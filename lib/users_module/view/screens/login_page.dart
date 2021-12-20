@@ -206,7 +206,7 @@ class LoginPage extends StatelessWidget {
 
                       child: TextButton(onPressed: (){
                         _loginController.checkLogin();
-                      }, child: Text('register'.tr,style: TextStyle(fontSize: 15.sp),),style: ButtonStyle(
+                      }, child: Text('newAccount'.tr,style: TextStyle(fontSize: 15.sp),),style: ButtonStyle(
                           foregroundColor:MaterialStateProperty.all(AppColors.whiteColor),
                           shape:MaterialStateProperty.all( RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(7.h),
                           ))) ),),
