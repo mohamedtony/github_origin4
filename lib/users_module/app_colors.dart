@@ -12,4 +12,5 @@ class AppColors{
  static const Color orBlueColor= Color(0xff182A61);
  static const Color arrowBlueColor= Color(0xff041D67);
  static const Color logoBlueColor= Color(0xff1F449E);
+ static const Color buttonGreyShadowColor= Color(0x00000029);
 }

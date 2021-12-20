@@ -3,6 +3,9 @@ import 'dart:ui';
 
 import 'package:advertisers/users_module/app_colors.dart';
 import 'package:advertisers/users_module/controller/login_controller.dart';
+import 'package:advertisers/users_module/view/usedWidgets/advertisers_button.dart';
+import 'package:advertisers/users_module/view/usedWidgets/advertisers_generic_field.dart';
+import 'package:advertisers/users_module/view/usedWidgets/advertisers_phone.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +15,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
-
+import 'package:flutter_svg_provider/flutter_svg_provider.dart'as svg;
 
 
 class LoginPage extends StatelessWidget {
@@ -46,16 +49,14 @@ class LoginPage extends StatelessWidget {
                         ),
                       ) ,
                     ),
-                    //SizedBox(height: 230.h,),
+
                     Container(
                         height:88.h,
                         width:88.w,
-                        decoration: const BoxDecoration(
+                        decoration:const BoxDecoration(
                           color: AppColors.blueAccentColor,
-                          //gradient: LinearGradient(begin:Alignment.topCenter ,end:Alignment.bottomCenter , colors:const [AppColors.firstBrownColor,AppColors.secondBrownColor]),
-                          shape: BoxShape.circle,),
-                            // borderRadius:BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)) ,
-                            // image:  DecorationImage(image: AssetImage('asset/images.jpeg'),fit: BoxFit.fill))
+                            shape: BoxShape.circle,
+                             image:  DecorationImage(image: svg.Svg('images/notLogo.svg'),fit: BoxFit.fill))
                     ),
                     SizedBox(height: 28.62.h,),
                     SizedBox(
@@ -72,89 +73,27 @@ class LoginPage extends StatelessWidget {
                         ),
                       ) ,
                     ),
-                    SizedBox(
-                      width: 323.w,
-                      //height: 50.h,
-                      child: TextFormField(
-                        style: TextStyle(fontSize: 15.sp ),
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          contentPadding:  EdgeInsets.symmetric(vertical: 5.0.h),
-                         suffixIcon: Padding(
-                           padding: const EdgeInsets.all(8.0),
-                           child: SvgPicture.asset('images/phone.svg',height: 22.8.h,fit: BoxFit.fitHeight,),
-                         ),
-                          prefixIcon:Obx(()=>CountryCodePicker(
-                              searchDecoration: const InputDecoration(
-                                  focusColor: AppColors.borderfayrozy,focusedBorder:UnderlineInputBorder(),
-                                  border: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: AppColors.borderfayrozy),)),
+                    Obx(()=>AdvertisersPhone(hintText: 'phone'.tr,initialSelection: _loginController.countryCode.value,
+                        onChanged: (countryCodeVal){
+                          _loginController.countryCode.value=countryCodeVal.code!;
+                        },controller: _loginController.phoneController,
+                      onSaved: (value){
+                        _loginController.phone=value!;
+                      },
+                      validator: (value){
+                        return _loginController.validatePhone(value!);
+                      }, )),
 
-                              initialSelection: _loginController.countryCode.value,
-                              onChanged: (countryCodeVal){
-                                _loginController.countryCode.value=countryCodeVal.code!;
-                              })),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color:AppColors.borderfayrozy)
-                          ),
-                          filled: true,
-                          disabledBorder:OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color: AppColors.borderfayrozy)
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color: AppColors.borderfayrozy)
-                          ),
-                          focusColor: AppColors.borderfayrozy,
-                          fillColor:AppColors.whiteColor,
-                          hintStyle:TextStyle(color: AppColors.greyColor,fontSize: 15.sp),
-                          hintText: 'phone'.tr,
-                        ),
-                        controller: _loginController.phoneController,
-                        onSaved: (value){
-                          _loginController.phone=value!;
-                        },
-                        validator: (value){
-                          return _loginController.validatePhone(value!);
-                        },
-
-                      ),
-                    ),
                     const SizedBox(height: 25,),
-                    SizedBox(
-                      width: 323.w,
-                      //height: 45.h,
-                      child: TextFormField(
-                        style: TextStyle(fontSize: 15.sp ),
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.number,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          contentPadding:  EdgeInsets.symmetric(vertical: 5.0.h),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color:AppColors.borderfayrozy)
-                          ),
-                          filled: true,
-                          disabledBorder:OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color: AppColors.borderfayrozy)
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color: AppColors.borderfayrozy)
-                          ),
-                          focusColor: AppColors.borderfayrozy,
-                          fillColor: AppColors.whiteColor,
-                          hintStyle:TextStyle(color: AppColors.greyColor,fontSize: 15.sp),
-                          hintText: 'أدخل كلمة المرور',
-                        ),
-                        controller: _loginController.passwordController,
-                        onSaved: (value){
-                          _loginController.password=value!;
-                        },
-                        validator: (value){
-                          return _loginController.validatePassword(value!);
-                        },
-                      ),
-                    ),
+
+                   AdvertisersGenericField(hintText: 'enterPassword'.tr,obscureText: true,
+                      controller: _loginController.passwordController,
+                      onSaved: (value){
+                        _loginController.password=value!;
+                      },
+                      validator: (value){
+                        return _loginController.validatePassword(value!);
+                      }, ),
                     SizedBox(height:10.h),
                     Padding(
                       padding: EdgeInsetsDirectional.only(end:31.w),
@@ -163,23 +102,7 @@ class LoginPage extends StatelessWidget {
                           child: SizedBox(child: Text('forgetPassword'.tr,style: TextStyle(color:AppColors.heavyBlueColor,decoration: TextDecoration.underline,fontSize: 15.sp),))),
                     ),
                     SizedBox(height:46.h),
-                    Container(
-                      height: 40.h,
-                      width:237.w,
-                      alignment: Alignment.center,
-                      decoration:  BoxDecoration(
-                        borderRadius: BorderRadius.circular(7),
-                        color: AppColors.blueAccentColor
-                        //gradient: LinearGradient(begin:Alignment.topCenter ,end:Alignment.bottomCenter , colors:const [AppColors.firstBrownColor,AppColors.secondBrownColor])
-                      ),
-
-                      child: TextButton(onPressed: (){
-                        _loginController.checkLogin();
-                      }, child: Text('login'.tr,style: TextStyle(fontSize: 15.sp),),style: ButtonStyle(
-                          foregroundColor:MaterialStateProperty.all(AppColors.whiteColor),
-                          shape:MaterialStateProperty.all(const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10),
-                          ))) ),),
-                    ),
+                   AdvertisersButton(text: 'login'.tr, onPressed: (){_loginController.checkLogin();}),
                     SizedBox(height:17.h),
                     SizedBox(
                       height: 29.h,
@@ -194,23 +117,9 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height:23.h),
-                    Container(
-                      height: 40.h,
-                      width:237.w,
-                      alignment: Alignment.center,
-                      decoration:  BoxDecoration(
-                          borderRadius: BorderRadius.circular(7.h),
-                          color: AppColors.blueAccentColor
-                         // gradient: LinearGradient(begin:Alignment.topCenter ,end:Alignment.bottomCenter , colors:const [AppColors.firstBrownColor,AppColors.secondBrownColor])
-                      ),
+                    AdvertisersButton(text: 'newAccount'.tr, onPressed: (){
 
-                      child: TextButton(onPressed: (){
-                        _loginController.checkLogin();
-                      }, child: Text('newAccount'.tr,style: TextStyle(fontSize: 15.sp),),style: ButtonStyle(
-                          foregroundColor:MaterialStateProperty.all(AppColors.whiteColor),
-                          shape:MaterialStateProperty.all( RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(7.h),
-                          ))) ),),
-                    )
+                    }),
                   ],
                 ),
               ),
