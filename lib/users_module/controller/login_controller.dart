@@ -35,14 +35,14 @@ class LoginController extends GetxController{
     super.onInit();
   }
   String? validatePhone(String phone){
-    if (phone.length<11||phone.length>11){
-      return 'رقم الهاتف لا يقل ولا يزيد عن 11 رقم';
+    if (phone.length<8){
+      return 'رقم الهاتف لا يقل 8 رقم';
     }
     return null;
   }
   String? validatePassword(String password){
-    if (password.length<8||password.length>8){
-      return 'الباسورد لا يقل ولا يزيد عن 8 حروف او ارقام';
+    if (password.length<8){
+      return 'الباسورد لا يقل عن 8 حروف او ارقام';
     }
     return null;
   }

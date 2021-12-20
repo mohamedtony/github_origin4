@@ -81,7 +81,10 @@ class LoginPage extends StatelessWidget {
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           contentPadding:  EdgeInsets.symmetric(vertical: 5.0.h),
-                         suffixIcon: SvgPicture.asset('images/phone.svg',height: 22.8.h,fit: BoxFit.fitHeight,),
+                         suffixIcon: Padding(
+                           padding: const EdgeInsets.all(8.0),
+                           child: SvgPicture.asset('images/phone.svg',height: 22.8.h,fit: BoxFit.fitHeight,),
+                         ),
                           prefixIcon:Obx(()=>CountryCodePicker(
                               searchDecoration: const InputDecoration(
                                   focusColor: AppColors.borderfayrozy,focusedBorder:UnderlineInputBorder(),
@@ -107,6 +110,42 @@ class LoginPage extends StatelessWidget {
                           hintStyle:TextStyle(color: AppColors.greyColor,fontSize: 15.sp),
                           hintText: 'phone'.tr,
                         ),
+                        controller: _loginController.phoneController,
+                        onSaved: (value){
+                          _loginController.phone=value!;
+                        },
+                        validator: (value){
+                          return _loginController.validatePhone(value!);
+                        },
+
+                      ),
+                    ),
+                    const SizedBox(height: 25,),
+                    SizedBox(
+                      width: 323.w,
+                      //height: 45.h,
+                      child: TextFormField(
+                        style: TextStyle(fontSize: 15.sp ),
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.number,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          contentPadding:  EdgeInsets.symmetric(vertical: 5.0.h),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color:AppColors.borderfayrozy)
+                          ),
+                          filled: true,
+                          disabledBorder:OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color: AppColors.borderfayrozy)
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color: AppColors.borderfayrozy)
+                          ),
+                          focusColor: AppColors.borderfayrozy,
+                          fillColor: AppColors.whiteColor,
+                          hintStyle:TextStyle(color: AppColors.greyColor,fontSize: 15.sp),
+                          hintText: 'أدخل كلمة المرور',
+                        ),
                         controller: _loginController.passwordController,
                         onSaved: (value){
                           _loginController.password=value!;
@@ -116,39 +155,6 @@ class LoginPage extends StatelessWidget {
                         },
                       ),
                     ),
-                    // const SizedBox(height: 25,),
-                    // SizedBox(
-                    //   width: 323.w,
-                    //   //height: 45.h,
-                    //   child: TextFormField(
-                    //     style: TextStyle(fontSize: 15.sp ),
-                    //     textAlign: TextAlign.center,
-                    //     keyboardType: TextInputType.number,
-                    //     decoration: InputDecoration(
-                    //       border: OutlineInputBorder(
-                    //           borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color:AppColors.borderGormozy)
-                    //       ),
-                    //       filled: true,
-                    //       disabledBorder:OutlineInputBorder(
-                    //           borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color: AppColors.borderGormozy)
-                    //       ),
-                    //       enabledBorder: OutlineInputBorder(
-                    //           borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color: AppColors.borderGormozy)
-                    //       ),
-                    //       focusColor: AppColors.borderGormozy,
-                    //       fillColor: AppColors.whiteColor,
-                    //       hintStyle:TextStyle(color: AppColors.greyColor,fontSize: 15.sp),
-                    //       hintText: 'أدخل كلمة المرور',
-                    //     ),
-                    //     controller: _loginController.phoneController,
-                    //     onSaved: (value){
-                    //       _loginController.phone=value!;
-                    //     },
-                    //     validator: (value){
-                    //       return _loginController.validatePhone(value!);
-                    //     },
-                    //   ),
-                    // ),
                     SizedBox(height:10.h),
                     Padding(
                       padding: EdgeInsetsDirectional.only(end:31.w),

@@ -5,4 +5,5 @@ const Map<String, String> enUS = {
   'forgetPassword':'Forget password',
   'newAccount':'Register',
   'or':'Or',
+  'enterPassword':'Enter password'
 };

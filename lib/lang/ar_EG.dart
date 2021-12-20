@@ -5,7 +5,7 @@ const Map<String, String> arEG = {
   'forgetPassword':'نسيت كلمة المرور',
   'newAccount':'انشاء حساب جديد',
   'or':'أو',
-  '':'',
+  'enterPassword':'أدخل كلمة المرور',
 
 
 };

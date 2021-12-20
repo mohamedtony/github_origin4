@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   void initState() {
-    LocalizationService().changeLocale(LocalizationService.langs.elementAt(1));
+    LocalizationService().changeLocale(LocalizationService.langs.elementAt(0));
     super.initState();
 
   }
