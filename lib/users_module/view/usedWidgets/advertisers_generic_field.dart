@@ -4,13 +4,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AdvertisersGenericField extends StatelessWidget {
-   AdvertisersGenericField({ required this.obscureText,this.onSaved,required this.controller,required this.hintText,this.validator,Key? key}) : super(key: key);
+   AdvertisersGenericField({this.borderColor, required this.textAlignment,required this.obscureText,this.onSaved,required this.controller,required this.hintText,this.validator,Key? key}) : super(key: key);
 
   late final String hintText;
   bool  obscureText= false;
   late final TextEditingController controller;
   final void Function(String?)? onSaved;
   String? Function(String?)? validator;
+  Color? borderColor;
+   TextAlign textAlignment=TextAlign.center ;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -18,21 +20,21 @@ class AdvertisersGenericField extends StatelessWidget {
       //height: 50.h,
       child: TextFormField(
         obscureText:obscureText,
-        style: TextStyle(fontSize: 15.sp ),
-        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 15.sp,fontFamily: 'Arabic-Regular' ),
+        textAlign: textAlignment==null?TextAlign.center:textAlignment,
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
-          contentPadding:  EdgeInsets.symmetric(vertical: 5.0.h),
+          contentPadding:  EdgeInsets.symmetric(vertical: 5.0.h,horizontal: 10.w),
 
          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color:AppColors.borderfayrozy)
+              borderRadius: BorderRadius.circular(12.h),borderSide: BorderSide(color:borderColor==null?AppColors.borderfayrozy: AppColors.borderAdvertiserRegisterColor)
           ),
           filled: true,
           disabledBorder:OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color: AppColors.borderfayrozy)
+              borderRadius: BorderRadius.circular(12.h),borderSide: BorderSide(color:borderColor==null?AppColors.borderfayrozy: AppColors.borderAdvertiserRegisterColor)
           ),
           enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color: AppColors.borderfayrozy)
+              borderRadius: BorderRadius.circular(12.h),borderSide: BorderSide(color: borderColor==null?AppColors.borderfayrozy: AppColors.borderAdvertiserRegisterColor)
           ),
           focusColor: AppColors.borderfayrozy,
           fillColor:AppColors.whiteColor,

@@ -13,4 +13,15 @@ class AppColors{
  static const Color arrowBlueColor= Color(0xff041D67);
  static const Color logoBlueColor= Color(0xff1F449E);
  static const Color buttonGreyShadowColor= Color(0x00000029);
+ static const Color verifyFayrouzyFirst= Color(0xff48DBE1);
+ static const Color verifyBlueSecond= Color(0xff4166CD);
+ static const Color verifyGreenThird= Color(0xff236B73);
+ static const Color transparentColor= Colors.transparent;
+ static const Color verifyBackgroundPin=Color(0xffFFFFFF);
+ static const Color changePhoneTextColor=Color(0xff707070);
+ static const Color verifyButtonColor=Color(0xffE8E8E8);
+ static const Color verifyTextColor=Color(0xff427AD0);
+ static const Color borderAdvertiserRegisterColor=Color(0xff8FBBE2);
+ static const Color tabAdvertiserTextColor=Color(0xff283D5B);
+ static const Color tabAdvertiserTextColor2=Color(0xff4184CE);
 }

@@ -38,6 +38,10 @@ dependencies:
   dio: ^4.0.4
   flutter_svg: ^0.23.0+1
   flutter_svg_provider: ^0.1.11
+  pin_code_fields: ^7.3.0
+  group_radio_button: ^1.1.0
+  dropdown_search: ^2.0.1
+  awesome_select: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -77,11 +81,13 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: Arabic-Regular
+      fonts:
+        - asset: fonts/Janna-LT-Regular.ttf
+    - family: elmessiri-regular
+      fonts:
+        - asset: fonts/elmessiri-regular.otf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

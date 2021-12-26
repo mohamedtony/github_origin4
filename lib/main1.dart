@@ -1,5 +1,12 @@
 import 'package:advertisers/lang/localization_get.dart';
+import 'package:advertisers/users_module/view/screens/forget_password_for_phone.dart';
 import 'package:advertisers/users_module/view/screens/login_page.dart';
+import 'package:advertisers/users_module/view/screens/register_account_type.dart';
+import 'package:advertisers/users_module/view/screens/register_new_advertiser_tab_bar.dart';
+import 'package:advertisers/users_module/view/screens/register_new_client_user.dart';
+import 'package:advertisers/users_module/view/screens/register_phone.dart';
+import 'package:advertisers/users_module/view/screens/registr_new_client_tab_bar.dart';
+import 'package:advertisers/users_module/view/screens/verification_code_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -43,10 +50,16 @@ class _MyAppState extends State<MyApp> {
           locale: LocalizationService.fallbackLocale,
           fallbackLocale: LocalizationService.locale,
           translations: LocalizationService(),
-          initialRoute: '/',
+          initialRoute: '/registerNewAdvertiserTapBar',
           getPages: [
-            GetPage(name: '/', page: () =>LoginPage()),
-
+            GetPage(name: '/loginPage', page: () =>LoginPage()),
+            GetPage(name: '/forgetPasswordForPhone', page: () =>ForgetPasswordForPhone()),
+            GetPage(name: '/verificationCodePage', page: () =>VerificationCodePage()),
+            GetPage(name: '/registerPhone', page: () =>RegisterPhone()),
+            GetPage(name: '/registerAccountType', page: () =>RegisterAccountType()),
+            // GetPage(name: '/registerNewClientUser', page: () =>RegisterNewClientUser()),
+            GetPage(name: '/registerNewClientTapBar', page: () =>RegisterNewClientTapBar()),
+            GetPage(name: '/registerNewAdvertiserTapBar', page: () =>RegisterNewAdvertiserTapBar()),
           ],
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',
