@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
 
           ],
           theme: ThemeData(
-            fontFamily: 'Arabic-Regular',
+            fontFamily: 'Janna',
           ),
         ));
   }

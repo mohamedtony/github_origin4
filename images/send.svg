@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="52.488" height="50.406" viewBox="0 0 52.488 50.406">
+  <defs>
+    <filter id="Path_3805" x="0.791" y="0" width="51.698" height="49.699" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-opacity="0.09"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Path_3806" x="0" y="0.707" width="51.698" height="49.699" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-2"/>
+      <feFlood flood-opacity="0.09"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_14816" data-name="Group 14816" transform="translate(0.744 -698.297)" opacity="0.49">
+    <g id="icon_70_" transform="translate(15.046 710.297)">
+      <g transform="matrix(1, 0, 0, 1, -15.79, -12)" filter="url(#Path_3805)">
+        <path id="Path_3805-2" data-name="Path 3805" d="M261.212,405.9a1.979,1.979,0,0,1-1.4-.586l-2.938-2.526-2.337,2.337a1,1,0,0,1-1.7-.7v-5.612l-2.918-3.389a2,2,0,0,1,.893-3.3l17.664-5.833a2,2,0,0,1,2.507,2.456,1.091,1.091,0,0,1-.067.171l-7.8,15.639a1.976,1.976,0,0,1-1.387,1.282A2.05,2.05,0,0,1,261.212,405.9Zm-4.392-5.469a.994.994,0,0,1,.65.241l3.693,3.18c.016-.059.1-.067.125-.121l7.749-15.53-17.644,5.822c.017.017-.006.052.011.071l3.18,3.693a1,1,0,0,1,.241.65v3.575l1.289-1.289A1,1,0,0,1,256.821,400.429Z" transform="translate(-233.57 -374.2)" fill="#4186cf"/>
+      </g>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, -0.74, 698.3)" filter="url(#Path_3806)">
+      <path id="Path_3806-2" data-name="Path 3806" d="M251.249,405.833a1,1,0,0,0,1.7.7l2.337-2.337,2.938,2.526a1.979,1.979,0,0,0,1.4.586,2.029,2.029,0,0,0,.509-.066,1.977,1.977,0,0,0,1.387-1.282l7.8-15.639a1.1,1.1,0,0,0,.067-.171,2,2,0,0,0-2.507-2.456l-17.664,5.833a2,2,0,0,0-.893,3.3l2.918,3.389v5.612Zm-1.427-10.326c-.016-.019.007-.053-.01-.071l17.644-5.822-7.749,15.53c-.027.054-.109.063-.125.122l-3.693-3.18a1,1,0,0,0-1.355.051l-1.289,1.289v-3.575a1,1,0,0,0-.241-.65Z" transform="translate(-232.77 -374.91)" fill="#4186cf" opacity="0.2"/>
+    </g>
+  </g>
+</svg>

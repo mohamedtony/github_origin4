@@ -1,5 +1,11 @@
+import 'package:advertisers/chat/view/pages/chat_page.dart';
+import 'package:advertisers/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/lang/localization_get.dart';
+import 'package:advertisers/notifications/view/pages/notifications_page.dart';
+import 'package:advertisers/notifications_settings/view/pages/notifications_settings_page.dart';
 import 'package:advertisers/users_module/view/screens/login_page.dart';
+import 'package:advertisers/wallet_module/wallet_page.dart';
+import 'package:advertisers/wallet_module/widgets/wallet_intro/wallet_intro_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -45,11 +51,11 @@ class _MyAppState extends State<MyApp> {
           translations: LocalizationService(),
           initialRoute: '/',
           getPages: [
-            GetPage(name: '/', page: () =>LoginPage()),
+            GetPage(name: '/', page: () =>NotificationsSettingsPage()),
 
           ],
           theme: ThemeData(
-            fontFamily: 'Arabic-Regular',
+            fontFamily: 'Janna',
           ),
         ));
   }
