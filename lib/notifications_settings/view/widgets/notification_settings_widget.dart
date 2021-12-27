@@ -37,12 +37,14 @@ class NotificationSettingsWidget extends StatelessWidget {
                 width: 20,
               ),
 
-              Expanded(child: Row(children: [
+              Expanded(child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                 Text("تنبيه",style: TextStyle(fontSize: 16,),),
                 SizedBox(
                   width: 10,
                 ),
-                controller.checkList!.contains(notificationSettingsData.id) ?  Icon(Icons.volume_mute) :  Icon(Icons.volume_down),
+                controller.checkList!.contains(notificationSettingsData.id) ?  Image.asset("${'images/volume_mute.png'}",height: 55,) :  Image.asset("${'images/volume-up.png'}",height: 55,),
 
               ],)),
               Expanded(child: InkWell(
@@ -53,12 +55,17 @@ class NotificationSettingsWidget extends StatelessWidget {
                   }
 
                 },
-                child: Row(children: [
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
                   Text("ايميل",style: TextStyle(fontSize: 16,color:Color(0xff244094)),),
                   SizedBox(
                     width: 10,
                   ),
-                controller.checkList!.contains(notificationSettingsData.id) ? selectedBigCheckBox() : unSelectedBigCheckBox()
+                controller.checkList!.contains(notificationSettingsData.id) ? selectedBigCheckBox() : unSelectedBigCheckBox(),
+                    SizedBox(
+                      width: 15,
+                    ),
 
                 ],),
               )),

@@ -1,7 +1,7 @@
 import 'package:advertisers/chat/view/pages/chat_page.dart';
 import 'package:advertisers/chat/view/widgets/chat_and_title.dart';
-import 'package:advertisers/chat/view/widgets/chat_app_bar.dart';
 import 'package:advertisers/chat/view/widgets/chat_recent_widget.dart';
+import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,9 +11,12 @@ class ChatRecentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(130),
-        child: ChatAppBarWidget(),
+      appBar:  PreferredSize(
+        preferredSize: Size.fromHeight(75),
+        child: AppBarWidget(
+          isSearchBar: true,
+          // showSearch: false,
+        ),
       ),
       body: Column(
         children: [

@@ -6,8 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 
-class LoginController extends GetxController{
-  GlobalKey<FormState> loginClientFormKey=GlobalKey<FormState>();
+class ForgetPasswordForPhoneController extends GetxController{
+  GlobalKey<FormState> forgetPasswordForPhoneFormKey=GlobalKey<FormState>();
   late TextEditingController passwordController;
   late TextEditingController phoneController;
 
@@ -17,8 +17,6 @@ class LoginController extends GetxController{
   var longitude=0.0.obs;
   var password='';
   var phone='';
-  // var latitudeController=''.obs;
-  // var longitudeController=''.obs;
   var logoPath=''.obs;
   var imageBase641=''.obs;
   //Repository repo=Repository();
@@ -29,6 +27,7 @@ class LoginController extends GetxController{
     phoneController=TextEditingController();
 
 
+
     super.onInit();
   }
   String? validatePhone(String phone){
@@ -37,22 +36,16 @@ class LoginController extends GetxController{
     }
     return null;
   }
-  String? validatePassword(String password){
-    if (password.length<8){
-      return 'الباسورد لا يقل عن 8 حروف او ارقام';
-    }
-    return null;
-  }
 
 
   void checkLogin(){
-    final isValid=loginClientFormKey.currentState!.validate();
+    final isValid=forgetPasswordForPhoneFormKey.currentState!.validate();
     if(!isValid){
       return;
     }
-    loginClientFormKey.currentState!.save();
-   // loginClient();
-
+    forgetPasswordForPhoneFormKey.currentState!.save();
+     // loginClient();
+    Get.toNamed('/verificationCodePage');
   }
   // void loginClient(){
   //   repo.post<LoginSalonResponse>(path: '/loginClient',fromJson:(json) => LoginSalonResponse.fromJson(json),
@@ -67,7 +60,7 @@ class LoginController extends GetxController{
   // }
   @override
   void onClose() {
-    passwordController.dispose();
+
     phoneController.dispose();
 
     super.onClose();

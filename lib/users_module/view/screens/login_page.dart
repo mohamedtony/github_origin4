@@ -69,7 +69,7 @@ class LoginPage extends StatelessWidget {
                         padding:  EdgeInsets.all(16.0.w),
                         child: Align(
                           alignment: AlignmentDirectional.centerStart,
-                          child: Text('login'.tr,style: TextStyle(fontSize:17.sp,color: AppColors.heavyBlueColor)),
+                          child: Text('login'.tr,style: TextStyle(fontSize:17.sp,color: AppColors.heavyBlueColor,fontWeight: FontWeight.bold)),
                         ),
                       ) ,
                     ),
@@ -87,7 +87,7 @@ class LoginPage extends StatelessWidget {
                     const SizedBox(height: 25,),
 
                    AdvertisersGenericField(hintText: 'enterPassword'.tr,obscureText: true,
-                      controller: _loginController.passwordController,
+                      controller: _loginController.passwordController,textAlignment: TextAlign.center,
                       onSaved: (value){
                         _loginController.password=value!;
                       },
@@ -95,11 +95,28 @@ class LoginPage extends StatelessWidget {
                         return _loginController.validatePassword(value!);
                       }, ),
                     SizedBox(height:10.h),
-                    Padding(
-                      padding: EdgeInsetsDirectional.only(end:31.w),
-                      child: Align(
-                          alignment: AlignmentDirectional.centerEnd,
-                          child: SizedBox(child: Text('forgetPassword'.tr,style: TextStyle(color:AppColors.heavyBlueColor,decoration: TextDecoration.underline,fontSize: 15.sp),))),
+                    InkWell(
+                      onTap: (){
+                        Get.toNamed('/forgetPasswordForPhone');
+                      },
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsetsDirectional.only(end:31.w),
+                            child: Align(
+                                alignment: AlignmentDirectional.centerEnd,
+                                child: SizedBox(child: Text('forgetPassword'.tr,style: TextStyle(color:AppColors.heavyBlueColor,decoration: TextDecoration.underline,fontSize: 15.sp,fontWeight: FontWeight.bold),))),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.only(end:31.w),
+                            child: Align(
+                                alignment: AlignmentDirectional.centerEnd,
+                                child: SizedBox(
+                                    width: 110.w,
+                                    child:const Divider(color:AppColors.heavyBlueColor,height: 1,thickness: 1,)),),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(height:46.h),
                    AdvertisersButton(text: 'login'.tr, onPressed: (){_loginController.checkLogin();}),
@@ -110,15 +127,15 @@ class LoginPage extends StatelessWidget {
                       child: Row(mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Container(color: AppColors.lightBlueColor,height: 2.h,width: 150.w,),
+                          Container(color: AppColors.heavyBlueColor,height: 2.h,width: 150.w,),
                           Text('or'.tr,style: TextStyle(fontSize: 16.sp,color: AppColors.orBlueColor)),
-                          Container(color: AppColors.lightBlueColor,height: 2.h,width: 150.w,),
+                          Container(color: AppColors.heavyBlueColor,height: 2.h,width: 150.w,),
                         ],
                       ),
                     ),
                     SizedBox(height:23.h),
                     AdvertisersButton(text: 'newAccount'.tr, onPressed: (){
-
+                            Get.toNamed('/registerPhone');
                     }),
                   ],
                 ),

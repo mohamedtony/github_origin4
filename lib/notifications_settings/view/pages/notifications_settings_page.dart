@@ -4,6 +4,7 @@ import 'package:advertisers/notifications/view/widgets/notifications_title.dart'
 import 'package:advertisers/notifications_settings/controller/notification_settings_controller.dart';
 import 'package:advertisers/notifications_settings/view/widgets/notification_settings_widget.dart';
 import 'package:advertisers/notifications_settings/view/widgets/notifications_settings_title.dart';
+import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:advertisers/shared/radio_buttons/radio_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,7 +16,16 @@ class NotificationsSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        child: AppBarWidget(),
+        child: AppBarWidget(
+          isSearchBar: true,
+          isNotification: false,
+          isBack: true,
+          isSideMenu: false,
+          // isFilter: false,
+          // searchBarBigLeft: false,
+          searchHint: "ابحث باسم العميل / رقم الطلب",
+
+        ),
         preferredSize: Size(MediaQuery.of(context).size.width, 150.0),
       ),
       body: Column(

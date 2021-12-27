@@ -31,7 +31,7 @@ class NotificationsSettingsTitle extends StatelessWidget {
               },
               child: Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 3),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(7),
                     color: const Color(0xff4184CE)),

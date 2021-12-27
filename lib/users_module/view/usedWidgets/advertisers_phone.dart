@@ -11,11 +11,12 @@ class AdvertisersPhone extends StatelessWidget {
 
     late final String initialSelection;
     late final String hintText;
+    Color? borderColor;
     final void Function(CountryCode)?  onChanged;
     late final TextEditingController controller;
     final void Function(String?)? onSaved;
     String? Function(String?)? validator;
-   AdvertisersPhone({this.onSaved,this.onChanged,required this.initialSelection,required this.controller,required this.hintText,this.validator,Key? key}) : super(key: key);
+   AdvertisersPhone({this.borderColor,this.onSaved,this.onChanged,required this.initialSelection,required this.controller,required this.hintText,this.validator,Key? key}) : super(key: key);
     //var controllerGetx=Get.find<dynamic>();
   @override
   Widget build(BuildContext context) {
@@ -41,18 +42,18 @@ class AdvertisersPhone extends StatelessWidget {
               initialSelection:initialSelection,
               onChanged: onChanged),
           border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color:AppColors.borderfayrozy)
+              borderRadius: BorderRadius.circular(12.h),borderSide: BorderSide(color: borderColor==null?AppColors.borderfayrozy: AppColors.borderAdvertiserRegisterColor)
           ),
           filled: true,
           disabledBorder:OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color: AppColors.borderfayrozy)
+              borderRadius: BorderRadius.circular(12.h),borderSide: BorderSide(color:borderColor==null?AppColors.borderfayrozy: AppColors.borderAdvertiserRegisterColor)
           ),
           enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.h),borderSide:const BorderSide(color: AppColors.borderfayrozy)
+              borderRadius: BorderRadius.circular(12.h),borderSide: BorderSide(color:  borderColor==null?AppColors.borderfayrozy: AppColors.borderAdvertiserRegisterColor)
           ),
           focusColor: AppColors.borderfayrozy,
           fillColor:AppColors.whiteColor,
-          hintStyle:TextStyle(color: AppColors.greyColor,fontSize: 15.sp),
+          hintStyle:TextStyle(color: AppColors.greyColor,fontSize: 15.sp,fontFamily: 'Arabic-Regular'),
           hintText: hintText,
         ),
         controller:controller,

@@ -1,6 +1,6 @@
-import 'package:advertisers/chat/view/widgets/appbar_widget.dart';
 import 'package:advertisers/chat/view/widgets/chat_and_title.dart';
 import 'package:advertisers/chat/view/widgets/chat_content_widget.dart';
+import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,8 +15,9 @@ class ChatPage extends StatelessWidget {
     return Scaffold(
       appBar:  PreferredSize(
         preferredSize: Size.fromHeight(75),
-        child: AppbarWidget(
-          showSearch: false,
+        child: AppBarWidget(
+          // isSearchBar: ,
+          // showSearch: false,
         ),
       ),
       body: Column(

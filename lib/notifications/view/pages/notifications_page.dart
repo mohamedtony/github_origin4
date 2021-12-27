@@ -1,6 +1,7 @@
 import 'package:advertisers/notifications/view/widgets/appbar_widget.dart';
 import 'package:advertisers/notifications/view/widgets/notification_widget.dart';
 import 'package:advertisers/notifications/view/widgets/notifications_title.dart';
+import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class NotificationsPage extends StatelessWidget {
