@@ -10,7 +10,7 @@ class AdvertisersButton extends StatelessWidget {
 
   late final String text;
   late final Color? backgroundColor,textColor;
-  late final Callback onPressed;
+  late final void Function()? onPressed;
   late final double? width;
   AdvertisersButton({this.width,this.textColor,this.backgroundColor,required this.text,required this.onPressed,Key? key}) : super(key: key);
 

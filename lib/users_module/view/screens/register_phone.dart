@@ -30,7 +30,7 @@ class RegisterPhone extends StatelessWidget {
                       begin: Alignment.topCenter,end: Alignment.bottomCenter ,stops:[0,1.6,.9]),
                 ),
                 child: Form(
-                //  key: _registerPhoneController.registerPhoneFormKey,
+                  key: _registerPhoneController.registerPhoneFormKey,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: SingleChildScrollView(
                     child: Column(

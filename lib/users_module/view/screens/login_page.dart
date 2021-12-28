@@ -22,7 +22,7 @@ class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
 
   final LoginController _loginController=Get.put(LoginController());
-  GlobalKey<FormState> registerPhoneFormKey=GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +33,7 @@ class LoginPage extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             alignment: Alignment.topCenter,
             child: Form(
-              //key: _loginController.loginClientFormKey,
+              key: _loginController.loginClientFormKey1,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: SingleChildScrollView(
                 child: Column(
@@ -137,8 +137,8 @@ class LoginPage extends StatelessWidget {
                     ),
                     SizedBox(height:23.h),
                     AdvertisersButton(text: 'newAccount'.tr, onPressed: (){
-                            Get.toNamed('/registerPhone');
-                    }),
+                           Get.toNamed('/registerAccountType');
+                    },),
                   ],
                 ),
               ),

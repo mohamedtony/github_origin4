@@ -32,7 +32,7 @@ class _RegisterAccountTypeState extends State<RegisterAccountType> {
  //  RegisterAccountTypeCard(value: 'advertiser', singleValue: 'advertiser'.tr,active :false)];
   late String value='client';
   bool active=false;
-  ClientType? _type ;
+  ClientType? _type= ClientType.client;
  @override
   void initState() {
     // TODO: implement initState
