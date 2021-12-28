@@ -38,9 +38,9 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   void initState() {
-    var locale=const Locale('ar', 'EG');
-    Get.updateLocale(locale);
-    //LocalizationService().changeLocale(LocalizationService.langs.elementAt(0));
+    // var locale=const Locale('ar', 'EG');
+    // Get.updateLocale(locale);
+
     super.initState();
 
   }
@@ -55,8 +55,10 @@ class _MyAppState extends State<MyApp> {
         designSize: const Size(375.0,812.0),
         builder:()=>GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          locale: LocalizationService.fallbackLocale,
-          fallbackLocale: LocalizationService.locale,
+          locale: LocalizationService.locale,
+          fallbackLocale: LocalizationService.fallbackLocale,
+         // fallbackLocale: LocalizationService.locale,
+
           translations: LocalizationService(),
           initialRoute: '/loginPage',
           getPages: [

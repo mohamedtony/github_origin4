@@ -20,6 +20,7 @@ import 'package:flutter_svg_provider/flutter_svg_provider.dart'as svg;
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
+
   final LoginController _loginController=Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
@@ -107,14 +108,14 @@ class LoginPage extends StatelessWidget {
                                 alignment: AlignmentDirectional.centerEnd,
                                 child: SizedBox(child: Text('forgetPassword'.tr,style: TextStyle(color:AppColors.heavyBlueColor,decoration: TextDecoration.underline,fontSize: 15.sp,fontWeight: FontWeight.bold),))),
                           ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.only(end:31.w),
-                            child: Align(
-                                alignment: AlignmentDirectional.centerEnd,
-                                child: SizedBox(
-                                    width: 110.w,
-                                    child:const Divider(color:AppColors.heavyBlueColor,height: 1,thickness: 1,)),),
-                          ),
+                          // Padding(
+                          //   padding: EdgeInsetsDirectional.only(end:31.w),
+                          //   child: Align(
+                          //       alignment: AlignmentDirectional.centerEnd,
+                          //       child: SizedBox(
+                          //           width: 110.w,
+                          //           child:const Divider(color:AppColors.heavyBlueColor,height: 1,thickness: 1,)),),
+                          // ),
                         ],
                       ),
                     ),

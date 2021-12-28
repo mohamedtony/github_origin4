@@ -5,7 +5,7 @@ import 'package:advertisers/lang/ar_EG.dart';
 import 'package:advertisers/lang/en_US.dart';
 class LocalizationService extends Translations {
   // Default locale
-  static final locale = Locale('en', 'US');
+  static final locale = Locale('ar', 'EG');
 
   // fallbackLocale saves the day when the locale gets in trouble
   static final fallbackLocale = Locale('ar', 'EG');
@@ -40,9 +40,10 @@ class LocalizationService extends Translations {
 
   // Finds language in `langs` list and returns it as Locale
   Locale? _getLocaleFromLanguage(String lang) {
-    for (int i = 0; i < langs.length; i++) {
-      if (lang == langs[i]) return locales[i];
-    }
-    return Get.locale;
+    // for (int i = 0; i < langs.length; i++) {
+    //  if (lang == langs[i]) return locales[i];
+    // }
+    // return Get.locale;
+    return locales[0];
   }
 }

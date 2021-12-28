@@ -36,7 +36,7 @@ class RegisterNewClientCompany extends StatelessWidget {
         ),
         alignment: Alignment.topCenter,
         child: Form(
-         // key: _loginController.loginClientFormKey,
+          key: _registerNewClientUserController.registerNewCompanyUserControllerKeyForm,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: SingleChildScrollView(
             child: Column(
