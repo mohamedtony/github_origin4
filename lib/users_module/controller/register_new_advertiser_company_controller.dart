@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 
 class RegisterNewAdvertiserCompanyController extends GetxController{
-  GlobalKey<FormState> registerNewAdvertiserCompanyControllerKeyForm=GlobalKey<FormState>();
+  GlobalKey<FormState> registerNewAdvertiserCompanyControllerKeyForm=GlobalKey<FormState>(debugLabel: 'registerNewAdvertiserCompanyControllerKeyForm');
 
   late TextEditingController phoneController;
   late TextEditingController companyNameController;
@@ -37,7 +37,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController{
     emailController=TextEditingController();
     accountAdminNameController=TextEditingController();
     passwordController=TextEditingController();
-
+    recordIDController=TextEditingController();
 
 
 
@@ -58,7 +58,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController{
     }
     registerNewAdvertiserCompanyControllerKeyForm.currentState!.save();
     // loginClient();
-    Get.toNamed('/verificationCodePage');
+    Get.toNamed('/bakaPage');
   }
   // void loginClient(){
   //   repo.post<LoginSalonResponse>(path: '/loginClient',fromJson:(json) => LoginSalonResponse.fromJson(json),

@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 
 class RegisterNewCompanyUserController extends GetxController{
-  GlobalKey<FormState> registerNewCompanyUserControllerKeyForm=GlobalKey<FormState>();
+  GlobalKey<FormState> registerNewCompanyUserControllerKeyForm1=GlobalKey<FormState>(debugLabel: 'registerNewCompanyUserControllerKeyForm');
 
   late TextEditingController phoneController;
   late TextEditingController companyNameController;
@@ -37,7 +37,7 @@ class RegisterNewCompanyUserController extends GetxController{
     emailController=TextEditingController();
     accountAdminNameController=TextEditingController();
     passwordController=TextEditingController();
-
+    recordIDController=TextEditingController();
 
 
 
@@ -52,11 +52,11 @@ class RegisterNewCompanyUserController extends GetxController{
 
 
   void checkLogin(){
-    final isValid=registerNewCompanyUserControllerKeyForm.currentState!.validate();
+    final isValid=registerNewCompanyUserControllerKeyForm1.currentState!.validate();
     if(!isValid){
       return;
     }
-    registerNewCompanyUserControllerKeyForm.currentState!.save();
+    registerNewCompanyUserControllerKeyForm1.currentState!.save();
     // loginClient();
     Get.toNamed('/verificationCodePage');
   }

@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 
 class ForgetPasswordForPhoneController extends GetxController{
-  GlobalKey<FormState> forgetPasswordForPhoneFormKey=GlobalKey<FormState>();
+  GlobalKey<FormState> forgetPasswordForPhoneFormKey=GlobalKey<FormState>(debugLabel: 'forgetPasswordForPhoneFormKey');
   late TextEditingController passwordController;
   late TextEditingController phoneController;
 

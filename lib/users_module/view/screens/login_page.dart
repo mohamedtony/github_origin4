@@ -137,8 +137,8 @@ class LoginPage extends StatelessWidget {
                     ),
                     SizedBox(height:23.h),
                     AdvertisersButton(text: 'newAccount'.tr, onPressed: (){
-                           Get.toNamed('/registerAccountType');
-                    },),
+                           Get.toNamed('/registerAccountType',);
+                    },key: ValueKey('register'),),
                   ],
                 ),
               ),

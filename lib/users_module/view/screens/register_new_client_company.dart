@@ -36,7 +36,7 @@ class RegisterNewClientCompany extends StatelessWidget {
         ),
         alignment: Alignment.topCenter,
         child: Form(
-          key: _registerNewClientUserController.registerNewCompanyUserControllerKeyForm,
+          key: _registerNewClientUserController.registerNewCompanyUserControllerKeyForm1,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: SingleChildScrollView(
             child: Column(
@@ -61,7 +61,7 @@ class RegisterNewClientCompany extends StatelessWidget {
                           color: AppColors.verifyFayrouzyFirst,
                           shape: BoxShape.circle,),
                         child: Icon(Icons.camera_alt_outlined,color: AppColors.whiteColor,size: 50,),
-                       // child:   SvgPicture.asset('images/camera.svg',height: 26.13.h,width:34.84.w,fit: BoxFit.fitWidth),
+                      //  child:   SvgPicture.asset('images/camera.svg',height: 26.13.h,width:34.84.w,fit: BoxFit.fitWidth),
 
                         // image:  DecorationImage(image: svg.Svg('images/notLogo.svg'),fit: BoxFit.fill)),
                       ),

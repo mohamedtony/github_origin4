@@ -30,7 +30,7 @@ class RegisterPhone extends StatelessWidget {
                       begin: Alignment.topCenter,end: Alignment.bottomCenter ,stops:[0,1.6,.9]),
                 ),
                 child: Form(
-                  key: _registerPhoneController.registerPhoneFormKey,
+                //  key: _registerPhoneController.registerPhoneFormKey,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: SingleChildScrollView(
                     child: Column(
@@ -93,7 +93,8 @@ class RegisterPhone extends StatelessWidget {
                         //       child: SizedBox(child: Text('forgetPassword'.tr,style: TextStyle(color:AppColors.heavyBlueColor,decoration: TextDecoration.underline,fontSize: 15.sp),))),
                         // ),
                         SizedBox(height:32.h),
-                        AdvertisersButton(text: 'register'.tr,textColor:AppColors.verifyTextColor ,backgroundColor: AppColors.verifyButtonColor, onPressed: (){_registerPhoneController.checkLogin();}),
+                        AdvertisersButton(text: 'register'.tr,textColor:AppColors.verifyTextColor ,backgroundColor: AppColors.verifyButtonColor, onPressed: (){_registerPhoneController.checkLogin();
+                        }),
 
                       ],
                     ),

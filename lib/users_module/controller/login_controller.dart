@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 
 class LoginController extends GetxController{
-   GlobalKey<FormState> loginClientFormKey1=GlobalKey<FormState>();
+   GlobalKey<FormState> loginClientFormKey1=GlobalKey<FormState>(debugLabel:'loginClientFormKey1' );
   late TextEditingController passwordController;
   late TextEditingController phoneController;
 
@@ -48,11 +48,11 @@ class LoginController extends GetxController{
   void checkLogin(){
     final isValid=loginClientFormKey1.currentState!.validate();
     if(!isValid){
-      Get.toNamed('/home');
-     // return;
+     // Get.toNamed('/home');
+      return;
     }
     loginClientFormKey1.currentState!.save();
-   // loginClient();
+    Get.toNamed('/home');
 
   }
   // void loginClient(){

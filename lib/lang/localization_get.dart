@@ -40,10 +40,10 @@ class LocalizationService extends Translations {
 
   // Finds language in `langs` list and returns it as Locale
   Locale? _getLocaleFromLanguage(String lang) {
-    // for (int i = 0; i < langs.length; i++) {
-    //  if (lang == langs[i]) return locales[i];
-    // }
-    // return Get.locale;
-    return locales[0];
+    for (int i = 0; i < langs.length; i++) {
+     if (lang == langs[i]) return locales[i];
+    }
+    return Get.locale;
+    //return locales[0];
   }
 }
