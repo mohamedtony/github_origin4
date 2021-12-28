@@ -1,5 +1,12 @@
+import 'package:advertisers/chat/view/pages/chat_page.dart';
+import 'package:advertisers/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/lang/localization_get.dart';
 import 'package:advertisers/users_module/view/screens/baka_page.dart';
+import 'package:advertisers/notifications/view/pages/notifications_page.dart';
+import 'package:advertisers/notifications_settings/view/pages/notifications_settings_page.dart';
+import 'package:advertisers/users_module/view/screens/login_page.dart';
+import 'package:advertisers/wallet_module/wallet_page.dart';
+import 'package:advertisers/wallet_module/widgets/wallet_intro/wallet_intro_page.dart';
 import 'package:advertisers/users_module/view/screens/forget_password_for_phone.dart';
 import 'package:advertisers/users_module/view/screens/login_page.dart';
 import 'package:advertisers/users_module/view/screens/register_account_type.dart';
@@ -53,7 +60,12 @@ class _MyAppState extends State<MyApp> {
           translations: LocalizationService(),
           initialRoute: '/loginPage',
           getPages: [
-            GetPage(name: '/loginPage', page: () =>LoginPage()),
+            GetPage(name: '/', page: () =>LoginPage()),
+            GetPage(name: '/NotificationsPage', page: () =>NotificationsPage()),
+            GetPage(name: '/NotificationsSettingsPage', page: () =>NotificationsSettingsPage()),
+            GetPage(name: '/WalletPage', page: () =>WalletPage()),
+            GetPage(name: '/ChatPage', page: () =>ChatPage()),
+            GetPage(name: '/ChatRecentPage', page: () =>ChatRecentPage()),
             GetPage(name: '/forgetPasswordForPhone', page: () =>ForgetPasswordForPhone()),
             GetPage(name: '/verificationCodePage', page: () =>VerificationCodePage()),
             GetPage(name: '/registerPhone', page: () =>RegisterPhone()),
