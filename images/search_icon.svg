@@ -1,0 +1,11 @@
+<svg id="bx-search-alt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20.814" height="20.814" viewBox="0 0 20.814 20.814">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#48dbe1"/>
+      <stop offset="1" stop-color="#4166cd"/>
+      <stop offset="1" stop-color="#236b73"/>
+    </linearGradient>
+  </defs>
+  <path id="Path_13164" data-name="Path 13164" d="M11.9,20.8a8.846,8.846,0,0,0,5.448-1.877l4.892,4.89,1.573-1.573L18.923,17.35A8.89,8.89,0,1,0,11.9,20.8Zm0-15.576A6.676,6.676,0,1,1,5.225,11.9,6.683,6.683,0,0,1,11.9,5.225Z" transform="translate(-3 -3)" fill="url(#linear-gradient)"/>
+  <path id="Path_13165" data-name="Path 13165" d="M15.476,11.892a2.214,2.214,0,0,1,.654,1.573h2.225a4.424,4.424,0,0,0-1.306-3.146,4.549,4.549,0,0,0-6.288,0l1.571,1.575A2.274,2.274,0,0,1,15.476,11.892Z" transform="translate(-5.005 -4.564)" fill="url(#linear-gradient)"/>
+</svg>

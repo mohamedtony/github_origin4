@@ -27,7 +27,30 @@ const Map<String, String> arEG = {
   'accountAdminName':'اسم صاحب الحساب / مدير الحساب',
   'recordNumber':'رقم السجل التجاري',
   'cian':'كيان',
-
+  'requestAdvertise':'إطلب إعلان',
+  'ads':'الإعلانات',
+  'advertisers':'المعلنين',
+  'coupons':'الكوبونات',
+  'advertisingData':'بيانات الإعلانات',
+  'productType':'نوع المنتج',
+  'adType':'نوع الإعلان',
+  'adDescription':'وصف الإعلان : ',
+  'adDate':'تاريخ الإعلان',
+  'adChannels':'قنوات الإعلان',
+  'attachments':'المرفقات',
+  'links':'الروابط',
+  'adTitle':'عنوان الإعلان',
+  'addCoupon':'إضافة كوبون',
+  'noticeable':'ملحوظة',
+  'advertisinPlan':'خطة الإعلان',
+  'findAdvertiser':'البحث عن معلن',
+  'save':'حفظ',
+  'cancel':'إلغاء',
+  'attachmentName':'اسم المرفق',
+  'copyCode':'نسخ الكود',
+  'linkName':'اسم الرابط',
+  'urlName':'عنوان الرابط',
+  'adPlan':'خطة الإعلان'
 
 
 
