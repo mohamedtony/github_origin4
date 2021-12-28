@@ -17,7 +17,7 @@ class AdvertisersButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Container(
-      height: 45.h,
+      height: 50.h,
       width:width ==null?237.w:width,
       alignment: Alignment.center,
       decoration:  BoxDecoration(

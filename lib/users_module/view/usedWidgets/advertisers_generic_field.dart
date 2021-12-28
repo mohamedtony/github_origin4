@@ -4,14 +4,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AdvertisersGenericField extends StatelessWidget {
-   AdvertisersGenericField({this.borderColor, required this.textAlignment,required this.obscureText,this.onSaved,required this.controller,required this.hintText,this.validator,Key? key}) : super(key: key);
+   AdvertisersGenericField({this.hintColor,this.fontSize,this.borderColor, required this.textAlignment,required this.obscureText,this.onSaved,required this.controller,required this.hintText,this.validator,Key? key}) : super(key: key);
 
   late final String hintText;
   bool  obscureText= false;
   late final TextEditingController controller;
   final void Function(String?)? onSaved;
   String? Function(String?)? validator;
-  Color? borderColor;
+  double? fontSize;
+  Color? borderColor,hintColor;
    TextAlign textAlignment=TextAlign.center ;
   @override
   Widget build(BuildContext context) {
@@ -20,8 +21,8 @@ class AdvertisersGenericField extends StatelessWidget {
       //height: 50.h,
       child: TextFormField(
         obscureText:obscureText,
-        style: TextStyle(fontSize: 15.sp,fontFamily: 'Arabic-Regular' ),
-        textAlign: textAlignment==null?TextAlign.center:textAlignment,
+        style: TextStyle(fontSize: fontSize==null?14.sp : 15.sp,fontFamily: 'Arabic-Regular' ),
+        textAlign: textAlignment,
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
           contentPadding:  EdgeInsets.symmetric(vertical: 5.0.h,horizontal: 10.w),

@@ -35,7 +35,7 @@ class RegisterNewClientUser extends StatelessWidget {
             ),
             alignment: Alignment.topCenter,
             child: Form(
-              key: _loginController.loginClientFormKey,
+             // key: _loginController.loginClientFormKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: SingleChildScrollView(
                 child: Column(
@@ -61,7 +61,8 @@ class RegisterNewClientUser extends StatelessWidget {
                                   color: AppColors.verifyFayrouzyFirst,
                                   shape: BoxShape.circle,),
                                  child: Icon(Icons.camera_alt_outlined,color: AppColors.whiteColor,size: 50,),
-                                 // image:  DecorationImage(image: svg.Svg('images/notLogo.svg'),fit: BoxFit.fill)),
+                                //  child:   SvgPicture.asset('images/camera.svg',height: 26.13.h,width:34.84.w,fit: BoxFit.fitWidth),
+
                           ),
                           Padding(
                             padding: EdgeInsetsDirectional.only(top: 2.0.h,end: 0.w),
@@ -80,7 +81,7 @@ class RegisterNewClientUser extends StatelessWidget {
                     SizedBox(height: 28.62.h,),
 
                    AdvertisersGenericField(obscureText: false, controller: _loginController.phoneController,
-                       textAlignment: TextAlign.end,hintText: 'name'.tr),
+                       textAlignment: TextAlign.end,hintText: 'name'.tr,),
                     SizedBox(height: 16.h,),
                        AdvertisersDropDown(hintText: 'type'.tr,width: 0,),
                     SizedBox(height: 16.h,),

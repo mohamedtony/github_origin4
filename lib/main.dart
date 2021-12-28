@@ -1,7 +1,7 @@
 import 'package:advertisers/chat/view/pages/chat_page.dart';
 import 'package:advertisers/chat/view/pages/chat_recent_page.dart';
-import 'package:advertisers/home_page/view/pages/home_bottom_navigation.dart';
 import 'package:advertisers/lang/localization_get.dart';
+import 'package:advertisers/users_module/view/screens/baka_page.dart';
 import 'package:advertisers/notifications/view/pages/notifications_page.dart';
 import 'package:advertisers/notifications_settings/view/pages/notifications_settings_page.dart';
 import 'package:advertisers/users_module/view/screens/login_page.dart';
@@ -50,40 +50,33 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
-    return
-
-      LayoutBuilder(builder: (context, constraints) {
-      return OrientationBuilder(//return OrientationBuilder
-        builder: (context, orientation) {
-          return ScreenUtilInit(
-        //this line belongs to ali don't touch just commit it if you want
-          designSize: const Size(360, 690),
-          builder:()=>GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-            locale: LocalizationService.fallbackLocale,
-            fallbackLocale: LocalizationService.locale,
-            translations: LocalizationService(),
-            initialRoute: '/',
-            getPages: [
-              GetPage(name: '/', page: () =>Home()),
-              GetPage(name: '/NotificationsPage', page: () =>NotificationsPage()),
-              GetPage(name: '/NotificationsSettingsPage', page: () =>NotificationsSettingsPage()),
-              GetPage(name: '/WalletPage', page: () =>WalletPage()),
-              GetPage(name: '/ChatPage', page: () =>ChatPage()),
-              GetPage(name: '/ChatRecentPage', page: () =>ChatRecentPage()),
-              GetPage(name: '/forgetPasswordForPhone', page: () =>ForgetPasswordForPhone()),
-              GetPage(name: '/verificationCodePage', page: () =>VerificationCodePage()),
-              GetPage(name: '/registerPhone', page: () =>RegisterPhone()),
-              GetPage(name: '/registerAccountType', page: () =>RegisterAccountType()),
-              // GetPage(name: '/registerNewClientUser', page: () =>RegisterNewClientUser()),
-              GetPage(name: '/registerNewClientTapBar', page: () =>RegisterNewClientTapBar()),
-              GetPage(name: '/registerNewAdvertiserTapBar', page: () =>RegisterNewAdvertiserTapBar()),
-            ],
-
-            theme: ThemeData(
-              fontFamily: 'Arabic-Regular',
-            ),
-          ));});}
-      );
+    return  ScreenUtilInit(
+      //this line belongs to ali don't touch just commit it if you want
+        designSize: const Size(360, 690),
+        builder:()=>GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          locale: LocalizationService.fallbackLocale,
+          fallbackLocale: LocalizationService.locale,
+          translations: LocalizationService(),
+          initialRoute: '/loginPage',
+          getPages: [
+            GetPage(name: '/', page: () =>LoginPage()),
+            GetPage(name: '/NotificationsPage', page: () =>NotificationsPage()),
+            GetPage(name: '/NotificationsSettingsPage', page: () =>NotificationsSettingsPage()),
+            GetPage(name: '/WalletPage', page: () =>WalletPage()),
+            GetPage(name: '/ChatPage', page: () =>ChatPage()),
+            GetPage(name: '/ChatRecentPage', page: () =>ChatRecentPage()),
+            GetPage(name: '/forgetPasswordForPhone', page: () =>ForgetPasswordForPhone()),
+            GetPage(name: '/verificationCodePage', page: () =>VerificationCodePage()),
+            GetPage(name: '/registerPhone', page: () =>RegisterPhone()),
+            GetPage(name: '/registerAccountType', page: () =>RegisterAccountType()),
+            GetPage(name: '/bakaPage', page: () =>BakaPage()),
+            GetPage(name: '/registerNewClientTapBar', page: () =>RegisterNewClientTapBar()),
+            GetPage(name: '/registerNewAdvertiserTapBar', page: () =>RegisterNewAdvertiserTapBar()),
+          ],
+          theme: ThemeData(
+            fontFamily: 'Arabic-Regular',
+          ),
+        ));
   }
 }

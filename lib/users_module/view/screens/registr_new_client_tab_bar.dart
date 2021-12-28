@@ -27,7 +27,6 @@ class RegisterNewClientTapBar extends StatelessWidget {
                   tabs: [
                     Tab(text: 'cian'.tr,height:58.h ,),
                     Tab( text: 'person'.tr,height:58.h ,),
-
                     //Tab(icon: Icon(Icons.directions_bike)),
                   ],labelStyle: TextStyle(fontSize: 23.sp,fontFamily: 'Arabic-Regular'),labelColor:AppColors.verifyBlueSecond ,
                   unselectedLabelColor: AppColors.whiteColor,
