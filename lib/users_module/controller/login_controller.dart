@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 
 class LoginController extends GetxController{
-  GlobalKey<FormState> loginClientFormKey=GlobalKey<FormState>();
+   GlobalKey<FormState> loginClientFormKey=GlobalKey<FormState>();
   late TextEditingController passwordController;
   late TextEditingController phoneController;
 

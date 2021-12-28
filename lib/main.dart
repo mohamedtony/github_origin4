@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
 
     return  ScreenUtilInit(
       //this line belongs to ali don't touch just commit it if you want
-        designSize: const Size(360, 690),
+        designSize: const Size(375, 812),
         builder:()=>GetMaterialApp(
           debugShowCheckedModeBanner: false,
           locale: LocalizationService.locale,

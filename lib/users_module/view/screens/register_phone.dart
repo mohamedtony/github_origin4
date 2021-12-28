@@ -43,7 +43,7 @@ class RegisterPhone extends StatelessWidget {
                             padding: EdgeInsetsDirectional.only(end:32.8.w),
                             child: Align(
                               alignment: AlignmentDirectional.centerEnd,
-                              child: SvgPicture.asset('images/arrow_back.svg',height: 47.h,fit: BoxFit.fitHeight),
+                              child: SvgPicture.asset('images/arrow_back.svg',height: 47.h,fit: BoxFit.fitHeight,cacheColorFilter: false,),
 
                             ),
                           ) ,

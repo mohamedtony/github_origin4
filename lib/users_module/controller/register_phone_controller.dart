@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 
 class RegisterPhoneController extends GetxController{
-  GlobalKey<FormState> registerPhoneFormKey=GlobalKey<FormState>();
+   GlobalKey<FormState> registerPhoneFormKey=GlobalKey<FormState>();
 
   late TextEditingController phoneController;
 
