@@ -15,6 +15,8 @@ class ChatRecentPage extends StatelessWidget {
         preferredSize: Size.fromHeight(75),
         child: AppBarWidget(
           isSearchBar: true,
+          // isNotification: true,
+          isBack: true,
           // showSearch: false,
         ),
       ),

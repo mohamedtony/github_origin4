@@ -46,38 +46,25 @@ class AppBarWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
 
-              if(isNotification == false)  if(isBack == true)  Row(
+              if(isSideMenu == true)  Row(
                 children: [
+
                   InkWell(
-                    onTap: (){
-                      backPressed != null
-                          ? backPressed!()
-                          : Navigator.of(context).pop();
-                    },
-                    child: SvgPicture.asset('images/arrow_back.svg',
-                      matchTextDirection: true,
-                      height: 50, fit: BoxFit.fitHeight,color: Colors.white,),
+                    /// To Do side menu on pressed
+                    onTap: sideMenuPresses,
+                    child: Container(
+                      child: Image.asset(
+                        "images/Nav.png",
+                        // height: ,
+                        // color: AppStyle.blueTextButton,
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     width: 25,
                   ),
                 ],
               ),
-              if(isBack == false)  if(isNotification == true) Row(
-               children: [
-                 InkWell(
-                   onTap: notificationPresses,
-                   child: SvgPicture.asset("images/appBarNotifiactions.svg",
-                     matchTextDirection: true,
-                     // height: 50,
-                     fit: BoxFit.fitHeight,
-                     ),
-                 ),
-                 const SizedBox(
-                   width: 25,
-                 ),
-               ],
-             ),
               widgetInsteadSearchBar ?? Container(),
              if(isSearchBar == true) Expanded(
                 child: SizedBox(
@@ -104,7 +91,7 @@ class AppBarWidget extends StatelessWidget {
                               errorBorder: InputBorder.none,
                               disabledBorder: InputBorder.none,
                               prefixIcon: Padding(
-                                padding: const EdgeInsets.all(12.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: InkWell(
                                   onTap: searchPressed,
                                   child: SvgPicture.asset(
@@ -114,7 +101,7 @@ class AppBarWidget extends StatelessWidget {
                                 ),
                               ),
                               suffixIcon: isFilter == true ? Padding(
-                                padding: const EdgeInsets.all(12.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: InkWell(
                                   onTap: filterPressed,
                                   child: SvgPicture.asset(
@@ -149,30 +136,42 @@ class AppBarWidget extends StatelessWidget {
                 ),
               ),
 
+              if(isNotification == false)  if(isBack == true)  Row(
+                children: [
+                  const SizedBox(
+                    width: 25,
+                  ),
+                  InkWell(
+                    onTap: (){
+                      backPressed != null
+                          ? backPressed!()
+                          : Navigator.of(context).pop();
+                    },
+                    child: SvgPicture.asset('images/arrow_back.svg',
+                      // matchTextDirection: true,
+                      height: 50, fit: BoxFit.fitHeight,color: Colors.white,),
+                  ),
 
-           if(isSideMenu == true)  Row(
-               children: [
-                 const SizedBox(
-                   width: 25,
-                 ),
-                 InkWell(
-                   /// To Do side menu on pressed
-                   onTap: sideMenuPresses,
-                   child: Transform(
-                     alignment: Alignment.center,
-                     transform: Matrix4.rotationY(
-                         Get.locale?.languageCode == const Locale('en').languageCode  ? 0 : math.pi),
-                     child: Container(
-                       child: Image.asset(
-                         "images/Nav.png",
-                         // height: ,
-                         // color: AppStyle.blueTextButton,
-                       ),
-                     ),
-                   ),
-                 ),
-               ],
-             ),
+                ],
+              ),
+              if(isBack == false)  if(isNotification == true) Row(
+                children: [
+                  const SizedBox(
+                    width: 25,
+                  ),
+                  InkWell(
+                    onTap: notificationPresses,
+                    child: SvgPicture.asset("images/appBarNotifiactions.svg",
+                      // matchTextDirection: true,
+                      // height: 50,
+                      fit: BoxFit.fitHeight,
+                    ),
+                  ),
+
+                ],
+              ),
+
+
 
 
             ],

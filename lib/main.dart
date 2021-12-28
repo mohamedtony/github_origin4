@@ -57,9 +57,10 @@ class _MyAppState extends State<MyApp> {
           locale: LocalizationService.fallbackLocale,
           fallbackLocale: LocalizationService.locale,
           translations: LocalizationService(),
-          initialRoute: '/registerNewAdvertiserTapBar',
+          initialRoute: '/ChatRecentPage',
           getPages: [
             GetPage(name: '/loginPage', page: () =>LoginPage()),
+            GetPage(name: '/ChatRecentPage', page: () =>ChatRecentPage()),
             GetPage(name: '/forgetPasswordForPhone', page: () =>ForgetPasswordForPhone()),
             GetPage(name: '/verificationCodePage', page: () =>VerificationCodePage()),
             GetPage(name: '/registerPhone', page: () =>RegisterPhone()),
