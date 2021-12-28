@@ -48,7 +48,8 @@ class LoginController extends GetxController{
   void checkLogin(){
     final isValid=loginClientFormKey.currentState!.validate();
     if(!isValid){
-      return;
+      Get.toNamed('/home');
+     // return;
     }
     loginClientFormKey.currentState!.save();
    // loginClient();

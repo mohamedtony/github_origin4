@@ -67,11 +67,16 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     actions: [
-                      Container(
-                        padding: EdgeInsets.only(left: 20.0, right: 10.0),
-                        child: SvgPicture.asset(
-                          'images/notification_icon.svg',
-                          //color: Colors.white,
+                      InkWell(
+                        onTap: (){
+                          Get.toNamed('/NotificationsPage');
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(left: 20.0, right: 10.0),
+                          child: SvgPicture.asset(
+                            'images/notification_icon.svg',
+                            //color: Colors.white,
+                          ),
                         ),
                       ),
                     ],

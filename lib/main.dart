@@ -1,5 +1,6 @@
 import 'package:advertisers/chat/view/pages/chat_page.dart';
 import 'package:advertisers/chat/view/pages/chat_recent_page.dart';
+import 'package:advertisers/home_page/view/pages/home_bottom_navigation.dart';
 import 'package:advertisers/lang/localization_get.dart';
 import 'package:advertisers/users_module/view/screens/baka_page.dart';
 import 'package:advertisers/notifications/view/pages/notifications_page.dart';
@@ -73,6 +74,7 @@ class _MyAppState extends State<MyApp> {
             GetPage(name: '/bakaPage', page: () =>BakaPage()),
             GetPage(name: '/registerNewClientTapBar', page: () =>RegisterNewClientTapBar()),
             GetPage(name: '/registerNewAdvertiserTapBar', page: () =>RegisterNewAdvertiserTapBar()),
+            GetPage(name: '/home', page: () =>Home()),
           ],
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',

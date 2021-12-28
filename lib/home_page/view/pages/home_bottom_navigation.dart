@@ -1,6 +1,10 @@
+import 'package:advertisers/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/home_page/controller/home_navigation_controller.dart';
+import 'package:advertisers/home_page/view/pages/add_ad_page.dart';
+import 'package:advertisers/home_page/view/pages/favorite_page.dart';
 import 'package:advertisers/home_page/view/pages/home_tabs_page.dart';
 import 'package:advertisers/home_page/app_colors.dart';
+import 'package:advertisers/wallet_module/wallet_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -196,10 +200,10 @@ class Home extends StatelessWidget {
           body: TabBarView(
               children: [
                 HomePage(),
-                HomePage(),
-                HomePage(),
-                HomePage(),
-                HomePage(),
+                FavoritePage(),
+                AddAdsPage(),
+                ChatRecentPage(),
+                WalletPage(),
               ]),
         ),
       ),
