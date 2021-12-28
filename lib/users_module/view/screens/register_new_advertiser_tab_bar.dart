@@ -3,6 +3,7 @@ import 'package:advertisers/users_module/view/screens/register_new_advertiser_co
 import 'package:advertisers/users_module/view/screens/register_new_advertiser_user.dart';
 import 'package:advertisers/users_module/view/screens/register_new_client_company.dart';
 import 'package:advertisers/users_module/view/screens/register_new_client_user.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
@@ -35,9 +36,10 @@ class RegisterNewAdvertiserTapBar extends StatelessWidget {
                     //Tab(icon: Icon(Icons.directions_bike)),
                   ],labelStyle: TextStyle(fontSize: 23.sp,fontFamily: 'Arabic-Regular'),labelColor:AppColors.tabAdvertiserTextColor2 ,
                   unselectedLabelColor: AppColors.tabAdvertiserTextColor,indicatorSize:TabBarIndicatorSize.tab ,mouseCursor: MouseCursor.defer,
-                  indicatorPadding: EdgeInsets.symmetric(horizontal: 24.w),automaticIndicatorColorAdjustment: false,labelPadding: EdgeInsets.symmetric(horizontal: 24.w),
+                  indicatorPadding: EdgeInsets.symmetric(horizontal: 24.w),automaticIndicatorColorAdjustment: false,
+                  labelPadding: EdgeInsets.symmetric(horizontal: 24.w),
                   //  indicator: BoxDecoration(
-                  //    border: Border.symmetric(vertical: BorderSide(color: Color(0xffF1F1F1),width: 2),
+                  //    border: Border.fromBorderSide( BorderSide(color: Color(0xffF1F1F1),width: 2,style:BorderStyle.solid ),
                   //   )
                   // ),
                 ),
@@ -48,8 +50,8 @@ class RegisterNewAdvertiserTapBar extends StatelessWidget {
           ),
           body:  TabBarView(
             children: [
-              RegisterNewAdvertiserCompany(),
               RegisterNewAdvertiserUser(),
+              RegisterNewAdvertiserCompany(),
             ],
           ),
         ),

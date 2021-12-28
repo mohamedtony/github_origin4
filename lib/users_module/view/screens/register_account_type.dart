@@ -32,7 +32,7 @@ class _RegisterAccountTypeState extends State<RegisterAccountType> {
  //  RegisterAccountTypeCard(value: 'advertiser', singleValue: 'advertiser'.tr,active :false)];
   late String value='client';
   bool active=false;
-  ClientType _type = ClientType.client;
+  ClientType? _type ;
  @override
   void initState() {
     // TODO: implement initState
@@ -84,7 +84,7 @@ class _RegisterAccountTypeState extends State<RegisterAccountType> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             SizedBox(
-                              width:160.46.w,
+                              width:185.46.w,
                               child: ListTile(
                                 title: Text('client'.tr,style: TextStyle(fontSize:25.sp ,color:AppColors.whiteColor,),),
                                 leading: Radio(
@@ -94,26 +94,31 @@ class _RegisterAccountTypeState extends State<RegisterAccountType> {
                                     setState(() {
                                       _type = value as ClientType;
                                     });
+                                    Get.toNamed('/registerNewClientTapBar');
                                   },
                                 ),
                               ),
                             ),
                             SizedBox(
-                              width:130.46.w,
+                              width:125.46.w,
                               child: ListTile(
                                 title: Text('company'.tr,style: TextStyle(fontSize:25.sp ,color:AppColors.whiteColor,),),
-                                leading: Radio(
-                                  value: ClientType.company,
-                                  groupValue: _type,overlayColor:  MaterialStateProperty.all(AppColors.whiteColor),fillColor: MaterialStateProperty.all(AppColors.whiteColor) ,
-                                  activeColor:AppColors.heavyBlueColor,focusColor:AppColors.whiteColor ,hoverColor: AppColors.whiteColor,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _type = value as ClientType;
-                                    });
-                                  },
+                                leading:
+                                 Radio(
+                                    value: ClientType.company,
+                                    groupValue: _type,overlayColor:  MaterialStateProperty.all(AppColors.whiteColor),fillColor: MaterialStateProperty.all(AppColors.whiteColor) ,
+                                    activeColor:AppColors.heavyBlueColor,focusColor:AppColors.whiteColor ,hoverColor: AppColors.whiteColor,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _type = value as ClientType;
+                                      });
+                                      Get.toNamed('/registerNewClientTapBar');
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
+
+
                           ],
                         ),
                       ),
@@ -139,11 +144,11 @@ class _RegisterAccountTypeState extends State<RegisterAccountType> {
                             value: ClientType.advertiser,
                             overlayColor:  MaterialStateProperty.all(AppColors.whiteColor),fillColor: MaterialStateProperty.all(AppColors.whiteColor) ,
                             groupValue: _type,activeColor:AppColors.heavyBlueColor,focusColor:AppColors.whiteColor ,hoverColor: AppColors.whiteColor,
-
                             onChanged: (value) {
                               setState(() {
                                 _type = value as ClientType;
                               });
+                              Get.toNamed('/registerNewAdvertiserTapBar');
                             },
                           ),
                         ),

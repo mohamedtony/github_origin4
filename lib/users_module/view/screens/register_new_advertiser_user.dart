@@ -36,7 +36,7 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
         // ),
         alignment: Alignment.topCenter,
         child: Form(
-          key: _loginController.loginClientFormKey,
+          //key: _loginController.loginClientFormKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: SingleChildScrollView(
             child: Column(
@@ -50,7 +50,7 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
 
                   alignment: Alignment.center,
                   decoration:const BoxDecoration(
-                    color: AppColors.whiteColor,
+                    color: AppColors.greyColor,
                     shape: BoxShape.circle,),
                   child: Stack(
                     alignment:AlignmentDirectional.topEnd ,
@@ -59,9 +59,11 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                         height:76.44.h,
                         width:76.44.w,
                         decoration:const BoxDecoration(
-                          color: AppColors.verifyFayrouzyFirst,
+                          color: AppColors.whiteColor,
                           shape: BoxShape.circle,),
-                        child: Icon(Icons.camera_alt_outlined,color: AppColors.whiteColor,size: 50,),
+                        child: Icon(Icons.camera_alt_outlined,color: AppColors.blueAccentColor,size: 50,),
+                        // child:   SvgPicture.asset('images/camera.svg',height: 26.13.h,width:34.84.w,fit: BoxFit.fitWidth),
+
                         // image:  DecorationImage(image: svg.Svg('images/notLogo.svg'),fit: BoxFit.fill)),
                       ),
                       Padding(

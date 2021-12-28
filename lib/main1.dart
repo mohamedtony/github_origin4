@@ -1,4 +1,5 @@
 import 'package:advertisers/lang/localization_get.dart';
+import 'package:advertisers/users_module/view/screens/baka_page.dart';
 import 'package:advertisers/users_module/view/screens/forget_password_for_phone.dart';
 import 'package:advertisers/users_module/view/screens/login_page.dart';
 import 'package:advertisers/users_module/view/screens/register_account_type.dart';
@@ -50,14 +51,14 @@ class _MyAppState extends State<MyApp> {
           locale: LocalizationService.fallbackLocale,
           fallbackLocale: LocalizationService.locale,
           translations: LocalizationService(),
-          initialRoute: '/registerNewAdvertiserTapBar',
+          initialRoute: '/loginPage',
           getPages: [
             GetPage(name: '/loginPage', page: () =>LoginPage()),
             GetPage(name: '/forgetPasswordForPhone', page: () =>ForgetPasswordForPhone()),
             GetPage(name: '/verificationCodePage', page: () =>VerificationCodePage()),
             GetPage(name: '/registerPhone', page: () =>RegisterPhone()),
             GetPage(name: '/registerAccountType', page: () =>RegisterAccountType()),
-            // GetPage(name: '/registerNewClientUser', page: () =>RegisterNewClientUser()),
+            GetPage(name: '/bakaPage', page: () =>BakaPage()),
             GetPage(name: '/registerNewClientTapBar', page: () =>RegisterNewClientTapBar()),
             GetPage(name: '/registerNewAdvertiserTapBar', page: () =>RegisterNewAdvertiserTapBar()),
           ],

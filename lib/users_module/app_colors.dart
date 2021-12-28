@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class AppColors{
  static const Color borderfayrozy= Color(0xff45B5DA);
- //static const Color firstBrownColor=Color(0xffD97D54);
  static const Color blueAccentColor= Color(0xff4391D4);
  static const Color blueColor= Color(0xff1F449E);
  static const Color heavyBlueColor= Color(0xff2F4769);
@@ -24,4 +23,6 @@ class AppColors{
  static const Color borderAdvertiserRegisterColor=Color(0xff8FBBE2);
  static const Color tabAdvertiserTextColor=Color(0xff283D5B);
  static const Color tabAdvertiserTextColor2=Color(0xff4184CE);
+ static const Color bakaBarColor=Color(0xffF5F5F5);
+ static const Color bakaPriceColor=Color(0xffE8880A);
 }
