@@ -59,10 +59,9 @@ class PullsWidget extends StatelessWidget {
                                 child:  Container(
                                   padding: EdgeInsets.only(bottom: 15),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    // mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      Text("${payments[index].number}",style: TextStyle(color: Colors.grey,fontSize: 18),)
-                                      ,
+                                      controller.paymentId == payments[index].id  ? selectedBigRadio() : unSelectedBigRadio(),
                                       SizedBox(
                                         width: 20,
                                       ),
@@ -77,7 +76,11 @@ class PullsWidget extends StatelessWidget {
                                       SizedBox(
                                         width: 20,
                                       ),
-                                      controller.paymentId == payments[index].id  ? selectedBigRadio() : unSelectedBigRadio(),
+
+
+                                      Text("${payments[index].number}",style: TextStyle(color: Colors.grey,fontSize: 18),),
+
+
                                     ],
                                   ),
                                 )
@@ -97,19 +100,21 @@ class PullsWidget extends StatelessWidget {
                               // mainAxisAlignment: MainAxisAlignment.end,
                               // crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Image.asset(
-                                  "images/income@3x.png",
-                                  width: 50,
-                                ),
-                                SizedBox(
-                                  width: 25,
-                                ),
 
                                 Expanded(child: Container(
                                   // width: MediaQuery.of(context).size.width * .6,
                                     child: Directionality(
                                         textDirection: TextDirection.rtl,
                                         child: Text("أدخل المبلغ الذي تطلب سحبه",style: TextStyle( fontSize: 21,color: Color(0xff486ac7)),)))),
+                                SizedBox(
+                                  width: 25,
+                                ),
+                                Image.asset(
+                                  "images/income@3x.png",
+                                  width: 50,
+                                ),
+
+
                               ],
                             ),
                             SizedBox(
@@ -118,6 +123,51 @@ class PullsWidget extends StatelessWidget {
                             Row(
                               children: [
 
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Card(
+                                        elevation: 8,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                        ),
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 40,vertical: 3),
+                                          child: TextFormField(
+                                            cursorColor: Colors.black,
+                                            textAlign: TextAlign.center,
+                                            keyboardType: TextInputType.number,
+                                            decoration: new InputDecoration(
+                                                border: InputBorder.none,
+                                                focusedBorder: InputBorder.none,
+                                                enabledBorder: InputBorder.none,
+                                                errorBorder: InputBorder.none,
+                                                disabledBorder: InputBorder.none,
+                                                hintText: '0.0',
+                                                contentPadding:
+                                                EdgeInsets.all(0),
+
+                                                hintStyle: TextStyle(fontSize: 24,color: Color(0XffC8714B))),
+                                          ),
+                                          // Text(
+                                          //   '0.0',
+                                          //   style: TextStyle(fontSize: 24,color: Color(0XffC8714B)),
+                                          //   textScaleFactor: 1.2,
+                                          // ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text("ريال",style: TextStyle( fontSize: 21,color: Color(0xff486ac7)),)
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 25,
+                                ),
                                 Container(
                                   // margin: const EdgeInsets.symmetric(horizontal: 5),
                                   width: 125.w,
@@ -162,52 +212,6 @@ class PullsWidget extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 25,
-                                ),
-
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Card(
-                                        elevation: 8,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(8.0),
-                                        ),
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(horizontal: 40,vertical: 3),
-                                          child: TextFormField(
-                                            cursorColor: Colors.black,
-                                            textAlign: TextAlign.center,
-                                            keyboardType: TextInputType.number,
-                                            decoration: new InputDecoration(
-                                                border: InputBorder.none,
-                                                focusedBorder: InputBorder.none,
-                                                enabledBorder: InputBorder.none,
-                                                errorBorder: InputBorder.none,
-                                                disabledBorder: InputBorder.none,
-                                                hintText: '0.0',
-                                                contentPadding:
-                                                EdgeInsets.all(0),
-
-                                                hintStyle: TextStyle(fontSize: 24,color: Color(0XffC8714B))),
-                                          ),
-                                          // Text(
-                                          //   '0.0',
-                                          //   style: TextStyle(fontSize: 24,color: Color(0XffC8714B)),
-                                          //   textScaleFactor: 1.2,
-                                          // ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 4,
-                                      ),
-                                      Text("ريال",style: TextStyle( fontSize: 21,color: Color(0xff486ac7)),)
-                                    ],
-                                  ),
-                                ),
                               ],
                             ),
                             SizedBox(
@@ -215,6 +219,25 @@ class PullsWidget extends StatelessWidget {
                             ),
                             Row(
                               children: [
+
+
+                                Expanded(child: InkWell(onTap: (){
+
+                                },
+                                  child: Container(
+                                    height: 40,
+                                    child: Center(
+                                      child: Text("تأكيد",style: TextStyle(color: Color(0xff4391D4),fontSize: 18,fontWeight: FontWeight.bold),),
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: Color(0xffE8E8E8),
+                                    ),
+                                  ),)),
+
+                                SizedBox(
+                                  width: 20,
+                                ),
                                 Expanded(child: InkWell(onTap: (){
 
                                 },
@@ -229,22 +252,6 @@ class PullsWidget extends StatelessWidget {
 
                                     ),
                                   ),)) ,
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Expanded(child: InkWell(onTap: (){
-
-                                },
-                                  child: Container(
-                                    height: 40,
-                                    child: Center(
-                                      child: Text("تأكيد",style: TextStyle(color: Color(0xff4391D4),fontSize: 18,fontWeight: FontWeight.bold),),
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      color: Color(0xffE8E8E8),
-                                    ),
-                                  ),))
                               ],
                             ),
                             SizedBox(

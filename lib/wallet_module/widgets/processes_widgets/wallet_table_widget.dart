@@ -88,6 +88,98 @@ class TableWidget extends StatelessWidget {
                 ]),
                 //////////// end /////////////
 
+
+                //////////////// start ////////////
+                TableRow( children: [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(child: Icon(Icons.cake, size: 20,)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(child: Text('02-11-2021',style: TextStyle(fontSize: 14,color: Colors.grey, decoration: TextDecoration.underline,))),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(child: Text('6969 اعلان',style: TextStyle(fontSize: 14,color: Colors.black54, decoration: TextDecoration.underline,))),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.all(8.0),child: Center(child: Text('6969 ر.س',style: TextStyle(fontSize: 14,color: Colors.teal,)))),
+
+
+
+                ]),
+                //////////////// end ///////////
+
+
+                ////////////////  start /////////
+                TableRow( children: [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(child: Icon(Icons.cake, size: 20,)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(child: Text('02-11-2021',style: TextStyle(fontSize: 14,color: Colors.grey, decoration: TextDecoration.underline,))),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(child: Text('6969 اعلان',style: TextStyle(fontSize: 14,color: Colors.black54, decoration: TextDecoration.underline,))),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.all(8.0),child: Center(child: Text('6969 ر.س',style: TextStyle(fontSize: 14,color: Colors.red,)))),
+
+
+
+                ]),
+                //////////// end /////////////
+
+
+                //////////////// start ////////////
+                TableRow( children: [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(child: Icon(Icons.cake, size: 20,)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(child: Text('02-11-2021',style: TextStyle(fontSize: 14,color: Colors.grey, decoration: TextDecoration.underline,))),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(child: Text('6969 اعلان',style: TextStyle(fontSize: 14,color: Colors.black54, decoration: TextDecoration.underline,))),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.all(8.0),child: Center(child: Text('6969 ر.س',style: TextStyle(fontSize: 14,color: Colors.teal,)))),
+
+
+
+                ]),
+                //////////////// end ///////////
+
+
+                ////////////////  start /////////
+                TableRow( children: [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(child: Icon(Icons.cake, size: 20,)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(child: Text('02-11-2021',style: TextStyle(fontSize: 14,color: Colors.grey, decoration: TextDecoration.underline,))),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(child: Text('6969 اعلان',style: TextStyle(fontSize: 14,color: Colors.black54, decoration: TextDecoration.underline,))),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.all(8.0),child: Center(child: Text('6969 ر.س',style: TextStyle(fontSize: 14,color: Colors.red,)))),
+
+
+
+                ]),
+                //////////// end /////////////
+
               ],
             ),
           ],

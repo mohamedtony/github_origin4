@@ -28,15 +28,18 @@ class AppbarWidget extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+
               InkWell(
                 onTap: (){
 
                 },
-                child: SvgPicture.asset(
-                  "images/bell.svg",
-                  height: 25,
+                child: Image.asset(
+                  "images/Nav.png",
+                  // height: ,
+                  // color: AppStyle.blueTextButton,
                 ),
               ),
+
               SizedBox(
                 width: 25,
               ),
@@ -106,10 +109,9 @@ class AppbarWidget extends StatelessWidget {
                 onTap: (){
 
                 },
-                child: Image.asset(
-                  "images/Nav.png",
-                  // height: ,
-                  // color: AppStyle.blueTextButton,
+                child: SvgPicture.asset(
+                  "images/bell.svg",
+                  height: 25,
                 ),
               ),
 
