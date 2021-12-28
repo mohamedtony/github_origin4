@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:advertisers/users_module/app_colors.dart';
 import 'package:advertisers/users_module/controller/login_controller.dart';
+import 'package:advertisers/users_module/controller/register_new_advertiser_user_controller.dart';
 import 'package:advertisers/users_module/view/usedWidgets/advertisers_button.dart';
 import 'package:advertisers/users_module/view/usedWidgets/advertisers_dropdown.dart';
 import 'package:advertisers/users_module/view/usedWidgets/advertisers_generic_field.dart';
@@ -22,7 +23,7 @@ import 'package:flutter_svg_provider/flutter_svg_provider.dart'as svg;
 
 class RegisterNewAdvertiserUser extends StatelessWidget {
   RegisterNewAdvertiserUser({Key? key}) : super(key: key);
-  final LoginController _loginController=Get.put(LoginController());
+  final RegisterNewAdvertiserUserController _registerNewAdvertiserUserController=Get.put(RegisterNewAdvertiserUserController());
   @override
   Widget build(BuildContext context) {
     return  Center(
@@ -36,7 +37,7 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
         // ),
         alignment: Alignment.topCenter,
         child: Form(
-          //key: _loginController.loginClientFormKey,
+          key: _registerNewAdvertiserUserController.registerNewAdvertiserUserControllerFormKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: SingleChildScrollView(
             child: Column(
@@ -82,38 +83,38 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                 ),
                 SizedBox(height: 28.62.h,),
 
-                AdvertisersGenericField(obscureText: false,borderColor: AppColors.borderAdvertiserRegisterColor, controller: _loginController.phoneController,
+                AdvertisersGenericField(obscureText: false,borderColor: AppColors.borderAdvertiserRegisterColor, controller: _registerNewAdvertiserUserController.nameController,
                     textAlignment: TextAlign.end,hintText: 'name'.tr),
                 SizedBox(height: 16.h,),
                 AdvertisersDropDown(hintText: 'type'.tr,width: 0,borderColor: AppColors.borderAdvertiserRegisterColor,),
                 SizedBox(height: 16.h,),
-                AdvertisersGenericField(obscureText: false, borderColor: AppColors.borderAdvertiserRegisterColor,controller: _loginController.phoneController,textAlignment: TextAlign.end, hintText: 'accountName'.tr),
+                AdvertisersGenericField(obscureText: false, borderColor: AppColors.borderAdvertiserRegisterColor,controller: _registerNewAdvertiserUserController.accountNameController,textAlignment: TextAlign.end, hintText: 'accountName'.tr),
 
                 SizedBox(height: 16.h,),
-                Obx(()=>AdvertisersPhone(hintText: 'phone'.tr,borderColor: AppColors.borderAdvertiserRegisterColor,initialSelection: _loginController.countryCode.value,
+                Obx(()=>AdvertisersPhone(hintText: 'phone'.tr,borderColor: AppColors.borderAdvertiserRegisterColor,initialSelection: _registerNewAdvertiserUserController.countryCode.value,
                   onChanged: (countryCodeVal){
-                    _loginController.countryCode.value=countryCodeVal.code!;
-                  },controller: _loginController.phoneController,
+                    _registerNewAdvertiserUserController.countryCode.value=countryCodeVal.code!;
+                  },controller: _registerNewAdvertiserUserController.phoneController,
                   onSaved: (value){
-                    _loginController.phone=value!;
+                    _registerNewAdvertiserUserController.phone=value!;
                   },
                   validator: (value){
-                    return _loginController.validatePhone(value!);
+                    return _registerNewAdvertiserUserController.validatePhone(value!);
                   }, )),
                 SizedBox(height: 16.h,),
-                AdvertisersGenericField(obscureText: false,borderColor: AppColors.borderAdvertiserRegisterColor, controller: _loginController.phoneController,textAlignment: TextAlign.end, hintText: 'email'.tr),
+                AdvertisersGenericField(obscureText: false,borderColor: AppColors.borderAdvertiserRegisterColor, controller: _registerNewAdvertiserUserController.emailController,textAlignment: TextAlign.end, hintText: 'email'.tr),
 
                 SizedBox(height: 16.h,),
-                AdvertisersGenericField(obscureText: false, borderColor: AppColors.borderAdvertiserRegisterColor,controller: _loginController.phoneController,textAlignment: TextAlign.end, hintText: 'nationalId'.tr),
+                AdvertisersGenericField(obscureText: false, borderColor: AppColors.borderAdvertiserRegisterColor,controller: _registerNewAdvertiserUserController.nationalIDController,textAlignment: TextAlign.end, hintText: 'nationalId'.tr),
                 SizedBox(height: 16.h,),
 
                 AdvertisersGenericField(hintText: 'enterPassword'.tr,borderColor: AppColors.borderAdvertiserRegisterColor,obscureText: true,textAlignment: TextAlign.end,
-                  controller: _loginController.passwordController,
+                  controller: _registerNewAdvertiserUserController.passwordController,
                   onSaved: (value){
-                    _loginController.password=value!;
+                    _registerNewAdvertiserUserController.password=value!;
                   },
                   validator: (value){
-                    return _loginController.validatePassword(value!);
+                   // return _registerNewAdvertiserUserController.validatePassword(value!);
                   }, ),
                 SizedBox(height:16.h),
                 SizedBox(width: 323.w,
@@ -126,7 +127,7 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                       ],
                     )),
                 SizedBox(height:44.6.h),
-                AdvertisersButton(text: 'verifyAndFollow'.tr, onPressed: (){_loginController.checkLogin();},
+                AdvertisersButton(text: 'verifyAndFollow'.tr, onPressed: (){_registerNewAdvertiserUserController.checkLogin();},
                 ),
                 SizedBox(height:22.h),
               ],

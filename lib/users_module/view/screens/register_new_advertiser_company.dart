@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:advertisers/users_module/app_colors.dart';
 import 'package:advertisers/users_module/controller/login_controller.dart';
+import 'package:advertisers/users_module/controller/register_new_advertiser_company_controller.dart';
 import 'package:advertisers/users_module/view/usedWidgets/advertisers_button.dart';
 import 'package:advertisers/users_module/view/usedWidgets/advertisers_dropdown.dart';
 import 'package:advertisers/users_module/view/usedWidgets/advertisers_generic_field.dart';
@@ -22,7 +23,7 @@ import 'package:flutter_svg_provider/flutter_svg_provider.dart'as svg;
 
 class RegisterNewAdvertiserCompany extends StatelessWidget {
   RegisterNewAdvertiserCompany({Key? key}) : super(key: key);
-  final LoginController _loginController=Get.put(LoginController());
+  final RegisterNewAdvertiserCompanyController _registerNewAdvertiserCompanyController=Get.put(RegisterNewAdvertiserCompanyController());
   @override
   Widget build(BuildContext context) {
     return  Center(
@@ -36,7 +37,7 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
         // ),
         alignment: Alignment.topCenter,
         child: Form(
-         // key: _loginController.loginClientFormKey,
+          key:_registerNewAdvertiserCompanyController.registerNewAdvertiserCompanyControllerKeyForm,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: SingleChildScrollView(
             child: Column(
@@ -82,41 +83,41 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
                 ),
                 SizedBox(height: 28.62.h,),
 
-                AdvertisersGenericField(obscureText: false, controller: _loginController.phoneController,
+                AdvertisersGenericField(obscureText: false, controller: _registerNewAdvertiserCompanyController.companyNameController,
                     textAlignment: TextAlign.end,hintText: 'companyName'.tr,borderColor: AppColors.borderAdvertiserRegisterColor,),
                 // SizedBox(height: 15.h,),
                 // AdvertisersDropDown(hintText: 'type'.tr,width: 0,),
                 // SizedBox(height: 15.h,),
                 SizedBox(height: 16.h,),
-                AdvertisersGenericField(obscureText: false,borderColor: AppColors.borderAdvertiserRegisterColor, controller: _loginController.phoneController,textAlignment: TextAlign.end, hintText: 'accountName'.tr),
+                AdvertisersGenericField(obscureText: false,borderColor: AppColors.borderAdvertiserRegisterColor, controller: _registerNewAdvertiserCompanyController.accountNameController,textAlignment: TextAlign.end, hintText: 'accountName'.tr),
                 SizedBox(height: 16.h,),
-                AdvertisersGenericField(obscureText: false,borderColor: AppColors.borderAdvertiserRegisterColor, controller: _loginController.phoneController,textAlignment: TextAlign.end, hintText: 'accountAdminName'.tr),
+                AdvertisersGenericField(obscureText: false,borderColor: AppColors.borderAdvertiserRegisterColor, controller: _registerNewAdvertiserCompanyController.accountAdminNameController,textAlignment: TextAlign.end, hintText: 'accountAdminName'.tr),
 
                 SizedBox(height: 16.h,),
-                Obx(()=>AdvertisersPhone(hintText: 'phone'.tr,initialSelection: _loginController.countryCode.value,borderColor: AppColors.borderAdvertiserRegisterColor,
+                Obx(()=>AdvertisersPhone(hintText: 'phone'.tr,initialSelection: _registerNewAdvertiserCompanyController.countryCode.value,borderColor: AppColors.borderAdvertiserRegisterColor,
                   onChanged: (countryCodeVal){
-                    _loginController.countryCode.value=countryCodeVal.code!;
-                  },controller: _loginController.phoneController,
+                    _registerNewAdvertiserCompanyController.countryCode.value=countryCodeVal.code!;
+                  },controller: _registerNewAdvertiserCompanyController.phoneController,
                   onSaved: (value){
-                    _loginController.phone=value!;
+                    _registerNewAdvertiserCompanyController.phone=value!;
                   },
                   validator: (value){
-                    return _loginController.validatePhone(value!);
+                    return _registerNewAdvertiserCompanyController.validatePhone(value!);
                   }, )),
                 SizedBox(height: 16.h,),
-                AdvertisersGenericField(obscureText: false,borderColor: AppColors.borderAdvertiserRegisterColor, controller: _loginController.phoneController,textAlignment: TextAlign.end, hintText: 'email'.tr),
+                AdvertisersGenericField(obscureText: false,borderColor: AppColors.borderAdvertiserRegisterColor, controller: _registerNewAdvertiserCompanyController.emailController,textAlignment: TextAlign.end, hintText: 'email'.tr),
 
                 SizedBox(height: 16.h,),
-                AdvertisersGenericField(obscureText: false, borderColor: AppColors.borderAdvertiserRegisterColor,controller: _loginController.phoneController,textAlignment: TextAlign.end, hintText: 'nationalId'.tr),
+                AdvertisersGenericField(obscureText: false, borderColor: AppColors.borderAdvertiserRegisterColor,controller: _registerNewAdvertiserCompanyController.recordIDController,textAlignment: TextAlign.end, hintText: 'recordNumber'.tr),
                 SizedBox(height: 16.h,),
 
                 AdvertisersGenericField(hintText: 'enterPassword'.tr,borderColor: AppColors.borderAdvertiserRegisterColor,obscureText: true,textAlignment: TextAlign.end,
-                  controller: _loginController.passwordController,
+                  controller: _registerNewAdvertiserCompanyController.passwordController,
                   onSaved: (value){
-                    _loginController.password=value!;
+                    _registerNewAdvertiserCompanyController.password=value!;
                   },
                   validator: (value){
-                    return _loginController.validatePassword(value!);
+                   // return _registerNewAdvertiserCompanyController.validatePassword(value!);
                   }, ),
                 SizedBox(height:16.h),
                 SizedBox(width: 323.w,
@@ -129,7 +130,7 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
                       ],
                     )),
                 SizedBox(height:44.6.h),
-                AdvertisersButton(text: 'verifyAndFollow'.tr, onPressed: (){_loginController.checkLogin();},
+                AdvertisersButton(text: 'verifyAndFollow'.tr, onPressed: (){_registerNewAdvertiserCompanyController.checkLogin();},
                   ),
                 SizedBox(height:22.h),
               ],

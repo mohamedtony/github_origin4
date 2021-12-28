@@ -6,8 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 
-class RegisterNewClientUserController extends GetxController{
-  GlobalKey<FormState> registerNewClientUserControllerFormKey=GlobalKey<FormState>();
+class RegisterNewAdvertiserUserController extends GetxController{
+  GlobalKey<FormState> registerNewAdvertiserUserControllerFormKey=GlobalKey<FormState>();
 
   late TextEditingController phoneController;
   late TextEditingController nameController;
@@ -15,7 +15,7 @@ class RegisterNewClientUserController extends GetxController{
   late TextEditingController emailController;
   late TextEditingController nationalIDController;
   late TextEditingController passwordController;
-  
+
 
   var countryCode='sa'.obs;
   var latitude=0.0.obs;
@@ -49,11 +49,11 @@ class RegisterNewClientUserController extends GetxController{
 
 
   void checkLogin(){
-    final isValid=registerNewClientUserControllerFormKey.currentState!.validate();
+    final isValid=registerNewAdvertiserUserControllerFormKey.currentState!.validate();
     if(!isValid){
       return;
     }
-    registerNewClientUserControllerFormKey.currentState!.save();
+    registerNewAdvertiserUserControllerFormKey.currentState!.save();
     // loginClient();
     Get.toNamed('/verificationCodePage');
   }

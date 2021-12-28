@@ -6,16 +6,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 
-class RegisterNewClientUserController extends GetxController{
-  GlobalKey<FormState> registerNewClientUserControllerFormKey=GlobalKey<FormState>();
+class RegisterNewCompanyUserController extends GetxController{
+  GlobalKey<FormState> registerNewCompanyUserControllerKeyForm=GlobalKey<FormState>();
 
   late TextEditingController phoneController;
-  late TextEditingController nameController;
+  late TextEditingController companyNameController;
   late TextEditingController accountNameController;
+  late TextEditingController accountAdminNameController;
   late TextEditingController emailController;
-  late TextEditingController nationalIDController;
+  late TextEditingController recordIDController;
   late TextEditingController passwordController;
-  
+
+
 
   var countryCode='sa'.obs;
   var latitude=0.0.obs;
@@ -30,11 +32,12 @@ class RegisterNewClientUserController extends GetxController{
     //repo.postWithImageMultipart({})
 
     phoneController=TextEditingController();
-    nameController=TextEditingController();
+    companyNameController=TextEditingController();
     accountNameController=TextEditingController();
     emailController=TextEditingController();
-    nationalIDController=TextEditingController();
+    accountAdminNameController=TextEditingController();
     passwordController=TextEditingController();
+
 
 
 
@@ -49,11 +52,11 @@ class RegisterNewClientUserController extends GetxController{
 
 
   void checkLogin(){
-    final isValid=registerNewClientUserControllerFormKey.currentState!.validate();
+    final isValid=registerNewCompanyUserControllerKeyForm.currentState!.validate();
     if(!isValid){
       return;
     }
-    registerNewClientUserControllerFormKey.currentState!.save();
+    registerNewCompanyUserControllerKeyForm.currentState!.save();
     // loginClient();
     Get.toNamed('/verificationCodePage');
   }
