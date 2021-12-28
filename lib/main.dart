@@ -61,7 +61,7 @@ class _MyAppState extends State<MyApp> {
          // fallbackLocale: LocalizationService.locale,
 
           translations: LocalizationService(),
-          initialRoute: '/loginPage',
+          initialRoute: '/',
           getPages: [
             GetPage(name: '/', page: () =>LoginPage()),
             GetPage(name: '/NotificationsPage', page: () =>NotificationsPage()),
