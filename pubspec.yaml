@@ -42,6 +42,10 @@ dependencies:
   group_radio_button: ^1.1.0
   dropdown_search: ^2.0.1
   awesome_select: ^5.1.0
+  dotted_decoration: ^2.0.0
+  flutter_slidable: ^1.1.0
+  image_picker: ^0.8.4+4
+
 
 dev_dependencies:
   flutter_test:
@@ -88,6 +92,9 @@ flutter:
     - family: elmessiri-regular
       fonts:
         - asset: fonts/elmessiri-regular.otf
+    - family: DecoType-Regular
+      fonts:
+        - asset: fonts/DecoType-Thuluth-Regular.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

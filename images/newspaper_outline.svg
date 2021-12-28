@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="18.1" height="18.1" viewBox="0 0 18.1 18.1">
+  <g id="newspaper-outline" transform="translate(-2.875 -2.875)">
+    <path id="Path_14432" data-name="Path 14432" d="M16.528,18.5V4.362a.989.989,0,0,0-.987-.987H4.362a.989.989,0,0,0-.987.987V18.831a1.649,1.649,0,0,0,1.644,1.644H18.5" fill="none" stroke="#44a7d8" stroke-width="1"/>
+    <path id="Path_14433" data-name="Path 14433" d="M27.848,22.811h0a1.973,1.973,0,0,1-1.973-1.973V9h2.96a.987.987,0,0,1,.987.987V20.839a1.973,1.973,0,0,1-1.973,1.973Z" transform="translate(-9.347 -2.337)" fill="none" stroke="#44a7d8" stroke-width="1"/>
+    <path id="Path_14434" data-name="Path 14434" d="M16.875,9h2.631" transform="translate(-5.608 -2.337)" fill="none" stroke="#44a7d8" stroke-width="1"/>
+    <path id="Path_14435" data-name="Path 14435" d="M16.875,13.5h2.631" transform="translate(-5.608 -4.206)" fill="none" stroke="#44a7d8" stroke-width="1"/>
+    <path id="Path_14436" data-name="Path 14436" d="M7.875,18h7.892" transform="translate(-1.869 -6.075)" fill="none" stroke="#44a7d8" stroke-width="1"/>
+    <path id="Path_14437" data-name="Path 14437" d="M7.875,22.5h7.892" transform="translate(-1.869 -7.945)" fill="none" stroke="#44a7d8" stroke-width="1"/>
+    <path id="Path_14438" data-name="Path 14438" d="M7.875,27h7.892" transform="translate(-1.869 -9.814)" fill="none" stroke="#44a7d8" stroke-width="1"/>
+    <path id="Path_14439" data-name="Path 14439" d="M10.038,11.821H7.408a.658.658,0,0,1-.658-.658V8.533a.658.658,0,0,1,.658-.658h2.631a.658.658,0,0,1,.658.658v2.631A.658.658,0,0,1,10.038,11.821Z" transform="translate(-1.402 -1.869)" fill="#46bedc"/>
+  </g>
+</svg>

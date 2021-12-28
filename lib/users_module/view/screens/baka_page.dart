@@ -8,6 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class BakaPage extends StatelessWidget {
   const BakaPage({Key? key}) : super(key: key);
@@ -102,7 +103,7 @@ class BakaPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           AdvertisersButton(text: 'أختر باقة', onPressed: (){
-
+                            Get.toNamed('/home');
                           },backgroundColor: AppColors.blueAccentColor,width: 146.w,),
                           AdvertisersButton(text: 'رجوع', onPressed: (){
 

@@ -1,0 +1,11 @@
+<svg id="Group_13971" data-name="Group 13971" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="19" height="17.258" viewBox="0 0 19 17.258">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#48dbe1"/>
+      <stop offset="1" stop-color="#4166cd"/>
+      <stop offset="1" stop-color="#236b73"/>
+    </linearGradient>
+  </defs>
+  <path id="tv-alt-play" d="M17.3,3.672a1.634,1.634,0,0,1,1.2.506A1.682,1.682,0,0,1,19,5.415V15.786a1.729,1.729,0,0,1-1.7,1.7H1.742a1.681,1.681,0,0,1-1.235-.506A1.636,1.636,0,0,1,0,15.786V5.415A1.681,1.681,0,0,1,.506,4.179a1.683,1.683,0,0,1,1.236-.507H8.305L5.429.837,6.037.229,9.52,3.672,12.964.229l.608.608L10.736,3.672H17.3Zm0,12.113V5.415H1.742V15.786H17.3ZM6.927,7.116,12.963,10.6,6.927,14.043Z" transform="translate(0 -0.229)" fill="url(#linear-gradient)"/>
+  <path id="Polygon_3" data-name="Polygon 3" d="M3.493,0,6.986,6.081H0Z" transform="translate(12.973 6.849) rotate(90)" fill="url(#linear-gradient)"/>
+</svg>
