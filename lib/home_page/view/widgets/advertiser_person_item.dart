@@ -43,7 +43,7 @@ class AdvertiserItem extends StatelessWidget {
 
 
              ),
-            Expanded(
+            Flexible(
               child: Container(
                 margin: EdgeInsets.only(right: 6.0),
                 child: Text(
@@ -55,7 +55,7 @@ class AdvertiserItem extends StatelessWidget {
               ),
             ),
             Container(
-              width: 180.0.w,
+              width: 158.0,
              // margin: EdgeInsets.only(left: 10.0,right: 3.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
