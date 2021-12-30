@@ -1,3 +1,5 @@
+import 'package:advertisers/advertiser_list_page/advertiser_list_page.dart';
+import 'package:advertisers/advertiser_list_page/list_page.dart';
 import 'package:advertisers/chat/view/pages/chat_page.dart';
 import 'package:advertisers/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/home_page/view/pages/home_bottom_navigation.dart';
@@ -63,7 +65,7 @@ class _MyAppState extends State<MyApp> {
           translations: LocalizationService(),
           initialRoute: '/',
           getPages: [
-            GetPage(name: '/', page: () =>LoginPage()),
+            GetPage(name: '/', page: () =>Home()),
             GetPage(name: '/NotificationsPage', page: () =>NotificationsPage()),
             GetPage(name: '/NotificationsSettingsPage', page: () =>NotificationsSettingsPage()),
             GetPage(name: '/WalletPage', page: () =>WalletPage()),

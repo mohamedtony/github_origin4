@@ -2,6 +2,7 @@ import 'package:advertisers/home_page/controller/home_navigation_controller.dart
 import 'package:advertisers/home_page/model/SelectedSocialMedia.dart';
 import 'package:advertisers/request_advertise_module/view/widgets/advertising_channels_sheet.dart';
 import 'package:advertisers/request_advertise_module/view/widgets/attatchements_sheet.dart';
+import 'package:advertisers/request_advertise_module/view/widgets/discount_coupon_sheet.dart';
 import 'package:advertisers/request_advertise_module/view/widgets/notice_sheet.dart';
 import 'package:advertisers/request_advertise_module/view/widgets/urls_bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -94,8 +95,11 @@ class RequestAdvertiseController extends GetxController {
             }else if(bottomNumber==4){
               return UrlsPage(
                   scrollController: scrollController);
-            }else{
+            }else if(bottomNumber==5){
               return NoticeSheet(
+                  scrollController: scrollController);
+            }else{
+              return DiscountCouponSheet(
                   scrollController: scrollController);
             }
           },

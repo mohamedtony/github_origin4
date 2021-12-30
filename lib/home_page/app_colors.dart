@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  static const Color addPhotoBottom2 = Color(0xFF4D7CC7);
   static const Color addPhotoBottom = Color(0xFF64F5B1);
   static const Color dividerBottom = Color(0xFFD97D54);
   static const Color saveButtonBottomSheet = Color(0xFFE8E8E8);

@@ -1,3 +1,4 @@
+import 'package:advertisers/advertiser_list_page/list_page.dart';
 import 'package:advertisers/home_page/controller/home_navigation_controller.dart';
 import 'package:advertisers/home_page/view/pages/advertisers_person_page.dart';
 import 'package:advertisers/home_page/view/pages/advertising_page.dart';
@@ -25,11 +26,21 @@ class HomePage extends StatelessWidget {
                 appBar: PreferredSize(
                   preferredSize: Size.fromHeight(75.0),
                   child: AppBar(
-                    leading: Container(
-                      margin: EdgeInsets.only(right: 10.0),
-                      child: SvgPicture.asset(
-                        'images/DrawerIcon.svg',
-                        color: Colors.white,
+                    leading: InkWell(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ListPage(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: 10.0),
+                        child: SvgPicture.asset(
+                          'images/DrawerIcon.svg',
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                     leadingWidth: 56.0,
@@ -90,6 +101,7 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     elevation: 2,
+                  //  bottom: ,
                   ),
                 ),
                 body: Column(

@@ -1,0 +1,15 @@
+<svg id="Component_30_1" data-name="Component 30 – 1" xmlns="http://www.w3.org/2000/svg" width="37" height="24" viewBox="0 0 37 24">
+  <rect id="Rectangle_9191" data-name="Rectangle 9191" width="37" height="24" rx="4" fill="#fff" opacity="0.57"/>
+  <g id="Nav" transform="translate(-303 -2.8)" opacity="0.79">
+    <g id="ico_menu" transform="translate(308 7)">
+      <rect id="Rectangle" width="26" height="2.2" transform="translate(0 0)" fill="#46bcdb"/>
+      <rect id="Rectangle_Copy" data-name="Rectangle Copy" width="26" height="2.2" transform="translate(0 7.2)" fill="#46bcdb"/>
+      <rect id="Rectangle_Copy_2" data-name="Rectangle Copy 2" width="16" height="2.2" transform="translate(10 14.4)" fill="#46bcdb"/>
+    </g>
+    <g id="ico_menu-2" data-name="ico_menu" transform="translate(309 6)">
+      <rect id="Rectangle-2" data-name="Rectangle" width="26" height="2.2" transform="translate(0 0)" fill="#ff86da"/>
+      <rect id="Rectangle_Copy-2" data-name="Rectangle Copy" width="26" height="2.2" transform="translate(0 7.2)" fill="#ff86da"/>
+      <rect id="Rectangle_Copy_2-2" data-name="Rectangle Copy 2" width="16" height="2.2" transform="translate(10 14.4)" fill="#ff86da"/>
+    </g>
+  </g>
+</svg>

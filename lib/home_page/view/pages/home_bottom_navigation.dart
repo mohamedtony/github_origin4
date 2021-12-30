@@ -199,6 +199,14 @@ class Home extends StatelessWidget {
           ),
           body: TabBarView(
               children: [
+                /*Navigator(
+                  key: controller.navigatorKey,
+                  onGenerateRoute: (routeSettings) {
+                    return MaterialPageRoute(
+                      builder: (context) => HomePage(),
+                    );
+                  },
+                ),*/
                 HomePage(),
                 FavoritePage(),
                 AddAdsPage(),

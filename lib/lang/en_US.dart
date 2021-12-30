@@ -51,5 +51,6 @@ const Map<String, String> enUS = {
   'copyCode':'Copy code',
   'urlName':'Url name',
   'urlTitel':'Url title',
-  'adPlan':'Ad plan'
+  'adPlan':'Ad plan',
+  'discountCoupon':'Discount coupon'
 };

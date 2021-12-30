@@ -50,9 +50,8 @@ const Map<String, String> arEG = {
   'copyCode':'نسخ الكود',
   'linkName':'اسم الرابط',
   'urlName':'عنوان الرابط',
-  'adPlan':'خطة الإعلان'
-
-
+  'adPlan':'خطة الإعلان',
+  'discountCoupon':'كوبون الخصم'
 
 
 };

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="37" height="24" viewBox="0 0 37 24">
+  <g id="Group_17175" data-name="Group 17175" transform="translate(-318 -45)">
+    <rect id="Rectangle_9191" data-name="Rectangle 9191" width="37" height="24" rx="4" transform="translate(318 45)" fill="#fff" opacity="0.57"/>
+    <g id="Nav" transform="translate(15 42.2)" opacity="0.79">
+      <g id="ico_menu" transform="translate(308 7)">
+        <rect id="Rectangle" width="26" height="2.2" transform="translate(0 0)" fill="#46bcdb"/>
+        <rect id="Rectangle_Copy" data-name="Rectangle Copy" width="26" height="2.2" transform="translate(0 7.2)" fill="#46bcdb"/>
+        <rect id="Rectangle_Copy_2" data-name="Rectangle Copy 2" width="16" height="2.2" transform="translate(10 14.4)" fill="#46bcdb"/>
+      </g>
+      <g id="ico_menu-2" data-name="ico_menu" transform="translate(309 6)">
+        <rect id="Rectangle-2" data-name="Rectangle" width="26" height="2.2" transform="translate(0 0)" fill="#fff"/>
+        <rect id="Rectangle_Copy-2" data-name="Rectangle Copy" width="26" height="2.2" transform="translate(0 7.2)" fill="#fff"/>
+        <rect id="Rectangle_Copy_2-2" data-name="Rectangle Copy 2" width="16" height="2.2" transform="translate(10 14.4)" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+</svg>
