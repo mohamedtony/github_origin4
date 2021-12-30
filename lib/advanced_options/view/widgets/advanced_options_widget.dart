@@ -75,11 +75,15 @@ class AdvancedOptionsWidget extends StatelessWidget {
               SizedBox(
                 height: 18,
               ),
+
               Container(
                 margin: EdgeInsets.only(right: 15,left: 25),
                 height: 1,
+                child: Divider(
+                  color: Color(0xff4277D0),
+                ),
                 width: MediaQuery.of(context).size.width,
-                color: Color(0xff4277D0),
+                // color: Color(0xff4277D0),
               ),
             ],
           ),
