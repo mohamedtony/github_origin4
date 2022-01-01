@@ -1,4 +1,5 @@
 import 'package:advertisers/advanced_options/view/pages/advanced_options_page.dart';
+import 'package:advertisers/advertising_influence_channels/view/page/advertising_influence_channels_page.dart';
 import 'package:advertisers/chat/view/pages/chat_page.dart';
 import 'package:advertisers/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/discounts/view/pages/discount_page.dart';
@@ -62,7 +63,7 @@ class _MyAppState extends State<MyApp> {
           fallbackLocale: LocalizationService.fallbackLocale,
          // fallbackLocale: LocalizationService.locale,
           translations: LocalizationService(),
-          initialRoute: '/AdvancedOptionsPage',
+          initialRoute: '/AdvertisingInfluenceChannelsPage',
           getPages: [
             GetPage(name: '/', page: () =>LoginPage()),
             GetPage(name: '/NotificationsPage', page: () =>NotificationsPage()),
@@ -80,6 +81,7 @@ class _MyAppState extends State<MyApp> {
             GetPage(name: '/home', page: () =>Home()),
             GetPage(name: '/DiscountPage', page: () =>DiscountPage()),
             GetPage(name: '/AdvancedOptionsPage', page: () =>AdvancedOptionsPage()),
+            GetPage(name: '/AdvertisingInfluenceChannelsPage', page: () =>AdvertisingInfluenceChannelsPage()),
           ],
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',
