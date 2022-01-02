@@ -2,6 +2,7 @@ import 'package:advertisers/chat/view/pages/chat_page.dart';
 import 'package:advertisers/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/home_page/view/pages/home_bottom_navigation.dart';
 import 'package:advertisers/lang/localization_get.dart';
+import 'package:advertisers/users_module/view/screens/baka_details.dart';
 import 'package:advertisers/users_module/view/screens/baka_page.dart';
 import 'package:advertisers/notifications/view/pages/notifications_page.dart';
 import 'package:advertisers/notifications_settings/view/pages/notifications_settings_page.dart';
@@ -61,7 +62,7 @@ class _MyAppState extends State<MyApp> {
          // fallbackLocale: LocalizationService.locale,
 
           translations: LocalizationService(),
-          initialRoute: '/',
+          initialRoute: '/bakaDetails',
           getPages: [
             GetPage(name: '/', page: () =>LoginPage()),
             GetPage(name: '/NotificationsPage', page: () =>NotificationsPage()),
@@ -77,6 +78,7 @@ class _MyAppState extends State<MyApp> {
             GetPage(name: '/registerNewClientTapBar', page: () =>RegisterNewClientTapBar()),
             GetPage(name: '/registerNewAdvertiserTapBar', page: () =>RegisterNewAdvertiserTapBar()),
             GetPage(name: '/home', page: () =>Home()),
+            GetPage(name: '/bakaDetails', page: () =>BakaDetails()),
           ],
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',

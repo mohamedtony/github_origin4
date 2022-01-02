@@ -30,7 +30,7 @@ class RegisterPhone extends StatelessWidget {
                       begin: Alignment.topCenter,end: Alignment.bottomCenter ,stops:[0,1.6,.9]),
                 ),
                 child: Form(
-                //  key: _registerPhoneController.registerPhoneFormKey,
+                 key: _registerPhoneController.registerPhoneFormKey,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: SingleChildScrollView(
                     child: Column(
@@ -39,12 +39,17 @@ class RegisterPhone extends StatelessWidget {
                       children: [
                         SizedBox(
                           width: MediaQuery.of(context).size.width,
-                          child:Padding(
-                            padding: EdgeInsetsDirectional.only(end:32.8.w),
-                            child: Align(
-                              alignment: AlignmentDirectional.centerEnd,
-                              child: SvgPicture.asset('images/arrow_back.svg',height: 47.h,fit: BoxFit.fitHeight,cacheColorFilter: false,),
+                          child:InkWell(
+                            onTap: (){
+                              Navigator.pop(context);
+                            },
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.only(end:32.8.w),
+                              child: Align(
+                                alignment: AlignmentDirectional.centerEnd,
+                                child: SvgPicture.asset('images/arrow_back.svg',height: 47.h,fit: BoxFit.fitHeight,cacheColorFilter: false,),
 
+                              ),
                             ),
                           ) ,
                         ),

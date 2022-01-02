@@ -14,6 +14,7 @@ class RegisterNewClientTapBar extends StatelessWidget {
     return MaterialApp(
       home: DefaultTabController(
         length: 2,
+        initialIndex: 1,
         child: Scaffold(
           backgroundColor: AppColors.verifyFayrouzyFirst,
           appBar: PreferredSize(
@@ -27,17 +28,23 @@ class RegisterNewClientTapBar extends StatelessWidget {
                   tabs: [
                     Tab(text: 'cian'.tr,height:58.h ,),
                     Tab( text: 'person'.tr,height:58.h ,),
+
                     //Tab(icon: Icon(Icons.directions_bike)),
                   ],labelStyle: TextStyle(fontSize: 23.sp,fontFamily: 'Arabic-Regular'),labelColor:AppColors.verifyBlueSecond ,
                   unselectedLabelColor: AppColors.whiteColor,
                 ),
               ),
-              title: SvgPicture.asset('images/arrow_back_register.svg',height: 47.h,fit: BoxFit.fitHeight),
+              title: InkWell(
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
+                  child: SvgPicture.asset('images/arrow_back_register.svg',height: 47.h,fit: BoxFit.fitHeight)),
 
             ),
           ),
           body:  TabBarView(
             children: [
+
               RegisterNewClientCompany(),
               RegisterNewClientUser(),
             ],

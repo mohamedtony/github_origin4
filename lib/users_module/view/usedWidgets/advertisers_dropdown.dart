@@ -25,12 +25,15 @@ class AdvertisersDropDown extends StatelessWidget {
         width: width==0?323.w:width,
          height: 47.h,
         child: DropdownSearch<String>(
-            mode: Mode.MENU,showSearchBox: true,dropDownButton: Icon(Icons.arrow_drop_down_sharp,size: 35,color:Color(0xff244094),),
+            mode: Mode.MENU,showSearchBox: true,dropDownButton: Padding(
+              padding: EdgeInsetsDirectional.only(bottom: 20.0.h,top: 0),
+              child: Icon(Icons.arrow_drop_down_sharp,size: 30,color:Color(0xff244094),),
+            ),
             items: ["Brazil", "Italia (Disabled)", "Tunisia", 'Canada'],dropdownButtonSplashRadius: 12,
             //label: "Menu mode",
             hint: hintText,dropdownSearchBaseStyle: TextStyle(fontFamily: 'Arabic-Regular',fontSize: 14.sp),
             popupItemDisabled: (String s) => s.startsWith('I'),dropdownSearchDecoration: InputDecoration(
-          contentPadding:  EdgeInsets.symmetric(vertical: 5.0.h,horizontal: 10.w),
+          contentPadding:  EdgeInsets.symmetric(horizontal: 10.w),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.h),borderSide: BorderSide(color:borderColor==null?AppColors.borderfayrozy: AppColors.borderAdvertiserRegisterColor)
           ),

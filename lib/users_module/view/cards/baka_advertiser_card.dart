@@ -34,7 +34,7 @@ class BakaAdvertiserCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.only(start: 27.5.w),
+                padding: EdgeInsetsDirectional.only(start: 26.0.w),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,8 +56,8 @@ class BakaAdvertiserCard extends StatelessWidget {
                           ),
                           SizedBox(
                             child: RotationTransition(
-                              turns: new AlwaysStoppedAnimation(25 / 360),
-                              child: new Text(
+                              turns:  AlwaysStoppedAnimation(25 / 360),
+                              child:  Text(
                                 "/",
                                 style: TextStyle(fontSize: 25.sp),
                               ),
