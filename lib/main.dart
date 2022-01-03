@@ -1,5 +1,8 @@
+import 'package:advertisers/advanced_options/view/pages/advanced_options_page.dart';
+import 'package:advertisers/advertising_influence_channels/view/page/advertising_influence_channels_page.dart';
 import 'package:advertisers/chat/view/pages/chat_page.dart';
 import 'package:advertisers/chat/view/pages/chat_recent_page.dart';
+import 'package:advertisers/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/home_page/view/pages/home_bottom_navigation.dart';
 import 'package:advertisers/lang/localization_get.dart';
 import 'package:advertisers/users_module/view/screens/baka_details.dart';
@@ -63,7 +66,7 @@ class _MyAppState extends State<MyApp> {
          // fallbackLocale: LocalizationService.locale,
 
           translations: LocalizationService(),
-          initialRoute: '/bakaDetails',
+          initialRoute: '/',
           getPages: [
             GetPage(name: '/', page: () =>LoginPage()),
             GetPage(name: '/NotificationsPage', page: () =>NotificationsPage()),
@@ -79,6 +82,9 @@ class _MyAppState extends State<MyApp> {
             GetPage(name: '/registerNewClientTapBar', page: () =>RegisterNewClientTapBar()),
             GetPage(name: '/registerNewAdvertiserTapBar', page: () =>RegisterNewAdvertiserTapBar()),
             GetPage(name: '/home', page: () =>Home()),
+            GetPage(name: '/DiscountPage', page: () =>DiscountPage()),
+            GetPage(name: '/AdvancedOptionsPage', page: () =>AdvancedOptionsPage()),
+            GetPage(name: '/AdvertisingInfluenceChannelsPage', page: () =>AdvertisingInfluenceChannelsPage()),
             GetPage(name: '/bakaDetails', page: () =>BakaDetails()),
             GetPage(name: '/payVerification', page: () =>PayVerification()),
           ],
