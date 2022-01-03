@@ -16,6 +16,7 @@ class AdvertisingInfluenceChannelsPageListWidget extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 12),
             child: AdvertisingInfluenceChannelsPageWidget(
               advertisingChannels: advertisingChannels![index],
+              index: index,
             ),
           );
         });

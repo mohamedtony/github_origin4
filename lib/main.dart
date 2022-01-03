@@ -5,6 +5,7 @@ import 'package:advertisers/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/home_page/view/pages/home_bottom_navigation.dart';
 import 'package:advertisers/lang/localization_get.dart';
+import 'package:advertisers/tax_settings/view/pages/tax_settings_page.dart';
 import 'package:advertisers/users_module/view/screens/baka_page.dart';
 import 'package:advertisers/notifications/view/pages/notifications_page.dart';
 import 'package:advertisers/notifications_settings/view/pages/notifications_settings_page.dart';
@@ -63,7 +64,7 @@ class _MyAppState extends State<MyApp> {
           fallbackLocale: LocalizationService.fallbackLocale,
          // fallbackLocale: LocalizationService.locale,
           translations: LocalizationService(),
-          initialRoute: '/',
+          initialRoute: '/TaxSettingsPage',
           getPages: [
             GetPage(name: '/', page: () =>LoginPage()),
             GetPage(name: '/NotificationsPage', page: () =>NotificationsPage()),
@@ -82,6 +83,7 @@ class _MyAppState extends State<MyApp> {
             GetPage(name: '/DiscountPage', page: () =>DiscountPage()),
             GetPage(name: '/AdvancedOptionsPage', page: () =>AdvancedOptionsPage()),
             GetPage(name: '/AdvertisingInfluenceChannelsPage', page: () =>AdvertisingInfluenceChannelsPage()),
+            GetPage(name: '/TaxSettingsPage', page: () =>TaxSettingsPage()),
           ],
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',

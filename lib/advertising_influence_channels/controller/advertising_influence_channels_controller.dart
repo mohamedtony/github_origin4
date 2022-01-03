@@ -26,6 +26,28 @@ class AdvertisingInfluenceChannelsController extends GetxController{
   }
 
 
+
+  List<bool>? checkListSee = [];
+  void addRemoveCheckListSee(index){
+    if(checkListSee![index] == true){
+      checkListSee![index] = false;
+    }else{
+      checkListSee![index] = true;
+    }
+    update();
+  }
+
+  // bool isCheckedSee = false;
+  // void changeCheckedSee(){
+  //   if(isCheckedSee == false){
+  //     isCheckedSee = true;
+  //   }else{
+  //     isCheckedSee = false;
+  //   }
+  //   update();
+  // }
+
+
   @override
   void onInit() {
     // passIndex;
