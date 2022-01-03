@@ -1,30 +1,11 @@
-import 'package:advertisers/advanced_options/view/pages/advanced_options_page.dart';
-import 'package:advertisers/advertising_influence_channels/view/page/advertising_influence_channels_page.dart';
-import 'package:advertisers/chat/view/pages/chat_page.dart';
-import 'package:advertisers/chat/view/pages/chat_recent_page.dart';
-import 'package:advertisers/discounts/view/pages/discount_page.dart';
-import 'package:advertisers/home_page/view/pages/home_bottom_navigation.dart';
-import 'package:advertisers/lang/localization_get.dart';
-import 'package:advertisers/tax_settings/view/pages/tax_settings_page.dart';
-import 'package:advertisers/users_module/view/screens/baka_page.dart';
-import 'package:advertisers/notifications/view/pages/notifications_page.dart';
-import 'package:advertisers/notifications_settings/view/pages/notifications_settings_page.dart';
-import 'package:advertisers/users_module/view/screens/login_page.dart';
-import 'package:advertisers/wallet_module/wallet_page.dart';
-import 'package:advertisers/wallet_module/widgets/wallet_intro/wallet_intro_page.dart';
-import 'package:advertisers/users_module/view/screens/forget_password_for_phone.dart';
-import 'package:advertisers/users_module/view/screens/login_page.dart';
-import 'package:advertisers/users_module/view/screens/register_account_type.dart';
-import 'package:advertisers/users_module/view/screens/register_new_advertiser_tab_bar.dart';
-import 'package:advertisers/users_module/view/screens/register_new_client_user.dart';
-import 'package:advertisers/users_module/view/screens/register_phone.dart';
-import 'package:advertisers/users_module/view/screens/registr_new_client_tab_bar.dart';
-import 'package:advertisers/users_module/view/screens/verification_code_page.dart';
+import 'package:advertisers/app_core/app_localization/app_localization.dart';
+import 'package:advertisers/app_core/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+
 
 
 void main() async{
@@ -63,28 +44,10 @@ class _MyAppState extends State<MyApp> {
           locale: LocalizationService.locale,
           fallbackLocale: LocalizationService.fallbackLocale,
          // fallbackLocale: LocalizationService.locale,
+
           translations: LocalizationService(),
-          initialRoute: '/TaxSettingsPage',
-          getPages: [
-            GetPage(name: '/', page: () =>LoginPage()),
-            GetPage(name: '/NotificationsPage', page: () =>NotificationsPage()),
-            GetPage(name: '/NotificationsSettingsPage', page: () =>NotificationsSettingsPage()),
-            GetPage(name: '/WalletPage', page: () =>WalletPage()),
-            GetPage(name: '/ChatPage', page: () =>ChatPage()),
-            GetPage(name: '/ChatRecentPage', page: () =>ChatRecentPage()),
-            GetPage(name: '/forgetPasswordForPhone', page: () =>ForgetPasswordForPhone()),
-            GetPage(name: '/verificationCodePage', page: () =>VerificationCodePage()),
-            GetPage(name: '/registerPhone', page: () =>RegisterPhone()),
-            GetPage(name: '/registerAccountType', page: () =>RegisterAccountType()),
-            GetPage(name: '/bakaPage', page: () =>BakaPage()),
-            GetPage(name: '/registerNewClientTapBar', page: () =>RegisterNewClientTapBar()),
-            GetPage(name: '/registerNewAdvertiserTapBar', page: () =>RegisterNewAdvertiserTapBar()),
-            GetPage(name: '/home', page: () =>Home()),
-            GetPage(name: '/DiscountPage', page: () =>DiscountPage()),
-            GetPage(name: '/AdvancedOptionsPage', page: () =>AdvancedOptionsPage()),
-            GetPage(name: '/AdvertisingInfluenceChannelsPage', page: () =>AdvertisingInfluenceChannelsPage()),
-            GetPage(name: '/TaxSettingsPage', page: () =>TaxSettingsPage()),
-          ],
+          initialRoute: '/',
+          getPages: Routes.routes,
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',
           ),

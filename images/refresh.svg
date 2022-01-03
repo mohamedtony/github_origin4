@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="56.102" height="56.102" viewBox="0 0 56.102 56.102">
+  <defs>
+    <filter id="convertio" x="0" y="0" width="56.102" height="56.102" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#convertio)">
+    <path id="convertio-2" data-name="convertio" d="M23.551.055A23.551,23.551,0,1,0,47.1,23.606,23.553,23.553,0,0,0,23.551.055ZM22.488,9.5a13.451,13.451,0,0,1,10.661,3.807c2.8,2.828,4.926,6.772,4.883,10.468h4.187L33.5,33.549l-8.724-9.77h4.54c0-3.394-.837-5.4-3.493-8.024a14.031,14.031,0,0,0-9.77-4.533,18.1,18.1,0,0,1,6.439-1.714Zm-8.88,4.16,8.724,9.77h-4.54c0,3.394.836,5.4,3.489,8.024A14.045,14.045,0,0,0,31.052,36c-5.268,2.5-12.207,2.752-17.094-2.095-2.8-2.828-4.93-6.772-4.884-10.468H4.883Z" transform="translate(4.5 1.45)" fill="#205a9b"/>
+  </g>
+</svg>
