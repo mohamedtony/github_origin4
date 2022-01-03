@@ -48,6 +48,9 @@ dependencies:
   fluttertoast: ^8.0.8
   step_progress_indicator: ^1.0.2
 
+  flutter_carousel_widget: ^0.1.0
+  modal_bottom_sheet: ^2.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

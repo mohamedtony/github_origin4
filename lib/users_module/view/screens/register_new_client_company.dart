@@ -1,24 +1,17 @@
-
-
 import 'dart:ui';
-
 import 'package:advertisers/users_module/app_colors.dart';
-import 'package:advertisers/users_module/controller/login_controller.dart';
 import 'package:advertisers/users_module/controller/register_new_company_user_controller.dart';
 import 'package:advertisers/users_module/view/usedWidgets/advertisers_button.dart';
 import 'package:advertisers/users_module/view/usedWidgets/advertisers_dropdown.dart';
 import 'package:advertisers/users_module/view/usedWidgets/advertisers_generic_field.dart';
 import 'package:advertisers/users_module/view/usedWidgets/advertisers_phone.dart';
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:flutter_svg_provider/flutter_svg_provider.dart'as svg;
 
 
 class RegisterNewClientCompany extends StatelessWidget {

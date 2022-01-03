@@ -25,4 +25,11 @@ class AppColors{
  static const Color tabAdvertiserTextColor2=Color(0xff4184CE);
  static const Color bakaBarColor=Color(0xffF5F5F5);
  static const Color bakaPriceColor=Color(0xffE8880A);
+ static const Color bakaDetailsTextColor=Color(0xff2465AE);
+ static const Color bakaBoxShadowColor=Color(0x00000029);
+ static const Color carouselIndicatorColor=Color(0xff46C1DC);
+ static const Color carouselIndicatorUnSelectedColor=Color(0xff45B8DB);
+ static const Color fontColorBlue=Color(0xff205A9B);
+ static const Color circleGreyColor=Color(0xff9DAEE2);
+ static const Color blackColor=Colors.black;
 }

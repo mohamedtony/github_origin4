@@ -19,6 +19,8 @@ class RegisterNewAdvertiserTapBar extends StatelessWidget {
     return MaterialApp(
       home: DefaultTabController(
         length: 2,
+        // set initial index to 1
+        initialIndex: 1,
         child: Scaffold(
           backgroundColor: AppColors.whiteColor,
           appBar: PreferredSize(
@@ -33,7 +35,7 @@ class RegisterNewAdvertiserTapBar extends StatelessWidget {
                     Tab(text: 'cian'.tr,height:58.h ,),
                     Tab( text: 'person'.tr,height:58.h ,),
 
-                    //Tab(icon: Icon(Icons.directions_bike)),
+                    //Tab(icon: Icon(Icons.directions_bike)),//
                   ],labelStyle: TextStyle(fontSize: 23.sp,fontFamily: 'Arabic-Regular'),labelColor:AppColors.tabAdvertiserTextColor2 ,
                   unselectedLabelColor: AppColors.tabAdvertiserTextColor,indicatorSize:TabBarIndicatorSize.tab ,mouseCursor: MouseCursor.defer,
                   indicatorPadding: EdgeInsets.symmetric(horizontal: 24.w),automaticIndicatorColorAdjustment: false,
@@ -44,14 +46,20 @@ class RegisterNewAdvertiserTapBar extends StatelessWidget {
                   // ),
                 ),
               ),
-              title: SvgPicture.asset('images/arrow_back.svg',height: 47.h,fit: BoxFit.fitHeight),
+              title: InkWell(
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
+                  child: SvgPicture.asset('images/arrow_back.svg',height: 47.h,fit: BoxFit.fitHeight)),
 
             ),
           ),
           body:  TabBarView(
             children: [
-              RegisterNewAdvertiserUser(),
+
               RegisterNewAdvertiserCompany(),
+              RegisterNewAdvertiserUser(),
+
             ],
           ),
         ),

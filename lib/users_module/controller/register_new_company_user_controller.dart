@@ -58,7 +58,7 @@ class RegisterNewCompanyUserController extends GetxController{
     }
     registerNewCompanyUserControllerKeyForm1.currentState!.save();
     // loginClient();
-    Get.toNamed('/verificationCodePage');
+    Get.toNamed('/bakaPage');
   }
   // void loginClient(){
   //   repo.post<LoginSalonResponse>(path: '/loginClient',fromJson:(json) => LoginSalonResponse.fromJson(json),

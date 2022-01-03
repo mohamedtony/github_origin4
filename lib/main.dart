@@ -1,14 +1,19 @@
 import 'package:advertisers/advertiser_list_page/advertiser_list_page.dart';
 import 'package:advertisers/advertiser_list_page/list_page.dart';
+import 'package:advertisers/advanced_options/view/pages/advanced_options_page.dart';
+import 'package:advertisers/advertising_influence_channels/view/page/advertising_influence_channels_page.dart';
 import 'package:advertisers/chat/view/pages/chat_page.dart';
 import 'package:advertisers/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/client_setting_page/client_setting_page.dart';
+import 'package:advertisers/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/home_page/view/pages/home_bottom_navigation.dart';
 import 'package:advertisers/lang/localization_get.dart';
+import 'package:advertisers/users_module/view/screens/baka_details.dart';
 import 'package:advertisers/users_module/view/screens/baka_page.dart';
 import 'package:advertisers/notifications/view/pages/notifications_page.dart';
 import 'package:advertisers/notifications_settings/view/pages/notifications_settings_page.dart';
 import 'package:advertisers/users_module/view/screens/login_page.dart';
+import 'package:advertisers/users_module/view/screens/pay_verification.dart';
 import 'package:advertisers/wallet_module/wallet_page.dart';
 import 'package:advertisers/wallet_module/widgets/wallet_intro/wallet_intro_page.dart';
 import 'package:advertisers/users_module/view/screens/forget_password_for_phone.dart';
@@ -45,8 +50,8 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   void initState() {
-     //var locale=const Locale('ar', 'EG');
-     //Get.updateLocale(locale);
+    // var locale=const Locale('ar', 'EG');
+    // Get.updateLocale(locale);
 
     super.initState();
 
@@ -84,6 +89,11 @@ class _MyAppState extends State<MyApp> {
             GetPage(name: '/registerNewClientTapBar', page: () =>RegisterNewClientTapBar()),
             GetPage(name: '/registerNewAdvertiserTapBar', page: () =>RegisterNewAdvertiserTapBar()),
             GetPage(name: '/home', page: () =>Home()),
+            GetPage(name: '/DiscountPage', page: () =>DiscountPage()),
+            GetPage(name: '/AdvancedOptionsPage', page: () =>AdvancedOptionsPage()),
+            GetPage(name: '/AdvertisingInfluenceChannelsPage', page: () =>AdvertisingInfluenceChannelsPage()),
+            GetPage(name: '/bakaDetails', page: () =>BakaDetails()),
+            GetPage(name: '/payVerification', page: () =>PayVerification()),
           ],
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',

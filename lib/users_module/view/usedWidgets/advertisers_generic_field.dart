@@ -4,20 +4,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AdvertisersGenericField extends StatelessWidget {
-   AdvertisersGenericField({this.hintColor,this.fontSize,this.borderColor, required this.textAlignment,required this.obscureText,this.onSaved,required this.controller,required this.hintText,this.validator,Key? key}) : super(key: key);
+   AdvertisersGenericField({this.width,this.hintColor,this.fontSize,this.borderColor, required this.textAlignment,required this.obscureText,this.onSaved,required this.controller,required this.hintText,this.validator,Key? key}) : super(key: key);
 
   late final String hintText;
   bool  obscureText= false;
   late final TextEditingController controller;
   final void Function(String?)? onSaved;
   String? Function(String?)? validator;
+  double? width;
   double? fontSize;
   Color? borderColor,hintColor;
    TextAlign textAlignment=TextAlign.center ;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 323.w,
+      width: width ??323.w,
       //height: 50.h,
       child: TextFormField(
         obscureText:obscureText,

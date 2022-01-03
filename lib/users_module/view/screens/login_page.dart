@@ -40,17 +40,17 @@ class LoginPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child:Padding(
-                        padding: EdgeInsetsDirectional.only(end:32.8.w),
-                        child: Align(
-                          alignment: AlignmentDirectional.centerEnd,
-                          child: SvgPicture.asset('images/arrow_back.svg',height: 47.h,fit: BoxFit.fitHeight),
-                         
-                        ),
-                      ) ,
-                    ),
+                    // SizedBox(
+                    //   width: MediaQuery.of(context).size.width,
+                    //   child:Padding(
+                    //     padding: EdgeInsetsDirectional.only(end:32.8.w),
+                    //     child: Align(
+                    //       alignment: AlignmentDirectional.centerEnd,
+                    //       child: SvgPicture.asset('images/arrow_back.svg',height: 47.h,fit: BoxFit.fitHeight),
+                    //
+                    //     ),
+                    //   ) ,
+                    // ),
 
                     Container(
                         height:88.h,
@@ -137,7 +137,7 @@ class LoginPage extends StatelessWidget {
                     ),
                     SizedBox(height:23.h),
                     AdvertisersButton(text: 'newAccount'.tr, onPressed: (){
-                           Get.toNamed('/registerAccountType',);
+                           Get.toNamed('/registerPhone',);
                     },key: ValueKey('register'),),
                   ],
                 ),

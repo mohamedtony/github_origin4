@@ -17,9 +17,11 @@ class AdvertisersButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Container(
-      height: 50.h,
+      height: 47.h,
+      margin: EdgeInsets.symmetric(vertical: 0,horizontal: 0),
+      padding: EdgeInsets.symmetric(vertical: 0,horizontal: 0),
       width:width ==null?237.w:width,
-      alignment: Alignment.center,
+      alignment: Alignment.topCenter,
       decoration:  BoxDecoration(
           borderRadius: BorderRadius.circular(7),
           color: backgroundColor==null?AppColors.blueAccentColor:backgroundColor,
