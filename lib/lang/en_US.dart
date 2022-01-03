@@ -52,5 +52,6 @@ const Map<String, String> enUS = {
   'urlName':'Url name',
   'urlTitel':'Url title',
   'adPlan':'Ad plan',
-  'discountCoupon':'Discount coupon'
+  'discountCoupon':'Discount coupon',
+  'edit':'Edit'
 };

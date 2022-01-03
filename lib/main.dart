@@ -2,6 +2,7 @@ import 'package:advertisers/advertiser_list_page/advertiser_list_page.dart';
 import 'package:advertisers/advertiser_list_page/list_page.dart';
 import 'package:advertisers/chat/view/pages/chat_page.dart';
 import 'package:advertisers/chat/view/pages/chat_recent_page.dart';
+import 'package:advertisers/client_setting_page/client_setting_page.dart';
 import 'package:advertisers/home_page/view/pages/home_bottom_navigation.dart';
 import 'package:advertisers/lang/localization_get.dart';
 import 'package:advertisers/users_module/view/screens/baka_page.dart';
@@ -24,6 +25,9 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
+import 'advertiser_settings_page/advertiser_settings_page.dart';
+import 'blocked_users_page/blocked_users_page.dart';
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,8 +45,8 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   void initState() {
-    // var locale=const Locale('ar', 'EG');
-    // Get.updateLocale(locale);
+     //var locale=const Locale('ar', 'EG');
+     //Get.updateLocale(locale);
 
     super.initState();
 
@@ -65,7 +69,8 @@ class _MyAppState extends State<MyApp> {
           translations: LocalizationService(),
           initialRoute: '/',
           getPages: [
-            GetPage(name: '/', page: () =>Home()),
+            GetPage(name: '/', page: () =>AdvertiserSettingsPage()),
+            GetPage(name: '/BlockedUsersPage', page: () =>BlockedUsersPage()),
             GetPage(name: '/NotificationsPage', page: () =>NotificationsPage()),
             GetPage(name: '/NotificationsSettingsPage', page: () =>NotificationsSettingsPage()),
             GetPage(name: '/WalletPage', page: () =>WalletPage()),

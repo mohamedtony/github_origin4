@@ -1,4 +1,5 @@
 import 'package:advertisers/advertiser_list_page/list_page.dart';
+import 'package:advertisers/client_setting_page/client_setting_page.dart';
 import 'package:advertisers/home_page/controller/home_navigation_controller.dart';
 import 'package:advertisers/home_page/view/pages/advertisers_person_page.dart';
 import 'package:advertisers/home_page/view/pages/advertising_page.dart';
@@ -31,7 +32,7 @@ class HomePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ListPage(),
+                            builder: (context) => /*ListPage()*/ClientSettingPage(),
                           ),
                         );
                       },

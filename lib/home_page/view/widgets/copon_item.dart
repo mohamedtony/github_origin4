@@ -2,8 +2,10 @@ import 'package:advertisers/home_page/controller/copons_page_controller.dart';
 import 'package:advertisers/home_page/view/widgets/my_expand_tile.dart';
 import 'package:advertisers/home_page/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 class CoponItem extends StatelessWidget {
@@ -138,16 +140,29 @@ class CoponItem extends StatelessWidget {
                         GetBuilder<CoponsPageController>(
                           //init: CoponsPageController(),
                             builder: (controller)=>
-                            controller.position==pos&&controller.isOpend?Container(
-                                padding: EdgeInsets.only(top:2.0,bottom: 2.0,left: 6.0,right: 6.0),
-                                margin: EdgeInsets.only(left: 6.0,right: 6.0),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: AppColors.copyCodeColor,
-                                    ),
-                                    borderRadius: BorderRadius.all(Radius.circular(6))
-                                ),
-                                child: Text('copyCode'.tr,style: TextStyle(color: AppColors.copyCodeColor),)
+                            controller.position==pos&&controller.isOpend?InkWell(
+                              onTap: (){
+                                Clipboard.setData(ClipboardData(text: "MS502")).then((_){
+                                 // Get.snackbar('', 'تم نسخ الكود MS502',snackPosition: SnackPosition.BOTTOM,);
+                                  Fluttertoast.showToast(
+                                      msg: "تم نسخ الكود MS502",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.BOTTOM,
+                                      fontSize: 16.0
+                                  );
+                                });;
+                              },
+                              child: Container(
+                                  padding: EdgeInsets.only(top:2.0,bottom: 2.0,left: 6.0,right: 6.0),
+                                  margin: EdgeInsets.only(left: 6.0,right: 6.0),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: AppColors.copyCodeColor,
+                                      ),
+                                      borderRadius: BorderRadius.all(Radius.circular(6))
+                                  ),
+                                  child: Text('copyCode'.tr,style: TextStyle(color: AppColors.copyCodeColor),)
+                              ),
                             ):Container()),
                         Row(
                           children: [

@@ -51,7 +51,8 @@ const Map<String, String> arEG = {
   'linkName':'اسم الرابط',
   'urlName':'عنوان الرابط',
   'adPlan':'خطة الإعلان',
-  'discountCoupon':'كوبون الخصم'
+  'discountCoupon':'كوبون الخصم',
+  'edit':'تعديل'
 
 
 };

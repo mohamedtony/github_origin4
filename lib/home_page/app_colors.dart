@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  static const Color white = Color(0xFFFFFFFF);
+  static const Color editProfileTextColorOpa = Color(0xFF244094);
+  static const Color editProfileTextColor = Color(0xFF244094);
   static const Color addPhotoBottom2 = Color(0xFF4D7CC7);
+  static const Color editProfileContainerColor = Color(0xFF46BEDC);
   static const Color addPhotoBottom = Color(0xFF64F5B1);
   static const Color dividerBottom = Color(0xFFD97D54);
   static const Color saveButtonBottomSheet = Color(0xFFE8E8E8);
