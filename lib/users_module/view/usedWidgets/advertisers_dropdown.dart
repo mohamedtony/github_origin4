@@ -34,10 +34,12 @@ class AdvertisersDropDown extends StatelessWidget {
             hint: hintText,dropdownSearchBaseStyle: TextStyle(fontFamily: 'Arabic-Regular',fontSize: 14.sp),
             popupItemDisabled: (String s) => s.startsWith('I'),dropdownSearchDecoration: InputDecoration(
           contentPadding:  EdgeInsets.symmetric(horizontal: 10.w),
+
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.h),borderSide: BorderSide(color:borderColor==null?AppColors.borderfayrozy: AppColors.borderAdvertiserRegisterColor)
           ),
           filled: true,
+
           disabledBorder:OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.h),borderSide: BorderSide(color:borderColor==null?AppColors.borderfayrozy: AppColors.borderAdvertiserRegisterColor)
           ),fillColor: AppColors.whiteColor,

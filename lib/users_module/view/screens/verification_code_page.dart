@@ -17,15 +17,15 @@ class VerificationCodePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.verifyFayrouzyFirst,
+      backgroundColor: AppColors.verifyFayrouzyFirst.withOpacity(.99),
       body: SafeArea(
         child: Container(
           height: 812.0.h,
           width:375.0.w ,
-          decoration:const BoxDecoration(
+          decoration: BoxDecoration(
             color:AppColors.verifyFayrouzyFirst,
-            gradient: LinearGradient(colors: [AppColors.verifyFayrouzyFirst,AppColors.verifyBlueSecond,AppColors.verifyGreenThird],
-            begin: Alignment.topCenter,end: Alignment.bottomCenter ,stops:[0,1.6,.9]),
+            gradient: LinearGradient(colors: [AppColors.verifyFayrouzyFirst.withOpacity(.99),AppColors.verifyBlueSecond.withOpacity(.99),AppColors.verifyGreenThird],
+            begin: Alignment.topCenter,end: Alignment.bottomCenter ,stops:[-.7,20.5,.5]),
           ),
 
             child: SingleChildScrollView(

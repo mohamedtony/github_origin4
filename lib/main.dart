@@ -7,6 +7,7 @@ import 'package:advertisers/users_module/view/screens/baka_page.dart';
 import 'package:advertisers/notifications/view/pages/notifications_page.dart';
 import 'package:advertisers/notifications_settings/view/pages/notifications_settings_page.dart';
 import 'package:advertisers/users_module/view/screens/login_page.dart';
+import 'package:advertisers/users_module/view/screens/pay_verification.dart';
 import 'package:advertisers/wallet_module/wallet_page.dart';
 import 'package:advertisers/wallet_module/widgets/wallet_intro/wallet_intro_page.dart';
 import 'package:advertisers/users_module/view/screens/forget_password_for_phone.dart';
@@ -79,6 +80,7 @@ class _MyAppState extends State<MyApp> {
             GetPage(name: '/registerNewAdvertiserTapBar', page: () =>RegisterNewAdvertiserTapBar()),
             GetPage(name: '/home', page: () =>Home()),
             GetPage(name: '/bakaDetails', page: () =>BakaDetails()),
+            GetPage(name: '/payVerification', page: () =>PayVerification()),
           ],
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',
