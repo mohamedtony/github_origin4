@@ -1,3 +1,5 @@
+import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
+import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
 import 'package:advertisers/features/home_page/controller/home_navigation_controller.dart';
 import 'package:advertisers/features/home_page/model/SelectedSocialMedia.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/advertising_channels_sheet.dart';
@@ -71,7 +73,6 @@ class RequestAdvertiseController extends GetxController {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(10.0),
@@ -87,8 +88,11 @@ class RequestAdvertiseController extends GetxController {
           expand: false,
           builder: (context, scrollController) {
             if(bottomNumber==2) {
-              return AdvertisingChannelsPage(
+              /*return AdvertisingChannelsPage(
+                  scrollController: scrollController);*/
+              return LocationRangeBottomSheet(
                   scrollController: scrollController);
+
             }else if(bottomNumber==3){
               return AttatchementPage(
                   scrollController: scrollController);

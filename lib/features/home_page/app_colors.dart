@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+
+  static const Color activitiesDropDown = Color(0xFF182A5E);
+  static const Color activitiesSheetRounded = Color(0xFFD5C7E9);
+  static const Color activitiesSheetTextColor = Color(0xFF726B65);
+  static const Color activitiesSheetTextBg = Color(0xFFFBD098);
   static const Color white = Color(0xFFFFFFFF);
   static const Color editProfileTextColorOpa = Color(0xFF244094);
   static const Color editProfileTextColor = Color(0xFF244094);

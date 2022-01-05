@@ -1,3 +1,4 @@
+import 'package:advertisers/features/client_setting_page/client_setting_page.dart';
 import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/advertising_channels_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/attatchements_sheet.dart';
@@ -11,7 +12,8 @@ import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 class RequestAdvertisePage extends StatelessWidget {
-   RequestAdvertisePage({Key? key}) : super(key: key);
+   RequestAdvertisePage({Key? key,this.onSheetClicked}) : super(key: key);
+    Function(int x)? onSheetClicked;
   RequestAdvertiseController requestAdvertiseController=Get.put(RequestAdvertiseController());
   @override
   Widget build(BuildContext context) {
@@ -273,7 +275,9 @@ class RequestAdvertisePage extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: (){
-                    requestAdvertiseController.showMyBottomSheet(context,3);
+                    //Get.to(ClientSettingPage());
+                    onSheetClicked!(3);
+                    //requestAdvertiseController.showMyBottomSheet(context,3);
                   },
                   child: Container(
                     width: 165,

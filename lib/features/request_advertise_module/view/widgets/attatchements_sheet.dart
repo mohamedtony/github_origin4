@@ -14,6 +14,13 @@ class AttatchementPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(10.0),
+            topRight: const Radius.circular(10.0)),
+      ),
       child: ListView(
         controller: this.scrollController,
         children: [

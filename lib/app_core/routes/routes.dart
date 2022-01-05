@@ -9,6 +9,7 @@ import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation.dart';
 import 'package:advertisers/features/notifications/view/pages/notifications_page.dart';
 import 'package:advertisers/features/notifications_settings/view/pages/notifications_settings_page.dart';
+import 'package:advertisers/features/request_advertise_module/view/pages/request_advertise_page.dart';
 import 'package:advertisers/features/tax_settings/view/pages/tax_settings_page.dart';
 import 'package:advertisers/features/users_module/view/screens/baka_details.dart';
 import 'package:advertisers/features/users_module/view/screens/baka_page.dart';
@@ -27,7 +28,7 @@ class Routes {
   static final routes = [
     GetPage(
       name: '/',
-      page: () => LoginPage(),
+      page: () => Home(),
       binding: DataBinding(),
     ),
     GetPage(

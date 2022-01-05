@@ -1,12 +1,17 @@
+import 'dart:ui';
+
+import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/features/home_page/controller/home_navigation_controller.dart';
 import 'package:advertisers/features/home_page/view/pages/add_ad_page.dart';
 import 'package:advertisers/features/home_page/view/pages/favorite_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_tabs_page.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+import 'package:advertisers/features/request_advertise_module/view/widgets/attatchements_sheet.dart';
 import 'package:advertisers/features/wallet_module/wallet_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class Home extends StatelessWidget {
     Home({Key? key}) : super(key: key);
@@ -207,7 +212,12 @@ class Home extends StatelessWidget {
                     );
                   },
                 ),*/
-                HomePage(),
+                HomePage(
+                  onSheetClicke: (x){
+                    print('tonyClicked:$x');
+                    showM(context);
+                  },
+                ),
                 FavoritePage(),
                 AddAdsPage(),
                 ChatRecentPage(),
@@ -217,4 +227,83 @@ class Home extends StatelessWidget {
       ),
     );
   }
+    void showM(BuildContext context){
+      /*showMaterialModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+       // expand: true,
+        isDismissible: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+       // clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (context) => BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+
+            initialChildSize: 0.67,
+            expand: false,
+            builder: (context, scrollController) {
+              return AttatchementPage(
+                  scrollController: scrollController);
+            },
+          )
+        ),
+      );*/
+
+/*      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        isDismissible: true,
+        //barrierColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+        //clipBehavior: Clip.antiAliasWithSaveLayer,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (context) =>  BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          child: DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+            initialChildSize: 0.67,
+           // expand: true,
+            builder: (context, scrollController) {
+              return ActivitiesBottomSheet(
+                  scrollController: scrollController);
+            },
+          )),
+      );*/
+
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) {
+          return DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+
+            initialChildSize: 0.67,
+            expand: false,
+            builder: (context, scrollController) {
+              return ActivitiesBottomSheet(
+                  scrollController: scrollController);
+            },
+          );
+        },
+      );
+    }
 }

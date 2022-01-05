@@ -1,13 +1,14 @@
 import 'package:advertisers/features/home_page/view/widgets/advertise_item_home_page.dart';
 import 'package:advertisers/features/request_advertise_module/view/pages/request_advertise_page.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+import 'package:advertisers/features/request_advertise_module/view/widgets/attatchements_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 class AdvertisingPage extends StatelessWidget {
-  const AdvertisingPage({Key? key}) : super(key: key);
-
+   AdvertisingPage({Key? key,this.onSheetClicked}) : super(key: key);
+   Function(int x)? onSheetClicked;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -29,7 +30,12 @@ class AdvertisingPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => RequestAdvertisePage(),
+                    builder: (context) => RequestAdvertisePage(
+                      onSheetClicked: (x){
+                      //  print('tony:sheetClicked');
+                        this.onSheetClicked!(x);
+                      },
+                    ),
                   ),
                 );
               },
