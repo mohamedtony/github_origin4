@@ -12,7 +12,7 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart'as svg;
 class ForgetPasswordForPhone extends StatelessWidget {
    ForgetPasswordForPhone({Key? key}) : super(key: key);
-  final ForgetPasswordForPhoneController _forgetPasswordForPhoneController=Get.put(ForgetPasswordForPhoneController());
+  final ForgetPasswordForPhoneController _forgetPasswordForPhoneController=Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

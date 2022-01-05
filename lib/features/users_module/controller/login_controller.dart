@@ -52,7 +52,7 @@ class LoginController extends GetxController{
       return;
     }
     loginClientFormKey1.currentState!.save();
-    Get.toNamed('/home');
+    Get.toNamed('/Home');
 
   }
   // void loginClient(){

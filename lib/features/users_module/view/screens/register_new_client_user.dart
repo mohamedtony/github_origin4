@@ -24,7 +24,7 @@ import 'package:flutter_svg_provider/flutter_svg_provider.dart'as svg;
 
 class RegisterNewClientUser extends StatelessWidget {
   RegisterNewClientUser({Key? key}) : super(key: key);
-  final RegisterNewClientUserController _registerNewClientUserController=Get.put(RegisterNewClientUserController());
+  final RegisterNewClientUserController _registerNewClientUserController=Get.find();
   @override
   Widget build(BuildContext context) {
     return  Center(

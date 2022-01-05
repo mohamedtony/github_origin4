@@ -24,7 +24,7 @@ class BakaAdvertiserCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         onTap: (){
-          Get.toNamed('/home');
+          Get.toNamed('/bakaDetails');
         },
         child: Container(
           alignment:AlignmentDirectional.centerStart,

@@ -13,7 +13,7 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart'as svg;
 class RegisterPhone extends StatelessWidget {
   RegisterPhone({Key? key}) : super(key: key);
-  final RegisterPhoneController _registerPhoneController=Get.put(RegisterPhoneController());
+  final RegisterPhoneController _registerPhoneController=Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
