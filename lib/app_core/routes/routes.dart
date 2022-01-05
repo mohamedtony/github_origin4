@@ -10,8 +10,16 @@ import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation
 import 'package:advertisers/features/notifications/view/pages/notifications_page.dart';
 import 'package:advertisers/features/notifications_settings/view/pages/notifications_settings_page.dart';
 import 'package:advertisers/features/tax_settings/view/pages/tax_settings_page.dart';
+import 'package:advertisers/features/users_module/controller/baka_details_controller.dart';
+import 'package:advertisers/features/users_module/controller/forget_password_for_phone_controller.dart';
+import 'package:advertisers/features/users_module/controller/login_controller.dart';
+import 'package:advertisers/features/users_module/controller/register_new_advertiser_company_controller.dart';
+import 'package:advertisers/features/users_module/controller/register_new_advertiser_user_controller.dart';
+import 'package:advertisers/features/users_module/controller/register_new_client_company_controller.dart';
+import 'package:advertisers/features/users_module/controller/register_new_client_user_controller.dart';
+import 'package:advertisers/features/users_module/controller/register_phone_controller.dart';
 import 'package:advertisers/features/users_module/view/screens/baka_details.dart';
-import 'package:advertisers/features/users_module/view/screens/baka_page.dart';
+import 'package:advertisers/features/users_module/view/screens/choose_baka_page.dart';
 import 'package:advertisers/features/users_module/view/screens/forget_password_for_phone.dart';
 import 'package:advertisers/features/users_module/view/screens/login_page.dart';
 import 'package:advertisers/features/users_module/view/screens/pay_verification.dart';
@@ -19,6 +27,7 @@ import 'package:advertisers/features/users_module/view/screens/register_account_
 import 'package:advertisers/features/users_module/view/screens/register_new_advertiser_tab_bar.dart';
 import 'package:advertisers/features/users_module/view/screens/register_phone.dart';
 import 'package:advertisers/features/users_module/view/screens/registr_new_client_tab_bar.dart';
+import 'package:advertisers/features/users_module/view/screens/successful_paying_page.dart';
 import 'package:advertisers/features/users_module/view/screens/verification_code_page.dart';
 import 'package:advertisers/features/wallet_module/wallet_page.dart';
 import 'package:get/get.dart';
@@ -28,92 +37,107 @@ class Routes {
     GetPage(
       name: '/',
       page: () => LoginPage(),
-      binding: DataBinding(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<LoginController>(() => LoginController());
+      }),
+
     ),
     GetPage(
       name: '/AdvertiserSettingsPage',
       page: () => AdvertiserSettingsPage(),
-      binding: DataBinding(),
+
     ),
     GetPage(
       name: '/BlockedUsersPage',
       page: () => BlockedUsersPage(),
-      binding: DataBinding(),
+
     ),
     GetPage(
       name: '/NotificationsPage',
       page: () => NotificationsPage(),
-      binding: DataBinding(),
+
     ),
     GetPage(
       name: '/NotificationsSettingsPage',
       page: () => NotificationsSettingsPage(),
-      binding: DataBinding(),
+
     ),
     GetPage(
       name: '/WalletPage',
       page: () => WalletPage(),
-      binding: DataBinding(),
+
     ),
     GetPage(
       name: '/ChatPage',
       page: () => ChatPage(),
-      binding: DataBinding(),
+
     ),
     GetPage(
       name: '/ChatRecentPage',
       page: () => ChatRecentPage(),
-      binding: DataBinding(),
+
     ),
     GetPage(
-      name: '/ForgetPasswordForPhone',
+      name: '/forgetPasswordForPhone',
       page: () => ForgetPasswordForPhone(),
-      binding: DataBinding(),
+      binding: BindingsBuilder(() {
+  Get.lazyPut<ForgetPasswordForPhoneController>(() => ForgetPasswordForPhoneController());
+  }),
     ),
     GetPage(
-      name: '/VerificationCodePage',
+      name: '/verificationCodePage',
       page: () => VerificationCodePage(),
-      binding: DataBinding(),
+
     ),
     GetPage(
-      name: '/RegisterPhone',
+      name: '/registerPhone',
       page: () => RegisterPhone(),
-      binding: DataBinding(),
+      binding: BindingsBuilder(() {
+  Get.lazyPut<RegisterPhoneController>(() => RegisterPhoneController());
+  })
     ),
     GetPage(
-      name: '/RegisterAccountType',
+      name: '/registerAccountType',
       page: () => RegisterAccountType(),
-      binding: DataBinding(),
+
     ),
     GetPage(
-      name: '/BakaPage',
-      page: () => BakaPage(),
-      binding: DataBinding(),
+      name: '/bakaPage',
+      page: () => ChooseBakaPage(),
+
     ),
     GetPage(
-      name: '/RegisterNewClientTapBar',
+      name: '/registerNewClientTapBar',
       page: () => RegisterNewClientTapBar(),
-      binding: DataBinding(),
+      bindings: [ BindingsBuilder(() {
+        Get.lazyPut<RegisterNewClientUserController>(() => RegisterNewClientUserController());
+      }), BindingsBuilder(() {
+        Get.lazyPut<RegisterNewClientCompanyController>(() => RegisterNewClientCompanyController());
+      })]
     ),
     GetPage(
-      name: '/RegisterNewAdvertiserTapBar',
+      name: '/registerNewAdvertiserTapBar',
       page: () => RegisterNewAdvertiserTapBar(),
-      binding: DataBinding(),
+        bindings: [ BindingsBuilder(() {
+          Get.lazyPut<RegisterNewAdvertiserUserController>(() => RegisterNewAdvertiserUserController());
+        }), BindingsBuilder(() {
+          Get.lazyPut<RegisterNewAdvertiserCompanyController>(() => RegisterNewAdvertiserCompanyController());
+        })]
     ),
     GetPage(
       name: '/Home',
       page: () => Home(),
-      binding: DataBinding(),
+
     ),
     GetPage(
       name: '/DiscountPage',
       page: () => DiscountPage(),
-      binding: DataBinding(),
+
     ),
     GetPage(
-      name: '/AdvancedOptionsPage',
+      name: '/advancedOptionsPage',
       page: () => AdvancedOptionsPage(),
-      binding: DataBinding(),
+
     ),
     GetPage(
       name: '/AdvertisingInfluenceChannelsPage',
@@ -123,17 +147,31 @@ class Routes {
     GetPage(
       name: '/TaxSettingsPage',
       page: () => TaxSettingsPage(),
-      binding: DataBinding(),
+
     ),
     GetPage(
-      name: '/BakaDetails',
+      name: '/bakaDetails',
       page: () => BakaDetails(),
-      binding: DataBinding(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<BakaDetailsController>(() => BakaDetailsController());
+      }),
     ),
     GetPage(
-      name: '/PayVerification',
+      name: '/registerPhone',
+      page: () => RegisterPhone(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<RegisterPhoneController>(() => RegisterPhoneController());
+      }),
+    ),
+    GetPage(
+      name: '/payVerification',
       page: () => PayVerification(),
-      binding: DataBinding(),
+
+    ),
+    GetPage(
+      name: '/successfulPayingPage',
+      page: () => SuccessfulPayingPage(),
+
     ),
   ];
 }

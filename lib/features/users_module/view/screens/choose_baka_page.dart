@@ -10,8 +10,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-class BakaPage extends StatelessWidget {
-  const BakaPage({Key? key}) : super(key: key);
+class ChooseBakaPage extends StatelessWidget {
+  const ChooseBakaPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -108,10 +108,10 @@ class BakaPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           AdvertisersButton(text: 'أختر باقة', onPressed: (){
-                            Get.toNamed('/home');
+                            Get.toNamed('/bakaDetails');
                           },backgroundColor: AppColors.blueAccentColor,width: 146.w,),
                           AdvertisersButton(text: 'رجوع', onPressed: (){
-
+                            Get.toNamed('/registerNewAdvertiserTapBar');
                           },backgroundColor: AppColors.verifyButtonColor,width: 146.w,textColor: AppColors.verifyTextColor,),
                         ],
                       ),

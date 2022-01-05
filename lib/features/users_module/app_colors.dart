@@ -32,4 +32,5 @@ class AppColors{
  static const Color fontColorBlue=Color(0xff205A9B);
  static const Color circleGreyColor=Color(0xff9DAEE2);
  static const Color blackColor=Colors.black;
+ static const Color borderRadiusColor=Color(0xffF5F5F5);
 }

@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 
-class RegisterPhoneController extends GetxController{
+class BakaDetailsController extends GetxController{
   GlobalKey<FormState> pakaDetailsFormKey=GlobalKey<FormState>( );
 
   late TextEditingController pakaTimeController;

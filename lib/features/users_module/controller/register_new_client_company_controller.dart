@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 
-class RegisterNewCompanyUserController extends GetxController{
+class RegisterNewClientCompanyController extends GetxController{
   GlobalKey<FormState> registerNewCompanyUserControllerKeyForm1=GlobalKey<FormState>(debugLabel: 'registerNewCompanyUserControllerKeyForm');
 
   late TextEditingController phoneController;

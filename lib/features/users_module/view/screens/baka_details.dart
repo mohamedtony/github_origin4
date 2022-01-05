@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:advertisers/features/users_module/controller/baka_details_controller.dart';
 import 'package:advertisers/features/users_module/view/cards/advantages_baka_card.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_button.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_dropdown.dart';
@@ -22,7 +23,9 @@ import '../../app_colors.dart';
 
 class BakaDetails extends StatelessWidget {
    BakaDetails({Key? key}) : super(key: key);
+  // final BakaDetailsController _registerPhoneController=Get.find();
  TextEditingController discountCodeController=TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     if(blocOfWidgets.isEmpty) {
@@ -285,7 +288,7 @@ class BakaDetails extends StatelessWidget {
                         text: 'أختر باقة',
                         onPressed: () async{
                           await bottomSheet(context);
-                        //  Get.toNamed('/home');
+                          Get.toNamed('/payVerification');
                         },
                         backgroundColor: AppColors.blueAccentColor,
                         width: 146.w,

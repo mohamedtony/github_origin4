@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class PayVerification extends StatelessWidget {
   const PayVerification({Key? key}) : super(key: key);
@@ -482,7 +483,9 @@ Widget section3() {
               ])),
         )),
     SizedBox(height:18.h),
-    AdvertisersButton(text: 'تأكيد الدفع', onPressed: (){},width: 320.w,backgroundColor: AppColors.verifyButtonColor,textColor: AppColors.blueAccentColor,),
+    AdvertisersButton(text: 'تأكيد الدفع', onPressed: (){
+      Get.toNamed('/successfulPayingPage');
+    },width: 320.w,backgroundColor: AppColors.verifyButtonColor,textColor: AppColors.blueAccentColor,),
     SizedBox(height:18.h),
   ]);
 }
