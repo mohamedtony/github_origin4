@@ -2,6 +2,7 @@
 
 
 import 'package:advertisers/main.dart';
+import 'package:advertisers/shared/network/models/Area.dart';
 import 'package:advertisers/shared/network/models/Country.dart';
 import 'package:advertisers/shared/network/responses/CountriesResponse.dart';
 import 'package:dio/dio.dart' as dio;
@@ -28,8 +29,9 @@ class RegisterNewClientUserController extends GetxController{
   var phone='';
   var logoPath=''.obs;
   var imageBase641=''.obs;
-  List<Country> countries = [];
-  RxList<Country> items = <Country>[].obs;
+  //List<Country> countries = [];
+  RxList<Country> countries = <Country>[].obs;
+  RxList<Area> areas = <Area>[].obs;
   //Repository repo=Repository();
   @override
   void onInit() {
@@ -44,7 +46,7 @@ class RegisterNewClientUserController extends GetxController{
 
     client!.getCountries().then((value){
       if(value.data!=null){
-        items.value = value.data!;
+        countries.value = value.data!;
         print(value.data![0].name);
         Logger().i(value.data);
       }
@@ -59,7 +61,18 @@ class RegisterNewClientUserController extends GetxController{
     return null;
   }
 
-
+  void changeAreas(int countryId){
+    areas.value=[];
+    Country? country = countries.firstWhereOrNull((element) => element.id==countryId);
+    if(country!=null){
+      areas.value = country.areas!;
+    }
+    /*countries.forEach((element) {
+      if(element.id==countryId){
+        areas.add(element.)
+      }
+    });*/
+  }
   void checkLogin(){
     final isValid=registerNewClientUserControllerFormKey.currentState!.validate();
     if(!isValid){
@@ -86,15 +99,6 @@ class RegisterNewClientUserController extends GetxController{
     phoneController.dispose();
 
     super.onClose();
-  }
-  Future<void> getCountries() async {
-    CountriesResponse response = await client!.getCountries();
-    if(response!=null){
-      if(response.data!=null){
-        countries=response.data!;
-      }
-
-    }
   }
 }
 

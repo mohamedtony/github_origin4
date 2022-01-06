@@ -120,9 +120,10 @@ SizedBox(width: 323.w,
 child:Row(
   mainAxisAlignment: MainAxisAlignment.spaceBetween,
   children: [
-
-    AdvertisersDropDown(hintText: 'السعودية',width:150.w),
-    AdvertisersDropDown(hintText: 'الرياض',width:150.w),
+                Obx(()=>AdvertisersDropDown(hintText: 'الدولة',width:150.w,countries: _registerNewClientUserController.countries.value,onCountryChanged: (id){
+                  _registerNewClientUserController.changeAreas(id);
+                },),),
+                Obx(()=>AdvertisersDropDown(hintText: 'المدينة',width:150.w,areas: _registerNewClientUserController.areas.value,)),
   ],
 )),
                     SizedBox(height:44.6.h),
