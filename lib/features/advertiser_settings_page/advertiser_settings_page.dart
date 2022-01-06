@@ -512,12 +512,14 @@ class AdvertiserSettingsPage extends StatelessWidget {
             margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Flexible(
                   child: Container(
                       //height: 42,
 
                      // width: 110,
+                    padding: EdgeInsets.only(bottom: 12.0),
                       child: Text(
                         "اختر النشاطات التى ترغب للاعلان عنها",
                         style: TextStyle(
@@ -525,6 +527,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                             fontSize: 16.0,
                             color: AppColors.tabColor,
                         ),
+                        textAlign: TextAlign.center,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       )),
@@ -533,8 +536,9 @@ class AdvertiserSettingsPage extends StatelessWidget {
                   children: [
                     Container(
                         padding: EdgeInsets.only(
-                            top: 4.0,
-                            right: 16.0
+                            //top: 4.0,
+                            right: 8.0
+                                ,bottom: 8.0
                         ),
                         child: SvgPicture.asset(
                           'images/notice_icon.svg',
@@ -553,13 +557,13 @@ class AdvertiserSettingsPage extends StatelessWidget {
                         )),
                     Container(
                         padding: EdgeInsets.only(
-                            top: 4.0,
-                            right: 16.0
+                            //top: 4.0,
+                            right: 8.0
                         ),
                         child: SvgPicture.asset(
-                          'images/rounded_icon.svg',
-                          width: 33.0,
-                          height: 33.0,
+                          'images/list_item.svg',
+                          width: 40.0,
+                          height: 40.0,
                           fit: BoxFit.fill,
                           //color: AppColors.bottomSheetTabColorRounded,
                         ),
@@ -577,15 +581,17 @@ class AdvertiserSettingsPage extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 10.0),
+            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Flexible(
                   child: Container(
                     //height: 42,
 
                     // width: 110,
+                      padding: EdgeInsets.only(bottom: 12.0),
                       child: Text(
                         "نطاق التأثير الجغرافى",
                         style: TextStyle(
@@ -593,6 +599,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                           fontSize: 16.0,
                           color: AppColors.tabColor,
                         ),
+                        textAlign: TextAlign.center,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       )),
@@ -601,8 +608,9 @@ class AdvertiserSettingsPage extends StatelessWidget {
                   children: [
                     Container(
                         padding: EdgeInsets.only(
-                            top: 4.0,
-                            right: 16.0
+                          //top: 4.0,
+                            right: 8.0
+                            ,bottom: 8.0
                         ),
                         child: SvgPicture.asset(
                           'images/notice_icon.svg',
@@ -621,13 +629,13 @@ class AdvertiserSettingsPage extends StatelessWidget {
                         )),
                     Container(
                         padding: EdgeInsets.only(
-                            top: 4.0,
-                            right: 16.0
+                          //top: 4.0,
+                            right: 8.0
                         ),
                         child: SvgPicture.asset(
-                          'images/rounded_icon.svg',
-                          width: 33.0,
-                          height: 33.0,
+                          'images/location_img.svg',
+                          width: 40.0,
+                          height: 40.0,
                           fit: BoxFit.fill,
                           //color: AppColors.bottomSheetTabColorRounded,
                         ),
@@ -645,15 +653,17 @@ class AdvertiserSettingsPage extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 10.0),
+            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Flexible(
                   child: Container(
                     //height: 42,
 
                     // width: 110,
+                      padding: EdgeInsets.only(bottom: 12.0),
                       child: Text(
                         "قنوات الإعلان والتأثير",
                         style: TextStyle(
@@ -661,6 +671,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                           fontSize: 16.0,
                           color: AppColors.tabColor,
                         ),
+                        textAlign: TextAlign.center,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       )),
@@ -669,8 +680,9 @@ class AdvertiserSettingsPage extends StatelessWidget {
                   children: [
                     Container(
                         padding: EdgeInsets.only(
-                            top: 4.0,
-                            right: 16.0
+                          //top: 4.0,
+                            right: 8.0
+                            ,bottom: 8.0
                         ),
                         child: SvgPicture.asset(
                           'images/notice_icon.svg',
@@ -689,13 +701,13 @@ class AdvertiserSettingsPage extends StatelessWidget {
                         )),
                     Container(
                         padding: EdgeInsets.only(
-                            top: 4.0,
-                            right: 16.0
+                          //top: 4.0,
+                            right: 8.0
                         ),
                         child: SvgPicture.asset(
-                          'images/rounded_icon.svg',
-                          width: 33.0,
-                          height: 33.0,
+                          'images/channels_icon.svg',
+                          width: 40.0,
+                          height: 40.0,
                           fit: BoxFit.fill,
                           //color: AppColors.bottomSheetTabColorRounded,
                         ),
@@ -713,15 +725,17 @@ class AdvertiserSettingsPage extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 10.0),
+            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Flexible(
                   child: Container(
                     //height: 42,
 
                     // width: 110,
+                      padding: EdgeInsets.only(bottom: 12.0),
                       child: Text(
                         "اعدادات الضريبة",
                         style: TextStyle(
@@ -729,6 +743,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                           fontSize: 16.0,
                           color: AppColors.tabColor,
                         ),
+                        textAlign: TextAlign.center,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       )),
@@ -737,8 +752,9 @@ class AdvertiserSettingsPage extends StatelessWidget {
                   children: [
                     Container(
                         padding: EdgeInsets.only(
-                            top: 4.0,
-                            right: 16.0
+                          //top: 4.0,
+                            right: 8.0
+                            ,bottom: 8.0
                         ),
                         child: SvgPicture.asset(
                           'images/notice_icon.svg',
@@ -757,13 +773,13 @@ class AdvertiserSettingsPage extends StatelessWidget {
                         )),
                     Container(
                         padding: EdgeInsets.only(
-                            top: 4.0,
-                            right: 16.0
+                          //top: 4.0,
+                            right: 8.0
                         ),
                         child: SvgPicture.asset(
-                          'images/rounded_icon.svg',
-                          width: 33.0,
-                          height: 33.0,
+                          'images/tax_icn.svg',
+                          width: 40.0,
+                          height: 40.0,
                           fit: BoxFit.fill,
                           //color: AppColors.bottomSheetTabColorRounded,
                         ),
@@ -781,15 +797,17 @@ class AdvertiserSettingsPage extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 10.0),
+            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Flexible(
                   child: Container(
                     //height: 42,
 
                     // width: 110,
+                      padding: EdgeInsets.only(bottom: 12.0),
                       child: Text(
                         "حالة الحساب",
                         style: TextStyle(
@@ -797,6 +815,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                           fontSize: 16.0,
                           color: AppColors.tabColor,
                         ),
+                        textAlign: TextAlign.center,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       )),
@@ -805,8 +824,9 @@ class AdvertiserSettingsPage extends StatelessWidget {
                   children: [
                     Container(
                         padding: EdgeInsets.only(
-                            top: 4.0,
-                            right: 16.0
+                          //top: 4.0,
+                            right: 8.0
+                            ,bottom: 8.0
                         ),
                         child: SvgPicture.asset(
                           'images/notice_icon.svg',
@@ -825,13 +845,13 @@ class AdvertiserSettingsPage extends StatelessWidget {
                         )),
                     Container(
                         padding: EdgeInsets.only(
-                            top: 4.0,
-                            right: 16.0
+                          //top: 4.0,
+                            right: 8.0
                         ),
                         child: SvgPicture.asset(
-                          'images/rounded_icon.svg',
-                          width: 33.0,
-                          height: 33.0,
+                          'images/lock_icon.svg',
+                          width: 40.0,
+                          height: 40.0,
                           fit: BoxFit.fill,
                           //color: AppColors.bottomSheetTabColorRounded,
                         ),
@@ -849,15 +869,17 @@ class AdvertiserSettingsPage extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 10.0),
+            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Flexible(
                   child: Container(
                     //height: 42,
 
                     // width: 110,
+                      padding: EdgeInsets.only(bottom: 12.0),
                       child: Text(
                         "اعدادات متقدمة",
                         style: TextStyle(
@@ -865,19 +887,20 @@ class AdvertiserSettingsPage extends StatelessWidget {
                           fontSize: 16.0,
                           color: AppColors.tabColor,
                         ),
+                        textAlign: TextAlign.center,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       )),
                 ),
                 Container(
                     padding: EdgeInsets.only(
-                        top: 4.0,
-                        right: 16.0
+                      //top: 4.0,
+                        right: 8.0
                     ),
                     child: SvgPicture.asset(
-                      'images/rounded_icon.svg',
-                      width: 33.0,
-                      height: 33.0,
+                      'images/advanced_settings.svg',
+                      width: 40.0,
+                      height: 40.0,
                       fit: BoxFit.fill,
                       //color: AppColors.bottomSheetTabColorRounded,
                     ),
@@ -889,53 +912,11 @@ class AdvertiserSettingsPage extends StatelessWidget {
                                               fit: BoxFit.cover,
                                             )*/
                     )),
-                /*Row(
-                  children: [
-                    Container(
-                        padding: EdgeInsets.only(
-                            top: 4.0,
-                            right: 16.0
-                        ),
-                        child: SvgPicture.asset(
-                          'images/notice_icon.svg',
-                          width: 26.0,
-                          height: 26.0,
-                          fit: BoxFit.fill,
-                          color: AppColors.bottomSheetTabColorRounded,
-                        ),
-                        decoration: BoxDecoration(
-                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
-                          borderRadius: BorderRadius.circular(8.0),
-                          *//*image: DecorationImage(
-                                                  image: AssetImage("images/image1.jpg"),
-                                                  fit: BoxFit.cover,
-                                                )*//*
-                        )),
-                    Container(
-                        padding: EdgeInsets.only(
-                            top: 4.0,
-                            right: 16.0
-                        ),
-                        child: SvgPicture.asset(
-                          'images/rounded_icon.svg',
-                          width: 33.0,
-                          height: 33.0,
-                          fit: BoxFit.fill,
-                          //color: AppColors.bottomSheetTabColorRounded,
-                        ),
-                        decoration: BoxDecoration(
-                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
-                          borderRadius: BorderRadius.circular(8.0),
-                          *//*image: DecorationImage(
-                                              image: AssetImage("images/image1.jpg"),
-                                              fit: BoxFit.cover,
-                                            )*//*
-                        )),
-                  ],
-                ),*/
               ],
             ),
           ),
+
+
           Container(
             margin: EdgeInsets.only(bottom: 20.0),
             child: Row(

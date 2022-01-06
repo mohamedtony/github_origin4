@@ -51,8 +51,8 @@ class ActivitiesBottomSheet extends StatelessWidget {
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 15.0),
-                      child: Image.asset(
-                        'images/attatch_file_icon.png',
+                      child: SvgPicture.asset(
+                        'images/list_bullet.svg',
                         fit: BoxFit.fill,
                         height: 25.0,
                         width: 13.0,

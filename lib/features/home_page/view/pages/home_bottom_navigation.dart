@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
+import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/features/home_page/controller/home_navigation_controller.dart';
 import 'package:advertisers/features/home_page/view/pages/add_ad_page.dart';
@@ -8,6 +9,9 @@ import 'package:advertisers/features/home_page/view/pages/favorite_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_tabs_page.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/attatchements_sheet.dart';
+import 'package:advertisers/features/request_advertise_module/view/widgets/discount_coupon_sheet.dart';
+import 'package:advertisers/features/request_advertise_module/view/widgets/notice_sheet.dart';
+import 'package:advertisers/features/request_advertise_module/view/widgets/urls_bottom_sheet.dart';
 import 'package:advertisers/features/wallet_module/wallet_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -215,7 +219,7 @@ class Home extends StatelessWidget {
                 HomePage(
                   onSheetClicke: (x){
                     print('tonyClicked:$x');
-                    showM(context);
+                    showM(context,x);
                   },
                 ),
                 FavoritePage(),
@@ -227,7 +231,47 @@ class Home extends StatelessWidget {
       ),
     );
   }
-    void showM(BuildContext context){
+    void showM(BuildContext context,int bottomNumber){
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) {
+          return DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+
+            initialChildSize: 0.67,
+            expand: false,
+            builder: (context, scrollController) {
+              if(bottomNumber==2) {
+                /*return AdvertisingChannelsPage(
+                  scrollController: scrollController);*/
+                return LocationRangeBottomSheet(
+                    scrollController: scrollController);
+
+              }else if(bottomNumber==3){
+                return AttatchementPage(
+                    scrollController: scrollController);
+              }else if(bottomNumber==4){
+                return UrlsPage(
+                    scrollController: scrollController);
+              }else if(bottomNumber==5){
+                return NoticeSheet(
+                    scrollController: scrollController);
+              }else{
+                return DiscountCouponSheet(
+                    scrollController: scrollController);
+              }
+            },
+          );
+        },
+      );
       /*showMaterialModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
@@ -282,7 +326,7 @@ class Home extends StatelessWidget {
           )),
       );*/
 
-      showModalBottomSheet(
+     /* showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         shape: RoundedRectangleBorder(
@@ -304,6 +348,6 @@ class Home extends StatelessWidget {
             },
           );
         },
-      );
+      );*/
     }
 }

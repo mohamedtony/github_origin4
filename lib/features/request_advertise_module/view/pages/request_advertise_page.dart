@@ -229,7 +229,8 @@ class RequestAdvertisePage extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: (){
-                    requestAdvertiseController.showMyBottomSheet(context,2);
+                    //requestAdvertiseController.showMyBottomSheet(context,2);
+                    onSheetClicked!(2);
                   },
                   child: Container(
                     width: 165,
@@ -276,7 +277,7 @@ class RequestAdvertisePage extends StatelessWidget {
                 InkWell(
                   onTap: (){
                     //Get.to(ClientSettingPage());
-                    onSheetClicked!(3);
+                  onSheetClicked!(3);
                     //requestAdvertiseController.showMyBottomSheet(context,3);
                   },
                   child: Container(
@@ -317,7 +318,8 @@ class RequestAdvertisePage extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: (){
-                    requestAdvertiseController.showMyBottomSheet(context,4);
+                   // requestAdvertiseController.showMyBottomSheet(context,4);
+                    onSheetClicked!(4);
                   },
                   child: Container(
                     width: 165,
@@ -398,7 +400,8 @@ class RequestAdvertisePage extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: (){
-                    requestAdvertiseController.showMyBottomSheet(context,6);
+                    //requestAdvertiseController.showMyBottomSheet(context,6);
+                    onSheetClicked!(6);
                   },
                   child: Container(
                     width: 165,
@@ -444,7 +447,8 @@ class RequestAdvertisePage extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: (){
-                    requestAdvertiseController.showMyBottomSheet(context,5);
+                    //requestAdvertiseController.showMyBottomSheet(context,5);
+                    onSheetClicked!(5);
                   },
                   child: Container(
                     width: 165,

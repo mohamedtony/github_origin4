@@ -1,9 +1,13 @@
 
 
 
+import 'package:advertisers/main.dart';
+import 'package:advertisers/shared/network/models/Country.dart';
+import 'package:advertisers/shared/network/responses/CountriesResponse.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 
 class RegisterNewClientUserController extends GetxController{
@@ -24,6 +28,8 @@ class RegisterNewClientUserController extends GetxController{
   var phone='';
   var logoPath=''.obs;
   var imageBase641=''.obs;
+  List<Country> countries = [];
+  RxList<Country> items = <Country>[].obs;
   //Repository repo=Repository();
   @override
   void onInit() {
@@ -36,7 +42,13 @@ class RegisterNewClientUserController extends GetxController{
     nationalIDController=TextEditingController();
     passwordController=TextEditingController();
 
-
+    client!.getCountries().then((value){
+      if(value.data!=null){
+        items.value = value.data!;
+        print(value.data![0].name);
+        Logger().i(value.data);
+      }
+    });
 
     super.onInit();
   }
@@ -75,4 +87,14 @@ class RegisterNewClientUserController extends GetxController{
 
     super.onClose();
   }
+  Future<void> getCountries() async {
+    CountriesResponse response = await client!.getCountries();
+    if(response!=null){
+      if(response.data!=null){
+        countries=response.data!;
+      }
+
+    }
+  }
 }
+
