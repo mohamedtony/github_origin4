@@ -6,6 +6,7 @@ import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_p
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -77,12 +78,14 @@ class RegisterPhone extends StatelessWidget {
                         //     ),
                         //   ) ,
                         // ),
-                        Obx(()=>AdvertisersPhone(hintText: 'phone'.tr,initialSelection: _registerPhoneController.countryCode.value,
+                        Obx(()=>AdvertisersPhone(hintText: 'phone'.tr,initialSelection: _registerPhoneController.countryCode.toString(),
                           onChanged: (countryCodeVal){
-                            _registerPhoneController.countryCode.value=countryCodeVal.code!;
+                            _registerPhoneController.countryCode.value=countryCodeVal.dialCode! ;
+                            print('>>>>>>>>>>>>>>${countryCodeVal.name}  ${countryCodeVal.code}    ${countryCodeVal.dialCode}     ${countryCodeVal.flagUri}');
                           },controller: _registerPhoneController.phoneController,
                           onSaved: (value){
                             _registerPhoneController.phone=value!;
+
                           },
                           validator: (value){
                             return _registerPhoneController.validatePhone(value!);

@@ -87,7 +87,9 @@ class Routes {
     GetPage(
       name: '/verificationCodePage',
       page: () => VerificationCodePage(),
-
+      binding: BindingsBuilder(() {
+        Get.lazyPut<RegisterPhoneController>(() => RegisterPhoneController());
+      }),
     ),
     GetPage(
       name: '/registerPhone',

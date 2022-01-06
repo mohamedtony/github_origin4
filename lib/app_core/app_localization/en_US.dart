@@ -8,7 +8,7 @@ const Map<String, String> enUS = {
   'send':'Send',
   'enterPassword':'Enter password',
   'verifyPhone':'Verify your phone number',
-  'pleaseEnterCode':'Please enter code that send  \n on this number 0545459314',
+  'pleaseEnterCode':'Please enter code that send  \n on this number',
   'changePhone':'Change phone ?',
   'verify':'Verify',
   'codeNotSend':'Code not send ? resend code',

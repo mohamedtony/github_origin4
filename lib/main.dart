@@ -1,16 +1,21 @@
 import 'package:advertisers/app_core/app_localization/app_localization.dart';
 import 'package:advertisers/app_core/routes/routes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:get_storage/get_storage.dart';
 
-
-
+late FirebaseAuth auth;
+late var storage;
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  // account.getPreferences();
+  await GetStorage.init();
+  await Firebase.initializeApp();
+  auth = FirebaseAuth.instance;
   runApp(const MyApp());
 }
 class MyApp extends StatefulWidget {
@@ -26,6 +31,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // var locale=const Locale('ar', 'EG');
     // Get.updateLocale(locale);
+    storage=GetStorage();
 
     super.initState();
 
