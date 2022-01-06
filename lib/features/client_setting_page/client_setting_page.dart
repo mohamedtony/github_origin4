@@ -978,8 +978,8 @@ class ClientSettingPage extends StatelessWidget {
                             Container(
                               // height: 70,
                                 margin: EdgeInsets.only(bottom: 0.0,left: 10.0),
-                                child: Image.asset(
-                                  'images/bell_icon.png',
+                                child: SvgPicture.asset(
+                                  'images/no_notification_icon.svg',
                                     height: 22,
                                   width: 33,
                                 )

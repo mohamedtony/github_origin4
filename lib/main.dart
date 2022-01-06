@@ -1,5 +1,7 @@
 import 'package:advertisers/app_core/app_localization/app_localization.dart';
 import 'package:advertisers/app_core/routes/routes.dart';
+import 'package:advertisers/shared/network/service.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +9,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+
+RestClient? client;
+Dio? dio;
+//final logger = Logger();
+
 import 'package:get_storage/get_storage.dart';
 
 late FirebaseAuth auth;
 late var storage;
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  // account.getPreferences();
+  dio = Dio();
+  dio?.options.headers['Content-Type'] = 'application/json';
+  //dio.options.headers['Content-Type'] = 'multipart/form-data';
+  client = RestClient(dio!);
+  //client.getTasks().then((it) => logger.i(it));
+
   await GetStorage.init();
   await Firebase.initializeApp();
   auth = FirebaseAuth.instance;

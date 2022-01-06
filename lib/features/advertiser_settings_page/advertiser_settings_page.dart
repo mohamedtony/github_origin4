@@ -48,7 +48,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                             child: Image.asset(
                               'images/qrcode.png',
                               width: 40.0,
-                              height: 50.0,
+                              height: 45.0,
                               fit: BoxFit.fill,
                             ),
                             decoration: BoxDecoration(
@@ -82,7 +82,9 @@ class AdvertiserSettingsPage extends StatelessWidget {
                           margin: EdgeInsets.only(right: 4.0, top: 0.0),
                           child: Text(
                             'نشط',
-                            style: TextStyle(color: Colors.white, fontSize: 16.0,decoration: TextDecoration.underline,decorationThickness: .7),
+                            style: TextStyle(color: Colors.white, fontSize: 16.0,decoration: TextDecoration.underline,decorationThickness: 4,
+                              decorationStyle:
+                              TextDecorationStyle.dashed,),
                           ),
                         ),
 
@@ -101,38 +103,66 @@ class AdvertiserSettingsPage extends StatelessWidget {
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                      right: 10.0,
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      '% 50',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: AppColors.indicatorColor,
-                          fontSize: 18.0,
-                        //  decoration: TextDecoration.underline,
-                        //  decorationThickness: 2
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(
+                        right: 10.0,
+                        top: 14.0
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        '% 50',
+                        textAlign: TextAlign.center,
+                        textDirection: mt.TextDirection.ltr,
+                        style: TextStyle(
+                            color: AppColors.indicatorColor,
+                            fontSize: 22.0,
+                          fontWeight: FontWeight.w600
+                          //  decoration: TextDecoration.underline,
+                          //  decorationThickness: 2
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(right: 14.0,left: 14.0),
-                      child: StepProgressIndicator(
-                        totalSteps: 10,
-                        currentStep: 6,
-                        size: 5.5,
-                        selectedColor: AppColors.indicatorColor,
-                        unselectedColor: Colors.white,
-                        progressDirection: mt.TextDirection.rtl,
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+
+                            alignment: Alignment.center,
+                            child: Text(
+                              'معدل اكتمال اعدادات الحساب',
+                              textAlign: TextAlign.center,
+                              textDirection: mt.TextDirection.ltr,
+                              style: TextStyle(
+                                  color: AppColors.white,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w400
+                                //  decoration: TextDecoration.underline,
+                                //  decorationThickness: 2
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(right: 14.0,left: 14.0,bottom: 10.0),
+                            child: StepProgressIndicator(
+                              totalSteps: 10,
+                              currentStep: 6,
+                              size: 4,
+                              selectedColor: AppColors.indicatorColor,
+                              unselectedColor: Colors.white,
+                              progressDirection: mt.TextDirection.rtl,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               )
             ],
           ),
@@ -161,7 +191,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                       Container(
                         margin: EdgeInsets.only(right: 20.0, top: 4.0),
                         child: SvgPicture.asset(
-                          'images/setting_person.svg',
+                          'images/setting_icon.svg',
                           height: 32,
                           width: 32,
                           //color:  Color(0xff486ac7),
@@ -169,7 +199,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                       ),
                       Container(
                         margin: EdgeInsets.only(
-                          right: 10.0,
+                          right: 18.0,
                         ),
                         alignment: Alignment.center,
                         child: Text(
@@ -409,253 +439,6 @@ class AdvertiserSettingsPage extends StatelessWidget {
                             bottomRight: Radius.circular(12.0)),
                         color: AppColors.bottomSheetTabColor),
                     child: Text(
-                      "صاحب الحساب",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.0,
-                          color: AppColors.tabColor),
-                    )),
-                Expanded(
-                  child: Container(
-                    height: 42,
-                    decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
-                              color: AppColors.editProfileContainerColor,
-                              width: 0.4),
-                          bottom: BorderSide(
-                              color: AppColors.editProfileContainerColor,
-                              width: 0.4),
-                          left: BorderSide(
-                              color: AppColors.editProfileContainerColor,
-                              width: 0.4),
-                          right: BorderSide(
-                              color: AppColors.editProfileContainerColor,
-                              width: 0.4),
-                        ),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12.0),
-                            bottomLeft: Radius.circular(12.0)),
-                        color: Colors.white),
-                    child: TextField(
-                      textAlign: TextAlign.end,
-                      textAlignVertical: TextAlignVertical.center,
-                      controller: controller.accountOwner,
-                      textDirection: mt.TextDirection.ltr,
-                      style: TextStyle(
-                        color: (AppColors.editProfileTextColorOpa)
-                            .withOpacity(0.51),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14.0,
-                      ),
-                      decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(
-                              left: 10.0, right: 14.0, bottom: 12.0),
-                          // isCollapsed: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(70.0),
-                            borderSide: BorderSide(
-                              width: 0,
-                              style: BorderStyle.none,
-                            ),
-                          ),
-                          filled: true,
-                          hintStyle: TextStyle(color: Colors.grey[350]),
-                          hintText: 'محمد',
-                          fillColor: Colors.white70),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            height: 42,
-            margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
-            child: Row(
-              children: [
-                Container(
-                    height: 42,
-                    width: 110,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 0.2),
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(12.0),
-                            bottomRight: Radius.circular(12.0)),
-                        color: AppColors.editProfileContainerColor),
-                    child: Text(
-                      "تأكيد",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.0,
-                          color: Colors.white),
-                    )),
-                Expanded(
-                  child: Container(
-                    height: 42,
-                    decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
-                              color: AppColors.editProfileContainerColor,
-                              width: 0.4),
-                          bottom: BorderSide(
-                              color: AppColors.editProfileContainerColor,
-                              width: 0.4),
-                          left: BorderSide(
-                              color: AppColors.editProfileContainerColor,
-                              width: 0.4),
-                          right: BorderSide(
-                              color: AppColors.editProfileContainerColor,
-                              width: 0.4),
-                        ),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12.0),
-                            bottomLeft: Radius.circular(12.0)),
-                        color: Colors.white),
-                    child: TextField(
-                      textAlign: TextAlign.start,
-                      textAlignVertical: TextAlignVertical.center,
-                      controller: controller.phoneController,
-                      //textDirection: mt.TextDirection.ltr,
-                      style: TextStyle(
-                        color: (AppColors.editProfileTextColorOpa)
-                            .withOpacity(0.51),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14.0,
-                      ),
-                      decoration: InputDecoration(
-                        /* suffixIcon: Directionality(
-                            textDirection: mt.TextDirection.ltr,
-                            child: Container(
-                              // width: 100,
-                              child: CountryCodePicker(
-                                  padding: EdgeInsets.only(bottom: 2.0),
-                                  // showFlag: false,
-                                  flagWidth: 25,
-                                  searchDecoration: const InputDecoration(
-                                    // hintTextDirection: mt.TextDirection.rtl,
-                                    focusColor: AppColors.tabColor,
-                                    focusedBorder: UnderlineInputBorder(),
-                                    *//*border: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: AppColors.focusedBorder),)*//*
-                                  ),
-                                  initialSelection: 'sa',
-                                  onChanged: (s) {}),
-                            ),
-                          ),*/
-                          contentPadding: EdgeInsets.only(
-                              left: 10.0, right: 14.0, bottom: 12.0),
-                          // isCollapsed: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(70.0),
-                            borderSide: BorderSide(
-                              width: 0,
-                              style: BorderStyle.none,
-                            ),
-                          ),
-                          filled: true,
-                          hintStyle: TextStyle(color: Colors.grey[350]),
-                          hintText: 'محمد',
-                          fillColor: Colors.white70),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            height: 42,
-            margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
-            child: Row(
-              children: [
-                Container(
-                    height: 42,
-                    width: 110,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 0.2),
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(12.0),
-                            bottomRight: Radius.circular(12.0)),
-                        color: AppColors.editProfileContainerColor),
-                    child: Text(
-                      "تحقق",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.0,
-                          color: Colors.white),
-                    )),
-                Expanded(
-                  child: Container(
-                    height: 42,
-                    decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
-                              color: AppColors.editProfileContainerColor,
-                              width: 0.4),
-                          bottom: BorderSide(
-                              color: AppColors.editProfileContainerColor,
-                              width: 0.4),
-                          left: BorderSide(
-                              color: AppColors.editProfileContainerColor,
-                              width: 0.4),
-                          right: BorderSide(
-                              color: AppColors.editProfileContainerColor,
-                              width: 0.4),
-                        ),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12.0),
-                            bottomLeft: Radius.circular(12.0)),
-                        color: Colors.white),
-                    child: TextField(
-                      textAlign: TextAlign.start,
-                      textAlignVertical: TextAlignVertical.center,
-                      controller: controller.emailController,
-                      //textDirection: mt.TextDirection.ltr,
-                      style: TextStyle(
-                        color: (AppColors.editProfileTextColorOpa)
-                            .withOpacity(0.51),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14.0,
-                      ),
-                      decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(
-                              left: 10.0, right: 14.0, bottom: 12.0),
-                          // isCollapsed: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(70.0),
-                            borderSide: BorderSide(
-                              width: 0,
-                              style: BorderStyle.none,
-                            ),
-                          ),
-                          filled: true,
-                          hintStyle: TextStyle(color: Colors.grey[350]),
-                          hintText: 'محمد',
-                          fillColor: Colors.white70),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            height: 42,
-            margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
-            child: Row(
-              children: [
-                Container(
-                    height: 42,
-                    width: 110,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 0.2),
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(12.0),
-                            bottomRight: Radius.circular(12.0)),
-                        color: AppColors.bottomSheetTabColor),
-                    child: Text(
                       "رقم السجل",
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -716,120 +499,6 @@ class AdvertiserSettingsPage extends StatelessWidget {
               ],
             ),
           ),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.only(
-                      top: 16.0, left: 16.0, right: 20.0, bottom: 8.0),
-                  height: 45.0,
-                  child: DropdownSearch<String>(
-                      mode: Mode.MENU,
-                      dropDownButton: Container(
-                        margin: EdgeInsets.only(left: 0.0),
-                        child: SvgPicture.asset(
-                          'images/dropdown_icon.svg',
-                          fit: BoxFit.fill,
-                          height: 8.0,
-                          width: 8.0,
-                        ),
-                      ),
-                      dropdownSearchDecoration: InputDecoration(
-                        // filled: true,
-                        //fillColor: Color(0xFFF2F2F2),
-                        contentPadding:
-                        EdgeInsets.only(right: 20.0, top: 0.0, bottom: 0.0),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
-                          borderSide: BorderSide(
-                              width: 0.4, color: AppColors.borderDropDownColor),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
-                          borderSide: BorderSide(
-                              width: 0.4, color: AppColors.borderDropDownColor),
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(16)),
-                            borderSide: BorderSide(
-                              width: 1,
-                            )),
-                      ),
-                      items: [
-                        "السعودية",
-                        "Italia (Disabled)",
-                        "Tunisia",
-                        'Canada'
-                      ],
-                      // label: "Menu mode",
-                      hint: "country in menu mode",
-                      popupItemDisabled: (String s) => s.startsWith('I'),
-                      onChanged: print,
-                      selectedItem: 'السعودية'.tr),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.only(
-                      top: 16.0, left: 20.0, right: 10.0, bottom: 8.0),
-                  height: 45.0,
-                  child: DropdownSearch<String>(
-                    mode: Mode.MENU,
-
-                    favoriteItemBuilder: (context, item, b) {
-                      return Text(
-                        item,
-                        style: TextStyle(color: Colors.red),
-                      );
-                    },
-                    dropDownButton: Container(
-                      margin: EdgeInsets.only(left: 0.0),
-                      child: SvgPicture.asset(
-                        'images/dropdown_icon.svg',
-                        fit: BoxFit.fill,
-                        height: 8.0,
-                        width: 8.0,
-                      ),
-                    ),
-                    dropdownSearchBaseStyle: TextStyle(
-                        fontFamily: 'Arabic-Regular', fontSize: 14.sp),
-                    // dropdownSearchBaseStyle:  TextStyle(color: AppColors.editProfileContainerColor),
-                    dropdownSearchDecoration: InputDecoration(
-                      // filled: true,
-                      //fillColor: Color(0xFFF2F2F2),
-                      labelStyle:
-                      TextStyle(color: AppColors.editProfileContainerColor),
-                      //counterText: 'modeo',
-                      contentPadding:
-                      EdgeInsets.only(right: 20.0, top: 0.0, bottom: 0.0),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
-                        borderSide: BorderSide(
-                            width: 0.4, color: AppColors.borderDropDownColor),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
-                        borderSide: BorderSide(
-                            width: 0.4, color: AppColors.borderDropDownColor),
-                      ),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
-                          borderSide: BorderSide(
-                            width: 1,
-                          )),
-                    ),
-                    items: ["الرياض", "Italia (Disabled)", "Tunisia", 'Canada'],
-                    // label: "Menu mode",
-                    hint: "country in menu mode",
-                    popupItemDisabled: (String s) => s.startsWith('I'),
-                    onChanged: print,
-                    selectedItem: 'الرياض'.tr,
-                  ),
-                ),
-              ),
-            ],
-          ),
           Container(
             margin: EdgeInsets.only(top: 10.0),
             child: Divider(
@@ -840,279 +509,414 @@ class AdvertiserSettingsPage extends StatelessWidget {
             ),
           ),
           Container(
-            height: 42,
-            margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
-            decoration: BoxDecoration(
-                border: Border.all(
-                    color: AppColors.editProfileContainerColor,
-                    width: 0.4
-                ),
-                borderRadius: BorderRadius.circular(
-                    12.0
-                ),
-                color: Colors.white),
+            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  margin: EdgeInsets.only(right: 10,bottom: 4.0),
-                  child: Text(
-                    "مراسلتى",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16.0,
-                        color: AppColors.tabColor),
-                  ),
-                ),
-                Container(
-                  //margin: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
-                  child: Row(
-                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 3.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(
-                                  right: 3.0, left: 14.0, bottom: 10.0),
-                              alignment: Alignment.center,
-                              child: Text(
-                                'نعم',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: AppColors.tabColor,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ),
-                            Container(
-                              // height: 70,
-                                margin: EdgeInsets.only(bottom: 0.0),
-                                child: Image.asset(
-                                  'images/switch_icon.png',
-                                  scale: 2,
-                                )
+                Flexible(
+                  child: Container(
+                      //height: 42,
 
-                              /*Switch(
-                          onChanged: (s){
-
-                          },
-                          value: true,
-                          //activeColor: Colors.white,
-                         /// activeTrackColor: AppColors.beginColor,
-                         // inactiveThumbColor: Colors.white,
-                         // inactiveTrackColor: Colors.grey,
-                          activeThumbImage: AssetImage('images/switch_icon.png'),
-                          inactiveThumbImage: AssetImage('images/inactive_img.png'),
-                        ),*/
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                right: 10.0, left: 20.0, bottom: 10.0,),
-                              alignment: Alignment.center,
-                              child: Text(
-                                'لا',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: AppColors.tabColor,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ),
-                          ],
+                     // width: 110,
+                    padding: EdgeInsets.only(bottom: 12.0),
+                      child: Text(
+                        "اختر النشاطات التى ترغب للاعلان عنها",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: AppColors.tabColor,
                         ),
-                      )
-                    ],
-                  ),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                ),
+                Row(
+                  children: [
+                    Container(
+                        padding: EdgeInsets.only(
+                            //top: 4.0,
+                            right: 8.0
+                                ,bottom: 8.0
+                        ),
+                        child: SvgPicture.asset(
+                          'images/notice_icon.svg',
+                          width: 26.0,
+                          height: 26.0,
+                          fit: BoxFit.fill,
+                          color: AppColors.bottomSheetTabColorRounded,
+                        ),
+                        decoration: BoxDecoration(
+                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                          borderRadius: BorderRadius.circular(8.0),
+                          /*image: DecorationImage(
+                                                  image: AssetImage("images/image1.jpg"),
+                                                  fit: BoxFit.cover,
+                                                )*/
+                        )),
+                    Container(
+                        padding: EdgeInsets.only(
+                            //top: 4.0,
+                            right: 8.0
+                        ),
+                        child: SvgPicture.asset(
+                          'images/list_item.svg',
+                          width: 40.0,
+                          height: 40.0,
+                          fit: BoxFit.fill,
+                          //color: AppColors.bottomSheetTabColorRounded,
+                        ),
+                        decoration: BoxDecoration(
+                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                          borderRadius: BorderRadius.circular(8.0),
+                          /*image: DecorationImage(
+                                              image: AssetImage("images/image1.jpg"),
+                                              fit: BoxFit.cover,
+                                            )*/
+                        )),
+                  ],
                 ),
               ],
             ),
           ),
           Container(
-            height: 42,
-            margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
-            decoration: BoxDecoration(
-                border: Border.all(
-                    color: AppColors.editProfileContainerColor,
-                    width: 0.4
-                ),
-                borderRadius: BorderRadius.circular(
-                    12.0
-                ),
-                color: Colors.white),
+            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  margin: EdgeInsets.only(right: 10,bottom: 4.0),
-                  child: Text(
-                    "التنبيهات",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16.0,
-                        color: AppColors.tabColor),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only( left: 20.0, right: 10.0),
-                  child: Row(
-                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 3.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              // height: 70,
-                                margin: EdgeInsets.only(bottom: 0.0,left: 10.0),
-                                child: Image.asset(
-                                  'images/bell_icon.png',
-                                  height: 22,
-                                  width: 33,
-                                )
+                Flexible(
+                  child: Container(
+                    //height: 42,
 
-                              /*Switch(
-                          onChanged: (s){
-
-                          },
-                          value: true,
-                          //activeColor: Colors.white,
-                         /// activeTrackColor: AppColors.beginColor,
-                         // inactiveThumbColor: Colors.white,
-                         // inactiveTrackColor: Colors.grey,
-                          activeThumbImage: AssetImage('images/switch_icon.png'),
-                          inactiveThumbImage: AssetImage('images/inactive_img.png'),
-                        ),*/
-                            ),
-                            Container(
-                              // height: 70,
-                                margin: EdgeInsets.only(bottom: 0.0,top: 2),
-                                child: Image.asset(
-                                  'images/switch_icon.png',
-                                  scale: 2,
-                                )
-
-                              /*Switch(
-                          onChanged: (s){
-
-                          },
-                          value: true,
-                          //activeColor: Colors.white,
-                         /// activeTrackColor: AppColors.beginColor,
-                         // inactiveThumbColor: Colors.white,
-                         // inactiveTrackColor: Colors.grey,
-                          activeThumbImage: AssetImage('images/switch_icon.png'),
-                          inactiveThumbImage: AssetImage('images/inactive_img.png'),
-                        ),*/
-                            ),
-                            Container(
-                              // height: 70,
-                                margin: EdgeInsets.only(bottom: 0.0,),
-                                child: Image.asset(
-                                  'images/bell_icon.png',
-                                  height: 22,
-                                  width: 22,
-                                )
-
-                              /*Switch(
-                          onChanged: (s){
-
-                          },
-                          value: true,
-                          //activeColor: Colors.white,
-                         /// activeTrackColor: AppColors.beginColor,
-                         // inactiveThumbColor: Colors.white,
-                         // inactiveTrackColor: Colors.grey,
-                          activeThumbImage: AssetImage('images/switch_icon.png'),
-                          inactiveThumbImage: AssetImage('images/inactive_img.png'),
-                        ),*/
-                            ),
-                          ],
+                    // width: 110,
+                      padding: EdgeInsets.only(bottom: 12.0),
+                      child: Text(
+                        "نطاق التأثير الجغرافى",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16.0,
+                          color: AppColors.tabColor,
                         ),
-                      )
-                    ],
-                  ),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                ),
+                Row(
+                  children: [
+                    Container(
+                        padding: EdgeInsets.only(
+                          //top: 4.0,
+                            right: 8.0
+                            ,bottom: 8.0
+                        ),
+                        child: SvgPicture.asset(
+                          'images/notice_icon.svg',
+                          width: 26.0,
+                          height: 26.0,
+                          fit: BoxFit.fill,
+                          color: AppColors.bottomSheetTabColorRounded,
+                        ),
+                        decoration: BoxDecoration(
+                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                          borderRadius: BorderRadius.circular(8.0),
+                          /*image: DecorationImage(
+                                                  image: AssetImage("images/image1.jpg"),
+                                                  fit: BoxFit.cover,
+                                                )*/
+                        )),
+                    Container(
+                        padding: EdgeInsets.only(
+                          //top: 4.0,
+                            right: 8.0
+                        ),
+                        child: SvgPicture.asset(
+                          'images/location_img.svg',
+                          width: 40.0,
+                          height: 40.0,
+                          fit: BoxFit.fill,
+                          //color: AppColors.bottomSheetTabColorRounded,
+                        ),
+                        decoration: BoxDecoration(
+                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                          borderRadius: BorderRadius.circular(8.0),
+                          /*image: DecorationImage(
+                                              image: AssetImage("images/image1.jpg"),
+                                              fit: BoxFit.cover,
+                                            )*/
+                        )),
+                  ],
                 ),
               ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: 150,
-                height: 40,
-                margin: EdgeInsets.only(right: 30.0, top: 10.0),
-                child: Material(
-                  elevation: 6.0,
-                  shadowColor: Colors.grey[200],
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                  color: AppColors.saveButtonBottomSheet,
-                  borderOnForeground: true,
+          Container(
+            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Flexible(
                   child: Container(
-                    /*margin: EdgeInsets.only(
-                              left: 12.0, bottom: 4.0, right: 20),*/
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 0.5),
-                        borderRadius: BorderRadius.circular(8),
-                        color: AppColors.bottomSheetTabColor
-                    ),
-                    child: Text(
-                      'مسح المحادثات',
-                      style: TextStyle(
+                    //height: 42,
+
+                    // width: 110,
+                      padding: EdgeInsets.only(bottom: 12.0),
+                      child: Text(
+                        "قنوات الإعلان والتأثير",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
                           fontSize: 16.0,
                           color: AppColors.tabColor,
-                          fontWeight: FontWeight.w400),
-                      textAlign: TextAlign.center,
-                    ),
-
-                  ),
-                ),
-              ),
-              Container(
-                width: 150,
-                height: 40,
-                margin: EdgeInsets.only(left: 30.0, top: 10.0),
-                child: Material(
-                  elevation: 6.0,
-                  shadowColor: Colors.grey[200],
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                  color: AppColors.saveButtonBottomSheet,
-                  borderOnForeground: true,
-                  child: InkWell(
-                    onTap: (){
-                      Get.to(() => BlockedUsersPage());
-                    },
-                    child: Container(
-                      /*margin: EdgeInsets.only(
-                                left: 12.0, bottom: 4.0, right: 20),*/
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey, width: 0.5),
-                          borderRadius: BorderRadius.circular(8),
-                          color: AppColors.bottomSheetTabColor
-                      ),
-                      child: Text(
-                        'المحظورون',
-                        style: TextStyle(
-                            fontSize: 16.0,
-                            color: AppColors.tabColor,
-                            fontWeight: FontWeight.w400),
+                        ),
                         textAlign: TextAlign.center,
-                      ),
-
-                    ),
-                  ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      )),
                 ),
-              ),
-            ],
+                Row(
+                  children: [
+                    Container(
+                        padding: EdgeInsets.only(
+                          //top: 4.0,
+                            right: 8.0
+                            ,bottom: 8.0
+                        ),
+                        child: SvgPicture.asset(
+                          'images/notice_icon.svg',
+                          width: 26.0,
+                          height: 26.0,
+                          fit: BoxFit.fill,
+                          color: AppColors.bottomSheetTabColorRounded,
+                        ),
+                        decoration: BoxDecoration(
+                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                          borderRadius: BorderRadius.circular(8.0),
+                          /*image: DecorationImage(
+                                                  image: AssetImage("images/image1.jpg"),
+                                                  fit: BoxFit.cover,
+                                                )*/
+                        )),
+                    Container(
+                        padding: EdgeInsets.only(
+                          //top: 4.0,
+                            right: 8.0
+                        ),
+                        child: SvgPicture.asset(
+                          'images/channels_icon.svg',
+                          width: 40.0,
+                          height: 40.0,
+                          fit: BoxFit.fill,
+                          //color: AppColors.bottomSheetTabColorRounded,
+                        ),
+                        decoration: BoxDecoration(
+                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                          borderRadius: BorderRadius.circular(8.0),
+                          /*image: DecorationImage(
+                                              image: AssetImage("images/image1.jpg"),
+                                              fit: BoxFit.cover,
+                                            )*/
+                        )),
+                  ],
+                ),
+              ],
+            ),
           ),
+          Container(
+            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: Container(
+                    //height: 42,
+
+                    // width: 110,
+                      padding: EdgeInsets.only(bottom: 12.0),
+                      child: Text(
+                        "اعدادات الضريبة",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16.0,
+                          color: AppColors.tabColor,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                ),
+                Row(
+                  children: [
+                    Container(
+                        padding: EdgeInsets.only(
+                          //top: 4.0,
+                            right: 8.0
+                            ,bottom: 8.0
+                        ),
+                        child: SvgPicture.asset(
+                          'images/notice_icon.svg',
+                          width: 26.0,
+                          height: 26.0,
+                          fit: BoxFit.fill,
+                          color: AppColors.bottomSheetTabColorRounded,
+                        ),
+                        decoration: BoxDecoration(
+                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                          borderRadius: BorderRadius.circular(8.0),
+                          /*image: DecorationImage(
+                                                  image: AssetImage("images/image1.jpg"),
+                                                  fit: BoxFit.cover,
+                                                )*/
+                        )),
+                    Container(
+                        padding: EdgeInsets.only(
+                          //top: 4.0,
+                            right: 8.0
+                        ),
+                        child: SvgPicture.asset(
+                          'images/tax_icn.svg',
+                          width: 40.0,
+                          height: 40.0,
+                          fit: BoxFit.fill,
+                          //color: AppColors.bottomSheetTabColorRounded,
+                        ),
+                        decoration: BoxDecoration(
+                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                          borderRadius: BorderRadius.circular(8.0),
+                          /*image: DecorationImage(
+                                              image: AssetImage("images/image1.jpg"),
+                                              fit: BoxFit.cover,
+                                            )*/
+                        )),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: Container(
+                    //height: 42,
+
+                    // width: 110,
+                      padding: EdgeInsets.only(bottom: 12.0),
+                      child: Text(
+                        "حالة الحساب",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16.0,
+                          color: AppColors.tabColor,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                ),
+                Row(
+                  children: [
+                    Container(
+                        padding: EdgeInsets.only(
+                          //top: 4.0,
+                            right: 8.0
+                            ,bottom: 8.0
+                        ),
+                        child: SvgPicture.asset(
+                          'images/notice_icon.svg',
+                          width: 26.0,
+                          height: 26.0,
+                          fit: BoxFit.fill,
+                          color: AppColors.bottomSheetTabColorRounded,
+                        ),
+                        decoration: BoxDecoration(
+                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                          borderRadius: BorderRadius.circular(8.0),
+                          /*image: DecorationImage(
+                                                  image: AssetImage("images/image1.jpg"),
+                                                  fit: BoxFit.cover,
+                                                )*/
+                        )),
+                    Container(
+                        padding: EdgeInsets.only(
+                          //top: 4.0,
+                            right: 8.0
+                        ),
+                        child: SvgPicture.asset(
+                          'images/lock_icon.svg',
+                          width: 40.0,
+                          height: 40.0,
+                          fit: BoxFit.fill,
+                          //color: AppColors.bottomSheetTabColorRounded,
+                        ),
+                        decoration: BoxDecoration(
+                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                          borderRadius: BorderRadius.circular(8.0),
+                          /*image: DecorationImage(
+                                              image: AssetImage("images/image1.jpg"),
+                                              fit: BoxFit.cover,
+                                            )*/
+                        )),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: Container(
+                    //height: 42,
+
+                    // width: 110,
+                      padding: EdgeInsets.only(bottom: 12.0),
+                      child: Text(
+                        "اعدادات متقدمة",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16.0,
+                          color: AppColors.tabColor,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                ),
+                Container(
+                    padding: EdgeInsets.only(
+                      //top: 4.0,
+                        right: 8.0
+                    ),
+                    child: SvgPicture.asset(
+                      'images/advanced_settings.svg',
+                      width: 40.0,
+                      height: 40.0,
+                      fit: BoxFit.fill,
+                      //color: AppColors.bottomSheetTabColorRounded,
+                    ),
+                    decoration: BoxDecoration(
+                      //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                      borderRadius: BorderRadius.circular(8.0),
+                      /*image: DecorationImage(
+                                              image: AssetImage("images/image1.jpg"),
+                                              fit: BoxFit.cover,
+                                            )*/
+                    )),
+              ],
+            ),
+          ),
+
+
           Container(
             margin: EdgeInsets.only(bottom: 20.0),
             child: Row(

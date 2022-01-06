@@ -10,12 +10,12 @@ class AdvertisingInfluenceChannelsPageListWidget extends StatelessWidget {
     return ListView.builder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
-        itemCount: advertisingChannels!.length,
+        itemCount: advertisingChannels.length,
         itemBuilder: (context, index) {
           return  Container(
             padding: EdgeInsets.only(bottom: 12),
             child: AdvertisingInfluenceChannelsPageWidget(
-              advertisingChannels: advertisingChannels![index],
+              advertisingChannels: advertisingChannels[index],
               index: index,
             ),
           );

@@ -36,7 +36,7 @@ class Routes {
   static final routes = [
     GetPage(
       name: '/',
-      page: () => LoginPage(),
+      page: () =>LoginPage(),
       binding: BindingsBuilder(() {
         Get.lazyPut<LoginController>(() => LoginController());
       }),
