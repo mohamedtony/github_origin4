@@ -10,6 +10,7 @@ import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_b
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_dropdown.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_generic_field.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_phone.dart';
+import 'package:advertisers/shared/network/models/Country.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -120,10 +121,10 @@ SizedBox(width: 323.w,
 child:Row(
   mainAxisAlignment: MainAxisAlignment.spaceBetween,
   children: [
-                Obx(()=>AdvertisersDropDown(hintText: 'الدولة',width:150.w,countries: _registerNewClientUserController.countries.value,onCountryChanged: (id){
-                  _registerNewClientUserController.changeAreas(id);
+                Obx(()=>AdvertisersDropDown(hintText: 'الدولة',width:150.w,items: _registerNewClientUserController.countries.value,onSelectedItemChanged: (c){
+                  _registerNewClientUserController.changeAreas((c as Country).id!);
                 },),),
-                Obx(()=>AdvertisersDropDown(hintText: 'المدينة',width:150.w,areas: _registerNewClientUserController.areas.value,)),
+                Obx(()=>AdvertisersDropDown(hintText: 'المدينة',width:150.w,items: _registerNewClientUserController.areas.value,)),
   ],
 )),
                     SizedBox(height:44.6.h),

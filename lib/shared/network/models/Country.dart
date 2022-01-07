@@ -21,7 +21,7 @@ class Country {
     this.phone_key,
     this.areas
   });
-  String countryAsStringByName() {
+  String itemAsStringByName() {
     return this.name!;
   }
   factory Country.fromJson(Map<String, dynamic> json) => _$CountryFromJson(json);
