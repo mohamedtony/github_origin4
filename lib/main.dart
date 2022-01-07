@@ -10,12 +10,12 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
-RestClient? client;
-Dio? dio;
+
 //final logger = Logger();
 
 import 'package:get_storage/get_storage.dart';
-
+RestClient? client;
+Dio? dio;
 late FirebaseAuth auth;
 late var storage;
 void main() async{
