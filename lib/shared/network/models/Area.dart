@@ -12,6 +12,10 @@ class Area {
   String? area_code;
 
 
+  String areaAsStringByName() {
+    return this.name!;
+  }
+
   Area({this.id, this.country_id, this.name,this.area_code});
 
   factory Area.fromJson(Map<String, dynamic> json) => _$AreaFromJson(json);
