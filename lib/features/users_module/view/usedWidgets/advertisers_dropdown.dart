@@ -60,8 +60,9 @@ class AdvertisersDropDown extends StatelessWidget {
           ),
           onChanged: (item){
             //_registerNewClientUserController.changeAreas(country!.id!);
-
-              this.onSelectedItemChanged!(item);
+              if(this.onSelectedItemChanged!=null) {
+                this.onSelectedItemChanged!(item);
+              }
 
           },
           //selectedItem: "Brazil"
