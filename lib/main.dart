@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
          // fallbackLocale: LocalizationService.locale,
 
           translations: LocalizationService(),
-          initialRoute: '/',
+          initialRoute: '/AdvertiserQrPage',
           getPages: Routes.routes,
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',

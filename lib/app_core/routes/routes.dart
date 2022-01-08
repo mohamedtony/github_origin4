@@ -1,5 +1,6 @@
 import 'package:advertisers/app_core/bindings/data_binding.dart';
 import 'package:advertisers/features/advanced_options/view/pages/advanced_options_page.dart';
+import 'package:advertisers/features/advertiser_qr/view/page/advertiser_qr_page.dart';
 import 'package:advertisers/features/advertiser_settings_page/advertiser_settings_page.dart';
 import 'package:advertisers/features/advertising_influence_channels/view/page/advertising_influence_channels_page.dart';
 import 'package:advertisers/features/blocked_users_page/blocked_users_page.dart';
@@ -133,6 +134,11 @@ class Routes {
     GetPage(
       name: '/PayVerification',
       page: () => PayVerification(),
+      binding: DataBinding(),
+    ),
+    GetPage(
+      name: '/AdvertiserQrPage',
+      page: () => AdvertiserQrPage(),
       binding: DataBinding(),
     ),
   ];
