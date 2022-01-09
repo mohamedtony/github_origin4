@@ -1,9 +1,11 @@
+import 'package:advertisers/features/add_advertiser_channel/controller/add_advertiser_channel_controller.dart';
 import 'package:advertisers/features/add_advertiser_channel/widgets/selected_countery_area_widget.dart';
 import 'package:advertisers/features/add_advertiser_channel/widgets/title.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class AddAdvertiserChannel extends StatefulWidget {
   const AddAdvertiserChannel({Key? key}) : super(key: key);
@@ -555,161 +557,180 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
           ),
           Row(
             children: [
+
               Expanded(
-                child: Container(
-                  margin: const EdgeInsets.all(15.0),
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                      color: const Color(0xffC3CFE2),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(15),
-                          bottomRight: Radius.circular(15),
-                        ),
-                        child: Container(
-                          // alignment: Alignment.center,
-                          width: 40.w,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 2,
-                            vertical: 11,
-                          ),
-                          // color: const Color(0xffE8E8E8),
-                          child: Text(
-                            "الدولة",
-                            style: TextStyle(fontSize: 10.5.sp, color: Color(0xff041D67)),
-                          ),
+                child:               GetBuilder<AddAdvertiserChannelController>(
+                    init: AddAdvertiserChannelController(),
+                    builder: (controller) => Container(
+                      margin: const EdgeInsets.all(15.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: const Color(0xffC3CFE2),
                         ),
                       ),
-                      Container(
-                        width: 2,
-                        height: 40.h,
-                        color: const Color(0xffC3CFE2),
-                      ),
-                      Expanded(
-                        child: DropdownButton<Country>(
-                          underline: const SizedBox.shrink(),
-                          // icon: const Icon(Icons.keyboard_arrow_down),
-                          icon: const SizedBox.shrink(),
-                          hint:
+                      child: Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(15),
+                              bottomRight: Radius.circular(15),
+                            ),
+                            child: Container(
+                              // alignment: Alignment.center,
+                              width: 40.w,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 2,
+                                vertical: 11,
+                              ),
+                              // color: const Color(0xffE8E8E8),
+                              child: Text(
+                                "الدولة",
+                                style: TextStyle(fontSize: 10.5.sp, color: Color(0xff041D67)),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 2,
+                            height: 40.h,
+                            color: const Color(0xffC3CFE2),
+                          ),
+                          Expanded(
+                            child: DropdownButton<Country>(
+                              underline: const SizedBox.shrink(),
+                              // icon: const Icon(Icons.keyboard_arrow_down),
+                              icon: const SizedBox.shrink(),
+                              hint:
                               Center(child: Text(_selectedCountry?.name ?? '')),
-                          items: Country.countries.map((Country value) {
-                            return DropdownMenuItem<Country>(
-                              value: value,
-                              child: Text(value.name),
-                            );
-                          }).toList(),
-                          // value: _selectedLocation,
-                          // isDense: true,
-                          isExpanded: true,
-                          onChanged: (newVal) {
-                            setState(() {
-                              _selectedCountry = newVal!;
-                              // if (_selectedCountry?.id != newVal.id) {
-                              _selectedCity = null;
-                              // }
-                            });
-                          },
-                        ),
+                              items: Country.countries.map((Country value) {
+                                return DropdownMenuItem<Country>(
+                                  value: value,
+                                  child: Text(value.name),
+                                );
+                              }).toList(),
+                              // value: _selectedLocation,
+                              // isDense: true,
+                              isExpanded: true,
+                              onChanged: (newVal) {
+                                setState(() {
+                                  _selectedCountry = newVal!;
+                                  // if (_selectedCountry?.id != newVal.id) {
+                                  _selectedCity = null;
+                                  // }
+                                });
+                                controller.addToList(_selectedCountry);
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    )
                 ),
               ),
+
               Expanded(
-                child: Container(
-                  margin: const EdgeInsets.all(15.0),
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                      color: const Color(0xffC3CFE2),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(15),
-                          bottomRight: Radius.circular(15),
-                        ),
-                        child: Container(
-                          // alignment: Alignment.center,
-                          width: 40.w,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 2,
-                            vertical: 11,
-                          ),
-                          // color: const Color(0xffE8E8E8),
-                          child: Text(
-                            "المدينة",
-                            style: TextStyle(fontSize: 10.5.sp, color: Color(0xff041D67)),
-                          ),
+                child:  GetBuilder<AddAdvertiserChannelController>(
+                    init: AddAdvertiserChannelController(),
+                    builder: (controller) => Container(
+                      margin: const EdgeInsets.all(15.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: const Color(0xffC3CFE2),
                         ),
                       ),
-                      Container(
-                        width: 2,
-                        height: 40.h,
-                        color: const Color(0xffC3CFE2),
-                      ),
-                      Expanded(
-                        child: DropdownButton<City>(
-                          underline: const SizedBox.shrink(),
-                          // icon: const Icon(Icons.keyboard_arrow_down),
-                          icon: const SizedBox.shrink(),
-                          hint: Center(child: Text(_selectedCity?.name ?? '')),
-                          items: Country
-                              .countries[Country.countries.indexWhere(
-                                          (element) =>
-                                              _selectedCountry?.id ==
-                                              element.id) ==
-                                      -1
+                      child: Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(15),
+                              bottomRight: Radius.circular(15),
+                            ),
+                            child: Container(
+                              // alignment: Alignment.center,
+                              width: 40.w,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 2,
+                                vertical: 11,
+                              ),
+                              // color: const Color(0xffE8E8E8),
+                              child: Text(
+                                "المدينة",
+                                style: TextStyle(fontSize: 10.5.sp, color: Color(0xff041D67)),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 2,
+                            height: 40.h,
+                            color: const Color(0xffC3CFE2),
+                          ),
+                          Expanded(
+                            child: DropdownButton<City>(
+                              underline: const SizedBox.shrink(),
+                              // icon: const Icon(Icons.keyboard_arrow_down),
+                              icon: const SizedBox.shrink(),
+                              hint: Center(child: Text(_selectedCity?.name ?? '')),
+                              items: Country
+                                  .countries[Country.countries.indexWhere(
+                                      (element) =>
+                                  _selectedCountry?.id ==
+                                      element.id) ==
+                                  -1
                                   ? 0
                                   : Country.countries.indexWhere((element) =>
-                                      _selectedCountry?.id == element.id)]
-                              .cities
-                              .map((City value) {
-                            return DropdownMenuItem<City>(
-                              value: value,
-                              child: Text(value.name),
-                            );
-                          }).toList(),
-                          // value: _selectedLocation,
-                          // isDense: true,
-                          isExpanded: true,
-                          onChanged: (newVal) {
-                            setState(() {
-                              _selectedCity = newVal!;
-                            });
-                          },
-                        ),
+                              _selectedCountry?.id == element.id)]
+                                  .cities
+                                  .map((City value) {
+                                return DropdownMenuItem<City>(
+                                  value: value,
+                                  child: Text(value.name),
+                                );
+                              }).toList(),
+                              // value: _selectedLocation,
+                              // isDense: true,
+                              isExpanded: true,
+                              onChanged: (newVal) {
+                                setState(() {
+                                  _selectedCity = newVal!;
+                                });
+                                controller.addToList(_selectedCity);
+
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    )
                 ),
               ),
             ],
           ),
-Container(
-  padding: EdgeInsets.all(15),
-  child:           Wrap(
-    children: <Widget>[
-      SelectedAreaWidget(title: "العالم العربي",),
-      SelectedAreaWidget(title: "الخليج العربي",),
-      SelectedAreaWidget(title: "السعودية",),
-      SelectedAreaWidget(title: "الرياض",),
-      SelectedAreaWidget(title: "جدة",),
-      SelectedAreaWidget(title: "الرياض",),
-      SelectedAreaWidget(title: "الرياض",),
+          GetBuilder<AddAdvertiserChannelController>(
+              init: AddAdvertiserChannelController(),
+              builder: (controller) => Container(
+                padding: EdgeInsets.all(15),
+                child: Wrap(
+                  children: controller.citiesCountriesController.map<Widget>((e) => SelectedAreaWidget(title: "${e.name}",onPressed: (){
+                    controller.removeFromList(e);
+                    print(e.name);
+                  },)).toList()
+                  // <Widget>[
+                  //
+                  //   SelectedAreaWidget(title: "العالم العربي",),
+                  //   SelectedAreaWidget(title: "الخليج العربي",),
+                  //   SelectedAreaWidget(title: "السعودية",),
+                  //   SelectedAreaWidget(title: "الرياض",),
+                  //   SelectedAreaWidget(title: "جدة",),
+                  //   SelectedAreaWidget(title: "الرياض",),
+                  //   SelectedAreaWidget(title: "الرياض",),
+                  // ],
+                ),
+              )
+          ),
 
-    ],
-  ),
-),
 
 
           Padding(
@@ -770,7 +791,7 @@ class Country {
 
   static final List<Country> countries = [
     Country(
-      1,
+      11,
       'مصر',
       [
         City(1, 'المنصورة'),
@@ -779,12 +800,12 @@ class Country {
       ],
     ),
     Country(
-      2,
+      12,
       'السعودية',
       [
-        City(1, 'مكة'),
-        City(2, 'الرياض'),
-        City(3, 'المدينة'),
+        City(4, 'مكة'),
+        City(5, 'الرياض'),
+        City(6, 'المدينة'),
       ],
     ),
   ];
@@ -796,3 +817,15 @@ class City {
 
   City(this.id, this.name);
 }
+
+
+class CitiesCountries{
+  int ? id;
+  String ? name;
+  CitiesCountries({
+    this.id,
+    this.name
+  });
+}
+
+

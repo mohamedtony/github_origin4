@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class SelectedAreaWidget extends StatelessWidget {
   String? title;
-   SelectedAreaWidget({Key? key,this.title}) : super(key: key);
+  VoidCallback?  onPressed;
+   SelectedAreaWidget({Key? key,this.title,this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +29,17 @@ class SelectedAreaWidget extends StatelessWidget {
           Positioned(
               top: 0,
               left: 0,
-              child: Container(
-                height: 18,
-                width: 18,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: Color(0xffFF9100),
+              child: InkWell(
+                onTap: onPressed,
+                child: Container(
+                  height: 18,
+                  width: 18,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Color(0xffFF9100),
+                  ),
+                  child: Icon(Icons.clear,size: 12,color: Colors.white,),
                 ),
-                child: Icon(Icons.clear,size: 12,color: Colors.white,),
               ))
         ],
       ),
