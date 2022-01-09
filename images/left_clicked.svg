@@ -1,7 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="30" height="16.6" viewBox="0 0 30 16.6">
-  <g id="ico_menu" transform="translate(2)" opacity="0.79">
-    <rect id="Rectangle" width="26" height="2.2" transform="translate(0 0)" fill="#ff86da"/>
-    <rect id="Rectangle-2" data-name="Rectangle" width="26" height="2.2" transform="translate(0 14.4)" fill="#ff86da"/>
-    <rect id="Rectangle_Copy" data-name="Rectangle Copy" width="30" height="2.2" transform="translate(-2 7.2)" fill="#ff86da"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="37" height="24" viewBox="0 0 37 24">
+  <g id="Group_17326" data-name="Group 17326" transform="translate(-20 -45)">
+    <g id="Rectangle_9189" data-name="Rectangle 9189" transform="translate(20 45)" fill="#fff" stroke="#ee98de" stroke-width="1" opacity="0.57">
+      <rect width="37" height="24" rx="4" stroke="none"/>
+      <rect x="0.5" y="0.5" width="36" height="23" rx="3.5" fill="none"/>
+    </g>
+    <rect id="Rectangle" width="26" height="2.2" transform="translate(25 49.2)" fill="#46bcdb"/>
+    <rect id="Rectangle-2" data-name="Rectangle" width="26" height="2.2" transform="translate(25 63.601)" fill="#46bcdb"/>
+    <rect id="Rectangle_Copy" data-name="Rectangle Copy" width="30" height="2.2" transform="translate(23 56.4)" fill="#46bcdb"/>
+    <rect id="Rectangle-3" data-name="Rectangle" width="26" height="2.2" transform="translate(26 48.2)" fill="#ff86da"/>
+    <rect id="Rectangle-4" data-name="Rectangle" width="26" height="2.2" transform="translate(26 62.601)" fill="#ff86da"/>
+    <rect id="Rectangle_Copy-2" data-name="Rectangle Copy" width="30" height="2.2" transform="translate(24 55.4)" fill="#ff86da"/>
   </g>
 </svg>

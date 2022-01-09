@@ -1,6 +1,7 @@
 
 
 import 'package:advertisers/features/users_module/app_colors.dart';
+import 'package:advertisers/features/users_module/controller/choose_baka_controller.dart';
 import 'package:advertisers/features/users_module/view/cards/baka_advertiser_card.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_button.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class ChooseBakaPage extends StatelessWidget {
-  const ChooseBakaPage({Key? key}) : super(key: key);
+   ChooseBakaPage({Key? key}) : super(key: key);
+  final ChooseBakaController _chooseBakaController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +54,20 @@ class ChooseBakaPage extends StatelessWidget {
           decoration: const BoxDecoration(
 
             color: AppColors.bakaBarColor,
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(12),topRight:  Radius.circular(12))
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(12),topRight:  Radius.circular(12)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black,
+                blurRadius: 25.0, // soften the shadow
+                spreadRadius: 5.0, //extend the shadow
+                offset: Offset(
+                  0.0, // Move to right 10  horizontally
+                  15.0, // Move to bottom 10 Vertically
+                ),
+              )
+            ],
           ),
+
           child:   Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -86,10 +100,27 @@ class ChooseBakaPage extends StatelessWidget {
               child:Container(
                 color:AppColors.whiteColor,
                 child: Column(
+                  mainAxisSize: MainAxisSize.max,
                     children:[
+                     Obx(()=> _chooseBakaController.subscriptionBaka.isNotEmpty?ListView.builder(
+                         itemCount: _chooseBakaController.subscriptionBaka.length,
+                         shrinkWrap: true,
+                         itemBuilder: (BuildContext context,int index){
+                           return Column(
+                             children: [
+                               Padding(
+                                 padding: EdgeInsets.symmetric(horizontal:6.5.w,vertical: 3.62.h),
+                                 child: BakaAdvertiserCard(subscriptionBaka:_chooseBakaController.subscriptionBaka.value[index],bakaName: 'الباقة الاساسية',slash:true, domain: 'مجانية لمدة سنة',price: '500',imageStr: 'images/mainBaka.png',),
+                               ),
+                               SizedBox(height: 5.h,),
+                             ],
+                           );
+                         }
+                     ):Container(
+                       margin: EdgeInsets.only(top:30),
+                         child: CircularProgressIndicator())),
 
-
-                      Padding(
+                      /*Padding(
                         padding: EdgeInsets.symmetric(horizontal:6.5.w,vertical: 3.62.h),
                         child: BakaAdvertiserCard(bakaName: 'الباقة الاساسية',slash:true, domain: 'مجانية لمدة سنة',price: '500',imageStr: 'images/mainBaka.png',),
                       ),
@@ -102,7 +133,7 @@ class ChooseBakaPage extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal:6.5.w,vertical: 3.62.h),
                         child: BakaAdvertiserCard(bakaName: 'الباقة بريميم', domain: 'تجربة مجانية لمدة شهر',price: '2000',imageStr: 'images/bakaBremuim.png',),
-                      ),
+                      ),*/
                       SizedBox(height: 97.h,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,

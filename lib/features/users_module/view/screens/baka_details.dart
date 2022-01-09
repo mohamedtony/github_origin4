@@ -25,7 +25,7 @@ class BakaDetails extends StatelessWidget {
    BakaDetails({Key? key}) : super(key: key);
   // final BakaDetailsController _registerPhoneController=Get.find();
  TextEditingController discountCodeController=TextEditingController();
-
+   final BakaDetailsController _chooseBakaController = Get.find();
   @override
   Widget build(BuildContext context) {
     if(blocOfWidgets.isEmpty) {

@@ -1,11 +1,7 @@
-
-
-
+import 'package:advertisers/main.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-
-
 class BakaDetailsController extends GetxController{
   GlobalKey<FormState> pakaDetailsFormKey=GlobalKey<FormState>( );
 
@@ -23,8 +19,12 @@ class BakaDetailsController extends GetxController{
 
     pakaTimeController=TextEditingController();
 
-
-
+    client!.getSubscriptionDetails(1).then((value){
+      if(value.data!=null){
+        //subscriptionBaka.value = value.data!;
+        print("BakaDetails"+ value.data!.settings![0].name!);
+      }
+    });
     super.onInit();
   }
   String? validateDropDown(String timeStr){

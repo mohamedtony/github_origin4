@@ -1,3 +1,4 @@
+import 'package:advertisers/app_core/bindings/choose_baka_binding.dart';
 import 'package:advertisers/app_core/bindings/data_binding.dart';
 import 'package:advertisers/features/advanced_options/view/pages/advanced_options_page.dart';
 import 'package:advertisers/features/advertiser_settings_page/advertiser_settings_page.dart';
@@ -34,14 +35,21 @@ import 'package:get/get.dart';
 
 class Routes {
   static final routes = [
+
     GetPage(
+      name: '/',
+      page: () =>ChooseBakaPage(),
+      binding: ChooseBakaBinding(),
+
+    ),
+   /* GetPage(
       name: '/',
       page: () =>LoginPage(),
       binding: BindingsBuilder(() {
         Get.lazyPut<LoginController>(() => LoginController());
       }),
 
-    ),
+    ),*/
     GetPage(
       name: '/AdvertiserSettingsPage',
       page: () => AdvertiserSettingsPage(),

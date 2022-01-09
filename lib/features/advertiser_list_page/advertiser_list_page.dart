@@ -391,7 +391,7 @@ class AdvertiserListPage extends StatelessWidget {
           AdvertiseListItem(icon: 'images/menu_icon.svg',title: 'الطلبات',listTilePressed: (){
             print('pressed2');
           },),
-          AdvertiseListItem(icon: 'images/menu_icon.svg',title: 'اعلاناتى',listTilePressed: (){
+          AdvertiseListItem(icon: 'images/my_ads_icon.svg',title: 'اعلاناتى',listTilePressed: (){
             print('pressed2');
           },),
           AdvertiseListItem(icon: 'images/discount_copon_img.svg',title: 'الخوصومات والكوبوناتي',listTilePressed: (){
@@ -409,7 +409,7 @@ class AdvertiserListPage extends StatelessWidget {
           AdvertiseListItem(icon: 'images/subscribe_icon.svg',title: 'الاشتراكات',listTilePressed: (){
             print('pressed2');
           },),
-          AdvertiseListItem(icon: 'images/subscribe_icon.svg',title: 'ادارة حسابات المعلنين',listTilePressed: (){
+          AdvertiseListItem(icon: 'images/manage_icon.svg',title: 'ادارة حسابات المعلنين',listTilePressed: (){
             print('pressed2');
           },),
           AdvertiseListItem(icon: 'images/logout_icon.svg',title: 'خروج',listTilePressed: (){
