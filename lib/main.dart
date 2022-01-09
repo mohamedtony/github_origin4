@@ -1,16 +1,26 @@
 import 'package:advertisers/app_core/app_localization/app_localization.dart';
 import 'package:advertisers/app_core/routes/routes.dart';
+import 'package:advertisers/shared/network/service.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 
-
+RestClient? client;
+Dio? dio;
+//final logger = Logger();
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   // account.getPreferences();
+  dio = Dio();
+  dio?.options.headers['Content-Type'] = 'application/json';
+  //dio.options.headers['Content-Type'] = 'multipart/form-data';
+  client = RestClient(dio!);
+  //client.getTasks().then((it) => logger.i(it));
+
   runApp(const MyApp());
 }
 class MyApp extends StatefulWidget {
@@ -46,7 +56,7 @@ class _MyAppState extends State<MyApp> {
          // fallbackLocale: LocalizationService.locale,
 
           translations: LocalizationService(),
-          initialRoute: '/AdvertiserQrPage',
+          initialRoute: '/',
           getPages: Routes.routes,
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',

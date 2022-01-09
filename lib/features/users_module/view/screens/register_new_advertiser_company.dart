@@ -23,7 +23,7 @@ import 'package:flutter_svg_provider/flutter_svg_provider.dart'as svg;
 
 class RegisterNewAdvertiserCompany extends StatelessWidget {
   RegisterNewAdvertiserCompany({Key? key}) : super(key: key);
-  final RegisterNewAdvertiserCompanyController _registerNewAdvertiserCompanyController=Get.put(RegisterNewAdvertiserCompanyController());
+  final RegisterNewAdvertiserCompanyController _registerNewAdvertiserCompanyController=Get.find();
   @override
   Widget build(BuildContext context) {
     return  Center(

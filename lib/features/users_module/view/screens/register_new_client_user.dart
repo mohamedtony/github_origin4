@@ -10,6 +10,7 @@ import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_b
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_dropdown.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_generic_field.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_phone.dart';
+import 'package:advertisers/shared/network/models/Country.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ import 'package:flutter_svg_provider/flutter_svg_provider.dart'as svg;
 
 class RegisterNewClientUser extends StatelessWidget {
   RegisterNewClientUser({Key? key}) : super(key: key);
-  final RegisterNewClientUserController _registerNewClientUserController=Get.put(RegisterNewClientUserController());
+  final RegisterNewClientUserController _registerNewClientUserController=Get.find();
   @override
   Widget build(BuildContext context) {
     return  Center(
@@ -120,9 +121,10 @@ SizedBox(width: 323.w,
 child:Row(
   mainAxisAlignment: MainAxisAlignment.spaceBetween,
   children: [
-
-    AdvertisersDropDown(hintText: 'السعودية',width:150.w),
-    AdvertisersDropDown(hintText: 'الرياض',width:150.w),
+                Obx(()=>AdvertisersDropDown(hintText: 'الدولة',width:150.w,items: _registerNewClientUserController.countries.value,onSelectedItemChanged: (c){
+                  _registerNewClientUserController.changeAreas((c as Country).id!);
+                },),),
+                Obx(()=>AdvertisersDropDown(hintText: 'المدينة',width:150.w,items: _registerNewClientUserController.areas.value,)),
   ],
 )),
                     SizedBox(height:44.6.h),

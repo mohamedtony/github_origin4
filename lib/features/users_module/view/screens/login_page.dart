@@ -21,7 +21,7 @@ import 'package:flutter_svg_provider/flutter_svg_provider.dart'as svg;
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
 
-  final LoginController _loginController=Get.put(LoginController());
+  final LoginController _loginController=Get.find();
 
   @override
   Widget build(BuildContext context) {

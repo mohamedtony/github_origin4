@@ -5,13 +5,15 @@ import 'package:advertisers/features/home_page/view/pages/advertisers_person_pag
 import 'package:advertisers/features/home_page/view/pages/advertising_page.dart';
 import 'package:advertisers/features/home_page/view/pages/copons_page.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+import 'package:advertisers/features/request_advertise_module/view/widgets/attatchements_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key,this.onSheetClicke}) : super(key: key);
+  Function(int x)? onSheetClicke;
 
   final HomeNavController _loginController = Get.put(HomeNavController());
 
@@ -32,7 +34,7 @@ class HomePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => /*ListPage()*/ClientSettingPage(),
+                            builder: (context) => ListPage()/*ClientSettingPage(),*/
                           ),
                         );
                       },
@@ -176,7 +178,11 @@ class HomePage extends StatelessWidget {
                           key: controller.navigatorKey,
                           onGenerateRoute: (routeSettings) {
                             return MaterialPageRoute(
-                              builder: (context) => AdvertisingPage(),
+                              builder: (context) => AdvertisingPage(
+                                onSheetClicked: (x){
+                                  this.onSheetClicke!(x);
+                                },
+                              ),
                             );
                           },
                         ),
@@ -190,5 +196,7 @@ class HomePage extends StatelessWidget {
                 ),
               ))),
     );
+
   }
+
 }

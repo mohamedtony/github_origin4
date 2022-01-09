@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:advertisers/features/users_module/app_colors.dart';
-import 'package:advertisers/features/users_module/controller/register_new_company_user_controller.dart';
+import 'package:advertisers/features/users_module/controller/register_new_client_company_controller.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_button.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_dropdown.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_generic_field.dart';
@@ -16,7 +16,7 @@ import 'package:get/get_instance/src/extension_instance.dart';
 
 class RegisterNewClientCompany extends StatelessWidget {
   RegisterNewClientCompany({Key? key}) : super(key: key);
-  final RegisterNewCompanyUserController _registerNewClientUserController=Get.put(RegisterNewCompanyUserController());
+  final RegisterNewClientCompanyController _registerNewClientUserController=Get.find();
   @override
   Widget build(BuildContext context) {
     return  Center(
