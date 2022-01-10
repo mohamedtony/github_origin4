@@ -1,4 +1,8 @@
+import 'package:advertisers/shared/network/requests/MLoginRequest.dart';
+import 'package:advertisers/shared/network/requests/login_client_request.dart';
 import 'package:advertisers/shared/network/responses/CountriesResponse.dart';
+import 'package:advertisers/shared/network/responses/LoginClientResponse.dart';
+import 'package:advertisers/shared/network/responses/LoginResponse.dart';
 import 'package:advertisers/shared/network/responses/SubscriptionDetailsResponse.dart';
 import 'package:advertisers/shared/network/responses/SubscruptionResponse.dart';
 import 'package:dio/dio.dart';
@@ -17,4 +21,7 @@ abstract class RestClient {
 
   @GET('https://advertiser.cefour.com/api/v1/subscriptions/{id}')
   Future<SubscriptionDetailsResponse> getSubscriptionDetails(@Path("id") int id);
+
+  @POST('https://advertiser.cefour.com/api/v1/auth/login')
+  Future<LoginClientResponse> login(@Body() LoginClientRequest mLoginRequest);
 }

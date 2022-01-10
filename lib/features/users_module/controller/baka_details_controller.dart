@@ -1,4 +1,5 @@
 import 'package:advertisers/main.dart';
+import 'package:advertisers/shared/network/models/SubscriptionDetail.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -12,7 +13,9 @@ class BakaDetailsController extends GetxController{
   var phone='';
   var logoPath=''.obs;
   var imageBase641=''.obs;
+  var subscriptionBakaDetail = SubscriptionDetail();
   //Repository repo=Repository();
+  RxList<String> items=<String>[].obs;
   @override
   void onInit() {
     //repo.postWithImageMultipart({})
@@ -20,9 +23,17 @@ class BakaDetailsController extends GetxController{
     pakaTimeController=TextEditingController();
 
     client!.getSubscriptionDetails(1).then((value){
-      if(value.data!=null){
+      if(value.data!=null&&value.status==200){
         //subscriptionBaka.value = value.data!;
-        print("BakaDetails"+ value.data!.settings![0].name!);
+        //print("BakaDetails"+ value.data!.settings![0].name!);
+        subscriptionBakaDetail = value.data!;
+        subscriptionBakaDetail.settings?.forEach((element) {
+          if(element!=null && element.name!=null) {
+            print("ininininininini");
+            items.value.add(element.name!);
+          }
+        });
+        update();
       }
     });
     super.onInit();

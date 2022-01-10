@@ -10,7 +10,7 @@ part 'SubscriptionBaka.g.dart';
 class SubscriptionBaka {
   int? id;
   String? name;
-  String? commission;
+  double? commission;
   String? image;
   int? subscribers_count;
   PeriodModel? first_period;

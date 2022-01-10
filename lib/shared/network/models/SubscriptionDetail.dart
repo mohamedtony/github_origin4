@@ -12,9 +12,10 @@ part 'SubscriptionDetail.g.dart';
 class SubscriptionDetail {
   int? id;
   String? name;
-  String? commission;
+  double? commission;
   String? image;
   int? subscribers_count;
+  PeriodModel? first_period;
   List<SubscriptionSettingsModel>? settings;
   List<PeriodModel>? periods;
 
@@ -26,7 +27,8 @@ class SubscriptionDetail {
     this.subscribers_count,
     this.image,
     this.settings,
-    this.periods
+    this.periods,
+    this.first_period
   });
 
   factory SubscriptionDetail.fromJson(Map<String, dynamic> json) => _$SubscriptionDetailFromJson(json);

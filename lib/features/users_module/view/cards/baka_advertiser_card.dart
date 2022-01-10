@@ -53,7 +53,7 @@ class BakaAdvertiserCard extends StatelessWidget {
                           child: Stack(alignment: Alignment.center, children: [
                         SizedBox(
                           child: Text(
-                            subscriptionBaka.first_period?.price_after_discount?.toString()??"",style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
+                            subscriptionBaka.first_period?.price?.toString()??"",style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
                           ),
                         ),
                         SizedBox(
@@ -72,7 +72,7 @@ class BakaAdvertiserCard extends StatelessWidget {
                         ),),
                       SizedBox(
                         child: Text(
-                            '${subscriptionBaka.first_period?.price ?? ""}',style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
+                            '${subscriptionBaka.first_period?.price_after_discount ?? ""}',style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
                         ),
                       ),
                       SizedBox(

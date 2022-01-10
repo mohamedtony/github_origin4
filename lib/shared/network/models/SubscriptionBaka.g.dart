@@ -10,7 +10,7 @@ SubscriptionBaka _$SubscriptionBakaFromJson(Map<String, dynamic> json) =>
     SubscriptionBaka(
       id: json['id'] as int?,
       name: json['name'] as String?,
-      commission: json['commission'] as String?,
+      commission: (json['commission'] as num?)?.toDouble(),
       subscribers_count: json['subscribers_count'] as int?,
       image: json['image'] as String?,
       first_period: json['first_period'] == null
