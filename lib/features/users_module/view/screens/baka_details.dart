@@ -5,6 +5,7 @@ import 'package:advertisers/features/users_module/view/cards/advantages_baka_car
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_button.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_dropdown.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_generic_field.dart';
+import 'package:advertisers/shared/network/models/PeriodModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -35,9 +36,9 @@ class BakaDetails extends StatelessWidget {
       backgroundColor: AppColors.verifyFayrouzyFirst,
       body: SafeArea(
 
-        child:  GetBuilder<BakaDetailsController>(
+        child: GetBuilder<BakaDetailsController>(
           init: _chooseBakaController,
-          builder: (controller)=>Container(
+          builder: (controller)=>controller.subscriptionBakaDetail!=null?Container(
             height: 812.0.h,
             width: 375.0.w,
             decoration: const BoxDecoration(
@@ -74,7 +75,7 @@ class BakaDetails extends StatelessWidget {
                             topLeft: Radius.circular(7),
                             topRight: Radius.circular(7))),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.5.w),
+                      padding: EdgeInsets.symmetric(horizontal: 14.5.w),
                       child: Column(
                         children: [
                           Row(
@@ -83,7 +84,7 @@ class BakaDetails extends StatelessWidget {
                               Column(
                                 children: [
                                   SizedBox(
-                                    child: Text( _chooseBakaController.subscriptionBakaDetail.name?.toString()??"",
+                                    child: Text( _chooseBakaController.subscriptionBakaDetail?.name?.toString()??"",
                                         style: TextStyle(
                                             fontSize: 27.sp,
                                             color: AppColors.bakaDetailsTextColor,
@@ -95,7 +96,7 @@ class BakaDetails extends StatelessWidget {
                                           child: Stack(alignment: Alignment.center, children: [
                                             SizedBox(
                                               child: Text(
-                                                  _chooseBakaController.subscriptionBakaDetail.first_period?.price?.toString()??"",style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
+                                                  _chooseBakaController.subscriptionBakaDetail?.first_period?.price?.toString()??"",style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
                                               ),
                                             ),
                                             SizedBox(
@@ -114,14 +115,14 @@ class BakaDetails extends StatelessWidget {
                                         ),),
                                       SizedBox(
                                         child: Text(
-                                            '${_chooseBakaController.subscriptionBakaDetail.first_period?.price_after_discount ?? ""}',style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
+                                            '${_chooseBakaController.subscriptionBakaDetail?.first_period?.price_after_discount ?? ""}',style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
                                         ),
                                       ),
                                       SizedBox(
                                         child: Container(
                                           margin: EdgeInsets.only(right: 24.0),
                                           child: Text(
-                                              ' ${(_chooseBakaController.subscriptionBakaDetail.first_period?.months_count??"")} أشهر ',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 16.sp)
+                                              ' ${(_chooseBakaController.subscriptionBakaDetail?.first_period?.months_count??"")} أشهر ',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 16.sp)
                                           ),
                                         ),
                                       ),
@@ -181,7 +182,7 @@ class BakaDetails extends StatelessWidget {
                                     SizedBox(
                                       height: 35.h,
                                       child: Text(
-                                        'تجربة مجانية لمدة '+' أيام ' + (_chooseBakaController.subscriptionBakaDetail.first_period?.free_days?.toString()??"") ,
+                                        'تجربة مجانية لمدة ' + (_chooseBakaController.subscriptionBakaDetail?.first_period?.free_days?.toString()??"")+' أيام ' ,
                                         textDirection: TextDirection.ltr,
                                         style: TextStyle(
                                             color: AppColors.arrowBlueColor,
@@ -254,7 +255,7 @@ class BakaDetails extends StatelessWidget {
                           ),
                           SizedBox(
                             child: Text(
-                              ' نقاط المعلن : ${(_chooseBakaController.subscriptionBakaDetail.commission?.toString()??"")} % من عمولة المنصة للفواتير المدفوعة داخل المنصة ',
+                              ' نقاط المعلن : ${(_chooseBakaController.subscriptionBakaDetail?.commission?.toString()??"")} % من عمولة المنصة للفواتير المدفوعة داخل المنصة ',
                               style: TextStyle(
                                   fontSize: 18.sp,
                                   color: AppColors.arrowBlueColor),
@@ -329,14 +330,16 @@ class BakaDetails extends StatelessWidget {
                           text: 'أختر باقة',
                           onPressed: () async{
                             await bottomSheet(context);
-                            Get.toNamed('/payVerification');
+                            //Get.toNamed('/payVerification');
                           },
                           backgroundColor: AppColors.blueAccentColor,
                           width: 146.w,
                         ),
                         AdvertisersButton(
                           text: 'رجوع',
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.back();
+                          },
                           backgroundColor: AppColors.verifyButtonColor,
                           width: 146.w,
                           textColor: AppColors.verifyTextColor,
@@ -347,6 +350,10 @@ class BakaDetails extends StatelessWidget {
                 ],
               ),
             ),
+          ):Container(
+            margin: EdgeInsets.only(top:20.0),
+            alignment: Alignment.topCenter,
+            child: CircularProgressIndicator(),
           ),
         ),
       ),
@@ -402,7 +409,7 @@ class BakaDetails extends StatelessWidget {
 
           SafeArea(
             child: Container(
-        height:812.h ,
+            height:810.h ,
             decoration: const BoxDecoration(
               color: AppColors.verifyFayrouzyFirst,
               gradient: LinearGradient(
@@ -462,7 +469,7 @@ class BakaDetails extends StatelessWidget {
                             Column(
                               children: [
                                 SizedBox(
-                                  child: Text('باقة التقدم',
+                                  child: Text(_chooseBakaController.subscriptionBakaDetail?.name??"",
                                       style: TextStyle(
                                           fontSize: 27.sp,
                                           color: AppColors.bakaDetailsTextColor,
@@ -474,7 +481,45 @@ class BakaDetails extends StatelessWidget {
                                   color: AppColors.bakaPriceColor,
                                 ),
                                 SizedBox(height: 19.h,),
-                                SizedBox(
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                        child: Stack(alignment: Alignment.center, children: [
+                                          SizedBox(
+                                            child: Text(
+                                                _chooseBakaController.subscriptionBakaDetail?.first_period?.price?.toString()??"",style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            child: RotationTransition(
+                                              turns:  AlwaysStoppedAnimation(25 / 360),
+                                              child:  Text(
+                                                "/",
+                                                style: TextStyle(fontSize: 25.sp),
+                                              ),
+                                            ),
+                                          )
+                                        ])),
+                                    SizedBox(
+                                      child: Text(
+                                          '  /  ',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 18.sp)
+                                      ),),
+                                    SizedBox(
+                                      child: Text(
+                                          '${_chooseBakaController.subscriptionBakaDetail?.first_period?.price_after_discount ?? ""}',style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      child: Container(
+                                        margin: EdgeInsets.only(right: 24.0),
+                                        child: Text(
+                                            ' ${(_chooseBakaController.subscriptionBakaDetail?.first_period?.months_count??"")} أشهر ',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 16.sp)
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                /*SizedBox(
                                   child: RichText(
                                     text: TextSpan(
                                       text: '1200 ',
@@ -522,7 +567,7 @@ class BakaDetails extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                ),
+                                ),*/
                               ],
                             ),
                             Padding(
@@ -530,17 +575,31 @@ class BakaDetails extends StatelessWidget {
                               EdgeInsetsDirectional.only(start: 15.6.w),
                               child: Column(
                                 children: [
-                                  Image.asset(
+                                  /*Image.asset(
                                     'images/bakaDetails.png',
                                     height: 79.52.h,
                                     width: 119.5.w,
                                     fit: BoxFit.fitHeight,
+                                  ),*/
+                                  Container(
+                                    margin: EdgeInsets.only(top: 10.0),
+                                    child: _chooseBakaController.subscriptionBakaDetail?.image!=null && _chooseBakaController.subscriptionBakaDetail?.image!=""?Image.network(
+                                      _chooseBakaController.subscriptionBakaDetail!.image!,
+                                      height: 79.52.h,
+                                      width: 119.5.w,
+                                      fit: BoxFit.fitHeight,
+                                    ):Image.asset(
+                                      'images/bakaDetails.png',
+                                      height: 79.52.h,
+                                      width: 119.5.w,
+                                      fit: BoxFit.fitHeight,
+                                    ),
                                   ),
                                   // SizedBox(height: 28.h,),
                                   SizedBox(
                                     height: 35.h,
                                     child: Text(
-                                      'تجربة مجانية لمدة شهر',
+                                      'تجربة مجانية لمدة '+ (_chooseBakaController.subscriptionBakaDetail?.first_period?.free_days?.toString()??"") + ' أيام ' ,
                                       style: TextStyle(
                                           color: AppColors.arrowBlueColor,
                                           fontSize: 12.sp),
@@ -573,11 +632,17 @@ class BakaDetails extends StatelessWidget {
                                   child: Text('اختر مدة الاشتراك',style: TextStyle(
                                       color: AppColors.arrowBlueColor, fontSize: 18.sp),),
                                 ),
-                                AdvertisersDropDown(hintText: 'ستة أشهر',width:217.w,),
+                                AdvertisersDropDown(hintText: 'مدة الاشتراك',width:217.w,items: _chooseBakaController.subscriptionBakaDetail?.periods,
+                                onSelectedItemChanged: (period){
+                                   _chooseBakaController.changePeriod((period as PeriodModel).id!);
+                                  },
+                                ),
                                 SizedBox(height:20.h),
                                 AdvertisersGenericField(textAlignment:TextAlign.center, obscureText: false, controller: discountCodeController,width:217.w, hintText: 'أدخل كود الخصم التسويقي'),
                                 SizedBox(height:16.h),
-                                Container(
+                                GetBuilder(
+                                    init: _chooseBakaController,
+                                    builder: (_)=>Container(
                                   height: 62.h,
                                   width: 217.w,
                                   alignment:Alignment.center,
@@ -587,13 +652,13 @@ class BakaDetails extends StatelessWidget {
                                   ),
                                   child: RichText(
                                     text: TextSpan(
-                                      text: '1200 ',
+                                      text: _chooseBakaController.priceAfterDiscount>-1?_chooseBakaController.priceAfterDiscount.toString()??"":_chooseBakaController.subscriptionBakaDetail?.first_period?.price_after_discount.toString()??"",
                                       style: TextStyle(
                                           fontSize: 24.sp,
                                           color: AppColors.whiteColor),
                                       children: <TextSpan>[
                                         TextSpan(
-                                            text: 'ر.س',
+                                            text: ' ر.س ',
                                             style: TextStyle(
                                                 fontSize: 16.sp,
                                                 color: AppColors
@@ -602,7 +667,7 @@ class BakaDetails extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                )
+                                ))
                               ],
                             ),
                             Material(
@@ -612,7 +677,15 @@ class BakaDetails extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height:63.h),
-                        AdvertisersButton(text: 'ادفع الآن', onPressed: (){}),
+                        AdvertisersButton(text: 'ادفع الآن', onPressed: (){
+                          if(_chooseBakaController.periodId==-1){
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: const Text('يرجى اختيار مدة الإشتراك !',style: TextStyle(color: AppColors.whiteColor,fontSize: 17,fontFamily: 'Arabic-Regular'),),
+                            ));
+                            return;
+                          }
+                          Get.toNamed('/payVerification');
+                        }),
                         SizedBox(height:13.h),
                       ],
                     ),

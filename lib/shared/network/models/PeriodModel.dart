@@ -18,7 +18,9 @@ class PeriodModel {
     this.price_after_discount,
     this.free_days,
   });
-
+  String itemAsStringByName() {
+    return this.months_count.toString()+" أشهر ";
+  }
   factory PeriodModel.fromJson(Map<String, dynamic> json) => _$PeriodModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$PeriodModelToJson(this);

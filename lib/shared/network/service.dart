@@ -1,3 +1,4 @@
+import 'package:advertisers/shared/network/requests/CreateSubscriptionRequest.dart';
 import 'package:advertisers/shared/network/requests/MLoginRequest.dart';
 import 'package:advertisers/shared/network/requests/login_client_request.dart';
 import 'package:advertisers/shared/network/responses/CountriesResponse.dart';
@@ -24,4 +25,7 @@ abstract class RestClient {
 
   @POST('https://advertiser.cefour.com/api/v1/auth/login')
   Future<LoginClientResponse> login(@Body() LoginClientRequest mLoginRequest);
+
+  @POST('https://advertiser.cefour.com/api/v1/subscriptions')
+  Future<LoginClientResponse> createSubscriptions(@Body() CreateSubscriptionRequest createSubscriptionRequest,@Header("Authorization") String token);
 }
