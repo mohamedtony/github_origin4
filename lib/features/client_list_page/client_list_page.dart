@@ -399,7 +399,7 @@ class ClientListPage extends StatelessWidget {
               ClientListItem(icon: 'images/discount_copon_img.svg',title: 'الخصومات',listTilePressed: (){
                 print('pressed2');
               },),
-              ClientListItem(icon: 'images/notification_icon.svg',title: 'ادارة التنبيهات',listTilePressed: (){
+              ClientListItem(icon: 'images/notification_icon2.svg',title: 'ادارة التنبيهات',listTilePressed: (){
                 print('pressed2');
               },),
 

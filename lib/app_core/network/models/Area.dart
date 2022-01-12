@@ -12,7 +12,7 @@ class Area {
   String? area_code;
 
 
-  String areaAsStringByName() {
+  String itemAsStringByName() {
     return this.name!;
   }
 
