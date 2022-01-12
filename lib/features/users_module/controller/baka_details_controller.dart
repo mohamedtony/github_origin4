@@ -1,5 +1,6 @@
 import 'package:advertisers/features/users_module/controller/choose_baka_controller.dart';
 import 'package:advertisers/main.dart';
+import 'package:advertisers/shared/network/models/CreateSubscriptionModel.dart';
 import 'package:advertisers/shared/network/models/PeriodModel.dart';
 import 'package:advertisers/shared/network/models/SubscriptionDetail.dart';
 import 'package:advertisers/shared/network/requests/CreateSubscriptionRequest.dart';
@@ -18,10 +19,14 @@ class BakaDetailsController extends GetxController{
   var logoPath=''.obs;
   var imageBase641=''.obs;
   SubscriptionDetail? subscriptionBakaDetail;
+  CreateSubscriptionModel? createSubscriptionModel;
   //Repository repo=Repository();
   RxList<String> items=<String>[].obs;
   var periodId=-1;
   double priceAfterDiscount =-1;
+  var paymentMethod = ''.obs;
+  //final paymentIndex=-1.obs;
+  final paymentIndex = Rxn<int>(-1);
   @override
   void onInit() {
     //repo.postWithImageMultipart({})
@@ -34,6 +39,7 @@ class BakaDetailsController extends GetxController{
         print("mTotal: "+value.data!.total!.toString());
         // if(value.data.total!=null){
         priceAfterDiscount =value.data!.total!;
+        createSubscriptionModel=value.data;
         update();
         //}
       }
@@ -109,5 +115,12 @@ class BakaDetailsController extends GetxController{
         update();
       }
     }*/
+  }
+
+  void changePayMethod(String payMethod, int index) {
+    paymentMethod.value = payMethod;
+   // someNumber.value
+    paymentIndex.value = index;
+
   }
 }

@@ -83,7 +83,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<LoginClientResponse> createSubscriptions(
+  Future<CreateSubscriptionResponse> createSubscriptions(
       createSubscriptionRequest, token) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -92,13 +92,13 @@ class _RestClient implements RestClient {
     final _data = <String, dynamic>{};
     _data.addAll(createSubscriptionRequest.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<LoginClientResponse>(
+        _setStreamType<CreateSubscriptionResponse>(
             Options(method: 'POST', headers: _headers, extra: _extra)
                 .compose(_dio.options,
                     'https://advertiser.cefour.com/api/v1/subscriptions',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = LoginClientResponse.fromJson(_result.data!);
+    final value = CreateSubscriptionResponse.fromJson(_result.data!);
     return value;
   }
 

@@ -13,7 +13,8 @@ CreateSubscriptionResponse _$CreateSubscriptionResponseFromJson(
       message: json['message'] as String?,
       data: json['data'] == null
           ? null
-          : User.fromJson(json['data'] as Map<String, dynamic>),
+          : CreateSubscriptionModel.fromJson(
+              json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$CreateSubscriptionResponseToJson(

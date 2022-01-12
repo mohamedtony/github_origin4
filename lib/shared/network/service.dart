@@ -2,6 +2,7 @@ import 'package:advertisers/shared/network/requests/CreateSubscriptionRequest.da
 import 'package:advertisers/shared/network/requests/MLoginRequest.dart';
 import 'package:advertisers/shared/network/requests/login_client_request.dart';
 import 'package:advertisers/shared/network/responses/CountriesResponse.dart';
+import 'package:advertisers/shared/network/responses/CreateSubscriptionResponse.dart';
 import 'package:advertisers/shared/network/responses/LoginClientResponse.dart';
 import 'package:advertisers/shared/network/responses/LoginResponse.dart';
 import 'package:advertisers/shared/network/responses/SubscriptionDetailsResponse.dart';
@@ -27,5 +28,5 @@ abstract class RestClient {
   Future<LoginClientResponse> login(@Body() LoginClientRequest mLoginRequest);
 
   @POST('https://advertiser.cefour.com/api/v1/subscriptions')
-  Future<LoginClientResponse> createSubscriptions(@Body() CreateSubscriptionRequest createSubscriptionRequest,@Header("Authorization") String token);
+  Future<CreateSubscriptionResponse> createSubscriptions(@Body() CreateSubscriptionRequest createSubscriptionRequest,@Header("Authorization") String token);
 }
