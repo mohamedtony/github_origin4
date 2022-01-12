@@ -26,7 +26,8 @@ import 'package:advertisers/features/users_module/view/screens/pay_verification.
 import 'package:advertisers/features/users_module/view/screens/register_account_type.dart';
 import 'package:advertisers/features/users_module/view/screens/register_new_advertiser_tab_bar.dart';
 import 'package:advertisers/features/users_module/view/screens/register_phone.dart';
-import 'package:advertisers/features/users_module/view/screens/registr_new_client_tab_bar.dart';
+import 'package:advertisers/features/users_module/view/screens/register_new_client_tab_bar.dart';
+import 'package:advertisers/features/users_module/view/screens/start_page.dart';
 import 'package:advertisers/features/users_module/view/screens/successful_paying_page.dart';
 import 'package:advertisers/features/users_module/view/screens/verification_code_page.dart';
 import 'package:advertisers/features/wallet_module/wallet_page.dart';
@@ -34,8 +35,12 @@ import 'package:get/get.dart';
 
 class Routes {
   static final routes = [
+
+  GetPage(
+  name: '/',
+  page: () =>StartPage(),),
     GetPage(
-      name: '/',
+      name: '/loginPage',
       page: () =>LoginPage(),
       binding: BindingsBuilder(() {
         Get.lazyPut<LoginController>(() => LoginController());

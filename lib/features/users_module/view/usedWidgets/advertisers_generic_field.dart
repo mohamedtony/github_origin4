@@ -24,7 +24,7 @@ class AdvertisersGenericField extends StatelessWidget {
         obscureText:obscureText,
         style: TextStyle(fontSize: fontSize==null?14.sp : 15.sp,fontFamily: 'Arabic-Regular' ),
         textAlign: textAlignment,
-        keyboardType: TextInputType.number,
+
         decoration: InputDecoration(
           contentPadding:  EdgeInsets.symmetric(vertical: 5.0.h,horizontal: 10.w),
 

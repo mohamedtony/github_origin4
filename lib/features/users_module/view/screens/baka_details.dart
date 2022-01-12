@@ -531,7 +531,7 @@ class BakaDetails extends StatelessWidget {
                                   child: Text('اختر مدة الاشتراك',style: TextStyle(
                                       color: AppColors.arrowBlueColor, fontSize: 18.sp),),
                                 ),
-                                AdvertisersDropDown(hintText: 'ستة أشهر',width:217.w,),
+                                AdvertisersDropDown(hintText: 'ستة أشهر',width:217.w,items: [],),
                                 SizedBox(height:20.h),
                                 AdvertisersGenericField(textAlignment:TextAlign.center, obscureText: false, controller: discountCodeController,width:217.w, hintText: 'أدخل كود الخصم التسويقي'),
                                 SizedBox(height:16.h),
@@ -570,7 +570,9 @@ class BakaDetails extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height:63.h),
-                        AdvertisersButton(text: 'ادفع الآن', onPressed: (){}),
+                        AdvertisersButton(text: 'ادفع الآن', onPressed: (){
+                          Get.toNamed('/payVerification');
+                        }),
                         SizedBox(height:13.h),
                       ],
                     ),

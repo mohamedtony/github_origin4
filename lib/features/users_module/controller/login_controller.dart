@@ -1,8 +1,15 @@
 
 
 
+import 'package:advertisers/app_core/network/repository.dart';
+import 'package:advertisers/app_core/network/requests/login_client_request.dart';
+import 'package:advertisers/app_core/network/responses/LoginClientResponse.dart';
+import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
+import 'package:advertisers/main.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 
@@ -12,7 +19,7 @@ class LoginController extends GetxController{
   late TextEditingController phoneController;
 
 
-  var countryCode='sa'.obs;
+  var countryCode='+966'.obs;
   var latitude=0.0.obs;
   var longitude=0.0.obs;
   var password='';
@@ -52,20 +59,35 @@ class LoginController extends GetxController{
       return;
     }
     loginClientFormKey1.currentState!.save();
-    Get.toNamed('/Home');
+    loginClient();
 
   }
-  // void loginClient(){
-  //   repo.post<LoginSalonResponse>(path: '/loginClient',fromJson:(json) => LoginSalonResponse.fromJson(json),
-  //       json:LoginSalonRequest(phone: phoneController.text,password: passwordController.text),onSuccess:(res) {
-  //         account.model=AccountModel.fromJson(res.account!.toJson());
-  //         Get.toNamed("/homeClientPage");
-  //       },onError: (err){
-  //
-  //       }
-  //   );
-  //
-  // }
+  void loginClient(){
+    EasyLoading.show();
+    Repository repo=Repository();
+    repo.post<LoginClientResponse>(path: 'auth/login',fromJson:(json) => LoginClientResponse.fromJson(json),
+        json:LoginClientRequest(phone: countryCode.value+phoneController.text,password: passwordController.text),onSuccess:(res) {
+      storage.write("data",res.data!.toJson());
+      if(EasyLoading.isShow){
+        EasyLoading.dismiss();
+      }
+      //account.model=AccountModel.fromJson(res.account!.toJson());
+          Get.toNamed("/Home");
+        },onError: (err){
+          if(EasyLoading.isShow){
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            err.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+
+        }
+    );
+
+  }
   @override
   void onClose() {
     passwordController.dispose();

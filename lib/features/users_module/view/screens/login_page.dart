@@ -77,7 +77,7 @@ class LoginPage extends StatelessWidget {
                     ),
                     Obx(()=>AdvertisersPhone(hintText: 'phone'.tr,initialSelection: _loginController.countryCode.value,
                         onChanged: (countryCodeVal){
-                          _loginController.countryCode.value=countryCodeVal.code!;
+                          _loginController.countryCode.value=countryCodeVal.dialCode!;
                         },controller: _loginController.phoneController,
                       onSaved: (value){
                         _loginController.phone=value!;

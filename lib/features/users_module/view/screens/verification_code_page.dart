@@ -151,8 +151,18 @@ class VerificationCodePage extends StatelessWidget {
                 AdvertisersButton(
                     text: 'verify'.tr,
                     onPressed: () {
-                      if (auth.currentUser != null) {
-                        Get.toNamed('/registerAccountType');
+                      if (auth.currentUser != null&&Get
+                          .parameters['phone'].toString()=='registerPhone') {
+
+                        Get.toNamed('/registerAccountType?phone=${Get
+                            .parameters['phone'].toString()}');
+
+                      }else if(auth.currentUser != null&&Get
+                          .parameters['phone'].toString()=='forgetPasswordForPhone'){
+
+                        Get.toNamed('/forgetPasswordForPhone?phone=${Get
+                            .parameters['phone'].toString()}');
+
                       } else {
                         Get.find<RegisterPhoneController>().signIn();
                       }

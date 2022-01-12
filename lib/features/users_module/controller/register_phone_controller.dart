@@ -5,6 +5,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 class RegisterPhoneController extends GetxController {
@@ -46,9 +47,9 @@ class RegisterPhoneController extends GetxController {
     registerPhoneFormKey.currentState!.save();
     print(
         '>>>>>>>>>>>>>>>>>>>>${countryCode.value.toString() + int.parse(phone).toString()}');
-   /// await verifyPhone();
-    Get.toNamed(
-        '/verificationCodePage?phone=${countryCode.value.toString() + int.parse(phone).toString()}');
+     await verifyPhone();
+    // Get.toNamed(
+    //     '/verificationCodePage?phone=${countryCode.value.toString() + int.parse(phone).toString()}');
     // loginClient();
     // Get.toNamed('/verificationCodePage');
   }
@@ -65,10 +66,14 @@ class RegisterPhoneController extends GetxController {
   //
   // }
   Future<void> verifyPhone() async {
+    EasyLoading.show(status:'انتظر');
     final PhoneCodeSent smsOTPSent = (String verId, [int? forceCodeResend]) {
+      if(EasyLoading.isShow){
+        EasyLoading.dismiss();
+      }
       verificationId = verId;
       Get.toNamed(
-          '/verificationCodePage?phone=${countryCode.value.toString() + int.parse(phone).toString()}');
+          '/verificationCodePage?route=registerPhone&phone=${countryCode.value.toString() + int.parse(phone).toString()}');
       // smsOTPDialog(context).then((value) {
       //   print('sign in');
       // });
@@ -101,6 +106,9 @@ class RegisterPhoneController extends GetxController {
             );
           });
     } on Exception catch (_, e) {
+      if(EasyLoading.isShow){
+        EasyLoading.dismiss();
+      }
       Get.snackbar(
         "حدث خطأ",
         e.toString(),
@@ -112,6 +120,7 @@ class RegisterPhoneController extends GetxController {
   }
 
   signIn() async {
+    EasyLoading.show(status:'انتظر');
     try {
       final AuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationId,
@@ -119,12 +128,18 @@ class RegisterPhoneController extends GetxController {
       );
       final UserCredential user = await auth.signInWithCredential(credential);
       final User currentUser = await auth.currentUser!;
+      if(EasyLoading.isShow){
+        EasyLoading.dismiss();
+      }
       assert(user.user?.uid == currentUser.uid);
       Get.toNamed(
           '/registerAccountType?phone=${countryCode.value.toString() + int.parse(phone).toString()}');
       // Navigator.of(context).pop();
       // Navigator.of(context).pushReplacementNamed('/homepage');
     } catch (e) {
+      if(EasyLoading.isShow){
+        EasyLoading.dismiss();
+      }
       Get.snackbar(
         "حدث خطأ",
         e.toString(),
