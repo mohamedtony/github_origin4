@@ -1,4 +1,5 @@
 import 'package:advertisers/features/users_module/controller/baka_details_controller.dart';
+import 'package:advertisers/features/users_module/controller/choose_baka_controller.dart';
 import 'package:advertisers/features/users_module/controller/forget_password_for_phone_controller.dart';
 import 'package:advertisers/features/users_module/controller/login_controller.dart';
 import 'package:advertisers/features/users_module/controller/register_new_advertiser_company_controller.dart';
@@ -20,7 +21,7 @@ class DataBinding extends Bindings {
     Get.lazyPut(() => RegisterNewAdvertiserUserController());
     Get.lazyPut(() => RegisterNewClientUserController());
     Get.lazyPut(() => RegisterNewClientCompanyController());
-    Get.lazyPut(() => BakaDetailsController());
     Get.lazyPut(()=>RegisterPhoneController());
+    Get.lazyPut(() => ChooseBakaController());
   }
 }

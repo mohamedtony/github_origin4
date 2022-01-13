@@ -29,6 +29,8 @@ class RegisterNewClientCompanyController extends GetxController {
   late TextEditingController recordIDController;
   late TextEditingController passwordController;
 
+  var isValid=false.obs;
+  var errorRegister=false.obs;
   RxList<Country> countries = <Country>[].obs;
   RxList<Area> areas = <Area>[].obs;
   Rx registerClientUserResponse = RegisterClientUserResponse().obs;
@@ -49,7 +51,15 @@ class RegisterNewClientCompanyController extends GetxController {
   var areaId = ''.obs;
   var countryId = ''.obs;
   var logoPath = ''.obs;
-
+///////////////////////////////////
+  var phoneMess = ''.obs;
+  var nameMess = ''.obs;
+  var nationalIDMess = ''.obs;
+  var accountNameMess = ''.obs;
+  var emailMess = ''.obs;
+  var accountAdminNameMess=''.obs;
+  var  companyNameMess=''.obs;
+  var recordIDMess=''.obs;
   //Repository repo=Repository();
   @override
   void onInit() {
@@ -79,6 +89,8 @@ class RegisterNewClientCompanyController extends GetxController {
   String? validatePhone(String phone) {
     if (phone.length < 8) {
       return 'رقم الهاتف لا يقل 8 رقم';
+    }else if(phoneMess.isNotEmpty){
+      return phoneMess.value;
     }
     return null;
   }
@@ -91,30 +103,40 @@ class RegisterNewClientCompanyController extends GetxController {
   String? validateCompanyName(String val) {
     if (val.length < 3) {
       return 'الباسوورد لا يقل عن 3 حروف ';
+    }else if(companyNameMess.isNotEmpty){
+      return nameMess.value;
     }
     return null;
   }
   String? validateUserName(String val) {
     if (val.length < 3) {
       return 'الاسم لا يقل 3 رقم';
+    }else if(nameMess.isNotEmpty){
+      return nameMess.value;
     }
     return null;
   }
   String? validateAccountName(String val) {
     if (val.length < 3) {
       return 'الاسم لا يقل 3 رقم';
+    }else if(accountNameMess.isNotEmpty){
+      return accountNameMess.value;
     }
     return null;
   }
   String? validateEmail(String val) {
     if (!GetUtils.isEmail(val)) {
       return 'رجاء ادخل الايميل بشكل صحيح';
+    }else if(emailMess.isNotEmpty){
+      return emailMess.value;
     }
     return null;
   }
   String? validateNationalId(String val) {
     if (val.length < 8) {
       return 'رقم الهوية لا يقل عن 10 ارقام';
+    }else if(nationalIDMess.isNotEmpty){
+      return nationalIDMess.value;
     }
     return null;
   }
@@ -122,19 +144,23 @@ class RegisterNewClientCompanyController extends GetxController {
   String? validateRecordID(String val) {
     if (val.length < 3) {
       return 'رقم السجل لا يقل عن 3 ارقام';
+    }else if(recordIDMess.isNotEmpty){
+      return nationalIDMess.value;
     }
     return null;
   }
   String? validateAccountAdminName(String val) {
     if (val.length < 3) {
       return 'رقم الادمن لا يقل عن 3 ارقام';
+    }else if(accountAdminNameMess.isNotEmpty){
+      return accountAdminNameMess.value;
     }
     return null;
   }
-  void checkLogin(context) {
-    final isValid = registerNewCompanyUserControllerKeyForm1.currentState!
+  void checkLogin() {
+   isValid.value = registerNewCompanyUserControllerKeyForm1.currentState!
         .validate();
-    if (!isValid) {
+    if (!isValid.value||errorRegister.value==true) {
       return;
     }
     registerNewCompanyUserControllerKeyForm1.currentState!.save();
@@ -142,7 +168,7 @@ class RegisterNewClientCompanyController extends GetxController {
    // Get.toNamed('/bakaPage');
 
       if(countryId.isNotEmpty&&areaId.isNotEmpty){
-        registerCompanyUser(context: context);}
+        registerCompanyUser();}
       else{
         Get.snackbar(
           "خطأ",
@@ -168,7 +194,7 @@ class RegisterNewClientCompanyController extends GetxController {
     });*/
   }
 
-  void registerCompanyUser({required BuildContext context}) {
+  void registerCompanyUser() {
     Repository repo = Repository();
 
     repo.postWithImageMultipart<RegisterClientUserResponse>(
@@ -192,9 +218,23 @@ class RegisterNewClientCompanyController extends GetxController {
         onSuccess: (res) {
           storage.write(
               "data", registerClientUserResponse.value.toJson());
-          Get.toNamed('/bakaPage');
+          Get.toNamed('/chooseBakaPage');
         },
-        onError: (err) {
+        onError: (err,res) {
+          errorRegister.value=true;
+          isValid.value=false;
+          nationalIDMess.value=res.data!.personalId??'';
+          phoneMess.value=res.data!.phone??'';
+          nameMess.value=res.data!.username??'';
+          accountNameMess.value=res.data!.accountName??'';
+          emailMess.value=res.data!.email??'';
+           // accountAdminNameMess.value=res.data!.;
+           //  companyNameMess.value=''.obs;
+           // recordIDMess.value=''.obs;
+          checkLogin();
+          if(EasyLoading.isShow){
+            EasyLoading.dismiss();
+          }
           Get.snackbar(
             "خطأ",
             err.toString(),

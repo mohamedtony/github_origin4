@@ -1,4 +1,5 @@
-import 'package:advertisers/shared/network/models/PeriodModel.dart';
+//import 'package:advertisers/shared/network/models/PeriodModel.dart';
+import 'package:advertisers/app_core/network/models/PeriodModel.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'Area.dart';

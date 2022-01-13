@@ -1,6 +1,7 @@
+import 'package:advertisers/app_core/network/models/SubscriptionBaka.dart';
 import 'package:advertisers/features/users_module/app_colors.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_button.dart';
-import 'package:advertisers/shared/network/models/SubscriptionBaka.dart';
+//import 'package:advertisers/shared/network/models/SubscriptionBaka.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' as mt;
 import 'package:flutter/material.dart';

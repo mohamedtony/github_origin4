@@ -110,7 +110,7 @@ class ChooseBakaPage extends StatelessWidget {
                              children: [
                                Padding(
                                  padding: EdgeInsets.symmetric(horizontal:6.5.w,vertical: 3.62.h),
-                                 child: BakaAdvertiserCard(subscriptionBaka:_chooseBakaController.subscriptionBaka.value[index],bakaName: 'الباقة الاساسية',slash:true, domain: 'مجانية لمدة سنة',price: '500',imageStr: 'images/mainBaka.png',),
+                                 child: BakaAdvertiserCard(subscriptionBaka:_chooseBakaController.subscriptionBaka[index],bakaName: 'الباقة الاساسية',slash:true, domain: 'مجانية لمدة سنة',price: '500',imageStr: 'images/mainBaka.png',),
                                ),
                                SizedBox(height: 5.h,),
                              ],
@@ -139,7 +139,7 @@ class ChooseBakaPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           AdvertisersButton(text: 'أختر باقة', onPressed: (){
-                            Get.toNamed('/bakaDetails');
+                            Get.toNamed('/chooseBakaDetails');
                           },backgroundColor: AppColors.blueAccentColor,width: 146.w,),
                           AdvertisersButton(text: 'رجوع', onPressed: (){
                             Get.toNamed('/registerNewAdvertiserTapBar');

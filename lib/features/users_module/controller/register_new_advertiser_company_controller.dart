@@ -12,6 +12,7 @@ import 'package:advertisers/main.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
@@ -28,6 +29,9 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
   late TextEditingController emailController;
   late TextEditingController recordIDController;
   late TextEditingController passwordController;
+
+  var isValid=false.obs;
+  var errorRegister=false.obs;
   RxList<Country> countries = <Country>[].obs;
   RxList<Area> areas = <Area>[].obs;
   Rx registerCompanyResponse = RegisterCompanyResponse().obs;
@@ -48,6 +52,15 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
   String companyName='';
   String accountAdminName='';
   String recordNumber='';
+  ///////////////////////////////////
+  var phoneMess = ''.obs;
+  var nameMess = ''.obs;
+  var nationalIDMess = ''.obs;
+  var accountNameMess = ''.obs;
+  var emailMess = ''.obs;
+  var accountAdminNameMess=''.obs;
+  var  companyNameMess=''.obs;
+  var recordIDMess=''.obs;
   //Repository repo=Repository();
   @override
   void onInit() {
@@ -74,6 +87,8 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
   String? validatePhone(String phone) {
     if (phone.length < 8) {
       return 'رقم الهاتف لا يقل 8 رقم';
+    }else if(phoneMess.isNotEmpty){
+      return phoneMess.value;
     }
     return null;
   }
@@ -86,30 +101,40 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
   String? validateCompanyName(String val) {
     if (val.length < 3) {
       return 'الباسوورد لا يقل عن 3 حروف ';
+    }else if(companyNameMess.isNotEmpty){
+      return nameMess.value;
     }
     return null;
   }
   String? validateUserName(String val) {
     if (val.length < 3) {
       return 'الاسم لا يقل 3 رقم';
+    }else if(nameMess.isNotEmpty){
+      return nameMess.value;
     }
     return null;
   }
   String? validateAccountName(String val) {
     if (val.length < 3) {
       return 'الاسم لا يقل 3 رقم';
+    }else if(accountNameMess.isNotEmpty){
+      return accountNameMess.value;
     }
     return null;
   }
   String? validateEmail(String val) {
     if (!GetUtils.isEmail(val)) {
       return 'رجاء ادخل الايميل بشكل صحيح';
+    }else if(emailMess.isNotEmpty){
+      return emailMess.value;
     }
     return null;
   }
   String? validateNationalId(String val) {
     if (val.length < 8) {
       return 'رقم الهوية لا يقل عن 10 ارقام';
+    }else if(nationalIDMess.isNotEmpty){
+      return nationalIDMess.value;
     }
     return null;
   }
@@ -117,16 +142,20 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
   String? validateRecordID(String val) {
     if (val.length < 3) {
       return 'رقم السجل لا يقل عن 3 ارقام';
+    }else if(recordIDMess.isNotEmpty){
+      return nationalIDMess.value;
     }
     return null;
   }
   String? validateAccountAdminName(String val) {
     if (val.length < 3) {
       return 'رقم الادمن لا يقل عن 3 ارقام';
+    }else if(accountAdminNameMess.isNotEmpty){
+      return accountAdminNameMess.value;
     }
     return null;
   }
-  void checkLogin(context) {
+  void checkLogin() {
     final isValid = registerNewAdvertiserCompanyControllerKeyForm.currentState!
         .validate();
     if (!isValid) {
@@ -137,7 +166,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
     // Get.toNamed('/bakaPage');
 
     if(countryId.isNotEmpty&&areaId.isNotEmpty){
-      registerCompanyUser(context: context);}
+      registerCompanyUser();}
     else{
       Get.snackbar(
         "خطأ",
@@ -161,7 +190,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
     });*/
   }
 
-  void registerCompanyUser({required BuildContext context}) {
+  void registerCompanyUser() {
     Repository repo = Repository();
 
     repo.postWithImageMultipart<RegisterCompanyResponse>(
@@ -185,9 +214,23 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
         onSuccess: (res) {
           storage.write(
               "data", registerCompanyResponse.value.toJson());
-          Get.toNamed('/bakaPage');
+          Get.toNamed('/chooseBakaPage');
         },
-        onError: (err) {
+        onError: (err,res) {
+          errorRegister.value=true;
+          isValid.value=false;
+          nationalIDMess.value=res.data!.personalId??'';
+          phoneMess.value=res.data!.phone??'';
+          nameMess.value=res.data!.username??'';
+          accountNameMess.value=res.data!.accountName??'';
+          emailMess.value=res.data!.email??'';
+          // accountAdminNameMess.value=res.data!.;
+          //  companyNameMess.value=''.obs;
+          // recordIDMess.value=''.obs;
+          checkLogin();
+          if(EasyLoading.isShow){
+            EasyLoading.dismiss();
+          }
           Get.snackbar(
             "خطأ",
             err.toString(),

@@ -21,7 +21,8 @@ import 'package:logger/logger.dart';
 
 class RegisterNewAdvertiserUserController extends GetxController{
   GlobalKey<FormState> registerNewAdvertiserUserControllerFormKey=GlobalKey<FormState>(debugLabel: 'registerNewAdvertiserUserControllerFormKey');
-
+  var isValid=false.obs;
+  var errorRegister=false.obs;
   late TextEditingController phoneController;
   late TextEditingController nameController;
   late TextEditingController accountNameController;
@@ -47,6 +48,13 @@ class RegisterNewAdvertiserUserController extends GetxController{
   RxList<Country> countries = <Country>[].obs;
   RxList<Area> areas = <Area>[].obs;
   Rx registerClientUserResponse = RegisterClientUserResponse().obs;
+
+  ///////////////////////////////////
+  var phoneMess = ''.obs;
+  var nameMess = ''.obs;
+  var nationalIDMess = ''.obs;
+  var accountNameMess = ''.obs;
+  var emailMess = ''.obs;
   //Repository repo=Repository();
   @override
   void onInit() {
@@ -69,38 +77,57 @@ class RegisterNewAdvertiserUserController extends GetxController{
 
     super.onInit();
   }
-  String? validatePhone(String phone){
-    if (phone.length<8){
-      return 'رقم الهاتف لا يقل 8 رقم';
+  String? validatePhone(String phone) {
+    if (phone.length < 8) {
+      return 'رقم الهاتف لا يقل عن 8 رقم';
+    }else if(phoneMess.isNotEmpty){
+      return phoneMess.value;
     }
     return null;
   }
-
+  String? validatePassword(String val) {
+    if (val.length < 6) {
+      return 'الباسوورد لا يقل عن 6 حروف او ارقام';
+    }
+    return null;
+  }
   String? validateUserName(String val) {
     if (val.length < 3) {
       return 'الاسم لا يقل 3 رقم';
+    }else if(nameMess.isNotEmpty){
+      return nameMess.value;
     }
     return null;
   }
   String? validateAccountName(String val) {
     if (val.length < 3) {
       return 'الاسم لا يقل 3 رقم';
+    }else if(accountNameMess.isNotEmpty){
+      return accountNameMess.value;
     }
     return null;
   }
   String? validateEmail(String val) {
-    if (GetUtils.isEmail(val)) {
+    if (!GetUtils.isEmail(val)) {
       return 'رجاء ادخل الايميل بشكل صحيح';
+    }else if(emailMess.isNotEmpty){
+      return emailMess.value;
     }
     return null;
   }
   String? validateNationalId(String val) {
-    if (phone.length < 8) {
+    if (val.length < 8) {
       return 'رقم الهوية لا يقل عن 10 ارقام';
+    }else if(nationalIDMess.isNotEmpty){
+      return nationalIDMess.value;
     }
+    // else if(nationalIDMessValid.value==true){
+    //   return null;
+    // }
     return null;
   }
 
+  // void changeAreas(int countryId){
   void changeAreas(Country country2) {
     areas.value = [];
     Country? country = countries.firstWhereOrNull((element) =>
@@ -115,17 +142,19 @@ class RegisterNewAdvertiserUserController extends GetxController{
     });*/
   }
 
-  void checkLogin(context){
-    final isValid=registerNewAdvertiserUserControllerFormKey.currentState!.validate();
-    if(!isValid){
+  void checkLogin() {
+    isValid.value = registerNewAdvertiserUserControllerFormKey.currentState!
+        .validate();
+    if (!isValid.value||errorRegister.value==true) {
       return;
     }
     registerNewAdvertiserUserControllerFormKey.currentState!.save();
-    // loginClient();
+    // registerClientUser(context: context);
     if(role.value.isNotEmpty){
-      if(countryId.isNotEmpty&&areaId.isNotEmpty){
-        registerClientUser(context: context);}
-      else{
+      if(countryId.isNotEmpty&&areaId.isNotEmpty) {
+        registerAdvertiserUser();
+        //registerClientUser();
+      }else{
         Get.snackbar(
           "خطأ",
           'يجب اختيار الدولة ثم المدينة' ?? '',colorText: AppColors.white,
@@ -140,9 +169,11 @@ class RegisterNewAdvertiserUserController extends GetxController{
         backgroundColor: Colors.red,
         snackPosition: SnackPosition.BOTTOM,);
     }
+    // loginClient();
+
   }
 
-  void registerClientUser({required BuildContext context}) {
+  void registerAdvertiserUser() {
     EasyLoading.show();
     Repository repo = Repository();
 
@@ -169,9 +200,18 @@ class RegisterNewAdvertiserUserController extends GetxController{
           }
           storage.write(
               "data", registerClientUserResponse.value.toJson());
-          Get.toNamed('/bakaPage');
+          Get.toNamed('/chooseBakaPage');
         },
-        onError: (err) {
+        onError: (err,res) {
+          errorRegister.value=true;
+          isValid.value=false;
+          nationalIDMess.value=res.data!.personalId??'';
+          phoneMess.value=res.data!.phone??'';
+          nameMess.value=res.data!.username??'';
+          accountNameMess.value=res.data!.accountName??'';
+          emailMess.value=res.data!.email??'';
+
+          checkLogin();
           if(EasyLoading.isShow){
             EasyLoading.dismiss();
           }

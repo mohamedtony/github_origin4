@@ -3,7 +3,12 @@ import 'dart:io';
 
 import 'package:advertisers/app_core/network/requests/RegisterClientUserRequest.dart';
 import 'package:advertisers/app_core/network/responses/CountriesResponse.dart';
+import 'package:advertisers/app_core/network/responses/LoginClientResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
+import 'package:advertisers/app_core/network/responses/SubscriptionDetailsResponse.dart';
+import 'package:advertisers/app_core/network/responses/SubscruptionResponse.dart';
+// import 'package:advertisers/shared/network/responses/SubscriptionDetailsResponse.dart';
+// import 'package:advertisers/shared/network/responses/SubscruptionResponse.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/dio.dart';
@@ -26,6 +31,10 @@ abstract class RestClient {
      FormData? body
   // @Part() File? image,
   });
+  @GET('https://advertiser.cefour.com/api/v1/subscriptions')
+  Future<SubscruptionResponse> getSubscription();
 
+  @GET('https://advertiser.cefour.com/api/v1/subscriptions/{id}')
+  Future<SubscriptionDetailsResponse> getSubscriptionDetails(@Path("id") int id);
 
 }

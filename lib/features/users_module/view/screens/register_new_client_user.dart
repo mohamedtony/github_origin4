@@ -178,7 +178,7 @@ class RegisterNewClientUser extends StatelessWidget {
                 ),
                 Obx(() => AdvertisersPhone(
                       hintText: 'phone'.tr,
-                      enabled: false,
+                     // enabled: false,
                       flag: false,
                       initialSelection:
                           _registerNewClientUserController.countryCode.value,
@@ -221,6 +221,9 @@ class RegisterNewClientUser extends StatelessWidget {
                         _registerNewClientUserController.nationalIDController,
                     textAlignment: TextAlign.end,
                     hintText: 'nationalId'.tr,
+                  onChanged:(val){
+                   // _registerNewClientUserController.nationalIDMessValid.value=true;
+                  },
                   onSaved: (value) {
                     _registerNewClientUserController.nationalID = value!;
                   },
@@ -278,7 +281,16 @@ class RegisterNewClientUser extends StatelessWidget {
                 AdvertisersButton(
                   text: 'verifyAndFollow'.tr,
                   onPressed: () {
-                    _registerNewClientUserController.checkLogin(context);
+                    _registerNewClientUserController.phoneMess.value = '';
+                    _registerNewClientUserController. nameMess.value = '';
+                    _registerNewClientUserController.nationalIDMess.value = '';
+                    _registerNewClientUserController.accountNameMess.value = '';
+                    _registerNewClientUserController. emailMess.value = '';
+
+
+                    _registerNewClientUserController.errorRegister.value=false;
+                    _registerNewClientUserController.isValid.value=false;
+                    _registerNewClientUserController.checkLogin();
                   },
                   backgroundColor: AppColors.verifyButtonColor,
                   textColor: AppColors.verifyTextColor,

@@ -282,7 +282,16 @@ class RegisterNewClientCompany extends StatelessWidget {
                 AdvertisersButton(
                   text: 'verifyAndFollow'.tr,
                   onPressed: () {
-                    _registerNewClientCompanyController.checkLogin(context);
+                    _registerNewClientCompanyController.phoneMess.value = '';
+                    _registerNewClientCompanyController. nameMess.value = '';
+                    _registerNewClientCompanyController.nationalIDMess.value = '';
+                    _registerNewClientCompanyController.accountNameMess.value = '';
+                    _registerNewClientCompanyController. emailMess.value = '';
+
+                    _registerNewClientCompanyController.errorRegister.value=false;
+                    _registerNewClientCompanyController.isValid.value=false;
+
+                    _registerNewClientCompanyController.checkLogin();
                   },
                   backgroundColor: AppColors.verifyButtonColor,
                   textColor: AppColors.verifyTextColor,

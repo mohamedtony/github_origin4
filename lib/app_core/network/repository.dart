@@ -26,7 +26,7 @@ class Repository {
     context,
     Unmarshable<RES>? fromJson,
     Map<String, dynamic>? json,
-    Function(int)? onError,
+    Function(int,RES)? onError,
     Function(RES)? onSuccess,
   }) async {
     // EasyLoading.show();
@@ -65,7 +65,7 @@ class Repository {
       // debugPrint("Internal Status Code: " + code.toString());
       debugPrintThrottled("Response Body: \n" + encoder.convert(data));
       if (code != 200) {
-        onError!(code);
+        onError!(code,fromJson!(data));
         return;
       }
       onSuccess!(fromJson!(data));
@@ -78,7 +78,7 @@ class Repository {
     context,
     Unmarshable<RES>? fromJson,
     Object? json,
-    Function(String)? onError,
+    Function(int,RES)? onError,
     Function(RES)? onSuccess,
     bool? dontShow,
   }) async {
@@ -100,7 +100,7 @@ class Repository {
         .then((res) {
 
       final data = jsonDecode(res.body);
-      final code = data["status"];
+      final code = data["status"] as int;
       //final message=data["message"];
       //final note = data["message"] as String;
       // if (note != null && note != "done"){
@@ -112,7 +112,7 @@ class Repository {
       debugPrint("Internal Status Code: " + code.toString());
       debugPrintThrottled("Response Body: \n" + encoder.convert(data));
       if (code != 200) {
-        onError!(code);
+        onError!(code,fromJson!(data));
         return;
       }
       onSuccess!(fromJson!(data));

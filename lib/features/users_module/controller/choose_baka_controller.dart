@@ -1,7 +1,8 @@
+import 'package:advertisers/app_core/network/models/SubscriptionBaka.dart';
 import 'package:advertisers/main.dart';
-import 'package:advertisers/shared/network/models/SubscriptionBaka.dart';
-import 'package:advertisers/shared/network/requests/MLoginRequest.dart';
-import 'package:advertisers/shared/network/requests/login_client_request.dart';
+// import 'package:advertisers/shared/network/models/SubscriptionBaka.dart';
+// import 'package:advertisers/shared/network/requests/MLoginRequest.dart';
+// import 'package:advertisers/shared/network/requests/login_client_request.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -29,7 +30,7 @@ class ChooseBakaController extends GetxController{
 
     client!.getSubscription().then((value){
       if(value.data!=null){
-        subscriptionBaka.value = value.data!;
+        subscriptionBaka.value = value.data!.cast<SubscriptionBaka>();
         print(value.data![0].name);
       }
     });

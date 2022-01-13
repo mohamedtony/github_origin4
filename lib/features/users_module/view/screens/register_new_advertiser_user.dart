@@ -291,7 +291,16 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                 AdvertisersButton(
                   text: 'verifyAndFollow'.tr,
                   onPressed: () {
-                    _registerNewAdvertiserUserController.checkLogin(context);
+                    _registerNewAdvertiserUserController.phoneMess.value = '';
+                    _registerNewAdvertiserUserController. nameMess.value = '';
+                    _registerNewAdvertiserUserController.nationalIDMess.value = '';
+                    _registerNewAdvertiserUserController.accountNameMess.value = '';
+                    _registerNewAdvertiserUserController. emailMess.value = '';
+
+
+                    _registerNewAdvertiserUserController.errorRegister.value=false;
+                    _registerNewAdvertiserUserController.isValid.value=false;
+                    _registerNewAdvertiserUserController.checkLogin();
                   },
                 ),
                 SizedBox(height: 22.h),

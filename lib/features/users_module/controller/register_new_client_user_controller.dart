@@ -31,8 +31,8 @@ class RegisterNewClientUserController extends GetxController {
   late TextEditingController emailController;
   late TextEditingController nationalIDController;
   late TextEditingController passwordController;
-
-
+  var isValid=false.obs;
+  var errorRegister=false.obs;
   var countryCode = '+966'.obs;
   var latitude = 0.0.obs;
   var savedFile = File(' ').obs;
@@ -49,7 +49,13 @@ class RegisterNewClientUserController extends GetxController {
   var nationalID = '';
   var accountName = '';
   var email = '';
-
+///////////////////////////////////
+  var phoneMess = ''.obs;
+  var nameMess = ''.obs;
+  var nationalIDMess = ''.obs;
+  var accountNameMess = ''.obs;
+  var emailMess = ''.obs;
+  //var nationalIDMessValid=false.obs;
   //List<Country> countries = [];
   RxList<Country> countries = <Country>[].obs;
   RxList<Area> areas = <Area>[].obs;
@@ -81,6 +87,8 @@ class RegisterNewClientUserController extends GetxController {
   String? validatePhone(String phone) {
     if (phone.length < 8) {
       return 'رقم الهاتف لا يقل عن 8 رقم';
+    }else if(phoneMess.isNotEmpty){
+      return phoneMess.value;
     }
     return null;
   }
@@ -93,25 +101,36 @@ class RegisterNewClientUserController extends GetxController {
   String? validateUserName(String val) {
     if (val.length < 3) {
       return 'الاسم لا يقل 3 رقم';
+    }else if(nameMess.isNotEmpty){
+      return nameMess.value;
     }
     return null;
   }
   String? validateAccountName(String val) {
     if (val.length < 3) {
       return 'الاسم لا يقل 3 رقم';
+    }else if(accountNameMess.isNotEmpty){
+      return accountNameMess.value;
     }
     return null;
   }
   String? validateEmail(String val) {
     if (!GetUtils.isEmail(val)) {
       return 'رجاء ادخل الايميل بشكل صحيح';
+    }else if(emailMess.isNotEmpty){
+      return emailMess.value;
     }
     return null;
   }
   String? validateNationalId(String val) {
     if (val.length < 8) {
       return 'رقم الهوية لا يقل عن 10 ارقام';
+    }else if(nationalIDMess.isNotEmpty){
+      return nationalIDMess.value;
     }
+    // else if(nationalIDMessValid.value==true){
+    //   return null;
+    // }
     return null;
   }
 
@@ -130,17 +149,17 @@ class RegisterNewClientUserController extends GetxController {
     });*/
   }
 
-  void checkLogin(context) {
-    final isValid = registerNewClientUserControllerFormKey.currentState!
+  void checkLogin() {
+     isValid.value = registerNewClientUserControllerFormKey.currentState!
         .validate();
-    if (!isValid) {
+    if (!isValid.value||errorRegister.value==true) {
       return;
     }
     registerNewClientUserControllerFormKey.currentState!.save();
    // registerClientUser(context: context);
     if(role.value.isNotEmpty){
     if(countryId.isNotEmpty&&areaId.isNotEmpty) {
-      registerClientUser(context: context);
+      registerClientUser();
       //registerClientUser();
     }else{
       Get.snackbar(
@@ -161,7 +180,7 @@ class RegisterNewClientUserController extends GetxController {
 
   }
 
-  void registerClientUser({required BuildContext context}) {
+  void registerClientUser() {
     EasyLoading.show();
     Repository repo = Repository();
 
@@ -189,9 +208,18 @@ class RegisterNewClientUserController extends GetxController {
           }
           storage.write(
               "data", registerClientUserResponse.value.toJson());
-          Get.toNamed('/bakaPage');
+          Get.toNamed('/chooseBakaPage');
         },
-        onError: (err) {
+        onError: (err,res) {
+          errorRegister.value=true;
+          isValid.value=false;
+          nationalIDMess.value=res.data!.personalId??'';
+          phoneMess.value=res.data!.phone??'';
+          nameMess.value=res.data!.username??'';
+          accountNameMess.value=res.data!.accountName??'';
+          emailMess.value=res.data!.email??'';
+
+          checkLogin();
           if(EasyLoading.isShow){
             EasyLoading.dismiss();
           }

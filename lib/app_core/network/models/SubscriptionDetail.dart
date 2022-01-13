@@ -1,6 +1,8 @@
-import 'package:advertisers/shared/network/models/PeriodModel.dart';
-import 'package:advertisers/shared/network/models/SubscriptionPivotModel.dart';
-import 'package:advertisers/shared/network/models/SubscriptionSettingsModel.dart';
+// import 'package:advertisers/shared/network/models/PeriodModel.dart';
+// import 'package:advertisers/shared/network/models/SubscriptionPivotModel.dart';
+// import 'package:advertisers/shared/network/models/SubscriptionSettingsModel.dart';
+import 'package:advertisers/app_core/network/models/PeriodModel.dart';
+import 'package:advertisers/app_core/network/models/SubscriptionSettingsModel.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'Area.dart';

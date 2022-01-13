@@ -15,6 +15,7 @@ import 'package:advertisers/features/notifications/view/pages/notifications_page
 import 'package:advertisers/features/notifications_settings/view/pages/notifications_settings_page.dart';
 import 'package:advertisers/features/tax_settings/view/pages/tax_settings_page.dart';
 import 'package:advertisers/features/users_module/controller/baka_details_controller.dart';
+import 'package:advertisers/features/users_module/controller/choose_baka_controller.dart';
 import 'package:advertisers/features/users_module/controller/forget_password_for_phone_controller.dart';
 import 'package:advertisers/features/users_module/controller/login_controller.dart';
 import 'package:advertisers/features/users_module/controller/register_new_advertiser_company_controller.dart';
@@ -40,12 +41,12 @@ import 'package:get/get.dart';
 class Routes {
   static final routes = [
 
-    GetPage(
-      name: '/',
-      page: () =>ChooseBakaPage(),
-      binding: ChooseBakaBinding(),
-
-    ),
+    // GetPage(
+    //   name: '/',
+    //   page: () =>ChooseBakaPage(),
+    //   binding: ChooseBakaBinding(),
+    //
+    // ),
    /* GetPage(
       name: '/',
 
@@ -122,10 +123,11 @@ class Routes {
 
     ),
     GetPage(
-      name: '/bakaPage',
+      name: '/chooseBakaPage',
       page: () => ChooseBakaPage(),
-
-    ),
+  binding: BindingsBuilder(() {
+  Get.lazyPut<ChooseBakaController>(() => ChooseBakaController());
+  })),
     GetPage(
       name: '/registerNewClientTapBar',
       page: () => RegisterNewClientTapBar(),

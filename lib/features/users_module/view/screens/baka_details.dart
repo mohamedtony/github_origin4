@@ -23,376 +23,393 @@ import '../../app_colors.dart';
 
 class BakaDetails extends StatelessWidget {
    BakaDetails({Key? key}) : super(key: key);
+   final BakaDetailsController _bakaDetailsController = Get.find();
   // final BakaDetailsController _registerPhoneController=Get.find();
- TextEditingController discountCodeController=TextEditingController();
-   final BakaDetailsController _chooseBakaController = Get.find();
+final TextEditingController discountCodeController=TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-   /* if(blocOfWidgets.isEmpty) {
-      buildItems();
-    }*/
+    // if(blocOfWidgets.isEmpty) {
+    //   buildItems(_bakaDetailsController.items);
+    // }
     return Scaffold(
       backgroundColor: AppColors.verifyFayrouzyFirst,
       body: SafeArea(
 
-        child:  GetBuilder<BakaDetailsController>(
-          init: _chooseBakaController,
-          builder: (controller)=>Container(
-            height: 812.0.h,
-            width: 375.0.w,
-            decoration: const BoxDecoration(
-              color: AppColors.verifyFayrouzyFirst,
-              gradient: LinearGradient(
-                  colors: [
-                    AppColors.verifyFayrouzyFirst,
-                    AppColors.verifyBlueSecond,
-                    AppColors.verifyGreenThird
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: [0, 1.6, .9]),
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 169.h,
-                    width: 362.w,
-                    decoration: BoxDecoration(
-                        color: AppColors.whiteColor,
-                        boxShadow: [
-                          BoxShadow(
-                              color:
-                              AppColors.bakaBoxShadowColor.withOpacity(.93),
-                              blurStyle: BlurStyle.inner,
-                              blurRadius: 0,
-                              spreadRadius: -50)
-                        ],
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(7),
-                            topRight: Radius.circular(7))),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.5.w),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                children: [
-                                  SizedBox(
-                                    child: Text( _chooseBakaController.subscriptionBakaDetail.name?.toString()??"",
-                                        style: TextStyle(
-                                            fontSize: 27.sp,
-                                            color: AppColors.bakaDetailsTextColor,
-                                            fontFamily: 'Arabic-Regular')),
-                                  ),
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                          child: Stack(alignment: Alignment.center, children: [
-                                            SizedBox(
-                                              child: Text(
-                                                  _chooseBakaController.subscriptionBakaDetail.first_period?.price?.toString()??"",style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              child: RotationTransition(
-                                                turns:  AlwaysStoppedAnimation(25 / 360),
-                                                child:  Text(
-                                                  "/",
-                                                  style: TextStyle(fontSize: 25.sp),
+        child:
+        // GetBuilder<BakaDetailsController>(
+        //   init: _bakaDetailsController,
+        //   builder: (controller)=>
+       Container(
+              height: 812.0.h,
+              width: 375.0.w,
+              decoration: const BoxDecoration(
+                color: AppColors.verifyFayrouzyFirst,
+                gradient: LinearGradient(
+                    colors: [
+                      AppColors.verifyFayrouzyFirst,
+                      AppColors.verifyBlueSecond,
+                      AppColors.verifyGreenThird
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0, 1.6, .9]),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 169.h,
+                      width: 362.w,
+                      decoration: BoxDecoration(
+                          color: AppColors.whiteColor,
+                          boxShadow: [
+                            BoxShadow(
+                                color:
+                                AppColors.bakaBoxShadowColor.withOpacity(.93),
+                                blurStyle: BlurStyle.inner,
+                                blurRadius: 0,
+                                spreadRadius: -50)
+                          ],
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(7),
+                              topRight: Radius.circular(7))),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.5.w),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+                                    SizedBox(
+                                      child: Text( _bakaDetailsController.subscriptionBakaDetail.name?.toString()??"",
+                                          style: TextStyle(
+                                              fontSize: 27.sp,
+                                              color: AppColors.bakaDetailsTextColor,
+                                              fontFamily: 'Arabic-Regular')),
+                                    ),
+
+                                       Row(
+                                        children: [
+                                          SizedBox(
+                                              child: Stack(alignment: Alignment.center, children: [
+
+                                                   SizedBox(
+                                                    child: Text(
+                                                        _bakaDetailsController.subscriptionBakaDetail.first_period?.price?.toString()??"",style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
+                                                    )),
+
+
+                                                SizedBox(
+                                                  child: RotationTransition(
+                                                    turns:  AlwaysStoppedAnimation(25 / 360),
+                                                    child:  Text(
+                                                      "/",
+                                                      style: TextStyle(fontSize: 25.sp),
+                                                    ),
+                                                  ),
+                                                )
+                                              ])),
+                                          SizedBox(
+                                            child: Text(
+                                                '  /  ',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 18.sp)
+                                            ),),
+                                        SizedBox(
+                                            child:  Text(
+                                                '${_bakaDetailsController.subscriptionBakaDetail.first_period?.price_after_discount ?? ""}',style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
+                                            )
+                                        ) ,
+
+                                             SizedBox(
+                                              child: Container(
+                                                margin: EdgeInsets.only(right: 24.0),
+                                                child: Text(
+                                                    ' ${(_bakaDetailsController.subscriptionBakaDetail.first_period?.months_count??"")} أشهر ',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 16.sp)
                                                 ),
                                               ),
-                                            )
-                                          ])),
-                                      SizedBox(
-                                        child: Text(
-                                            '  /  ',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 18.sp)
-                                        ),),
-                                      SizedBox(
-                                        child: Text(
-                                            '${_chooseBakaController.subscriptionBakaDetail.first_period?.price_after_discount ?? ""}',style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
-                                        ),
+                                            ),
+
+                                        ],
+
+                                    ),
+                                    /*SizedBox(
+                                    child: RichText(
+                                      text: TextSpan(
+                                        text: '1200 ',
+                                        style: TextStyle(
+                                            fontSize: 16.sp,
+                                            color: AppColors.bakaPriceColor),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text: 'سنوي',
+                                              style: TextStyle(
+                                                  fontSize: 15.sp,
+                                                  color: AppColors
+                                                      .bakaDetailsTextColor,
+                                                  fontFamily: 'Arabic-Regular')),
+                                        ],
                                       ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    child: RichText(
+                                      text: TextSpan(
+                                        text: '1200 ',
+                                        style: TextStyle(
+                                            fontSize: 16.sp,
+                                            color: AppColors.bakaPriceColor),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text: 'شهري',
+                                              style: TextStyle(
+                                                  fontSize: 15.sp,
+                                                  color: AppColors
+                                                      .bakaDetailsTextColor)),
+                                        ],
+                                      ),
+                                    ),
+                                  ),*/
+                                  ],
+                                ),
+                                Padding(
+                                  padding:
+                                  EdgeInsetsDirectional.only(start: 15.6.w),
+                                  child: Column(
+                                    children: [
+                                      Image.asset(
+                                        'images/bakaDetails.png',
+                                        height: 79.52.h,
+                                        width: 119.5.w,
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                      // SizedBox(height: 28.h,),
                                       SizedBox(
-                                        child: Container(
-                                          margin: EdgeInsets.only(right: 24.0),
-                                          child: Text(
-                                              ' ${(_chooseBakaController.subscriptionBakaDetail.first_period?.months_count??"")} أشهر ',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 16.sp)
-                                          ),
+                                        height: 35.h,
+                                        child: Text(
+                                          'تجربة مجانية لمدة '+' أيام ' + (_bakaDetailsController.subscriptionBakaDetail.first_period?.free_days?.toString()??"") ,
+                                          textDirection: TextDirection.ltr,
+                                          style: TextStyle(
+                                              color: AppColors.arrowBlueColor,
+                                              fontSize: 12.sp),
                                         ),
                                       ),
                                     ],
                                   ),
-                                  /*SizedBox(
-                                  child: RichText(
-                                    text: TextSpan(
-                                      text: '1200 ',
-                                      style: TextStyle(
-                                          fontSize: 16.sp,
-                                          color: AppColors.bakaPriceColor),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                            text: 'سنوي',
-                                            style: TextStyle(
-                                                fontSize: 15.sp,
-                                                color: AppColors
-                                                    .bakaDetailsTextColor,
-                                                fontFamily: 'Arabic-Regular')),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  child: RichText(
-                                    text: TextSpan(
-                                      text: '1200 ',
-                                      style: TextStyle(
-                                          fontSize: 16.sp,
-                                          color: AppColors.bakaPriceColor),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                            text: 'شهري',
-                                            style: TextStyle(
-                                                fontSize: 15.sp,
-                                                color: AppColors
-                                                    .bakaDetailsTextColor)),
-                                      ],
-                                    ),
-                                  ),
-                                ),*/
-                                ],
-                              ),
-                              Padding(
-                                padding:
-                                EdgeInsetsDirectional.only(start: 15.6.w),
-                                child: Column(
-                                  children: [
-                                    Image.asset(
-                                      'images/bakaDetails.png',
-                                      height: 79.52.h,
-                                      width: 119.5.w,
-                                      fit: BoxFit.fitHeight,
-                                    ),
-                                    // SizedBox(height: 28.h,),
-                                    SizedBox(
-                                      height: 35.h,
-                                      child: Text(
-                                        'تجربة مجانية لمدة '+' أيام ' + (_chooseBakaController.subscriptionBakaDetail.first_period?.free_days?.toString()??"") ,
-                                        textDirection: TextDirection.ltr,
-                                        style: TextStyle(
-                                            color: AppColors.arrowBlueColor,
-                                            fontSize: 12.sp),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                              child: Text(
-                                'مدة مجانية اضافية على الاشتراك السنوي 3 أشهر',
-                                style: TextStyle(
-                                    color: AppColors.arrowBlueColor, fontSize: 15.sp),
-                              )),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                    // alignment: Alignment.topCenter,
-                    width: 362.w,
-                    decoration: BoxDecoration(
-                      color: AppColors.whiteColor,
-                      boxShadow: [
-                        BoxShadow(
-                            color: AppColors.bakaBoxShadowColor.withOpacity(.93),
-                            blurStyle: BlurStyle.inner,
-                            blurRadius: 0,
-                            spreadRadius: -50)
-                      ],
-                      //borderRadius: BorderRadius.only(topLeft: Radius.circular(7),topRight:Radius.circular(7) )
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(10.5.w),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            child: Text(
-                              'هل تريد تجربة مجانية لمدة شهر',
-                              style: TextStyle(
-                                  fontSize: 18.sp,
-                                  color: AppColors.bakaPriceColor),
-                            ),
-                          ),
-                          Align(
-                            alignment: AlignmentDirectional.centerStart,
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  child: Text(
-                                    'مميزات الباقة',
-                                    style: TextStyle(
-                                        fontSize: 18.sp,
-                                        color: AppColors.arrowBlueColor),
-                                  ),
-                                ),
-                                Container(
-                                  height: 2,
-                                  width: 99.w,
-                                  color: AppColors.bakaPriceColor,
                                 )
                               ],
                             ),
-                          ),
-                          SizedBox(
-                            child: Text(
-                              ' نقاط المعلن : ${(_chooseBakaController.subscriptionBakaDetail.commission?.toString()??"")} % من عمولة المنصة للفواتير المدفوعة داخل المنصة ',
-                              style: TextStyle(
-                                  fontSize: 18.sp,
-                                  color: AppColors.arrowBlueColor),
-                            ),
-                          ),
-
-                         Obx(()=>SizedBox(
-                           width: 325.w,
-                           child: FlutterCarousel(
-                             options: CarouselOptions(viewportFraction: 1,height: 320.w,
-                               showIndicator: true,
-                               slideIndicator: CircularSlideIndicator(indicatorBackgroundColor: AppColors.carouselIndicatorUnSelectedColor,
-                                   currentIndicatorColor: AppColors.carouselIndicatorColor,
-                                   padding:EdgeInsets.only(top: 80.h) ),),
-                             items: buildItems(_chooseBakaController.items.value).map((i) {
-
-                               return Builder(
-                                 builder: (BuildContext context) {
-                                   return SizedBox(
-
-                                     child: SingleChildScrollView(
-                                       child: Column(
-                                         //key: Key('$i'),
-                                         children:
-                                         i,
-
-                                       ),
-                                     ),
-                                   );
-                                   //   Container(
-                                   //       width: MediaQuery.of(context).size.width,
-                                   //       margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                   //       decoration: BoxDecoration(
-                                   //           color: Colors.amber
-                                   //       ),
-                                   //       child: Text('text $i', style: TextStyle(fontSize: 16.0),)
-                                   // );
-                                 },
-                               );
-                             }).toList(),
-                           ),
-                         ),),
-
-                        ],
+                            SizedBox(
+                                child: Text(
+                                  'مدة مجانية اضافية على الاشتراك السنوي 3 أشهر',
+                                  style: TextStyle(
+                                      color: AppColors.arrowBlueColor, fontSize: 15.sp),
+                                )),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                    // alignment: Alignment.topCenter,
-                    padding: EdgeInsetsDirectional.only(top: 5.h,bottom: 15.h),
-                    width: 362.w,
-                    decoration: BoxDecoration(
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Container(
+                      // alignment: Alignment.topCenter,
+                      width: 362.w,
+                      decoration: BoxDecoration(
                         color: AppColors.whiteColor,
                         boxShadow: [
                           BoxShadow(
-                              color:
-                              AppColors.bakaBoxShadowColor.withOpacity(.93),
+                              color: AppColors.bakaBoxShadowColor.withOpacity(.93),
                               blurStyle: BlurStyle.inner,
                               blurRadius: 0,
                               spreadRadius: -50)
                         ],
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(7),
-                            bottomRight: Radius.circular(7))),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        AdvertisersButton(
-                          text: 'أختر باقة',
-                          onPressed: () async{
-                            await bottomSheet(context);
-                            Get.toNamed('/payVerification');
-                          },
-                          backgroundColor: AppColors.blueAccentColor,
-                          width: 146.w,
+                        //borderRadius: BorderRadius.only(topLeft: Radius.circular(7),topRight:Radius.circular(7) )
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(10.5.w),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              child: Text(
+                                'هل تريد تجربة مجانية لمدة شهر',
+                                style: TextStyle(
+                                    fontSize: 18.sp,
+                                    color: AppColors.bakaPriceColor),
+                              ),
+                            ),
+                            Align(
+                              alignment: AlignmentDirectional.centerStart,
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    child: Text(
+                                      'مميزات الباقة',
+                                      style: TextStyle(
+                                          fontSize: 18.sp,
+                                          color: AppColors.arrowBlueColor),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 2,
+                                    width: 99.w,
+                                    color: AppColors.bakaPriceColor,
+                                  )
+                                ],
+                              ),
+                            ),
+                      SizedBox(
+                              child: Text(
+                                ' نقاط المعلن : ${(_bakaDetailsController.subscriptionBakaDetail.commission?.toString()??"")} % من عمولة المنصة للفواتير المدفوعة داخل المنصة ',
+                                style: TextStyle(
+                                    fontSize: 18.sp,
+                                    color: AppColors.arrowBlueColor),
+                              ),
+                            ),
+
+                            SizedBox(
+                             width: 325.w,
+                             child: Obx(()=>_bakaDetailsController.blocOfWidgets.isNotEmpty?FlutterCarousel(
+                               options: CarouselOptions(viewportFraction: 1,height: 320.h,
+                                 showIndicator: true,
+                                 slideIndicator: CircularSlideIndicator(indicatorBackgroundColor: AppColors.carouselIndicatorUnSelectedColor,
+                                     currentIndicatorColor: AppColors.carouselIndicatorColor,
+                                     padding:EdgeInsets.only(top: 80.h) ),),
+                               items:  _bakaDetailsController.blocOfWidgets.map((i) {
+
+                                 return Builder(
+                                   builder: (BuildContext context) {
+                                     return SizedBox(
+
+                                       child: SingleChildScrollView(
+                                         child: Column(
+                                           mainAxisAlignment: MainAxisAlignment.start,
+                                           //key: Key('$i'),
+                                           children:
+                                           i.isNotEmpty?i:[SizedBox()],
+
+
+                                        ),
+                                     ));
+                                     //   Container(
+                                     //       width: MediaQuery.of(context).size.width,
+                                     //       margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                     //       decoration: BoxDecoration(
+                                     //           color: Colors.amber
+                                     //       ),
+                                     //       child: Text('text $i', style: TextStyle(fontSize: 16.0),)
+                                     // );
+                                   },
+                                 );
+                               }).toList(),
+                             ):SizedBox()),
+
+
+                            )],
                         ),
-                        AdvertisersButton(
-                          text: 'رجوع',
-                          onPressed: () {},
-                          backgroundColor: AppColors.verifyButtonColor,
-                          width: 146.w,
-                          textColor: AppColors.verifyTextColor,
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Container(
+                      // alignment: Alignment.topCenter,
+                      padding: EdgeInsetsDirectional.only(top: 5.h,bottom: 15.h),
+                      width: 362.w,
+                      decoration: BoxDecoration(
+                          color: AppColors.whiteColor,
+                          boxShadow: [
+                            BoxShadow(
+                                color:
+                                AppColors.bakaBoxShadowColor.withOpacity(.93),
+                                blurStyle: BlurStyle.inner,
+                                blurRadius: 0,
+                                spreadRadius: -50)
+                          ],
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(7),
+                              bottomRight: Radius.circular(7))),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          AdvertisersButton(
+                            text: 'أختر باقة',
+                            onPressed: () async{
+                              await bottomSheet(context);
+                              Get.toNamed('/payVerification');
+                            },
+                            backgroundColor: AppColors.blueAccentColor,
+                            width: 146.w,
+                          ),
+                          AdvertisersButton(
+                            text: 'رجوع',
+                            onPressed: () {},
+                            backgroundColor: AppColors.verifyButtonColor,
+                            width: 146.w,
+                            textColor: AppColors.verifyTextColor,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ),
-        ),
-      ),
+            )),
+       // ),
+      //  ),
+   //   ),
     );
   }
-/*   List<String> items=['كيو آر كود خاص بصفحة المعلن / المؤثر','إمكانية إيقاف استقبال رسائل الشات','إمكانية حفظ محتوى المعرض على سيرفر المنصة',
-     'إمكانية إيقاف استقبال رسائل الشات','إمكانية ربط الإعلان بعنوان محدد','إمكانية اختيار نشاطات محددة للمعلن','إمكانية الحصول على تقارير أكثر تفصيلاً',
-     'إمكانية إيقاف استقبال الطلبات','إمكانية إيقاف استقبال الطلبات','كيو آر كود خاص بصفحة المعلن / المؤثر','إمكانية إيقاف استقبال رسائل الشات','إمكانية حفظ محتوى المعرض على سيرفر المنصة',
-     'إمكانية إيقاف استقبال رسائل الشات','إمكانية ربط الإعلان بعنوان محدد','إمكانية اختيار نشاطات محددة للمعلن','إمكانية الحصول على تقارير أكثر تفصيلاً',
-     'إمكانية إيقاف استقبال الطلبات','إمكانية إيقاف استقبال الطلبات'];*/
-   List<List<Widget>> blocOfWidgets=[];
-   List<Widget> itemsAsWidgets=[];
-   // List<List<String>> blocOfWidgetst=[];
-   // List<String> itemsAsWidgetst=[];
-   List<List<Widget>> buildItems(List<String> items){
-
-
-
-    int counter=0,iterate=(items.length/9).floor();
-    for(String text in items){
-
-      itemsAsWidgets.add(AdvantagesBakaCard(//key: ValueKey(counter),
-        text: text,
-      ),);
-      print(itemsAsWidgets.length%9);
-      if(itemsAsWidgets.length%9==0){
-
-        print(itemsAsWidgets.length);
-        blocOfWidgets.add(itemsAsWidgets.toList());
-        counter++;
-        itemsAsWidgets.clear();
-      }else if(blocOfWidgets.isNotEmpty&&itemsAsWidgets.isNotEmpty&&counter>0&&itemsAsWidgets.length<9&&items.length>9&&counter<iterate){
-        blocOfWidgets.add(itemsAsWidgets.toList());
-        print(itemsAsWidgets.length);
-        counter++;
-      }else if(blocOfWidgets.isNotEmpty&&itemsAsWidgets.isNotEmpty&&counter==0&&itemsAsWidgets.length<9&&items.length<9){
-        blocOfWidgets.add(itemsAsWidgets.toList());
-        return [];
-        print(itemsAsWidgets.length);
-        counter++;
-      }
-    }
-    print('>>>>>>>>>>>>>>>>>>>>>>>>> ${20%9}');
-    return blocOfWidgets;
-
-  }
+  // List<String> items=['كيو آر كود خاص بصفحة المعلن / المؤثر','إمكانية إيقاف استقبال رسائل الشات','إمكانية حفظ محتوى المعرض على سيرفر المنصة',
+  //    'إمكانية إيقاف استقبال رسائل الشات','إمكانية ربط الإعلان بعنوان محدد','إمكانية اختيار نشاطات محددة للمعلن','إمكانية الحصول على تقارير أكثر تفصيلاً',
+  //    'إمكانية إيقاف استقبال الطلبات','إمكانية إيقاف استقبال الطلبات','كيو آر كود خاص بصفحة المعلن / المؤثر','إمكانية إيقاف استقبال رسائل الشات','إمكانية حفظ محتوى المعرض على سيرفر المنصة',
+  //    'إمكانية إيقاف استقبال رسائل الشات','إمكانية ربط الإعلان بعنوان محدد','إمكانية اختيار نشاطات محددة للمعلن','إمكانية الحصول على تقارير أكثر تفصيلاً',
+  //    'إمكانية إيقاف استقبال الطلبات','إمكانية إيقاف استقبال الطلبات'];
+ //List<String> items=Get.find<BakaDetailsController>().items;
+ // List<List<Widget>> blocOfWidgets=[];
+ //  List<Widget> itemsAsWidgets=[];
+ //  // List<List<String>> blocOfWidgetst=[];
+ //   // List<String> itemsAsWidgetst=[];
+ //
+ //   List<List<Widget>> buildItems(List<String> items){
+ //
+ //     // List<List<Widget>> blocOfWidgets=[];
+ //     // List<Widget> itemsAsWidgets=[];
+ //
+ //    int counter=0,iterate=(items.length/9).floor();
+ //    for(String text in items){
+ //      print(text);
+ //      itemsAsWidgets.add(AdvantagesBakaCard(key: UniqueKey(),
+ //        text: text,
+ //      ),);
+ //      print(itemsAsWidgets.length%9);
+ //      if(itemsAsWidgets.length%9==0){
+ //
+ //        print(itemsAsWidgets.length);
+ //        blocOfWidgets.add(itemsAsWidgets.toList());
+ //        counter++;
+ //        itemsAsWidgets.clear();
+ //      }else if(blocOfWidgets.isNotEmpty&&itemsAsWidgets.isNotEmpty&&counter>0&&itemsAsWidgets.length<9&&items.length>9&&counter<iterate){
+ //
+ //        blocOfWidgets.add(itemsAsWidgets.toList());
+ //        print(itemsAsWidgets.length);
+ //        counter++;
+ //      }else if(blocOfWidgets.isNotEmpty&&itemsAsWidgets.isNotEmpty&&counter==0&&itemsAsWidgets.length<9&&items.length<9){
+ //        blocOfWidgets.add(itemsAsWidgets.toList());
+ //       // return [];
+ //        print(itemsAsWidgets.length);
+ //        counter++;
+ //       }else{
+ //         blocOfWidgets.add(itemsAsWidgets.toList());
+ //      }
+ //    }
+ //    print('>>>>>>>>>>>>>>>>>>>>>>>>> ${20%9}');
+ //    return blocOfWidgets;
+ //
+ //  }
 
   Future bottomSheet(BuildContext context){
 

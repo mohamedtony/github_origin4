@@ -121,7 +121,14 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height:46.h),
-                   AdvertisersButton(text: 'login'.tr, onPressed: (){_loginController.checkLogin();}),
+                   AdvertisersButton(text: 'login'.tr, onPressed: (){
+                     _loginController.phoneMess.value = '';
+                     _loginController. passwordMess.value = '';
+
+                     _loginController.errorRegister.value=false;
+                     _loginController.isValid.value=false;
+
+                     _loginController.checkLogin();}),
                     SizedBox(height:17.h),
                     SizedBox(
                       height: 29.h,
