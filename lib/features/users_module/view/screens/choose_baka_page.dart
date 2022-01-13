@@ -2,6 +2,7 @@
 
 import 'package:advertisers/features/users_module/app_colors.dart';
 import 'package:advertisers/features/users_module/controller/choose_baka_controller.dart';
+import 'package:advertisers/features/users_module/view/cards/baka_advertiser_caed_with_bg.dart';
 import 'package:advertisers/features/users_module/view/cards/baka_advertiser_card.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_button.dart';
 import 'package:flutter/material.dart';
@@ -110,7 +111,13 @@ class ChooseBakaPage extends StatelessWidget {
                              children: [
                                Padding(
                                  padding: EdgeInsets.symmetric(horizontal:6.5.w,vertical: 3.62.h),
-                                 child: BakaAdvertiserCard(subscriptionBaka:_chooseBakaController.subscriptionBaka[index],bakaName: 'الباقة الاساسية',slash:true, domain: 'مجانية لمدة سنة',price: '500',imageStr: 'images/mainBaka.png',),
+                                 child: InkWell(
+                                     onTap: (){
+                                       // _chooseBakaController.indexClicked=index;
+                                       _chooseBakaController.changeIndex(index,_chooseBakaController.subscriptionBaka.value[index].id!);
+                                     },
+                                     //child:_chooseBakaController.indexClicked==index?BakaAdvertiserCardBG(subscriptionBaka:_chooseBakaController.subscriptionBaka.value[index],bakaName: 'الباقة الاساسية',slash:true, domain: 'مجانية لمدة سنة سنة',price: '500',imageStr: 'images/mainBaka.png',):BakaAdvertiserCard(subscriptionBaka:_chooseBakaController.subscriptionBaka.value[index],bakaName: 'الباقة الاساسية',slash:true, domain: 'مجانية لمدة سنة',price: '500',imageStr: 'images/mainBaka.png',)),
+                                     child:BakaAdvertiserCardBG(subscriptionBaka:_chooseBakaController.subscriptionBaka.value[index],bakaName: 'الباقة الاساسية',slash:true, domain: 'مجانية لمدة سنة سنة',price: '500',imageStr: 'images/mainBaka.png',index:index))
                                ),
                                SizedBox(height: 5.h,),
                              ],
@@ -139,7 +146,14 @@ class ChooseBakaPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           AdvertisersButton(text: 'أختر باقة', onPressed: (){
-                            Get.toNamed('/chooseBakaDetails');
+                            if(_chooseBakaController.selectedBakaId!=-1) {
+                              Get.toNamed('/chooseBakaDetails');
+                            }else{
+                              //Get.snackbar( '',"يرجى اختيار الباقة !");
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: const Text('يرجى اختيار الباقة !',style: TextStyle(color: AppColors.whiteColor,fontSize: 17,fontFamily: 'Arabic-Regular'),),
+                                ));
+                            }
                           },backgroundColor: AppColors.blueAccentColor,width: 146.w,),
                           AdvertisersButton(text: 'رجوع', onPressed: (){
                             Get.toNamed('/registerNewAdvertiserTapBar');

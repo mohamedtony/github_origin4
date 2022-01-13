@@ -9,8 +9,10 @@ import 'package:advertisers/features/advertising_influence_channels/view/page/ad
 import 'package:advertisers/features/blocked_users_page/blocked_users_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
+import 'package:advertisers/features/customer_order_invoice/view/customer_order_invoice_page.dart';
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation.dart';
+import 'package:advertisers/features/my_orders_archive/view/my_orders_archive_page.dart';
 import 'package:advertisers/features/notifications/view/pages/notifications_page.dart';
 import 'package:advertisers/features/notifications_settings/view/pages/notifications_settings_page.dart';
 import 'package:advertisers/features/tax_settings/view/pages/tax_settings_page.dart';
@@ -206,6 +208,14 @@ class Routes {
     GetPage(
       name: '/AddAdvertiserChannel',
       page: () => AddAdvertiserChannel(),
+    ),
+    GetPage(
+      name: '/CustomerOrderInvoicePage',
+      page: () => CustomerOrderInvoicePage(),
+    ),
+    GetPage(
+      name: '/MyOrdersArchivePage',
+      page: () => MyOrdersArchivePage(),
     ),
   ];
 }

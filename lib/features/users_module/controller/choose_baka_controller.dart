@@ -1,15 +1,12 @@
-import 'package:advertisers/app_core/network/models/SubscriptionBaka.dart';
 import 'package:advertisers/main.dart';
-// import 'package:advertisers/shared/network/models/SubscriptionBaka.dart';
-// import 'package:advertisers/shared/network/requests/MLoginRequest.dart';
-// import 'package:advertisers/shared/network/requests/login_client_request.dart';
-import 'package:dio/dio.dart' as dio;
-import 'package:flutter/cupertino.dart';
+import 'package:advertisers/shared/network/models/SubscriptionBaka.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 class ChooseBakaController extends GetxController{
 
   RxList<SubscriptionBaka> subscriptionBaka = <SubscriptionBaka>[].obs;
+  var indexClicked=-1;
+  var selectedBakaId = -1;
 
   @override
   void onInit() {
@@ -29,8 +26,8 @@ class ChooseBakaController extends GetxController{
     });*/
 
     client!.getSubscription().then((value){
-      if(value.data!=null){
-        subscriptionBaka.value = value.data!.cast<SubscriptionBaka>();
+      if(value.data!=null&&value.status==200){
+        subscriptionBaka.value = value.data!;
         print(value.data![0].name);
       }
     });
@@ -41,4 +38,23 @@ class ChooseBakaController extends GetxController{
   void onClose() {
     super.onClose();
   }
+
+  void changeIndex(int index,int bakaId) {
+    print("inIndex"+indexClicked.toString());
+    if(indexClicked==index){
+      indexClicked=-1;
+      selectedBakaId = -1;
+      update();
+      return;
+    }
+
+    indexClicked=index;
+    selectedBakaId = bakaId;
+    update();
+  }
+
+  void changeBakaID(int id) {
+    selectedBakaId = id;
+  }
+
 }
