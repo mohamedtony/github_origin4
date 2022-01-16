@@ -69,7 +69,7 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
                           height: 76.44.h,
                           width: 76.44.w,
                           decoration: const BoxDecoration(
-                            color: AppColors.verifyFayrouzyFirst,
+                            color: AppColors.whiteColor,
                             shape: BoxShape.circle,
                           ),
                           child: _registerNewAdvertiserCompanyController
@@ -77,7 +77,7 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
                               ' '
                               ? const Icon(
                             Icons.camera_alt_outlined,
-                            color: AppColors.whiteColor,
+                            color: AppColors.verifyFayrouzyFirst,
                             size: 50,
                           )
                               : Container(
@@ -282,6 +282,8 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
                 AdvertisersButton(
                   text: 'verifyAndFollow'.tr,
                   onPressed: () {
+                    _registerNewAdvertiserCompanyController
+                        .savedFile.value=File(' ');
                     _registerNewAdvertiserCompanyController.phoneMess.value = '';
                     _registerNewAdvertiserCompanyController. nameMess.value = '';
                     _registerNewAdvertiserCompanyController.nationalIDMess.value = '';
@@ -292,6 +294,7 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
                     _registerNewAdvertiserCompanyController.isValid.value=false;
 
                     _registerNewAdvertiserCompanyController.checkLogin();
+
                   },
                 ),
                 SizedBox(height: 22.h),

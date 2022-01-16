@@ -416,7 +416,7 @@ class AdvertiserListPage extends StatelessWidget {
           },),
           AdvertiseListItem(icon: 'images/logout_icon.svg',title: 'خروج',listTilePressed: (){
             storage.remove("data");
-            Get.offAndToNamed('/loginPage');
+            Get.offAllNamed('/loginPage');
             print('pressed2');
           },),
         ],

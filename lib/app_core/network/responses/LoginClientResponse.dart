@@ -9,7 +9,7 @@ class LoginClientResponse {
   int? status;
   String? message;
   User? data;
-  CreateSubscriptionModel? data;
+ // CreateSubscriptionModel? data;
 
   LoginClientResponse({
     this.status,

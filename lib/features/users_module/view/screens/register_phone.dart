@@ -78,7 +78,7 @@ class RegisterPhone extends StatelessWidget {
                         //     ),
                         //   ) ,
                         // ),
-                        Obx(()=>AdvertisersPhone(hintText: 'phone'.tr,initialSelection: _registerPhoneController.countryCode.toString(),
+                        Obx(()=>AdvertisersPhone(hintText: 'phone'.tr,initialSelection: _registerPhoneController.countryCode.toString(),flag: true,
                           onChanged: (countryCodeVal){
                             _registerPhoneController.countryCode.value=countryCodeVal.dialCode! ;
                             print('>>>>>>>>>>>>>>${countryCodeVal.name}  ${countryCodeVal.code}    ${countryCodeVal.dialCode}     ${countryCodeVal.flagUri}');

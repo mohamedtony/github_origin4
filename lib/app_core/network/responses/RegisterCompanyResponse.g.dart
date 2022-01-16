@@ -11,7 +11,8 @@ RegisterCompanyResponse _$RegisterCompanyResponseFromJson(
     RegisterCompanyResponse(
       status: json['status'] as int?,
       message: json['message'] as String?,
-      data: json['data']? null
+      data: json['data'] == null
+          ? null
           : Company.fromJson(json['data'] as Map<String, dynamic>),
     );
 

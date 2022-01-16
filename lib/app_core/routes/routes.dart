@@ -49,8 +49,8 @@ class Routes {
     //   binding: ChooseBakaBinding(),
     //
     // ),
-   /* GetPage(
-      name: '/',
+    // GetPage(
+    //   name: '/',
 
   GetPage(
   name: '/',
@@ -62,7 +62,7 @@ class Routes {
         Get.lazyPut<LoginController>(() => LoginController());
       }),
 
-    ),*/
+    ),
     GetPage(
       name: '/AdvertiserSettingsPage',
       page: () => AdvertiserSettingsPage(),
@@ -187,11 +187,11 @@ class Routes {
         Get.lazyPut<RegisterPhoneController>(() => RegisterPhoneController());
       }),
     ),
-    GetPage(
-      name: '/payVerification',
-      page: () => PayVerification(),
-
-    ),
+    // GetPage(
+    //   name: '/payVerification',
+    //   page: () => PayVerification(),
+    //
+    // ),
     GetPage(
       name: '/successfulPayingPage',
       page: () => SuccessfulPayingPage(),

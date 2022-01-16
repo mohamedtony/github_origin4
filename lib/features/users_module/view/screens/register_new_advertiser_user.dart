@@ -218,7 +218,7 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                 },
                   validator: (value) {
                     return _registerNewAdvertiserUserController
-                        .validateAccountName(value!);
+                        .validateEmail(value!);
                   },
                 ),
                 SizedBox(
@@ -235,7 +235,7 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                 },
                   validator: (value) {
                     return _registerNewAdvertiserUserController
-                        .validateAccountName(value!);
+                        .validateNationalId(value!);
                   },
                 ),
                 SizedBox(
@@ -252,7 +252,7 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                     _registerNewAdvertiserUserController.password = value!;
                   },
                   validator: (value) {
-                    // return _registerNewAdvertiserUserController.validatePassword(value!);
+                     return _registerNewAdvertiserUserController.validatePassword(value!);
                   },
                 ),
                 SizedBox(height: 16.h),
@@ -291,6 +291,8 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                 AdvertisersButton(
                   text: 'verifyAndFollow'.tr,
                   onPressed: () {
+                    _registerNewAdvertiserUserController
+                        .savedFile.value=File(' ');
                     _registerNewAdvertiserUserController.phoneMess.value = '';
                     _registerNewAdvertiserUserController. nameMess.value = '';
                     _registerNewAdvertiserUserController.nationalIDMess.value = '';

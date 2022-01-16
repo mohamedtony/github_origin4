@@ -72,8 +72,8 @@ class LoginController extends GetxController{
   void loginClient(){
     EasyLoading.show();
     Repository repo=Repository();
-    repo.post<LoginClientResponse>(path: 'auth/login',fromJson:(json) => LoginClientResponse.fromJson(json),
-        json:LoginClientRequest(phone: countryCode.value+phoneController.text,password: passwordController.text),onSuccess:(res) {
+    repo.postWithImageMultipart<LoginClientResponse>(path: 'auth/login',fromJson:(json) => LoginClientResponse.fromJson(json),
+        json:{"phone": countryCode.value.replaceFirst('+','',0)+int.parse(phoneController.text??'0').toString(),"password": passwordController.text},onSuccess:(res) {
       storage.write("data",res.data!.toJson());
       if(EasyLoading.isShow){
         EasyLoading.dismiss();

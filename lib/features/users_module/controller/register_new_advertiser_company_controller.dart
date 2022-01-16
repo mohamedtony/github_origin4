@@ -191,6 +191,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
   }
 
   void registerCompanyUser() {
+    EasyLoading.show();
     Repository repo = Repository();
 
     repo.postWithImageMultipart<RegisterCompanyResponse>(

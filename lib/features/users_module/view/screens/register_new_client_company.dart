@@ -282,6 +282,8 @@ class RegisterNewClientCompany extends StatelessWidget {
                 AdvertisersButton(
                   text: 'verifyAndFollow'.tr,
                   onPressed: () {
+                    _registerNewClientCompanyController
+                        .savedFile.value=File(' ');
                     _registerNewClientCompanyController.phoneMess.value = '';
                     _registerNewClientCompanyController. nameMess.value = '';
                     _registerNewClientCompanyController.nationalIDMess.value = '';

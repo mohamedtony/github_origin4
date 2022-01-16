@@ -2,11 +2,14 @@
 import 'dart:io';
 
 import 'package:advertisers/app_core/network/requests/RegisterClientUserRequest.dart';
+import 'package:advertisers/app_core/network/requests/login_client_request.dart';
 import 'package:advertisers/app_core/network/responses/CountriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/LoginClientResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/app_core/network/responses/SubscriptionDetailsResponse.dart';
 import 'package:advertisers/app_core/network/responses/SubscruptionResponse.dart';
+import 'package:advertisers/shared/network/requests/CreateSubscriptionRequest.dart';
+import 'package:advertisers/shared/network/responses/CreateSubscriptionResponse.dart';
 // import 'package:advertisers/shared/network/responses/SubscriptionDetailsResponse.dart';
 // import 'package:advertisers/shared/network/responses/SubscruptionResponse.dart';
 import 'package:dio/dio.dart';
@@ -16,25 +19,36 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:retrofit/retrofit.dart';
 part 'service.g.dart';
-
 @RestApi()
 abstract class RestClient {
-  factory RestClient(Dio dio) = _RestClient;
+@RestApi()
+factory RestClient(Dio dio) = _RestClient;
 
- static const String rootPath='https://advertiser.cefour.com/api/v1/';
-  @GET(rootPath+'countries')
-  Future<CountriesResponse> getCountries();
+@GET('https://advertiser.cefour.com/api/v1/countries')
+Future<CountriesResponse> getCountries();
+
+@GET('https://advertiser.cefour.com/api/v1/subscriptions')
+Future<SubscruptionResponse> getSubscription();
+
+@GET('https://advertiser.cefour.com/api/v1/subscriptions/{id}')
+Future<SubscriptionDetailsResponse> getSubscriptionDetails(@Path("id") int id);
+
+@POST('https://advertiser.cefour.com/api/v1/auth/login')
+Future<LoginClientResponse> login(@Body() LoginClientRequest mLoginRequest);
+
+@POST('https://advertiser.cefour.com/api/v1/subscriptions')
+Future<CreateSubscriptionResponse> createSubscriptions(@Body() CreateSubscriptionRequest createSubscriptionRequest,@Header("Authorization") String token);
 
   @Header('Accept":"application/json')
-  @POST(rootPath+'auth/register')
+  @POST('https://advertiser.cefour.com/api/v1/auth/register')
   Future<RegisterClientUserResponse> registerClientUser({
      FormData? body
   // @Part() File? image,
   });
-  @GET('https://advertiser.cefour.com/api/v1/subscriptions')
-  Future<SubscruptionResponse> getSubscription();
-
-  @GET('https://advertiser.cefour.com/api/v1/subscriptions/{id}')
-  Future<SubscriptionDetailsResponse> getSubscriptionDetails(@Path("id") int id);
+  // @GET('https://advertiser.cefour.com/api/v1/subscriptions')
+  // Future<SubscruptionResponse> getSubscription();
+  //
+  // @GET('https://advertiser.cefour.com/api/v1/subscriptions/{id}')
+  // Future<SubscriptionDetailsResponse> getSubscriptionDetails(@Path("id") int id);
 
 }

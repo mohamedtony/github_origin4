@@ -12,8 +12,7 @@ LoginClientResponse _$LoginClientResponseFromJson(Map<String, dynamic> json) =>
       message: json['message'] as String?,
       data: json['data'] == null
           ? null
-          : CreateSubscriptionModel.fromJson(
-              json['data'] as Map<String, dynamic>),
+          : User.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$LoginClientResponseToJson(

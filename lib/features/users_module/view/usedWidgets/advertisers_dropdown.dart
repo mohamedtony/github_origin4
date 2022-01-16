@@ -20,7 +20,7 @@ class AdvertisersDropDown extends StatelessWidget {
    // List<Area>? areas;
    //  Function(int id)? onCountryChanged;
    //  Function(Area area)? onAreaChanged;
-   AdvertisersDropDown({ this.itemType,required this.items,this.onChanged,this.borderColor,this.width,required this.hintText,Key? key}) : super(key: key);
+   AdvertisersDropDown({ this.itemType,required this.items,this.onChanged,this.borderColor,this.width,required this.hintText,Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

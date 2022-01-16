@@ -92,8 +92,9 @@ class Repository {
     client
         .post(Uri.parse(base+ path,),
       headers: {
-        'Content-Type': 'application/json',
-        'Accept-Type': 'application/json',
+        // 'Content-Type': 'application/json',
+        // 'Accept-Type': 'application/json',
+        "Accept":"application/json",
       },
       body: body,
     )

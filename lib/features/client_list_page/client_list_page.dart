@@ -414,7 +414,7 @@ class ClientListPage extends StatelessWidget {
               },),
               ClientListItem(icon: 'images/logout_icon.svg',title: 'خروج',listTilePressed: (){
                storage.remove("data");
-               Get.offAndToNamed('/loginPage');
+               Get.offAllNamed('/loginPage');
                 print('pressed2');
               },),
             ],
