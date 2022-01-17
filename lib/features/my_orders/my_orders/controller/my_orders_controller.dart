@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 
-class MyOrdersArchiveController extends GetxController{
+class MyOrdersController extends GetxController{
 
 
   List<int>? checkList = [];

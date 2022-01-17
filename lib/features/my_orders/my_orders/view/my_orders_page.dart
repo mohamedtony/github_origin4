@@ -1,4 +1,4 @@
-import 'package:advertisers/features/my_orders_archive/controller/my_orders_archive_controller.dart';
+import 'package:advertisers/features/my_orders/my_orders/controller/my_orders_controller.dart';
 import 'package:advertisers/features/wallet_module/widgets/processes_widgets/processes_widget.dart';
 import 'package:advertisers/features/wallet_module/widgets/shipping_widgets/shipping_widget.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
@@ -9,9 +9,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class MyOrdersArchivePage extends StatelessWidget {
-   MyOrdersArchivePage({Key? key}) : super(key: key);
-  // final MyOrdersArchiveController _myOrdersArchiveController = Get.put(MyOrdersArchiveController());
+class MyOrdersPage extends StatelessWidget {
+   MyOrdersPage({Key? key}) : super(key: key);
+  // final MyOrdersController _MyOrdersController = Get.put(MyOrdersController());
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +34,8 @@ class MyOrdersArchivePage extends StatelessWidget {
         child: Column(
           children: [
 
-            GetBuilder<MyOrdersArchiveController>(
-              init: MyOrdersArchiveController(),
+            GetBuilder<MyOrdersController>(
+              init: MyOrdersController(),
               builder: (controller) => Container(
                 height: 50,
                 child:   Padding(
@@ -49,7 +49,7 @@ class MyOrdersArchivePage extends StatelessWidget {
                           return InkWell(
                               onTap: (){
                                 controller.passIndex(upperTabItems![index].id);
-                                print("myOrdersArchiveController.tabId ${controller.tabId}");
+                                print("MyOrdersController.tabId ${controller.tabId}");
                               },
                               child:  Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -88,8 +88,8 @@ class MyOrdersArchivePage extends StatelessWidget {
               child: ListView(
                 children: [
 
-                  GetBuilder<MyOrdersArchiveController>(
-                    init: MyOrdersArchiveController(),
+                  GetBuilder<MyOrdersController>(
+                    init: MyOrdersController(),
                     builder: (controller) => Container(
                       child: ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),

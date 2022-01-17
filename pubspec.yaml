@@ -52,6 +52,7 @@ dependencies:
   json_annotation: ^4.4.0
   retrofit: ^3.0.1
   logger: ^1.1.0
+  font_awesome_flutter: ^9.2.0
 
 dev_dependencies:
   flutter_test:
