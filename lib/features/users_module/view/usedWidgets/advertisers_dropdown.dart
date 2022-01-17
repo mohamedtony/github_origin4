@@ -47,7 +47,7 @@ class AdvertisersDropDown extends StatelessWidget {
          // items: countries,
           items:items,
           dropdownButtonSplashRadius: 12,
-          itemAsString:itemType=='String'?(u) => u:(u) => u.name,
+          itemAsString:itemType=='String'?(u) => u:itemType=="bakaDetails"?(dynamic? u) => u!.itemAsStringByName():(u) => u.name,
           //label: "Menu mode",
           hint: hintText,dropdownSearchBaseStyle: TextStyle(fontFamily: 'Arabic-Regular',fontSize: 14.sp),
           dropdownSearchDecoration: InputDecoration(

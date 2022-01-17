@@ -1,10 +1,4 @@
-// import 'package:advertisers/advertiser_list_page/advertise_list_controller.dart';
-// import 'package:advertisers/advertiser_list_page/advertiser_list_item.dart';
-// import 'package:advertisers/blocked_users_page/blocked_users_page.dart';
-// import 'package:advertisers/client_list_page/client_list_item.dart';
-// import 'package:advertisers/client_setting_page/client_switch_controller.dart';
-import 'package:advertisers/features/blocked_users_page/blocked_users_page.dart';
-import 'package:advertisers/features/client_setting_page/client_switch_controller.dart';
+import 'package:advertisers/features/client_setting_page/client_setting_page_controller.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 // import 'package:advertisers/home_page/app_colors.dart';
 // import 'package:advertisers/home_page/controller/home_navigation_controller.dart';
@@ -22,7 +16,7 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class AdvertiserSettingsPage extends StatelessWidget {
    AdvertiserSettingsPage({Key? key}) : super(key: key);
-   var controller = Get.put(ClientSwitchController(), permanent: false);
+   var controller = Get.put(ClientSettingPageController(), permanent: false);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -237,7 +231,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                         // height: 70,
                           margin: EdgeInsets.only(bottom: 6.0),
                           child: Image.asset(
-                            'images/switch_icon.png',
+                            'images/switch_icon_left.png',
                             scale: 2,
                           )
 
