@@ -185,7 +185,7 @@ class RegisterNewAdvertiserUserController extends GetxController{
           "area_id": areaId.value,
           "country_id": countryId.value,
           "email": emailController.text,
-          "fcm_token": 'ffc',
+          "fcm_token": token,
           "password": passwordController.text,
           "personal_id": nationalIDController.text,
           "phone": phoneController.text,

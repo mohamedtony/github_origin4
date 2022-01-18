@@ -20,6 +20,7 @@ import 'package:advertisers/features/users_module/controller/baka_details_contro
 import 'package:advertisers/features/users_module/controller/choose_baka_controller.dart';
 import 'package:advertisers/features/users_module/controller/forget_password_for_phone_controller.dart';
 import 'package:advertisers/features/users_module/controller/login_controller.dart';
+import 'package:advertisers/features/users_module/controller/newPasswordController.dart';
 import 'package:advertisers/features/users_module/controller/register_new_advertiser_company_controller.dart';
 import 'package:advertisers/features/users_module/controller/register_new_advertiser_user_controller.dart';
 import 'package:advertisers/features/users_module/controller/register_new_client_company_controller.dart';
@@ -29,6 +30,7 @@ import 'package:advertisers/features/users_module/view/screens/baka_details.dart
 import 'package:advertisers/features/users_module/view/screens/choose_baka_page.dart';
 import 'package:advertisers/features/users_module/view/screens/forget_password_for_phone.dart';
 import 'package:advertisers/features/users_module/view/screens/login_page.dart';
+import 'package:advertisers/features/users_module/view/screens/new_password_page.dart';
 import 'package:advertisers/features/users_module/view/screens/pay_verification.dart';
 import 'package:advertisers/features/users_module/view/screens/register_account_type.dart';
 import 'package:advertisers/features/users_module/view/screens/register_new_advertiser_tab_bar.dart';
@@ -60,6 +62,14 @@ class Routes {
       page: () =>LoginPage(),
       binding: BindingsBuilder(() {
         Get.lazyPut<LoginController>(() => LoginController());
+      }),
+
+    ),
+    GetPage(
+      name: '/newPasswordPage',
+      page: () =>NewPasswordPage(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<NewPasswordController>(() => NewPasswordController());
       }),
 
     ),

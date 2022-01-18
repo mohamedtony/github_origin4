@@ -7,6 +7,7 @@ import 'package:advertisers/features/users_module/controller/register_new_advert
 import 'package:advertisers/features/users_module/controller/register_new_client_user_controller.dart';
 import 'package:advertisers/features/users_module/controller/register_new_client_company_controller.dart';
 import 'package:advertisers/features/users_module/controller/register_phone_controller.dart';
+import 'package:advertisers/features/users_module/view/screens/new_password_page.dart';
 import 'package:advertisers/features/wallet_module/wallet_controller.dart';
 import 'package:get/get.dart';
 
@@ -23,5 +24,7 @@ class DataBinding extends Bindings {
     Get.lazyPut(() => RegisterNewClientCompanyController());
     Get.lazyPut(()=>RegisterPhoneController());
     Get.lazyPut(() => ChooseBakaController());
+    Get.lazyPut(() => NewPasswordPage());
+
   }
 }

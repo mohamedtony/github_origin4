@@ -1,3 +1,4 @@
+import 'package:advertisers/features/users_module/controller/forget_password_for_phone_controller.dart';
 import 'package:advertisers/features/users_module/controller/register_phone_controller.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_button.dart';
 import 'package:advertisers/main.dart';
@@ -151,20 +152,29 @@ class VerificationCodePage extends StatelessWidget {
                 AdvertisersButton(
                     text: 'verify'.tr,
                     onPressed: () {
+                      print(Get
+                          .parameters['route'].toString()  );
+                      print(auth.currentUser);
+
                       if (auth.currentUser != null&&Get
-                          .parameters['phone'].toString()=='registerPhone') {
+                          .parameters['route'].toString()=='registerPhone') {
 
                         Get.toNamed('/registerAccountType?phone=${Get
                             .parameters['phone'].toString()}');
 
                       }else if(auth.currentUser != null&&Get
-                          .parameters['phone'].toString()=='forgetPasswordForPhone'){
+                          .parameters['route'].toString()=='forgetPasswordForPhone'){
 
-                        Get.toNamed('/forgetPasswordForPhone?phone=${Get
+                        Get.toNamed('/newPasswordPage?phone=${Get
                             .parameters['phone'].toString()}');
 
-                      } else {
+                      }
+                      else if(auth.currentUser == null&&Get
+                          .parameters['route'].toString()=='registerPhone'){
                         Get.find<RegisterPhoneController>().signIn();
+                      }else if(auth.currentUser == null&&Get
+                          .parameters['route'].toString()=='forgetPasswordForPhone'){
+                        Get.find<ForgetPasswordForPhoneController>().signIn();
                       }
                     },
                     backgroundColor: AppColors.verifyButtonColor,

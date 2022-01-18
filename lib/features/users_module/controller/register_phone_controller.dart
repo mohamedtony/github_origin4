@@ -104,7 +104,12 @@ class RegisterPhoneController extends GetxController {
               backgroundColor: Colors.red,
               snackPosition: SnackPosition.BOTTOM,
             );
-          });
+
+          }).then((value) {
+
+        print('>>>>>>>>>>>>>>${auth.currentUser}');
+      });
+
     } on Exception catch (_, e) {
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
@@ -127,7 +132,11 @@ class RegisterPhoneController extends GetxController {
         smsCode: smsOTP.value,
       );
       final UserCredential user = await auth.signInWithCredential(credential);
-      final User currentUser = await auth.currentUser!;
+      final User currentUser =  auth.currentUser!;
+      if (currentUser != null) {
+        await currentUser.reload();
+      }
+      print('>>>>>>>>>>>>>>$currentUser');
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
       }
