@@ -62,6 +62,7 @@ dependencies:
   percent_indicator: ^3.4.0
   open_file: ^3.2.1
   device_info: ^2.0.3
+  shimmer: ^2.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

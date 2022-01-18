@@ -4,7 +4,9 @@ import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/main.dart';
 import 'package:advertisers/shared/loading_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
@@ -15,12 +17,17 @@ class ClientSettingPageController extends GetxController  {
   var tabIndex = 1.obs;
   TextEditingController? kayanNameController,accountNameEdit,accountOwner,phoneController,emailController,accountRegisteredNumController;
   var flag = false.obs;
+  var isEnabled=false.obs;
 
   var clientProfileModel = ClientProfileModel().obs;
   RxList<Country> countries = <Country>[].obs;
   RxList<Area> areas = <Area>[].obs;
   var country = Country().obs;
   var area = Area().obs;
+  var smsOTP = ''.obs;
+  var verificationId = '';
+  var countryCode = '+966'.obs;
+  var phone = '';
 // switches the value between true/false
  // flag.toggle();
 
@@ -122,7 +129,71 @@ class ClientSettingPageController extends GetxController  {
         });
       }
     });
+
     super.onReady();
+  }
+  void changeEdit(){
+
+    if(isEnabled.value){
+      isEnabled.value = false;
+    }else{
+      isEnabled.value = true;
+    }
+    print("EditEdit"+isEnabled.value.toString());
+  }
+
+  Future<void> verifyPhone() async {
+    EasyLoading.show(status:'انتظر');
+    final PhoneCodeSent smsOTPSent = (String verId, [int? forceCodeResend]) {
+      if(EasyLoading.isShow){
+        EasyLoading.dismiss();
+      }
+     verificationId = verId;
+      Get.toNamed(
+          '/verificationCodePage?route=registerPhone&phone=${countryCode.value.toString() + int.parse(phoneController!.text).toString()}');
+      /*smsOTPDialog(context).then((value) {
+        print('sign in');
+      });*/
+    };
+    try {
+    /*  print(
+          '>>>>>>>>>>>>>>>>>>>>${countryCode.value.toString() + int.parse(phone).toString()}');*/
+      await auth.verifyPhoneNumber(
+          phoneNumber: countryCode.value.toString() +
+              int.parse(phoneController!.text)
+                  .toString(), // PHONE NUMBER TO SEND OTP
+          codeAutoRetrievalTimeout: (String verId) {
+            //Starts the phone number verification process for the given phone number.
+            //Either sends an SMS with a 6 digit code to the phone number specified, or sign's the user in and [verificationCompleted] is called.
+            verificationId = verId;
+          },
+          codeSent:
+          smsOTPSent, // WHEN CODE SENT THEN WE OPEN DIALOG TO ENTER OTP.
+          timeout: const Duration(seconds: 60),
+          verificationCompleted: (AuthCredential phoneAuthCredential) {
+            print(phoneAuthCredential);
+          },
+          verificationFailed: (exception) {
+            Get.snackbar(
+              "حدث خطأ",
+              exception.message.toString(),
+              icon: const Icon(Icons.person, color: AppColors.white),
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM,
+            );
+          });
+    } on Exception catch (_, e) {
+      if(EasyLoading.isShow){
+        EasyLoading.dismiss();
+      }
+      Get.snackbar(
+        "حدث خطأ",
+        e.toString(),
+        icon: const Icon(Icons.person, color: AppColors.white),
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 
   void changeStatus(bool isOpend,int position) {

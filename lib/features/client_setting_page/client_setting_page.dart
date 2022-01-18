@@ -177,19 +177,24 @@ class ClientSettingPage extends StatelessWidget {
                           //color:  Color(0xff486ac7),
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          right: 10.0,
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          'edit'.tr,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: AppColors.editProfileTextColor,
-                              fontSize: 18.0,
-                              decoration: TextDecoration.underline,
-                              decorationThickness: 2),
+                      InkWell(
+                        onTap: (){
+                          controller.changeEdit();
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(
+                            right: 10.0,
+                          ),
+                          alignment: Alignment.center,
+                          child: Obx(()=>Text(
+                            controller.isEnabled.value?'إلغاء':'edit'.tr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: AppColors.editProfileTextColor,
+                                fontSize: 18.0,
+                                decoration: TextDecoration.underline,
+                                decorationThickness: 2),
+                          ),)
                         ),
                       ),
                     ],
@@ -297,10 +302,11 @@ class ClientSettingPage extends StatelessWidget {
                             topLeft: Radius.circular(12.0),
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
-                    child: TextField(
+                    child: Obx(()=>TextField(
                       textAlign: TextAlign.start,
                       textAlignVertical: TextAlignVertical.center,
                       controller: controller.kayanNameController,
+                      enabled: controller.isEnabled.value,
                       style: TextStyle(
                           color: (AppColors.editProfileTextColorOpa)
                               .withOpacity(0.51),
@@ -321,7 +327,7 @@ class ClientSettingPage extends StatelessWidget {
                           hintStyle: TextStyle(color: Colors.grey[350]),
                           hintText: 'الراشد للاوانى الفخارية',
                           fillColor: Colors.white70),
-                    ),
+                    )),
                   ),
                 ),
               ],
@@ -484,23 +490,28 @@ class ClientSettingPage extends StatelessWidget {
             margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
             child: Row(
               children: [
-                Container(
-                    height: 42,
-                    width: 110,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 0.2),
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(12.0),
-                            bottomRight: Radius.circular(12.0)),
-                        color: AppColors.editProfileContainerColor),
-                    child: Text(
-                      "تأكيد",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.0,
-                          color: Colors.white),
-                    )),
+                InkWell(
+                  onTap: () {
+                    controller.verifyPhone();
+                  },
+                  child: Container(
+                      height: 42,
+                      width: 110,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey, width: 0.2),
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(12.0),
+                              bottomRight: Radius.circular(12.0)),
+                          color: AppColors.editProfileContainerColor),
+                      child: Text(
+                        "تأكيد",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: Colors.white),
+                      )),
+                ),
                 Expanded(
                   child: Container(
                     height: 42,
@@ -528,6 +539,7 @@ class ClientSettingPage extends StatelessWidget {
                       textAlignVertical: TextAlignVertical.center,
                       controller: controller.phoneController,
                       //textDirection: mt.TextDirection.ltr,
+
                       style: TextStyle(
                         color: (AppColors.editProfileTextColorOpa)
                             .withOpacity(0.51),
@@ -535,7 +547,7 @@ class ClientSettingPage extends StatelessWidget {
                         fontSize: 14.0,
                       ),
                       decoration: InputDecoration(
-                         /* suffixIcon: Directionality(
+                          suffixIcon: Directionality(
                             textDirection: mt.TextDirection.ltr,
                             child: Container(
                               // width: 100,
@@ -547,13 +559,19 @@ class ClientSettingPage extends StatelessWidget {
                                     // hintTextDirection: mt.TextDirection.rtl,
                                     focusColor: AppColors.tabColor,
                                     focusedBorder: UnderlineInputBorder(),
-                                    *//*border: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: AppColors.focusedBorder),)*//*
+                                    /*border: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: AppColors.focusedBorder),)*/
                                   ),
                                   initialSelection: 'sa',
-                                  onChanged: (s) {}),
+                                  onChanged: (countryCodeVal) {
+                                    controller.countryCode.value=countryCodeVal.dialCode! ;
+                                    print('>>>>>>>>>>>>>>${countryCodeVal.name}  ${countryCodeVal.code}    ${countryCodeVal.dialCode}     ${countryCodeVal.flagUri}');
+
+                                  },
+
+                              ),
                             ),
-                          ),*/
+                          ),
                           contentPadding: EdgeInsets.only(
                               left: 10.0, right: 14.0, bottom: 12.0),
                           // isCollapsed: true,
@@ -566,8 +584,10 @@ class ClientSettingPage extends StatelessWidget {
                           ),
                           filled: true,
                           hintStyle: TextStyle(color: Colors.grey[350]),
-                          hintText: 'محمد',
-                          fillColor: Colors.white70),
+                          hintText: 'رقم الجوال',
+                          fillColor: Colors.white70,
+
+                      ),
                     ),
                   ),
                 ),
@@ -745,9 +765,9 @@ class ClientSettingPage extends StatelessWidget {
                           width: 8.0,
                         ),
                       ),
-                      /*dropdownBuilder: (BuildContext context,s){
-                        return Text('$s',style: TextStyle(color: AppColors.activitiesDropDown.withOpacity(0.73),decoration: TextDecoration.underline,decorationThickness: 2,fontSize: 16.0),textAlign: TextAlign.center,);
-                      },*/
+                      dropdownBuilder: (BuildContext context,s){
+                        return Text('${ (s?.name??'')}',style: TextStyle(color: AppColors.tabColor.withOpacity(0.73),/*decoration: TextDecoration.underline,decorationThickness: 2,*/fontSize: 16.0,fontWeight: FontWeight.w500),textAlign: TextAlign.start,);
+                      },
                       dropdownSearchDecoration: InputDecoration(
                         // filled: true,
                         //fillColor: Color(0xFFF2F2F2),
@@ -770,10 +790,10 @@ class ClientSettingPage extends StatelessWidget {
                               width: 1,
                             )),
                       ),
-                      items: controller.countries.value??[],
+                      items: controller.countries.value,
                       // label: "Menu mode",
                       itemAsString: (Country? u) => u?.itemAsStringByName()??'',
-                      hint: "country in menu mode",
+                      hint: "الدولة",
                       //popupItemDisabled: (String s) => s.startsWith('I'),
                       onChanged: print,
                       selectedItem: controller.country.value),
@@ -795,6 +815,9 @@ class ClientSettingPage extends StatelessWidget {
                         width: 8.0,
                       ),
                     ),
+                    dropdownBuilder: (BuildContext context,s){
+                      return Text('${ (s?.name??'')}',style: TextStyle(color: AppColors.tabColor.withOpacity(0.73),/*decoration: TextDecoration.underline,decorationThickness: 2,*/fontSize: 16.0,fontWeight: FontWeight.w500),textAlign: TextAlign.start,);
+                    },
                     dropdownSearchBaseStyle: TextStyle(
                         fontFamily: 'Arabic-Regular', fontSize: 14.sp),
                     // dropdownSearchBaseStyle:  TextStyle(color: AppColors.editProfileContainerColor),
@@ -892,15 +915,19 @@ class ClientSettingPage extends StatelessWidget {
                                     fontWeight: FontWeight.w400),
                               ),
                             ),
-                            Container(
-                              // height: 70,
-                                margin: EdgeInsets.only(bottom: 0.0),
-                                child: Image.asset(
-                                  'images/switch_icon_left.png',
-                                  scale: 2,
-                                )
+                            InkWell(
+                              child: Container(
+                                // height: 70,
+                                  margin: EdgeInsets.only(bottom: 0.0),
+                                  child: Obx(()=>controller.clientProfileModel.value.chat!=null && controller.clientProfileModel.value.chat! ?Image.asset(
+                                    'images/switch_icon_right.png',
+                                    scale: 2,
+                                  ):Image.asset(
+                                    'images/switch_icon_left.png',
+                                    scale: 2,
+                                  ))
 
-                              /*Switch(
+                                /*Switch(
                           onChanged: (s){
 
                           },
@@ -912,6 +939,7 @@ class ClientSettingPage extends StatelessWidget {
                           activeThumbImage: AssetImage('images/switch_icon.png'),
                           inactiveThumbImage: AssetImage('images/inactive_img.png'),
                         ),*/
+                              ),
                             ),
                             Container(
                               margin: EdgeInsets.only(

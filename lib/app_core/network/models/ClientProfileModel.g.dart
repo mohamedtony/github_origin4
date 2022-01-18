@@ -21,6 +21,7 @@ ClientProfileModel _$ClientProfileModelFromJson(Map<String, dynamic> json) =>
       country_id: json['country_id'] as int?,
       area_id: json['area_id'] as int?,
       token: json['token'] as String?,
+      chat: json['chat'] as bool?,
     );
 
 Map<String, dynamic> _$ClientProfileModelToJson(ClientProfileModel instance) =>
@@ -38,4 +39,5 @@ Map<String, dynamic> _$ClientProfileModelToJson(ClientProfileModel instance) =>
       'country_id': instance.country_id,
       'area_id': instance.area_id,
       'token': instance.token,
+      'chat': instance.chat,
     };

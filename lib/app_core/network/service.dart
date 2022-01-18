@@ -1,7 +1,9 @@
 import 'package:advertisers/app_core/network/requests/CreateSubscriptionRequest.dart';
 import 'package:advertisers/app_core/network/requests/login_client_request.dart';
+import 'package:advertisers/app_core/network/responses/AddRemoveBlackListResponse.dart';
 import 'package:advertisers/app_core/network/responses/CountriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateSubscriptionResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetBlockedUsersResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetMyProfileInfoResponse.dart';
 import 'package:advertisers/app_core/network/responses/LoginClientResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
@@ -42,10 +44,11 @@ Future<GetMyProfileInfoResponse> getMyProfile(@Header("Authorization") String to
      FormData? body
   // @Part() File? image,
   });
-  // @GET('https://advertiser.cefour.com/api/v1/subscriptions')
-  // Future<SubscruptionResponse> getSubscription();
-  //
-  // @GET('https://advertiser.cefour.com/api/v1/subscriptions/{id}')
-  // Future<SubscriptionDetailsResponse> getSubscriptionDetails(@Path("id") int id);
+
+@GET('https://advertiser.cefour.com/api/v1/profile/blacklist')
+Future<GetBlockedUsersResponse> getBlockedUsers(@Header("Authorization") String token);
+
+@GET('https://advertiser.cefour.com/api/v1/profile/blacklist/{id}')
+Future<AddRemoveBlackListResponse> addRemoveBlackList(@Path("id") int id,@Header("Authorization") String token);
 
 }

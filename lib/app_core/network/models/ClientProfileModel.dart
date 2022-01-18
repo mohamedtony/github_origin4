@@ -16,9 +16,10 @@ class ClientProfileModel {
   int? country_id;
   int? area_id;
   String? token;
+  bool? chat;
 
   ClientProfileModel({this.id, this.username, this.account_name,this.personal_id,this.email,
-    this.phone,this.type,this.role,this.image,this.blocked_at,this.country_id,this.area_id,this.token});
+    this.phone,this.type,this.role,this.image,this.blocked_at,this.country_id,this.area_id,this.token,this.chat});
 
   factory ClientProfileModel.fromJson(Map<String, dynamic> json) => _$ClientProfileModelFromJson(json);
 
