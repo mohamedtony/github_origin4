@@ -1,4 +1,5 @@
 import 'package:advertisers/app_core/bindings/choose_baka_binding.dart';
+import 'package:advertisers/app_core/bindings/client_setting_binding.dart';
 import 'package:advertisers/app_core/bindings/data_binding.dart';
 import 'package:advertisers/features/add_advertiser_channel/add_advertiser_channel.dart';
 import 'package:advertisers/features/advanced_options/view/pages/advanced_options_page.dart';
@@ -9,6 +10,7 @@ import 'package:advertisers/features/advertising_influence_channels/view/page/ad
 import 'package:advertisers/features/blocked_users_page/blocked_users_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
+import 'package:advertisers/features/client_setting_page/client_setting_page.dart';
 import 'package:advertisers/features/customer_order_invoice/view/customer_order_invoice_page.dart';
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation.dart';
@@ -184,7 +186,7 @@ class Routes {
 
     ),
     GetPage(
-      name: '/bakaDetails',
+      name: '/chooseBakaDetails',
       page: () => BakaDetails(),
       binding: BindingsBuilder(() {
         Get.lazyPut<BakaDetailsController>(() => BakaDetailsController());
@@ -197,11 +199,11 @@ class Routes {
         Get.lazyPut<RegisterPhoneController>(() => RegisterPhoneController());
       }),
     ),
-    // GetPage(
-    //   name: '/payVerification',
-    //   page: () => PayVerification(),
-    //
-    // ),
+    GetPage(
+      name: '/payVerification',
+      page: () => PayVerification(),
+
+    ),
     GetPage(
       name: '/successfulPayingPage',
       page: () => SuccessfulPayingPage(),
@@ -226,6 +228,11 @@ class Routes {
     GetPage(
       name: '/MyOrdersArchivePage',
       page: () => MyOrdersArchivePage(),
+    ),
+    GetPage(
+        name: '/clientSettingPage',
+        page: () => ClientSettingPage(),
+        binding: ClientSettingBinding()
     ),
   ];
 }

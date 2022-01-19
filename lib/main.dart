@@ -28,7 +28,7 @@ void main() async{
 
   dio = Dio();
   dio?.options.headers['Content-Type'] = 'application/json';
-  dio?.options.headers['Content-Type'] = 'multipart/form-data';
+  //dio?.options.headers['Content-Type'] = 'multipart/form-data';
   client = RestClient(dio!);
   //client.getTasks().then((it) => logger.i(it));
 
@@ -97,7 +97,7 @@ class _MyAppState extends State<MyApp> {
          // fallbackLocale: LocalizationService.locale,
           builder: EasyLoading.init(),
           translations: LocalizationService(),
-          initialRoute: '/',
+          initialRoute: '/clientSettingPage',
           getPages: Routes.routes,
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',

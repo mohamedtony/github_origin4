@@ -103,6 +103,45 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<CreateSubscriptionResponse> checkCopon(code, period_id, token) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'code': code,
+      r'period_id': period_id
+    };
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CreateSubscriptionResponse>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options,
+                    'https://advertiser.cefour.com/api/v1/check_copon',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = CreateSubscriptionResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<GetMyProfileInfoResponse> getMyProfile(token) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<GetMyProfileInfoResponse>(Options(
+                method: 'GET', headers: _headers, extra: _extra)
+            .compose(
+                _dio.options, 'https://advertiser.cefour.com/api/v1/profile',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = GetMyProfileInfoResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<RegisterClientUserResponse> registerClientUser({body}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -117,6 +156,42 @@ class _RestClient implements RestClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = RegisterClientUserResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<GetBlockedUsersResponse> getBlockedUsers(token) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<GetBlockedUsersResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options,
+                    'https://advertiser.cefour.com/api/v1/profile/blacklist',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = GetBlockedUsersResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AddRemoveBlackListResponse> addRemoveBlackList(id, token) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AddRemoveBlackListResponse>(Options(
+                method: 'GET', headers: _headers, extra: _extra)
+            .compose(_dio.options,
+                'https://advertiser.cefour.com/api/v1/profile/blacklist/${id}',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AddRemoveBlackListResponse.fromJson(_result.data!);
     return value;
   }
 

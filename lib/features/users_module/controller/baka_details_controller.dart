@@ -1,19 +1,29 @@
+import 'dart:io';
+
+import 'package:advertisers/app_core/network/models/CoponModel.dart';
+import 'package:advertisers/app_core/network/models/CreateSubscriptionModel.dart';
+import 'package:advertisers/app_core/network/models/CreateSuscriptionWithReciet.dart';
+import 'package:advertisers/app_core/network/requests/CreateSubscriptionRequest.dart';
+import 'package:advertisers/features/users_module/app_colors.dart';
 import 'package:advertisers/features/users_module/controller/choose_baka_controller.dart';
 import 'package:advertisers/app_core/network/models/SubscriptionDetail.dart';
 import 'package:advertisers/features/users_module/view/cards/advantages_baka_card.dart';
 import 'package:advertisers/main.dart';
-import 'package:advertisers/shared/network/models/CreateSubscriptionModel.dart';
-// import 'package:advertisers/shared/network/models/PeriodModel.dart';
-// import 'package:advertisers/shared/network/models/SubscriptionDetail.dart';
-import 'package:advertisers/shared/network/requests/CreateSubscriptionRequest.dart';
-
-import 'package:dio/dio.dart' as dio;
+import 'package:advertisers/shared/loading_dialog.dart';
+import 'package:advertisers/shared/loading_downloading_dialog.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 class BakaDetailsController extends GetxController{
   GlobalKey<FormState> pakaDetailsFormKey=GlobalKey<FormState>( );
 
   late TextEditingController pakaTimeController;
+  late TextEditingController discountCodeController;
   final ChooseBakaController _chooseBakaController = Get.find();
 
 
@@ -27,26 +37,37 @@ class BakaDetailsController extends GetxController{
   RxList<String> items=<String>[].obs;
   var periodId=-1.obs;
   Rx<double> priceAfterDiscount =  (-0.1).obs;
+  int coponId =-1;
   var paymentMethod = ''.obs;
   //final paymentIndex=-1.obs;
   final paymentIndex = Rxn<int>(-1);
+  String? pdfReciept;
+
+  //for downloading
+  String? fileFullPath;
+  String? urlPdf;
+  bool _allowWriteFile=false;
+  var progress = ' 0 '.obs;
+  var isLoading = true.obs;
   @override
   void onInit() {
     //repo.postWithImageMultipart({})
 
     pakaTimeController=TextEditingController();
+    discountCodeController=TextEditingController();
 
-    // client!.createSubscriptions(CreateSubscriptionRequest(execute: 0,payment_method: "STC",period_id: _chooseBakaController.selectedBakaId), "Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
-    //   if(value.data!=null&&value.status==200){
-    //     //subscriptionBakaDetail = value.data!;
-    //     print("mTotal: "+value.data!.total!.toString());
-    //     // if(value.data.total!=null){
-    //     priceAfterDiscount.value=value.data!.total! ;
-    //     createSubscriptionModel.value=value.data! ;
-    //  ///   update();
-    //     //}
-    //   }
-    // });
+    client!.createSubscriptions(CreateSubscriptionRequest(execute: 0,payment_method: "STC",period_id: _chooseBakaController.selectedBakaId), "Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+      if(value.data!=null&&value.status==200){
+        //subscriptionBakaDetail = value.data!;
+        //print("mTotal: "+value.data!.total!.toString());
+        // if(value.data.total!=null){
+        priceAfterDiscount.value = (CreateSubscriptionModel.fromJson(value.data)).total!;
+        createSubscriptionModel.value= (CreateSubscriptionModel.fromJson(value.data));
+        isLoading.value = false;
+        //update();
+        //}
+      }
+    });
     client!.getSubscriptionDetails(_chooseBakaController.selectedBakaId).then((value){
       if(value.data!=null&&value.status==200){
         //subscriptionBaka.value = value.data!;
@@ -56,7 +77,7 @@ class BakaDetailsController extends GetxController{
           if(element!=null && element.name!=null) {
             print("ininininininini");
             print(element.name);
-            items.add(element.name!);
+            items.value.add(element.name!);
           }
         });
       ///  update();
@@ -153,6 +174,167 @@ class BakaDetailsController extends GetxController{
         update();
       }
     }*/
+
+  void changePeriod(int id) {
+    periodId = id;
+    client!.createSubscriptions(CreateSubscriptionRequest(execute: 0,payment_method: "STC",period_id: id), "Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+      if(value.data!=null&&value.status==200){
+        priceAfterDiscount.value = (CreateSubscriptionModel.fromJson(value.data)).total!;
+        createSubscriptionModel.value = CreateSubscriptionModel.fromJson(value.data);
+        //update();
+        //  Get.toNamed('/payVerification');
+      }
+    });
+/*    if(subscriptionBakaDetail.periods!=null) {
+      PeriodModel periodModel = subscriptionBakaDetail.periods!.firstWhere((element) => element.id == id);
+      if(periodModel!=null){
+        priceAfterDiscount = periodModel.price_after_discount!;
+        update();
+      }
+    }*/
+  }
+
+  void payNow(BuildContext context) {
+    //periodId = id;
+    Logger().i(CreateSubscriptionRequest(execute: 1,payment_method: paymentMethod.value,period_id: periodId,copon_id: coponId==-1?null:coponId).toJson());
+
+    client!.createSubscriptions(CreateSubscriptionRequest(execute: 1,payment_method: paymentMethod.value,period_id: periodId,copon_id: coponId==-1?null:coponId), "Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+      print("mMessage"+value.message!);
+      if(value.status==200){
+        // String msg = value.message.toString();
+        pdfReciept = CreateSuscriptionWithReciet.fromJson(value.data!).pdf;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:  Text('لقد تم تسجيلك بنجاح !',style: TextStyle(color: AppColors.whiteColor,fontSize: 17,fontFamily: 'Arabic-Regular'),),
+        ));
+        Navigator.of(context).pop();
+        Get.toNamed('/successfulPayingPage');
+      }
+    });
+/*    if(subscriptionBakaDetail.periods!=null) {
+      PeriodModel periodModel = subscriptionBakaDetail.periods!.firstWhere((element) => element.id == id);
+      if(periodModel!=null){
+        priceAfterDiscount = periodModel.price_after_discount!;
+        update();
+      }
+    }*/
+  }
+
+  void changePayMethod(String payMethod, int index) {
+    paymentMethod.value = payMethod;
+    // someNumber.value
+    paymentIndex.value = index;
+
+  }
+
+  void checkCopon(context) {
+    LoadingDailog().showLoading(context);
+    print("controller= "+discountCodeController.text);
+    client!.checkCopon(discountCodeController.text!=null && discountCodeController.text.isNotEmpty && discountCodeController.text!="" ? discountCodeController.text:"123123", periodId,"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+      print("mMessage"+value.message!);
+      if(value.status==200&&value.data!=null){
+        // String msg = value.message.toString();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:  Text('تم تطبيق كوبون الخصم بنجاح !',style: TextStyle(color: AppColors.whiteColor,fontSize: 17,fontFamily: 'Arabic-Regular'),),
+        ));
+        Navigator.of(context).pop();
+        //Get.toNamed('/successfulPayingPage');
+        priceAfterDiscount.value = (CoponModel.fromJson(value.data)).total!;
+        coponId = (CoponModel.fromJson(value.data)).copon_id!;
+        //update();
+      }else{
+        Navigator.of(context).pop();
+      }
+    });
+  }
+
+  downloadPDf(String url,BuildContext context){
+    getDirectoryPath().then((path) async {
+      String extension=url.substring(url.lastIndexOf("/"));
+      File file=File(path+"$extension");
+      if(file.existsSync())
+      {
+        if(file!=null){
+          OpenFile.open(file.path);
+        }
+        return;
+      }
+
+      await downloadFile(url,"$path/$extension",file,context);
+
+    });
+  }
+
+  Future downloadFile(String url,path,File file,BuildContext context) async {
+    if(!_allowWriteFile)
+    {
+      await requestWritePermission();
+    }
+    try{
+      LoadingDownloadingDailog().showLoading(context);
+      final response = await dio?.get(url,
+          options: Options(
+              responseType: ResponseType.bytes,
+              followRedirects: false,
+              receiveTimeout: 0
+          )
+          ,onReceiveProgress: (rec,total){
+
+            progress.value=" % "+((rec/total)*100).toStringAsFixed(0);
+            print(progress.value);
+          });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content:  Text('تم حفظ الفاتورة بنجاح !',style: TextStyle(color: AppColors.whiteColor,fontSize: 17,fontFamily: 'Arabic-Regular'),),
+      ));
+      Navigator.of(context).pop();
+      final raf = file.openSync(mode: FileMode.write);
+      raf.writeFromSync(response?.data);
+      await raf.close();
+
+      if(file!=null){
+        await OpenFile.open(file.path);
+      }
+      Get.offAllNamed('/Home');
+    }catch( e)
+    {
+      Navigator.of(context).pop();
+      print(e.toString());
+    }
+  }
+
+  Future<String>getDirectoryPath() async {
+    String? externalStorageDirPath ;
+    if (Platform.isAndroid) {
+      /* final directory = await getApplicationDocumentsDirectory();
+  externalStorageDirPath = directory.path;*/
+      externalStorageDirPath = '/storage/emulated/0/Download';
+    } else if (Platform.isIOS) {
+      externalStorageDirPath =
+          (await getApplicationDocumentsDirectory()).absolute.path;
+    }
+
+
+    //Directory? appDocDirectory = await path_provider.getExternalStorageDirectory();
+    Directory directory= await new Directory(externalStorageDirPath!);
+    // Directory directory= await new Directory(externalStorageDirPath +'/'+'dir').create(recursive: true);
+
+    return directory.path;
+  }
+
+  Future<void> requestWritePermission() async {
+
+    if (await Permission.storage.request().isGranted) {
+      // setState(() {
+      _allowWriteFile = true;
+
+      // });
+    }else
+    {
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.storage,
+      ].request();
+    }
+
+  }
   }
 
   // void changePayMethod(String payMethod, int index) {
