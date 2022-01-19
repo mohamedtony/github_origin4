@@ -18,7 +18,7 @@ class ForgetPasswordForPhoneController extends GetxController{
   late TextEditingController phoneController;
 
   var smsOTP = ''.obs;
-  var verificationId = '';
+  var verificationId = ''.obs;
   var errorMessage = '';
   var countryCode='sa'.obs;
   var latitude=0.0.obs;
@@ -61,7 +61,7 @@ class ForgetPasswordForPhoneController extends GetxController{
         '>>>>>>>>>>>>>>>>>>>>${countryCode.value.toString() + int.parse(phone).toString()}');
     await verifyPhone();
     // Get.toNamed(
-    //     '/verificationCodePage?phone=${countryCode.value.toString() + int.parse(phone).toString()}');
+    //     '/newPasswordPage?phone=${countryCode.value.toString() + int.parse(phone).toString()}');
     // loginClient();
     // Get.toNamed('/verificationCodePage');
   }
@@ -71,12 +71,13 @@ class ForgetPasswordForPhoneController extends GetxController{
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
       }
-      verificationId = verId;
+      verificationId.value = verId;
       Get.toNamed(
-          '/verificationCodePage?route=forgetPasswordForPhone&phone=${countryCode.value.toString() + int.parse(phone).toString()}');
+          '/verificationCodePage?verificationId=${verificationId.value}&&route=forgetPasswordForPhone&phone=${countryCode.value.toString() + int.parse(phone).toString()}');
       // smsOTPDialog(context).then((value) {
       //   print('sign in');
       // });
+      print('MMMMMMMMMMMMMMMMMMMMMMMMMMMMM${verificationId.value}');
     };
     try {
       print(
@@ -88,7 +89,7 @@ class ForgetPasswordForPhoneController extends GetxController{
           codeAutoRetrievalTimeout: (String verId) {
             //Starts the phone number verification process for the given phone number.
             //Either sends an SMS with a 6 digit code to the phone number specified, or sign's the user in and [verificationCompleted] is called.
-            verificationId = verId;
+            verificationId.value = verId;
           },
           codeSent:
           smsOTPSent, // WHEN CODE SENT THEN WE OPEN DIALOG TO ENTER OTP.
@@ -176,7 +177,7 @@ class ForgetPasswordForPhoneController extends GetxController{
     EasyLoading.show(status:'انتظر');
     try {
       final AuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: verificationId,
+        verificationId: verificationId.value,
         smsCode: smsOTP.value,
       );
       final UserCredential user = await auth.signInWithCredential(credential);
@@ -188,7 +189,7 @@ class ForgetPasswordForPhoneController extends GetxController{
       // Get.toNamed(
       //     '/registerAccountType?phone=${countryCode.value.toString() + int.parse(phone).toString()}');
       Get.toNamed(
-          '/forgetPasswordForPhone?route=forgetPasswordForPhone&phone=${countryCode.value.toString() + int.parse(phone).toString()}');
+          '/newPasswordPage?route=forgetPasswordForPhone&phone=${countryCode.value.toString() + int.parse(phone).toString()}');
 
       // Navigator.of(context).pop();
       // Navigator.of(context).pushReplacementNamed('/homepage');

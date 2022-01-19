@@ -50,7 +50,7 @@ class NewPasswordController extends GetxController{
     return null;
   }
   String? validateReEnterNewPassword(String val){
-    if (val==newPasswordController.text){
+    if (val!=newPasswordController.text){
       return 'كلمتا المرور غير متطابقتان ';
     }
     return null;
@@ -82,7 +82,7 @@ class NewPasswordController extends GetxController{
             EasyLoading.dismiss();
           }
           //account.model=AccountModel.fromJson(res.account!.toJson());
-          Get.toNamed("/loginPage");
+          Get.offAllNamed("/loginPage");
         },onError: (err,res){
 
 

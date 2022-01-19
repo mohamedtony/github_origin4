@@ -2,10 +2,12 @@ import 'package:advertisers/features/users_module/controller/forget_password_for
 import 'package:advertisers/features/users_module/controller/register_phone_controller.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_button.dart';
 import 'package:advertisers/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -131,7 +133,10 @@ class VerificationCodePage extends StatelessWidget {
                       print("Completed");
                     },
                     onChanged: (value) {
-                      Get.find<RegisterPhoneController>().smsOTP.value = value;
+                      if(Get.parameters['route'].toString()=='registerPhone'){
+                      Get.find<RegisterPhoneController>().smsOTP.value = value;}
+                      else if(Get.parameters['route'].toString()=='forgetPasswordForPhone'){
+                      Get.find<ForgetPasswordForPhoneController>().smsOTP.value = value;}
                       print(value);
                       // setState(() {
                       //   currentText = value;
@@ -186,7 +191,9 @@ class VerificationCodePage extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: AdvertisersButton(
                       text: 'codeNotSend'.tr,
-                      onPressed: () {},
+                      onPressed: () async{
+                        await verifyPhone();
+                      },
                       backgroundColor: AppColors.verifyButtonColor,
                       textColor: AppColors.verifyTextColor,
                       width: 279.w),
@@ -197,5 +204,60 @@ class VerificationCodePage extends StatelessWidget {
         ),
       ),
     );
+  }
+  String verificationId='';
+  Future<void> verifyPhone() async {
+
+    EasyLoading.show(status:'انتظر');
+    final PhoneCodeSent smsOTPSent = (String verId, [int? forceCodeResend]) {
+      if(EasyLoading.isShow){
+        EasyLoading.dismiss();
+      }
+      verificationId = verId;
+      // Get.toNamed(
+      //     '/verificationCodePage?route=forgetPasswordForPhone&phone=${countryCode.value.toString() + int.parse(phone).toString()}');
+      // smsOTPDialog(context).then((value) {
+      //   print('sign in');
+      // });
+    };
+    try {
+      // print(
+      //     '>>>>>>>>>>>>>>>>>>>>${countryCode.value.toString() + int.parse(phone).toString()}');
+      await auth.verifyPhoneNumber(
+          phoneNumber:Get
+              .parameters['phone'].toString() ,
+                  // PHONE NUMBER TO SEND OTP
+          codeAutoRetrievalTimeout: (String verId) {
+            //Starts the phone number verification process for the given phone number.
+            //Either sends an SMS with a 6 digit code to the phone number specified, or sign's the user in and [verificationCompleted] is called.
+            verificationId = verId;
+          },
+          codeSent:
+          smsOTPSent, // WHEN CODE SENT THEN WE OPEN DIALOG TO ENTER OTP.
+          timeout: const Duration(seconds: 60),
+          verificationCompleted: (AuthCredential phoneAuthCredential) {
+            print(phoneAuthCredential);
+          },
+          verificationFailed: (exception) {
+            Get.snackbar(
+              "حدث خطأ",
+              exception.message.toString(),
+              icon: const Icon(Icons.person, color: AppColors.whiteColor),
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.BOTTOM,
+            );
+          });
+    } on Exception catch (_, e) {
+      if(EasyLoading.isShow){
+        EasyLoading.dismiss();
+      }
+      Get.snackbar(
+        "حدث خطأ",
+        e.toString(),
+        icon: const Icon(Icons.person, color: AppColors.whiteColor),
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 }
