@@ -67,8 +67,9 @@ class ForgetPasswordForPhone extends StatelessWidget {
                         ) ,
                       ),
                       Obx(()=>AdvertisersPhone(hintText: 'phone'.tr,initialSelection: _forgetPasswordForPhoneController.countryCode.value,
+                        flag: true,
                         onChanged: (countryCodeVal){
-                          _forgetPasswordForPhoneController.countryCode.value=countryCodeVal.code!;
+                          _forgetPasswordForPhoneController.countryCode.value=countryCodeVal.dialCode!;
                         },controller: _forgetPasswordForPhoneController.phoneController,
                         onSaved: (value){
                           _forgetPasswordForPhoneController.phone=value!;

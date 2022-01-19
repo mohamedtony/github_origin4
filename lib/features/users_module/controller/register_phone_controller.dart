@@ -20,7 +20,7 @@ class RegisterPhoneController extends GetxController {
   var phone = '';
 
   var smsOTP = ''.obs;
-  var verificationId = '';
+  var verificationId = ''.obs;
   var errorMessage = '';
   //Repository repo=Repository();
   @override
@@ -71,9 +71,9 @@ class RegisterPhoneController extends GetxController {
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
       }
-      verificationId = verId;
+      verificationId.value = verId;
       Get.toNamed(
-          '/verificationCodePage?route=registerPhone&phone=${countryCode.value.toString() + int.parse(phone).toString()}');
+          '/verificationCodePage?verificationId=${verificationId.value}&&route=registerPhone&phone=${countryCode.value.toString() + int.parse(phone).toString()}');
       // smsOTPDialog(context).then((value) {
       //   print('sign in');
       // });
@@ -88,7 +88,7 @@ class RegisterPhoneController extends GetxController {
           codeAutoRetrievalTimeout: (String verId) {
             //Starts the phone number verification process for the given phone number.
             //Either sends an SMS with a 6 digit code to the phone number specified, or sign's the user in and [verificationCompleted] is called.
-            verificationId = verId;
+            verificationId.value = verId;
           },
           codeSent:
               smsOTPSent, // WHEN CODE SENT THEN WE OPEN DIALOG TO ENTER OTP.
@@ -104,7 +104,12 @@ class RegisterPhoneController extends GetxController {
               backgroundColor: Colors.red,
               snackPosition: SnackPosition.BOTTOM,
             );
-          });
+
+          }).then((value) {
+
+        print('>>>>>>>>>>>>>>${auth.currentUser}');
+      });
+
     } on Exception catch (_, e) {
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
@@ -123,11 +128,15 @@ class RegisterPhoneController extends GetxController {
     EasyLoading.show(status:'انتظر');
     try {
       final AuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: verificationId,
+        verificationId: verificationId.value,
         smsCode: smsOTP.value,
       );
       final UserCredential user = await auth.signInWithCredential(credential);
-      final User currentUser = await auth.currentUser!;
+      final User currentUser =  auth.currentUser!;
+      if (currentUser != null) {
+        await currentUser.reload();
+      }
+      print('>>>>>>>>>>>>>>$currentUser');
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
       }
