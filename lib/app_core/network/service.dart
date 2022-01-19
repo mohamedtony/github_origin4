@@ -4,6 +4,7 @@ import 'package:advertisers/app_core/network/responses/AddRemoveBlackListRespons
 import 'package:advertisers/app_core/network/responses/CountriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateSubscriptionResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetBlockedUsersResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetCategoriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetMyProfileInfoResponse.dart';
 import 'package:advertisers/app_core/network/responses/LoginClientResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
@@ -50,5 +51,9 @@ Future<GetBlockedUsersResponse> getBlockedUsers(@Header("Authorization") String 
 
 @GET('https://advertiser.cefour.com/api/v1/profile/blacklist/{id}')
 Future<AddRemoveBlackListResponse> addRemoveBlackList(@Path("id") int id,@Header("Authorization") String token);
+
+
+@GET('https://advertiser.cefour.com/api/v1/profile/categories')
+Future<GetCategoriesResponse> getCategories(@Header("Authorization") String token);
 
 }
