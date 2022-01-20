@@ -1,4 +1,5 @@
 import 'package:advertisers/app_core/network/requests/CreateSubscriptionRequest.dart';
+import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
 import 'package:advertisers/app_core/network/requests/login_client_request.dart';
 import 'package:advertisers/app_core/network/responses/AddRemoveBlackListResponse.dart';
 import 'package:advertisers/app_core/network/responses/CountriesResponse.dart';
@@ -55,5 +56,8 @@ Future<AddRemoveBlackListResponse> addRemoveBlackList(@Path("id") int id,@Header
 
 @GET('https://advertiser.cefour.com/api/v1/profile/categories')
 Future<GetCategoriesResponse> getCategories(@Header("Authorization") String token);
+
+@POST('https://advertiser.cefour.com/api/v1/profile/categories')
+Future<GetCategoriesResponse> updateUserCategories(@Body() UpdateUserCategoryRequest updateUserCategoryRequest,@Header("Authorization") String token);
 
 }

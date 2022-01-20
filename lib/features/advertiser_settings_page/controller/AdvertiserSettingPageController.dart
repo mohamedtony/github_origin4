@@ -2,6 +2,7 @@ import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/app_core/network/models/ClientProfileModel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
+import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/main.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
@@ -38,6 +40,7 @@ class AdvertiserSettingPageController extends GetxController  {
   RxList<CategoryModel> userCategories = <CategoryModel>[].obs;
   RxList<CategoryModel> generalCategories = <CategoryModel>[].obs;
   RxList<CategoryModel> selectedCategories = <CategoryModel>[].obs;
+  RxList<int> selectedCategoriesIds = <int>[].obs;
   var isLoading = true.obs;
 
   @override
@@ -217,6 +220,7 @@ class AdvertiserSettingPageController extends GetxController  {
   void onClose() {
     // TODO: implement onClose
     phoneController?.dispose();
+    //selectedCategories.value = [];
     super.onClose();
   }
   @override
@@ -231,6 +235,7 @@ class AdvertiserSettingPageController extends GetxController  {
         if(value.data!.user_categories!=null&&value.data!.user_categories!.isNotEmpty){
           userCategories.value = value.data!.user_categories!;
           selectedCategories.value = value.data!.user_categories!;
+
         }
         if(value.data!.all_categories!=null&&value.data!.all_categories!.isNotEmpty){
           generalCategories.value = value.data!.all_categories!;
@@ -265,7 +270,11 @@ class AdvertiserSettingPageController extends GetxController  {
           },
         );
       },
-    );
+    ).then((value){
+      print("showDialog");
+      selectedCategories.value = [];
+
+    });
   }
   void removeItem(int id){
     /*if(!realImages.h(s)){
@@ -278,9 +287,46 @@ class AdvertiserSettingPageController extends GetxController  {
     }
   }
   void addItem(CategoryModel s){
-    if(!selectedCategories.contains(s)&&s.id!=-1){
+    CategoryModel? categoryModel = selectedCategories.firstWhereOrNull((element) => element.id==s.id);
+
+
+    if(categoryModel==null && s.id!=-1){
       selectedCategories.add(s);
       //update();
     }
+  }
+
+  void onUpdateUserCategories(BuildContext context){
+    /*if(selectedCategories.isEmpty){
+      Fluttertoast.showToast(
+        msg: 'يرجى إختيار النشاطات الخاصة بك',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black.withOpacity(0.6),
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+     *//* ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content:  Text('يرجى إختيار النشاطات الخاصة بك',style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),),
+      ));*//*
+      return;
+    }*/
+
+    selectedCategoriesIds.value = [];
+    selectedCategories.forEach((element) {
+      selectedCategoriesIds.add(element.id!);
+    });
+    client!.updateUserCategories(UpdateUserCategoryRequest(categories:selectedCategoriesIds.value),"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+      if(value.status==200){
+        Fluttertoast.showToast(
+          msg: value.message??'',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.black.withOpacity(0.6),
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+      }
+    });
   }
 }

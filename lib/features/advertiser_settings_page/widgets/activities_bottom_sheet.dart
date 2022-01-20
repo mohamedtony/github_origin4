@@ -275,60 +275,70 @@ class ActivitiesBottomSheet extends StatelessWidget {
                 ),
               ),),
 
-              Container(
-                margin: EdgeInsets.only(top: 24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 135,
-                      height: 35,
-                      margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
-                      child: Material(
-                        elevation: 6.0,
-                        shadowColor: Colors.grey[200],
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                        color: AppColors.saveButtonBottomSheet,
-                        child: Container(
-                          /*margin: EdgeInsets.only(
-                                left: 12.0, bottom: 4.0, right: 20),*/
-                          alignment: Alignment.center,
-                          child: Text(
-                            'save'.tr,
-                            style: TextStyle(
-                                fontSize: 16.0,
-                                color: AppColors.tabColor,
-                                fontWeight: FontWeight.w700),
-                            textAlign: TextAlign.center,
+              InkWell(
+                onTap: (){
+                  advertiserSettingPageController.onUpdateUserCategories(context);
+                },
+                child: Container(
+                  margin: EdgeInsets.only(top: 24),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 135,
+                        height: 35,
+                        margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
+                        child: Material(
+                          elevation: 6.0,
+                          shadowColor: Colors.grey[200],
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          color: AppColors.saveButtonBottomSheet,
+                          child: Container(
+                            /*margin: EdgeInsets.only(
+                                  left: 12.0, bottom: 4.0, right: 20),*/
+                            alignment: Alignment.center,
+                            child: Text(
+                              'save'.tr,
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: AppColors.tabColor,
+                                  fontWeight: FontWeight.w700),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Container(
-                      width: 135,
-                      height: 35,
-                      margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
-                      child: Material(
-                        elevation: 6.0,
-                        shadowColor: Colors.grey[200],
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                        color: AppColors.tabColor,
+                      InkWell(
+                        onTap: (){
+                          Navigator.pop(context);
+                        },
                         child: Container(
-                          /*margin: EdgeInsets.only(
-                                left: 12.0, bottom: 4.0, right: 20),*/
-                          alignment: Alignment.center,
-                          child: Text(
-                            'cancel'.tr,
-                            style: TextStyle(
-                                fontSize: 16.0,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w300),
-                            textAlign: TextAlign.center,
+                          width: 135,
+                          height: 35,
+                          margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
+                          child: Material(
+                            elevation: 6.0,
+                            shadowColor: Colors.grey[200],
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            color: AppColors.tabColor,
+                            child: Container(
+                              /*margin: EdgeInsets.only(
+                                    left: 12.0, bottom: 4.0, right: 20),*/
+                              alignment: Alignment.center,
+                              child: Text(
+                                'cancel'.tr,
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w300),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               )
             ],
