@@ -2,10 +2,12 @@ import 'package:advertisers/app_core/bindings/choose_baka_binding.dart';
 import 'package:advertisers/app_core/bindings/client_setting_binding.dart';
 import 'package:advertisers/app_core/bindings/data_binding.dart';
 import 'package:advertisers/features/add_advertiser_channel/add_advertiser_channel.dart';
+import 'package:advertisers/features/add_advertiser_channel/controller/add_advertiser_channel_controller.dart';
 import 'package:advertisers/features/advanced_options/view/pages/advanced_options_page.dart';
 import 'package:advertisers/features/advertiser_account_status/tax_settings/view/pages/advertiser_account_status_page.dart';
 import 'package:advertisers/features/advertiser_qr/view/page/advertiser_qr_page.dart';
 import 'package:advertisers/features/advertiser_settings_page/advertiser_settings_page.dart';
+import 'package:advertisers/features/advertising_influence_channels/controller/advertising_influence_channels_controller.dart';
 import 'package:advertisers/features/advertising_influence_channels/view/page/advertising_influence_channels_page.dart';
 import 'package:advertisers/features/blocked_users_page/blocked_users_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_page.dart';
@@ -177,9 +179,10 @@ class Routes {
     ),
     GetPage(
       name: '/AdvertisingInfluenceChannelsPage',
-      page: () => AdvertisingInfluenceChannelsPage(),
-      binding: DataBinding(),
-    ),
+      page:() => AdvertisingInfluenceChannelsPage(),
+      binding:BindingsBuilder(() {
+  Get.lazyPut<AdvertisingInfluenceChannelsController>(() => AdvertisingInfluenceChannelsController());
+  }),),
     GetPage(
       name: '/TaxSettingsPage',
       page: () => TaxSettingsPage(),
@@ -220,7 +223,9 @@ class Routes {
     GetPage(
       name: '/AddAdvertiserChannel',
       page: () => AddAdvertiserChannel(),
-    ),
+  binding: BindingsBuilder(() {
+  Get.lazyPut<AddAdvertiserChannelController>(() => AddAdvertiserChannelController());
+  })),
     GetPage(
       name: '/CustomerOrderInvoicePage',
       page: () => CustomerOrderInvoicePage(),
