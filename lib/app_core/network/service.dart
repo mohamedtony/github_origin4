@@ -1,11 +1,13 @@
 
 import 'package:advertisers/app_core/network/models/ChannelData.dart';
 import 'package:advertisers/app_core/network/requests/CreateSubscriptionRequest.dart';
+import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
 import 'package:advertisers/app_core/network/requests/login_client_request.dart';
 import 'package:advertisers/app_core/network/responses/AddRemoveBlackListResponse.dart';
 import 'package:advertisers/app_core/network/responses/CountriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateSubscriptionResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetBlockedUsersResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetCategoriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetMyProfileInfoResponse.dart';
 import 'package:advertisers/app_core/network/responses/LoginClientResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
@@ -52,6 +54,13 @@ Future<GetBlockedUsersResponse> getBlockedUsers(@Header("Authorization") String 
 
 @GET('https://advertiser.cefour.com/api/v1/profile/blacklist/{id}')
 Future<AddRemoveBlackListResponse> addRemoveBlackList(@Path("id") int id,@Header("Authorization") String token);
+
+
+@GET('https://advertiser.cefour.com/api/v1/profile/categories')
+Future<GetCategoriesResponse> getCategories(@Header("Authorization") String token);
+
+@POST('https://advertiser.cefour.com/api/v1/profile/categories')
+Future<GetCategoriesResponse> updateUserCategories(@Body() UpdateUserCategoryRequest updateUserCategoryRequest,@Header("Authorization") String token);
 
 @POST('https://advertiser.cefour.com/api/v1/profile/channels/add')
 Future<CreateSubscriptionResponse> addChannel(@Body() ChannelData channel,@Header("Authorization") String token);
