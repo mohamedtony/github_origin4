@@ -147,7 +147,7 @@ class ChooseBakaPage extends StatelessWidget {
                         children: [
                           AdvertisersButton(text: 'أختر باقة', onPressed: (){
                             if(_chooseBakaController.selectedBakaId!=-1) {
-                              Get.toNamed('/bakaDetails');
+                              Get.toNamed('/chooseBakaDetails');
                             }else{
                               //Get.snackbar( '',"يرجى اختيار الباقة !");
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(

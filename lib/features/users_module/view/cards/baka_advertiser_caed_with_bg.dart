@@ -1,8 +1,9 @@
+import 'package:advertisers/app_core/network/models/SubscriptionBaka.dart';
 import 'package:advertisers/features/users_module/app_colors.dart';
 import 'package:advertisers/features/home_page/app_colors.dart' as mColor;
 import 'package:advertisers/features/users_module/controller/choose_baka_controller.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_button.dart';
-import 'package:advertisers/shared/network/models/SubscriptionBaka.dart';
+//import 'package:advertisers/shared/network/models/SubscriptionBaka.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' as mt;
 import 'package:flutter/material.dart';

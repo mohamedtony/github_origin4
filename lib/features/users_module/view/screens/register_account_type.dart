@@ -99,7 +99,7 @@ class _RegisterAccountTypeState extends State<RegisterAccountType> {
                                     setState(() {
                                       _type = value as ClientType;
                                     });
-                                    Get.toNamed('/registerNewClientTapBar');
+                                    Get.toNamed('/registerNewClientTapBar?phone=${Get.parameters['phone'].toString()}');
                                   },
                                 ),
                               ),
@@ -117,7 +117,7 @@ class _RegisterAccountTypeState extends State<RegisterAccountType> {
                                       setState(() {
                                         _type = value as ClientType;
                                       });
-                                      Get.toNamed('/registerNewClientTapBar');
+                                      Get.toNamed('/registerNewClientTapBar?phone=${Get.parameters['phone'].toString()}');
                                     },
                                   ),
                                 ),
@@ -153,7 +153,7 @@ class _RegisterAccountTypeState extends State<RegisterAccountType> {
                               setState(() {
                                 _type = value as ClientType;
                               });
-                              Get.toNamed('/registerNewAdvertiserTapBar');
+                              Get.toNamed('/registerNewAdvertiserTapBar?phone=${Get.parameters['phone'].toString()}');
                             },
                           ),
                         ),

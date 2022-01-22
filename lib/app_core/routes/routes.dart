@@ -3,6 +3,7 @@ import 'package:advertisers/app_core/bindings/data_binding.dart';
 import 'package:advertisers/features/add_advertiser_channel/add_advertiser_channel.dart';
 import 'package:advertisers/features/advanced_options/view/pages/advanced_options_page.dart';
 import 'package:advertisers/features/advertiser_account_status/tax_settings/view/pages/advertiser_account_status_page.dart';
+import 'package:advertisers/features/advertiser_details/advertiser_details_page.dart';
 import 'package:advertisers/features/advertiser_qr/view/page/advertiser_qr_page.dart';
 import 'package:advertisers/features/advertiser_settings_page/advertiser_settings_page.dart';
 import 'package:advertisers/features/advertising_influence_channels/view/page/advertising_influence_channels_page.dart';
@@ -12,11 +13,14 @@ import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/features/customer_order_invoice/view/customer_order_invoice_page.dart';
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation.dart';
+import 'package:advertisers/features/my_orders/view/my_orders_page.dart';
+import 'package:advertisers/features/my_orders_and_my_orders_archive/my_orders_and_my_orders_archive.dart';
 import 'package:advertisers/features/my_orders_archive/view/my_orders_archive_page.dart';
 import 'package:advertisers/features/notifications/view/pages/notifications_page.dart';
 import 'package:advertisers/features/notifications_settings/view/pages/notifications_settings_page.dart';
 import 'package:advertisers/features/tax_settings/view/pages/tax_settings_page.dart';
 import 'package:advertisers/features/users_module/controller/baka_details_controller.dart';
+import 'package:advertisers/features/users_module/controller/choose_baka_controller.dart';
 import 'package:advertisers/features/users_module/controller/forget_password_for_phone_controller.dart';
 import 'package:advertisers/features/users_module/controller/login_controller.dart';
 import 'package:advertisers/features/users_module/controller/register_new_advertiser_company_controller.dart';
@@ -32,7 +36,8 @@ import 'package:advertisers/features/users_module/view/screens/pay_verification.
 import 'package:advertisers/features/users_module/view/screens/register_account_type.dart';
 import 'package:advertisers/features/users_module/view/screens/register_new_advertiser_tab_bar.dart';
 import 'package:advertisers/features/users_module/view/screens/register_phone.dart';
-import 'package:advertisers/features/users_module/view/screens/registr_new_client_tab_bar.dart';
+import 'package:advertisers/features/users_module/view/screens/register_new_client_tab_bar.dart';
+import 'package:advertisers/features/users_module/view/screens/start_page.dart';
 import 'package:advertisers/features/users_module/view/screens/successful_paying_page.dart';
 import 'package:advertisers/features/users_module/view/screens/verification_code_page.dart';
 import 'package:advertisers/features/wallet_module/wallet_page.dart';
@@ -41,20 +46,26 @@ import 'package:get/get.dart';
 class Routes {
   static final routes = [
 
-    GetPage(
-      name: '/',
-      page: () =>ChooseBakaPage(),
-      binding: ChooseBakaBinding(),
+    // GetPage(
+    //   name: '/',
+    //   page: () =>ChooseBakaPage(),
+    //   binding: ChooseBakaBinding(),
+    //
+    // ),
+    // GetPage(
+    //   name: '/',
 
-    ),
-   /* GetPage(
-      name: '/',
+  GetPage(
+  name: '/',
+  page: () =>StartPage(),),
+    GetPage(
+      name: '/loginPage',
       page: () =>LoginPage(),
       binding: BindingsBuilder(() {
         Get.lazyPut<LoginController>(() => LoginController());
       }),
 
-    ),*/
+    ),
     GetPage(
       name: '/AdvertiserSettingsPage',
       page: () => AdvertiserSettingsPage(),
@@ -100,7 +111,9 @@ class Routes {
     GetPage(
       name: '/verificationCodePage',
       page: () => VerificationCodePage(),
-
+      binding: BindingsBuilder(() {
+        Get.lazyPut<RegisterPhoneController>(() => RegisterPhoneController());
+      }),
     ),
     GetPage(
       name: '/registerPhone',
@@ -115,10 +128,11 @@ class Routes {
 
     ),
     GetPage(
-      name: '/bakaPage',
+      name: '/chooseBakaPage',
       page: () => ChooseBakaPage(),
-
-    ),
+  binding: BindingsBuilder(() {
+  Get.lazyPut<ChooseBakaController>(() => ChooseBakaController());
+  })),
     GetPage(
       name: '/registerNewClientTapBar',
       page: () => RegisterNewClientTapBar(),
@@ -176,11 +190,11 @@ class Routes {
         Get.lazyPut<RegisterPhoneController>(() => RegisterPhoneController());
       }),
     ),
-    GetPage(
-      name: '/payVerification',
-      page: () => PayVerification(),
-
-    ),
+    // GetPage(
+    //   name: '/payVerification',
+    //   page: () => PayVerification(),
+    //
+    // ),
     GetPage(
       name: '/successfulPayingPage',
       page: () => SuccessfulPayingPage(),
@@ -202,9 +216,21 @@ class Routes {
       name: '/CustomerOrderInvoicePage',
       page: () => CustomerOrderInvoicePage(),
     ),
+    // GetPage(
+    //   name: '/MyOrdersArchivePage',
+    //   page: () => MyOrdersArchivePage(),
+    // ),
+    // GetPage(
+    //   name: '/MyOrdersPage',
+    //   page: () => MyOrdersPage(),
+    // ),
     GetPage(
-      name: '/MyOrdersArchivePage',
-      page: () => MyOrdersArchivePage(),
+      name: '/MyOrdersAndMyOrdersArchive',
+      page: () => MyOrdersAndMyOrdersArchive(),
+    ),
+    GetPage(
+      name: '/AdvertiserDetailsPage',
+      page: () => AdvertiserDetailsPage(),
     ),
   ];
 }

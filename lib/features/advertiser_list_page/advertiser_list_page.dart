@@ -8,6 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../main.dart';
+
 class AdvertiserListPage extends StatelessWidget {
    AdvertiserListPage({Key? key}) : super(key: key);
    var controller = Get.put(AdvertiseListController());
@@ -413,6 +415,8 @@ class AdvertiserListPage extends StatelessWidget {
             print('pressed2');
           },),
           AdvertiseListItem(icon: 'images/logout_icon.svg',title: 'خروج',listTilePressed: (){
+            storage.remove("data");
+            Get.offAllNamed('/loginPage');
             print('pressed2');
           },),
         ],

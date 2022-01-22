@@ -8,7 +8,7 @@ const Map<String, String> arEG = {
   'send':'ارسال',
   'enterPassword':'أدخل كلمة المرور',
   'verifyPhone':'اكد رقم جوالك',
-  'pleaseEnterCode':'من فضلك ادخل رمز التحقق المرسل \n علي رقم الجوال 0545459314',
+  'pleaseEnterCode':'من فضلك ادخل رمز التحقق المرسل \n علي رقم الجوال',
   'changePhone':'تغيير رقم الجوال ؟',
   'verify':'تأكيد',
   'codeNotSend':'لم يصلك اي كود الي الان ؟ ارسال مرة اخري',

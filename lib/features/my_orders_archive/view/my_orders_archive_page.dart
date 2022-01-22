@@ -1,7 +1,9 @@
+import 'package:advertisers/features/my_orders/view/my_orders_page.dart';
 import 'package:advertisers/features/my_orders_archive/controller/my_orders_archive_controller.dart';
 import 'package:advertisers/features/wallet_module/widgets/processes_widgets/processes_widget.dart';
 import 'package:advertisers/features/wallet_module/widgets/shipping_widgets/shipping_widget.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,70 +18,70 @@ class MyOrdersArchivePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      appBar:  PreferredSize(
-        child:  AppBarWidget(
-          isSideMenu: false,
-          isSearchBar: true,
-          isNotification: false,
-          isBack: true,
-          searchBarBigRight: false,
-        ),
-        preferredSize:  Size(
-            MediaQuery.of(context).size.width,
-            90.0
-        ),
-      ),
+      // appBar:  PreferredSize(
+      //   child:  AppBarWidget(
+      //     isSideMenu: false,
+      //     isSearchBar: true,
+      //     isNotification: false,
+      //     isBack: true,
+      //     searchBarBigRight: false,
+      //   ),
+      //   preferredSize:  Size(
+      //       MediaQuery.of(context).size.width,
+      //       90.0
+      //   ),
+      // ),
       body:  Container(
         color: Color(0xffF5F5F5),
         child: Column(
           children: [
 
-            GetBuilder<MyOrdersArchiveController>(
-              init: MyOrdersArchiveController(),
-              builder: (controller) => Container(
-                height: 50,
-                child:   Padding(
-                  padding: const EdgeInsets.only(top: 12),
-                  child: Center(
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: upperTabItems!.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                              onTap: (){
-                                controller.passIndex(upperTabItems![index].id);
-                                print("myOrdersArchiveController.tabId ${controller.tabId}");
-                              },
-                              child:  Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 5),
-                                child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 25,vertical: 3),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            color:upperTabItems![index].id! != controller.tabId? Colors.transparent :  Color(0xff4184CE)
-        ),
-        child: Text("${upperTabItems![index].title}",style: TextStyle(color:upperTabItems![index].id! != controller.tabId? Color(0xff4184CE) : Colors.white,fontSize: 16.sp),),
-      )
-                                // SelectedTab(title: upperTabItems![index].title, id: upperTabItems![index].id,),
-                              )
-                          ) ;
-                        }),
-                  ),
-                ),
-              )
-            ),
-
-
-            const SizedBox(
-              height: 12,
-            ),
-
-            Container(
-              color: Colors.grey.withOpacity(.5),
-              height: 1,
-              width: double.infinity,
-            ),
+      //       GetBuilder<MyOrdersArchiveController>(
+      //         init: MyOrdersArchiveController(),
+      //         builder: (controller) => Container(
+      //           height: 50,
+      //           child:   Padding(
+      //             padding: const EdgeInsets.only(top: 12),
+      //             child: Center(
+      //               child: ListView.builder(
+      //                   scrollDirection: Axis.horizontal,
+      //                   shrinkWrap: true,
+      //                   itemCount: upperTabItems!.length,
+      //                   itemBuilder: (context, index) {
+      //                     return InkWell(
+      //                         onTap: (){
+      //                           controller.passIndex(upperTabItems![index].id);
+      //                           print("myOrdersArchiveController.tabId ${controller.tabId}");
+      //                         },
+      //                         child:  Padding(
+      //                           padding: const EdgeInsets.symmetric(horizontal: 5),
+      //                           child: Container(
+      //   padding: EdgeInsets.symmetric(horizontal: 25,vertical: 3),
+      //   decoration: BoxDecoration(
+      //       borderRadius: BorderRadius.circular(7),
+      //       color:upperTabItems![index].id! != controller.tabId? Colors.transparent :  Color(0xff4184CE)
+      //   ),
+      //   child: Text("${upperTabItems![index].title}",style: TextStyle(color:upperTabItems![index].id! != controller.tabId? Color(0xff4184CE) : Colors.white,fontSize: 16.sp),),
+      // )
+      //                           // SelectedTab(title: upperTabItems![index].title, id: upperTabItems![index].id,),
+      //                         )
+      //                     ) ;
+      //                   }),
+      //             ),
+      //           ),
+      //         )
+      //       ),
+      //
+      //
+      //       const SizedBox(
+      //         height: 12,
+      //       ),
+      //
+      //       Container(
+      //         color: Colors.grey.withOpacity(.5),
+      //         height: 1,
+      //         width: double.infinity,
+      //       ),
 
 
            Expanded(
@@ -108,6 +110,7 @@ class MyOrdersArchivePage extends StatelessWidget {
                                     child:  Column(
                                       children: [
                                         Container(
+                                          // height: 190.h,
                                           padding: const EdgeInsets.all(8),
                                           child:  Column(
                                             children: [
@@ -172,7 +175,7 @@ class MyOrdersArchivePage extends StatelessWidget {
                                                 children: [
                                                   ClipRRect(
                                                       borderRadius: BorderRadius.circular(10),
-                                                      child: Image.network("${orders![index].ownerImage}",height: 120,)
+                                                      child: Image.network("${orders![index].ownerImage}",height: 75,)
                                                   ),
                                                   const  SizedBox(
                                                     width: 15,
@@ -194,7 +197,7 @@ class MyOrdersArchivePage extends StatelessWidget {
                                                           height: 7,
                                                         ),
                                                         Text("${orders![index].orderTitle}",style: TextStyle(fontSize: 14.sp,color: Color(0xff4B4B95)),),
-                                                        Text("${orders![index].orderDesc}",style: TextStyle(fontSize: 14.sp,color: Color(0xff888888)),),
+                                                        Text("${orders![index].orderDesc}",style: TextStyle(fontSize: 14.sp,color: Color(0xff888888),overflow: TextOverflow.ellipsis),maxLines: 1,),
 
                                                       ],
                                                     ),
@@ -276,70 +279,72 @@ class MyOrdersArchivePage extends StatelessWidget {
                                     child : controller.checkList!.contains(orders![index].id)?
                                     // AnimatedContainer(
                                     //   duration: const Duration(milliseconds: 500),
-                                    Container(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          InkWell(
-                                            onTap: (){
+                                    FadeInDown(
+                                      child: Container(
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            InkWell(
+                                              onTap: (){
 
-                                            },
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
 
-                                              children: [
-                                                Container(
-                                                  padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                                                  decoration: const BoxDecoration(
-                                                    color: Colors.white54,
-                                                    borderRadius: BorderRadius.all(
-                                                    Radius.circular(10.0),
+                                                children: [
+                                                  Container(
+                                                    padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+                                                    decoration: const BoxDecoration(
+                                                      color: Colors.white54,
+                                                      borderRadius: BorderRadius.all(
+                                                      Radius.circular(10.0),
+                                                    ),
+                                                    ),
+                                                    child: Center(
+                                                      child: FaIcon(FontAwesomeIcons.whatsapp,color: Color(0xff148253),size: 35.sp,),
+                                                    ),
                                                   ),
+                                                ],
+                                              ),
+                                            ), InkWell(
+                                              onTap: (){
+
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+
+                                                children: [
+                                                  Container(
+                                                    padding: EdgeInsets.symmetric(horizontal: 15,vertical: 12),
+                                                    decoration: const BoxDecoration(
+                                                      color: Colors.white54,
+                                                      borderRadius: BorderRadius.all(
+                                                      Radius.circular(10.0),
+                                                    ),
+                                                    ),
+                                                    child: Center(
+                                                      child: FaIcon(FontAwesomeIcons.commentDots,color: Colors.white,size: 35.sp,),
+                                                    ),
                                                   ),
-                                                  child: Center(
-                                                    child: FaIcon(FontAwesomeIcons.whatsapp,color: Color(0xff148253),size: 35.sp,),
-                                                  ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
-                                          ), InkWell(
-                                            onTap: (){
-
-                                            },
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-
-                                              children: [
-                                                Container(
-                                                  padding: EdgeInsets.symmetric(horizontal: 15,vertical: 12),
-                                                  decoration: const BoxDecoration(
-                                                    color: Colors.white54,
-                                                    borderRadius: BorderRadius.all(
-                                                    Radius.circular(10.0),
-                                                  ),
-                                                  ),
-                                                  child: Center(
-                                                    child: FaIcon(FontAwesomeIcons.commentDots,color: Colors.white,size: 35.sp,),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      // color: Colors.black45,
-                                      decoration: const BoxDecoration(
-                                        gradient:   LinearGradient(
-                                            begin: Alignment.topRight,
-                                            end: Alignment.bottomRight,
-                                            colors: [
-                                              Color(0xff6fd3de),
-                                              Color(0xff486ac7),
-                                            ]
-                                        ),        borderRadius: BorderRadius.all(
-                                        Radius.circular(10.0),
-                                      ),
+                                          ],
+                                        ),
+                                        // color: Colors.black45,
+                                        decoration: const BoxDecoration(
+                                          gradient:   LinearGradient(
+                                              begin: Alignment.topRight,
+                                              end: Alignment.bottomRight,
+                                              colors: [
+                                                Color(0xff6fd3de),
+                                                Color(0xff486ac7),
+                                              ]
+                                          ),        borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0),
+                                        ),
+                                        ),
                                       ),
                                     ):Container(),
                                   )
@@ -371,13 +376,7 @@ class MyOrdersArchivePage extends StatelessWidget {
 
 
 
-List <Widget> TabsWidgets = [
-  ProcessesWidget(),
-  ShippingWidget(),
-  // PullsWidget(),
-  // PointsWidget()
 
-];
 
 class Orders {
   int? id;

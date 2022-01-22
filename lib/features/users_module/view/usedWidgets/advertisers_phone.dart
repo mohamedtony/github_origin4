@@ -12,11 +12,13 @@ class AdvertisersPhone extends StatelessWidget {
     late final String initialSelection;
     late final String hintText;
     Color? borderColor;
+    bool? enabled;
+    bool?  flag=true;
     final void Function(CountryCode)?  onChanged;
     late final TextEditingController controller;
     final void Function(String?)? onSaved;
     String? Function(String?)? validator;
-   AdvertisersPhone({this.borderColor,this.onSaved,this.onChanged,required this.initialSelection,required this.controller,required this.hintText,this.validator,Key? key}) : super(key: key);
+   AdvertisersPhone({this.flag,this.enabled,this.borderColor,this.onSaved,this.onChanged,required this.initialSelection,required this.controller,required this.hintText,this.validator,Key? key}) : super(key: key);
     //var controllerGetx=Get.find<dynamic>();
   @override
   Widget build(BuildContext context) {
@@ -27,20 +29,21 @@ class AdvertisersPhone extends StatelessWidget {
         style: TextStyle(fontSize: 15.sp ),
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
+        enabled: enabled??true,
         decoration: InputDecoration(
           contentPadding:  EdgeInsets.symmetric(vertical: 5.0.h),
           suffixIcon: Padding(
             padding: const EdgeInsets.all(8.0),
             child: SvgPicture.asset('images/phone.svg',height: 22.8.h,fit: BoxFit.fitHeight,),
           ),
-          prefixIcon:CountryCodePicker(
+          prefixIcon:flag==true?CountryCodePicker(
               searchDecoration: const InputDecoration(
                   focusColor: AppColors.borderfayrozy,focusedBorder:UnderlineInputBorder(),
                   border: UnderlineInputBorder(
                     borderSide: BorderSide(color: AppColors.borderfayrozy),)),
 
               initialSelection:initialSelection,
-              onChanged: onChanged),
+              onChanged: onChanged):const SizedBox(),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.h),borderSide: BorderSide(color: borderColor==null?AppColors.borderfayrozy: AppColors.borderAdvertiserRegisterColor)
           ),
