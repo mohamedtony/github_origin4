@@ -44,6 +44,7 @@ class AddAdvertiserChannelController extends GetxController {
        countries.value = value.data!;
        print(value.data![0].name);
        Logger().i(value.data);
+       update();
      }
    });
 
@@ -127,6 +128,7 @@ class AddAdvertiserChannelController extends GetxController {
         path: 'profile/channels/add',
         fromJson: (json) => ChannelsResponse.fromJson(json),
         json: {"token":"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd",
+          "channel_id":4,
           "name":accountNameController.text,
        "link":linkController.text,
      "followers_from":int.parse(selectedRange.value.substring(0,selectedRange.value.lastIndexOf('-')-1)),
@@ -141,6 +143,12 @@ class AddAdvertiserChannelController extends GetxController {
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
+          Get.snackbar(
+            "نجاح",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
 
         },
         onError: (err, res) {

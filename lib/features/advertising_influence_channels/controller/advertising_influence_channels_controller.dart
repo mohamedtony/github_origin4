@@ -8,7 +8,8 @@ import 'package:get/get.dart';
 
 
 class AdvertisingInfluenceChannelsController extends GetxController{
-var channels=[].obs;
+  late Repository repo ;
+  var channels=[].obs;
   var checkList = [].obs;
   void addRemoveCheckList(id){
     if(checkList!.contains(id)){
@@ -45,7 +46,7 @@ var channels=[].obs;
   getChannels(){
 
       EasyLoading.show();
-      Repository repo = Repository();
+
 
       repo.get<ChannelsResponse>(
           path: 'profile/channels',
@@ -71,6 +72,40 @@ var channels=[].obs;
           });
 
   }
+  deleteChannel(){
+
+    EasyLoading.show();
+
+   int id=4;
+    repo.get<ChannelsResponse>(
+        path: 'profile/channels/$id/delete',
+        fromJson: (json) => ChannelsResponse.fromJson(json),
+        json: {"token":"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd"},
+        onSuccess: (res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "نجاح",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        },
+        onError: (err, res) {
+
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
+
+  }
   // bool isCheckedSee = false;
   // void changeCheckedSee(){
   //   if(isCheckedSee == false){
@@ -85,6 +120,7 @@ var channels=[].obs;
   @override
   void onInit() {
     // passIndex;
+    repo = Repository();
     getChannels();
     super.onInit();
   }

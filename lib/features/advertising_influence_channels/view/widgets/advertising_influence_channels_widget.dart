@@ -191,7 +191,7 @@ class AdvertisingInfluenceChannelsPageWidget extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: (){
-
+                              _advertisingInfluenceChannelsController.deleteChannel();
                             },
                             child: Icon(Icons.delete_forever,color: Color(0xff5aa1d0),),
                           ),

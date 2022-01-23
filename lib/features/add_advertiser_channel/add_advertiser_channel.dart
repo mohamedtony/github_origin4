@@ -711,7 +711,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                                       .areas
                                       ?.map((Area value) {
                                     return DropdownMenuItem<Area>(
-                                      value: value,
+                                      value: value,//enabled: _addAdvertiserChannelController.countries.length>1?false:true,
                                       child: Text(value.name??''),
                                     );
                                   }).toList():[],
@@ -744,6 +744,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                             SelectedAreaWidget(
                               title: "${e.name}", onPressed: () {
                               controller.removeFromList(e);
+
                               print(e.name);
                             },)).toList()
                       // <Widget>[

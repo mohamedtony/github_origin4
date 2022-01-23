@@ -1,4 +1,5 @@
 import 'package:advertisers/features/advanced_options/controller/advanced_options_controller.dart';
+import 'package:advertisers/features/advanced_options/controller/advanced_options_controller.dart';
 import 'package:advertisers/features/advanced_options/view/widgets/advanced_options_widget.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:advertisers/shared/radio_buttons/radio_buttons.dart';
@@ -9,8 +10,8 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AdvancedOptionsPage extends StatelessWidget {
-  const AdvancedOptionsPage({Key? key}) : super(key: key);
-
+  AdvancedOptionsPage({Key? key}) : super(key: key);
+  AdvancedOptionsController _advancedOptionsController=Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,12 +96,12 @@ class AdvancedOptionsPage extends StatelessWidget {
                     horizontal: 4,
                   ),
                   physics: const BouncingScrollPhysics(),
-                  itemCount: AdvancedOptionsData.advancedOptions.length,
+                  itemCount:_advancedOptionsController. advancedOptionsData.length,
                   separatorBuilder: (_, __) => const SizedBox(
                     height: 10,
                   ),
                   itemBuilder: (_, index) => AdvancedOptionsWidget(
-                    advancedOptionsData: AdvancedOptionsData.advancedOptions[index],
+                    advancedOptionsData: _advancedOptionsController.advancedOptionsData[index],
                   ),
                 ),
               )),

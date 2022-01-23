@@ -105,46 +105,46 @@ class AdvancedOptionsData {
     // this.onPressed
   });
 
-  static List<AdvancedOptionsData> advancedOptions = [
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 1,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 2,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 3,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 4,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 5,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 6,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 7,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 8,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 9,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 10,
-    ),
-  ];
+  // static List<AdvancedOptionsData> advancedOptions = [
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 1,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 2,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 3,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 4,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 5,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 6,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 7,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 8,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 9,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 10,
+  //   ),
+  // ];
 }
