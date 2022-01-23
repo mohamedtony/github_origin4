@@ -1,3 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:advertisers/app_core/network/models/Area.dart';
+import 'package:advertisers/app_core/network/models/Country.dart';
+import 'package:advertisers/features/add_advertiser_channel/controller/add_advertiser_channel_controller.dart';
 import 'package:advertisers/features/add_advertiser_channel/controller/add_advertiser_channel_controller.dart';
 import 'package:advertisers/features/add_advertiser_channel/widgets/selected_countery_area_widget.dart';
 import 'package:advertisers/features/add_advertiser_channel/widgets/title.dart';
@@ -6,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart' as dio;
 
 class AddAdvertiserChannel extends StatefulWidget {
   const AddAdvertiserChannel({Key? key}) : super(key: key);
@@ -15,13 +23,14 @@ class AddAdvertiserChannel extends StatefulWidget {
 }
 
 class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
+  AddAdvertiserChannelController _addAdvertiserChannelController = Get.find();
   final List<String> _ranges = [
     '100 - 1000',
     '1000 - 10000',
     '10000 - 100000',
     '100000 - 1000000'
   ];
-  String _selectedRange = '';
+
 
   final List<String> _percentages = [
     '10',
@@ -35,13 +44,10 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
     '90',
     '100',
   ];
-  String _selectedMenPercentage = '';
-  String _selectedWomenPercentage = '';
-  String _selectedBoysPercentage = '';
-  String _selectedGirlsPercentage = '';
+
 
   Country? _selectedCountry;
-  City? _selectedCity;
+  Area? _selectedCity;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +59,10 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
           isBack: true,
           isSideMenu: false,
         ),
-        preferredSize: Size(MediaQuery.of(context).size.width, 120.h),
+        preferredSize: Size(MediaQuery
+            .of(context)
+            .size
+            .width, 120.h),
       ),
       body: ListView(
         children: [
@@ -96,31 +105,33 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                     color: const Color(0xffE8E8E8),
                     child: Text(
                       "اسم الحساب",
-                      style: TextStyle(fontSize: 14.sp,color: Color(0xff041D67)),
+                      style: TextStyle(
+                          fontSize: 14.sp, color: Color(0xff041D67)),
                     ),
                   ),
                 ),
                 Expanded(
                     child: TextFormField(
-                  // enabled: controller.isChecked,
-                  initialValue: "# Elrashed",
-                  style: TextStyle(
-                      color: const Color(0xff041D67), fontSize: 14.sp),
-                  // cursorColor: Colors.black,
-                  // keyboardType: inputType,
-                  // textDirection: TextDirection.rtl,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    contentPadding: EdgeInsets.only(
-                        left: 15, bottom: 11, top: 11, right: 15),
-                    hintText: "اسم الحساب",
-                  ),
-                  // hintText: "1236532897120",hintStyle: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp),),
-                )),
+                      // enabled: controller.isChecked,
+                     // initialValue: "# Elrashed",
+                      style: TextStyle(
+                          color: const Color(0xff041D67), fontSize: 14.sp),
+                      // cursorColor: Colors.black,
+                      // keyboardType: inputType,
+                      // textDirection: TextDirection.rtl,
+                      controller: _addAdvertiserChannelController.accountNameController,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                        contentPadding: EdgeInsets.only(
+                            left: 15, bottom: 11, top: 11, right: 15),
+                        hintText: "اسم الحساب",
+                      ),
+                      // hintText: "1236532897120",hintStyle: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp),),
+                    )),
               ],
             ),
           ),
@@ -146,31 +157,33 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                     color: const Color(0xffE8E8E8),
                     child: Text(
                       "رابط الحساب",
-                      style: TextStyle(fontSize: 14.sp,color: Color(0xff041D67)),
+                      style: TextStyle(
+                          fontSize: 14.sp, color: Color(0xff041D67)),
                     ),
                   ),
                 ),
                 Expanded(
                     child: TextFormField(
-                  // enabled: controller.isChecked,
-                  initialValue: "Snapchat .com / gdshh",
-                  style: TextStyle(
-                      color: const Color(0xff041D67), fontSize: 14.sp),
-                  // cursorColor: Colors.black,
-                  // keyboardType: inputType,
-                  // textDirection: TextDirection.rtl,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    contentPadding: EdgeInsets.only(
-                        left: 15, bottom: 11, top: 11, right: 15),
-                    hintText: "رابط الحساب",
-                  ),
-                  // hintText: "1236532897120",hintStyle: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp),),
-                )),
+                      // enabled: controller.isChecked,
+                      //initialValue: "Snapchat .com / gdshh",
+                      style: TextStyle(
+                          color: const Color(0xff041D67), fontSize: 14.sp),
+                      // cursorColor: Colors.black,
+                      // keyboardType: inputType,
+                      // textDirection: TextDirection.rtl,
+                      controller: _addAdvertiserChannelController.linkController,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                        contentPadding: EdgeInsets.only(
+                            left: 15, bottom: 11, top: 11, right: 15),
+                        hintText: "رابط الحساب",
+                      ),
+                      // hintText: "1236532897120",hintStyle: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp),),
+                    )),
                 Container(
                   width: 2,
                   height: 40.h,
@@ -192,9 +205,9 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
             child: Text(
               'عدد المتاعين - بالتقريب',
               style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-                color: Color(0xff041D67)
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff041D67)
               ),
             ),
           ),
@@ -224,7 +237,8 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                     color: const Color(0xffE8E8E8),
                     child: Text(
                       "من",
-                      style: TextStyle(fontSize: 14.sp, color: Color(0xff041D67)),
+                      style: TextStyle(
+                          fontSize: 14.sp, color: Color(0xff041D67)),
                     ),
                   ),
                 ),
@@ -234,8 +248,8 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                     child: DropdownButton<String>(
                       underline: const SizedBox.shrink(),
                       icon: const Icon(Icons.keyboard_arrow_down),
-                      hint: _selectedRange.isNotEmpty
-                          ? Center(child: Text(_selectedRange))
+                      hint: _addAdvertiserChannelController.selectedRange!='0'
+                          ? Center(child: Text(_addAdvertiserChannelController.selectedRange.value))
                           : const Center(child: Text('من فضلك اختر النطاق')),
                       items: _ranges.map((String value) {
                         return DropdownMenuItem<String>(
@@ -248,7 +262,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                       isExpanded: true,
                       onChanged: (newVal) {
                         setState(() {
-                          _selectedRange = newVal!;
+                          _addAdvertiserChannelController.selectedRange.value = newVal!;
                         });
                       },
                     ),
@@ -266,8 +280,8 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
             child: Text(
               'توزيع النسبة المئوية للمتأثرين بحسب النوع',
               style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
                   color: Color(0xff041D67)
               ),
             ),
@@ -301,7 +315,8 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                           // color: const Color(0xffE8E8E8),
                           child: Text(
                             "الرجال",
-                            style: TextStyle(fontSize: 10.5.sp, color: Color(0xff041D67)),
+                            style: TextStyle(
+                                fontSize: 10.5.sp, color: Color(0xff041D67)),
                           ),
                         ),
                       ),
@@ -314,7 +329,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                         child: DropdownButton<String>(
                           underline: const SizedBox.shrink(),
                           icon: const Icon(Icons.keyboard_arrow_down),
-                          hint: Center(child: Text(_selectedMenPercentage)),
+                          hint: Center(child: Text(_addAdvertiserChannelController.selectedMenPercentage.value)),
                           items: _percentages.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -326,7 +341,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                           isExpanded: true,
                           onChanged: (newVal) {
                             setState(() {
-                              _selectedMenPercentage = newVal!;
+                              _addAdvertiserChannelController.selectedMenPercentage.value = newVal!;
                             });
                           },
                         ),
@@ -366,7 +381,8 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                           // color: const Color(0xffE8E8E8),
                           child: Text(
                             "النساء",
-                            style: TextStyle(fontSize: 10.5.sp, color: Color(0xff041D67)),
+                            style: TextStyle(
+                                fontSize: 10.5.sp, color: Color(0xff041D67)),
                           ),
                         ),
                       ),
@@ -379,7 +395,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                         child: DropdownButton<String>(
                           underline: const SizedBox.shrink(),
                           icon: const Icon(Icons.keyboard_arrow_down),
-                          hint: Center(child: Text(_selectedWomenPercentage)),
+                          hint: Center(child: Text(_addAdvertiserChannelController.selectedWomenPercentage.value)),
                           items: _percentages.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -391,7 +407,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                           isExpanded: true,
                           onChanged: (newVal) {
                             setState(() {
-                              _selectedWomenPercentage = newVal!;
+                              _addAdvertiserChannelController.selectedWomenPercentage.value = newVal!;
                             });
                           },
                         ),
@@ -435,7 +451,8 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                           // color: const Color(0xffE8E8E8),
                           child: Text(
                             "الشباب",
-                            style: TextStyle(fontSize: 10.5.sp, color: Color(0xff041D67)),
+                            style: TextStyle(
+                                fontSize: 10.5.sp, color: Color(0xff041D67)),
                           ),
                         ),
                       ),
@@ -448,7 +465,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                         child: DropdownButton<String>(
                           underline: const SizedBox.shrink(),
                           icon: const Icon(Icons.keyboard_arrow_down),
-                          hint: Center(child: Text(_selectedBoysPercentage)),
+                          hint: Center(child: Text(_addAdvertiserChannelController.selectedBoysPercentage.value)),
                           items: _percentages.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -460,7 +477,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                           isExpanded: true,
                           onChanged: (newVal) {
                             setState(() {
-                              _selectedBoysPercentage = newVal!;
+                              _addAdvertiserChannelController.selectedBoysPercentage.value = newVal!;
                             });
                           },
                         ),
@@ -500,7 +517,8 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                           // color: const Color(0xffE8E8E8),
                           child: Text(
                             "الفتايات",
-                            style: TextStyle(fontSize: 10.5.sp, color: Color(0xff041D67)),
+                            style: TextStyle(
+                                fontSize: 10.5.sp, color: Color(0xff041D67)),
                           ),
                         ),
                       ),
@@ -513,7 +531,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                         child: DropdownButton<String>(
                           underline: const SizedBox.shrink(),
                           icon: const Icon(Icons.keyboard_arrow_down),
-                          hint: Center(child: Text(_selectedGirlsPercentage)),
+                          hint: Center(child: Text(_addAdvertiserChannelController.selectedGirlsPercentage.value)),
                           items: _percentages.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -525,7 +543,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                           isExpanded: true,
                           onChanged: (newVal) {
                             setState(() {
-                              _selectedGirlsPercentage = newVal!;
+                              _addAdvertiserChannelController.selectedGirlsPercentage.value = newVal!;
                             });
                           },
                         ),
@@ -549,8 +567,8 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
             child: Text(
               'النطاق الجغرافي للمتأثرين',
               style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
                   color: Color(0xff041D67)
               ),
             ),
@@ -559,178 +577,189 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
             children: [
 
               Expanded(
-                child:               GetBuilder<AddAdvertiserChannelController>(
+                child: GetBuilder<AddAdvertiserChannelController>(
                     init: AddAdvertiserChannelController(),
-                    builder: (controller) => Container(
-                      margin: const EdgeInsets.all(15.0),
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                          color: const Color(0xffC3CFE2),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(15),
-                              bottomRight: Radius.circular(15),
+                    builder: (controller) =>
+                        Container(
+                          margin: const EdgeInsets.all(15.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(
+                              color: const Color(0xffC3CFE2),
                             ),
-                            child: Container(
-                              // alignment: Alignment.center,
-                              width: 40.w,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 2,
-                                vertical: 11,
+                          ),
+                          child: Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  topRight: Radius.circular(15),
+                                  bottomRight: Radius.circular(15),
+                                ),
+                                child: Container(
+                                  // alignment: Alignment.center,
+                                  width: 40.w,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 2,
+                                    vertical: 11,
+                                  ),
+                                  // color: const Color(0xffE8E8E8),
+                                  child: Text(
+                                    "الدولة",
+                                    style: TextStyle(fontSize: 10.5.sp,
+                                        color: Color(0xff041D67)),
+                                  ),
+                                ),
                               ),
-                              // color: const Color(0xffE8E8E8),
-                              child: Text(
-                                "الدولة",
-                                style: TextStyle(fontSize: 10.5.sp, color: Color(0xff041D67)),
+                              Container(
+                                width: 2,
+                                height: 40.h,
+                                color: const Color(0xffC3CFE2),
                               ),
-                            ),
+                              Expanded(
+                                child: DropdownButton<Country>(
+                                  underline: const SizedBox.shrink(),
+                                  // icon: const Icon(Icons.keyboard_arrow_down),
+                                  icon: const SizedBox.shrink(),
+                                  hint:
+                                  Center(child: Text(
+                                      _selectedCountry?.name ?? '')),
+                                  items: _addAdvertiserChannelController.countries.map((Country value) {
+                                    return DropdownMenuItem<Country>(
+                                      value: value,
+                                      child: Text(value.name??''),
+                                    );
+                                  }).toList(),
+                                  // value: _selectedLocation,
+                                  // isDense: true,
+                                  isExpanded: true,
+                                  onChanged: (newVal) {
+                                    setState(() {
+                                      _selectedCountry = newVal!;
+                                      // if (_selectedCountry?.id != newVal.id) {
+                                      _selectedCity = null;
+                                      // }
+                                    });
+                                    controller.addToList(_selectedCountry);
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                          Container(
-                            width: 2,
-                            height: 40.h,
-                            color: const Color(0xffC3CFE2),
-                          ),
-                          Expanded(
-                            child: DropdownButton<Country>(
-                              underline: const SizedBox.shrink(),
-                              // icon: const Icon(Icons.keyboard_arrow_down),
-                              icon: const SizedBox.shrink(),
-                              hint:
-                              Center(child: Text(_selectedCountry?.name ?? '')),
-                              items: Country.countries.map((Country value) {
-                                return DropdownMenuItem<Country>(
-                                  value: value,
-                                  child: Text(value.name),
-                                );
-                              }).toList(),
-                              // value: _selectedLocation,
-                              // isDense: true,
-                              isExpanded: true,
-                              onChanged: (newVal) {
-                                setState(() {
-                                  _selectedCountry = newVal!;
-                                  // if (_selectedCountry?.id != newVal.id) {
-                                  _selectedCity = null;
-                                  // }
-                                });
-                                controller.addToList(_selectedCountry);
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
+                        )
                 ),
               ),
 
               Expanded(
-                child:  GetBuilder<AddAdvertiserChannelController>(
+                child: GetBuilder<AddAdvertiserChannelController>(
                     init: AddAdvertiserChannelController(),
-                    builder: (controller) => Container(
-                      margin: const EdgeInsets.all(15.0),
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                          color: const Color(0xffC3CFE2),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(15),
-                              bottomRight: Radius.circular(15),
+                    builder: (controller) =>
+                        Container(
+                          margin: const EdgeInsets.all(15.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(
+                              color: const Color(0xffC3CFE2),
                             ),
-                            child: Container(
-                              // alignment: Alignment.center,
-                              width: 40.w,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 2,
-                                vertical: 11,
+                          ),
+                          child: Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  topRight: Radius.circular(15),
+                                  bottomRight: Radius.circular(15),
+                                ),
+                                child: Container(
+                                  // alignment: Alignment.center,
+                                  width: 40.w,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 2,
+                                    vertical: 11,
+                                  ),
+                                  // color: const Color(0xffE8E8E8),
+                                  child: Text(
+                                    "المدينة",
+                                    style: TextStyle(fontSize: 10.5.sp,
+                                        color: Color(0xff041D67)),
+                                  ),
+                                ),
                               ),
-                              // color: const Color(0xffE8E8E8),
-                              child: Text(
-                                "المدينة",
-                                style: TextStyle(fontSize: 10.5.sp, color: Color(0xff041D67)),
+                              Container(
+                                width: 2,
+                                height: 40.h,
+                                color: const Color(0xffC3CFE2),
                               ),
-                            ),
+                              Expanded(
+                                child: DropdownButton<Area>(
+                                  underline: const SizedBox.shrink(),
+                                  // icon: const Icon(Icons.keyboard_arrow_down),
+                                  icon: const SizedBox.shrink(),
+                                  hint: Center(
+                                      child: Text(_selectedCity?.name ?? '')),
+                                  items: _addAdvertiserChannelController
+                                      .countries.isNotEmpty?_addAdvertiserChannelController
+                                      .countries[_addAdvertiserChannelController.countries.indexWhere(
+                                          (element) =>
+                                      _selectedCountry?.id ==
+                                          element.id) ==
+                                      -1
+                                      ? 0
+                                      : _addAdvertiserChannelController.countries.indexWhere((
+                                      element) =>
+                                  _selectedCountry?.id == element.id)]
+                                      .areas
+                                      ?.map((Area value) {
+                                    return DropdownMenuItem<Area>(
+                                      value: value,//enabled: _addAdvertiserChannelController.countries.length>1?false:true,
+                                      child: Text(value.name??''),
+                                    );
+                                  }).toList():[],
+                                  // value: _selectedLocation,
+                                  // isDense: true,
+                                  isExpanded: true,
+                                  onChanged: (newVal) {
+                                    setState(() {
+                                      _selectedCity = newVal ;
+                                    });
+                                    controller.addToList(_selectedCity);
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                          Container(
-                            width: 2,
-                            height: 40.h,
-                            color: const Color(0xffC3CFE2),
-                          ),
-                          Expanded(
-                            child: DropdownButton<City>(
-                              underline: const SizedBox.shrink(),
-                              // icon: const Icon(Icons.keyboard_arrow_down),
-                              icon: const SizedBox.shrink(),
-                              hint: Center(child: Text(_selectedCity?.name ?? '')),
-                              items: Country
-                                  .countries[Country.countries.indexWhere(
-                                      (element) =>
-                                  _selectedCountry?.id ==
-                                      element.id) ==
-                                  -1
-                                  ? 0
-                                  : Country.countries.indexWhere((element) =>
-                              _selectedCountry?.id == element.id)]
-                                  .cities
-                                  .map((City value) {
-                                return DropdownMenuItem<City>(
-                                  value: value,
-                                  child: Text(value.name),
-                                );
-                              }).toList(),
-                              // value: _selectedLocation,
-                              // isDense: true,
-                              isExpanded: true,
-                              onChanged: (newVal) {
-                                setState(() {
-                                  _selectedCity = newVal!;
-                                });
-                                controller.addToList(_selectedCity);
-
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
+                        )
                 ),
               ),
             ],
           ),
           GetBuilder<AddAdvertiserChannelController>(
               init: AddAdvertiserChannelController(),
-              builder: (controller) => Container(
-                padding: EdgeInsets.all(15),
-                child: Wrap(
-                  children: controller.citiesCountriesController.map<Widget>((e) => SelectedAreaWidget(title: "${e.name}",onPressed: (){
-                    controller.removeFromList(e);
-                    print(e.name);
-                  },)).toList()
-                  // <Widget>[
-                  //
-                  //   SelectedAreaWidget(title: "العالم العربي",),
-                  //   SelectedAreaWidget(title: "الخليج العربي",),
-                  //   SelectedAreaWidget(title: "السعودية",),
-                  //   SelectedAreaWidget(title: "الرياض",),
-                  //   SelectedAreaWidget(title: "جدة",),
-                  //   SelectedAreaWidget(title: "الرياض",),
-                  //   SelectedAreaWidget(title: "الرياض",),
-                  // ],
-                ),
-              )
-          ),
+              builder: (controller) =>
+                  Container(
+                    padding: EdgeInsets.all(15),
+                    child: Wrap(
+                        children: controller.citiesCountriesController.map<
+                            Widget>((e) =>
+                            SelectedAreaWidget(
+                              title: "${e.name}", onPressed: () {
+                              controller.removeFromList(e);
 
+                              print(e.name);
+                            },)).toList()
+                      // <Widget>[
+                      //
+                      //   SelectedAreaWidget(title: "العالم العربي",),
+                      //   SelectedAreaWidget(title: "الخليج العربي",),
+                      //   SelectedAreaWidget(title: "السعودية",),
+                      //   SelectedAreaWidget(title: "الرياض",),
+                      //   SelectedAreaWidget(title: "جدة",),
+                      //   SelectedAreaWidget(title: "الرياض",),
+                      //   SelectedAreaWidget(title: "الرياض",),
+                      // ],
+                    ),
+                  )
+          ),
 
 
           Padding(
@@ -742,13 +771,16 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
             ),
             child: Row(
               children: [
-                Expanded(child: InkWell(onTap: (){
-
+                Expanded(child: InkWell(onTap: () {
+                  _addAdvertiserChannelController.addChannel();
                 },
                   child: Container(
                     height: 40,
                     child: Center(
-                      child: Text("حفظ",style: TextStyle(color: Color(0xff4391D4),fontSize: 18,fontWeight: FontWeight.bold),),
+                      child: Text("حفظ", style: TextStyle(color: Color(
+                          0xff4391D4),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),),
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
@@ -759,20 +791,22 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                 SizedBox(
                   width: 20,
                 ),
-                Expanded(child: InkWell(onTap: (){
+                Expanded(child: InkWell(onTap: () {
 
                 },
                   child: Container(
                     height: 40,
                     child: Center(
-                      child: Text("الغاء",style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),),
+                      child: Text("الغاء", style: TextStyle(color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),),
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: Color(0xff4391D4),
 
                     ),
-                  ),)) ,
+                  ),)),
               ],
             ),
           ),
@@ -782,41 +816,41 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
   }
 }
 
-class Country {
-  final int id;
-  final String name;
-  final List<City> cities;
+// class Country {
+//   final int id;
+//   final String name;
+//   final List<City> cities;
+//
+//   Country(this.id, this.name, this.cities);
+//
+//   static final List<Country> countries = [
+//     Country(
+//       11,
+//       'مصر',
+//       [
+//         City(1, 'المنصورة'),
+//         City(2, 'القاهرة'),
+//         City(3, 'اﻷسكندرية'),
+//       ],
+//     ),
+//     Country(
+//       12,
+//       'السعودية',
+//       [
+//         City(4, 'مكة'),
+//         City(5, 'الرياض'),
+//         City(6, 'المدينة'),
+//       ],
+//     ),
+//   ];
+// }
 
-  Country(this.id, this.name, this.cities);
-
-  static final List<Country> countries = [
-    Country(
-      11,
-      'مصر',
-      [
-        City(1, 'المنصورة'),
-        City(2, 'القاهرة'),
-        City(3, 'اﻷسكندرية'),
-      ],
-    ),
-    Country(
-      12,
-      'السعودية',
-      [
-        City(4, 'مكة'),
-        City(5, 'الرياض'),
-        City(6, 'المدينة'),
-      ],
-    ),
-  ];
-}
-
-class City {
-  final int id;
-  final String name;
-
-  City(this.id, this.name);
-}
+// class City {
+//   final int id;
+//   final String name;
+//
+//   City(this.id, this.name);
+// }
 
 
 class CitiesCountries{

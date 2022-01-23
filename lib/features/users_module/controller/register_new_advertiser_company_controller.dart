@@ -217,19 +217,19 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
               "data", registerCompanyResponse.value.toJson());
           Get.toNamed('/chooseBakaPage');
         },
-        onError: (err,res) {
-          errorRegister.value=true;
-          isValid.value=false;
-          nationalIDMess.value=res.data!.personalId??'';
-          phoneMess.value=res.data!.phone??'';
-          nameMess.value=res.data!.username??'';
-          accountNameMess.value=res.data!.accountName??'';
-          emailMess.value=res.data!.email??'';
+        onError: (err, res) {
+          errorRegister.value = true;
+          isValid.value = false;
+          nationalIDMess.value = res.data!.personalId ?? '';
+          phoneMess.value = res.data!.phone ?? '';
+          nameMess.value = res.data!.username ?? '';
+          accountNameMess.value = res.data!.accountName ?? '';
+          emailMess.value = res.data!.email ?? '';
           // accountAdminNameMess.value=res.data!.;
           //  companyNameMess.value=''.obs;
           // recordIDMess.value=''.obs;
           checkLogin();
-          if(EasyLoading.isShow){
+          if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
           Get.snackbar(
@@ -239,6 +239,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
             backgroundColor: Colors.yellow,
             snackPosition: SnackPosition.BOTTOM,);
         });
+  }
     @override
     void onClose() {
       phoneController.dispose();
@@ -246,4 +247,3 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
       super.onClose();
     }
   }
-}

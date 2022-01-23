@@ -46,9 +46,9 @@ void main() async{
     ..indicatorSize = 45.0
     ..radius = 10.0
     ..progressColor = Colors.yellow
-    ..backgroundColor = Colors.green
+    ..backgroundColor = Color(0xff4391D4)
     ..indicatorColor = Colors.yellow
-    ..textColor = Colors.yellow
+    ..textColor = Colors.white
     ..maskColor = Colors.blue.withOpacity(0.5)
     ..userInteractions = true
     ..dismissOnTap = false;
@@ -97,7 +97,7 @@ class _MyAppState extends State<MyApp> {
          // fallbackLocale: LocalizationService.locale,
           builder: EasyLoading.init(),
           translations: LocalizationService(),
-          initialRoute: '/AdvertiserSettingsPage',
+          initialRoute: '/TaxSettingsPage',
           getPages: Routes.routes,
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',

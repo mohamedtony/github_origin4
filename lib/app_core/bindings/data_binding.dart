@@ -1,3 +1,5 @@
+import 'package:advertisers/features/add_advertiser_channel/controller/add_advertiser_channel_controller.dart';
+import 'package:advertisers/features/advertising_influence_channels/controller/advertising_influence_channels_controller.dart';
 import 'package:advertisers/features/users_module/controller/baka_details_controller.dart';
 import 'package:advertisers/features/users_module/controller/choose_baka_controller.dart';
 import 'package:advertisers/features/users_module/controller/forget_password_for_phone_controller.dart';
@@ -25,6 +27,9 @@ class DataBinding extends Bindings {
     Get.lazyPut(()=>RegisterPhoneController());
     Get.lazyPut(() => ChooseBakaController());
     Get.lazyPut(() => NewPasswordPage());
+    Get.lazyPut(() => AdvertisingInfluenceChannelsController());
+    Get.lazyPut(() =>AddAdvertiserChannelController());
+
 
   }
 }

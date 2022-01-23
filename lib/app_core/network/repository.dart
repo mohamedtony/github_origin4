@@ -44,7 +44,7 @@ class Repository {
     dioDio.post(base + path, data: formData, options: dio.Options(
         followRedirects: false,
         method: 'POST', validateStatus: (status) { return status! < 500; },
-         contentType: 'multipart/form-data',headers: {"Accept":"application/json"},
+         contentType: 'multipart/form-data',headers: {"Accept":"application/json", "Authorization":json["token"]},
         responseType: dio.ResponseType.json
 
     ))
@@ -73,11 +73,12 @@ class Repository {
 
   }
 
-  void post<RES>({
+  void get<RES>({
     String? path,
     context,
     Unmarshable<RES>? fromJson,
-    Object? json,
+    // Object? json,
+    Map<String, dynamic>? json,
     Function(int,RES)? onError,
     Function(RES)? onSuccess,
     bool? dontShow,
@@ -87,16 +88,17 @@ class Repository {
     }
     final encoder = JsonEncoder.withIndent("  ");
     final body = encoder.convert(json);
-    debugPrintSynchronously("POST " + base + path! + "\n" + body);
+    debugPrintSynchronously("GET " + base + path! + "\n" + body);
 
     client
-        .post(Uri.parse(base+ path,),
+        .get(Uri.parse(base+ path,),
       headers: {
         // 'Content-Type': 'application/json',
         // 'Accept-Type': 'application/json',
+        "Authorization":json!["token"],
         "Accept":"application/json",
       },
-      body: body,
+      //body: body,
     )
         .then((res) {
 

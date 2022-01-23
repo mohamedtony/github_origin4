@@ -1,3 +1,5 @@
+
+import 'package:advertisers/app_core/network/models/ChannelData.dart';
 import 'package:advertisers/app_core/network/requests/CreateSubscriptionRequest.dart';
 import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
 import 'package:advertisers/app_core/network/requests/login_client_request.dart';
@@ -66,4 +68,7 @@ Future<GetUseLocationsResponse> getUseLocations(@Header("Authorization") String 
 
 /*@GET('https://advertiser.cefour.com/api/v1/profile/categories')
 Future<GetCategoriesResponse> setOneCountryAndCities(@Header("Authorization") String token);*/
+@POST('https://advertiser.cefour.com/api/v1/profile/channels/add')
+Future<CreateSubscriptionResponse> addChannel(@Body() ChannelData channel,@Header("Authorization") String token);
+
 }

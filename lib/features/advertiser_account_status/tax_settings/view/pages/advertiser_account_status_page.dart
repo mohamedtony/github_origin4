@@ -18,12 +18,12 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
   String? _selectedFromDate;
   String? _selectedToDate;
 
-  final List<String> _ranges = [
-    '100 - 1000',
-    '1000 - 10000',
-    '10000 - 100000',
-    '100000 - 1000000'
-  ];
+  // final List<String> _ranges = [
+  //   '100 - 1000',
+  //   '1000 - 10000',
+  //   '10000 - 100000',
+  //   '100000 - 1000000'
+  // ];
   String _selectedRange = '';
 
   @override
@@ -121,10 +121,11 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                       ),
                       child: TextFormField(
                         enabled: false,
-                        initialValue: "اختر الحالة",
+                        //initialValue: "اختر الحالة",
                         style: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp),
                         // cursorColor: Colors.black,
                         // keyboardType: inputType,
+                        controller: controller.caseController,
                         decoration: new InputDecoration(
                           border: InputBorder.none,
                           focusedBorder: InputBorder.none,
@@ -136,12 +137,12 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                           isDense: true,
                           contentPadding:
                           EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                          hintText: "اسم الضريبة",),
+                          hintText: "اسم الحالة",),
                       ),
                     )),
                     Expanded(
                         flex: 7,
-                        child:  DropdownButton<String>(
+                        child:  DropdownButton(
                           underline: const SizedBox.shrink(),
                           icon: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 7),
@@ -149,8 +150,8 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                           ),
                           hint: _selectedRange.isNotEmpty
                               ? Center(child: Text(_selectedRange,style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),))
-                              : const Center(child: Text('إجازة عيد الأضحى المبارك',style: TextStyle(color:Color(0xff041D67) ,fontSize: 16),)),
-                          items: _ranges.map((String value) {
+                              : const Center(child: Text('السبب',style: TextStyle(color:Color(0xff041D67) ,fontSize: 16),)),
+                          items: controller.ranges.map((value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),
@@ -161,7 +162,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                           isExpanded: true,
                           onChanged: (newVal) {
                             setState(() {
-                              _selectedRange = newVal!;
+                              _selectedRange = newVal.toString();
                             });
                           },
                         )),
@@ -185,10 +186,11 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
               elevation: 5,
               child: TextFormField(
                 maxLines: 2,
-                initialValue: "...............................................",
+                //initialValue: "...............................................",
                 style: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp),
                 // cursorColor: Colors.black,
                 // keyboardType: inputType,
+                controller: Get.find<AdvertiserAccountStatusController>().messageController,
                 decoration: new InputDecoration(
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
@@ -197,7 +199,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                   disabledBorder: InputBorder.none,
                   contentPadding:
                   EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                  hintText: "رقم الضريبة",),
+                  hintText: "...............................................",hintStyle: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp)),
                 // hintText: "1236532897120",hintStyle: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp),),
               ),
             ),
@@ -222,7 +224,9 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                         if (result != null) {
                           setState(() {
                             _selectedFromDate = result.toString();
+
                           });
+                          Get.find<AdvertiserAccountStatusController>().from.value=result.toString();
                         }
                       }
                       _showDatePicker();
@@ -252,6 +256,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                             setState(() {
                               _selectedToDate = result.toString();
                             });
+                            Get.find<AdvertiserAccountStatusController>().to.value=result.toString();
                           }
                         }
                         _showDatePicker();
@@ -287,7 +292,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
             child: Row(
               children: [
                 Expanded(child: InkWell(onTap: (){
-
+                 Get.find<AdvertiserAccountStatusController>().postStopProfile();
                 },
                   child: Container(
                     height: 40,

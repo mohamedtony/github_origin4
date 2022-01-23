@@ -41,6 +41,7 @@ class ClientSettingPageController extends GetxController  {
 
   @override
   void onInit() {
+   // EasyLoading.show(status: 'انتظر');
     // TODO: implement onInit
     kayanNameController = TextEditingController(text: 'الراشد للاوانى الفخارية');
     accountNameEdit= TextEditingController(text: '# El rashid');
