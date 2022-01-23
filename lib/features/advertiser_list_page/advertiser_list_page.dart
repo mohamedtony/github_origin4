@@ -388,7 +388,7 @@ class AdvertiserListPage extends StatelessWidget {
       body:ListView(
         children: [
           AdvertiseListItem(icon: 'images/setting_icon.svg',title: 'اعدادات الحساب التجارى',listTilePressed: (){
-            print('pressed1');
+            Get.toNamed('/AdvertiserSettingsPage');
           },),
           AdvertiseListItem(icon: 'images/menu_icon.svg',title: 'الطلبات',listTilePressed: (){
             print('pressed2');

@@ -10,7 +10,7 @@ import '../../main.dart';
 
 class ClientListPage extends StatelessWidget {
   ClientListPage({Key? key}) : super(key: key);
-  var controller = Get.put(AdvertiseListController());
+  //var controller = Get.put(AdvertiseListController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -390,7 +390,8 @@ class ClientListPage extends StatelessWidget {
           ListView(
             children: [
               ClientListItem(icon: 'images/setting_person.svg',title: 'الاعدادات الرئيسية',listTilePressed: (){
-                print('pressed1');
+                print("here");
+                Get.toNamed('/clientSettingPage');
 
               },),
               ClientListItem(icon: 'images/menu_icon.svg',title: 'طلباتى',listTilePressed: (){
@@ -421,15 +422,15 @@ class ClientListPage extends StatelessWidget {
           ),
 
 
-          InkWell(
-            onTap: (){
-              Get.back();
-            },
-            child: Container(
-              alignment: Alignment.centerLeft,
-              //margin: EdgeInsets.only(left: 15.0),
-              padding: EdgeInsets.only(
-                  top: 8.0, bottom: 8.0, right: 12, left: 0.0),
+          Container(
+            alignment: Alignment.centerLeft,
+            //margin: EdgeInsets.only(left: 15.0),
+            padding: EdgeInsets.only(
+                top: 8.0, bottom: 8.0, right: 12, left: 0.0),
+            child: InkWell(
+              onTap: (){
+                Get.back();
+              },
               child: Image.asset(
                 'images/croped_img.png',
                 fit: BoxFit.fill,

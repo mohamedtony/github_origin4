@@ -17,6 +17,7 @@ import 'package:advertisers/features/blocked_users_page/blocked_users_page.dart'
 import 'package:advertisers/features/chat/view/pages/chat_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page.dart';
+import 'package:advertisers/features/client_setting_page/client_setting_page_controller.dart';
 import 'package:advertisers/features/customer_order_invoice/view/customer_order_invoice_page.dart';
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation.dart';
@@ -252,7 +253,10 @@ class Routes {
     GetPage(
         name: '/clientSettingPage',
         page: () => ClientSettingPage(),
-        binding: ClientSettingBinding()
+       // binding: ClientSettingBinding()
+  binding: BindingsBuilder(() {
+  Get.lazyPut<ClientSettingPageController>(() => ClientSettingPageController());
+  }),
     ),
   ];
 }

@@ -10,6 +10,7 @@ ClientProfileModel _$ClientProfileModelFromJson(Map<String, dynamic> json) =>
     ClientProfileModel(
       id: json['id'] as int?,
       username: json['username'] as String?,
+      manager_name: json['manager_name'] as String?,
       account_name: json['account_name'] as String?,
       personal_id: json['personal_id'] as String?,
       email: json['email'] as String?,
@@ -22,6 +23,12 @@ ClientProfileModel _$ClientProfileModelFromJson(Map<String, dynamic> json) =>
       area_id: json['area_id'] as int?,
       token: json['token'] as String?,
       chat: json['chat'] as bool?,
+      country: json['country'] == null
+          ? null
+          : CountryWithFlag.fromJson(json['country'] as Map<String, dynamic>),
+      followers: json['followers'] as int?,
+      rate: json['rate'] as String?,
+      wallet: json['wallet'] as int?,
     );
 
 Map<String, dynamic> _$ClientProfileModelToJson(ClientProfileModel instance) =>
@@ -29,6 +36,8 @@ Map<String, dynamic> _$ClientProfileModelToJson(ClientProfileModel instance) =>
       'id': instance.id,
       'username': instance.username,
       'account_name': instance.account_name,
+      'manager_name': instance.manager_name,
+      'country': instance.country,
       'personal_id': instance.personal_id,
       'email': instance.email,
       'phone': instance.phone,
@@ -40,4 +49,7 @@ Map<String, dynamic> _$ClientProfileModelToJson(ClientProfileModel instance) =>
       'area_id': instance.area_id,
       'token': instance.token,
       'chat': instance.chat,
+      'followers': instance.followers,
+      'rate': instance.rate,
+      'wallet': instance.wallet,
     };

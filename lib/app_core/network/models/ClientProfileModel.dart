@@ -1,3 +1,4 @@
+import 'package:advertisers/app_core/network/models/CountryWithFlag.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'ClientProfileModel.g.dart';
 
@@ -6,6 +7,8 @@ class ClientProfileModel {
   int? id;
   String? username;
   String? account_name;
+  String? manager_name;
+  CountryWithFlag? country;
   String? personal_id;
   String? email;
   String? phone;
@@ -17,9 +20,13 @@ class ClientProfileModel {
   int? area_id;
   String? token;
   bool? chat;
+  int? followers;
+  String? rate;
+  int? wallet;
 
-  ClientProfileModel({this.id, this.username, this.account_name,this.personal_id,this.email,
-    this.phone,this.type,this.role,this.image,this.blocked_at,this.country_id,this.area_id,this.token,this.chat});
+
+  ClientProfileModel({this.id, this.username, this.manager_name,this.account_name,this.personal_id,this.email,
+    this.phone,this.type,this.role,this.image,this.blocked_at,this.country_id,this.area_id,this.token,this.chat,this.country,this.followers,this.rate,this.wallet});
 
   factory ClientProfileModel.fromJson(Map<String, dynamic> json) => _$ClientProfileModelFromJson(json);
 

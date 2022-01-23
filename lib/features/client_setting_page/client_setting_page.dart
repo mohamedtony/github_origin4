@@ -27,7 +27,6 @@ class ClientSettingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(165.0),
@@ -52,28 +51,38 @@ class ClientSettingPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(6.0),
                           border: Border.all(color: Colors.white, width: 1),
                         ),
-                        child: Obx(()=>Container(
+                        child: Obx(() => Container(
                             padding: EdgeInsets.all(
                               4.0,
                             ),
-                            child: controller.imagePath.value.isNotEmpty?Image.file(
-                              File(controller.imagePath.value),
-                              width: 50.0,
-                              height: 60.0,
-                              fit: BoxFit.fill,
-                            ):CachedNetworkImage(
-                              imageUrl: controller.clientProfileModel.value.image??'',
-                              placeholder: (context, url) =>  const SpinKitThreeBounce(color: Colors.grey, size: 25,),
-                              errorWidget: (context, url, error) => Icon(Icons.error),
-                              width: 50.0,
-                              height: 60.0,
-                              fit: BoxFit.fitHeight,
-                            )/*Image.asset(
+                            child: controller.imagePath.value.isNotEmpty
+                                ? Image.file(
+                                    File(controller.imagePath.value),
+                                    width: 50.0,
+                                    height: 60.0,
+                                    fit: BoxFit.fill,
+                                  )
+                                : CachedNetworkImage(
+                                    imageUrl: controller
+                                            .clientProfileModel.value.image ??
+                                        '',
+                                    placeholder: (context, url) =>
+                                        const SpinKitThreeBounce(
+                                      color: Colors.grey,
+                                      size: 25,
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
+                                    width: 50.0,
+                                    height: 60.0,
+                                    fit: BoxFit.fitHeight,
+                                  ) /*Image.asset(
                               'images/image1.jpg',
                               width: 50.0,
                               height: 60.0,
                               fit: BoxFit.fitHeight,
-                            )*/,
+                            )*/
+                            ,
                             decoration: BoxDecoration(
                               //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
                               borderRadius: BorderRadius.circular(8.0),
@@ -234,7 +243,7 @@ class ClientSettingPage extends StatelessWidget {
                     children: [
                       Container(
                         margin: EdgeInsets.only(
-                            right: 3.0, left: 20.0, bottom: 10.0),
+                            right: 3.0, left: 8.0, bottom: 10.0),
                         alignment: Alignment.center,
                         child: Text(
                           'فرد',
@@ -245,7 +254,48 @@ class ClientSettingPage extends StatelessWidget {
                               fontWeight: FontWeight.w400),
                         ),
                       ),
-                      Container(
+                      Obx(()=>InkWell(
+                        onTap: controller.isEnabled.value
+                            ? () {
+                          if (controller.accountType.value.isNotEmpty &&
+                              controller.accountType.value == "client") {
+                            controller.accountType.value = "company";
+                          } else {
+                            controller.accountType.value = "client";
+                          }
+                        }
+                            : () {},
+                        child: Container(
+                          child: Obx(() =>
+                          controller.accountType.value.isNotEmpty &&
+                              controller.accountType.value == "client"
+                              ? Container(
+                            //margin: EdgeInsets.only(left: 10.0,bottom: 10.0),
+                            padding: EdgeInsets.only(
+                                left: 10.0, bottom: 10.0, top: 2.0),
+                            child: Image.asset(
+                              'images/switch_icon_right.png',
+                              scale: 2,
+                              width: 45,
+                              height: 40,
+                              fit: BoxFit.fill,
+                            ),
+                          )
+                              : Container(
+                            padding: EdgeInsets.only(
+                                right: 10.0, bottom: 10.0, top: 2.0),
+                            //margin: EdgeInsets.only(bottom: 10.0),
+                            child: Image.asset(
+                              'images/switch_icon_left.png',
+                              scale: 2,
+                              width: 45,
+                              height: 40,
+                              fit: BoxFit.fill,
+                            ),
+                          )),
+                        ),
+                      )),
+                      /* Container(
                           // height: 70,
                           margin: EdgeInsets.only(bottom: 6.0),
                           child: Image.asset(
@@ -253,7 +303,7 @@ class ClientSettingPage extends StatelessWidget {
                             scale: 2,
                           )
 
-                          /*Switch(
+                          */ /*Switch(
                           onChanged: (s){
 
                           },
@@ -264,8 +314,8 @@ class ClientSettingPage extends StatelessWidget {
                          // inactiveTrackColor: Colors.grey,
                           activeThumbImage: AssetImage('images/switch_icon.png'),
                           inactiveThumbImage: AssetImage('images/inactive_img.png'),
-                        ),*/
-                          ),
+                        ),*/ /*
+                          ),*/
                       Container(
                         margin: EdgeInsets.only(
                             right: 3.0, left: 20.0, bottom: 10.0),
@@ -285,7 +335,8 @@ class ClientSettingPage extends StatelessWidget {
               ],
             ),
           ),
-          Container(
+
+          controller.accountType.value == "company"?Container(
             height: 42,
             margin: EdgeInsets.only(top: 0.0, left: 22.0, right: 22.0),
             child: Row(
@@ -355,6 +406,80 @@ class ClientSettingPage extends StatelessWidget {
                               hintText: 'الراشد للاوانى الفخارية',
                               fillColor: Colors.white70),
                         )),
+                  ),
+                ),
+              ],
+            ),
+          ):Container(
+            height: 42,
+            margin: EdgeInsets.only(top: 0.0, left: 22.0, right: 22.0),
+            child: Row(
+              children: [
+                Container(
+                    height: 42,
+                    width: 110,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 0.2),
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(12.0),
+                            bottomRight: Radius.circular(12.0)),
+                        color: AppColors.bottomSheetTabColor),
+                    child: Text(
+                      "الاسم",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16.0,
+                          color: AppColors.tabColor),
+                    )),
+                Expanded(
+                  child: Container(
+                    height: 42,
+                    decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                              color: AppColors.editProfileContainerColor,
+                              width: 0.4),
+                          bottom: BorderSide(
+                              color: AppColors.editProfileContainerColor,
+                              width: 0.4),
+                          left: BorderSide(
+                              color: AppColors.editProfileContainerColor,
+                              width: 0.4),
+                          right: BorderSide(
+                              color: AppColors.editProfileContainerColor,
+                              width: 0.4),
+                        ),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12.0),
+                            bottomLeft: Radius.circular(12.0)),
+                        color: Colors.white),
+                    child: Obx(() => TextField(
+                      textAlign: TextAlign.start,
+                      textAlignVertical: TextAlignVertical.center,
+                      controller: controller.userNameController,
+                      enabled: controller.isEnabled.value,
+                      style: TextStyle(
+                          color: (AppColors.editProfileTextColorOpa)
+                              .withOpacity(0.51),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.0),
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(
+                              left: 10.0, right: 14.0, bottom: 12.0),
+                          // isCollapsed: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(70.0),
+                            borderSide: BorderSide(
+                              width: 0,
+                              style: BorderStyle.none,
+                            ),
+                          ),
+                          filled: true,
+                          hintStyle: TextStyle(color: Colors.grey[350]),
+                          hintText: 'الراشد للاوانى الفخارية',
+                          fillColor: Colors.white70),
+                    )),
                   ),
                 ),
               ],
@@ -437,7 +562,7 @@ class ClientSettingPage extends StatelessWidget {
               ],
             ),
           ),
-          Container(
+          controller.accountType.value == "company"?Container(
             height: 42,
             margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
             child: Row(
@@ -513,7 +638,7 @@ class ClientSettingPage extends StatelessWidget {
                 ),
               ],
             ),
-          ),
+          ):SizedBox(),
           Container(
             height: 42,
             margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
@@ -935,7 +1060,7 @@ class ClientSettingPage extends StatelessWidget {
                               onChanged: print,
                               selectedItem: controller.area.value,
                             )
-                          : CircularProgressIndicator(),
+                          : SizedBox(),
                     )),
               ),
             ],
@@ -971,6 +1096,104 @@ class ClientSettingPage extends StatelessWidget {
                   ),
                 ),
                 Container(
+                  margin: EdgeInsets.only(top: 3.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                            right: 3.0, left: 8.0, bottom: 10.0),
+                        alignment: Alignment.center,
+                        child: Text(
+                          'نعم',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: AppColors.tabColor,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                      Obx(()=>InkWell(
+                        onTap: controller.isEnabled.value
+                            ? () {
+                          if (controller.isChat.value) {
+                            controller.isChat.value = false;
+                          } else {
+                            controller.isChat.value = true;
+                          }
+                        }
+                            : () {},
+                        child: Container(
+                          child: controller.isChat.value
+                              ? Container(
+                            //margin: EdgeInsets.only(left: 10.0,bottom: 10.0),
+                            padding: EdgeInsets.only(
+                              left: 10.0,
+                            ),
+                            child: Image.asset(
+                              'images/switch_icon_right.png',
+                              scale: 2,
+                              width: 45,
+                              height: 40,
+                              fit: BoxFit.fill,
+                            ),
+                          )
+                              : Container(
+                            padding: EdgeInsets.only(
+                              right: 10.0,
+                            ),
+                            //margin: EdgeInsets.only(bottom: 10.0),
+                            child: Image.asset(
+                              'images/switch_icon_left.png',
+                              scale: 2,
+                              width: 45,
+                              height: 40,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                      ),),
+                      /* Container(
+                          // height: 70,
+                          margin: EdgeInsets.only(bottom: 6.0),
+                          child: Image.asset(
+                            'images/switch_icon_left.png',
+                            scale: 2,
+                          )
+
+                          */ /*Switch(
+                          onChanged: (s){
+
+                          },
+                          value: true,
+                          //activeColor: Colors.white,
+                         /// activeTrackColor: AppColors.beginColor,
+                         // inactiveThumbColor: Colors.white,
+                         // inactiveTrackColor: Colors.grey,
+                          activeThumbImage: AssetImage('images/switch_icon.png'),
+                          inactiveThumbImage: AssetImage('images/inactive_img.png'),
+                        ),*/ /*
+                          ),*/
+                      Container(
+                        margin: EdgeInsets.only(
+                          right: 3.0,
+                          left: 20.0,
+                          bottom: 10.0,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          'لا',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: AppColors.tabColor,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+                /*Container(
                   //margin: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
                   child: Row(
                     //mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -983,7 +1206,7 @@ class ClientSettingPage extends StatelessWidget {
                           children: [
                             Container(
                               margin: EdgeInsets.only(
-                                  right: 3.0, left: 14.0, bottom: 10.0),
+                                  right: 3.0, left: 8.0, bottom: 10.0),
                               alignment: Alignment.center,
                               child: Text(
                                 'نعم',
@@ -1011,20 +1234,30 @@ class ClientSettingPage extends StatelessWidget {
                                   child: Obx(() =>
                                   controller.isChat.value != null &&
                                       controller.isChat.value
-                                      ? Image.asset(
-                                    'images/switch_icon_right.png',
-                                    scale: 1,
-                                    width: 45,
-                                    height: 55,
+                                      ?  Container(
+                                    //margin: EdgeInsets.only(left: 10.0,bottom: 10.0),
+                                    padding: EdgeInsets.only(left: 10.0,bottom: 10.0,top: 2.0),
+                                    child: Image.asset(
+                                      'images/switch_icon_right.png',
+                                      scale:2,
+                                      width: 45,
+                                      height: 45,
+                                      fit: BoxFit.fill,
+                                    ),
                                   )
-                                      : Image.asset(
-                                    'images/switch_icon_left.png',
-                                    scale: 1,
-                                    width: 45,
-                                    height: 55,
+                                      : Container(
+                                    padding: EdgeInsets.only(left: 10.0,bottom: 10.0,top: 2.0),
+                                    //margin: EdgeInsets.only(bottom: 10.0),
+                                    child: Image.asset(
+                                      'images/switch_icon_left.png',
+                                      scale:2,
+                                      width: 45,
+                                      height: 45,
+                                      fit: BoxFit.fill,
+                                    ),
                                   ))
 
-                                /*Switch(
+                                */ /*Switch(
                           onChanged: (s){
 
                           },
@@ -1035,12 +1268,12 @@ class ClientSettingPage extends StatelessWidget {
                          // inactiveTrackColor: Colors.grey,
                           activeThumbImage: AssetImage('images/switch_icon.png'),
                           inactiveThumbImage: AssetImage('images/inactive_img.png'),
-                        ),*/
+                        ),*/ /*
                               ),
                             )),
                             Container(
                               margin: EdgeInsets.only(
-                                right: 10.0,
+                                right: 3.0,
                                 left: 20.0,
                                 bottom: 10.0,
                               ),
@@ -1059,7 +1292,7 @@ class ClientSettingPage extends StatelessWidget {
                       )
                     ],
                   ),
-                ),
+                ),*/
               ],
             ),
           ),
@@ -1118,7 +1351,7 @@ class ClientSettingPage extends StatelessWidget {
                           inactiveThumbImage: AssetImage('images/inactive_img.png'),
                         ),*/
                                 ),
-                           /* Container(
+                            /* Container(
                                 // height: 70,
                                 margin: EdgeInsets.only(bottom: 0.0, top: 2),
                                 child: Image.asset(
@@ -1126,7 +1359,7 @@ class ClientSettingPage extends StatelessWidget {
                                   scale: 2,
                                 )
 
-                                *//*Switch(
+                                */ /*Switch(
                           onChanged: (s){
 
                           },
@@ -1137,36 +1370,44 @@ class ClientSettingPage extends StatelessWidget {
                          // inactiveTrackColor: Colors.grey,
                           activeThumbImage: AssetImage('images/switch_icon.png'),
                           inactiveThumbImage: AssetImage('images/inactive_img.png'),
-                        ),*//*
+                        ),*/ /*
                                 ),*/
 
-                            Obx(()=>InkWell(
-                              onTap: controller.isEnabled.value?(){
-                                if(controller.isNotification.value){
-                                  controller.isNotification.value = false;
-                                }else{
-                                  controller.isNotification.value = true;
+                            InkWell(
+                              onTap: controller.isEnabled.value
+                                  ? () {
+                                if (controller.isNotification.value) {
+                                  controller.isNotification.value =
+                                  false;
+                                } else {
+                                  controller.isNotification.value =
+                                  true;
                                 }
-                              }:(){
-
-                              },
+                              }
+                                  : () {},
                               child: Container(
                                 // height: 70,
                                   margin: EdgeInsets.only(bottom: 0.0),
                                   child: Obx(() =>
-                                  controller.isNotification.value != null &&
+                                  controller.isNotification.value !=
+                                      null &&
                                       controller.isNotification.value
-                                      ? Image.asset(
-                                    'images/switch_icon_right.png',
-                                    scale: 1,
-                                    width: 45,
-                                    height: 55,
+                                      ? Container(
+                                    padding: EdgeInsets.only(),
+                                    child: Image.asset(
+                                      'images/switch_icon_right.png',
+                                      scale: 2,
+                                      width: 45,
+                                      height: 55,
+                                      fit: BoxFit.fill,
+                                    ),
                                   )
                                       : Image.asset(
                                     'images/switch_icon_left.png',
-                                    scale: 1,
+                                    scale: 2,
                                     width: 45,
                                     height: 55,
+                                    fit: BoxFit.fill,
                                   ))
 
                                 /*Switch(
@@ -1182,8 +1423,7 @@ class ClientSettingPage extends StatelessWidget {
                           inactiveThumbImage: AssetImage('images/inactive_img.png'),
                         ),*/
                               ),
-                            ),),
-
+                            ),
                             Container(
                                 // height: 70,
                                 margin: EdgeInsets.only(

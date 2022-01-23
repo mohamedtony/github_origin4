@@ -18,7 +18,7 @@ class ClientSettingPageController extends GetxController  {
   var isOpend = false;
   var position = -1;
   var tabIndex = 1.obs;
-  TextEditingController? kayanNameController,accountNameEdit,accountOwner,phoneController,emailController,accountRegisteredNumController;
+  TextEditingController? kayanNameController,accountNameEdit,accountOwner,phoneController,emailController,accountRegisteredNumController,userNameController;
   var flag = false.obs;
   var isEnabled=false.obs;
 
@@ -38,11 +38,12 @@ class ClientSettingPageController extends GetxController  {
    late XFile xFile ;
    late File imageFile;
    var imagePath = ''.obs;
-
+  var accountType = ''.obs;
   @override
   void onInit() {
    // EasyLoading.show(status: 'انتظر');
     // TODO: implement onInit
+    userNameController = TextEditingController(text: 'الراشد للاوانى الفخارية');
     kayanNameController = TextEditingController(text: 'الراشد للاوانى الفخارية');
     accountNameEdit= TextEditingController(text: '# El rashid');
     accountOwner= TextEditingController(text: 'محمد تونى حماد');
@@ -81,12 +82,12 @@ class ClientSettingPageController extends GetxController  {
       if(value.data!=null&&value.status==200){
         Get.back();
         clientProfileModel.value = value.data!;
-        kayanNameController?.text = "tony";
-        if(clientProfileModel.value.account_name!=null) {
-          accountNameEdit?.text = clientProfileModel.value.account_name!;
+        //kayanNameController?.text = "tony";
+        if(clientProfileModel.value.username!=null) {
+          userNameController?.text = clientProfileModel.value.username!;
         }
         if(clientProfileModel.value.account_name!=null) {
-          accountNameEdit?.text = clientProfileModel.value.account_name!;
+          accountNameEdit?.text = "# "+clientProfileModel.value.account_name!;
         }
         if(clientProfileModel.value.phone!=null) {
           phoneController?.text = clientProfileModel.value.phone!;
@@ -102,6 +103,8 @@ class ClientSettingPageController extends GetxController  {
         }else{
           isChat.value = false;
         }
+        if(clientProfileModel.value.type !=null)
+          accountType.value = clientProfileModel.value.type!;
 
         /*if(clientProfileModel.value.r!=null){
           isChat.value = clientProfileModel.value.chat!;
