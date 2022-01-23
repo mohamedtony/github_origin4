@@ -63,4 +63,7 @@ Future<GetCategoriesResponse> updateUserCategories(@Body() UpdateUserCategoryReq
 
 @GET('https://advertiser.cefour.com/api/v1/profile/areas')
 Future<GetUseLocationsResponse> getUseLocations(@Header("Authorization") String token);
+
+/*@GET('https://advertiser.cefour.com/api/v1/profile/categories')
+Future<GetCategoriesResponse> setOneCountryAndCities(@Header("Authorization") String token);*/
 }
