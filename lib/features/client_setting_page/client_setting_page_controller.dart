@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/app_core/network/models/ClientProfileModel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 
 class ClientSettingPageController extends GetxController  {
@@ -30,6 +33,11 @@ class ClientSettingPageController extends GetxController  {
   var phone = '';
 // switches the value between true/false
  // flag.toggle();
+  var isChat = false.obs;
+  var isNotification = false.obs;
+   late XFile xFile ;
+   late File imageFile;
+   var imagePath = ''.obs;
 
   @override
   void onInit() {
@@ -88,11 +96,23 @@ class ClientSettingPageController extends GetxController  {
         if(clientProfileModel.value.personal_id!=null) {
           accountRegisteredNumController?.text = clientProfileModel.value.personal_id!;
         }
+        if(clientProfileModel.value.chat!=null){
+          isChat.value = clientProfileModel.value.chat!;
+        }else{
+          isChat.value = false;
+        }
 
+        /*if(clientProfileModel.value.r!=null){
+          isChat.value = clientProfileModel.value.chat!;
+        }else{
+          isChat.value = false;
+        }
+*/
         client!.getCountries().then((value){
           if(value.data!=null){
             countries.value = value.data!;
-            countries.value.forEach((element) {
+            countries.insert(0, Country(id: -1,name: 'الدولة'));
+            countries.forEach((element) {
               Logger().i(element.toJson());
             });
             Country? countryIn = countries.firstWhereOrNull((element) => element.id==clientProfileModel.value.country_id);
@@ -100,6 +120,7 @@ class ClientSettingPageController extends GetxController  {
               country.value = countryIn;
               if(countryIn.areas!=null) {
                 areas.value = countryIn.areas!;
+                areas.insert(0, Area(id: -1,name: 'المدينة'));
                 Area? areaIn = countryIn.areas?.firstWhereOrNull((
                     element) => element.id == clientProfileModel.value.area_id);
 
@@ -111,7 +132,8 @@ class ClientSettingPageController extends GetxController  {
                 }
               }
             }else{
-               countryIn = countries.value[1];
+               countryIn = countries.value[2];
+               country.value = countryIn;
               if(countryIn.areas!=null) {
                 areas.value = countryIn.areas!;
                 Area? areaIn = countryIn.areas?.firstWhereOrNull((
@@ -204,6 +226,62 @@ class ClientSettingPageController extends GetxController  {
 
   late TabController controller;
 
+  Future<void> showChoiceImageDialog(BuildContext context)
+  {
+    return showDialog(context: context,builder: (BuildContext context){
+
+      return AlertDialog(
+        title: Text("Choose option",style: TextStyle(color: Colors.blue),),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: (){
+                  _openGallery(context);
+                },
+                title: Text("Gallery"),
+                leading: Icon(Icons.account_box,color: Colors.blue,),
+              ),
+
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: (){
+                  _openCamera(context);
+                },
+                title: Text("Camera"),
+                leading: Icon(Icons.camera,color: Colors.blue,),
+              ),
+            ],
+          ),
+        ),);
+    });
+  }
+  void _openGallery(BuildContext context) async{
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if(pickedFile!=null){
+      xFile = pickedFile;
+      imageFile = File(xFile.path);
+      imagePath.value =xFile.path;
+    }
+   /* setState(() {
+      imageFile = pickedFile!;
+    });*/
+
+    Navigator.pop(context);
+  }
+  void _openCamera(BuildContext context) async{
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+    /* setState(() {
+      imageFile = pickedFile!;
+    });*/
+    if(pickedFile!=null){
+      xFile = pickedFile;
+      imageFile = File(xFile.path);
+      imagePath.value =xFile.path;
+    }
+    Navigator.pop(context);
+  }
   @override
   void onClose() {
     // TODO: implement onClose

@@ -7,6 +7,7 @@ import 'package:advertisers/app_core/network/responses/CreateSubscriptionRespons
 import 'package:advertisers/app_core/network/responses/GetBlockedUsersResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetCategoriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetMyProfileInfoResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetUseLocationsResponse.dart';
 import 'package:advertisers/app_core/network/responses/LoginClientResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/app_core/network/responses/SubscriptionDetailsResponse.dart';
@@ -60,4 +61,6 @@ Future<GetCategoriesResponse> getCategories(@Header("Authorization") String toke
 @POST('https://advertiser.cefour.com/api/v1/profile/categories')
 Future<GetCategoriesResponse> updateUserCategories(@Body() UpdateUserCategoryRequest updateUserCategoryRequest,@Header("Authorization") String token);
 
+@GET('https://advertiser.cefour.com/api/v1/profile/areas')
+Future<GetUseLocationsResponse> getUseLocations(@Header("Authorization") String token);
 }
