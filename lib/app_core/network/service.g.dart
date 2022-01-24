@@ -270,6 +270,83 @@ class _RestClient implements RestClient {
     return value;
   }
 
+  @override
+  Future<GetUseLocationsResponse> setOneCountryAndCities(
+      oneCountryAndCitiesRequest, token) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(oneCountryAndCitiesRequest.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<GetUseLocationsResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options,
+                    'https://advertiser.cefour.com/api/v1/profile/areas',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = GetUseLocationsResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<GetMyProfileInfoResponse> updateMyProfile(token, username,
+      account_name, email, phone, country_id, area_id, role, type, personal_id,
+      {file}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{r'Accept': token};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = FormData();
+    if (username != null) {
+      _data.fields.add(MapEntry('username', username));
+    }
+    if (account_name != null) {
+      _data.fields.add(MapEntry('account_name', account_name));
+    }
+    if (email != null) {
+      _data.fields.add(MapEntry('email', email));
+    }
+    if (phone != null) {
+      _data.fields.add(MapEntry('phone', phone));
+    }
+    if (country_id != null) {
+      _data.fields.add(MapEntry('country_id', country_id.toString()));
+    }
+    if (area_id != null) {
+      _data.fields.add(MapEntry('area_id', area_id.toString()));
+    }
+    if (role != null) {
+      _data.fields.add(MapEntry('role', role));
+    }
+    if (type != null) {
+      _data.fields.add(MapEntry('type', type));
+    }
+    if (personal_id != null) {
+      _data.fields.add(MapEntry('personal_id', personal_id));
+    }
+    if (file != null) {
+      _data.files.add(MapEntry(
+          'image',
+          MultipartFile.fromFileSync(file.path,
+              filename: file.path.split(Platform.pathSeparator).last)));
+    }
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<GetMyProfileInfoResponse>(Options(
+                method: 'POST',
+                headers: _headers,
+                extra: _extra,
+                contentType: 'multipart/form-data')
+            .compose(_dio.options,
+                'https://advertiser.cefour.com/api/v1/profile/update',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = GetMyProfileInfoResponse.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||
