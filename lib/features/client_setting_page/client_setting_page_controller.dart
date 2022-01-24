@@ -3,16 +3,20 @@ import 'dart:io';
 import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/app_core/network/models/ClientProfileModel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
+import 'package:advertisers/app_core/network/requests/UpdateProfileRequest.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/main.dart';
 import 'package:advertisers/shared/loading_dialog.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
+import 'package:phone_number/phone_number.dart';
 
 class ClientSettingPageController extends GetxController  {
   var isOpend = false;
@@ -29,7 +33,7 @@ class ClientSettingPageController extends GetxController  {
   var area = Area().obs;
   var smsOTP = ''.obs;
   var verificationId = '';
-  var countryCode = '+966'.obs;
+  var countryCode ='SA'.obs;
   var phone = '';
 // switches the value between true/false
  // flag.toggle();
@@ -39,6 +43,9 @@ class ClientSettingPageController extends GetxController  {
    late File imageFile;
    var imagePath = ''.obs;
   var accountType = ''.obs;
+  var isLoadingLocation = true.obs;
+  var isValidPhone = false.obs;
+  var   e164 =''.obs;
   @override
   void onInit() {
    // EasyLoading.show(status: 'انتظر');
@@ -57,6 +64,29 @@ class ClientSettingPageController extends GetxController  {
     this.tabIndex.value = position;
 
   }
+  Future<void> initPlatformState() async {
+    try {
+      print("dailcode= "+countryCode.value+phoneController!.text);
+
+
+      final parsed = await PhoneNumberUtil().parse(phoneController!.text, regionCode: countryCode.value);
+    //final parsed = await PhoneNumber();
+
+    e164.value = parsed.e164;
+        print("mPhonee164= "+  parsed.e164.replaceFirst('+', ''));
+    print("mPhoneinternational= "+  parsed.international);
+    print("mPhoneinterNational= "+  parsed.national);
+    print("mPhonenational= "+  parsed.nationalNumber);
+        isValidPhone.value = true;
+    } catch (e) {
+      //setState(() {
+      isValidPhone.value = false;
+      print("mPhone= "+ ' parsed.e164');
+     //});
+    }
+   // if (!mounted) return;
+  }
+
   @override
   void onReady() {
     // TODO: implement onReady
@@ -113,6 +143,7 @@ class ClientSettingPageController extends GetxController  {
         }
 */
         client!.getCountries().then((value){
+          isLoadingLocation.value = false;
           if(value.data!=null){
             countries.value = value.data!;
             countries.insert(0, Country(id: -1,name: 'الدولة'));
@@ -286,6 +317,53 @@ class ClientSettingPageController extends GetxController  {
     }
     Navigator.pop(context);
   }
+
+  void saveButtonClicked(context) async{
+    print("hereeee1");
+    await client!.updateMyProfile("application/json","Mohamed","Etonry","mohamedhammad@gmail.com","966547257058",2,9,"user","client","541457760",file: File(imagePath.value)).then((value){
+          print("myHere"+value.status.toString());
+          print("myHere"+value.message.toString());
+          Logger().i(value.data!.toJson());
+    });
+
+    /*await client!.updateMyProfile(*//*UpdateProfileRequest(username: "MohamedEltony",account_name: " Eltony",email: "mohamedtony349@yahoo.com",phone: "201111046148",country_id: 1,area_id: 1,role: 'user',type: 'client')*//**//*"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd",*//*file: File(imagePath.value) ).then((value) {
+      Logger().i(value.toJson());
+      //if()
+    });*/
+    await initPlatformState();
+    if (phoneController!.text.isEmpty) {
+      showMyToast("من فضلك ادخل رقم الجوال !",true,context);
+      return;
+    } else if (!isValidPhone.value) {
+      showMyToast("رقم الجوال وكود الدولة غير متطابقين !",true,context);
+      return;
+    }else{
+      print("hereeee");
+     /* client!.updateMyProfile(*//*UpdateProfileRequest(username: "MohamedEltony",account_name: " Eltony",email: "mohamedtony349@yahoo.com",phone: "201111046148",country_id: 1,area_id: 1,role: 'user',type: 'client')*//*"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd",file: File(imagePath.value) ).then((value) {
+        Logger().i(value.toJson());
+        //if()
+      });*/
+    }
+
+  }
+
+  void showMyToast(String msg,bool error,BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content:  Text(msg,style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),
+      ),
+      backgroundColor: error?Colors.red:Colors.grey,
+    ));
+    /*Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: error?Colors.red:Colors.grey,
+        textColor: Colors.white,
+       //fontFamily: 'Arabic-Regular',
+        fontSize: 16.0);*/
+  }
+
   @override
   void onClose() {
     // TODO: implement onClose

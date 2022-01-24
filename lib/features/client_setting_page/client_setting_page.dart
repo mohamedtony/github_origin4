@@ -720,9 +720,9 @@ class ClientSettingPage extends StatelessWidget {
                                         initialSelection: 'sa',
                                         onChanged: (countryCodeVal) {
                                           controller.countryCode.value =
-                                              countryCodeVal.dialCode!;
+                                              countryCodeVal.code!;
                                           print(
-                                              '>>>>>>>>>>>>>>${countryCodeVal.name}  ${countryCodeVal.code}    ${countryCodeVal.dialCode}     ${countryCodeVal.flagUri}');
+                                              '>>>>>>>>>>>>>>${countryCodeVal.code}    ${countryCodeVal.dialCode}     ${countryCodeVal.flagUri}');
                                         },
                                       )
                                     : SizedBox(),
@@ -912,7 +912,15 @@ class ClientSettingPage extends StatelessWidget {
                         top: 16.0, left: 16.0, right: 20.0, bottom: 8.0),
                     height: 45.0,
                     child: Obx(
-                      () => DropdownSearch<Country>(
+                      () => controller
+                          .isLoadingLocation.value ? Container(
+                        child: const SpinKitThreeBounce(
+                          color: Colors.blue,
+                          size: 25,
+                        ),
+                      )
+                          :controller.countries.isNotEmpty
+                          ? DropdownSearch<Country>(
                           mode: Mode.MENU,
                           enabled: controller.isEnabled.value,
                           dropDownButton: Container(
@@ -975,7 +983,9 @@ class ClientSettingPage extends StatelessWidget {
                           // hint: "الدولة",
                           //popupItemDisabled: (String s) => s.startsWith('I'),
                           onChanged: print,
-                          selectedItem: controller.country.value),
+                          selectedItem: controller.country.value): Container(
+    alignment: Alignment.centerRight,
+    child: Text("لا يوجد مناطق")),
                     )),
               ),
               Expanded(
@@ -984,8 +994,14 @@ class ClientSettingPage extends StatelessWidget {
                         top: 16.0, left: 20.0, right: 10.0, bottom: 8.0),
                     height: 45.0,
                     child: Obx(
-                      () => controller.areas.value != null &&
-                              controller.areas.value.isNotEmpty
+                      () =>  controller
+                          .isLoadingLocation.value ? Container(
+                        child: const SpinKitThreeBounce(
+                          color: Colors.blue,
+                          size: 25,
+                        ),
+                      )
+                          :controller.areas.isNotEmpty
                           ? DropdownSearch<Area>(
                               mode: Mode.MENU,
                               enabled: controller.isEnabled.value,
@@ -1052,7 +1068,7 @@ class ClientSettingPage extends StatelessWidget {
                               ),
                               items: controller.areas.value,
                               itemAsString: (Area? u) => u != null
-                                  ? (u?.itemAsStringByName()) ?? ''
+                                  ? (u.itemAsStringByName()) ?? ''
                                   : '',
                               // label: "Menu mode",
                               hint: "country in menu mode",
@@ -1060,7 +1076,9 @@ class ClientSettingPage extends StatelessWidget {
                               onChanged: print,
                               selectedItem: controller.area.value,
                             )
-                          : SizedBox(),
+                          : Container(
+                          alignment: Alignment.centerRight,
+                          child: Text("لا يوجد مناطق")),
                     )),
               ),
             ],
@@ -1539,17 +1557,22 @@ class ClientSettingPage extends StatelessWidget {
                     shadowColor: Colors.grey[200],
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                     color: AppColors.saveButtonBottomSheet,
-                    child: Container(
-                      /*margin: EdgeInsets.only(
-                                left: 12.0, bottom: 4.0, right: 20),*/
-                      alignment: Alignment.center,
-                      child: Text(
-                        'save'.tr,
-                        style: TextStyle(
-                            fontSize: 16.0,
-                            color: AppColors.tabColor,
-                            fontWeight: FontWeight.w700),
-                        textAlign: TextAlign.center,
+                    child: InkWell(
+                      onTap: (){
+                        controller.saveButtonClicked(context);
+                      },
+                      child: Container(
+                        /*margin: EdgeInsets.only(
+                                  left: 12.0, bottom: 4.0, right: 20),*/
+                        alignment: Alignment.center,
+                        child: Text(
+                          'save'.tr,
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              color: AppColors.tabColor,
+                              fontWeight: FontWeight.w700),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ),

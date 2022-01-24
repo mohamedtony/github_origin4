@@ -29,6 +29,9 @@ ClientProfileModel _$ClientProfileModelFromJson(Map<String, dynamic> json) =>
       followers: json['followers'] as int?,
       rate: json['rate'] as String?,
       wallet: json['wallet'] as int?,
+      ads_count: json['ads_count'] as int?,
+      profile_completion: json['profile_completion'] as int?,
+      reply_speed: json['reply_speed'] as String?,
     );
 
 Map<String, dynamic> _$ClientProfileModelToJson(ClientProfileModel instance) =>
@@ -43,6 +46,7 @@ Map<String, dynamic> _$ClientProfileModelToJson(ClientProfileModel instance) =>
       'phone': instance.phone,
       'type': instance.type,
       'role': instance.role,
+      'profile_completion': instance.profile_completion,
       'image': instance.image,
       'blocked_at': instance.blocked_at,
       'country_id': instance.country_id,
@@ -50,6 +54,8 @@ Map<String, dynamic> _$ClientProfileModelToJson(ClientProfileModel instance) =>
       'token': instance.token,
       'chat': instance.chat,
       'followers': instance.followers,
+      'reply_speed': instance.reply_speed,
+      'ads_count': instance.ads_count,
       'rate': instance.rate,
       'wallet': instance.wallet,
     };

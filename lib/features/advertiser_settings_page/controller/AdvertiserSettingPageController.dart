@@ -477,7 +477,7 @@ class AdvertiserSettingPageController extends GetxController  {
         if (selectedUserLocations[0] is Country &&
             selectedUserLocations.length == 1) {
           Area? areaIn = selectedUserLocations.firstWhereOrNull((
-              element) => element.id == area!.id);
+              element) => element.id == area.id && (element is Area));
           if (areaIn == null) {
             selectedUserLocations.add(area);
           }
@@ -485,7 +485,7 @@ class AdvertiserSettingPageController extends GetxController  {
           isCountryEnabled.value = false;
         } else {
           Area? areaIn = selectedUserLocations.firstWhereOrNull((
-              element) => element.id == area!.id);
+              element) => element.id == area.id && (element is Area));
           if (areaIn == null) {
             selectedUserLocations.add(area);
           }
@@ -502,8 +502,8 @@ class AdvertiserSettingPageController extends GetxController  {
     }*/
   }
 
-  void removeCountryOrArea(id) {
-    selectedUserLocations.removeWhere((element) =>element.id==id);
+  void removeCountryOrArea(dynamic countryOrArea) {
+    selectedUserLocations.removeWhere((element) =>element==countryOrArea);
    if(selectedUserLocations.length==0){
      isCountryEnabled.value = true;
      isAreaEnabled.value = true;

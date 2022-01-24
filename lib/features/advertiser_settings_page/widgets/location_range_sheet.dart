@@ -287,8 +287,8 @@ class LocationRangeBottomSheet extends StatelessWidget {
                               child: Container(
                                 margin: EdgeInsets.only(
                                     top: 0.0,
-                                    left: 4.0,
-                                    right: 4.0,
+                                  //  left: 4.0,
+                                    //right: 4.0,
                                     bottom: 0.0),
                                 height: 45.0,
                                 child: Obx(() => advertiserSettingPageController
@@ -308,9 +308,11 @@ class LocationRangeBottomSheet extends StatelessWidget {
                                                     .isAreaEnabled.value,
                                             dropDownButton: Container(
                                                 margin:
-                                                    EdgeInsets.only(left: 0.0),
+                                                    EdgeInsets.zero,
+                                                padding: EdgeInsets.zero,
                                                 child: Icon(
                                                   Icons.keyboard_arrow_down,
+
                                                   color: Colors.black
                                                       .withOpacity(0.32),
                                                   size: 20,
@@ -439,7 +441,7 @@ class LocationRangeBottomSheet extends StatelessWidget {
                                             onTap: () {
                                               advertiserSettingPageController
                                                   .removeCountryOrArea(
-                                                      value.id);
+                                                      value);
                                             },
                                             child: Container(
                                                 // alignment: Alignment.topLeft,
