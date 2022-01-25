@@ -79,7 +79,8 @@ class LoginController extends GetxController{
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
       }
-      //account.model=AccountModel.fromJson(res.account!.toJson());
+
+     //account.model=AccountModel.fromJson(res.account!.toJson());
           Get.toNamed("/Home");
         },onError: (err,res){
           errorRegister.value=true;

@@ -64,38 +64,43 @@ class RegisterNewClientCompany extends StatelessWidget {
                     alignment: AlignmentDirectional.topEnd,
                     children: [
                       InkWell(
-                        onTap:(){
+                        onTap: () {
                           _showBottomSheet1(context);
                         },
-                        child: Obx(()=>Container(
-                          height: 76.44.h,
-                          width: 76.44.w,
-                          decoration: const BoxDecoration(
-                            color: AppColors.verifyFayrouzyFirst,
-                            shape: BoxShape.circle,
-                          ),
-                          child: _registerNewClientCompanyController
-                              .savedFile.value.path ==
-                              ' '
-                              ? const Icon(
-                            Icons.camera_alt_outlined,
-                            color: AppColors.whiteColor,
-                            size: 50,
-                          )
-                              : Container(
+                        child: Obx(
+                          () => Container(
                             height: 76.44.h,
                             width: 76.44.w,
-                            decoration: BoxDecoration(
-                                color: AppColors.verifyFayrouzyFirst,
-                                shape: BoxShape.circle,
-                                image: DecorationImage(image: FileImage(_registerNewClientCompanyController
-                                    .savedFile.value,),fit: BoxFit.fill,)
+                            decoration: const BoxDecoration(
+                              color: AppColors.verifyFayrouzyFirst,
+                              shape: BoxShape.circle,
                             ),
-                            // child: Image.file(_registerNewClientUserController
-                            //     .savedFile.value,fit: BoxFit.fill,),
+                            child: _registerNewClientCompanyController
+                                        .savedFile.value.path ==
+                                    ' '
+                                ? const Icon(
+                                    Icons.camera_alt_outlined,
+                                    color: AppColors.whiteColor,
+                                    size: 50,
+                                  )
+                                : Container(
+                                    height: 76.44.h,
+                                    width: 76.44.w,
+                                    decoration: BoxDecoration(
+                                        color: AppColors.verifyFayrouzyFirst,
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          image: FileImage(
+                                            _registerNewClientCompanyController
+                                                .savedFile.value,
+                                          ),
+                                          fit: BoxFit.fill,
+                                        )),
+                                    // child: Image.file(_registerNewClientUserController
+                                    //     .savedFile.value,fit: BoxFit.fill,),
+                                  ),
+                            //  child:   SvgPicture.asset('images/camera.svg',height: 26.13.h,width:34.84.w,fit: BoxFit.fitWidth),
                           ),
-                          //  child:   SvgPicture.asset('images/camera.svg',height: 26.13.h,width:34.84.w,fit: BoxFit.fitWidth),
-                        ),
                         ),
                       ),
                       Padding(
@@ -122,18 +127,19 @@ class RegisterNewClientCompany extends StatelessWidget {
                 ),
 
                 AdvertisersGenericField(
-                    obscureText: false,
-                    controller: _registerNewClientCompanyController
-                        .companyNameController,
-                    textAlignment: TextAlign.end,
-                    hintText: 'companyName'.tr,
+                  obscureText: false,
+                  controller:
+                      _registerNewClientCompanyController.companyNameController,
+                  textAlignment: TextAlign.end,
+                  hintText: 'companyName'.tr,
                   onSaved: (value) {
                     _registerNewClientCompanyController.companyName = value!;
                   },
                   validator: (value) {
                     return _registerNewClientCompanyController
                         .validateCompanyName(value!);
-                  },),
+                  },
+                ),
                 // SizedBox(height: 15.h,),
                 // AdvertisersDropDown(hintText: 'type'.tr,width: 0,),
                 // SizedBox(height: 15.h,),
@@ -141,44 +147,45 @@ class RegisterNewClientCompany extends StatelessWidget {
                   height: 16.h,
                 ),
                 AdvertisersGenericField(
-                    obscureText: false,
-                    controller: _registerNewClientCompanyController
-                        .accountNameController,
-                    textAlignment: TextAlign.end,
-                    hintText: 'accountName'.tr
-                  ,
+                  obscureText: false,
+                  controller:
+                      _registerNewClientCompanyController.accountNameController,
+                  textAlignment: TextAlign.end,
+                  hintText: 'accountName'.tr,
                   onSaved: (value) {
                     _registerNewClientCompanyController.accountName = value!;
                   },
                   validator: (value) {
                     return _registerNewClientCompanyController
                         .validateAccountName(value!);
-                  },),
+                  },
+                ),
                 SizedBox(
                   height: 16.h,
                 ),
                 AdvertisersGenericField(
-                    obscureText: false,
-
-                    controller: _registerNewClientCompanyController
-                        .accountAdminNameController,
-                    textAlignment: TextAlign.end,
-                    hintText: 'accountAdminName'.tr ,
+                  obscureText: false,
+                  controller: _registerNewClientCompanyController
+                      .accountAdminNameController,
+                  textAlignment: TextAlign.end,
+                  hintText: 'accountAdminName'.tr,
                   onSaved: (value) {
-                    _registerNewClientCompanyController.accountAdminName = value!;
+                    _registerNewClientCompanyController.accountAdminName =
+                        value!;
                   },
                   validator: (value) {
                     return _registerNewClientCompanyController
                         .validateAccountName(value!);
-                  },),
+                  },
+                ),
 
                 SizedBox(
                   height: 16.h,
                 ),
                 Obx(() => AdvertisersPhone(
                       hintText: 'phone'.tr,
-                  enabled: false,
-                  flag: false,
+                      enabled: false,
+                      flag: false,
                       initialSelection:
                           _registerNewClientCompanyController.countryCode.value,
                       onChanged: (countryCodeVal) {
@@ -199,35 +206,37 @@ class RegisterNewClientCompany extends StatelessWidget {
                   height: 16.h,
                 ),
                 AdvertisersGenericField(
-                    obscureText: false,
-                    controller:
-                        _registerNewClientCompanyController.emailController,
-                    textAlignment: TextAlign.end,
-                    hintText: 'email'.tr,
+                  obscureText: false,
+                  controller:
+                      _registerNewClientCompanyController.emailController,
+                  textAlignment: TextAlign.end,
+                  hintText: 'email'.tr,
                   onSaved: (value) {
                     _registerNewClientCompanyController.email = value!;
                   },
                   validator: (value) {
                     return _registerNewClientCompanyController
                         .validateEmail(value!);
-                  },),
+                  },
+                ),
 
                 SizedBox(
                   height: 16.h,
                 ),
                 AdvertisersGenericField(
-                    obscureText: false,
-                    controller:
-                        _registerNewClientCompanyController.recordIDController,
-                    textAlignment: TextAlign.end,
-                    hintText: 'recordNumber'.tr,
+                  obscureText: false,
+                  controller:
+                      _registerNewClientCompanyController.recordIDController,
+                  textAlignment: TextAlign.end,
+                  hintText: 'recordNumber'.tr,
                   onSaved: (value) {
                     _registerNewClientCompanyController.recordNumber = value!;
                   },
                   validator: (value) {
                     return _registerNewClientCompanyController
                         .validateRecordID(value!);
-                  },),
+                  },
+                ),
                 SizedBox(
                   height: 16.h,
                 ),
@@ -282,18 +291,33 @@ class RegisterNewClientCompany extends StatelessWidget {
                 AdvertisersButton(
                   text: 'verifyAndFollow'.tr,
                   onPressed: () {
-                    _registerNewClientCompanyController
-                        .savedFile.value=File(' ');
-                    _registerNewClientCompanyController.phoneMess.value = '';
-                    _registerNewClientCompanyController. nameMess.value = '';
-                    _registerNewClientCompanyController.nationalIDMess.value = '';
-                    _registerNewClientCompanyController.accountNameMess.value = '';
-                    _registerNewClientCompanyController. emailMess.value = '';
+                    if (_registerNewClientCompanyController
+                            .savedFile.value.path ==
+                        ' ') {
+                      Get.snackbar(
+                        "خطأ",
+                        'الصورة مطلوبة',
+                        icon: const Icon(Icons.person, color: Colors.red),
+                        backgroundColor: Colors.yellow,
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    } else {
+                      _registerNewClientCompanyController.savedFile.value =
+                          File(' ');
+                      _registerNewClientCompanyController.phoneMess.value = '';
+                      _registerNewClientCompanyController.nameMess.value = '';
+                      _registerNewClientCompanyController.nationalIDMess.value =
+                          '';
+                      _registerNewClientCompanyController
+                          .accountNameMess.value = '';
+                      _registerNewClientCompanyController.emailMess.value = '';
 
-                    _registerNewClientCompanyController.errorRegister.value=false;
-                    _registerNewClientCompanyController.isValid.value=false;
+                      _registerNewClientCompanyController.errorRegister.value =
+                          false;
+                      _registerNewClientCompanyController.isValid.value = false;
 
-                    _registerNewClientCompanyController.checkLogin();
+                      _registerNewClientCompanyController.checkLogin();
+                    }
                   },
                   backgroundColor: AppColors.verifyButtonColor,
                   textColor: AppColors.verifyTextColor,
@@ -306,6 +330,7 @@ class RegisterNewClientCompany extends StatelessWidget {
       ),
     );
   }
+
   void _showBottomSheet1(BuildContext context) {
     ImagePicker _imagePicker = ImagePicker();
     // Future<File> imageFile;
@@ -320,14 +345,17 @@ class RegisterNewClientCompany extends StatelessWidget {
                 onPressed: () async {
                   _imagePicker
                       .pickImage(
-                      source: ImageSource.camera,
-                      imageQuality: 60,
-                      maxWidth: 1280,
-                      maxHeight: 720)
+                          source: ImageSource.camera,
+                          imageQuality: 60,
+                          maxWidth: 1280,
+                          maxHeight: 720)
                       .then((file) async {
                     _registerNewClientCompanyController.savedFile.value =
                         File.fromUri(Uri.file(file!.path));
-                    RegisterNewClientCompanyController.photo= await dio.MultipartFile.fromFile(file.path, filename: file.path.substring(file.path.lastIndexOf("/")+1));
+                    RegisterNewClientCompanyController.photo =
+                        await dio.MultipartFile.fromFile(file.path,
+                            filename: file.path
+                                .substring(file.path.lastIndexOf("/") + 1));
 
                     //provider = FileImage(savedFile);
                     //setState(() {
@@ -359,14 +387,17 @@ class RegisterNewClientCompany extends StatelessWidget {
                 onPressed: () async {
                   _imagePicker
                       .pickImage(
-                      source: ImageSource.gallery,
-                      imageQuality: 60,
-                      maxWidth: 1280,
-                      maxHeight: 720)
+                          source: ImageSource.gallery,
+                          imageQuality: 60,
+                          maxWidth: 1280,
+                          maxHeight: 720)
                       .then((file) async {
                     _registerNewClientCompanyController.savedFile.value =
                         File.fromUri(Uri.file(file!.path));
-                    RegisterNewClientCompanyController.photo= await dio.MultipartFile.fromFile(file.path, filename: file.path.substring(file.path.lastIndexOf("/")+1));
+                    RegisterNewClientCompanyController.photo =
+                        await dio.MultipartFile.fromFile(file.path,
+                            filename: file.path
+                                .substring(file.path.lastIndexOf("/") + 1));
                     //         provider = FileImage(savedFile);
                     //         setState(() {
                     _registerNewClientCompanyController.imageBase641.value =

@@ -1,5 +1,6 @@
 import 'package:advertisers/features/advertiser_account_status/tax_settings/controller/advertiser_account_status_controller.dart';
 import 'package:advertisers/features/advertiser_account_status/tax_settings/view/widgets/advertiser_account_status_app_bar_widget.dart';
+import 'package:advertisers/features/users_module/app_colors.dart';
 import 'package:advertisers/shared/radio_buttons/radio_buttons.dart';
 import 'package:advertisers/shared/widget_and_title/widget_and_title.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
               builder: (controller) => InkWell(
                 onTap: (){
                   controller.changeChecked();
-                  print("${controller.isChecked}");
+                  print("${controller.isChecked.value}");
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -72,7 +73,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                           child: Container(
                             margin: EdgeInsets.all(3),
                             decoration: BoxDecoration(
-                              color: Color(0xc6244094),
+                              color: controller.status=='0'?AppColors.whiteColor:Color(0xc6244094),
                               borderRadius: BorderRadius.all(
                                 Radius.circular(50.0),
                               ),
@@ -85,7 +86,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                         Text("تعليق حالة الحساب",style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),),
                       ],
                     )),
-                    controller.isChecked == true ? selectedRadio() : unSelectedRadio(),
+                    controller.isChecked.value == true ? selectedRadio() : unSelectedRadio(),
                     SizedBox(
                       width:10,
                     ),
@@ -120,7 +121,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                         bottomRight: Radius.circular(15),
                       ),
                       child: TextFormField(
-                        enabled: false,
+                        enabled: controller.isChecked.value == true ?true:false,
                         //initialValue: "اختر الحالة",
                         style: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp),
                         // cursorColor: Colors.black,
@@ -154,7 +155,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                           items: controller.ranges.map((value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value),
+                              child: Text(value),enabled: controller.isChecked.value == true ?true:false,
                             );
                           }).toList(),
                           // value: _selectedLocation,
@@ -190,6 +191,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                 style: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp),
                 // cursorColor: Colors.black,
                 // keyboardType: inputType,
+                enabled: Get.find<AdvertiserAccountStatusController>().isChecked .value== true ?true:false,
                 controller: Get.find<AdvertiserAccountStatusController>().messageController,
                 decoration: new InputDecoration(
                   border: InputBorder.none,
@@ -214,7 +216,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                 children: [
 
                   Expanded(child: InkWell(
-                    onTap: (){
+                    onTap:Get.find<AdvertiserAccountStatusController>().isChecked.value == true ? (){
                       Future<void> _showDatePicker() async {
                         final DateTime? result =
                         await showDatePicker(context: context,
@@ -231,7 +233,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                       }
                       _showDatePicker();
                       print("_selectedFromDate${_selectedFromDate}");
-                    },
+                    }:null,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -244,7 +246,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                     ),
                   )),
                   Expanded(child: InkWell(
-                    onTap: (){
+                    onTap:Get.find<AdvertiserAccountStatusController>().isChecked.value == true ? (){
                       if(_selectedFromDate != null){
                         Future<void> _showDatePicker() async {
                           final DateTime? result =
@@ -263,7 +265,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                       }
 
                       print("_selectedToDate${_selectedToDate}");
-                    },
+                    }:null,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

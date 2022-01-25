@@ -12,6 +12,7 @@ class AdvertiserAccountStatusController extends GetxController {
   late Repository repo;
   List<int>? checkList = [];
   var textMessage=''.obs;
+  var status='0'.obs;
   var from=''.obs;
   var to=''.obs;
   var getStopProfileResponse=GetStopProfileResponse().obs;
@@ -26,13 +27,13 @@ class AdvertiserAccountStatusController extends GetxController {
   }
 
 
-  bool isChecked = false;
+ var isChecked = false.obs;
 
   void changeChecked() {
-    if (isChecked == false) {
-      isChecked = true;
+    if (isChecked.value == false) {
+      isChecked.value = true;
     } else {
-      isChecked = false;
+      isChecked.value = false;
     }
     update();
   }
@@ -84,6 +85,7 @@ class AdvertiserAccountStatusController extends GetxController {
           EasyLoading.dismiss();
         }
         getStopProfileResponse.value.data = res.data!;
+        status.value=res.data!.settings?.stop_account??'0';
         ranges.value=res.data!.reasons??[];
         textMessage.value=res.data!.settings?.stop_text??'';
         from.value=res.data!.settings?.stop_from.toString()??'';
