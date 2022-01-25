@@ -26,10 +26,12 @@ class ClientProfileModel {
   int?ads_count;
   String? rate;
   int? wallet;
+  String? sgl;
+  int?points;
 
 
   ClientProfileModel({this.id, this.username, this.manager_name,this.account_name,this.personal_id,this.email,
-    this.phone,this.type,this.role,this.image,this.blocked_at,this.country_id,this.area_id,this.token,this.chat,this.country,this.followers,this.rate,this.wallet,this.ads_count,this.profile_completion,this.reply_speed});
+    this.phone,this.type,this.role,this.image,this.blocked_at,this.country_id,this.area_id,this.token,this.chat,this.country,this.followers,this.rate,this.wallet,this.ads_count,this.profile_completion,this.reply_speed,this.sgl,this.points});
 
   factory ClientProfileModel.fromJson(Map<String, dynamic> json) => _$ClientProfileModelFromJson(json);
 

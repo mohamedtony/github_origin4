@@ -22,7 +22,7 @@ class ClientSettingPageController extends GetxController  {
   var isOpend = false;
   var position = -1;
   var tabIndex = 1.obs;
-  TextEditingController? kayanNameController,accountNameEdit,accountOwner,phoneController,emailController,accountRegisteredNumController,userNameController;
+  TextEditingController? kayanNameController,accountNameEdit,accountOwner,phoneController,emailController,personalIdController,userNameController,sglNumberController;
   var flag = false.obs;
   var isEnabled=false.obs;
 
@@ -40,8 +40,7 @@ class ClientSettingPageController extends GetxController  {
   var isChat = false.obs;
   var isNotification = false.obs;
    late XFile xFile ;
-   late File imageFile;
-   var imagePath = ''.obs;
+   File? imageFile;var imagePath = ''.obs;
   var accountType = ''.obs;
   var isLoadingLocation = true.obs;
   var isValidPhone = false.obs;
@@ -50,13 +49,14 @@ class ClientSettingPageController extends GetxController  {
   void onInit() {
    // EasyLoading.show(status: 'انتظر');
     // TODO: implement onInit
-    userNameController = TextEditingController(text: 'الراشد للاوانى الفخارية');
-    kayanNameController = TextEditingController(text: 'الراشد للاوانى الفخارية');
-    accountNameEdit= TextEditingController(text: '# El rashid');
-    accountOwner= TextEditingController(text: 'محمد تونى حماد');
-    phoneController = TextEditingController(text: '01111046148');
-    emailController = TextEditingController(text: 'mohamedtony349@yahoo.com');
-    accountRegisteredNumController  = TextEditingController();
+    userNameController = TextEditingController();
+    kayanNameController = TextEditingController();
+    accountNameEdit= TextEditingController();
+    accountOwner= TextEditingController();
+    phoneController = TextEditingController();
+    emailController = TextEditingController();
+    sglNumberController= TextEditingController();
+    personalIdController  = TextEditingController();
     super.onInit();
   }
 
@@ -117,7 +117,10 @@ class ClientSettingPageController extends GetxController  {
           userNameController?.text = clientProfileModel.value.username!;
         }
         if(clientProfileModel.value.account_name!=null) {
-          accountNameEdit?.text = "# "+clientProfileModel.value.account_name!;
+          accountNameEdit?.text = clientProfileModel.value.account_name!;
+        }
+        if(clientProfileModel.value.manager_name !=null) {
+          accountOwner?.text = clientProfileModel.value.manager_name!;
         }
         if(clientProfileModel.value.phone!=null) {
           phoneController?.text = clientProfileModel.value.phone!;
@@ -126,7 +129,10 @@ class ClientSettingPageController extends GetxController  {
           emailController?.text = clientProfileModel.value.email!;
         }
         if(clientProfileModel.value.personal_id!=null) {
-          accountRegisteredNumController?.text = clientProfileModel.value.personal_id!;
+          personalIdController?.text = clientProfileModel.value.personal_id!;
+        }
+        if(clientProfileModel.value.sgl!=null) {
+          sglNumberController?.text = clientProfileModel.value.sgl!;
         }
         if(clientProfileModel.value.chat!=null){
           isChat.value = clientProfileModel.value.chat!;
@@ -319,30 +325,70 @@ class ClientSettingPageController extends GetxController  {
   }
 
   void saveButtonClicked(context) async{
-    print("hereeee1");
-    await client!.updateMyProfile("application/json","Mohamed","Etonry","mohamedhammad@gmail.com","966547257058",2,9,"user","client","541457760",file: File(imagePath.value)).then((value){
-          print("myHere"+value.status.toString());
-          print("myHere"+value.message.toString());
-          Logger().i(value.data!.toJson());
-    });
 
-    /*await client!.updateMyProfile(*//*UpdateProfileRequest(username: "MohamedEltony",account_name: " Eltony",email: "mohamedtony349@yahoo.com",phone: "201111046148",country_id: 1,area_id: 1,role: 'user',type: 'client')*//**//*"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd",*//*file: File(imagePath.value) ).then((value) {
-      Logger().i(value.toJson());
+ /*   await client!.updateMyProfile(UpdateProfileRequest(username: "MohamedEltony",account_name: " Eltony",email: "mohamedtony349@yahoo.com",phone: "201111046148",country_id: 4,area_id: 9,role: 'user',type: 'client',personal_id: "5666660609"),"application/json",file: File(imagePath.value) ).then((value) {
+      print("myHere"+value.status.toString());
+      print("myHere"+value.message.toString());
+      Logger().i(value.data!.toJson());
       //if()
     });*/
     await initPlatformState();
-    if (phoneController!.text.isEmpty) {
+    if (accountType.value=="client" && userNameController!.text.isEmpty) {
+      showMyToast("من فضلك ادخل الاسم !",true,context);
+      return;
+    }else if (accountType.value=="company" && kayanNameController!.text.isEmpty) {
+      showMyToast("من فضلك ادخل اسم الكيان !",true,context);
+      return;
+    }else if (accountNameEdit!.text.isEmpty) {
+      showMyToast("من فضلك ادخل اسم الحساب !",true,context);
+      return;
+    }else if (accountType.value=="company" && accountOwner!.text.isEmpty) {
+      showMyToast("من فضلك ادخل اسم صاحب الحساب !",true,context);
+      return;
+    }if (accountType.value=="company" && userNameController!.text.isEmpty) {
+      showMyToast("من فضلك ادخل الاسم !",true,context);
+      return;
+    } else if (phoneController!.text.isEmpty) {
       showMyToast("من فضلك ادخل رقم الجوال !",true,context);
       return;
     } else if (!isValidPhone.value) {
       showMyToast("رقم الجوال وكود الدولة غير متطابقين !",true,context);
       return;
-    }else{
-      print("hereeee");
-     /* client!.updateMyProfile(*//*UpdateProfileRequest(username: "MohamedEltony",account_name: " Eltony",email: "mohamedtony349@yahoo.com",phone: "201111046148",country_id: 1,area_id: 1,role: 'user',type: 'client')*//*"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd",file: File(imagePath.value) ).then((value) {
-        Logger().i(value.toJson());
-        //if()
-      });*/
+    }else if (emailController!.text.isEmpty) {
+      showMyToast("من فضلك ادخل الايميل الالكترونى !",true,context);
+      return;
+    } else if (accountType.value=="company" && sglNumberController!.text.isEmpty) {
+      showMyToast("من فضلك ادخل رقم السجل !",true,context);
+      return;
+    } else if (accountType.value=="client" && personalIdController!.text.isEmpty) {
+      showMyToast("من فضلك ادخل رقم الهوية !",true,context);
+      return;
+    } else{
+      print("hereeee1");
+      LoadingDailog().showLoading(context);
+      if(accountType.value=="client"){
+        await client!.updateMyProfile("application/json",username: userNameController!.text.isEmpty?null:userNameController!.text,account_name: accountNameEdit!.text,phone: e164.value.replaceFirst("+", ""),email: emailController!.text,type: accountType.value,role: "user",personal_id: personalIdController!.text.isEmpty?null: personalIdController!.text,area_id: area.value.id,country_id: country.value.id,isChat: isChat.value?1:0,file: imageFile).then((value){
+          print("myHere"+value.status.toString());
+          print("myHere"+value.message.toString());
+          Logger().i(value.data!.toJson());
+          Navigator.of(context).pop();
+          if(value.message!=null) {
+            showMyToast(value.message!, false, context);
+          }
+        });
+      }else{
+        print("accountType.value"+accountType.value);
+        await client!.updateMyProfile("application/json",account_name: accountNameEdit!.text,manager_name: kayanNameController!.text.isEmpty?null: kayanNameController!.text,phone: e164.value.replaceFirst("+", ""),email: emailController!.text,type: accountType.value,role: "user",sgl: sglNumberController!.text.isEmpty?null:sglNumberController!.text,area_id: area.value.id,country_id: country.value.id,isChat:  isChat.value?1:0,file: imageFile).then((value){
+          print("myHere"+value.status.toString());
+          print("myHere"+value.message.toString());
+          Logger().i(value.data!.toJson());
+          Navigator.of(context).pop();
+          if(value.message!=null) {
+            showMyToast(value.message!, false, context);
+          }
+        });
+      }
+
     }
 
   }

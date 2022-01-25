@@ -291,9 +291,20 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<GetMyProfileInfoResponse> updateMyProfile(token, username,
-      account_name, email, phone, country_id, area_id, role, type, personal_id,
-      {file}) async {
+  Future<GetMyProfileInfoResponse> updateMyProfile(token,
+      {username,
+      account_name,
+      manager_name,
+      email,
+      phone,
+      country_id,
+      area_id,
+      role,
+      type,
+      personal_id,
+      sgl,
+      isChat,
+      file}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -305,6 +316,9 @@ class _RestClient implements RestClient {
     }
     if (account_name != null) {
       _data.fields.add(MapEntry('account_name', account_name));
+    }
+    if (manager_name != null) {
+      _data.fields.add(MapEntry('manager_name', manager_name));
     }
     if (email != null) {
       _data.fields.add(MapEntry('email', email));
@@ -326,6 +340,12 @@ class _RestClient implements RestClient {
     }
     if (personal_id != null) {
       _data.fields.add(MapEntry('personal_id', personal_id));
+    }
+    if (sgl != null) {
+      _data.fields.add(MapEntry('sgl', sgl));
+    }
+    if (isChat != null) {
+      _data.fields.add(MapEntry('chat', isChat.toString()));
     }
     if (file != null) {
       _data.files.add(MapEntry(

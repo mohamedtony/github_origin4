@@ -118,7 +118,7 @@ class ListPage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
 
-                                Text("12345",style: const TextStyle(color: Colors.white,fontSize: 18),),
+                                Obx(()=>Text('${controller.clientProfileModel.value.followers??''}',style: const TextStyle(color: Colors.white,fontSize: 18),),),
                                 Text("المتابعين",style: const TextStyle(color: Colors.white,fontSize: 16),),
                               ],
                             ),
@@ -150,7 +150,7 @@ class ListPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
 
-                        Text("4.5",style: const TextStyle(color: Colors.white,fontSize: 18),),
+                        Obx(()=>Text(controller.clientProfileModel.value.rate??'',style: const TextStyle(color: Colors.white,fontSize: 18),),),
                         Text("التقييم",style: const TextStyle(color: Colors.white,fontSize: 16),),
                       ],
                     ),
@@ -180,7 +180,7 @@ class ListPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
 
-                        Text("4.5",style: const TextStyle(color: Colors.white,fontSize: 18),),
+                        Obx(()=>Text(controller.clientProfileModel.value.reply_speed??'',style: const TextStyle(color: Colors.white,fontSize: 18),),),
                         Text("سرعة الرد",style: const TextStyle(color: Colors.white,fontSize: 16),),
                       ],
                     ),
@@ -210,7 +210,7 @@ class ListPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
 
-                        Text("547",style: const TextStyle(color: Colors.white,fontSize: 18),),
+                        Obx(()=>Text('${controller.clientProfileModel.value.ads_count??''}',style: const TextStyle(color: Colors.white,fontSize: 18),),),
                         Container(
                           // margin: EdgeInsets.only(bottom: 6.0),
                             child: Text("الاعلانات",style: const TextStyle(color: Colors.white,fontSize: 16),)),
@@ -279,7 +279,7 @@ class ListPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
 
-                        Text(controller.clientProfileModel.value.rate??'',style: const TextStyle(color: Colors.white,fontSize: 18),),
+                        Obx(()=>Text(controller.clientProfileModel.value.rate??'',style: const TextStyle(color: Colors.white,fontSize: 18),),),
                         Text("التقييم",style: const TextStyle(color: Colors.white,fontSize: 16),),
                       ],
                     ),
@@ -309,8 +309,8 @@ class ListPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
 
-                        Text("4.5",style: const TextStyle(color: Colors.white,fontSize: 18),),
-                        Text("سرعة الرد",style: const TextStyle(color: Colors.white,fontSize: 16),),
+                        Obx(()=>Text('${controller.clientProfileModel.value.wallet??''}',style: const TextStyle(color: Colors.white,fontSize: 18),),),
+                        const Text("المحفظة",style: const TextStyle(color: Colors.white,fontSize: 16),),
                       ],
                     ),
                   ),
@@ -339,10 +339,8 @@ class ListPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
 
-                        Text("547",style: const TextStyle(color: Colors.white,fontSize: 18),),
-                        Container(
-                          // margin: EdgeInsets.only(bottom: 6.0),
-                            child: Text("الاعلانات",style: const TextStyle(color: Colors.white,fontSize: 16),)),
+                        Obx(()=>Text('${controller.clientProfileModel.value.points??''}',style: const TextStyle(color: Colors.white,fontSize: 18),),),
+                        const Text("النقاط",style: const TextStyle(color: Colors.white,fontSize: 16),),
                       ],
                     ),
                   ),

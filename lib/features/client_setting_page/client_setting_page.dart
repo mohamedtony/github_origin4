@@ -129,12 +129,26 @@ class ClientSettingPage extends StatelessWidget {
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: Colors.white),
-                                child: Image.asset(
+                                child: controller.clientProfileModel.value.country?.image==null || controller.clientProfileModel.value.country!.image!.isEmpty? Image.asset(
                                   'images/flag.png',
                                   fit: BoxFit.fill,
                                   height: 32.0,
                                   width: 32.0,
+                                ):CachedNetworkImage(
+                              imageUrl: controller
+                                  .clientProfileModel.value.image ??
+                                '',
+                                placeholder: (context, url) =>
+                                const SpinKitThreeBounce(
+                                  color: Colors.grey,
+                                  size: 25,
                                 ),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                                fit: BoxFit.fill,
+                                height: 32.0,
+                                width: 32.0,
+                              ) ,
                               )))
                     ],
                   ),
@@ -145,8 +159,7 @@ class ClientSettingPage extends StatelessWidget {
                       Container(
                         margin: EdgeInsets.only(right: 10.0, top: 20.0),
                         child: Obx(() => Text(
-                              controller.clientProfileModel.value.username ??
-                                  '',
+                          controller.clientProfileModel.value.type=="client"?(controller.clientProfileModel.value.username ?? ''):(controller.clientProfileModel.value.manager_name ?? ''),
                               style: TextStyle(
                                   color: Colors.white, fontSize: 16.0),
                             )),
@@ -167,14 +180,19 @@ class ClientSettingPage extends StatelessWidget {
                   ),
                 ],
               ),
-              Container(
-                alignment: Alignment.topLeft,
-                margin: EdgeInsets.only(left: 10.0, top: 35.0),
-                child: SvgPicture.asset(
-                  "images/back_button.svg",
-                  height: 45,
-                  width: 45,
-                  // matchTextDirection: true,
+              InkWell(
+                onTap: (){
+                  Get.back();
+                },
+                child: Container(
+                  alignment: Alignment.topLeft,
+                  margin: EdgeInsets.only(left: 10.0, top: 35.0),
+                  child: SvgPicture.asset(
+                    "images/back_button.svg",
+                    height: 45,
+                    width: 45,
+                    // matchTextDirection: true,
+                  ),
                 ),
               ),
             ],
@@ -264,7 +282,7 @@ class ClientSettingPage extends StatelessWidget {
                             controller.accountType.value = "client";
                           }
                         }
-                            : () {},
+                            : null,
                         child: Container(
                           child: Obx(() =>
                           controller.accountType.value.isNotEmpty &&
@@ -336,7 +354,7 @@ class ClientSettingPage extends StatelessWidget {
             ),
           ),
 
-          controller.accountType.value == "company"?Container(
+          Obx(()=>controller.accountType.value == "company"?Container(
             height: 42,
             margin: EdgeInsets.only(top: 0.0, left: 22.0, right: 22.0),
             child: Row(
@@ -381,31 +399,31 @@ class ClientSettingPage extends StatelessWidget {
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
                     child: Obx(() => TextField(
-                          textAlign: TextAlign.start,
-                          textAlignVertical: TextAlignVertical.center,
-                          controller: controller.kayanNameController,
-                          enabled: controller.isEnabled.value,
-                          style: TextStyle(
-                              color: (AppColors.editProfileTextColorOpa)
-                                  .withOpacity(0.51),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.0),
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  left: 10.0, right: 14.0, bottom: 12.0),
-                              // isCollapsed: true,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(70.0),
-                                borderSide: BorderSide(
-                                  width: 0,
-                                  style: BorderStyle.none,
-                                ),
-                              ),
-                              filled: true,
-                              hintStyle: TextStyle(color: Colors.grey[350]),
-                              hintText: 'الراشد للاوانى الفخارية',
-                              fillColor: Colors.white70),
-                        )),
+                      textAlign: TextAlign.start,
+                      textAlignVertical: TextAlignVertical.center,
+                      controller: controller.kayanNameController,
+                      enabled: controller.isEnabled.value,
+                      style: TextStyle(
+                          color: (AppColors.editProfileTextColorOpa)
+                              .withOpacity(0.51),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.0),
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(
+                              left: 10.0, right: 14.0, bottom: 12.0),
+                          // isCollapsed: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(70.0),
+                            borderSide: BorderSide(
+                              width: 0,
+                              style: BorderStyle.none,
+                            ),
+                          ),
+                          filled: true,
+                          hintStyle: TextStyle(color: Colors.grey[350]),
+                          hintText: 'اسم الكيان',
+                          fillColor: Colors.white70),
+                    )),
                   ),
                 ),
               ],
@@ -477,14 +495,14 @@ class ClientSettingPage extends StatelessWidget {
                           ),
                           filled: true,
                           hintStyle: TextStyle(color: Colors.grey[350]),
-                          hintText: 'الراشد للاوانى الفخارية',
+                          hintText: 'اسم المستخدم',
                           fillColor: Colors.white70),
                     )),
                   ),
                 ),
               ],
             ),
-          ),
+          )),
           Container(
             height: 42,
             margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
@@ -554,7 +572,7 @@ class ClientSettingPage extends StatelessWidget {
                               ),
                               filled: true,
                               hintStyle: TextStyle(color: Colors.grey[350]),
-                              hintText: 'محمد',
+                              hintText: 'اسم الحساب',
                               fillColor: Colors.white70),
                         )),
                   ),
@@ -562,7 +580,7 @@ class ClientSettingPage extends StatelessWidget {
               ],
             ),
           ),
-          controller.accountType.value == "company"?Container(
+          Obx(()=>controller.accountType.value == "company"?Container(
             height: 42,
             margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
             child: Row(
@@ -607,38 +625,38 @@ class ClientSettingPage extends StatelessWidget {
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
                     child: Obx(() => TextField(
-                          textAlign: TextAlign.end,
-                          textAlignVertical: TextAlignVertical.center,
-                          controller: controller.accountOwner,
-                          textDirection: mt.TextDirection.ltr,
-                          enabled: controller.isEnabled.value,
-                          style: TextStyle(
-                            color: (AppColors.editProfileTextColorOpa)
-                                .withOpacity(0.51),
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14.0,
+                      textAlign: TextAlign.end,
+                      textAlignVertical: TextAlignVertical.center,
+                      controller: controller.accountOwner,
+                      textDirection: mt.TextDirection.ltr,
+                      enabled: controller.isEnabled.value,
+                      style: TextStyle(
+                        color: (AppColors.editProfileTextColorOpa)
+                            .withOpacity(0.51),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14.0,
+                      ),
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(
+                              left: 10.0, right: 14.0, bottom: 12.0),
+                          // isCollapsed: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(70.0),
+                            borderSide: BorderSide(
+                              width: 0,
+                              style: BorderStyle.none,
+                            ),
                           ),
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  left: 10.0, right: 14.0, bottom: 12.0),
-                              // isCollapsed: true,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(70.0),
-                                borderSide: BorderSide(
-                                  width: 0,
-                                  style: BorderStyle.none,
-                                ),
-                              ),
-                              filled: true,
-                              hintStyle: TextStyle(color: Colors.grey[350]),
-                              hintText: 'محمد',
-                              fillColor: Colors.white70),
-                        )),
+                          filled: true,
+                          hintStyle: TextStyle(color: Colors.grey[350]),
+                          hintText: 'اسم صاحب الحساب',
+                          fillColor: Colors.white70),
+                    )),
                   ),
                 ),
               ],
             ),
-          ):SizedBox(),
+          ):SizedBox()),
           Container(
             height: 42,
             margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
@@ -818,7 +836,7 @@ class ClientSettingPage extends StatelessWidget {
                               ),
                               filled: true,
                               hintStyle: TextStyle(color: Colors.grey[350]),
-                              hintText: 'محمد',
+                              hintText: 'الايميل الاكترونى',
                               fillColor: Colors.white70),
                         )),
                   ),
@@ -826,7 +844,7 @@ class ClientSettingPage extends StatelessWidget {
               ],
             ),
           ),
-          Container(
+          Obx(()=>controller.accountType.value == "company"?Container(
             height: 42,
             margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
             child: Row(
@@ -871,38 +889,115 @@ class ClientSettingPage extends StatelessWidget {
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
                     child: Obx(() => TextField(
-                          textAlign: TextAlign.end,
-                          textAlignVertical: TextAlignVertical.center,
-                          controller: controller.accountRegisteredNumController,
-                          textDirection: mt.TextDirection.ltr,
-                          enabled: controller.isEnabled.value,
-                          style: TextStyle(
-                            color: (AppColors.editProfileTextColorOpa)
-                                .withOpacity(0.51),
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14.0,
+                      textAlign: TextAlign.end,
+                      textAlignVertical: TextAlignVertical.center,
+                      controller: controller.sglNumberController,
+                      textDirection: mt.TextDirection.ltr,
+                      enabled: controller.isEnabled.value,
+                      style: TextStyle(
+                        color: (AppColors.editProfileTextColorOpa)
+                            .withOpacity(0.51),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14.0,
+                      ),
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(
+                              left: 10.0, right: 14.0, bottom: 12.0),
+                          // isCollapsed: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(70.0),
+                            borderSide: BorderSide(
+                              width: 0,
+                              style: BorderStyle.none,
+                            ),
                           ),
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  left: 10.0, right: 14.0, bottom: 12.0),
-                              // isCollapsed: true,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(70.0),
-                                borderSide: BorderSide(
-                                  width: 0,
-                                  style: BorderStyle.none,
-                                ),
-                              ),
-                              filled: true,
-                              hintStyle: TextStyle(color: Colors.grey[350]),
-                              hintText: 'محمد',
-                              fillColor: Colors.white70),
-                        )),
+                          filled: true,
+                          hintStyle: TextStyle(color: Colors.grey[350]),
+                          hintText: 'رقم السجل',
+                          fillColor: Colors.white70),
+                    )),
                   ),
                 ),
               ],
             ),
-          ),
+          ):
+          Container(
+            height: 42,
+            margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
+            child: Row(
+              children: [
+                Container(
+                    height: 42,
+                    width: 110,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 0.2),
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(12.0),
+                            bottomRight: Radius.circular(12.0)),
+                        color: AppColors.bottomSheetTabColor),
+                    child: Text(
+                      "رقم الهوية",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16.0,
+                          color: AppColors.tabColor),
+                    )),
+                Expanded(
+                  child: Container(
+                    height: 42,
+                    decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                              color: AppColors.editProfileContainerColor,
+                              width: 0.4),
+                          bottom: BorderSide(
+                              color: AppColors.editProfileContainerColor,
+                              width: 0.4),
+                          left: BorderSide(
+                              color: AppColors.editProfileContainerColor,
+                              width: 0.4),
+                          right: BorderSide(
+                              color: AppColors.editProfileContainerColor,
+                              width: 0.4),
+                        ),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12.0),
+                            bottomLeft: Radius.circular(12.0)),
+                        color: Colors.white),
+                    child: Obx(() => TextField(
+                      textAlign: TextAlign.end,
+                      textAlignVertical: TextAlignVertical.center,
+                      controller: controller.personalIdController,
+                      textDirection: mt.TextDirection.ltr,
+                      enabled: controller.isEnabled.value,
+                      style: TextStyle(
+                        color: (AppColors.editProfileTextColorOpa)
+                            .withOpacity(0.51),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14.0,
+                      ),
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(
+                              left: 10.0, right: 14.0, bottom: 12.0),
+                          // isCollapsed: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(70.0),
+                            borderSide: BorderSide(
+                              width: 0,
+                              style: BorderStyle.none,
+                            ),
+                          ),
+                          filled: true,
+                          hintStyle: TextStyle(color: Colors.grey[350]),
+                          hintText: 'رقم الهوية',
+                          fillColor: Colors.white70),
+                    )),
+                  ),
+                ),
+              ],
+            ),
+          )),
           Row(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -982,7 +1077,9 @@ class ClientSettingPage extends StatelessWidget {
                               u?.itemAsStringByName() ?? '',
                           // hint: "الدولة",
                           //popupItemDisabled: (String s) => s.startsWith('I'),
-                          onChanged: print,
+                          onChanged: (country){
+                            controller.country.value = country!;
+                          },
                           selectedItem: controller.country.value): Container(
     alignment: Alignment.centerRight,
     child: Text("لا يوجد مناطق")),
@@ -1071,9 +1168,11 @@ class ClientSettingPage extends StatelessWidget {
                                   ? (u.itemAsStringByName()) ?? ''
                                   : '',
                               // label: "Menu mode",
-                              hint: "country in menu mode",
                               //popupItemDisabled: (String s) => s.startsWith('I'),
-                              onChanged: print,
+                              onChanged: (area){
+                                controller.area.value = area!;
+                              },
+
                               selectedItem: controller.area.value,
                             )
                           : Container(
@@ -1140,7 +1239,7 @@ class ClientSettingPage extends StatelessWidget {
                             controller.isChat.value = true;
                           }
                         }
-                            : () {},
+                            : null,
                         child: Container(
                           child: controller.isChat.value
                               ? Container(
@@ -1159,6 +1258,7 @@ class ClientSettingPage extends StatelessWidget {
                               : Container(
                             padding: EdgeInsets.only(
                               right: 10.0,
+                              //left: 10.0
                             ),
                             //margin: EdgeInsets.only(bottom: 10.0),
                             child: Image.asset(
@@ -1194,8 +1294,8 @@ class ClientSettingPage extends StatelessWidget {
                           ),*/
                       Container(
                         margin: EdgeInsets.only(
-                          right: 3.0,
-                          left: 20.0,
+                          right: 8.0,
+                          left: 23.0,
                           bottom: 10.0,
                         ),
                         alignment: Alignment.center,
@@ -1391,7 +1491,7 @@ class ClientSettingPage extends StatelessWidget {
                         ),*/ /*
                                 ),*/
 
-                            InkWell(
+                            Obx(()=>InkWell(
                               onTap: controller.isEnabled.value
                                   ? () {
                                 if (controller.isNotification.value) {
@@ -1402,50 +1502,44 @@ class ClientSettingPage extends StatelessWidget {
                                   true;
                                 }
                               }
-                                  : () {},
+                                  : null,
                               child: Container(
-                                // height: 70,
-                                  margin: EdgeInsets.only(bottom: 0.0),
-                                  child: Obx(() =>
-                                  controller.isNotification.value !=
-                                      null &&
-                                      controller.isNotification.value
-                                      ? Container(
-                                    padding: EdgeInsets.only(),
-                                    child: Image.asset(
-                                      'images/switch_icon_right.png',
-                                      scale: 2,
-                                      width: 45,
-                                      height: 55,
-                                      fit: BoxFit.fill,
-                                    ),
-                                  )
-                                      : Image.asset(
+                                child:  controller.isNotification.value
+                                    ? Container(
+                                  //margin: EdgeInsets.only(left: 10.0,bottom: 10.0),
+                                  padding: EdgeInsets.only(
+                                    left: 10.0,
+                                  ),
+                                  child: Image.asset(
+                                    'images/switch_icon_right.png',
+                                    scale: 2,
+                                    width: 45,
+                                    height: 40,
+                                    fit: BoxFit.fill,
+                                  ),
+                                )
+                                    : Container(
+                                  padding: EdgeInsets.only(
+                                    right: 10.0,
+                                    //left: 10.0
+                                  ),
+                                  //margin: EdgeInsets.only(bottom: 10.0),
+                                  child: Image.asset(
                                     'images/switch_icon_left.png',
                                     scale: 2,
                                     width: 45,
-                                    height: 55,
+                                    height: 40,
                                     fit: BoxFit.fill,
-                                  ))
-
-                                /*Switch(
-                          onChanged: (s){
-
-                          },
-                          value: true,
-                          //activeColor: Colors.white,
-                         /// activeTrackColor: AppColors.beginColor,
-                         // inactiveThumbColor: Colors.white,
-                         // inactiveTrackColor: Colors.grey,
-                          activeThumbImage: AssetImage('images/switch_icon.png'),
-                          inactiveThumbImage: AssetImage('images/inactive_img.png'),
-                        ),*/
+                                  ),
+                                ),
                               ),
-                            ),
+                            ),),
+
                             Container(
                                 // height: 70,
                                 margin: EdgeInsets.only(
                                   bottom: 0.0,
+
                                 ),
                                 child: Image.asset(
                                   'images/bell_icon.png',
