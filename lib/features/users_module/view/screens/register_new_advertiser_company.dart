@@ -62,38 +62,43 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
                     alignment: AlignmentDirectional.topEnd,
                     children: [
                       InkWell(
-                        onTap:(){
+                        onTap: () {
                           _showBottomSheet1(context);
                         },
-                        child: Obx(()=>Container(
-                          height: 76.44.h,
-                          width: 76.44.w,
-                          decoration: const BoxDecoration(
-                            color: AppColors.whiteColor,
-                            shape: BoxShape.circle,
-                          ),
-                          child: _registerNewAdvertiserCompanyController
-                              .savedFile.value.path ==
-                              ' '
-                              ? const Icon(
-                            Icons.camera_alt_outlined,
-                            color: AppColors.verifyFayrouzyFirst,
-                            size: 50,
-                          )
-                              : Container(
+                        child: Obx(
+                          () => Container(
                             height: 76.44.h,
                             width: 76.44.w,
-                            decoration: BoxDecoration(
-                                color: AppColors.verifyFayrouzyFirst,
-                                shape: BoxShape.circle,
-                                image: DecorationImage(image: FileImage(_registerNewAdvertiserCompanyController
-                                    .savedFile.value,),fit: BoxFit.fill,)
+                            decoration: const BoxDecoration(
+                              color: AppColors.whiteColor,
+                              shape: BoxShape.circle,
                             ),
-                            // child: Image.file(_registerNewClientUserController
-                            //     .savedFile.value,fit: BoxFit.fill,),
+                            child: _registerNewAdvertiserCompanyController
+                                        .savedFile.value.path ==
+                                    ' '
+                                ? const Icon(
+                                    Icons.camera_alt_outlined,
+                                    color: AppColors.verifyFayrouzyFirst,
+                                    size: 50,
+                                  )
+                                : Container(
+                                    height: 76.44.h,
+                                    width: 76.44.w,
+                                    decoration: BoxDecoration(
+                                        color: AppColors.verifyFayrouzyFirst,
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          image: FileImage(
+                                            _registerNewAdvertiserCompanyController
+                                                .savedFile.value,
+                                          ),
+                                          fit: BoxFit.fill,
+                                        )),
+                                    // child: Image.file(_registerNewClientUserController
+                                    //     .savedFile.value,fit: BoxFit.fill,),
+                                  ),
+                            //  child:   SvgPicture.asset('images/camera.svg',height: 26.13.h,width:34.84.w,fit: BoxFit.fitWidth),
                           ),
-                          //  child:   SvgPicture.asset('images/camera.svg',height: 26.13.h,width:34.84.w,fit: BoxFit.fitWidth),
-                        ),
                         ),
                       ),
                       Padding(
@@ -127,12 +132,14 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
                   hintText: 'companyName'.tr,
                   borderColor: AppColors.borderAdvertiserRegisterColor,
                   onSaved: (value) {
-                    _registerNewAdvertiserCompanyController.companyName = value!;
+                    _registerNewAdvertiserCompanyController.companyName =
+                        value!;
                   },
                   validator: (value) {
                     return _registerNewAdvertiserCompanyController
                         .validateCompanyName(value!);
-                  },),
+                  },
+                ),
                 // SizedBox(height: 15.h,),
                 // AdvertisersDropDown(hintText: 'type'.tr,width: 0,),
                 // SizedBox(height: 15.h,),
@@ -140,42 +147,47 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
                   height: 16.h,
                 ),
                 AdvertisersGenericField(
-                    obscureText: false,
-                    borderColor: AppColors.borderAdvertiserRegisterColor,
-                    controller: _registerNewAdvertiserCompanyController
-                        .accountNameController,
+                  obscureText: false,
+                  borderColor: AppColors.borderAdvertiserRegisterColor,
+                  controller: _registerNewAdvertiserCompanyController
+                      .accountNameController,
                   onSaved: (value) {
-                    _registerNewAdvertiserCompanyController.accountName = value!;
+                    _registerNewAdvertiserCompanyController.accountName =
+                        value!;
                   },
                   validator: (value) {
                     return _registerNewAdvertiserCompanyController
                         .validateAccountName(value!);
-                  }, textAlignment: TextAlign.end,
-                    hintText: 'accountName'.tr,),
+                  },
+                  textAlignment: TextAlign.end,
+                  hintText: 'accountName'.tr,
+                ),
                 SizedBox(
                   height: 16.h,
                 ),
                 AdvertisersGenericField(
-                    obscureText: false,
-                    borderColor: AppColors.borderAdvertiserRegisterColor,
-                    controller: _registerNewAdvertiserCompanyController
-                        .accountAdminNameController,
-                    textAlignment: TextAlign.end,
-                    hintText: 'accountAdminName'.tr,
+                  obscureText: false,
+                  borderColor: AppColors.borderAdvertiserRegisterColor,
+                  controller: _registerNewAdvertiserCompanyController
+                      .accountAdminNameController,
+                  textAlignment: TextAlign.end,
+                  hintText: 'accountAdminName'.tr,
                   onSaved: (value) {
-                    _registerNewAdvertiserCompanyController.accountAdminName = value!;
+                    _registerNewAdvertiserCompanyController.accountAdminName =
+                        value!;
                   },
                   validator: (value) {
                     return _registerNewAdvertiserCompanyController
                         .validateAccountName(value!);
-                  },),
+                  },
+                ),
                 SizedBox(
                   height: 16.h,
                 ),
                 Obx(() => AdvertisersPhone(
                       hintText: 'phone'.tr,
                       enabled: false,
-                  flag: false,
+                      flag: false,
                       initialSelection: _registerNewAdvertiserCompanyController
                           .countryCode.value,
                       borderColor: AppColors.borderAdvertiserRegisterColor,
@@ -185,49 +197,52 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
                       },
                       controller: _registerNewAdvertiserCompanyController
                           .phoneController,
-                  onSaved: (value) {
-                    _registerNewAdvertiserCompanyController.phone = value!;
-                  },
-                  validator: (value) {
-                    return _registerNewAdvertiserCompanyController
-                        .validatePhone(value!);
-                  },
-                )),
+                      onSaved: (value) {
+                        _registerNewAdvertiserCompanyController.phone = value!;
+                      },
+                      validator: (value) {
+                        return _registerNewAdvertiserCompanyController
+                            .validatePhone(value!);
+                      },
+                    )),
                 SizedBox(
                   height: 16.h,
                 ),
                 AdvertisersGenericField(
-                    obscureText: false,
-                    borderColor: AppColors.borderAdvertiserRegisterColor,
-                    controller:
-                        _registerNewAdvertiserCompanyController.emailController,
-                    textAlignment: TextAlign.end,
-                    hintText: 'email'.tr,
+                  obscureText: false,
+                  borderColor: AppColors.borderAdvertiserRegisterColor,
+                  controller:
+                      _registerNewAdvertiserCompanyController.emailController,
+                  textAlignment: TextAlign.end,
+                  hintText: 'email'.tr,
                   onSaved: (value) {
                     _registerNewAdvertiserCompanyController.email = value!;
                   },
                   validator: (value) {
                     return _registerNewAdvertiserCompanyController
                         .validateEmail(value!);
-                  },),
+                  },
+                ),
 
                 SizedBox(
                   height: 16.h,
                 ),
                 AdvertisersGenericField(
-                    obscureText: false,
-                    borderColor: AppColors.borderAdvertiserRegisterColor,
-                    controller: _registerNewAdvertiserCompanyController
-                        .recordIDController,
-                    textAlignment: TextAlign.end,
-                    hintText: 'recordNumber'.tr,
-                    onSaved: (value) {
-          _registerNewAdvertiserCompanyController.recordNumber = value!;
-          },
-            validator: (value) {
-              return _registerNewAdvertiserCompanyController
-                  .validateRecordID(value!);
-            },),
+                  obscureText: false,
+                  borderColor: AppColors.borderAdvertiserRegisterColor,
+                  controller: _registerNewAdvertiserCompanyController
+                      .recordIDController,
+                  textAlignment: TextAlign.end,
+                  hintText: 'recordNumber'.tr,
+                  onSaved: (value) {
+                    _registerNewAdvertiserCompanyController.recordNumber =
+                        value!;
+                  },
+                  validator: (value) {
+                    return _registerNewAdvertiserCompanyController
+                        .validateRecordID(value!);
+                  },
+                ),
                 SizedBox(
                   height: 16.h,
                 ),
@@ -253,7 +268,7 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Obx(
-                              () => AdvertisersDropDown(
+                          () => AdvertisersDropDown(
                             hintText: 'الدولة',
                             width: 150.w,
                             items: _registerNewAdvertiserCompanyController
@@ -267,34 +282,52 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
                           ),
                         ),
                         Obx(() => AdvertisersDropDown(
-                          hintText: 'المدينة',
-                          width: 150.w,
-                          items: _registerNewAdvertiserCompanyController
-                              .areas.value,
-                          onChanged: (area) {
-                            _registerNewAdvertiserCompanyController
-                                .areaId.value = area.id.toString();
-                          },
-                        )),
+                              hintText: 'المدينة',
+                              width: 150.w,
+                              items: _registerNewAdvertiserCompanyController
+                                  .areas.value,
+                              onChanged: (area) {
+                                _registerNewAdvertiserCompanyController
+                                    .areaId.value = area.id.toString();
+                              },
+                            )),
                       ],
                     )),
                 SizedBox(height: 44.6.h),
                 AdvertisersButton(
                   text: 'verifyAndFollow'.tr,
                   onPressed: () {
-                    _registerNewAdvertiserCompanyController
-                        .savedFile.value=File(' ');
-                    _registerNewAdvertiserCompanyController.phoneMess.value = '';
-                    _registerNewAdvertiserCompanyController. nameMess.value = '';
-                    _registerNewAdvertiserCompanyController.nationalIDMess.value = '';
-                    _registerNewAdvertiserCompanyController.accountNameMess.value = '';
-                    _registerNewAdvertiserCompanyController. emailMess.value = '';
+                    if (_registerNewAdvertiserCompanyController
+                            .savedFile.value.path ==
+                        ' ') {
+                      Get.snackbar(
+                        "خطأ",
+                        'الصورة مطلوبة',
+                        icon: const Icon(Icons.person, color: Colors.red),
+                        backgroundColor: Colors.yellow,
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    } else {
+                      _registerNewAdvertiserCompanyController.savedFile.value =
+                          File(' ');
+                      _registerNewAdvertiserCompanyController.phoneMess.value =
+                          '';
+                      _registerNewAdvertiserCompanyController.nameMess.value =
+                          '';
+                      _registerNewAdvertiserCompanyController
+                          .nationalIDMess.value = '';
+                      _registerNewAdvertiserCompanyController
+                          .accountNameMess.value = '';
+                      _registerNewAdvertiserCompanyController.emailMess.value =
+                          '';
 
-                    _registerNewAdvertiserCompanyController.errorRegister.value=false;
-                    _registerNewAdvertiserCompanyController.isValid.value=false;
+                      _registerNewAdvertiserCompanyController
+                          .errorRegister.value = false;
+                      _registerNewAdvertiserCompanyController.isValid.value =
+                          false;
 
-                    _registerNewAdvertiserCompanyController.checkLogin();
-
+                      _registerNewAdvertiserCompanyController.checkLogin();
+                    }
                   },
                 ),
                 SizedBox(height: 22.h),
@@ -305,6 +338,7 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
       ),
     );
   }
+
   void _showBottomSheet1(BuildContext context) {
     ImagePicker _imagePicker = ImagePicker();
     // Future<File> imageFile;
@@ -319,14 +353,17 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
                 onPressed: () async {
                   _imagePicker
                       .pickImage(
-                      source: ImageSource.camera,
-                      imageQuality: 60,
-                      maxWidth: 1280,
-                      maxHeight: 720)
+                          source: ImageSource.camera,
+                          imageQuality: 60,
+                          maxWidth: 1280,
+                          maxHeight: 720)
                       .then((file) async {
                     _registerNewAdvertiserCompanyController.savedFile.value =
                         File.fromUri(Uri.file(file!.path));
-                    RegisterNewAdvertiserCompanyController.photo= await dio.MultipartFile.fromFile(file.path, filename: file.path.substring(file.path.lastIndexOf("/")+1));
+                    RegisterNewAdvertiserCompanyController.photo =
+                        await dio.MultipartFile.fromFile(file.path,
+                            filename: file.path
+                                .substring(file.path.lastIndexOf("/") + 1));
 
                     //provider = FileImage(savedFile);
                     //setState(() {
@@ -358,14 +395,17 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
                 onPressed: () async {
                   _imagePicker
                       .pickImage(
-                      source: ImageSource.gallery,
-                      imageQuality: 60,
-                      maxWidth: 1280,
-                      maxHeight: 720)
+                          source: ImageSource.gallery,
+                          imageQuality: 60,
+                          maxWidth: 1280,
+                          maxHeight: 720)
                       .then((file) async {
                     _registerNewAdvertiserCompanyController.savedFile.value =
                         File.fromUri(Uri.file(file!.path));
-                    RegisterNewAdvertiserCompanyController.photo= await dio.MultipartFile.fromFile(file.path, filename: file.path.substring(file.path.lastIndexOf("/")+1));
+                    RegisterNewAdvertiserCompanyController.photo =
+                        await dio.MultipartFile.fromFile(file.path,
+                            filename: file.path
+                                .substring(file.path.lastIndexOf("/") + 1));
                     //         provider = FileImage(savedFile);
                     //         setState(() {
                     _registerNewAdvertiserCompanyController.imageBase641.value =

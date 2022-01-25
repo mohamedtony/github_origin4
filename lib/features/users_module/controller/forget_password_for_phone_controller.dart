@@ -59,9 +59,9 @@ class ForgetPasswordForPhoneController extends GetxController{
     forgetPasswordForPhoneFormKey.currentState!.save();
     print(
         '>>>>>>>>>>>>>>>>>>>>${countryCode.value.toString() + int.parse(phone).toString()}');
-    await verifyPhone();
-    // Get.toNamed(
-    //     '/newPasswordPage?phone=${countryCode.value.toString() + int.parse(phone).toString()}');
+    //await verifyPhone();
+    Get.toNamed(
+        '/newPasswordPage?route=forgetPasswordForPhone&phone=${countryCode.value.toString() + int.parse(phone).toString()}');
     // loginClient();
     // Get.toNamed('/verificationCodePage');
   }

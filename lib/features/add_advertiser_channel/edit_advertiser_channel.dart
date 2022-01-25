@@ -15,14 +15,14 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart' as dio;
 
-class AddAdvertiserChannel extends StatefulWidget {
-  const AddAdvertiserChannel({Key? key}) : super(key: key);
+class EditAdvertiserChannel extends StatefulWidget {
+  const EditAdvertiserChannel({Key? key}) : super(key: key);
 
   @override
-  State<AddAdvertiserChannel> createState() => _AddAdvertiserChannelState();
+  State<EditAdvertiserChannel> createState() => _EditAdvertiserChannelState();
 }
 
-class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
+class _EditAdvertiserChannelState extends State<EditAdvertiserChannel> {
   AddAdvertiserChannelController _addAdvertiserChannelController = Get.find();
   final List<String> _ranges = [
     '100 - 1000',
@@ -66,7 +66,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
       ),
       body: ListView(
         children: [
-           AddAdvertiserTitle(title: 'اضافة قناة اعلان وتأثير',),
+           AddAdvertiserTitle(title: 'تحديث قناة اعلان وتأثير',),
           Row(
             children: [
               Image.asset(
@@ -113,7 +113,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                 Expanded(
                     child: TextFormField(
                       // enabled: controller.isChecked,
-                     // initialValue: "# Elrashed",
+                      // initialValue: "# Elrashed",
                       style: TextStyle(
                           color: const Color(0xff041D67), fontSize: 14.sp),
                       // cursorColor: Colors.black,
@@ -772,7 +772,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
             child: Row(
               children: [
                 Expanded(child: InkWell(onTap: () {
-                  _addAdvertiserChannelController.addChannel();
+                  _addAdvertiserChannelController.editChannel();
                 },
                   child: Container(
                     height: 40,
@@ -814,7 +814,6 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
       ),
     );
   }
-
 }
 
 // class Country {

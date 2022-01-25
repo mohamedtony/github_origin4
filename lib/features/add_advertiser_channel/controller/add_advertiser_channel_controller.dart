@@ -166,6 +166,52 @@ class AddAdvertiserChannelController extends GetxController {
 
   }
 
+  editChannel(){
+
+    EasyLoading.show();
+    Repository repo = Repository();
+
+    repo.postWithImageMultipart<ChannelsResponse>(
+        path: 'profile/channels/add',
+        fromJson: (json) => ChannelsResponse.fromJson(json),
+        json: {"token":"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd",
+          "channel_id":4,
+          "name":accountNameController.text,
+          "link":linkController.text,
+          "followers_from":int.parse(selectedRange.value.substring(0,selectedRange.value.lastIndexOf('-')-1)),
+          "followers_to":int.parse(selectedRange.value.substring(selectedRange.value.lastIndexOf('-')+2)),
+          "men":int.parse(selectedMenPercentage.value),
+          "women":int.parse(selectedWomenPercentage.value),
+          "boys":int.parse(selectedBoysPercentage.value),
+          "girls":int.parse(selectedGirlsPercentage.value),
+          "areas":areas,
+        },
+        onSuccess: (res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "نجاح",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+
+        },
+        onError: (err, res) {
+
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
+
+  }
 
 
   @override

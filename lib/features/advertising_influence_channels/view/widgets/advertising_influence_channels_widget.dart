@@ -65,6 +65,8 @@ class AdvertisingInfluenceChannelsPageWidget extends StatelessWidget {
                                         if(Get.find<AdvertisingInfluenceChannelsController>().isChecked == true){
     Get.find<AdvertisingInfluenceChannelsController>().addRemoveCheckList(advertisingChannels.id);
                                           print("${Get.find<AdvertisingInfluenceChannelsController>().checkList!}");
+
+    Get.find<AdvertisingInfluenceChannelsController>().channelToggleType(toggleId:advertisingChannels.channel?.id??0);
                                         }
                                       },
                                       child: Row(
@@ -179,13 +181,14 @@ class AdvertisingInfluenceChannelsPageWidget extends StatelessWidget {
                               if(Get.find<AdvertisingInfluenceChannelsController>().isChecked == true){
     Get.find<AdvertisingInfluenceChannelsController>().addRemoveCheckListSee(index);
                               }
+                              Get.find<AdvertisingInfluenceChannelsController>().channelToggleStatusView(viewId: advertisingChannels.id??0);
                               print("${Get.find<AdvertisingInfluenceChannelsController>().isChecked} ${advertisingChannels.id}");
                             },
                             child: Get.find<AdvertisingInfluenceChannelsController>().checkListSee![index!] == true ? Icon(Icons.remove_red_eye_outlined,color: Color(0xff5aa1d0),):Icon(Icons.remove_red_eye,color: Color(0xff5aa1d0),),
                           ),
                           InkWell(
                             onTap: (){
-
+                              Get.toNamed('/EditAdvertiserChannel');
                             },
                             child: Icon(Icons.edit,color: Color(0xff5aa1d0),),
                           ),

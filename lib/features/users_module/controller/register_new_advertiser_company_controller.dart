@@ -198,6 +198,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
         path: 'auth/register',
         fromJson: (json) => RegisterCompanyResponse.fromJson(json),
         json: {
+          "company_name": companyNameController.text,
           "account_name": accountNameController.text,
           "area_id": areaId.value,
           "country_id": countryId.value,
@@ -213,6 +214,9 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
           "image": photo
         },
         onSuccess: (res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
           storage.write(
               "data", registerCompanyResponse.value.toJson());
           Get.toNamed('/chooseBakaPage');

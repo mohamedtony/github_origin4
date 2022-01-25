@@ -157,6 +157,7 @@ class RegisterNewClientCompanyController extends GetxController {
     }
     return null;
   }
+
   void checkLogin() {
    isValid.value = registerNewCompanyUserControllerKeyForm1.currentState!
         .validate();
@@ -201,6 +202,7 @@ class RegisterNewClientCompanyController extends GetxController {
         path: 'auth/register',
         fromJson: (json) => RegisterClientUserResponse.fromJson(json),
         json: {
+          "company_name": companyNameController.text,
           "account_name": accountNameController.text,
           "area_id": areaId.value,
           "country_id": countryId.value,

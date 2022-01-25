@@ -90,7 +90,7 @@ class AdvancedOptionsPage extends StatelessWidget {
           Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 25),
-                child: ListView.separated(
+                child: Obx(()=>ListView.separated(
                   padding: const EdgeInsets.symmetric(
                     vertical: 8,
                     horizontal: 4,
@@ -104,7 +104,7 @@ class AdvancedOptionsPage extends StatelessWidget {
                     advancedOptionsData: _advancedOptionsController.advancedOptionsData[index],
                   ),
                 ),
-              )),
+              ))),
           Padding(
             padding: const EdgeInsets.only(
                 bottom: 15,
@@ -115,7 +115,7 @@ class AdvancedOptionsPage extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(child: InkWell(onTap: (){
-
+                 Get.find<AdvancedOptionsController>().setSettings();
                 },
                   child: Container(
                     height: 40,

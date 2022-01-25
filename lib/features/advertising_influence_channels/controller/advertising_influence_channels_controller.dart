@@ -11,6 +11,7 @@ class AdvertisingInfluenceChannelsController extends GetxController{
   late Repository repo ;
   var channels=[].obs;
   var checkList = [].obs;
+ // var toggleId=0.obs;
   void addRemoveCheckList(id){
     if(checkList!.contains(id)){
       checkList!.remove(id);
@@ -70,6 +71,64 @@ class AdvertisingInfluenceChannelsController extends GetxController{
               backgroundColor: Colors.yellow,
               snackPosition: SnackPosition.BOTTOM,);
           });
+
+  }
+  channelToggleStatusView({required int viewId}){
+
+    EasyLoading.show();
+
+
+    repo.get<ChannelsResponse>(
+        path: 'profile/channels/$viewId/status',
+        fromJson: (json) => ChannelsResponse.fromJson(json),
+        json: {"token":"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd"},
+        onSuccess: (res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          channels.value=res.data!;
+        },
+        onError: (err, res) {
+
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
+
+  }
+  channelToggleType({required int toggleId}){
+
+    EasyLoading.show();
+
+
+    repo.get<ChannelsResponse>(
+        path: 'profile/channels/$toggleId/type',
+        fromJson: (json) => ChannelsResponse.fromJson(json),
+        json: {"token":"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd"},
+        onSuccess: (res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          channels.value=res.data!;
+        },
+        onError: (err, res) {
+
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
 
   }
   deleteChannel(){

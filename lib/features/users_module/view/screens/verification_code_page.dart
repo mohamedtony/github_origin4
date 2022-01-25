@@ -160,27 +160,42 @@ class VerificationCodePage extends StatelessWidget {
                       print(Get
                           .parameters['route'].toString()  );
                       print(auth.currentUser);
-
-                      if (auth.currentUser != null&&Get
+                 ///
+                      if (Get
                           .parameters['route'].toString()=='registerPhone') {
 
                         Get.toNamed('/registerAccountType?phone=${Get
                             .parameters['phone'].toString()}');
 
-                      }else if(auth.currentUser != null&&Get
+                      }else if(Get
                           .parameters['route'].toString()=='forgetPasswordForPhone'){
 
                         Get.toNamed('/newPasswordPage?phone=${Get
                             .parameters['phone'].toString()}');
 
                       }
-                      else if(auth.currentUser == null&&Get
-                          .parameters['route'].toString()=='registerPhone'){
-                        Get.find<RegisterPhoneController>().signIn();
-                      }else if(auth.currentUser == null&&Get
-                          .parameters['route'].toString()=='forgetPasswordForPhone'){
-                        Get.find<ForgetPasswordForPhoneController>().signIn();
-                      }
+                      ///
+
+                      // if (auth.currentUser != null&&Get
+                      //     .parameters['route'].toString()=='registerPhone') {
+                      //
+                      //   Get.toNamed('/registerAccountType?phone=${Get
+                      //       .parameters['phone'].toString()}');
+                      //
+                      // }else if(auth.currentUser != null&&Get
+                      //     .parameters['route'].toString()=='forgetPasswordForPhone'){
+                      //
+                      //   Get.toNamed('/newPasswordPage?phone=${Get
+                      //       .parameters['phone'].toString()}');
+                      //
+                      // }
+                      // else if(auth.currentUser == null&&Get
+                      //     .parameters['route'].toString()=='registerPhone'){
+                      //   Get.find<RegisterPhoneController>().signIn();
+                      // }else if(auth.currentUser == null&&Get
+                      //     .parameters['route'].toString()=='forgetPasswordForPhone'){
+                      //   Get.find<ForgetPasswordForPhoneController>().signIn();
+                      // }
                     },
                     backgroundColor: AppColors.verifyButtonColor,
                     textColor: AppColors.verifyTextColor),

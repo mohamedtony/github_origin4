@@ -134,14 +134,15 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                   height: 28.62.h,
                 ),
                 AdvertisersGenericField(
-                    obscureText: false,
-                    borderColor: AppColors.borderAdvertiserRegisterColor,
-                    controller:
-                        _registerNewAdvertiserUserController.nameController,
-                    textAlignment: TextAlign.end,
-                    hintText: 'name'.tr, onSaved: (value) {
-                  _registerNewAdvertiserUserController.accountName = value!;
-                },
+                  obscureText: false,
+                  borderColor: AppColors.borderAdvertiserRegisterColor,
+                  controller:
+                      _registerNewAdvertiserUserController.nameController,
+                  textAlignment: TextAlign.end,
+                  hintText: 'name'.tr,
+                  onSaved: (value) {
+                    _registerNewAdvertiserUserController.accountName = value!;
+                  },
                   validator: (value) {
                     return _registerNewAdvertiserUserController
                         .validateAccountName(value!);
@@ -151,31 +152,32 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                   height: 16.h,
                 ),
                 AdvertisersDropDown(
-                    hintText: 'type'.tr,
-                    width: 0,
-                    itemType: 'String',
-                    items: const ['عميل', 'معلن'],
-                    onChanged: (val) {
-                      if(val=='عميل') {
-                        _registerNewAdvertiserUserController.role.value = 'user';
-                      }else if(val=='معلن'){
-                        _registerNewAdvertiserUserController.role.value = 'advertiser';
-                      }
-                    },
-                  ),
-
+                  hintText: 'type'.tr,
+                  width: 0,
+                  itemType: 'String',
+                  items: const ['عميل', 'معلن'],
+                  onChanged: (val) {
+                    if (val == 'عميل') {
+                      _registerNewAdvertiserUserController.role.value = 'user';
+                    } else if (val == 'معلن') {
+                      _registerNewAdvertiserUserController.role.value =
+                          'advertiser';
+                    }
+                  },
+                ),
                 SizedBox(
                   height: 16.h,
                 ),
                 AdvertisersGenericField(
-                    obscureText: false,
-                    borderColor: AppColors.borderAdvertiserRegisterColor,
-                    controller: _registerNewAdvertiserUserController
-                        .accountNameController,
-                    textAlignment: TextAlign.end,
-                    hintText: 'accountName'.tr, onSaved: (value) {
-                  _registerNewAdvertiserUserController.accountName = value!;
-                },
+                  obscureText: false,
+                  borderColor: AppColors.borderAdvertiserRegisterColor,
+                  controller: _registerNewAdvertiserUserController
+                      .accountNameController,
+                  textAlignment: TextAlign.end,
+                  hintText: 'accountName'.tr,
+                  onSaved: (value) {
+                    _registerNewAdvertiserUserController.accountName = value!;
+                  },
                   validator: (value) {
                     return _registerNewAdvertiserUserController
                         .validateAccountName(value!);
@@ -187,12 +189,13 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                 Obx(() => AdvertisersPhone(
                       hintText: 'phone'.tr,
                       enabled: false,
-                  flag: false,
+                      flag: false,
                       borderColor: AppColors.borderAdvertiserRegisterColor,
                       initialSelection: _registerNewAdvertiserUserController
                           .countryCode.value,
                       onChanged: (countryCodeVal) {
-                        _registerNewAdvertiserUserController.countryCode.value=countryCodeVal.dialCode! ;
+                        _registerNewAdvertiserUserController.countryCode.value =
+                            countryCodeVal.dialCode!;
                       },
                       controller:
                           _registerNewAdvertiserUserController.phoneController,
@@ -208,14 +211,15 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                   height: 16.h,
                 ),
                 AdvertisersGenericField(
-                    obscureText: false,
-                    borderColor: AppColors.borderAdvertiserRegisterColor,
-                    controller:
-                        _registerNewAdvertiserUserController.emailController,
-                    textAlignment: TextAlign.end,
-                    hintText: 'email'.tr, onSaved: (value) {
-                  _registerNewAdvertiserUserController.accountName = value!;
-                },
+                  obscureText: false,
+                  borderColor: AppColors.borderAdvertiserRegisterColor,
+                  controller:
+                      _registerNewAdvertiserUserController.emailController,
+                  textAlignment: TextAlign.end,
+                  hintText: 'email'.tr,
+                  onSaved: (value) {
+                    _registerNewAdvertiserUserController.accountName = value!;
+                  },
                   validator: (value) {
                     return _registerNewAdvertiserUserController
                         .validateEmail(value!);
@@ -225,14 +229,15 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                   height: 16.h,
                 ),
                 AdvertisersGenericField(
-                    obscureText: false,
-                    borderColor: AppColors.borderAdvertiserRegisterColor,
-                    controller: _registerNewAdvertiserUserController
-                        .nationalIDController,
-                    textAlignment: TextAlign.end,
-                    hintText: 'nationalId'.tr, onSaved: (value) {
-                  _registerNewAdvertiserUserController.accountName = value!;
-                },
+                  obscureText: false,
+                  borderColor: AppColors.borderAdvertiserRegisterColor,
+                  controller:
+                      _registerNewAdvertiserUserController.nationalIDController,
+                  textAlignment: TextAlign.end,
+                  hintText: 'nationalId'.tr,
+                  onSaved: (value) {
+                    _registerNewAdvertiserUserController.accountName = value!;
+                  },
                   validator: (value) {
                     return _registerNewAdvertiserUserController
                         .validateNationalId(value!);
@@ -252,7 +257,8 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                     _registerNewAdvertiserUserController.password = value!;
                   },
                   validator: (value) {
-                     return _registerNewAdvertiserUserController.validatePassword(value!);
+                    return _registerNewAdvertiserUserController
+                        .validatePassword(value!);
                   },
                 ),
                 SizedBox(height: 16.h),
@@ -291,18 +297,33 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                 AdvertisersButton(
                   text: 'verifyAndFollow'.tr,
                   onPressed: () {
-                    _registerNewAdvertiserUserController
-                        .savedFile.value=File(' ');
-                    _registerNewAdvertiserUserController.phoneMess.value = '';
-                    _registerNewAdvertiserUserController. nameMess.value = '';
-                    _registerNewAdvertiserUserController.nationalIDMess.value = '';
-                    _registerNewAdvertiserUserController.accountNameMess.value = '';
-                    _registerNewAdvertiserUserController. emailMess.value = '';
+                    if (_registerNewAdvertiserUserController
+                            .savedFile.value.path ==
+                        ' ') {
+                      Get.snackbar(
+                        "خطأ",
+                        'الصورة مطلوبة',
+                        icon: const Icon(Icons.person, color: Colors.red),
+                        backgroundColor: Colors.yellow,
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    } else {
+                      _registerNewAdvertiserUserController.savedFile.value =
+                          File(' ');
+                      _registerNewAdvertiserUserController.phoneMess.value = '';
+                      _registerNewAdvertiserUserController.nameMess.value = '';
+                      _registerNewAdvertiserUserController
+                          .nationalIDMess.value = '';
+                      _registerNewAdvertiserUserController
+                          .accountNameMess.value = '';
+                      _registerNewAdvertiserUserController.emailMess.value = '';
 
-
-                    _registerNewAdvertiserUserController.errorRegister.value=false;
-                    _registerNewAdvertiserUserController.isValid.value=false;
-                    _registerNewAdvertiserUserController.checkLogin();
+                      _registerNewAdvertiserUserController.errorRegister.value =
+                          false;
+                      _registerNewAdvertiserUserController.isValid.value =
+                          false;
+                      _registerNewAdvertiserUserController.checkLogin();
+                    }
                   },
                 ),
                 SizedBox(height: 22.h),
