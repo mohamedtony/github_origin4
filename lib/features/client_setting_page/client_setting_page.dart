@@ -664,7 +664,7 @@ class ClientSettingPage extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    controller.verifyPhone();
+                    //controller.verifyPhone();
                   },
                   child: Container(
                       height: 42,

@@ -86,14 +86,19 @@ class AdvertiserSettingsPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    margin: EdgeInsets.only(left: 10.0, top: 35.0),
-                    child: SvgPicture.asset(
-                      "images/back_button.svg",
-                      height: 45,
-                      width: 45,
-                      // matchTextDirection: true,
+                  InkWell(
+                    onTap: (){
+                      Get.back();
+                    },
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      margin: EdgeInsets.only(left: 10.0, top: 35.0),
+                      child: SvgPicture.asset(
+                        "images/back_button.svg",
+                        height: 45,
+                        width: 45,
+                        // matchTextDirection: true,
+                      ),
                     ),
                   ),
                 ],
@@ -108,18 +113,18 @@ class AdvertiserSettingsPage extends StatelessWidget {
                         top: 14.0
                       ),
                       alignment: Alignment.center,
-                      child: Text(
-                        '% 50',
+                      child:Obx(()=> Text(
+                        '% ${controller.clientProfileModel.value.profile_completion??''}',
                         textAlign: TextAlign.center,
                         textDirection: mt.TextDirection.ltr,
                         style: TextStyle(
                             color: AppColors.indicatorColor,
                             fontSize: 22.0,
-                          fontWeight: FontWeight.w600
+                            fontWeight: FontWeight.w600
                           //  decoration: TextDecoration.underline,
                           //  decorationThickness: 2
                         ),
-                      ),
+                      )),
                     ),
                     Expanded(
                       child: Column(
@@ -142,17 +147,17 @@ class AdvertiserSettingsPage extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Container(
+                          Obx(()=>Container(
                             margin: EdgeInsets.only(right: 14.0,left: 14.0,bottom: 10.0),
                             child: StepProgressIndicator(
                               totalSteps: 10,
-                              currentStep: 6,
+                              currentStep: controller.profile_completion.value,
                               size: 4,
                               selectedColor: AppColors.indicatorColor,
                               unselectedColor: Colors.white,
                               progressDirection: mt.TextDirection.rtl,
                             ),
-                          ),
+                          ))
                         ],
                       ),
                     )
@@ -192,25 +197,112 @@ class AdvertiserSettingsPage extends StatelessWidget {
                           //color:  Color(0xff486ac7),
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          right: 18.0,
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          'edit'.tr,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: AppColors.editProfileTextColor,
-                              fontSize: 18.0,
-                              decoration: TextDecoration.underline,
-                              decorationThickness: 2),
+                      InkWell(
+                        onTap: (){
+                          Get.toNamed("/clientSettingPage?from=advertiserPage");
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(
+                            right: 18.0,
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            'edit'.tr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: AppColors.editProfileTextColor,
+                                fontSize: 18.0,
+                                decoration: TextDecoration.underline,
+                                decorationThickness: 2),
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
                 Container(
+                  margin: const EdgeInsets.only(top: 3.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(
+                            right: 3.0, left: 8.0, bottom: 10.0),
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'فرد',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              color: AppColors.editProfileTextColor,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                      Obx(() =>
+                      controller.accountType.value.isNotEmpty &&
+                          controller.accountType.value == "client"
+                          ? Container(
+                        //margin: EdgeInsets.only(left: 10.0,bottom: 10.0),
+                        padding: const EdgeInsets.only(
+                            left: 10.0, bottom: 10.0, top: 2.0),
+                        child: Image.asset(
+                          'images/switch_icon_right.png',
+                          scale: 2,
+                          width: 45,
+                          height: 40,
+                          fit: BoxFit.fill,
+                        ),
+                      )
+                          : Container(
+                        padding: const EdgeInsets.only(
+                            right: 10.0, bottom: 10.0, top: 2.0),
+                        //margin: EdgeInsets.only(bottom: 10.0),
+                        child: Image.asset(
+                          'images/switch_icon_left.png',
+                          scale: 2,
+                          width: 45,
+                          height: 40,
+                          fit: BoxFit.fill,
+                        ),
+                      )),
+                      /* Container(
+                          // height: 70,
+                          margin: EdgeInsets.only(bottom: 6.0),
+                          child: Image.asset(
+                            'images/switch_icon_left.png',
+                            scale: 2,
+                          )
+
+                          */ /*Switch(
+                          onChanged: (s){
+
+                          },
+                          value: true,
+                          //activeColor: Colors.white,
+                         /// activeTrackColor: AppColors.beginColor,
+                         // inactiveThumbColor: Colors.white,
+                         // inactiveTrackColor: Colors.grey,
+                          activeThumbImage: AssetImage('images/switch_icon.png'),
+                          inactiveThumbImage: AssetImage('images/inactive_img.png'),
+                        ),*/ /*
+                          ),*/
+                      Container(
+                        margin: const EdgeInsets.only(
+                            right: 3.0, left: 20.0, bottom: 10.0),
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'كيان',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: AppColors.dividerBottom,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                /*Container(
                   margin: EdgeInsets.only(top: 3.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,7 +328,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                             scale: 2,
                           )
 
-                        /*Switch(
+                        *//*Switch(
                           onChanged: (s){
 
                           },
@@ -247,7 +339,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                          // inactiveTrackColor: Colors.grey,
                           activeThumbImage: AssetImage('images/switch_icon.png'),
                           inactiveThumbImage: AssetImage('images/inactive_img.png'),
-                        ),*/
+                        ),*//*
                       ),
                       Container(
                         margin: EdgeInsets.only(
@@ -264,7 +356,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                )
+                )*/
               ],
             ),
           ),
@@ -314,6 +406,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                         color: Colors.white),
                     child: TextField(
                       textAlign: TextAlign.start,
+                      enabled: false,
                       textAlignVertical: TextAlignVertical.center,
                       controller: controller.kayanNameController,
                       style: TextStyle(
@@ -388,6 +481,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                         color: Colors.white),
                     child: TextField(
                       textAlign: TextAlign.end,
+                      enabled: false,
                       textAlignVertical: TextAlignVertical.center,
                       controller: controller.accountNameEdit,
                       textDirection: mt.TextDirection.ltr,
@@ -465,7 +559,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
                     child: TextField(
                       textAlign: TextAlign.end,
                       textAlignVertical: TextAlignVertical.center,
-                      controller: controller.accountNameEdit,
+                      enabled: false,
+                      controller: controller.sglNumberController,
                       textDirection: mt.TextDirection.ltr,
                       style: TextStyle(
                         color: (AppColors.editProfileTextColorOpa)

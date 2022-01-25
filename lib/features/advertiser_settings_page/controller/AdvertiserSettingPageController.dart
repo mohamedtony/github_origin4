@@ -22,7 +22,7 @@ class AdvertiserSettingPageController extends GetxController  {
   var isOpend = false;
   var position = -1;
   var tabIndex = 1.obs;
-  TextEditingController? kayanNameController,accountNameEdit,accountOwner,phoneController,emailController,accountRegisteredNumController;
+  TextEditingController? kayanNameController,sglNumberController,accountNameEdit,accountOwner,phoneController,emailController,accountRegisteredNumController;
   var flag = false.obs;
   var isEnabled=false.obs;
 
@@ -53,15 +53,18 @@ class AdvertiserSettingPageController extends GetxController  {
   RxList<dynamic> selectedUserLocations = <dynamic>[].obs;
   var isAreaEnabled = true.obs;
   var isCountryEnabled = true.obs;
+  var accountType = ''.obs;
+  var profile_completion = 0.obs;
   @override
   void onInit() {
     // TODO: implement onInit
-    kayanNameController = TextEditingController(text: 'الراشد للاوانى الفخارية');
-    accountNameEdit= TextEditingController(text: '# El rashid');
-    accountOwner= TextEditingController(text: 'محمد تونى حماد');
-    phoneController = TextEditingController(text: '01111046148');
-    emailController = TextEditingController(text: 'mohamedtony349@yahoo.com');
+    kayanNameController = TextEditingController();
+    accountNameEdit= TextEditingController();
+    accountOwner= TextEditingController();
+    phoneController = TextEditingController();
+    emailController = TextEditingController();
     accountRegisteredNumController  = TextEditingController();
+    sglNumberController = TextEditingController();
     super.onInit();
   }
 
@@ -94,23 +97,24 @@ class AdvertiserSettingPageController extends GetxController  {
       if(value.data!=null&&value.status==200){
         Get.back();
         clientProfileModel.value = value.data!;
-        kayanNameController?.text = "tony";
-        if(clientProfileModel.value.account_name!=null) {
-          accountNameEdit?.text = clientProfileModel.value.account_name!;
+       // kayanNameController?.text = "tony";
+        if(clientProfileModel.value.company_name!=null) {
+          kayanNameController?.text = clientProfileModel.value.company_name!;
         }
         if(clientProfileModel.value.account_name!=null) {
           accountNameEdit?.text = clientProfileModel.value.account_name!;
         }
-        if(clientProfileModel.value.phone!=null) {
-          phoneController?.text = clientProfileModel.value.phone!;
+        if(clientProfileModel.value.manager_name !=null) {
+          accountOwner?.text = clientProfileModel.value.manager_name!;
         }
-        if(clientProfileModel.value.email!=null) {
-          emailController?.text = clientProfileModel.value.email!;
+        if(clientProfileModel.value.type !=null)
+          accountType.value = clientProfileModel.value.type!;
+        if(clientProfileModel.value.sgl!=null) {
+          sglNumberController?.text = clientProfileModel.value.sgl!;
         }
-        if(clientProfileModel.value.personal_id!=null) {
-          accountRegisteredNumController?.text = clientProfileModel.value.personal_id!;
+        if(clientProfileModel.value.profile_completion!=null){
+          profile_completion.value = ((clientProfileModel.value.profile_completion)!~/10);
         }
-
         client!.getCountries().then((value){
           if(value.data!=null){
             countries.value = value.data!;
