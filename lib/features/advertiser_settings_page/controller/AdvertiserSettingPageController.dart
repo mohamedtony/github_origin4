@@ -56,8 +56,9 @@ class AdvertiserSettingPageController extends GetxController  {
   var isCountryEnabled = true.obs;
   var accountType = ''.obs;
   var profile_completion = 0.obs;
+  String? myToken;
   @override
-  void onInit() {
+  Future<void> onInit() async {
     // TODO: implement onInit
     kayanNameController = TextEditingController();
     accountNameEdit= TextEditingController();
@@ -66,6 +67,7 @@ class AdvertiserSettingPageController extends GetxController  {
     emailController = TextEditingController();
     accountRegisteredNumController  = TextEditingController();
     sglNumberController = TextEditingController();
+     myToken  = await storage.read("token");
     super.onInit();
   }
 
@@ -74,7 +76,7 @@ class AdvertiserSettingPageController extends GetxController  {
 
   }
   @override
-  void onReady() {
+  Future<void> onReady() async {
     // TODO: implement onReady
     Get.dialog(
         Dialog(
@@ -92,8 +94,7 @@ class AdvertiserSettingPageController extends GetxController  {
           ),
         )
     );
-
-    client!.getMyProfile("Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+    client!.getMyProfile("Bearer "+myToken!).then((value) {
       Logger().i(value.data?.toJson());
       if(value.data!=null&&value.status==200){
         Get.back();
@@ -242,9 +243,9 @@ class AdvertiserSettingPageController extends GetxController  {
   // TODO: implement onDelete
   InternalFinalCallback<void> get onDelete => super.onDelete;
 
-  void showActivitiesBottomSheet(BuildContext context, int bottomNumber) {
+  Future<void> showActivitiesBottomSheet(BuildContext context, int bottomNumber) async {
 
-    client!.getCategories("Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+    client!.getCategories("Bearer "+myToken!).then((value) {
       isLoading.value = false;
       if(value.data!=null&&value.status==200){
         if(value.data!.user_categories!=null&&value.data!.user_categories!.isNotEmpty){
@@ -331,7 +332,7 @@ class AdvertiserSettingPageController extends GetxController  {
     selectedCategories.forEach((element) {
       selectedCategoriesIds.add(element.id!);
     });
-    client!.updateUserCategories(UpdateUserCategoryRequest(categories:selectedCategoriesIds.value),"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+    client!.updateUserCategories(UpdateUserCategoryRequest(categories:selectedCategoriesIds.value),"Bearer "+myToken!).then((value) {
       if(value.status==200){
         Fluttertoast.showToast(
           msg: value.message??'',
@@ -399,7 +400,7 @@ class AdvertiserSettingPageController extends GetxController  {
       }
     });
 
-    client!.getUseLocations("Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value){
+    client!.getUseLocations("Bearer "+myToken!).then((value){
       isLoadingLocation.value = false;
       if(value.data!=null){
         if(value.data?.countries!=null && value.data!.countries!.isNotEmpty) {
@@ -521,7 +522,7 @@ class AdvertiserSettingPageController extends GetxController  {
           areasIds.add(element.id!);
         }
       });
-      client!.setMultipleCountry(OneCountryAndCitiesRequest(countries:countriesId,areas: areasIds),"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+      client!.setMultipleCountry(OneCountryAndCitiesRequest(countries:countriesId,areas: areasIds),"Bearer "+myToken!).then((value) {
         if(value.status==200){
           Fluttertoast.showToast(
             msg: value.message??'',
@@ -546,7 +547,7 @@ class AdvertiserSettingPageController extends GetxController  {
           areasIds.add(element.id!);
         }
       });
-      client!.setOneCountryAndCities(OneCountryAndCitiesRequest(countries:countriesId,areas: areasIds),"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+      client!.setOneCountryAndCities(OneCountryAndCitiesRequest(countries:countriesId,areas: areasIds),"Bearer "+myToken!).then((value) {
         if(value.status==200){
           Fluttertoast.showToast(
             msg: value.message??'',

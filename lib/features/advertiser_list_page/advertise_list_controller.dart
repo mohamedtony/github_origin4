@@ -34,7 +34,7 @@ class AdvertiseListController extends GetxController with GetSingleTickerProvide
 
   }
   @override
-  void onReady() {
+  Future<void> onReady() async {
     // TODO: implement onReady
     Get.dialog(
         Dialog(
@@ -52,7 +52,8 @@ class AdvertiseListController extends GetxController with GetSingleTickerProvide
           ),
         )
     );
-    client!.getMyProfile("Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+    var myToken  = await storage.read("token");
+    client!.getMyProfile("Bearer "+myToken).then((value) {
       Logger().i(value.data?.toJson());
       if(value.data!=null&&value.status==200){
         Get.back();

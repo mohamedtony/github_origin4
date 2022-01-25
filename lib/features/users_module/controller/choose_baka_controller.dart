@@ -1,4 +1,5 @@
 import 'package:advertisers/app_core/network/models/SubscriptionBaka.dart';
+import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/main.dart';
 //import 'package:advertisers/shared/network/models/SubscriptionBaka.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +9,8 @@ class ChooseBakaController extends GetxController{
   RxList<SubscriptionBaka> subscriptionBaka = <SubscriptionBaka>[].obs;
   var indexClicked=-1;
   var selectedBakaId = -1;
-
   @override
-  void onInit() {
+  Future<void> onInit() async {
 
 /*    client!.login(MLoginRequest(phone: "966524281063",password: "12345678",fcm_token: "kkkkkkkk")).then((value){
       print("mUserName"+value.message!);
@@ -25,6 +25,8 @@ class ChooseBakaController extends GetxController{
         Logger().i(value.data?.toJson());
       }
     });*/
+    var myToken  = await storage.read("token");
+      print("mToken"+myToken);
 
     client!.getSubscription().then((value){
       if(value.data!=null&&value.status==200){

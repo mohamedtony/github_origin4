@@ -76,6 +76,7 @@ class LoginController extends GetxController{
         json:{"phone": countryCode.value.replaceFirst('+','',0)+int.parse(phoneController.text??'0').toString(),"password": passwordController.text
           ,"fcm_token": token,},onSuccess:(res) {
       storage.write("data",res.data!.toJson());
+      storage.write("token", res.data!.token);
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
       }

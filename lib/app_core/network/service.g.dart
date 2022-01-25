@@ -311,7 +311,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<GetMyProfileInfoResponse> updateMyProfile(token,
+  Future<GetMyProfileInfoResponse> updateMyProfile(accept, token,
       {company_name,
       username,
       account_name,
@@ -330,7 +330,10 @@ class _RestClient implements RestClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{r'Accept': token};
+    final _headers = <String, dynamic>{
+      r'Accept': accept,
+      r'Authorization': token
+    };
     _headers.removeWhere((k, v) => v == null);
     final _data = FormData();
     if (company_name != null) {

@@ -206,6 +206,8 @@ class RegisterNewClientUserController extends GetxController {
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
+          registerClientUserResponse.value = res;
+          storage.write("token", res.data!.token);
           storage.write(
               "data", registerClientUserResponse.value.toJson());
           Get.toNamed('/chooseBakaPage');

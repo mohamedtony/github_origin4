@@ -198,8 +198,10 @@ class RegisterNewAdvertiserUserController extends GetxController{
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
+          registerClientUserResponse.value = res;
           storage.write(
               "data", registerClientUserResponse.value.toJson());
+          storage.write("token", res.data!.token);
           Get.toNamed('/chooseBakaPage');
         },
         onError: (err, res) {

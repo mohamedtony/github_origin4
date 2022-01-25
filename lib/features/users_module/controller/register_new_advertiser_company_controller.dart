@@ -217,8 +217,10 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
+          registerCompanyResponse.value = res!;
           storage.write(
               "data", registerCompanyResponse.value.toJson());
+          storage.write("token", res.data!.token);
           Get.toNamed('/chooseBakaPage');
         },
         onError: (err, res) {
