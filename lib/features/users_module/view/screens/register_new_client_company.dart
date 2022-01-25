@@ -184,7 +184,7 @@ class RegisterNewClientCompany extends StatelessWidget {
                 ),
                 Obx(() => AdvertisersPhone(
                       hintText: 'phone'.tr,
-                      enabled: false,
+                      //enabled: false,
                       flag: false,
                       initialSelection:
                           _registerNewClientCompanyController.countryCode.value,
