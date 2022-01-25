@@ -4,6 +4,7 @@ import 'package:advertisers/app_core/network/models/ClientProfileModel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
+import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/main.dart';
 import 'package:advertisers/shared/loading_dialog.dart';
@@ -42,7 +43,15 @@ class AdvertiserSettingPageController extends GetxController  {
   RxList<CategoryModel> selectedCategories = <CategoryModel>[].obs;
   RxList<int> selectedCategoriesIds = <int>[].obs;
   var isLoading = true.obs;
-
+  var isLoadingLocation = true.obs;
+  //location range
+  RxList<Country> countriesForLocationSheet = <Country>[].obs;
+  RxList<Area> areasForLocationSheet = <Area>[].obs;
+  var countryForLocationSheet  = Country().obs;
+  var areaForLocationSheet  = Area().obs;
+  RxList<dynamic> selectedUserLocations = <dynamic>[].obs;
+  var isAreaEnabled = true.obs;
+  var isCountryEnabled = true.obs;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -227,7 +236,7 @@ class AdvertiserSettingPageController extends GetxController  {
   // TODO: implement onDelete
   InternalFinalCallback<void> get onDelete => super.onDelete;
 
-  void showBottomSheet(BuildContext context, int bottomNumber) {
+  void showActivitiesBottomSheet(BuildContext context, int bottomNumber) {
 
     client!.getCategories("Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
       isLoading.value = false;
@@ -328,5 +337,176 @@ class AdvertiserSettingPageController extends GetxController  {
         );
       }
     });
+  }
+  void showLocationBottomSheet(BuildContext context, int bottomNumber) {
+
+    client!.getCountries().then((value){
+      isLoadingLocation.value = false;
+      if(value.data!=null){
+        countriesForLocationSheet.value = value.data!;
+        countriesForLocationSheet.insert(0, Country(id: -1,name: 'إختر'));
+        countriesForLocationSheet.forEach((element) {
+          Logger().i(element.toJson());
+        });
+        if(countriesForLocationSheet.value[0].areas!=null&&countriesForLocationSheet.value[0].areas!.isNotEmpty) {
+          areasForLocationSheet.value =
+              countriesForLocationSheet.value[0].areas!;
+
+        }
+        Area? areaIn = areasForLocationSheet.firstWhereOrNull((
+            element) => element.id == -1);
+        if(areaIn==null) {
+          areasForLocationSheet.insert(0, Area(id: -1, name: 'إختر'));
+        }
+/*        Country? countryIn = countriesForLocationSheet.firstWhereOrNull((element) => element.id==clientProfileModel.value.country_id);
+        if(countryIn!=null){
+          countryForLocationSheet.value = countryIn;
+          if(countryIn.areas!=null) {
+            areas.value = countryIn.areas!;
+            areas.insert(0, Area(id: -1,name: 'المدينة'));
+            Area? areaIn = countryIn.areas?.firstWhereOrNull((
+                element) => element.id == clientProfileModel.value.area_id);
+
+            if(areaIn!=null){
+              print("areaIn"+areaIn.name!);
+              area.value = areaIn;
+            }else{
+              area.value = countryIn.areas![1];
+            }
+          }
+        }else{
+          countryIn = countriesForLocationSheet.value[2];
+          countryForLocationSheet.value = countryIn;
+          if(countryIn.areas!=null) {
+            areas.value = countryIn.areas!;
+            Area? areaIn = countryIn.areas?.firstWhereOrNull((
+                element) => element.id == clientProfileModel.value.area_id);
+
+            if(areaIn!=null){
+              print("areaIn"+areaIn.name!);
+              areaForLocationSheet.value = areaIn;
+            }else{
+              areaForLocationSheet.value = countryIn.areas![1];
+            }
+          }
+        }*/
+      }
+    });
+
+    client!.getUseLocations("Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value){
+      isLoadingLocation.value = false;
+      if(value.data!=null){
+        if(value.data?.countries!=null && value.data!.countries!.isNotEmpty) {
+          selectedUserLocations.value =[];
+          selectedUserLocations.addAll(value.data!.countries!);
+        }
+      }
+    });
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(10.0),
+            topRight: const Radius.circular(10.0)),
+      ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      builder: (BuildContext context) {
+        return DraggableScrollableSheet(
+          //maxChildSize: 0.8,
+          //minChildSize: 100.0,
+
+          initialChildSize: 0.67,
+          expand: false,
+          builder: (context, scrollController) {
+            //if(bottomNumber==1) {
+            /*return AdvertisingChannelsPage(
+                  scrollController: scrollController);*/
+            return LocationRangeBottomSheet(
+                scrollController: scrollController);
+
+            // }
+          },
+        );
+      },
+    ).then((value){
+      print("showDialog");
+      selectedCategories.value = [];
+
+    });
+  }
+
+  void changeCountry(Country? c) {
+    if(c!=null && c.id!=-1) {
+      if (selectedUserLocations.isNotEmpty) {
+        //country and country
+        if (selectedUserLocations[0] is Country) {
+          Country? country = selectedUserLocations.firstWhereOrNull((
+              element) => element.id == c!.id);
+          if (country == null) {
+            selectedUserLocations.add(c);
+          }
+          isAreaEnabled.value = false;
+        }
+      } else {
+        Country? country = selectedUserLocations.firstWhereOrNull((
+            element) => element.id == c!.id);
+        if (country == null) {
+          selectedUserLocations.add(c);
+        }
+      }
+
+      if (c?.areas != null && c!.areas!.isNotEmpty) {
+        areasForLocationSheet.value =
+        c.areas!;
+        Area? areaIn = areasForLocationSheet.firstWhereOrNull((
+            element) => element.id == -1);
+        if(areaIn==null) {
+          areasForLocationSheet.insert(0, Area(id: -1, name: 'إختر'));
+        }
+      } else {
+        areasForLocationSheet.value = [];
+      }
+    }
+  }
+
+  void changeArea(Area? area) {
+    if(area!=null && area.id!=-1) {
+      if (selectedUserLocations.isNotEmpty) {
+        //country and country
+        if (selectedUserLocations[0] is Country &&
+            selectedUserLocations.length == 1) {
+          Area? areaIn = selectedUserLocations.firstWhereOrNull((
+              element) => element.id == area.id && (element is Area));
+          if (areaIn == null) {
+            selectedUserLocations.add(area);
+          }
+          //selectedUserLocations.add(area);
+          isCountryEnabled.value = false;
+        } else {
+          Area? areaIn = selectedUserLocations.firstWhereOrNull((
+              element) => element.id == area.id && (element is Area));
+          if (areaIn == null) {
+            selectedUserLocations.add(area);
+          }
+          isCountryEnabled.value = false;
+        }
+      }
+    }
+
+/*    if(c?.areas!=null && c!.areas!.isNotEmpty) {
+      areasForLocationSheet.value =
+      c.areas!;
+    }else{
+      areasForLocationSheet.value = [];
+    }*/
+  }
+
+  void removeCountryOrArea(dynamic countryOrArea) {
+    selectedUserLocations.removeWhere((element) =>element==countryOrArea);
+   if(selectedUserLocations.length==0){
+     isCountryEnabled.value = true;
+     isAreaEnabled.value = true;
+   }
   }
 }

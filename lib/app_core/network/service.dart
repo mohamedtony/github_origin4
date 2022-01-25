@@ -1,6 +1,10 @@
 
+import 'dart:io';
+
 import 'package:advertisers/app_core/network/models/ChannelData.dart';
 import 'package:advertisers/app_core/network/requests/CreateSubscriptionRequest.dart';
+import 'package:advertisers/app_core/network/requests/OneCountryAndCitiesRequest.dart';
+import 'package:advertisers/app_core/network/requests/UpdateProfileRequest.dart';
 import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
 import 'package:advertisers/app_core/network/requests/login_client_request.dart';
 import 'package:advertisers/app_core/network/responses/AddRemoveBlackListResponse.dart';
@@ -9,12 +13,15 @@ import 'package:advertisers/app_core/network/responses/CreateSubscriptionRespons
 import 'package:advertisers/app_core/network/responses/GetBlockedUsersResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetCategoriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetMyProfileInfoResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetUseLocationsResponse.dart';
 import 'package:advertisers/app_core/network/responses/LoginClientResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/app_core/network/responses/SubscriptionDetailsResponse.dart';
 import 'package:advertisers/app_core/network/responses/SubscruptionResponse.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+import 'dart:convert';
+
 part 'service.g.dart';
 @RestApi()
 abstract class RestClient {
@@ -62,7 +69,22 @@ Future<GetCategoriesResponse> getCategories(@Header("Authorization") String toke
 @POST('https://advertiser.cefour.com/api/v1/profile/categories')
 Future<GetCategoriesResponse> updateUserCategories(@Body() UpdateUserCategoryRequest updateUserCategoryRequest,@Header("Authorization") String token);
 
+@GET('https://advertiser.cefour.com/api/v1/profile/areas')
+Future<GetUseLocationsResponse> getUseLocations(@Header("Authorization") String token);
+
 @POST('https://advertiser.cefour.com/api/v1/profile/channels/add')
 Future<CreateSubscriptionResponse> addChannel(@Body() ChannelData channel,@Header("Authorization") String token);
 
+@GET('https://advertiser.cefour.com/api/v1/profile/areas')
+Future<GetUseLocationsResponse> setOneCountryAndCities(@Body() OneCountryAndCitiesRequest oneCountryAndCitiesRequest,@Header("Authorization") String token);
+
+/*
+@POST('https://advertiser.cefour.com/api/v1/profile/update')
+@MultiPart()
+Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileRequest updateProfileRequest,*//*@Header("Accept") String token,@Part(name: 'username') String? username ,@Part(name: 'account_name') String? account_name ,@Part(name: 'email') String? email,@Part(name: 'phone') String? phone ,@Part(name: 'country_id') int? country_id ,@Part(name: 'area_id') int? area_id ,@Part(name: 'role') String? role ,@Part(name: 'type') String? type ,@Part(name: 'personal_id') String? personal_id ,{@Part(name: 'image') File? file});*/
+
+
+  @POST('https://advertiser.cefour.com/api/v1/profile/update')
+  @MultiPart()
+  Future<GetMyProfileInfoResponse> updateMyProfile(@Header("Accept") String token,{@Part(name: 'username') String? username ,@Part(name: 'account_name') String? account_name ,@Part(name: 'manager_name') String? manager_name,@Part(name: 'email') String? email,@Part(name: 'phone') String? phone ,@Part(name: 'country_id') int? country_id ,@Part(name: 'area_id') int? area_id ,@Part(name: 'role') String? role ,@Part(name: 'type') String? type ,@Part(name: 'personal_id') String? personal_id ,@Part(name: 'sgl') String? sgl ,@Part(name: 'chat') int? isChat ,@Part(name: 'image') File? file});
 }
