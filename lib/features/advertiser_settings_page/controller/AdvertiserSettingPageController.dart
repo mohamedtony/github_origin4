@@ -4,6 +4,7 @@ import 'package:advertisers/app_core/network/models/ClientProfileModel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/app_core/network/requests/OneCountryAndCitiesRequest.dart';
 import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
+import 'package:advertisers/features/add_advertiser_channel/add_advertiser_channel.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
@@ -566,5 +567,42 @@ class AdvertiserSettingPageController extends GetxController  {
      isCountryEnabled.value = true;
      isAreaEnabled.value = true;
    }
+  }
+
+  void showChannelsSheet(BuildContext context, int i) {
+
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+        topLeft: const Radius.circular(10.0),
+    topRight: const Radius.circular(10.0)),
+    ),
+    clipBehavior: Clip.antiAliasWithSaveLayer,
+    builder: (BuildContext context) {
+    return DraggableScrollableSheet(
+    //maxChildSize: 0.8,
+    //minChildSize: 100.0,
+
+    initialChildSize: 0.67,
+    expand: false,
+    builder: (context, scrollController) {
+    //if(bottomNumber==1) {
+    /*return AdvertisingChannelsPage(
+                  scrollController: scrollController);*/
+    return AddAdvertiserChannel(
+    //scrollController: scrollController
+    );
+
+    // }
+    },
+    );
+    },
+    ).then((value){
+    print("showDialog");
+   // selectedCategories.value = [];
+
+    });
   }
 }

@@ -40,11 +40,16 @@ class AdvertiserSettingsPage extends StatelessWidget {
                             padding: EdgeInsets.only(
                               right: 10.0,
                             ),
-                            child: Image.asset(
-                              'images/qrcode.png',
-                              width: 40.0,
-                              height: 45.0,
-                              fit: BoxFit.fill,
+                            child: InkWell(
+                              onTap: (){
+                                Get.toNamed('/AdvertiserQrPage');
+                              },
+                              child: Image.asset(
+                                'images/qrcode.png',
+                                width: 40.0,
+                                height: 45.0,
+                                fit: BoxFit.fill,
+                              ),
                             ),
                             decoration: BoxDecoration(
                               //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
@@ -752,220 +757,236 @@ class AdvertiserSettingsPage extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Flexible(
-                  child: Container(
-                    //height: 42,
+          InkWell(
+            onTap: (){
+              //controller.showChannelsSheet(context,1);
+              Get.toNamed('/AdvertisingInfluenceChannelsPage');
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: Container(
+                      //height: 42,
 
-                    // width: 110,
-                      padding: EdgeInsets.only(bottom: 12.0),
-                      child: Text(
-                        "قنوات الإعلان والتأثير",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.0,
-                          color: AppColors.tabColor,
-                        ),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      )),
-                ),
-                Row(
-                  children: [
-                    Container(
-                        padding: EdgeInsets.only(
-                          //top: 4.0,
-                            right: 8.0
-                            ,bottom: 8.0
-                        ),
-                        child: SvgPicture.asset(
-                          'images/notice_icon.svg',
-                          width: 26.0,
-                          height: 26.0,
-                          fit: BoxFit.fill,
-                          color: AppColors.bottomSheetTabColorRounded,
-                        ),
-                        decoration: BoxDecoration(
-                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
-                          borderRadius: BorderRadius.circular(8.0),
-                          /*image: DecorationImage(
-                                                  image: AssetImage("images/image1.jpg"),
-                                                  fit: BoxFit.cover,
-                                                )*/
+                      // width: 110,
+                        padding: EdgeInsets.only(bottom: 12.0),
+                        child: Text(
+                          "قنوات الإعلان والتأثير",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: AppColors.tabColor,
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         )),
-                    Container(
-                        padding: EdgeInsets.only(
-                          //top: 4.0,
-                            right: 8.0
-                        ),
-                        child: SvgPicture.asset(
-                          'images/channels_icon.svg',
-                          width: 40.0,
-                          height: 40.0,
-                          fit: BoxFit.fill,
-                          //color: AppColors.bottomSheetTabColorRounded,
-                        ),
-                        decoration: BoxDecoration(
-                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
-                          borderRadius: BorderRadius.circular(8.0),
-                          /*image: DecorationImage(
-                                              image: AssetImage("images/image1.jpg"),
-                                              fit: BoxFit.cover,
-                                            )*/
-                        )),
-                  ],
-                ),
-              ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                          padding: EdgeInsets.only(
+                            //top: 4.0,
+                              right: 8.0
+                              ,bottom: 8.0
+                          ),
+                          child: SvgPicture.asset(
+                            'images/notice_icon.svg',
+                            width: 26.0,
+                            height: 26.0,
+                            fit: BoxFit.fill,
+                            color: AppColors.bottomSheetTabColorRounded,
+                          ),
+                          decoration: BoxDecoration(
+                            //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                            borderRadius: BorderRadius.circular(8.0),
+                            /*image: DecorationImage(
+                                                    image: AssetImage("images/image1.jpg"),
+                                                    fit: BoxFit.cover,
+                                                  )*/
+                          )),
+                      Container(
+                          padding: EdgeInsets.only(
+                            //top: 4.0,
+                              right: 8.0
+                          ),
+                          child: SvgPicture.asset(
+                            'images/channels_icon.svg',
+                            width: 40.0,
+                            height: 40.0,
+                            fit: BoxFit.fill,
+                            //color: AppColors.bottomSheetTabColorRounded,
+                          ),
+                          decoration: BoxDecoration(
+                            //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                            borderRadius: BorderRadius.circular(8.0),
+                            /*image: DecorationImage(
+                                                image: AssetImage("images/image1.jpg"),
+                                                fit: BoxFit.cover,
+                                              )*/
+                          )),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Flexible(
-                  child: Container(
-                    //height: 42,
+          InkWell(
+            onTap: (){
+              Get.toNamed('/TaxSettingsPage');
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: Container(
+                      //height: 42,
 
-                    // width: 110,
-                      padding: EdgeInsets.only(bottom: 12.0),
-                      child: Text(
-                        "اعدادات الضريبة",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.0,
-                          color: AppColors.tabColor,
-                        ),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      )),
-                ),
-                Row(
-                  children: [
-                    Container(
-                        padding: EdgeInsets.only(
-                          //top: 4.0,
-                            right: 8.0
-                            ,bottom: 8.0
-                        ),
-                        child: SvgPicture.asset(
-                          'images/notice_icon.svg',
-                          width: 26.0,
-                          height: 26.0,
-                          fit: BoxFit.fill,
-                          color: AppColors.bottomSheetTabColorRounded,
-                        ),
-                        decoration: BoxDecoration(
-                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
-                          borderRadius: BorderRadius.circular(8.0),
-                          /*image: DecorationImage(
-                                                  image: AssetImage("images/image1.jpg"),
-                                                  fit: BoxFit.cover,
-                                                )*/
+                      // width: 110,
+                        padding: EdgeInsets.only(bottom: 12.0),
+                        child: Text(
+                          "اعدادات الضريبة",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: AppColors.tabColor,
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         )),
-                    Container(
-                        padding: EdgeInsets.only(
-                          //top: 4.0,
-                            right: 8.0
-                        ),
-                        child: SvgPicture.asset(
-                          'images/tax_icn.svg',
-                          width: 40.0,
-                          height: 40.0,
-                          fit: BoxFit.fill,
-                          //color: AppColors.bottomSheetTabColorRounded,
-                        ),
-                        decoration: BoxDecoration(
-                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
-                          borderRadius: BorderRadius.circular(8.0),
-                          /*image: DecorationImage(
-                                              image: AssetImage("images/image1.jpg"),
-                                              fit: BoxFit.cover,
-                                            )*/
-                        )),
-                  ],
-                ),
-              ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                          padding: EdgeInsets.only(
+                            //top: 4.0,
+                              right: 8.0
+                              ,bottom: 8.0
+                          ),
+                          child: SvgPicture.asset(
+                            'images/notice_icon.svg',
+                            width: 26.0,
+                            height: 26.0,
+                            fit: BoxFit.fill,
+                            color: AppColors.bottomSheetTabColorRounded,
+                          ),
+                          decoration: BoxDecoration(
+                            //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                            borderRadius: BorderRadius.circular(8.0),
+                            /*image: DecorationImage(
+                                                    image: AssetImage("images/image1.jpg"),
+                                                    fit: BoxFit.cover,
+                                                  )*/
+                          )),
+                      Container(
+                          padding: EdgeInsets.only(
+                            //top: 4.0,
+                              right: 8.0
+                          ),
+                          child: SvgPicture.asset(
+                            'images/tax_icn.svg',
+                            width: 40.0,
+                            height: 40.0,
+                            fit: BoxFit.fill,
+                            //color: AppColors.bottomSheetTabColorRounded,
+                          ),
+                          decoration: BoxDecoration(
+                            //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                            borderRadius: BorderRadius.circular(8.0),
+                            /*image: DecorationImage(
+                                                image: AssetImage("images/image1.jpg"),
+                                                fit: BoxFit.cover,
+                                              )*/
+                          )),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Flexible(
-                  child: Container(
-                    //height: 42,
+          InkWell(
+            onTap: (){
+              Get.toNamed('/AdvertiserAccountStatusPage');
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: Container(
+                      //height: 42,
 
-                    // width: 110,
-                      padding: EdgeInsets.only(bottom: 12.0),
-                      child: Text(
-                        "حالة الحساب",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.0,
-                          color: AppColors.tabColor,
-                        ),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      )),
-                ),
-                Row(
-                  children: [
-                    Container(
-                        padding: EdgeInsets.only(
-                          //top: 4.0,
-                            right: 8.0
-                            ,bottom: 8.0
-                        ),
-                        child: SvgPicture.asset(
-                          'images/notice_icon.svg',
-                          width: 26.0,
-                          height: 26.0,
-                          fit: BoxFit.fill,
-                          color: AppColors.bottomSheetTabColorRounded,
-                        ),
-                        decoration: BoxDecoration(
-                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
-                          borderRadius: BorderRadius.circular(8.0),
-                          /*image: DecorationImage(
-                                                  image: AssetImage("images/image1.jpg"),
-                                                  fit: BoxFit.cover,
-                                                )*/
+                      // width: 110,
+                        padding: EdgeInsets.only(bottom: 12.0),
+                        child: Text(
+                          "حالة الحساب",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: AppColors.tabColor,
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         )),
-                    Container(
-                        padding: EdgeInsets.only(
-                          //top: 4.0,
-                            right: 8.0
-                        ),
-                        child: SvgPicture.asset(
-                          'images/lock_icon.svg',
-                          width: 40.0,
-                          height: 40.0,
-                          fit: BoxFit.fill,
-                          //color: AppColors.bottomSheetTabColorRounded,
-                        ),
-                        decoration: BoxDecoration(
-                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
-                          borderRadius: BorderRadius.circular(8.0),
-                          /*image: DecorationImage(
-                                              image: AssetImage("images/image1.jpg"),
-                                              fit: BoxFit.cover,
-                                            )*/
-                        )),
-                  ],
-                ),
-              ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                          padding: EdgeInsets.only(
+                            //top: 4.0,
+                              right: 8.0
+                              ,bottom: 8.0
+                          ),
+                          child: SvgPicture.asset(
+                            'images/notice_icon.svg',
+                            width: 26.0,
+                            height: 26.0,
+                            fit: BoxFit.fill,
+                            color: AppColors.bottomSheetTabColorRounded,
+                          ),
+                          decoration: BoxDecoration(
+                            //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                            borderRadius: BorderRadius.circular(8.0),
+                            /*image: DecorationImage(
+                                                    image: AssetImage("images/image1.jpg"),
+                                                    fit: BoxFit.cover,
+                                                  )*/
+                          )),
+                      Container(
+                          padding: EdgeInsets.only(
+                            //top: 4.0,
+                              right: 8.0
+                          ),
+                          child: SvgPicture.asset(
+                            'images/lock_icon.svg',
+                            width: 40.0,
+                            height: 40.0,
+                            fit: BoxFit.fill,
+                            //color: AppColors.bottomSheetTabColorRounded,
+                          ),
+                          decoration: BoxDecoration(
+                            //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                            borderRadius: BorderRadius.circular(8.0),
+                            /*image: DecorationImage(
+                                                image: AssetImage("images/image1.jpg"),
+                                                fit: BoxFit.cover,
+                                              )*/
+                          )),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           Container(
