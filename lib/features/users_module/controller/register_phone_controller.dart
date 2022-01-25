@@ -49,7 +49,7 @@ class RegisterPhoneController extends GetxController {
         '>>>>>>>>>>>>>>>>>>>>${countryCode.value.toString() + int.parse(phone).toString()}');
     // await verifyPhone();
     Get.toNamed(
-        '/verificationCodePage?phone=${countryCode.value.toString() + int.parse(phone).toString()}');
+        '/verificationCodePage?route=registerPhone&phone=${countryCode.value.toString() + int.parse(phone).toString()}');
     // loginClient();
     // Get.toNamed('/verificationCodePage');
   }
