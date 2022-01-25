@@ -5,6 +5,7 @@ part 'ClientProfileModel.g.dart';
 @JsonSerializable()
 class ClientProfileModel {
   int? id;
+  String? company_name;
   String? username;
   String? account_name;
   String? manager_name;
@@ -28,10 +29,11 @@ class ClientProfileModel {
   int? wallet;
   String? sgl;
   int?points;
+  bool?notifiable;
 
 
   ClientProfileModel({this.id, this.username, this.manager_name,this.account_name,this.personal_id,this.email,
-    this.phone,this.type,this.role,this.image,this.blocked_at,this.country_id,this.area_id,this.token,this.chat,this.country,this.followers,this.rate,this.wallet,this.ads_count,this.profile_completion,this.reply_speed,this.sgl,this.points});
+    this.phone,this.type,this.role,this.image,this.blocked_at,this.country_id,this.area_id,this.token,this.chat,this.country,this.followers,this.rate,this.wallet,this.ads_count,this.profile_completion,this.reply_speed,this.sgl,this.points,this.notifiable,this.company_name});
 
   factory ClientProfileModel.fromJson(Map<String, dynamic> json) => _$ClientProfileModelFromJson(json);
 

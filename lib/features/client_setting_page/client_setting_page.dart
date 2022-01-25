@@ -29,7 +29,7 @@ class ClientSettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(165.0),
+        preferredSize: const Size.fromHeight(165.0),
         child: Container(
           height: 145,
           child: Row(
@@ -44,7 +44,7 @@ class ClientSettingPage extends StatelessWidget {
                       Container(
                         height: 160,
                         margin:
-                            EdgeInsets.only(top: 55, right: 25.0, bottom: 32),
+                            const EdgeInsets.only(top: 55, right: 25.0, bottom: 32),
                         //padding: EdgeInsets.only(bottom: 10),
                         decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
@@ -52,7 +52,7 @@ class ClientSettingPage extends StatelessWidget {
                           border: Border.all(color: Colors.white, width: 1),
                         ),
                         child: Obx(() => Container(
-                            padding: EdgeInsets.all(
+                            padding: const EdgeInsets.all(
                               4.0,
                             ),
                             child: controller.imagePath.value.isNotEmpty
@@ -72,7 +72,7 @@ class ClientSettingPage extends StatelessWidget {
                                       size: 25,
                                     ),
                                     errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
+                                        const Icon(Icons.error),
                                     width: 50.0,
                                     height: 60.0,
                                     fit: BoxFit.fitHeight,
@@ -107,7 +107,7 @@ class ClientSettingPage extends StatelessWidget {
                                   ,color: Colors.white
 
                               ),*/
-                              padding: EdgeInsets.all(0.0),
+                              padding: const EdgeInsets.all(0.0),
                               child: Image.asset(
                                 'images/camera_icon.png',
                                 height: 45,
@@ -126,7 +126,7 @@ class ClientSettingPage extends StatelessWidget {
                               },
                               child: Container(
                                 alignment: Alignment.bottomCenter,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: Colors.white),
                                 child: controller.clientProfileModel.value.country?.image==null || controller.clientProfileModel.value.country!.image!.isEmpty? Image.asset(
@@ -144,7 +144,7 @@ class ClientSettingPage extends StatelessWidget {
                                   size: 25,
                                 ),
                                 errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
+                                    const Icon(Icons.error),
                                 fit: BoxFit.fill,
                                 height: 32.0,
                                 width: 32.0,
@@ -157,22 +157,22 @@ class ClientSettingPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(right: 10.0, top: 20.0),
+                        margin: const EdgeInsets.only(right: 10.0, top: 20.0),
                         child: Obx(() => Text(
-                          controller.clientProfileModel.value.type=="client"?(controller.clientProfileModel.value.username ?? ''):(controller.clientProfileModel.value.manager_name ?? ''),
-                              style: TextStyle(
+                          controller.clientProfileModel.value.type=="client"?(controller.clientProfileModel.value.username ?? ''):(controller.clientProfileModel.value.company_name ?? ''),
+                              style: const TextStyle(
                                   color: Colors.white, fontSize: 16.0),
                             )),
                       ),
                       Container(
-                        margin: EdgeInsets.only(right: 10.0),
+                        margin: const EdgeInsets.only(right: 10.0),
                         child: Obx(() => Text(
                               '# ' +
                                   (controller.clientProfileModel.value
                                           .account_name ??
                                       ''),
                               textDirection: mt.TextDirection.ltr,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.white, fontSize: 14.0),
                             )),
                       ),
@@ -186,7 +186,7 @@ class ClientSettingPage extends StatelessWidget {
                 },
                 child: Container(
                   alignment: Alignment.topLeft,
-                  margin: EdgeInsets.only(left: 10.0, top: 35.0),
+                  margin: const EdgeInsets.only(left: 10.0, top: 35.0),
                   child: SvgPicture.asset(
                     "images/back_button.svg",
                     height: 45,
@@ -197,7 +197,7 @@ class ClientSettingPage extends StatelessWidget {
               ),
             ],
           ),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -210,17 +210,17 @@ class ClientSettingPage extends StatelessWidget {
         // shrinkWrap: true,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
+            margin: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 2.0),
+                  margin: const EdgeInsets.only(top: 2.0),
                   child: Row(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(right: 20.0, top: 4.0),
+                        margin: const EdgeInsets.only(right: 20.0, top: 4.0),
                         child: SvgPicture.asset(
                           'images/setting_person.svg',
                           height: 32,
@@ -233,7 +233,7 @@ class ClientSettingPage extends StatelessWidget {
                           controller.changeEdit();
                         },
                         child: Container(
-                            margin: EdgeInsets.only(
+                            margin: const EdgeInsets.only(
                               right: 10.0,
                             ),
                             alignment: Alignment.center,
@@ -243,7 +243,7 @@ class ClientSettingPage extends StatelessWidget {
                                     ? 'إلغاء'
                                     : 'edit'.tr,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: AppColors.editProfileTextColor,
                                     fontSize: 18.0,
                                     decoration: TextDecoration.underline,
@@ -255,18 +255,18 @@ class ClientSettingPage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 3.0),
+                  margin: const EdgeInsets.only(top: 3.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(
+                        margin: const EdgeInsets.only(
                             right: 3.0, left: 8.0, bottom: 10.0),
                         alignment: Alignment.center,
-                        child: Text(
+                        child: const Text(
                           'فرد',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.editProfileTextColor,
                               fontSize: 18.0,
                               fontWeight: FontWeight.w400),
@@ -289,7 +289,7 @@ class ClientSettingPage extends StatelessWidget {
                               controller.accountType.value == "client"
                               ? Container(
                             //margin: EdgeInsets.only(left: 10.0,bottom: 10.0),
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 left: 10.0, bottom: 10.0, top: 2.0),
                             child: Image.asset(
                               'images/switch_icon_right.png',
@@ -300,7 +300,7 @@ class ClientSettingPage extends StatelessWidget {
                             ),
                           )
                               : Container(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 right: 10.0, bottom: 10.0, top: 2.0),
                             //margin: EdgeInsets.only(bottom: 10.0),
                             child: Image.asset(
@@ -335,10 +335,10 @@ class ClientSettingPage extends StatelessWidget {
                         ),*/ /*
                           ),*/
                       Container(
-                        margin: EdgeInsets.only(
+                        margin: const EdgeInsets.only(
                             right: 3.0, left: 20.0, bottom: 10.0),
                         alignment: Alignment.center,
-                        child: Text(
+                        child: const Text(
                           'كيان',
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -356,7 +356,7 @@ class ClientSettingPage extends StatelessWidget {
 
           Obx(()=>controller.accountType.value == "company"?Container(
             height: 42,
-            margin: EdgeInsets.only(top: 0.0, left: 22.0, right: 22.0),
+            margin: const EdgeInsets.only(top: 0.0, left: 22.0, right: 22.0),
             child: Row(
               children: [
                 Container(
@@ -365,11 +365,11 @@ class ClientSettingPage extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 0.2),
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topRight: Radius.circular(12.0),
                             bottomRight: Radius.circular(12.0)),
                         color: AppColors.bottomSheetTabColor),
-                    child: Text(
+                    child: const Text(
                       "اسم الكيان",
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -379,22 +379,22 @@ class ClientSettingPage extends StatelessWidget {
                 Expanded(
                   child: Container(
                     height: 42,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         border: Border(
-                          top: BorderSide(
+                          top: const BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
-                          bottom: BorderSide(
+                          bottom: const BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
-                          left: BorderSide(
+                          left: const BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
                           right: BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
                         ),
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(12.0),
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
@@ -409,12 +409,12 @@ class ClientSettingPage extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                           fontSize: 14.0),
                       decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(
+                          contentPadding: const EdgeInsets.only(
                               left: 10.0, right: 14.0, bottom: 12.0),
                           // isCollapsed: true,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(70.0),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               width: 0,
                               style: BorderStyle.none,
                             ),
@@ -430,7 +430,7 @@ class ClientSettingPage extends StatelessWidget {
             ),
           ):Container(
             height: 42,
-            margin: EdgeInsets.only(top: 0.0, left: 22.0, right: 22.0),
+            margin: const EdgeInsets.only(top: 0.0, left: 22.0, right: 22.0),
             child: Row(
               children: [
                 Container(
@@ -439,13 +439,13 @@ class ClientSettingPage extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 0.2),
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topRight: Radius.circular(12.0),
                             bottomRight: Radius.circular(12.0)),
                         color: AppColors.bottomSheetTabColor),
-                    child: Text(
+                    child: const Text(
                       "الاسم",
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16.0,
                           color: AppColors.tabColor),
@@ -453,22 +453,22 @@ class ClientSettingPage extends StatelessWidget {
                 Expanded(
                   child: Container(
                     height: 42,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         border: Border(
                           top: BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
-                          bottom: BorderSide(
+                          bottom: const BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
-                          left: BorderSide(
+                          left: const BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
                           right: BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
                         ),
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(12.0),
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
@@ -483,12 +483,12 @@ class ClientSettingPage extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                           fontSize: 14.0),
                       decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(
+                          contentPadding: const EdgeInsets.only(
                               left: 10.0, right: 14.0, bottom: 12.0),
                           // isCollapsed: true,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(70.0),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               width: 0,
                               style: BorderStyle.none,
                             ),
@@ -505,7 +505,7 @@ class ClientSettingPage extends StatelessWidget {
           )),
           Container(
             height: 42,
-            margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
+            margin: const EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
             child: Row(
               children: [
                 Container(
@@ -514,11 +514,11 @@ class ClientSettingPage extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 0.2),
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topRight: Radius.circular(12.0),
                             bottomRight: Radius.circular(12.0)),
                         color: AppColors.bottomSheetTabColor),
-                    child: Text(
+                    child: const Text(
                       "اسم الحساب",
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -528,15 +528,15 @@ class ClientSettingPage extends StatelessWidget {
                 Expanded(
                   child: Container(
                     height: 42,
-                    decoration: BoxDecoration(
-                        border: Border(
+                    decoration: const BoxDecoration(
+                        border: const Border(
                           top: BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
                           bottom: BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
-                          left: BorderSide(
+                          left: const BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
                           right: BorderSide(
@@ -544,8 +544,8 @@ class ClientSettingPage extends StatelessWidget {
                               width: 0.4),
                         ),
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12.0),
-                            bottomLeft: Radius.circular(12.0)),
+                            topLeft: const Radius.circular(12.0),
+                            bottomLeft: const Radius.circular(12.0)),
                         color: Colors.white),
                     child: Obx(() => TextField(
                           textAlign: TextAlign.end,
@@ -560,12 +560,12 @@ class ClientSettingPage extends StatelessWidget {
                             fontSize: 14.0,
                           ),
                           decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
+                              contentPadding: const EdgeInsets.only(
                                   left: 10.0, right: 14.0, bottom: 12.0),
                               // isCollapsed: true,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(70.0),
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   width: 0,
                                   style: BorderStyle.none,
                                 ),
@@ -582,7 +582,7 @@ class ClientSettingPage extends StatelessWidget {
           ),
           Obx(()=>controller.accountType.value == "company"?Container(
             height: 42,
-            margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
+            margin: const EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
             child: Row(
               children: [
                 Container(
@@ -591,13 +591,13 @@ class ClientSettingPage extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 0.2),
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topRight: Radius.circular(12.0),
                             bottomRight: Radius.circular(12.0)),
                         color: AppColors.bottomSheetTabColor),
-                    child: Text(
+                    child: const Text(
                       "صاحب الحساب",
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16.0,
                           color: AppColors.tabColor),
@@ -605,23 +605,23 @@ class ClientSettingPage extends StatelessWidget {
                 Expanded(
                   child: Container(
                     height: 42,
-                    decoration: BoxDecoration(
-                        border: Border(
+                    decoration: const BoxDecoration(
+                        border: const Border(
                           top: BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
-                          bottom: BorderSide(
+                          bottom: const BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
-                          left: BorderSide(
+                          left: const BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
                           right: BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
                         ),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12.0),
+                        borderRadius: const BorderRadius.only(
+                            topLeft: const Radius.circular(12.0),
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
                     child: Obx(() => TextField(
@@ -637,12 +637,12 @@ class ClientSettingPage extends StatelessWidget {
                         fontSize: 14.0,
                       ),
                       decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(
+                          contentPadding: const EdgeInsets.only(
                               left: 10.0, right: 14.0, bottom: 12.0),
                           // isCollapsed: true,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(70.0),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               width: 0,
                               style: BorderStyle.none,
                             ),
@@ -656,10 +656,10 @@ class ClientSettingPage extends StatelessWidget {
                 ),
               ],
             ),
-          ):SizedBox()),
+          ):const SizedBox()),
           Container(
             height: 42,
-            margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
+            margin: const EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
             child: Row(
               children: [
                 InkWell(
@@ -672,11 +672,11 @@ class ClientSettingPage extends StatelessWidget {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey, width: 0.2),
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                               topRight: Radius.circular(12.0),
                               bottomRight: Radius.circular(12.0)),
                           color: AppColors.editProfileContainerColor),
-                      child: Text(
+                      child: const Text(
                         "تأكيد",
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
@@ -687,9 +687,9 @@ class ClientSettingPage extends StatelessWidget {
                 Expanded(
                   child: Container(
                     height: 42,
-                    decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
+                    decoration: const BoxDecoration(
+                        border: const Border(
+                          top: const BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
                           bottom: BorderSide(
@@ -702,7 +702,7 @@ class ClientSettingPage extends StatelessWidget {
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
                         ),
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(12.0),
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
@@ -725,7 +725,7 @@ class ClientSettingPage extends StatelessWidget {
                                 // width: 100,
                                 child: controller.isEnabled.value
                                     ? CountryCodePicker(
-                                        padding: EdgeInsets.only(bottom: 2.0),
+                                        padding: const EdgeInsets.only(bottom: 2.0),
                                         // showFlag: false,
                                         flagWidth: 25,
                                         searchDecoration: const InputDecoration(
@@ -743,15 +743,15 @@ class ClientSettingPage extends StatelessWidget {
                                               '>>>>>>>>>>>>>>${countryCodeVal.code}    ${countryCodeVal.dialCode}     ${countryCodeVal.flagUri}');
                                         },
                                       )
-                                    : SizedBox(),
+                                    : const SizedBox(),
                               ),
                             ),
-                            contentPadding: EdgeInsets.only(
+                            contentPadding: const EdgeInsets.only(
                                 left: 10.0, right: 14.0, bottom: 12.0),
                             // isCollapsed: true,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(70.0),
-                              borderSide: BorderSide(
+                              borderSide: const BorderSide(
                                 width: 0,
                                 style: BorderStyle.none,
                               ),
@@ -769,7 +769,7 @@ class ClientSettingPage extends StatelessWidget {
           ),
           Container(
             height: 42,
-            margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
+            margin: const EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
             child: Row(
               children: [
                 Container(
@@ -778,11 +778,11 @@ class ClientSettingPage extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 0.2),
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topRight: Radius.circular(12.0),
                             bottomRight: Radius.circular(12.0)),
                         color: AppColors.editProfileContainerColor),
-                    child: Text(
+                    child: const Text(
                       "تحقق",
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -792,7 +792,7 @@ class ClientSettingPage extends StatelessWidget {
                 Expanded(
                   child: Container(
                     height: 42,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         border: Border(
                           top: BorderSide(
                               color: AppColors.editProfileContainerColor,
@@ -800,7 +800,7 @@ class ClientSettingPage extends StatelessWidget {
                           bottom: BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
-                          left: BorderSide(
+                          left: const BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
                           right: BorderSide(
@@ -808,8 +808,8 @@ class ClientSettingPage extends StatelessWidget {
                               width: 0.4),
                         ),
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12.0),
-                            bottomLeft: Radius.circular(12.0)),
+                            topLeft: const Radius.circular(12.0),
+                            bottomLeft: const Radius.circular(12.0)),
                         color: Colors.white),
                     child: Obx(() => TextField(
                           textAlign: TextAlign.start,
@@ -824,12 +824,12 @@ class ClientSettingPage extends StatelessWidget {
                             fontSize: 14.0,
                           ),
                           decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
+                              contentPadding: const EdgeInsets.only(
                                   left: 10.0, right: 14.0, bottom: 12.0),
                               // isCollapsed: true,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(70.0),
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   width: 0,
                                   style: BorderStyle.none,
                                 ),
@@ -846,7 +846,7 @@ class ClientSettingPage extends StatelessWidget {
           ),
           Obx(()=>controller.accountType.value == "company"?Container(
             height: 42,
-            margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
+            margin: const EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
             child: Row(
               children: [
                 Container(
@@ -855,13 +855,13 @@ class ClientSettingPage extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 0.2),
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(12.0),
+                        borderRadius: const BorderRadius.only(
+                            topRight: const Radius.circular(12.0),
                             bottomRight: Radius.circular(12.0)),
                         color: AppColors.bottomSheetTabColor),
-                    child: Text(
+                    child: const Text(
                       "رقم السجل",
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16.0,
                           color: AppColors.tabColor),
@@ -869,22 +869,22 @@ class ClientSettingPage extends StatelessWidget {
                 Expanded(
                   child: Container(
                     height: 42,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         border: Border(
                           top: BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
-                          bottom: BorderSide(
+                          bottom: const BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
-                          left: BorderSide(
+                          left: const BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
                           right: BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
                         ),
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(12.0),
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
@@ -901,12 +901,12 @@ class ClientSettingPage extends StatelessWidget {
                         fontSize: 14.0,
                       ),
                       decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(
+                          contentPadding: const EdgeInsets.only(
                               left: 10.0, right: 14.0, bottom: 12.0),
                           // isCollapsed: true,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(70.0),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               width: 0,
                               style: BorderStyle.none,
                             ),
@@ -923,7 +923,7 @@ class ClientSettingPage extends StatelessWidget {
           ):
           Container(
             height: 42,
-            margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
+            margin: const EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
             child: Row(
               children: [
                 Container(
@@ -932,13 +932,13 @@ class ClientSettingPage extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 0.2),
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topRight: Radius.circular(12.0),
                             bottomRight: Radius.circular(12.0)),
                         color: AppColors.bottomSheetTabColor),
-                    child: Text(
+                    child: const Text(
                       "رقم الهوية",
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16.0,
                           color: AppColors.tabColor),
@@ -946,23 +946,23 @@ class ClientSettingPage extends StatelessWidget {
                 Expanded(
                   child: Container(
                     height: 42,
-                    decoration: BoxDecoration(
-                        border: Border(
+                    decoration: const BoxDecoration(
+                        border: const Border(
                           top: BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
-                          bottom: BorderSide(
+                          bottom: const BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
-                          left: BorderSide(
+                          left: const BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
                           right: BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
                         ),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12.0),
+                        borderRadius: const BorderRadius.only(
+                            topLeft: const Radius.circular(12.0),
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
                     child: Obx(() => TextField(
@@ -978,12 +978,12 @@ class ClientSettingPage extends StatelessWidget {
                         fontSize: 14.0,
                       ),
                       decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(
+                          contentPadding: const EdgeInsets.only(
                               left: 10.0, right: 14.0, bottom: 12.0),
                           // isCollapsed: true,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(70.0),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               width: 0,
                               style: BorderStyle.none,
                             ),
@@ -1003,7 +1003,7 @@ class ClientSettingPage extends StatelessWidget {
             children: [
               Expanded(
                 child: Container(
-                    margin: EdgeInsets.only(
+                    margin: const EdgeInsets.only(
                         top: 16.0, left: 16.0, right: 20.0, bottom: 8.0),
                     height: 45.0,
                     child: Obx(
@@ -1019,7 +1019,7 @@ class ClientSettingPage extends StatelessWidget {
                           mode: Mode.MENU,
                           enabled: controller.isEnabled.value,
                           dropDownButton: Container(
-                            margin: EdgeInsets.only(left: 0.0),
+                            margin: const EdgeInsets.only(left: 0.0),
                             child: SvgPicture.asset(
                               'images/dropdown_icon.svg',
                               fit: BoxFit.fill,
@@ -1038,14 +1038,14 @@ class ClientSettingPage extends StatelessWidget {
                               textAlign: TextAlign.start,
                             );
                           },
-                          dropdownSearchDecoration: InputDecoration(
+                          dropdownSearchDecoration: const InputDecoration(
                             // filled: true,
                             //fillColor: Color(0xFFF2F2F2),
                             contentPadding: EdgeInsets.only(
                                 right: 20.0, top: 0.0, bottom: 0.0),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
+                                  BorderRadius.all(const Radius.circular(16)),
                               borderSide: BorderSide(
                                   width: 0.4,
                                   color: AppColors.borderDropDownColor),
@@ -1064,7 +1064,7 @@ class ClientSettingPage extends StatelessWidget {
                                   width: 0.4,
                                   color: AppColors.borderDropDownColor),
                             ),
-                            border: OutlineInputBorder(
+                            border: const OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(16)),
                                 borderSide: BorderSide(
@@ -1082,12 +1082,12 @@ class ClientSettingPage extends StatelessWidget {
                           },
                           selectedItem: controller.country.value): Container(
     alignment: Alignment.centerRight,
-    child: Text("لا يوجد مناطق")),
+    child: const Text("لا يوجد مناطق")),
                     )),
               ),
               Expanded(
                 child: Container(
-                    margin: EdgeInsets.only(
+                    margin: const EdgeInsets.only(
                         top: 16.0, left: 20.0, right: 10.0, bottom: 8.0),
                     height: 45.0,
                     child: Obx(
@@ -1103,7 +1103,7 @@ class ClientSettingPage extends StatelessWidget {
                               mode: Mode.MENU,
                               enabled: controller.isEnabled.value,
                               dropDownButton: Container(
-                                margin: EdgeInsets.only(left: 0.0),
+                                margin: const EdgeInsets.only(left: 0.0),
                                 child: SvgPicture.asset(
                                   'images/dropdown_icon.svg',
                                   fit: BoxFit.fill,
@@ -1127,13 +1127,13 @@ class ClientSettingPage extends StatelessWidget {
                                   fontFamily: 'Arabic-Regular',
                                   fontSize: 14.sp),
                               // dropdownSearchBaseStyle:  TextStyle(color: AppColors.editProfileContainerColor),
-                              dropdownSearchDecoration: InputDecoration(
+                              dropdownSearchDecoration: const InputDecoration(
                                 // filled: true,
                                 //fillColor: Color(0xFFF2F2F2),
                                 labelStyle: TextStyle(
                                     color: AppColors.editProfileContainerColor),
                                 //counterText: 'modeo',
-                                contentPadding: EdgeInsets.only(
+                                contentPadding: const EdgeInsets.only(
                                     right: 20.0, top: 0.0, bottom: 0.0),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius:
@@ -1142,14 +1142,14 @@ class ClientSettingPage extends StatelessWidget {
                                       width: 0.4,
                                       color: AppColors.borderDropDownColor),
                                 ),
-                                disabledBorder: OutlineInputBorder(
+                                disabledBorder: const OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(16)),
                                   borderSide: BorderSide(
                                       width: 0.4,
                                       color: AppColors.borderDropDownColor),
                                 ),
-                                enabledBorder: OutlineInputBorder(
+                                enabledBorder: const OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(16)),
                                   borderSide: BorderSide(
@@ -1158,8 +1158,8 @@ class ClientSettingPage extends StatelessWidget {
                                 ),
                                 border: OutlineInputBorder(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(16)),
-                                    borderSide: BorderSide(
+                                        const BorderRadius.all(Radius.circular(16)),
+                                    borderSide: const BorderSide(
                                       width: 1,
                                     )),
                               ),
@@ -1177,14 +1177,14 @@ class ClientSettingPage extends StatelessWidget {
                             )
                           : Container(
                           alignment: Alignment.centerRight,
-                          child: Text("لا يوجد مناطق")),
+                          child: const Text("لا يوجد مناطق")),
                     )),
               ),
             ],
           ),
           Container(
-            margin: EdgeInsets.only(top: 10.0),
-            child: Divider(
+            margin: const EdgeInsets.only(top: 10.0),
+            child: const Divider(
               color: AppColors.dividerBottom,
               thickness: 4.0,
               indent: 20.0,
@@ -1193,7 +1193,7 @@ class ClientSettingPage extends StatelessWidget {
           ),
           Container(
             height: 42,
-            margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
+            margin: const EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
             decoration: BoxDecoration(
                 border: Border.all(
                     color: AppColors.editProfileContainerColor, width: 0.4),
@@ -1203,8 +1203,8 @@ class ClientSettingPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  margin: EdgeInsets.only(right: 10, bottom: 4.0),
-                  child: Text(
+                  margin: const EdgeInsets.only(right: 10, bottom: 4.0),
+                  child: const Text(
                     "مراسلتى",
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
@@ -1213,15 +1213,15 @@ class ClientSettingPage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 3.0),
+                  margin: const EdgeInsets.only(top: 3.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(
+                        margin: const EdgeInsets.only(
                             right: 3.0, left: 8.0, bottom: 10.0),
                         alignment: Alignment.center,
-                        child: Text(
+                        child: const Text(
                           'نعم',
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -1244,7 +1244,7 @@ class ClientSettingPage extends StatelessWidget {
                           child: controller.isChat.value
                               ? Container(
                             //margin: EdgeInsets.only(left: 10.0,bottom: 10.0),
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 10.0,
                             ),
                             child: Image.asset(
@@ -1256,7 +1256,7 @@ class ClientSettingPage extends StatelessWidget {
                             ),
                           )
                               : Container(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               right: 10.0,
                               //left: 10.0
                             ),
@@ -1293,13 +1293,13 @@ class ClientSettingPage extends StatelessWidget {
                         ),*/ /*
                           ),*/
                       Container(
-                        margin: EdgeInsets.only(
+                        margin: const EdgeInsets.only(
                           right: 8.0,
                           left: 23.0,
                           bottom: 10.0,
                         ),
                         alignment: Alignment.center,
-                        child: Text(
+                        child: const Text(
                           'لا',
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -1416,7 +1416,7 @@ class ClientSettingPage extends StatelessWidget {
           ),
           Container(
             height: 42,
-            margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
+            margin: const EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
             decoration: BoxDecoration(
                 border: Border.all(
                     color: AppColors.editProfileContainerColor, width: 0.4),
@@ -1426,8 +1426,8 @@ class ClientSettingPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  margin: EdgeInsets.only(right: 10, bottom: 4.0),
-                  child: Text(
+                  margin: const EdgeInsets.only(right: 10, bottom: 4.0),
+                  child: const Text(
                     "التنبيهات",
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
@@ -1436,20 +1436,20 @@ class ClientSettingPage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 20.0, right: 10.0),
+                  margin: const EdgeInsets.only(left: 20.0, right: 10.0),
                   child: Row(
                     //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(top: 3.0),
+                        margin: const EdgeInsets.only(top: 3.0),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Container(
                                 // height: 70,
                                 margin:
-                                    EdgeInsets.only(bottom: 0.0, left: 10.0),
+                                    const EdgeInsets.only(bottom: 0.0, left: 10.0),
                                 child: SvgPicture.asset(
                                   'images/no_notification_icon.svg',
                                   height: 22,
@@ -1507,7 +1507,7 @@ class ClientSettingPage extends StatelessWidget {
                                 child:  controller.isNotification.value
                                     ? Container(
                                   //margin: EdgeInsets.only(left: 10.0,bottom: 10.0),
-                                  padding: EdgeInsets.only(
+                                  padding: const EdgeInsets.only(
                                     left: 10.0,
                                   ),
                                   child: Image.asset(
@@ -1519,7 +1519,7 @@ class ClientSettingPage extends StatelessWidget {
                                   ),
                                 )
                                     : Container(
-                                  padding: EdgeInsets.only(
+                                  padding: const EdgeInsets.only(
                                     right: 10.0,
                                     //left: 10.0
                                   ),
@@ -1537,7 +1537,7 @@ class ClientSettingPage extends StatelessWidget {
 
                             Container(
                                 // height: 70,
-                                margin: EdgeInsets.only(
+                                margin: const EdgeInsets.only(
                                   bottom: 0.0,
 
                                 ),
@@ -1575,11 +1575,11 @@ class ClientSettingPage extends StatelessWidget {
               Container(
                 width: 150,
                 height: 40,
-                margin: EdgeInsets.only(right: 30.0, top: 10.0),
+                margin: const EdgeInsets.only(right: 30.0, top: 10.0),
                 child: Material(
                   elevation: 6.0,
                   shadowColor: Colors.grey[200],
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
                   color: AppColors.saveButtonBottomSheet,
                   borderOnForeground: true,
                   child: Container(
@@ -1590,7 +1590,7 @@ class ClientSettingPage extends StatelessWidget {
                         border: Border.all(color: Colors.grey, width: 0.5),
                         borderRadius: BorderRadius.circular(8),
                         color: AppColors.bottomSheetTabColor),
-                    child: Text(
+                    child: const Text(
                       'مسح المحادثات',
                       style: TextStyle(
                           fontSize: 16.0,
@@ -1604,11 +1604,11 @@ class ClientSettingPage extends StatelessWidget {
               Container(
                 width: 150,
                 height: 40,
-                margin: EdgeInsets.only(left: 30.0, top: 10.0),
+                margin: const EdgeInsets.only(left: 30.0, top: 10.0),
                 child: Material(
                   elevation: 6.0,
                   shadowColor: Colors.grey[200],
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
                   color: AppColors.saveButtonBottomSheet,
                   borderOnForeground: true,
                   child: InkWell(
@@ -1623,7 +1623,7 @@ class ClientSettingPage extends StatelessWidget {
                           border: Border.all(color: Colors.grey, width: 0.5),
                           borderRadius: BorderRadius.circular(8),
                           color: AppColors.bottomSheetTabColor),
-                      child: Text(
+                      child: const Text(
                         'المحظورون',
                         style: TextStyle(
                             fontSize: 16.0,
@@ -1638,18 +1638,18 @@ class ClientSettingPage extends StatelessWidget {
             ],
           ),
           Container(
-            margin: EdgeInsets.only(bottom: 20.0),
+            margin: const EdgeInsets.only(bottom: 20.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   width: 145,
                   height: 35,
-                  margin: EdgeInsets.only(right: 35.0, top: 35.0),
+                  margin: const EdgeInsets.only(right: 35.0, top: 35.0),
                   child: Material(
                     elevation: 6.0,
                     shadowColor: Colors.grey[200],
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderRadius: const BorderRadius.all(const Radius.circular(8)),
                     color: AppColors.saveButtonBottomSheet,
                     child: InkWell(
                       onTap: (){
@@ -1661,7 +1661,7 @@ class ClientSettingPage extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Text(
                           'save'.tr,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 16.0,
                               color: AppColors.tabColor,
                               fontWeight: FontWeight.w700),
@@ -1674,11 +1674,11 @@ class ClientSettingPage extends StatelessWidget {
                 Container(
                   width: 145,
                   height: 35,
-                  margin: EdgeInsets.only(left: 35.0, top: 35.0),
+                  margin: const EdgeInsets.only(left: 35.0, top: 35.0),
                   child: Material(
                     elevation: 6.0,
                     shadowColor: Colors.grey[200],
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
                     color: AppColors.tabColor,
                     child: Container(
                       /*margin: EdgeInsets.only(
@@ -1686,7 +1686,7 @@ class ClientSettingPage extends StatelessWidget {
                       alignment: Alignment.center,
                       child: Text(
                         'cancel'.tr,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16.0,
                             color: Colors.white,
                             fontWeight: FontWeight.w300),

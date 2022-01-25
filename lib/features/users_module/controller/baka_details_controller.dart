@@ -4,6 +4,7 @@ import 'package:advertisers/app_core/network/models/CoponModel.dart';
 import 'package:advertisers/app_core/network/models/CreateSubscriptionModel.dart';
 import 'package:advertisers/app_core/network/models/CreateSuscriptionWithReciet.dart';
 import 'package:advertisers/app_core/network/requests/CreateSubscriptionRequest.dart';
+import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/features/users_module/app_colors.dart';
 import 'package:advertisers/features/users_module/controller/choose_baka_controller.dart';
 import 'package:advertisers/app_core/network/models/SubscriptionDetail.dart';
@@ -49,13 +50,20 @@ class BakaDetailsController extends GetxController{
   bool _allowWriteFile=false;
   var progress = ' 0 '.obs;
   var isLoading = true.obs;
+  RegisterClientUserResponse? registerClientUserResponse;
   @override
-  void onInit() {
+   void onInit() async {
     //repo.postWithImageMultipart({})
 
     pakaTimeController=TextEditingController();
     discountCodeController=TextEditingController();
+    var json  = await storage.read("data");
+    registerClientUserResponse = RegisterClientUserResponse.fromJson(json);
 
+    if(registerClientUserResponse?.data?.token!=null){
+      print("mToken"+registerClientUserResponse!.data!.token!);
+
+    }
     client!.createSubscriptions(CreateSubscriptionRequest(execute: 0,payment_method: "STC",period_id: _chooseBakaController.selectedBakaId), "Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
       if(value.data!=null&&value.status==200){
         //subscriptionBakaDetail = value.data!;

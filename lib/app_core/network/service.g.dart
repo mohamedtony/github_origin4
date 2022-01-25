@@ -281,7 +281,27 @@ class _RestClient implements RestClient {
     _data.addAll(oneCountryAndCitiesRequest.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<GetUseLocationsResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options,
+                    'https://advertiser.cefour.com/api/v1/profile/areas',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = GetUseLocationsResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<GetUseLocationsResponse> setMultipleCountry(
+      oneCountryAndCitiesRequest, token) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(oneCountryAndCitiesRequest.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<GetUseLocationsResponse>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
                 .compose(_dio.options,
                     'https://advertiser.cefour.com/api/v1/profile/areas',
                     queryParameters: queryParameters, data: _data)
@@ -292,7 +312,8 @@ class _RestClient implements RestClient {
 
   @override
   Future<GetMyProfileInfoResponse> updateMyProfile(token,
-      {username,
+      {company_name,
+      username,
       account_name,
       manager_name,
       email,
@@ -304,6 +325,7 @@ class _RestClient implements RestClient {
       personal_id,
       sgl,
       isChat,
+      isNotification,
       file}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -311,6 +333,9 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{r'Accept': token};
     _headers.removeWhere((k, v) => v == null);
     final _data = FormData();
+    if (company_name != null) {
+      _data.fields.add(MapEntry('company_name', company_name));
+    }
     if (username != null) {
       _data.fields.add(MapEntry('username', username));
     }
@@ -346,6 +371,9 @@ class _RestClient implements RestClient {
     }
     if (isChat != null) {
       _data.fields.add(MapEntry('chat', isChat.toString()));
+    }
+    if (isNotification != null) {
+      _data.fields.add(MapEntry('notifiable', isNotification.toString()));
     }
     if (file != null) {
       _data.files.add(MapEntry(

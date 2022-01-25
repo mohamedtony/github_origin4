@@ -34,11 +34,14 @@ ClientProfileModel _$ClientProfileModelFromJson(Map<String, dynamic> json) =>
       reply_speed: json['reply_speed'] as String?,
       sgl: json['sgl'] as String?,
       points: json['points'] as int?,
+      notifiable: json['notifiable'] as bool?,
+      company_name: json['company_name'] as String?,
     );
 
 Map<String, dynamic> _$ClientProfileModelToJson(ClientProfileModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'company_name': instance.company_name,
       'username': instance.username,
       'account_name': instance.account_name,
       'manager_name': instance.manager_name,
@@ -62,4 +65,5 @@ Map<String, dynamic> _$ClientProfileModelToJson(ClientProfileModel instance) =>
       'wallet': instance.wallet,
       'sgl': instance.sgl,
       'points': instance.points,
+      'notifiable': instance.notifiable,
     };

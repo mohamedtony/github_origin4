@@ -113,6 +113,9 @@ class ClientSettingPageController extends GetxController  {
         Get.back();
         clientProfileModel.value = value.data!;
         //kayanNameController?.text = "tony";
+        if(clientProfileModel.value.company_name!=null) {
+          kayanNameController?.text = clientProfileModel.value.company_name!;
+        }
         if(clientProfileModel.value.username!=null) {
           userNameController?.text = clientProfileModel.value.username!;
         }
@@ -138,6 +141,11 @@ class ClientSettingPageController extends GetxController  {
           isChat.value = clientProfileModel.value.chat!;
         }else{
           isChat.value = false;
+        }
+        if(clientProfileModel.value.notifiable!=null){
+          isNotification.value = clientProfileModel.value.notifiable==1?false:true;
+        }else{
+          isNotification.value = true;
         }
         if(clientProfileModel.value.type !=null)
           accountType.value = clientProfileModel.value.type!;
@@ -367,7 +375,7 @@ class ClientSettingPageController extends GetxController  {
       print("hereeee1");
       LoadingDailog().showLoading(context);
       if(accountType.value=="client"){
-        await client!.updateMyProfile("application/json",username: userNameController!.text.isEmpty?null:userNameController!.text,account_name: accountNameEdit!.text,phone: e164.value.replaceFirst("+", ""),email: emailController!.text,type: accountType.value,role: "user",personal_id: personalIdController!.text.isEmpty?null: personalIdController!.text,area_id: area.value.id,country_id: country.value.id,isChat: isChat.value?1:0,file: imageFile).then((value){
+        await client!.updateMyProfile("application/json",username: userNameController!.text,account_name: accountNameEdit!.text,phone: e164.value.replaceFirst("+", ""),email: emailController!.text,type: accountType.value,role: "user",personal_id: personalIdController!.text.isEmpty?null: personalIdController!.text,area_id: area.value.id,country_id: country.value.id,isChat: isChat.value?1:0,isNotification:isNotification.value?0:1,file: imageFile).then((value){
           print("myHere"+value.status.toString());
           print("myHere"+value.message.toString());
           Logger().i(value.data!.toJson());
@@ -378,7 +386,7 @@ class ClientSettingPageController extends GetxController  {
         });
       }else{
         print("accountType.value"+accountType.value);
-        await client!.updateMyProfile("application/json",account_name: accountNameEdit!.text,manager_name: kayanNameController!.text.isEmpty?null: kayanNameController!.text,phone: e164.value.replaceFirst("+", ""),email: emailController!.text,type: accountType.value,role: "user",sgl: sglNumberController!.text.isEmpty?null:sglNumberController!.text,area_id: area.value.id,country_id: country.value.id,isChat:  isChat.value?1:0,file: imageFile).then((value){
+        await client!.updateMyProfile("application/json",company_name: kayanNameController!.text,account_name: accountNameEdit!.text,manager_name: accountOwner!.text,phone: e164.value.replaceFirst("+", ""),email: emailController!.text,type: accountType.value,role: "user",sgl: sglNumberController!.text.isEmpty?null:sglNumberController!.text,area_id: area.value.id,country_id: country.value.id,isChat:  isChat.value?1:0,isNotification:isNotification.value?0:1,file: imageFile).then((value){
           print("myHere"+value.status.toString());
           print("myHere"+value.message.toString());
           Logger().i(value.data!.toJson());

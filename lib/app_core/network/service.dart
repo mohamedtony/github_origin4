@@ -75,7 +75,7 @@ Future<GetUseLocationsResponse> getUseLocations(@Header("Authorization") String 
 @POST('https://advertiser.cefour.com/api/v1/profile/channels/add')
 Future<CreateSubscriptionResponse> addChannel(@Body() ChannelData channel,@Header("Authorization") String token);
 
-@GET('https://advertiser.cefour.com/api/v1/profile/areas')
+@POST('https://advertiser.cefour.com/api/v1/profile/areas')
 Future<GetUseLocationsResponse> setOneCountryAndCities(@Body() OneCountryAndCitiesRequest oneCountryAndCitiesRequest,@Header("Authorization") String token);
 
 /*
@@ -83,8 +83,10 @@ Future<GetUseLocationsResponse> setOneCountryAndCities(@Body() OneCountryAndCiti
 @MultiPart()
 Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileRequest updateProfileRequest,*//*@Header("Accept") String token,@Part(name: 'username') String? username ,@Part(name: 'account_name') String? account_name ,@Part(name: 'email') String? email,@Part(name: 'phone') String? phone ,@Part(name: 'country_id') int? country_id ,@Part(name: 'area_id') int? area_id ,@Part(name: 'role') String? role ,@Part(name: 'type') String? type ,@Part(name: 'personal_id') String? personal_id ,{@Part(name: 'image') File? file});*/
 
+  @POST('https://advertiser.cefour.com/api/v1/profile/areas')
+  Future<GetUseLocationsResponse> setMultipleCountry(@Body() OneCountryAndCitiesRequest oneCountryAndCitiesRequest,@Header("Authorization") String token);
 
   @POST('https://advertiser.cefour.com/api/v1/profile/update')
   @MultiPart()
-  Future<GetMyProfileInfoResponse> updateMyProfile(@Header("Accept") String token,{@Part(name: 'username') String? username ,@Part(name: 'account_name') String? account_name ,@Part(name: 'manager_name') String? manager_name,@Part(name: 'email') String? email,@Part(name: 'phone') String? phone ,@Part(name: 'country_id') int? country_id ,@Part(name: 'area_id') int? area_id ,@Part(name: 'role') String? role ,@Part(name: 'type') String? type ,@Part(name: 'personal_id') String? personal_id ,@Part(name: 'sgl') String? sgl ,@Part(name: 'chat') int? isChat ,@Part(name: 'image') File? file});
+  Future<GetMyProfileInfoResponse> updateMyProfile(@Header("Accept") String token,{@Part(name: 'company_name') String? company_name ,@Part(name: 'username') String? username ,@Part(name: 'account_name') String? account_name ,@Part(name: 'manager_name') String? manager_name,@Part(name: 'email') String? email,@Part(name: 'phone') String? phone ,@Part(name: 'country_id') int? country_id ,@Part(name: 'area_id') int? area_id ,@Part(name: 'role') String? role ,@Part(name: 'type') String? type ,@Part(name: 'personal_id') String? personal_id ,@Part(name: 'sgl') String? sgl ,@Part(name: 'chat') int? isChat ,@Part(name: 'notifiable') int? isNotification ,@Part(name: 'image') File? file});
 }

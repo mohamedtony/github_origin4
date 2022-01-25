@@ -242,8 +242,7 @@ class LocationRangeBottomSheet extends StatelessWidget {
                                         },
                                         selectedItem:
                                             advertiserSettingPageController
-                                                .countriesForLocationSheet
-                                                .value[0])),
+                                                .countriesForLocationSheet[0])),
                               ),
                             ),
                           ],
@@ -483,22 +482,27 @@ class LocationRangeBottomSheet extends StatelessWidget {
                       height: 35,
                       margin:
                           EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
-                      child: Material(
-                        elevation: 6.0,
-                        shadowColor: Colors.grey[200],
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                        color: AppColors.saveButtonBottomSheet,
-                        child: Container(
-                          /*margin: EdgeInsets.only(
-                                left: 12.0, bottom: 4.0, right: 20),*/
-                          alignment: Alignment.center,
-                          child: Text(
-                            'save'.tr,
-                            style: TextStyle(
-                                fontSize: 16.0,
-                                color: AppColors.tabColor,
-                                fontWeight: FontWeight.w700),
-                            textAlign: TextAlign.center,
+                      child: InkWell(
+                        onTap: (){
+                          advertiserSettingPageController.onUpdateUserLocations(context);
+                        },
+                        child: Material(
+                          elevation: 6.0,
+                          shadowColor: Colors.grey[200],
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          color: AppColors.saveButtonBottomSheet,
+                          child: Container(
+                            /*margin: EdgeInsets.only(
+                                  left: 12.0, bottom: 4.0, right: 20),*/
+                            alignment: Alignment.center,
+                            child: Text(
+                              'save'.tr,
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: AppColors.tabColor,
+                                  fontWeight: FontWeight.w700),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
                       ),

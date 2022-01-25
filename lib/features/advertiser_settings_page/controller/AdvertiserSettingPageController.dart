@@ -2,6 +2,7 @@ import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/app_core/network/models/ClientProfileModel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
+import 'package:advertisers/app_core/network/requests/OneCountryAndCitiesRequest.dart';
 import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
@@ -500,6 +501,59 @@ class AdvertiserSettingPageController extends GetxController  {
     }else{
       areasForLocationSheet.value = [];
     }*/
+  }
+
+  void onUpdateUserLocations(BuildContext context){
+    if(isCountryEnabled.value){
+      print("isCountryEnabledHere");
+      List<int> countriesId= [];
+      List<int> areasIds= [];
+      selectedUserLocations.forEach((element) {
+        if(element!=null && element is Country) {
+          countriesId.add(element.id!);
+        }
+        if(element!=null && element is Area) {
+          areasIds.add(element.id!);
+        }
+      });
+      client!.setMultipleCountry(OneCountryAndCitiesRequest(countries:countriesId,areas: areasIds),"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+        if(value.status==200){
+          Fluttertoast.showToast(
+            msg: value.message??'',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.black.withOpacity(0.6),
+            textColor: Colors.white,
+            fontSize: 14.0,
+          );
+        }
+      });
+    }
+    if(isAreaEnabled.value){
+      print("isAreaEnabledHere");
+      List<int> countriesId= [];
+      List<int> areasIds= [];
+      selectedUserLocations.forEach((element) {
+        if(element!=null && element is Country) {
+          countriesId.add(element.id!);
+        }
+        if(element!=null && element is Area) {
+          areasIds.add(element.id!);
+        }
+      });
+      client!.setOneCountryAndCities(OneCountryAndCitiesRequest(countries:countriesId,areas: areasIds),"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+        if(value.status==200){
+          Fluttertoast.showToast(
+            msg: value.message??'',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.black.withOpacity(0.6),
+            textColor: Colors.white,
+            fontSize: 14.0,
+          );
+        }
+      });
+    }
   }
 
   void removeCountryOrArea(dynamic countryOrArea) {
