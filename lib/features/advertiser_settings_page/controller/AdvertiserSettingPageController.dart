@@ -2,8 +2,11 @@ import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/app_core/network/models/ClientProfileModel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
+import 'package:advertisers/app_core/network/requests/OneCountryAndCitiesRequest.dart';
 import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
+import 'package:advertisers/features/add_advertiser_channel/add_advertiser_channel.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
+import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/main.dart';
 import 'package:advertisers/shared/loading_dialog.dart';
@@ -20,7 +23,7 @@ class AdvertiserSettingPageController extends GetxController  {
   var isOpend = false;
   var position = -1;
   var tabIndex = 1.obs;
-  TextEditingController? kayanNameController,accountNameEdit,accountOwner,phoneController,emailController,accountRegisteredNumController;
+  TextEditingController? kayanNameController,sglNumberController,accountNameEdit,accountOwner,phoneController,emailController,accountRegisteredNumController;
   var flag = false.obs;
   var isEnabled=false.obs;
 
@@ -42,16 +45,29 @@ class AdvertiserSettingPageController extends GetxController  {
   RxList<CategoryModel> selectedCategories = <CategoryModel>[].obs;
   RxList<int> selectedCategoriesIds = <int>[].obs;
   var isLoading = true.obs;
-
+  var isLoadingLocation = true.obs;
+  //location range
+  RxList<Country> countriesForLocationSheet = <Country>[].obs;
+  RxList<Area> areasForLocationSheet = <Area>[].obs;
+  var countryForLocationSheet  = Country().obs;
+  var areaForLocationSheet  = Area().obs;
+  RxList<dynamic> selectedUserLocations = <dynamic>[].obs;
+  var isAreaEnabled = true.obs;
+  var isCountryEnabled = true.obs;
+  var accountType = ''.obs;
+  var profile_completion = 0.obs;
+  String? myToken;
   @override
-  void onInit() {
+  Future<void> onInit() async {
     // TODO: implement onInit
-    kayanNameController = TextEditingController(text: 'الراشد للاوانى الفخارية');
-    accountNameEdit= TextEditingController(text: '# El rashid');
-    accountOwner= TextEditingController(text: 'محمد تونى حماد');
-    phoneController = TextEditingController(text: '01111046148');
-    emailController = TextEditingController(text: 'mohamedtony349@yahoo.com');
+    kayanNameController = TextEditingController();
+    accountNameEdit= TextEditingController();
+    accountOwner= TextEditingController();
+    phoneController = TextEditingController();
+    emailController = TextEditingController();
     accountRegisteredNumController  = TextEditingController();
+    sglNumberController = TextEditingController();
+     myToken  = await storage.read("token");
     super.onInit();
   }
 
@@ -60,7 +76,7 @@ class AdvertiserSettingPageController extends GetxController  {
 
   }
   @override
-  void onReady() {
+  Future<void> onReady() async {
     // TODO: implement onReady
     Get.dialog(
         Dialog(
@@ -78,29 +94,29 @@ class AdvertiserSettingPageController extends GetxController  {
           ),
         )
     );
-
-    client!.getMyProfile("Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+    client!.getMyProfile("Bearer "+myToken!).then((value) {
       Logger().i(value.data?.toJson());
       if(value.data!=null&&value.status==200){
         Get.back();
         clientProfileModel.value = value.data!;
-        kayanNameController?.text = "tony";
-        if(clientProfileModel.value.account_name!=null) {
-          accountNameEdit?.text = clientProfileModel.value.account_name!;
+       // kayanNameController?.text = "tony";
+        if(clientProfileModel.value.company_name!=null) {
+          kayanNameController?.text = clientProfileModel.value.company_name!;
         }
         if(clientProfileModel.value.account_name!=null) {
           accountNameEdit?.text = clientProfileModel.value.account_name!;
         }
-        if(clientProfileModel.value.phone!=null) {
-          phoneController?.text = clientProfileModel.value.phone!;
+        if(clientProfileModel.value.manager_name !=null) {
+          accountOwner?.text = clientProfileModel.value.manager_name!;
         }
-        if(clientProfileModel.value.email!=null) {
-          emailController?.text = clientProfileModel.value.email!;
+        if(clientProfileModel.value.type !=null)
+          accountType.value = clientProfileModel.value.type!;
+        if(clientProfileModel.value.sgl!=null) {
+          sglNumberController?.text = clientProfileModel.value.sgl!;
         }
-        if(clientProfileModel.value.personal_id!=null) {
-          accountRegisteredNumController?.text = clientProfileModel.value.personal_id!;
+        if(clientProfileModel.value.profile_completion!=null){
+          profile_completion.value = ((clientProfileModel.value.profile_completion)!~/10);
         }
-
         client!.getCountries().then((value){
           if(value.data!=null){
             countries.value = value.data!;
@@ -227,9 +243,9 @@ class AdvertiserSettingPageController extends GetxController  {
   // TODO: implement onDelete
   InternalFinalCallback<void> get onDelete => super.onDelete;
 
-  void showBottomSheet(BuildContext context, int bottomNumber) {
+  Future<void> showActivitiesBottomSheet(BuildContext context, int bottomNumber) async {
 
-    client!.getCategories("Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+    client!.getCategories("Bearer "+myToken!).then((value) {
       isLoading.value = false;
       if(value.data!=null&&value.status==200){
         if(value.data!.user_categories!=null&&value.data!.user_categories!.isNotEmpty){
@@ -316,7 +332,7 @@ class AdvertiserSettingPageController extends GetxController  {
     selectedCategories.forEach((element) {
       selectedCategoriesIds.add(element.id!);
     });
-    client!.updateUserCategories(UpdateUserCategoryRequest(categories:selectedCategoriesIds.value),"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+    client!.updateUserCategories(UpdateUserCategoryRequest(categories:selectedCategoriesIds.value),"Bearer "+myToken!).then((value) {
       if(value.status==200){
         Fluttertoast.showToast(
           msg: value.message??'',
@@ -327,6 +343,267 @@ class AdvertiserSettingPageController extends GetxController  {
           fontSize: 14.0,
         );
       }
+    });
+  }
+  void showLocationBottomSheet(BuildContext context, int bottomNumber) {
+
+    client!.getCountries().then((value){
+      isLoadingLocation.value = false;
+      if(value.data!=null){
+        countriesForLocationSheet.value = value.data!;
+        countriesForLocationSheet.insert(0, Country(id: -1,name: 'إختر'));
+        countriesForLocationSheet.forEach((element) {
+          Logger().i(element.toJson());
+        });
+        if(countriesForLocationSheet.value[0].areas!=null&&countriesForLocationSheet.value[0].areas!.isNotEmpty) {
+          areasForLocationSheet.value =
+              countriesForLocationSheet.value[0].areas!;
+
+        }
+        Area? areaIn = areasForLocationSheet.firstWhereOrNull((
+            element) => element.id == -1);
+        if(areaIn==null) {
+          areasForLocationSheet.insert(0, Area(id: -1, name: 'إختر'));
+        }
+/*        Country? countryIn = countriesForLocationSheet.firstWhereOrNull((element) => element.id==clientProfileModel.value.country_id);
+        if(countryIn!=null){
+          countryForLocationSheet.value = countryIn;
+          if(countryIn.areas!=null) {
+            areas.value = countryIn.areas!;
+            areas.insert(0, Area(id: -1,name: 'المدينة'));
+            Area? areaIn = countryIn.areas?.firstWhereOrNull((
+                element) => element.id == clientProfileModel.value.area_id);
+
+            if(areaIn!=null){
+              print("areaIn"+areaIn.name!);
+              area.value = areaIn;
+            }else{
+              area.value = countryIn.areas![1];
+            }
+          }
+        }else{
+          countryIn = countriesForLocationSheet.value[2];
+          countryForLocationSheet.value = countryIn;
+          if(countryIn.areas!=null) {
+            areas.value = countryIn.areas!;
+            Area? areaIn = countryIn.areas?.firstWhereOrNull((
+                element) => element.id == clientProfileModel.value.area_id);
+
+            if(areaIn!=null){
+              print("areaIn"+areaIn.name!);
+              areaForLocationSheet.value = areaIn;
+            }else{
+              areaForLocationSheet.value = countryIn.areas![1];
+            }
+          }
+        }*/
+      }
+    });
+
+    client!.getUseLocations("Bearer "+myToken!).then((value){
+      isLoadingLocation.value = false;
+      if(value.data!=null){
+        if(value.data?.countries!=null && value.data!.countries!.isNotEmpty) {
+          selectedUserLocations.value =[];
+          selectedUserLocations.addAll(value.data!.countries!);
+        }
+      }
+    });
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(10.0),
+            topRight: const Radius.circular(10.0)),
+      ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      builder: (BuildContext context) {
+        return DraggableScrollableSheet(
+          //maxChildSize: 0.8,
+          //minChildSize: 100.0,
+
+          initialChildSize: 0.67,
+          expand: false,
+          builder: (context, scrollController) {
+            //if(bottomNumber==1) {
+            /*return AdvertisingChannelsPage(
+                  scrollController: scrollController);*/
+            return LocationRangeBottomSheet(
+                scrollController: scrollController);
+
+            // }
+          },
+        );
+      },
+    ).then((value){
+      print("showDialog");
+      selectedCategories.value = [];
+
+    });
+  }
+
+  void changeCountry(Country? c) {
+    if(c!=null && c.id!=-1) {
+      if (selectedUserLocations.isNotEmpty) {
+        //country and country
+        if (selectedUserLocations[0] is Country) {
+          Country? country = selectedUserLocations.firstWhereOrNull((
+              element) => element.id == c!.id);
+          if (country == null) {
+            selectedUserLocations.add(c);
+          }
+          isAreaEnabled.value = false;
+        }
+      } else {
+        Country? country = selectedUserLocations.firstWhereOrNull((
+            element) => element.id == c!.id);
+        if (country == null) {
+          selectedUserLocations.add(c);
+        }
+      }
+
+      if (c?.areas != null && c!.areas!.isNotEmpty) {
+        areasForLocationSheet.value =
+        c.areas!;
+        Area? areaIn = areasForLocationSheet.firstWhereOrNull((
+            element) => element.id == -1);
+        if(areaIn==null) {
+          areasForLocationSheet.insert(0, Area(id: -1, name: 'إختر'));
+        }
+      } else {
+        areasForLocationSheet.value = [];
+      }
+    }
+  }
+
+  void changeArea(Area? area) {
+    if(area!=null && area.id!=-1) {
+      if (selectedUserLocations.isNotEmpty) {
+        //country and country
+        if (selectedUserLocations[0] is Country &&
+            selectedUserLocations.length == 1) {
+          Area? areaIn = selectedUserLocations.firstWhereOrNull((
+              element) => element.id == area.id && (element is Area));
+          if (areaIn == null) {
+            selectedUserLocations.add(area);
+          }
+          //selectedUserLocations.add(area);
+          isCountryEnabled.value = false;
+        } else {
+          Area? areaIn = selectedUserLocations.firstWhereOrNull((
+              element) => element.id == area.id && (element is Area));
+          if (areaIn == null) {
+            selectedUserLocations.add(area);
+          }
+          isCountryEnabled.value = false;
+        }
+      }
+    }
+
+/*    if(c?.areas!=null && c!.areas!.isNotEmpty) {
+      areasForLocationSheet.value =
+      c.areas!;
+    }else{
+      areasForLocationSheet.value = [];
+    }*/
+  }
+
+  void onUpdateUserLocations(BuildContext context){
+    if(isCountryEnabled.value){
+      print("isCountryEnabledHere");
+      List<int> countriesId= [];
+      List<int> areasIds= [];
+      selectedUserLocations.forEach((element) {
+        if(element!=null && element is Country) {
+          countriesId.add(element.id!);
+        }
+        if(element!=null && element is Area) {
+          areasIds.add(element.id!);
+        }
+      });
+      client!.setMultipleCountry(OneCountryAndCitiesRequest(countries:countriesId,areas: areasIds),"Bearer "+myToken!).then((value) {
+        if(value.status==200){
+          Fluttertoast.showToast(
+            msg: value.message??'',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.black.withOpacity(0.6),
+            textColor: Colors.white,
+            fontSize: 14.0,
+          );
+        }
+      });
+    }
+    if(isAreaEnabled.value){
+      print("isAreaEnabledHere");
+      List<int> countriesId= [];
+      List<int> areasIds= [];
+      selectedUserLocations.forEach((element) {
+        if(element!=null && element is Country) {
+          countriesId.add(element.id!);
+        }
+        if(element!=null && element is Area) {
+          areasIds.add(element.id!);
+        }
+      });
+      client!.setOneCountryAndCities(OneCountryAndCitiesRequest(countries:countriesId,areas: areasIds),"Bearer "+myToken!).then((value) {
+        if(value.status==200){
+          Fluttertoast.showToast(
+            msg: value.message??'',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.black.withOpacity(0.6),
+            textColor: Colors.white,
+            fontSize: 14.0,
+          );
+        }
+      });
+    }
+  }
+
+  void removeCountryOrArea(dynamic countryOrArea) {
+    selectedUserLocations.removeWhere((element) =>element==countryOrArea);
+   if(selectedUserLocations.length==0){
+     isCountryEnabled.value = true;
+     isAreaEnabled.value = true;
+   }
+  }
+
+  void showChannelsSheet(BuildContext context, int i) {
+
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+        topLeft: const Radius.circular(10.0),
+    topRight: const Radius.circular(10.0)),
+    ),
+    clipBehavior: Clip.antiAliasWithSaveLayer,
+    builder: (BuildContext context) {
+    return DraggableScrollableSheet(
+    //maxChildSize: 0.8,
+    //minChildSize: 100.0,
+
+    initialChildSize: 0.67,
+    expand: false,
+    builder: (context, scrollController) {
+    //if(bottomNumber==1) {
+    /*return AdvertisingChannelsPage(
+                  scrollController: scrollController);*/
+    return AddAdvertiserChannel(
+    //scrollController: scrollController
+    );
+
+    // }
+    },
+    );
+    },
+    ).then((value){
+    print("showDialog");
+   // selectedCategories.value = [];
+
     });
   }
 }

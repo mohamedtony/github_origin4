@@ -128,7 +128,8 @@ class TaxSettingsPage extends StatelessWidget {
                     )),
                     Expanded(child: TextFormField(
                       enabled: controller.isChecked,
-                      initialValue: "1236532897120",
+                      //initialValue: "1236532897120",
+                      controller: controller.taxNumberController,
                       style: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp),
                       // cursorColor: Colors.black,
                       // keyboardType: inputType,
@@ -183,7 +184,7 @@ class TaxSettingsPage extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(child: InkWell(onTap: (){
-
+                Get.find<TaxSettingsController>().postTaxSettings();
                 },
                   child: Container(
                     height: 40,

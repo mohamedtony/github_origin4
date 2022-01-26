@@ -47,9 +47,9 @@ class RegisterPhoneController extends GetxController {
     registerPhoneFormKey.currentState!.save();
     print(
         '>>>>>>>>>>>>>>>>>>>>${countryCode.value.toString() + int.parse(phone).toString()}');
-     await verifyPhone();
-    // Get.toNamed(
-    //     '/verificationCodePage?phone=${countryCode.value.toString() + int.parse(phone).toString()}');
+    // await verifyPhone();
+    Get.toNamed(
+        '/verificationCodePage?route=registerPhone&phone=${countryCode.value.toString() + int.parse(phone).toString()}');
     // loginClient();
     // Get.toNamed('/verificationCodePage');
   }

@@ -4,6 +4,7 @@ import 'package:advertisers/app_core/network/models/CoponModel.dart';
 import 'package:advertisers/app_core/network/models/CreateSubscriptionModel.dart';
 import 'package:advertisers/app_core/network/models/CreateSuscriptionWithReciet.dart';
 import 'package:advertisers/app_core/network/requests/CreateSubscriptionRequest.dart';
+import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/features/users_module/app_colors.dart';
 import 'package:advertisers/features/users_module/controller/choose_baka_controller.dart';
 import 'package:advertisers/app_core/network/models/SubscriptionDetail.dart';
@@ -14,6 +15,7 @@ import 'package:advertisers/shared/loading_downloading_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:open_file/open_file.dart';
@@ -49,14 +51,23 @@ class BakaDetailsController extends GetxController{
   bool _allowWriteFile=false;
   var progress = ' 0 '.obs;
   var isLoading = true.obs;
+  RegisterClientUserResponse? registerClientUserResponse;
+  String? myToken;
   @override
-  void onInit() {
+   void onInit() async {
     //repo.postWithImageMultipart({})
 
     pakaTimeController=TextEditingController();
     discountCodeController=TextEditingController();
+/*    var json  = await storage.read("data");
+    registerClientUserResponse = RegisterClientUserResponse.fromJson(json);
 
-    client!.createSubscriptions(CreateSubscriptionRequest(execute: 0,payment_method: "STC",period_id: _chooseBakaController.selectedBakaId), "Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+    if(registerClientUserResponse?.data?.token!=null){
+      print("mToken"+registerClientUserResponse!.data!.token!);
+
+    }*/
+     myToken  = await storage.read("token");
+    client!.createSubscriptions(CreateSubscriptionRequest(execute: 0,payment_method: "STC",period_id: _chooseBakaController.selectedBakaId), "Bearer "+myToken!).then((value) {
       if(value.data!=null&&value.status==200){
         //subscriptionBakaDetail = value.data!;
         //print("mTotal: "+value.data!.total!.toString());
@@ -67,6 +78,15 @@ class BakaDetailsController extends GetxController{
         //update();
         //}
       }
+      Fluttertoast.showToast(
+        msg: value.message??'',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black.withOpacity(0.6),
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+
     });
     client!.getSubscriptionDetails(_chooseBakaController.selectedBakaId).then((value){
       if(value.data!=null&&value.status==200){
@@ -177,7 +197,7 @@ class BakaDetailsController extends GetxController{
 
   void changePeriod(int id) {
     periodId = id;
-    client!.createSubscriptions(CreateSubscriptionRequest(execute: 0,payment_method: "STC",period_id: id), "Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+    client!.createSubscriptions(CreateSubscriptionRequest(execute: 0,payment_method: "STC",period_id: id),"Bearer "+myToken!).then((value) {
       if(value.data!=null&&value.status==200){
         priceAfterDiscount.value = (CreateSubscriptionModel.fromJson(value.data)).total!;
         createSubscriptionModel.value = CreateSubscriptionModel.fromJson(value.data);
@@ -198,7 +218,7 @@ class BakaDetailsController extends GetxController{
     //periodId = id;
     Logger().i(CreateSubscriptionRequest(execute: 1,payment_method: paymentMethod.value,period_id: periodId,copon_id: coponId==-1?null:coponId).toJson());
 
-    client!.createSubscriptions(CreateSubscriptionRequest(execute: 1,payment_method: paymentMethod.value,period_id: periodId,copon_id: coponId==-1?null:coponId), "Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+    client!.createSubscriptions(CreateSubscriptionRequest(execute: 1,payment_method: paymentMethod.value,period_id: periodId,copon_id: coponId==-1?null:coponId), "Bearer "+myToken!).then((value) {
       print("mMessage"+value.message!);
       if(value.status==200){
         // String msg = value.message.toString();
@@ -229,7 +249,7 @@ class BakaDetailsController extends GetxController{
   void checkCopon(context) {
     LoadingDailog().showLoading(context);
     print("controller= "+discountCodeController.text);
-    client!.checkCopon(discountCodeController.text!=null && discountCodeController.text.isNotEmpty && discountCodeController.text!="" ? discountCodeController.text:"123123", periodId,"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value) {
+    client!.checkCopon(discountCodeController.text!=null && discountCodeController.text.isNotEmpty && discountCodeController.text!="" ? discountCodeController.text:"123123", periodId,"Bearer "+myToken!).then((value) {
       print("mMessage"+value.message!);
       if(value.status==200&&value.data!=null){
         // String msg = value.message.toString();

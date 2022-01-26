@@ -62,7 +62,7 @@ class AttatchementPageController extends GetxController {
   }
 
   void deleteImage(int index){
-    realImages?.removeAt(index);
+    realImages.removeAt(index);
   }
   Future<void> pickImages() async {
     images2 = await _picker.pickMultiImage();

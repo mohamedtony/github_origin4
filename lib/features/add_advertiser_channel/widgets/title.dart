@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class AddAdvertiserTitle extends StatelessWidget {
-  const AddAdvertiserTitle({Key? key}) : super(key: key);
+  final String title;
+   AddAdvertiserTitle({required this.title,Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +23,8 @@ class AddAdvertiserTitle extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(7),
                     color: const Color(0xff4184CE)),
-                child: const Text(
-                  "اضافة قناة اعلان وتأثير",
+                child:  Text(
+                title, // "اضافة قناة اعلان وتأثير",
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),

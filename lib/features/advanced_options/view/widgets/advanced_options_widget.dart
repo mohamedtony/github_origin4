@@ -1,3 +1,4 @@
+import 'package:advertisers/app_core/network/models/SettingAdvertiserModel.dart';
 import 'package:advertisers/features/advanced_options/controller/advanced_options_controller.dart';
 import 'package:advertisers/shared/gradient_check_box/gradient_check_box.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class AdvancedOptionsWidget extends StatelessWidget {
-  final AdvancedOptionsData advancedOptionsData;
+  final SettingAdvertiserModel advancedOptionsData;
 
   const AdvancedOptionsWidget({
     Key? key,
@@ -45,14 +46,13 @@ class AdvancedOptionsWidget extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    Expanded(child: Text( "${advancedOptionsData.title}",style: TextStyle(fontSize: 16,color:Color(0xff4184CE)),))
+                    Expanded(child: Text( "${advancedOptionsData.txt}",style: TextStyle(fontSize: 16,color:Color(0xff4184CE)),))
                   ],)),
-
 
                   InkWell(
                     onTap: (){
                       if(controller.isChecked == true){
-                        controller.addRemoveCheckList(advancedOptionsData.id);
+                        controller.addRemoveCheckList(advancedOptionsData.key);
                         print("${controller.checkList!}");
                       }
 
@@ -63,7 +63,7 @@ class AdvancedOptionsWidget extends StatelessWidget {
                         SizedBox(
                           width: 10,
                         ),
-                        controller.checkList!.contains(advancedOptionsData.id) ? selectedBigCheckBox() : unSelectedBigCheckBox(),
+                        controller.checkList!.contains(advancedOptionsData.key) ? selectedBigCheckBox() : unSelectedBigCheckBox(),
                         SizedBox(
                           width: 15,
                         ),
@@ -94,57 +94,57 @@ class AdvancedOptionsWidget extends StatelessWidget {
   }
 }
 
-class AdvancedOptionsData {
-  final int?id;
-  final String title;
-  // final VoidCallback?  onPressed;
+// class AdvancedOptionsData {
+//   final int?id;
+//   final String title;
+//   // final VoidCallback?  onPressed;
+//
+//   AdvancedOptionsData({
+//     this.id,
+//     required this.title,
+//     // this.onPressed
+//   });
 
-  AdvancedOptionsData({
-    this.id,
-    required this.title,
-    // this.onPressed
-  });
-
-  static List<AdvancedOptionsData> advancedOptions = [
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 1,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 2,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 3,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 4,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 5,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 6,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 7,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 8,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 9,
-    ),
-    AdvancedOptionsData(
-      title: "استقبل رسائل الشات داخل الطلبات النشطة",
-      id: 10,
-    ),
-  ];
-}
+  // static List<AdvancedOptionsData> advancedOptions = [
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 1,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 2,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 3,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 4,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 5,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 6,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 7,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 8,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 9,
+  //   ),
+  //   AdvancedOptionsData(
+  //     title: "استقبل رسائل الشات داخل الطلبات النشطة",
+  //     id: 10,
+  //   ),
+  // ];
+//}

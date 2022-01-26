@@ -70,10 +70,11 @@ class RegisterNewClientUser extends StatelessWidget {
                     alignment: AlignmentDirectional.topEnd,
                     children: [
                       InkWell(
-                        onTap:(){
+                        onTap: () {
                           _showBottomSheet1(context);
-                },
-                        child: Obx(()=>Container(
+                        },
+                        child: Obx(
+                          () => Container(
                             height: 76.44.h,
                             width: 76.44.w,
                             decoration: const BoxDecoration(
@@ -89,17 +90,21 @@ class RegisterNewClientUser extends StatelessWidget {
                                     size: 50,
                                   )
                                 : Container(
-                              height: 76.44.h,
-                              width: 76.44.w,
-                              decoration: BoxDecoration(
-                                color: AppColors.verifyFayrouzyFirst,
-                                shape: BoxShape.circle,
-                                image: DecorationImage(image: FileImage(_registerNewClientUserController
-                                    .savedFile.value,),fit: BoxFit.fill,)
-                              ),
-                                  // child: Image.file(_registerNewClientUserController
-                                  //     .savedFile.value,fit: BoxFit.fill,),
-                                ),
+                                    height: 76.44.h,
+                                    width: 76.44.w,
+                                    decoration: BoxDecoration(
+                                        color: AppColors.verifyFayrouzyFirst,
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          image: FileImage(
+                                            _registerNewClientUserController
+                                                .savedFile.value,
+                                          ),
+                                          fit: BoxFit.fill,
+                                        )),
+                                    // child: Image.file(_registerNewClientUserController
+                                    //     .savedFile.value,fit: BoxFit.fill,),
+                                  ),
                             //  child:   SvgPicture.asset('images/camera.svg',height: 26.13.h,width:34.84.w,fit: BoxFit.fitWidth),
                           ),
                         ),
@@ -115,7 +120,7 @@ class RegisterNewClientUser extends StatelessWidget {
                               color: AppColors.whiteColor,
                               shape: BoxShape.circle,
                             ),
-                            child:const Icon(
+                            child: const Icon(
                               Icons.add,
                               size: 25,
                             )),
@@ -138,52 +143,53 @@ class RegisterNewClientUser extends StatelessWidget {
                     return _registerNewClientUserController
                         .validateUserName(value!);
                   },
-
                 ),
                 SizedBox(
                   height: 16.h,
                 ),
-               AdvertisersDropDown(
-                    hintText: 'type'.tr,
-                    width: 0,itemType: 'String',
-                    items: const ['عميل','معلن'],
-                    onChanged: (val){
-                      if(val=='عميل') {
-                        _registerNewClientUserController.role.value = 'user';
-                      }else if(val=='معلن'){
-                        _registerNewClientUserController.role.value = 'advertiser';
-                      }
-                    },
-                  ),
-
+                AdvertisersDropDown(
+                  hintText: 'type'.tr,
+                  width: 0,
+                  itemType: 'String',
+                  items: const ['عميل', 'معلن'],
+                  onChanged: (val) {
+                    if (val == 'عميل') {
+                      _registerNewClientUserController.role.value = 'user';
+                    } else if (val == 'معلن') {
+                      _registerNewClientUserController.role.value =
+                          'advertiser';
+                    }
+                  },
+                ),
                 SizedBox(
                   height: 16.h,
                 ),
                 AdvertisersGenericField(
-                    obscureText: false,
-                    controller:
-                        _registerNewClientUserController.accountNameController,
-                    textAlignment: TextAlign.end,
-                    hintText: 'accountName'.tr,
-                    onSaved: (value) {
-          _registerNewClientUserController.accountName = value!;
-          },
-            validator: (value) {
-              return _registerNewClientUserController
-                  .validateAccountName(value!);
-            },
-          ),
+                  obscureText: false,
+                  controller:
+                      _registerNewClientUserController.accountNameController,
+                  textAlignment: TextAlign.end,
+                  hintText: 'accountName'.tr,
+                  onSaved: (value) {
+                    _registerNewClientUserController.accountName = value!;
+                  },
+                  validator: (value) {
+                    return _registerNewClientUserController
+                        .validateAccountName(value!);
+                  },
+                ),
                 SizedBox(
                   height: 16.h,
                 ),
                 Obx(() => AdvertisersPhone(
                       hintText: 'phone'.tr,
-                      enabled: false,
+                     // enabled: false,
                       flag: false,
                       initialSelection:
                           _registerNewClientUserController.countryCode.value,
                       onChanged: (countryCodeVal) {
-                        _registerNewClientUserController.countryCode.value=countryCodeVal.dialCode! ;
+                        _registerNewClientUserController.countryCode.value =
+                            countryCodeVal.dialCode!;
                       },
                       controller:
                           _registerNewClientUserController.phoneController,
@@ -199,30 +205,29 @@ class RegisterNewClientUser extends StatelessWidget {
                   height: 16.h,
                 ),
                 AdvertisersGenericField(
-                    obscureText: false,
-                    controller:
-                        _registerNewClientUserController.emailController,
-                    textAlignment: TextAlign.end,
-                    hintText: 'email'.tr,
-                    onSaved: (value) {
-          _registerNewClientUserController.email = value!;
-          },
-            validator: (value) {
-              return _registerNewClientUserController
-                  .validateEmail(value!);
-            },
-          ),
+                  obscureText: false,
+                  controller: _registerNewClientUserController.emailController,
+                  textAlignment: TextAlign.end,
+                  hintText: 'email'.tr,
+                  onSaved: (value) {
+                    _registerNewClientUserController.email = value!;
+                  },
+                  validator: (value) {
+                    return _registerNewClientUserController
+                        .validateEmail(value!);
+                  },
+                ),
                 SizedBox(
                   height: 16.h,
                 ),
                 AdvertisersGenericField(
-                    obscureText: false,
-                    controller:
-                        _registerNewClientUserController.nationalIDController,
-                    textAlignment: TextAlign.end,
-                    hintText: 'nationalId'.tr,
-                  onChanged:(val){
-                   // _registerNewClientUserController.nationalIDMessValid.value=true;
+                  obscureText: false,
+                  controller:
+                      _registerNewClientUserController.nationalIDController,
+                  textAlignment: TextAlign.end,
+                  hintText: 'nationalId'.tr,
+                  onChanged: (val) {
+                    // _registerNewClientUserController.nationalIDMessValid.value=true;
                   },
                   onSaved: (value) {
                     _registerNewClientUserController.nationalID = value!;
@@ -261,8 +266,10 @@ class RegisterNewClientUser extends StatelessWidget {
                             items: _registerNewClientUserController
                                 .countries.value,
                             onChanged: (country) {
-                              _registerNewClientUserController.countryId.value=country.id.toString();
-                              _registerNewClientUserController.changeAreas(country);
+                              _registerNewClientUserController.countryId.value =
+                                  country.id.toString();
+                              _registerNewClientUserController
+                                  .changeAreas(country);
                             },
                           ),
                         ),
@@ -271,9 +278,10 @@ class RegisterNewClientUser extends StatelessWidget {
                               width: 150.w,
                               items:
                                   _registerNewClientUserController.areas.value,
-                          onChanged: (area){
-                            _registerNewClientUserController.areaId.value=area.id.toString();
-                          },
+                              onChanged: (area) {
+                                _registerNewClientUserController.areaId.value =
+                                    area.id.toString();
+                              },
                             )),
                       ],
                     )),
@@ -281,19 +289,31 @@ class RegisterNewClientUser extends StatelessWidget {
                 AdvertisersButton(
                   text: 'verifyAndFollow'.tr,
                   onPressed: () {
-                    _registerNewClientUserController
-                        .savedFile.value=File(' ');
-                    _registerNewClientUserController.phoneMess.value = '';
-                    _registerNewClientUserController. nameMess.value = '';
-                    _registerNewClientUserController.nationalIDMess.value = '';
-                    _registerNewClientUserController.accountNameMess.value = '';
-                    _registerNewClientUserController. emailMess.value = '';
+                    if (_registerNewClientUserController.savedFile.value.path ==
+                        ' ') {
+                      Get.snackbar(
+                        "خطأ",
+                        'الصورة مطلوبة',
+                        icon: const Icon(Icons.person, color: Colors.red),
+                        backgroundColor: Colors.yellow,
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    } else {
+                      _registerNewClientUserController.savedFile.value =
+                          File(' ');
+                      _registerNewClientUserController.phoneMess.value = '';
+                      _registerNewClientUserController.nameMess.value = '';
+                      _registerNewClientUserController.nationalIDMess.value =
+                          '';
+                      _registerNewClientUserController.accountNameMess.value =
+                          '';
+                      _registerNewClientUserController.emailMess.value = '';
 
-
-                    _registerNewClientUserController.errorRegister.value=false;
-                    _registerNewClientUserController.isValid.value=false;
-                    _registerNewClientUserController.checkLogin();
-
+                      _registerNewClientUserController.errorRegister.value =
+                          false;
+                      _registerNewClientUserController.isValid.value = false;
+                      _registerNewClientUserController.checkLogin();
+                    }
                   },
                   backgroundColor: AppColors.verifyButtonColor,
                   textColor: AppColors.verifyTextColor,
@@ -328,7 +348,10 @@ class RegisterNewClientUser extends StatelessWidget {
                       .then((file) async {
                     _registerNewClientUserController.savedFile.value =
                         File.fromUri(Uri.file(file!.path));
-                    RegisterNewClientUserController.photo= await dio.MultipartFile.fromFile(file.path, filename: file.path.substring(file.path.lastIndexOf("/")+1));
+                    RegisterNewClientUserController.photo =
+                        await dio.MultipartFile.fromFile(file.path,
+                            filename: file.path
+                                .substring(file.path.lastIndexOf("/") + 1));
 
                     //provider = FileImage(savedFile);
                     //setState(() {
@@ -367,7 +390,10 @@ class RegisterNewClientUser extends StatelessWidget {
                       .then((file) async {
                     _registerNewClientUserController.savedFile.value =
                         File.fromUri(Uri.file(file!.path));
-                    RegisterNewClientUserController.photo= await dio.MultipartFile.fromFile(file.path, filename: file.path.substring(file.path.lastIndexOf("/")+1));
+                    RegisterNewClientUserController.photo =
+                        await dio.MultipartFile.fromFile(file.path,
+                            filename: file.path
+                                .substring(file.path.lastIndexOf("/") + 1));
                     //         provider = FileImage(savedFile);
                     //         setState(() {
                     _registerNewClientUserController.imageBase641.value =

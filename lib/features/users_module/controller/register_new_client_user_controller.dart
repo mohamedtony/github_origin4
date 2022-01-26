@@ -196,31 +196,33 @@ class RegisterNewClientUserController extends GetxController {
           "password": passwordController.text,
           "personal_id": nationalIDController.text,
           "phone": phoneController.text,
-          "role":  role.value,
-          "type":'client',
+          "role": role.value,
+          "type": 'client',
           "username": nameController.text,
           "image": photo,
 
         },
         onSuccess: (res) {
-          if(EasyLoading.isShow){
+          if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
+          registerClientUserResponse.value = res;
+          storage.write("token", res.data!.token);
           storage.write(
               "data", registerClientUserResponse.value.toJson());
           Get.toNamed('/chooseBakaPage');
         },
-        onError: (err,res) {
-          errorRegister.value=true;
-          isValid.value=false;
-          nationalIDMess.value=res.data!.personalId??'';
-          phoneMess.value=res.data!.phone??'';
-          nameMess.value=res.data!.username??'';
-          accountNameMess.value=res.data!.accountName??'';
-          emailMess.value=res.data!.email??'';
+        onError: (err, res) {
+          errorRegister.value = true;
+          isValid.value = false;
+          nationalIDMess.value = res.data!.personalId ?? '';
+          phoneMess.value = res.data!.phone ?? '';
+          nameMess.value = res.data!.username ?? '';
+          accountNameMess.value = res.data!.accountName ?? '';
+          emailMess.value = res.data!.email ?? '';
 
           checkLogin();
-          if(EasyLoading.isShow){
+          if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
           Get.snackbar(
@@ -230,6 +232,7 @@ class RegisterNewClientUserController extends GetxController {
             backgroundColor: Colors.yellow,
             snackPosition: SnackPosition.BOTTOM,);
         });
+  }
   //   void registerClientUser() {
   //     EasyLoading.show();
   //     client!.registerClientUser(body:dio.FormData.fromMap( {
@@ -288,4 +291,3 @@ class RegisterNewClientUserController extends GetxController {
     }
   }
 
-}

@@ -29,6 +29,17 @@ void main() async{
   dio = Dio();
   dio?.options.headers['Content-Type'] = 'application/json';
   //dio?.options.headers['Content-Type'] = 'multipart/form-data';
+/*  dio?.options = BaseOptions(
+      receiveTimeout: 30000,
+      connectTimeout: 30000,
+      contentType: 'application/json',
+      *//* If needed headers *//*
+      headers: {
+        'Authorization': 'Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd',
+        //'X-ApiKey': 'ZGslzIzEyMw==',
+        'Content-Type': 'application/json'
+      }
+  );*/
   client = RestClient(dio!);
   //client.getTasks().then((it) => logger.i(it));
 
@@ -46,9 +57,9 @@ void main() async{
     ..indicatorSize = 45.0
     ..radius = 10.0
     ..progressColor = Colors.yellow
-    ..backgroundColor = Colors.green
+    ..backgroundColor = Color(0xff4391D4)
     ..indicatorColor = Colors.yellow
-    ..textColor = Colors.yellow
+    ..textColor = Colors.white
     ..maskColor = Colors.blue.withOpacity(0.5)
     ..userInteractions = true
     ..dismissOnTap = false;

@@ -157,6 +157,7 @@ class RegisterNewClientCompanyController extends GetxController {
     }
     return null;
   }
+
   void checkLogin() {
    isValid.value = registerNewCompanyUserControllerKeyForm1.currentState!
         .validate();
@@ -201,18 +202,19 @@ class RegisterNewClientCompanyController extends GetxController {
         path: 'auth/register',
         fromJson: (json) => RegisterClientUserResponse.fromJson(json),
         json: {
+          "company_name": companyNameController.text,
           "account_name": accountNameController.text,
           "area_id": areaId.value,
           "country_id": countryId.value,
           "email": emailController.text,
           "fcm_token": token,
-          "role":'user',
+          "role": 'user',
           "password": passwordController.text,
           "sgl": recordIDController.text,
           "phone": phoneController.text,
           "type": 'company',
           "username": companyNameController.text,
-          "manager_name":accountAdminNameController.text,
+          "manager_name": accountAdminNameController.text,
           "image": photo
         },
         onSuccess: (res) {
@@ -220,19 +222,19 @@ class RegisterNewClientCompanyController extends GetxController {
               "data", registerClientUserResponse.value.toJson());
           Get.toNamed('/chooseBakaPage');
         },
-        onError: (err,res) {
-          errorRegister.value=true;
-          isValid.value=false;
-          nationalIDMess.value=res.data!.personalId??'';
-          phoneMess.value=res.data!.phone??'';
-          nameMess.value=res.data!.username??'';
-          accountNameMess.value=res.data!.accountName??'';
-          emailMess.value=res.data!.email??'';
-           // accountAdminNameMess.value=res.data!.;
-           //  companyNameMess.value=''.obs;
-           // recordIDMess.value=''.obs;
+        onError: (err, res) {
+          errorRegister.value = true;
+          isValid.value = false;
+          nationalIDMess.value = res.data!.personalId ?? '';
+          phoneMess.value = res.data!.phone ?? '';
+          nameMess.value = res.data!.username ?? '';
+          accountNameMess.value = res.data!.accountName ?? '';
+          emailMess.value = res.data!.email ?? '';
+          // accountAdminNameMess.value=res.data!.;
+          //  companyNameMess.value=''.obs;
+          // recordIDMess.value=''.obs;
           checkLogin();
-          if(EasyLoading.isShow){
+          if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
           Get.snackbar(
@@ -242,6 +244,7 @@ class RegisterNewClientCompanyController extends GetxController {
             backgroundColor: Colors.yellow,
             snackPosition: SnackPosition.BOTTOM,);
         });
+  }
     @override
     void onClose() {
       phoneController.dispose();
@@ -249,4 +252,3 @@ class RegisterNewClientCompanyController extends GetxController {
       super.onClose();
     }
   }
-}

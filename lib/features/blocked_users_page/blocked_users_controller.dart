@@ -10,11 +10,12 @@ class BlockedUsersController extends GetxController {
   var isLoading = true.obs;
   var isEmpty = false.obs;
   RxList<BlockedUserModel> blockedUsers = <BlockedUserModel>[].obs;
-
+String?  myToken;
   @override
-  void onInit() {
+  Future<void> onInit() async {
     // TODO: implement onInit
-    client!.getBlockedUsers("Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value){
+    myToken = await storage.read("token");
+    client!.getBlockedUsers("Bearer "+myToken!).then((value){
       if(value.status==200 && value.data!=null && value.data!.isNotEmpty){
         isLoading.value = false;
         isEmpty.value = false;
@@ -29,7 +30,7 @@ class BlockedUsersController extends GetxController {
   }
 
   void removeBlockedUser(int id){
-    client!.addRemoveBlackList(id,"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd").then((value){
+    client!.addRemoveBlackList(id,"Bearer "+myToken!).then((value){
       if(value.status==200 && value.data!=null){
         blockedUsers.value.removeWhere((element) => element.id==id);
         if(blockedUsers.value.isEmpty){

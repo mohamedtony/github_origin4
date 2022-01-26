@@ -195,24 +195,26 @@ class RegisterNewAdvertiserUserController extends GetxController{
           "image": photo
         },
         onSuccess: (res) {
-          if(EasyLoading.isShow){
+          if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
+          registerClientUserResponse.value = res;
           storage.write(
               "data", registerClientUserResponse.value.toJson());
+          storage.write("token", res.data!.token);
           Get.toNamed('/chooseBakaPage');
         },
-        onError: (err,res) {
-          errorRegister.value=true;
-          isValid.value=false;
-          nationalIDMess.value=res.data!.personalId??'';
-          phoneMess.value=res.data!.phone??'';
-          nameMess.value=res.data!.username??'';
-          accountNameMess.value=res.data!.accountName??'';
-          emailMess.value=res.data!.email??'';
+        onError: (err, res) {
+          errorRegister.value = true;
+          isValid.value = false;
+          nationalIDMess.value = res.data!.personalId ?? '';
+          phoneMess.value = res.data!.phone ?? '';
+          nameMess.value = res.data!.username ?? '';
+          accountNameMess.value = res.data!.accountName ?? '';
+          emailMess.value = res.data!.email ?? '';
 
           checkLogin();
-          if(EasyLoading.isShow){
+          if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
           Get.snackbar(
@@ -222,6 +224,7 @@ class RegisterNewAdvertiserUserController extends GetxController{
             backgroundColor: Colors.yellow,
             snackPosition: SnackPosition.BOTTOM,);
         });
+  }
   // void registerClientUser() {
   //   EasyLoading.show();
   //   client!.registerClientUser(body: dio.FormData.fromMap({
@@ -268,4 +271,4 @@ class RegisterNewAdvertiserUserController extends GetxController{
 
     super.onClose();
   }
-}}
+}

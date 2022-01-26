@@ -198,6 +198,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
         path: 'auth/register',
         fromJson: (json) => RegisterCompanyResponse.fromJson(json),
         json: {
+          "company_name": companyNameController.text,
           "account_name": accountNameController.text,
           "area_id": areaId.value,
           "country_id": countryId.value,
@@ -213,23 +214,28 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
           "image": photo
         },
         onSuccess: (res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          registerCompanyResponse.value = res!;
           storage.write(
               "data", registerCompanyResponse.value.toJson());
+          storage.write("token", res.data!.token);
           Get.toNamed('/chooseBakaPage');
         },
-        onError: (err,res) {
-          errorRegister.value=true;
-          isValid.value=false;
-          nationalIDMess.value=res.data!.personalId??'';
-          phoneMess.value=res.data!.phone??'';
-          nameMess.value=res.data!.username??'';
-          accountNameMess.value=res.data!.accountName??'';
-          emailMess.value=res.data!.email??'';
+        onError: (err, res) {
+          errorRegister.value = true;
+          isValid.value = false;
+          nationalIDMess.value = res.data!.personalId ?? '';
+          phoneMess.value = res.data!.phone ?? '';
+          nameMess.value = res.data!.username ?? '';
+          accountNameMess.value = res.data!.accountName ?? '';
+          emailMess.value = res.data!.email ?? '';
           // accountAdminNameMess.value=res.data!.;
           //  companyNameMess.value=''.obs;
           // recordIDMess.value=''.obs;
           checkLogin();
-          if(EasyLoading.isShow){
+          if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
           Get.snackbar(
@@ -239,6 +245,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
             backgroundColor: Colors.yellow,
             snackPosition: SnackPosition.BOTTOM,);
         });
+  }
     @override
     void onClose() {
       phoneController.dispose();
@@ -246,4 +253,3 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
       super.onClose();
     }
   }
-}

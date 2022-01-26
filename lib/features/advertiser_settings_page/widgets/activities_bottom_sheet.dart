@@ -36,7 +36,7 @@ class ActivitiesBottomSheet extends StatelessWidget {
             children: [
               Container(
                 //margin: EdgeInsets.only(top: 10.0),
-                padding: EdgeInsets.all(4.0),
+                padding: const EdgeInsets.all(4.0),
                 color: AppColors.bottomSheetTabColor,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,8 +45,8 @@ class ActivitiesBottomSheet extends StatelessWidget {
                       height: 30.0,
                       width: 140.0,
                       //padding: EdgeInsets.all(8.0),
-                      margin: EdgeInsets.only(right: 8.0),
-                      child: Text(
+                      margin: const EdgeInsets.only(right: 8.0),
+                      child: const Text(
                         'النشاطات',
                         style: TextStyle(color: Colors.white),
                         textAlign: TextAlign.center,
@@ -56,7 +56,7 @@ class ActivitiesBottomSheet extends StatelessWidget {
                           color: AppColors.tabColor),
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 15.0),
+                      margin: const EdgeInsets.only(left: 15.0),
                       child: SvgPicture.asset(
                         'images/list_bullet.svg',
                         fit: BoxFit.fill,
@@ -67,26 +67,26 @@ class ActivitiesBottomSheet extends StatelessWidget {
                   ],
                 ),
               ),
-              Divider(
+              const Divider(
                 color: AppColors.dividerBottom,
                 thickness: 4.0,
               ),
               Container(
-                margin: EdgeInsets.all(10.0),
+                margin: const EdgeInsets.all(10.0),
                 child: Row( 
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     controller.isChecked == true
                         ? selectedRadio()
                         : unSelectedRadio(),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 6.0),
-                      child: Text(
+                      margin: const EdgeInsets.only(left: 6.0),
+                      child: const Text(
                         "تعديل",
-                        style: TextStyle(fontSize: 16, color: Color(0xff244094),decoration: TextDecoration.underline,decorationThickness: 4),
+                        style: TextStyle(fontSize: 16, color: const Color(0xff244094),decoration: TextDecoration.underline,decorationThickness: 4),
                       ),
                     ),
                   ],
@@ -95,12 +95,12 @@ class ActivitiesBottomSheet extends StatelessWidget {
               Container(
                 width: double.infinity,
                 height: 60,
-                margin: EdgeInsets.only(left: 14.0, right: 14.0),
+                margin: const EdgeInsets.only(left: 14.0, right: 14.0),
                 padding:
-                    EdgeInsets.only(left: 14.0, right: 14.0, top: 6, bottom: 6),
-                child: Text(
+                    const EdgeInsets.only(left: 14.0, right: 14.0, top: 6, bottom: 6),
+                child: const Text(
                   'دقة البيانات تساعد التاجر على الوصول اليك وتعطيك مصداقية اكبر لدلا عملائك',
-                  style: TextStyle(color: AppColors.activitiesSheetTextColor),
+                  style: const TextStyle(color: AppColors.activitiesSheetTextColor),
                 ),
                 decoration: BoxDecoration(
                     color: AppColors.activitiesSheetTextBg,
@@ -109,9 +109,9 @@ class ActivitiesBottomSheet extends StatelessWidget {
               Container(
                 width: double.infinity,
                 height: 60,
-                margin: EdgeInsets.only(left: 14.0, right: 14.0, top: 10.0),
+                margin: const EdgeInsets.only(left: 14.0, right: 14.0, top: 10.0),
                 padding:
-                    EdgeInsets.only(left: 14.0, right: 14.0, top: 6, bottom: 6),
+                    const EdgeInsets.only(left: 14.0, right: 14.0, top: 6, bottom: 6),
                 child: Text(
                   'اختر النشاطات التجارية التى ترغب أو انت متخصص فى الاعلان لها عادة',
                   style: TextStyle(
@@ -121,7 +121,7 @@ class ActivitiesBottomSheet extends StatelessWidget {
               ),
               Container(
                 height: 42,
-                margin: EdgeInsets.only(top: 10, left: 22.0, right: 22.0),
+                margin: const EdgeInsets.only(top: 10, left: 22.0, right: 22.0),
                 decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(12.0),
@@ -131,7 +131,7 @@ class ActivitiesBottomSheet extends StatelessWidget {
                 child: Row(
                   children: [
                     Container(
-                        margin: EdgeInsets.only(
+                        margin: const EdgeInsets.only(
                             top: 2.0, bottom: 2.0, left: 10.0, right: 10.0),
                         child: Text(
                           "اختر نشاطك",
@@ -146,18 +146,18 @@ class ActivitiesBottomSheet extends StatelessWidget {
                     ),
                     Expanded(
                       child: Container(
-                        margin: EdgeInsets.only(
+                        margin: const EdgeInsets.only(
                             top: 0.0, left: 16.0, right: 20.0, bottom: 0.0),
                         height: 45.0,
                         child: Obx(()=>advertiserSettingPageController.isLoading.value?Container(
-                          child:SpinKitThreeBounce(color: Colors.blue, size: 25,) ,
+                          child:const SpinKitThreeBounce(color: Colors.blue, size: 25,) ,
                         ):DropdownSearch<CategoryModel>(
                           mode: Mode.MENU,
                           loadingBuilder: (BuildContext context,s){
-                            return SpinKitThreeBounce(color: Colors.blue, size: 40,);
+                            return const SpinKitThreeBounce(color: Colors.blue, size: 40,);
                           },
                           dropDownButton: Container(
-                              margin: EdgeInsets.only(left: 0.0),
+                              margin: const EdgeInsets.only(left: 0.0),
                               child: Icon(
                                 Icons.keyboard_arrow_down,
                                 color: Colors.black.withOpacity(0.32),
@@ -172,25 +172,25 @@ class ActivitiesBottomSheet extends StatelessWidget {
                           dropdownSearchDecoration: InputDecoration(
                             // filled: true,
                             //fillColor: Color(0xFFF2F2F2),
-                            contentPadding: EdgeInsets.only(
+                            contentPadding: const EdgeInsets.only(
                                 right: 20.0, top: 0.0, bottom: 0.0),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(70.0),
-                              borderSide: BorderSide(
+                              borderSide: const BorderSide(
                                 width: 0,
                                 style: BorderStyle.none,
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(70.0),
-                              borderSide: BorderSide(
+                              borderSide: const BorderSide(
                                 width: 0,
                                 style: BorderStyle.none,
                               ),
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(70.0),
-                              borderSide: BorderSide(
+                              borderSide: const BorderSide(
                                 width: 0,
                                 style: BorderStyle.none,
                               ),
@@ -211,7 +211,7 @@ class ActivitiesBottomSheet extends StatelessWidget {
                 ),
               ),
               Obx(()=>Container(
-                margin: EdgeInsets.only(right: 10.0,left: 10.0,top: 18),
+                margin: const EdgeInsets.only(right: 10.0,left: 10.0,top: 18),
                 alignment: Alignment.center,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
@@ -223,20 +223,20 @@ class ActivitiesBottomSheet extends StatelessWidget {
                           children: [
                             Container(
                       height: 35,
-                      margin: EdgeInsets.only(left: 18.0,top: 8,bottom: 3),
+                      margin: const EdgeInsets.only(left: 18.0,top: 8,bottom: 3),
                               child:
                               Chip(
                                 elevation: 3.0,
-                                shape: StadiumBorder(side: BorderSide(
+                                shape: const StadiumBorder(side: BorderSide(
                                     color: AppColors.activitiesSheetRounded,
                                     width: 0.5
                                 )),
-                                labelPadding: EdgeInsets.only(bottom: 4,left: 6,right: 6),
+                                labelPadding: const EdgeInsets.only(bottom: 4,left: 6,right: 6),
                                 label: Container(
                                   //margin: EdgeInsets.only(bottom: 4),
                                   child: Text(
                                     value.name??'',
-                                    style: TextStyle(color: AppColors.activitiesDropDown,fontSize: 16.0,),
+                                    style: const TextStyle(color: AppColors.activitiesDropDown,fontSize: 16.0,),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -253,12 +253,12 @@ class ActivitiesBottomSheet extends StatelessWidget {
                                 },
                                 child: Container(
                                   // alignment: Alignment.topLeft,
-                                  padding: EdgeInsets.all(2),
-                                    decoration: BoxDecoration(
+                                  padding: const EdgeInsets.all(2),
+                                    decoration: const BoxDecoration(
                                         shape: BoxShape.circle
                                         ,color: AppColors.bottomSheetTabColorRounded
                                     ),
-                                    child: Icon(Icons.clear,color: AppColors.white,size: 18,)),
+                                    child: const Icon(Icons.clear,color: AppColors.white,size: 18,)),
                               ),
                             )
                           ],
@@ -270,7 +270,7 @@ class ActivitiesBottomSheet extends StatelessWidget {
                       child:const CircularProgressIndicator(color: AppColors.tabColor,)
                   ):Container(
                       alignment: Alignment.center,
-                      child:Text('لا يوجد عناصر')
+                      child:const Text('لا يوجد عناصر')
                   ),
                 ),
               ),),
@@ -280,18 +280,18 @@ class ActivitiesBottomSheet extends StatelessWidget {
                   advertiserSettingPageController.onUpdateUserCategories(context);
                 },
                 child: Container(
-                  margin: EdgeInsets.only(top: 24),
+                  margin: const EdgeInsets.only(top: 24),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         width: 135,
                         height: 35,
-                        margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
+                        margin: const EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
                         child: Material(
                           elevation: 6.0,
                           shadowColor: Colors.grey[200],
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          borderRadius: const BorderRadius.all(Radius.circular(8)),
                           color: AppColors.saveButtonBottomSheet,
                           child: Container(
                             /*margin: EdgeInsets.only(
@@ -299,7 +299,7 @@ class ActivitiesBottomSheet extends StatelessWidget {
                             alignment: Alignment.center,
                             child: Text(
                               'save'.tr,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 16.0,
                                   color: AppColors.tabColor,
                                   fontWeight: FontWeight.w700),
@@ -315,11 +315,11 @@ class ActivitiesBottomSheet extends StatelessWidget {
                         child: Container(
                           width: 135,
                           height: 35,
-                          margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
+                          margin: const EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
                           child: Material(
                             elevation: 6.0,
                             shadowColor: Colors.grey[200],
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            borderRadius: const BorderRadius.all(Radius.circular(8)),
                             color: AppColors.tabColor,
                             child: Container(
                               /*margin: EdgeInsets.only(
@@ -327,7 +327,7 @@ class ActivitiesBottomSheet extends StatelessWidget {
                               alignment: Alignment.center,
                               child: Text(
                                 'cancel'.tr,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 16.0,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w300),

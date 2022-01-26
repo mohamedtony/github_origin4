@@ -2,16 +2,24 @@ import 'package:advertisers/app_core/bindings/choose_baka_binding.dart';
 import 'package:advertisers/app_core/bindings/client_setting_binding.dart';
 import 'package:advertisers/app_core/bindings/data_binding.dart';
 import 'package:advertisers/features/add_advertiser_channel/add_advertiser_channel.dart';
+import 'package:advertisers/features/add_advertiser_channel/controller/add_advertiser_channel_controller.dart';
+import 'package:advertisers/features/add_advertiser_channel/edit_advertiser_channel.dart';
+import 'package:advertisers/features/advanced_options/controller/advanced_options_controller.dart';
 import 'package:advertisers/features/advanced_options/view/pages/advanced_options_page.dart';
+import 'package:advertisers/features/advanced_options/view/widgets/advanced_options_widget.dart';
+import 'package:advertisers/features/advertiser_account_status/tax_settings/controller/advertiser_account_status_controller.dart';
 import 'package:advertisers/features/advertiser_account_status/tax_settings/view/pages/advertiser_account_status_page.dart';
 import 'package:advertisers/features/advertiser_details/advertiser_details_page.dart';
 import 'package:advertisers/features/advertiser_qr/view/page/advertiser_qr_page.dart';
 import 'package:advertisers/features/advertiser_settings_page/advertiser_settings_page.dart';
+import 'package:advertisers/features/advertiser_settings_page/controller/AdvertiserSettingPageController.dart';
+import 'package:advertisers/features/advertising_influence_channels/controller/advertising_influence_channels_controller.dart';
 import 'package:advertisers/features/advertising_influence_channels/view/page/advertising_influence_channels_page.dart';
 import 'package:advertisers/features/blocked_users_page/blocked_users_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page.dart';
+import 'package:advertisers/features/client_setting_page/client_setting_page_controller.dart';
 import 'package:advertisers/features/customer_order_invoice/view/customer_order_invoice_page.dart';
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation.dart';
@@ -70,6 +78,15 @@ class Routes {
       }),
 
     ),
+
+    GetPage(
+      name: '/EditAdvertiserChannel',
+      page: () =>EditAdvertiserChannel(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<AddAdvertiserChannelController>(() => AddAdvertiserChannelController());
+      }),
+
+    ),
     GetPage(
       name: '/newPasswordPage',
       page: () =>NewPasswordPage(),
@@ -81,7 +98,16 @@ class Routes {
     GetPage(
       name: '/AdvertiserSettingsPage',
       page: () => AdvertiserSettingsPage(),
-
+      binding: BindingsBuilder(() {
+        Get.lazyPut<AdvertiserSettingPageController>(() => AdvertiserSettingPageController());
+      }),
+    ),
+    GetPage(
+      name: '/AdvancedOptionsPage',
+      page: () => AdvancedOptionsPage(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<AdvancedOptionsController>(() => AdvancedOptionsController());
+      }),
     ),
     GetPage(
       name: '/BlockedUsersPage',
@@ -180,9 +206,10 @@ class Routes {
     ),
     GetPage(
       name: '/AdvertisingInfluenceChannelsPage',
-      page: () => AdvertisingInfluenceChannelsPage(),
-      binding: DataBinding(),
-    ),
+      page:() => AdvertisingInfluenceChannelsPage(),
+      binding:BindingsBuilder(() {
+  Get.lazyPut<AdvertisingInfluenceChannelsController>(() => AdvertisingInfluenceChannelsController());
+  }),),
     GetPage(
       name: '/TaxSettingsPage',
       page: () => TaxSettingsPage(),
@@ -219,11 +246,15 @@ class Routes {
     GetPage(
       name: '/AdvertiserAccountStatusPage',
       page: () => AdvertiserAccountStatusPage(),
-    ),
+  binding: BindingsBuilder(() {
+  Get.lazyPut<AdvertiserAccountStatusController>(() => AdvertiserAccountStatusController());
+  })),
     GetPage(
       name: '/AddAdvertiserChannel',
       page: () => AddAdvertiserChannel(),
-    ),
+  binding: BindingsBuilder(() {
+  Get.lazyPut<AddAdvertiserChannelController>(() => AddAdvertiserChannelController());
+  })),
     GetPage(
       name: '/CustomerOrderInvoicePage',
       page: () => CustomerOrderInvoicePage(),
@@ -247,7 +278,10 @@ class Routes {
     GetPage(
         name: '/clientSettingPage',
         page: () => ClientSettingPage(),
-        binding: ClientSettingBinding()
+       // binding: ClientSettingBinding()
+  binding: BindingsBuilder(() {
+  Get.lazyPut<ClientSettingPageController>(() => ClientSettingPageController());
+  }),
     ),
   ];
 }
