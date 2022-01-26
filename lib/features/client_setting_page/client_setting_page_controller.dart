@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/app_core/network/models/ClientProfileModel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
+import 'package:advertisers/app_core/network/models/RegionCodesModel.dart';
+import 'package:advertisers/app_core/network/models/RegionCodesModelList.dart';
 import 'package:advertisers/app_core/network/requests/UpdateProfileRequest.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/main.dart';
@@ -10,6 +13,7 @@ import 'package:advertisers/shared/loading_dialog.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -71,27 +75,45 @@ class ClientSettingPageController extends GetxController  {
   }
   Future<void> initPlatformState() async {
     try {
-      print("dailcode= "+countryCode.value+phoneController!.text);
-
-
-      final parsed = await PhoneNumberUtil().parse(phoneController!.text, regionCode: countryCode.value);
-    //final parsed = await PhoneNumber();
-
-    e164.value = parsed.e164;
-        print("mPhonee164= "+  parsed.e164.replaceFirst('+', ''));
-    print("mPhoneinternational= "+  parsed.international);
-    print("mPhoneinterNational= "+  parsed.national);
-    print("mPhonenational= "+  parsed.nationalNumber);
+        final parsed = await PhoneNumberUtil().parse(phoneController!.text, regionCode: countryCode.value);
+        e164.value = parsed.e164;
         isValidPhone.value = true;
     } catch (e) {
-      //setState(() {
       isValidPhone.value = false;
-      print("mPhone= "+ ' parsed.e164');
-     //});
     }
-   // if (!mounted) return;
   }
+  Future<void> firstCheckCode() async {
+    try {
+      final parsed = await PhoneNumberUtil().parse("+"+phoneController!.text);
+      readJson(parsed.countryCode);
+     // e164.value = parsed.e164;
+    //  isValidPhone.value = true;
+    } catch (e) {
+      //setState(() {
+    //  isValidPhone.value = false;
+      print("mPhone= "+ ' parsed.e164');
+      //});
+    }
+    // if (!mounted) return;
+  }
+  Future<void> readJson(String countryCodeString) async {
+    final String response = await rootBundle.loadString('assets/region_codes.json');
+    final data = await json.decode(response);
 
+    for (final n in data) {
+      //print("jsonCountryCode= "+n['code']+" "+countryCode);
+     if(n["dial_code"] == "+"+countryCodeString){
+       print("jsonCountryCode= "+n['code']);
+       countryCode.value = n['code'];
+     }
+    }
+/*   final countryRegion = data?.firstWhereOrNull((element) =>
+    element["dial_code"] == countryCode
+   );
+
+    print("jsonCountryCode= "+countryRegion['code']);*/
+    // ...
+  }
   @override
   Future<void> onReady() async {
     // TODO: implement onReady
@@ -132,6 +154,7 @@ class ClientSettingPageController extends GetxController  {
         }
         if(clientProfileModel.value.phone!=null) {
           phoneController?.text = clientProfileModel.value.phone!;
+          firstCheckCode();
         }
         if(clientProfileModel.value.email!=null) {
           emailController?.text = clientProfileModel.value.email!;

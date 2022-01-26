@@ -56,13 +56,13 @@ class ListPage extends StatelessWidget {
                   controller.tabIndex.value==1?'images/left_clicked.svg':'images/left_notclicked.svg',
                   // color: Colors.white,
                 ),
-              ):Container(
+              ):/*Container(
                 margin: EdgeInsets.only(left: 10.0),
                 child: SvgPicture.asset(
                   controller.tabIndex.value==1?'images/left_clicked.svg':'images/left_notclicked.svg',
                   // color: Colors.white,
                 ),
-              ),)
+              )*/const SizedBox(),)
             ),
           ],
           flexibleSpace: Container(
