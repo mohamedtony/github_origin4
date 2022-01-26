@@ -1,21 +1,51 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
+class MyOrdersController extends GetxController{
 
-class MyOrdersArchiveController extends GetxController{
 
+  List<int>? checkListShare = [];
 
-  List<int>? checkList = [];
-
-  void addAndRemoveOtherFromCheckList(id){
-    if(checkList!.contains(id)){
-      checkList!.clear();
+  void addAndRemoveOtherFromCheckListShare(id){
+    if(checkListShare!.contains(id)){
+      checkListShare!.clear();
     }else{
-      checkList!.clear();
-      checkList!.add(id);
+      checkListShare!.clear();
+      checkListShare!.add(id);
       update();
     }
 
+    update();
+  }
+  List<int>? checkListFunctions = [];
+
+
+  void openSingleItemFromCheckListFunctions(id){
+    checkListShare!.clear();
+    checkListFunctions!.clear();
+    checkListFunctions!.add(id);
+    update();
+  }
+
+
+  void closeSingleItemFromCheckListFunctions(id){
+    checkListShare!.clear();
+    checkListFunctions!.clear();
+    // checkListFunctions!.add(id);
+    update();
+  }
+
+
+
+
+  void addAndRemoveOtherFromCheckListFunctions(id){
+    if(checkListFunctions!.contains(id)){
+      checkListFunctions!.clear();
+    }else{
+      checkListFunctions!.clear();
+      checkListFunctions!.add(id);
+      update();
+    }
     update();
   }
 
@@ -63,7 +93,6 @@ class MyOrdersArchiveController extends GetxController{
   @override
   void onClose() {
     searchController.dispose();
-
     super.onClose();
   }
 }

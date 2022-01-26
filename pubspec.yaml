@@ -52,10 +52,13 @@ dependencies:
   json_annotation: ^4.4.0
   retrofit: ^3.0.1
   logger: ^1.1.0
+  font_awesome_flutter: ^9.2.0
   flutter_easyloading: ^3.0.3
   get_storage: ^2.0.3
   firebase_auth:
   firebase_core :
+  animate_do: ^2.1.0
+  dotted_border:
   flutter_spinkit: ^5.1.0
   path_provider: ^2.0.8
   permission_handler: ^8.3.0
