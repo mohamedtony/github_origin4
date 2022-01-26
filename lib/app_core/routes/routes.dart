@@ -9,6 +9,7 @@ import 'package:advertisers/features/advanced_options/view/pages/advanced_option
 import 'package:advertisers/features/advanced_options/view/widgets/advanced_options_widget.dart';
 import 'package:advertisers/features/advertiser_account_status/tax_settings/controller/advertiser_account_status_controller.dart';
 import 'package:advertisers/features/advertiser_account_status/tax_settings/view/pages/advertiser_account_status_page.dart';
+import 'package:advertisers/features/advertiser_details/advertiser_details_page.dart';
 import 'package:advertisers/features/advertiser_qr/view/page/advertiser_qr_page.dart';
 import 'package:advertisers/features/advertiser_settings_page/advertiser_settings_page.dart';
 import 'package:advertisers/features/advertiser_settings_page/controller/AdvertiserSettingPageController.dart';
@@ -22,6 +23,8 @@ import 'package:advertisers/features/client_setting_page/client_setting_page_con
 import 'package:advertisers/features/customer_order_invoice/view/customer_order_invoice_page.dart';
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation.dart';
+import 'package:advertisers/features/my_orders/view/my_orders_page.dart';
+import 'package:advertisers/features/my_orders_and_my_orders_archive/my_orders_and_my_orders_archive.dart';
 import 'package:advertisers/features/my_orders_archive/view/my_orders_archive_page.dart';
 import 'package:advertisers/features/notifications/view/pages/notifications_page.dart';
 import 'package:advertisers/features/notifications_settings/view/pages/notifications_settings_page.dart';
@@ -256,9 +259,21 @@ class Routes {
       name: '/CustomerOrderInvoicePage',
       page: () => CustomerOrderInvoicePage(),
     ),
+    // GetPage(
+    //   name: '/MyOrdersArchivePage',
+    //   page: () => MyOrdersArchivePage(),
+    // ),
+    // GetPage(
+    //   name: '/MyOrdersPage',
+    //   page: () => MyOrdersPage(),
+    // ),
     GetPage(
-      name: '/MyOrdersArchivePage',
-      page: () => MyOrdersArchivePage(),
+      name: '/MyOrdersAndMyOrdersArchive',
+      page: () => MyOrdersAndMyOrdersArchive(),
+    ),
+    GetPage(
+      name: '/AdvertiserDetailsPage',
+      page: () => AdvertiserDetailsPage(),
     ),
     GetPage(
         name: '/clientSettingPage',
