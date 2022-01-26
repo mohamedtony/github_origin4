@@ -1,24 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'CreateSubscriptionResponse.dart';
+part of 'GetCategoriesResponse.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CreateSubscriptionResponse _$CreateSubscriptionResponseFromJson(
+GetCategoriesResponse _$GetCategoriesResponseFromJson(
         Map<String, dynamic> json) =>
-    CreateSubscriptionResponse(
+    GetCategoriesResponse(
       status: json['status'] as int?,
       message: json['message'] as String?,
       data: json['data'] == null
           ? null
-          : CreateSubscriptionModel.fromJson(
-              json['data'] as Map<String, dynamic>),
+          : GetCategoryModel.fromJson(json['data'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$CreateSubscriptionResponseToJson(
-        CreateSubscriptionResponse instance) =>
+Map<String, dynamic> _$GetCategoriesResponseToJson(
+        GetCategoriesResponse instance) =>
     <String, dynamic>{
       'status': instance.status,
       'message': instance.message,

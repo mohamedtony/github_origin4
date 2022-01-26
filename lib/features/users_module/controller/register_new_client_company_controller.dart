@@ -205,7 +205,7 @@ class RegisterNewClientCompanyController extends GetxController {
           "area_id": areaId.value,
           "country_id": countryId.value,
           "email": emailController.text,
-          "fcm_token": 'ffc',
+          "fcm_token": token,
           "role":'user',
           "password": passwordController.text,
           "sgl": recordIDController.text,

@@ -13,11 +13,11 @@ class ActivitiesSheetController extends GetxController{
     }
 
   }
-  void removeItem(String n){
+  void removeItem(int id){
     /*if(!realImages.h(s)){
       realImages.add(s);
     }*/
-    int index = realImages.indexWhere((element) => element==n);
+    int index = realImages.indexWhere((element) => element==id);
     realImages.removeAt(index);
   }
   void addRemoveCheckList(id){

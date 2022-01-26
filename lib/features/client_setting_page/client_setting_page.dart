@@ -1,9 +1,11 @@
+import 'package:advertisers/app_core/network/models/Area.dart';
+import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/features/advertiser_list_page/advertise_list_controller.dart';
 import 'package:advertisers/features/advertiser_list_page/advertiser_list_item.dart';
 import 'package:advertisers/features/blocked_users_page/blocked_users_page.dart';
 import 'package:advertisers/features/client_list_page/client_list_item.dart';
-import 'package:advertisers/features/client_setting_page/client_switch_controller.dart';
-import 'package:advertisers/features/client_setting_page/client_switch_controller.dart';
+import 'package:advertisers/features/client_setting_page/client_setting_page_controller.dart';
+import 'package:advertisers/features/client_setting_page/client_setting_page_controller.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -13,11 +15,11 @@ import 'package:flutter/material.dart' as mt;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 class ClientSettingPage extends StatelessWidget {
   ClientSettingPage({Key? key}) : super(key: key);
-  var controller = Get.put(ClientSwitchController(), permanent: false);
+  ClientSettingPageController controller = Get.find();
+
 
   @override
   Widget build(BuildContext context) {
@@ -115,18 +117,18 @@ class ClientSettingPage extends StatelessWidget {
                     children: [
                       Container(
                         margin: EdgeInsets.only(right: 10.0, top: 20.0),
-                        child: Text(
-                          'محمد حماد',
+                        child: Obx(()=>Text(
+                          controller.clientProfileModel.value.username??'',
                           style: TextStyle(color: Colors.white, fontSize: 16.0),
-                        ),
+                        )),
                       ),
                       Container(
                         margin: EdgeInsets.only(right: 10.0),
-                        child: Text(
-                          '#MohamedEltony',
+                        child: Obx(()=>Text(
+                          '# '+(controller.clientProfileModel.value.account_name ?? ''),
                           textDirection: mt.TextDirection.ltr,
                           style: TextStyle(color: Colors.white, fontSize: 14.0),
-                        ),
+                        )),
                       ),
                     ],
                   ),
@@ -175,19 +177,24 @@ class ClientSettingPage extends StatelessWidget {
                           //color:  Color(0xff486ac7),
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          right: 10.0,
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          'edit'.tr,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: AppColors.editProfileTextColor,
-                              fontSize: 18.0,
-                              decoration: TextDecoration.underline,
-                              decorationThickness: 2),
+                      InkWell(
+                        onTap: (){
+                          controller.changeEdit();
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(
+                            right: 10.0,
+                          ),
+                          alignment: Alignment.center,
+                          child: Obx(()=>Text(
+                            controller.isEnabled.value?'إلغاء':'edit'.tr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: AppColors.editProfileTextColor,
+                                fontSize: 18.0,
+                                decoration: TextDecoration.underline,
+                                decorationThickness: 2),
+                          ),)
                         ),
                       ),
                     ],
@@ -215,7 +222,7 @@ class ClientSettingPage extends StatelessWidget {
                           // height: 70,
                           margin: EdgeInsets.only(bottom: 6.0),
                           child: Image.asset(
-                            'images/switch_icon.png',
+                            'images/switch_icon_left.png',
                             scale: 2,
                           )
 
@@ -295,10 +302,11 @@ class ClientSettingPage extends StatelessWidget {
                             topLeft: Radius.circular(12.0),
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
-                    child: TextField(
+                    child: Obx(()=>TextField(
                       textAlign: TextAlign.start,
                       textAlignVertical: TextAlignVertical.center,
                       controller: controller.kayanNameController,
+                      enabled: controller.isEnabled.value,
                       style: TextStyle(
                           color: (AppColors.editProfileTextColorOpa)
                               .withOpacity(0.51),
@@ -319,7 +327,7 @@ class ClientSettingPage extends StatelessWidget {
                           hintStyle: TextStyle(color: Colors.grey[350]),
                           hintText: 'الراشد للاوانى الفخارية',
                           fillColor: Colors.white70),
-                    ),
+                    )),
                   ),
                 ),
               ],
@@ -482,23 +490,28 @@ class ClientSettingPage extends StatelessWidget {
             margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
             child: Row(
               children: [
-                Container(
-                    height: 42,
-                    width: 110,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 0.2),
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(12.0),
-                            bottomRight: Radius.circular(12.0)),
-                        color: AppColors.editProfileContainerColor),
-                    child: Text(
-                      "تأكيد",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.0,
-                          color: Colors.white),
-                    )),
+                InkWell(
+                  onTap: () {
+                    controller.verifyPhone();
+                  },
+                  child: Container(
+                      height: 42,
+                      width: 110,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey, width: 0.2),
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(12.0),
+                              bottomRight: Radius.circular(12.0)),
+                          color: AppColors.editProfileContainerColor),
+                      child: Text(
+                        "تأكيد",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: Colors.white),
+                      )),
+                ),
                 Expanded(
                   child: Container(
                     height: 42,
@@ -526,6 +539,7 @@ class ClientSettingPage extends StatelessWidget {
                       textAlignVertical: TextAlignVertical.center,
                       controller: controller.phoneController,
                       //textDirection: mt.TextDirection.ltr,
+
                       style: TextStyle(
                         color: (AppColors.editProfileTextColorOpa)
                             .withOpacity(0.51),
@@ -533,7 +547,7 @@ class ClientSettingPage extends StatelessWidget {
                         fontSize: 14.0,
                       ),
                       decoration: InputDecoration(
-                         /* suffixIcon: Directionality(
+                          suffixIcon: Directionality(
                             textDirection: mt.TextDirection.ltr,
                             child: Container(
                               // width: 100,
@@ -545,13 +559,19 @@ class ClientSettingPage extends StatelessWidget {
                                     // hintTextDirection: mt.TextDirection.rtl,
                                     focusColor: AppColors.tabColor,
                                     focusedBorder: UnderlineInputBorder(),
-                                    *//*border: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: AppColors.focusedBorder),)*//*
+                                    /*border: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: AppColors.focusedBorder),)*/
                                   ),
                                   initialSelection: 'sa',
-                                  onChanged: (s) {}),
+                                  onChanged: (countryCodeVal) {
+                                    controller.countryCode.value=countryCodeVal.dialCode! ;
+                                    print('>>>>>>>>>>>>>>${countryCodeVal.name}  ${countryCodeVal.code}    ${countryCodeVal.dialCode}     ${countryCodeVal.flagUri}');
+
+                                  },
+
+                              ),
                             ),
-                          ),*/
+                          ),
                           contentPadding: EdgeInsets.only(
                               left: 10.0, right: 14.0, bottom: 12.0),
                           // isCollapsed: true,
@@ -564,8 +584,10 @@ class ClientSettingPage extends StatelessWidget {
                           ),
                           filled: true,
                           hintStyle: TextStyle(color: Colors.grey[350]),
-                          hintText: 'محمد',
-                          fillColor: Colors.white70),
+                          hintText: 'رقم الجوال',
+                          fillColor: Colors.white70,
+
+                      ),
                     ),
                   ),
                 ),
@@ -695,7 +717,7 @@ class ClientSettingPage extends StatelessWidget {
                     child: TextField(
                       textAlign: TextAlign.end,
                       textAlignVertical: TextAlignVertical.center,
-                      controller: controller.accountNameEdit,
+                      controller: controller.accountRegisteredNumController,
                       textDirection: mt.TextDirection.ltr,
                       style: TextStyle(
                         color: (AppColors.editProfileTextColorOpa)
@@ -732,7 +754,7 @@ class ClientSettingPage extends StatelessWidget {
                   margin: EdgeInsets.only(
                       top: 16.0, left: 16.0, right: 20.0, bottom: 8.0),
                   height: 45.0,
-                  child: DropdownSearch<String>(
+                  child: Obx(() =>DropdownSearch<Country>(
                       mode: Mode.MENU,
                       dropDownButton: Container(
                         margin: EdgeInsets.only(left: 0.0),
@@ -743,6 +765,9 @@ class ClientSettingPage extends StatelessWidget {
                           width: 8.0,
                         ),
                       ),
+                      dropdownBuilder: (BuildContext context,s){
+                        return Text('${ (s?.name??'')}',style: TextStyle(color: AppColors.tabColor.withOpacity(0.73),/*decoration: TextDecoration.underline,decorationThickness: 2,*/fontSize: 16.0,fontWeight: FontWeight.w500),textAlign: TextAlign.start,);
+                      },
                       dropdownSearchDecoration: InputDecoration(
                         // filled: true,
                         //fillColor: Color(0xFFF2F2F2),
@@ -758,39 +783,29 @@ class ClientSettingPage extends StatelessWidget {
                           borderSide: BorderSide(
                               width: 0.4, color: AppColors.borderDropDownColor),
                         ),
+
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(16)),
                             borderSide: BorderSide(
                               width: 1,
                             )),
                       ),
-                      items: [
-                        "السعودية",
-                        "Italia (Disabled)",
-                        "Tunisia",
-                        'Canada'
-                      ],
+                      items: controller.countries.value,
                       // label: "Menu mode",
-                      hint: "country in menu mode",
-                      popupItemDisabled: (String s) => s.startsWith('I'),
+                      itemAsString: (Country? u) => u?.itemAsStringByName()??'',
+                      hint: "الدولة",
+                      //popupItemDisabled: (String s) => s.startsWith('I'),
                       onChanged: print,
-                      selectedItem: 'السعودية'.tr),
-                ),
+                      selectedItem: controller.country.value),
+                )),
               ),
               Expanded(
                 child: Container(
                   margin: EdgeInsets.only(
                       top: 16.0, left: 20.0, right: 10.0, bottom: 8.0),
                   height: 45.0,
-                  child: DropdownSearch<String>(
+                  child: Obx(() =>controller.areas.value!=null &&controller.areas.value.isNotEmpty?DropdownSearch<Area>(
                     mode: Mode.MENU,
-
-                    favoriteItemBuilder: (context, item, b) {
-                      return Text(
-                        item,
-                        style: TextStyle(color: Colors.red),
-                      );
-                    },
                     dropDownButton: Container(
                       margin: EdgeInsets.only(left: 0.0),
                       child: SvgPicture.asset(
@@ -800,6 +815,9 @@ class ClientSettingPage extends StatelessWidget {
                         width: 8.0,
                       ),
                     ),
+                    dropdownBuilder: (BuildContext context,s){
+                      return Text('${ (s?.name??'')}',style: TextStyle(color: AppColors.tabColor.withOpacity(0.73),/*decoration: TextDecoration.underline,decorationThickness: 2,*/fontSize: 16.0,fontWeight: FontWeight.w500),textAlign: TextAlign.start,);
+                    },
                     dropdownSearchBaseStyle: TextStyle(
                         fontFamily: 'Arabic-Regular', fontSize: 14.sp),
                     // dropdownSearchBaseStyle:  TextStyle(color: AppColors.editProfileContainerColor),
@@ -827,13 +845,14 @@ class ClientSettingPage extends StatelessWidget {
                             width: 1,
                           )),
                     ),
-                    items: ["الرياض", "Italia (Disabled)", "Tunisia", 'Canada'],
+                    items: controller.areas.value,
+                    itemAsString: (Area? u) => u!=null?(u?.itemAsStringByName())??'':'',
                     // label: "Menu mode",
                     hint: "country in menu mode",
-                    popupItemDisabled: (String s) => s.startsWith('I'),
+                    //popupItemDisabled: (String s) => s.startsWith('I'),
                     onChanged: print,
-                    selectedItem: 'الرياض'.tr,
-                  ),
+                    selectedItem: controller.area.value,
+                  ):CircularProgressIndicator(),)
                 ),
               ),
             ],
@@ -896,15 +915,19 @@ class ClientSettingPage extends StatelessWidget {
                                     fontWeight: FontWeight.w400),
                               ),
                             ),
-                            Container(
-                              // height: 70,
-                                margin: EdgeInsets.only(bottom: 0.0),
-                                child: Image.asset(
-                                  'images/switch_icon.png',
-                                  scale: 2,
-                                )
+                            InkWell(
+                              child: Container(
+                                // height: 70,
+                                  margin: EdgeInsets.only(bottom: 0.0),
+                                  child: Obx(()=>controller.clientProfileModel.value.chat!=null && controller.clientProfileModel.value.chat! ?Image.asset(
+                                    'images/switch_icon_right.png',
+                                    scale: 2,
+                                  ):Image.asset(
+                                    'images/switch_icon_left.png',
+                                    scale: 2,
+                                  ))
 
-                              /*Switch(
+                                /*Switch(
                           onChanged: (s){
 
                           },
@@ -916,6 +939,7 @@ class ClientSettingPage extends StatelessWidget {
                           activeThumbImage: AssetImage('images/switch_icon.png'),
                           inactiveThumbImage: AssetImage('images/inactive_img.png'),
                         ),*/
+                              ),
                             ),
                             Container(
                               margin: EdgeInsets.only(
@@ -1001,7 +1025,7 @@ class ClientSettingPage extends StatelessWidget {
                               // height: 70,
                                 margin: EdgeInsets.only(bottom: 0.0,top: 2),
                                 child: Image.asset(
-                                  'images/switch_icon.png',
+                                  'images/switch_icon_left.png',
                                   scale: 2,
                                 )
 
@@ -1184,13 +1208,4 @@ class ClientSettingPage extends StatelessWidget {
     );
   }
 
-  Widget _customDropDownAddress(
-      BuildContext context, _addressFilteredName, String itemDesignation) {
-    return Container(
-        child: Text(_addressFilteredName.toString(),
-            style: TextStyle(
-              fontSize: 10,
-              color: Colors.green,
-            )));
-  }
 }

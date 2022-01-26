@@ -1,10 +1,5 @@
-// import 'package:advertisers/advertiser_list_page/advertise_list_controller.dart';
-// import 'package:advertisers/advertiser_list_page/advertiser_list_item.dart';
-// import 'package:advertisers/blocked_users_page/blocked_users_page.dart';
-// import 'package:advertisers/client_list_page/client_list_item.dart';
-// import 'package:advertisers/client_setting_page/client_switch_controller.dart';
-import 'package:advertisers/features/blocked_users_page/blocked_users_page.dart';
-import 'package:advertisers/features/client_setting_page/client_switch_controller.dart';
+import 'package:advertisers/features/advertiser_settings_page/controller/AdvertiserSettingPageController.dart';
+import 'package:advertisers/features/client_setting_page/client_setting_page_controller.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 // import 'package:advertisers/home_page/app_colors.dart';
 // import 'package:advertisers/home_page/controller/home_navigation_controller.dart';
@@ -22,7 +17,7 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class AdvertiserSettingsPage extends StatelessWidget {
    AdvertiserSettingsPage({Key? key}) : super(key: key);
-   var controller = Get.put(ClientSwitchController(), permanent: false);
+   var controller = Get.put(AdvertiserSettingPageController(), permanent: false);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -237,7 +232,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                         // height: 70,
                           margin: EdgeInsets.only(bottom: 6.0),
                           child: Image.asset(
-                            'images/switch_icon.png',
+                            'images/switch_icon_left.png',
                             scale: 2,
                           )
 
@@ -508,76 +503,81 @@ class AdvertiserSettingsPage extends StatelessWidget {
               endIndent: 20.0,
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Flexible(
-                  child: Container(
-                      //height: 42,
+          InkWell(
+            onTap: (){
+              controller.showBottomSheet(context,1);
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: Container(
+                        //height: 42,
 
-                     // width: 110,
-                    padding: EdgeInsets.only(bottom: 12.0),
-                      child: Text(
-                        "اختر النشاطات التى ترغب للاعلان عنها",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16.0,
-                            color: AppColors.tabColor,
-                        ),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      )),
-                ),
-                Row(
-                  children: [
-                    Container(
-                        padding: EdgeInsets.only(
-                            //top: 4.0,
-                            right: 8.0
-                                ,bottom: 8.0
-                        ),
-                        child: SvgPicture.asset(
-                          'images/notice_icon.svg',
-                          width: 26.0,
-                          height: 26.0,
-                          fit: BoxFit.fill,
-                          color: AppColors.bottomSheetTabColorRounded,
-                        ),
-                        decoration: BoxDecoration(
-                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
-                          borderRadius: BorderRadius.circular(8.0),
-                          /*image: DecorationImage(
-                                                  image: AssetImage("images/image1.jpg"),
-                                                  fit: BoxFit.cover,
-                                                )*/
+                       // width: 110,
+                      padding: EdgeInsets.only(bottom: 12.0),
+                        child: Text(
+                          "اختر النشاطات التى ترغب للاعلان عنها",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16.0,
+                              color: AppColors.tabColor,
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         )),
-                    Container(
-                        padding: EdgeInsets.only(
-                            //top: 4.0,
-                            right: 8.0
-                        ),
-                        child: SvgPicture.asset(
-                          'images/list_item.svg',
-                          width: 40.0,
-                          height: 40.0,
-                          fit: BoxFit.fill,
-                          //color: AppColors.bottomSheetTabColorRounded,
-                        ),
-                        decoration: BoxDecoration(
-                          //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
-                          borderRadius: BorderRadius.circular(8.0),
-                          /*image: DecorationImage(
-                                              image: AssetImage("images/image1.jpg"),
-                                              fit: BoxFit.cover,
-                                            )*/
-                        )),
-                  ],
-                ),
-              ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                          padding: EdgeInsets.only(
+                              //top: 4.0,
+                              right: 8.0
+                                  ,bottom: 8.0
+                          ),
+                          child: SvgPicture.asset(
+                            'images/notice_icon.svg',
+                            width: 26.0,
+                            height: 26.0,
+                            fit: BoxFit.fill,
+                            color: AppColors.bottomSheetTabColorRounded,
+                          ),
+                          decoration: BoxDecoration(
+                            //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                            borderRadius: BorderRadius.circular(8.0),
+                            /*image: DecorationImage(
+                                                    image: AssetImage("images/image1.jpg"),
+                                                    fit: BoxFit.cover,
+                                                  )*/
+                          )),
+                      Container(
+                          padding: EdgeInsets.only(
+                              //top: 4.0,
+                              right: 8.0
+                          ),
+                          child: SvgPicture.asset(
+                            'images/list_item.svg',
+                            width: 40.0,
+                            height: 40.0,
+                            fit: BoxFit.fill,
+                            //color: AppColors.bottomSheetTabColorRounded,
+                          ),
+                          decoration: BoxDecoration(
+                            //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                            borderRadius: BorderRadius.circular(8.0),
+                            /*image: DecorationImage(
+                                                image: AssetImage("images/image1.jpg"),
+                                                fit: BoxFit.cover,
+                                              )*/
+                          )),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           Container(

@@ -22,7 +22,7 @@ class Country {
     this.areas
   });
   String itemAsStringByName() {
-    return this.name!;
+    return this.name!=null?this.name!:"";
   }
   factory Country.fromJson(Map<String, dynamic> json) => _$CountryFromJson(json);
 

@@ -1,5 +1,3 @@
-import 'package:advertisers/shared/network/models/CreateSubscriptionModel.dart';
-//import 'package:advertisers/shared/network/models/User.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'CreateSubscriptionResponse.g.dart';
@@ -8,8 +6,8 @@ part 'CreateSubscriptionResponse.g.dart';
 class CreateSubscriptionResponse {
   int? status;
   String? message;
-  CreateSubscriptionModel? data;
-
+  //CreateSubscriptionModel? data;
+  dynamic data;
 
   CreateSubscriptionResponse({
     this.status,

@@ -388,12 +388,12 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
               children: const [
                 Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text('- تغطية افتتاح الفرع الثالث من فروعنا'),
+                  child: Text('- تغطية افتتاح الفرع الثالث من فروعنا',style: TextStyle(color: Color(0xff041D67)),),
                 ),
                 Padding(
                   padding: EdgeInsets.all(8.0),
                   child:
-                      Text('- بمناسبة هذا الافتتاح سنمنح عرض 25% لمة 3 أيام'),
+                      Text('- بمناسبة هذا الافتتاح سنمنح عرض 25% لمة 3 أيام',style: TextStyle(color: Color(0xff041D67)),),
                 ),
               ],
             ),

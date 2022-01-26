@@ -1,10 +1,14 @@
+import 'package:advertisers/app_core/network/models/BlockedUserModel.dart';
+import 'package:advertisers/features/blocked_users_page/blocked_users_controller.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AdvertiseBlockedUserItem extends StatelessWidget {
-  const AdvertiseBlockedUserItem({Key? key}) : super(key: key);
+   AdvertiseBlockedUserItem({Key? key,required this.blockedUserModel,required this.blockedUsersController}) : super(key: key);
+   BlockedUserModel blockedUserModel;
+   BlockedUsersController blockedUsersController;
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +33,13 @@ class AdvertiseBlockedUserItem extends StatelessWidget {
                       margin: EdgeInsets.only(right: 6.0,left: 6.0),
                       decoration: new BoxDecoration(
                         shape: BoxShape.circle,
-                        image: new DecorationImage(
+                        image:  blockedUserModel.image!=null && blockedUserModel.image!.isNotEmpty?DecorationImage(
                           fit: BoxFit.cover,
-                          image: new AssetImage(
+                          image:  NetworkImage(
+                              blockedUserModel.image!),
+                        ):DecorationImage(
+                          fit: BoxFit.cover,
+                          image:  AssetImage(
                               'images/image1.jpg'),
                         ),
                         boxShadow: [ // so here your custom shadow goes:
@@ -50,7 +58,7 @@ class AdvertiseBlockedUserItem extends StatelessWidget {
                       child: Container(
                         margin: EdgeInsets.only(right: 6.0),
                         child: Text(
-                          ' حمدى الفريدى',
+                          blockedUserModel.username??'',
                           style: TextStyle(color: AppColors.advertiseNameColor,fontSize: 24.0.sp,fontFamily: 'DecoType-Regular',fontWeight: FontWeight.w400),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -79,11 +87,16 @@ class AdvertiseBlockedUserItem extends StatelessWidget {
                     ),
                     Container(
                       padding: EdgeInsets.only(left: 8.0,right: 8.0,bottom: 4.0),
-                      child: Image.asset(
-                        'images/icon_eye_off.png',
-                        fit: BoxFit.fill,
-                        height: 25.0,
-                        width: 25.0,
+                      child: InkWell(
+                        onTap: (){
+                          blockedUsersController.removeBlockedUser(blockedUserModel.id!);
+                        },
+                        child: Image.asset(
+                          'images/icon_eye_off.png',
+                          fit: BoxFit.fill,
+                          height: 25.0,
+                          width: 25.0,
+                        ),
                       ),
                     ),
                     Container(
