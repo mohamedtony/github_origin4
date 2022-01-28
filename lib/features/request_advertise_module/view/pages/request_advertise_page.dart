@@ -1,4 +1,5 @@
 import 'package:advertisers/features/client_setting_page/client_setting_page.dart';
+import 'package:advertisers/features/find_advertise_page/find_advertise_page.dart';
 import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/advertising_channels_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/attatchements_sheet.dart';
@@ -524,59 +525,74 @@ class RequestAdvertisePage extends StatelessWidget {
                 ),
               ],
             ),
-            Container(
-              width: 250.0,
-              height: 44.0,
-              margin: EdgeInsets.only(top: 30.0, bottom: 60.0),
-              child: Material(
-                  elevation: 6.0,
-                  shadowColor: Colors.grey[200],
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(22),
-                    bottomLeft: Radius.circular(22),
-                  ),
-                  child: Container(
-                    child: Row(
-                      //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 20.0),
-                          child: Image.asset(
-                            'images/advertising_icon.png',
-                            fit: BoxFit.fill,
-                            height: 24.0,
-                            width: 30.0,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                              left: 16.0, bottom: 4.0, right: 40),
-                          child: Text(
-                            'findAdvertiser'.tr,
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                color: AppColors.searchAdsColor,
-                                fontWeight: FontWeight.w400),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
+            InkWell(
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FindAdvertisePage(
+                      onSheetClicked: (x){
+                        //  print('tony:sheetClicked');
+                        this.onSheetClicked!(x);
+                      },
                     ),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          AppColors.beginSearchAds,
-                          AppColors.endSearchAds
+                  ),
+                );
+              },
+              child: Container(
+                width: 250.0,
+                height: 44.0,
+                margin: EdgeInsets.only(top: 30.0, bottom: 60.0),
+                child: Material(
+                    elevation: 6.0,
+                    shadowColor: Colors.grey[200],
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(22),
+                      bottomLeft: Radius.circular(22),
+                    ),
+                    child: Container(
+                      child: Row(
+                        //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(right: 20.0),
+                            child: Image.asset(
+                              'images/advertising_icon.png',
+                              fit: BoxFit.fill,
+                              height: 24.0,
+                              width: 30.0,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(
+                                left: 16.0, bottom: 4.0, right: 40),
+                            child: Text(
+                              'findAdvertiser'.tr,
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: AppColors.searchAdsColor,
+                                  fontWeight: FontWeight.w400),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         ],
                       ),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(22),
-                        bottomLeft: Radius.circular(22),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            AppColors.beginSearchAds,
+                            AppColors.endSearchAds
+                          ],
+                        ),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(22),
+                          bottomLeft: Radius.circular(22),
+                        ),
                       ),
-                    ),
-                  )),
+                    )),
+              ),
             ),
           ],
         ),

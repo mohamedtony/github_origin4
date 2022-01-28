@@ -219,7 +219,7 @@ class Home extends StatelessWidget {
                 HomePage(
                   onSheetClicke: (x){
                     print('tonyClicked:$x');
-                    showM(context,x);
+                    showBottomSheetForRequest(context,x);
                   },
                 ),
                 FavoritePage(),
@@ -231,7 +231,7 @@ class Home extends StatelessWidget {
       ),
     );
   }
-    void showM(BuildContext context,int bottomNumber){
+    void showBottomSheetForRequest(BuildContext context,int bottomNumber){
       showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -246,7 +246,7 @@ class Home extends StatelessWidget {
             //maxChildSize: 0.8,
             //minChildSize: 100.0,
 
-            initialChildSize: 0.67,
+            initialChildSize: bottomNumber==6?0.84:0.67,
             expand: false,
             builder: (context, scrollController) {
               if(bottomNumber==2) {
