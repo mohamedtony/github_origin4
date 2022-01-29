@@ -9,8 +9,11 @@ import 'package:get/get.dart';
 
 class DiscountCouponSheet extends StatelessWidget {
   ScrollController? scrollController;
-  DiscountCouponSheet({Key? key,this.scrollController}) : super(key: key);
-  final AttatchementPageController controller = Get.put(AttatchementPageController());
+
+  DiscountCouponSheet({Key? key, this.scrollController}) : super(key: key);
+  final AttatchementPageController controller =
+      Get.put(AttatchementPageController());
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,9 +36,12 @@ class DiscountCouponSheet extends StatelessWidget {
                       width: 140.0,
                       //padding: EdgeInsets.all(8.0),
                       margin: EdgeInsets.only(right: 8.0),
-                      child: Text('discountCoupon'.tr,style: TextStyle(color: Colors.white),textAlign: TextAlign.center,),
+                      child: Text(
+                        'discountCoupon'.tr,
+                        style: TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
                       decoration: BoxDecoration(
-
                           borderRadius: BorderRadius.circular(6.0),
                           color: AppColors.tabColor),
                     ),
@@ -56,15 +62,16 @@ class DiscountCouponSheet extends StatelessWidget {
                 thickness: 4.0,
               ),
               Container(
-                height: 150,
-                width: 150,
-                padding: EdgeInsets.all(40),
+               // height: 120,
+               // width: 120,
+                margin: EdgeInsets.only(bottom: 20),
                 child: Stack(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top:10,left: 5.0),
-                      width: 150.0,
-                      height: 150.0,
+                      margin: EdgeInsets.only(top: 0, left: 5.0),
+                      width: 120.0,
+                      height: 110.0,
+                      padding: EdgeInsets.all(15),
                       decoration: BoxDecoration(
                         shape: BoxShape.rectangle,
                         borderRadius: BorderRadius.circular(6.0),
@@ -73,19 +80,20 @@ class DiscountCouponSheet extends StatelessWidget {
                         elevation: 6.0,
                         shadowColor: Colors.grey[200],
                         borderRadius: BorderRadius.all(Radius.circular(8)),
-                        //borderOnForeground: true,
-                        color: AppColors.saveButtonBottomSheet,
-                        child:Container(
-                            width: 150.0,
-                            height: 150.0,
+                       borderOnForeground: true,
+                        color: AppColors.white,
+                        child: Container(
+                            width: 170.0,
+                            height: 170.0,
                             child: Image.asset(
-                              controller.images[0],
-                              width: 150.0,
-                              height: 150.0,
+                              'images/namshi_logo.jpg',
+                              width: 170.0,
+                              height: 170.0,
                               fit: BoxFit.fitHeight,
                             ),
                             decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                              border: Border.all(
+                                  color: AppColors.dividerBottom, width: 0.5),
                               borderRadius: BorderRadius.circular(8.0),
                               /*image: DecorationImage(
                                       image: AssetImage("images/image1.jpg"),
@@ -94,82 +102,485 @@ class DiscountCouponSheet extends StatelessWidget {
                             )),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        // alignment: Alignment.topLeft,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle
-                              ,color: Colors.white
+                    Positioned(
+                      left: -2,
+                      top:1,
+                      child: InkWell(
+                        onTap: (){
+                        },
+                        child:Container(
+                          margin: EdgeInsets.only(left: 10.0),
+                          child: PhysicalModel(
+                            //borderRadius: BorderRadius.circular(20),
+                            shape: BoxShape.circle,
+                            color: Colors.blue,
+                            elevation: 6,
+                            shadowColor: Colors.grey,
+                            child:  Container(
+                              width: 30,
+                              height: 30,
+                             // margin: EdgeInsets.all(4),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: Icon(
+                                    Icons.camera_alt_outlined
+                                        ,
+                                    color: Colors.white70,
+                                    size: 20.0,
+                                  )/*SvgPicture.asset(
+                                    'images/filter_edit.svg',
+                                    fit: BoxFit.fill,
+                                    //color: Colors.white,
+                                    height: 24.0,
+                                    width: 30.0,
+                                  )*/,
+                                ),)
+                              ,decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [AppColors.beginColor, AppColors.endColor],
+                              ),
+                            ),),
                           ),
-                          child: Icon(Icons.cancel_outlined,color: AppColors.bottomSheetTabColorRounded,)),
-                    )
+                        ),
+                      ),
+                    ),
+                    /*Align(
+                      alignment: Alignment.topLeft,
+                      child: *//*Container(
+                          // alignment: Alignment.topLeft,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.white),
+                          child: Icon(
+                            Icons.cancel_outlined,
+                            color: AppColors.bottomSheetTabColorRounded,
+                          ))*//*Container(
+                       // margin: EdgeInsets.only(left: 10.0,right: 10.0),
+                        alignment: Alignment.topLeft,
+                        child: Image.asset(
+                          'images/camera_icon.png',
+                          fit: BoxFit.fill,
+                          height: 40.0,
+                          width: 40.0,
+                        ),
+                      ),
+                    )*/
                   ],
                 ),
               ),
-              Obx(()=>controller.realImages.isNotEmpty?GridView.builder(
-                padding: EdgeInsets.only(right: 18.0,left: 18.0,bottom: 8.0,top: 12.0),
-                shrinkWrap: true,
-                itemCount: controller.realImages.length??0,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
-                  //childAspectRatio: 100 / 150,
-                  height: 100.0,
-                  crossAxisSpacing: 1,
-                  mainAxisSpacing: 1,
-                  crossAxisCount: 4,
+              Container(
+                height: 42,
+                margin: EdgeInsets.only(top: 10, left: 22.0, right: 22.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(6.0),
                 ),
-                itemBuilder: (context, index) =>
-
-                    Stack(
+                child: Material(
+                  elevation: 6.0,
+                  shadowColor: Colors.grey[200],
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  //borderOnForeground: true,
+                  color: AppColors.saveButtonBottomSheet,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: AppColors.addPhotoBottom, width: 0.5),
+                        borderRadius: BorderRadius.circular(12.0),
+                        color: Colors.white),
+                    child: Row(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(top:10,left: 5.0),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(6.0),
-                          ),
-                          child: Material(
-                            elevation: 6.0,
-                            shadowColor: Colors.grey[200],
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                            //borderOnForeground: true,
-                            color: AppColors.saveButtonBottomSheet,
-                            child:Container(
-                                child: Image.file(
-                                  controller.realImages[index],
-                                  width: 200.0,
-                                  height: 200.0,
-                                  fit: BoxFit.fitHeight,
+                            width: 95,
+                            margin: EdgeInsets.only(
+                                top: 2.0, bottom: 2.0, left: 10.0, right: 10.0),
+                            child: Text(
+                              "رقم الكوبون",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 16.0,color:AppColors.activitiesDropDown.withOpacity(0.73)),
+                            )),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 8.0),
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 2,
+                        ),
+                        Expanded(
+                          child: TextField(
+                            textAlign: TextAlign.start,
+                            textAlignVertical: TextAlignVertical.center,
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                  left: 10.0,
+                                  right: 10.0,
                                 ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  /*image: DecorationImage(
-                                    image: AssetImage("images/image1.jpg"),
-                                    fit: BoxFit.cover,
-                                  )*/
-                                )),
+                                // isCollapsed: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(70.0),
+                                  borderSide: BorderSide(
+                                    width: 0,
+                                    style: BorderStyle.none,
+                                  ),
+                                ),
+                                filled: true,
+                                hintStyle: TextStyle(color: Colors.grey[350]),
+                                hintText: 'رقم الكوبون',
+                                fillColor: Colors.white70),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: InkWell(
-                            onTap: (){
-                              controller.deleteImage(index);
-                            },
-                            child: Container(
-                              // alignment: Alignment.topLeft,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle
-                                    ,color: Colors.white
-                                ),
-                                child: Icon(Icons.cancel_outlined,color: AppColors.bottomSheetTabColorRounded,)),
-                          ),
-                        )
                       ],
                     ),
-
-              ):Center(child: Text('No Items')),) ,
+                  ),
+                ),
+              ),
+              Container(
+                height: 42,
+                margin: EdgeInsets.only(top: 10, left: 22.0, right: 22.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+                child: Material(
+                  elevation: 6.0,
+                  shadowColor: Colors.grey[200],
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  //borderOnForeground: true,
+                  color: AppColors.saveButtonBottomSheet,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: AppColors.addPhotoBottom, width: 0.5),
+                        borderRadius: BorderRadius.circular(12.0),
+                        color: Colors.white),
+                    child: Row(
+                      children: [
+                        Container(
+                            width: 95,
+                            margin: EdgeInsets.only(
+                                top: 2.0, bottom: 2.0, left: 10.0, right: 10.0),
+                            child: Text(
+                              "اسم الكوبون",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 16.0,color: AppColors.activitiesDropDown.withOpacity(0.73)),
+                            )),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 8.0),
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 2,
+                        ),
+                        Expanded(
+                          child: TextField(
+                            textAlign: TextAlign.start,
+                            textAlignVertical: TextAlignVertical.center,
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                  left: 10.0,
+                                  right: 10.0,
+                                ),
+                                // isCollapsed: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(70.0),
+                                  borderSide: BorderSide(
+                                    width: 0,
+                                    style: BorderStyle.none,
+                                  ),
+                                ),
+                                filled: true,
+                                hintStyle: TextStyle(color: Colors.grey[350]),
+                                hintText: 'اسم الكوبون',
+                                fillColor: Colors.white70),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                height: 42,
+                margin: EdgeInsets.only(top: 10, left: 22.0, right: 22.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+                child: Material(
+                  elevation: 6.0,
+                  shadowColor: Colors.grey[200],
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  //borderOnForeground: true,
+                  color: AppColors.saveButtonBottomSheet,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: AppColors.addPhotoBottom, width: 0.5),
+                        borderRadius: BorderRadius.circular(12.0),
+                        color: Colors.white),
+                    child: Row(
+                      children: [
+                        Container(
+                            width: 95,
+                            margin: EdgeInsets.only(
+                                top: 2.0, bottom: 2.0, left: 10.0, right: 10.0),
+                            child: Text(
+                              "نسبة الخصم",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 16.0,color: AppColors.activitiesDropDown.withOpacity(0.73)),
+                            )),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 8.0),
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 2,
+                        ),
+                        Expanded(
+                          child: TextField(
+                            textAlign: TextAlign.start,
+                            textAlignVertical: TextAlignVertical.center,
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                  left: 10.0,
+                                  right: 10.0,
+                                ),
+                                // isCollapsed: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(70.0),
+                                  borderSide: BorderSide(
+                                    width: 0,
+                                    style: BorderStyle.none,
+                                  ),
+                                ),
+                                filled: true,
+                                hintStyle: TextStyle(color: Colors.grey[350]),
+                                hintText: 'نسبة الخصم',
+                                fillColor: Colors.white70),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                height: 42,
+                margin: EdgeInsets.only(top: 10, left: 22.0, right: 22.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+                child: Material(
+                  elevation: 6.0,
+                  shadowColor: Colors.grey[200],
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  //borderOnForeground: true,
+                  color: AppColors.saveButtonBottomSheet,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: AppColors.addPhotoBottom, width: 0.5),
+                        borderRadius: BorderRadius.circular(12.0),
+                        color: Colors.white),
+                    child: Row(
+                      children: [
+                        Container(
+                            width: 95,
+                            margin: EdgeInsets.only(
+                                top: 2.0, bottom: 2.0, left: 10.0, right: 10.0),
+                            child: Text(
+                              "عدد الاستخدام",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 16.0,color: AppColors.activitiesDropDown.withOpacity(0.73)),
+                            )),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 8.0),
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 2,
+                        ),
+                        Expanded(
+                          child: TextField(
+                            textAlign: TextAlign.start,
+                            textAlignVertical: TextAlignVertical.center,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                  left: 10.0,
+                                  right: 10.0,
+                                ),
+                                // isCollapsed: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(70.0),
+                                  borderSide: BorderSide(
+                                    width: 0,
+                                    style: BorderStyle.none,
+                                  ),
+                                ),
+                                filled: true,
+                                hintStyle: TextStyle(color: Colors.grey[350]),
+                                hintText: 'عدد الاستخدام',
+                                fillColor: Colors.white70),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                height: 42,
+                margin: EdgeInsets.only(top: 10, left: 22.0, right: 22.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+                child: Material(
+                  elevation: 6.0,
+                  shadowColor: Colors.grey[200],
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  //borderOnForeground: true,
+                  color: AppColors.saveButtonBottomSheet,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: AppColors.addPhotoBottom, width: 0.5),
+                        borderRadius: BorderRadius.circular(12.0),
+                        color: Colors.white),
+                    child: Row(
+                      children: [
+                        Container(
+                            width: 95,
+                            margin: EdgeInsets.only(
+                                top: 2.0, bottom: 2.0, left: 10.0, right: 10.0),
+                            child: Text(
+                              "رابط المتجر",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 16.0,color: AppColors.activitiesDropDown.withOpacity(0.73)),
+                            )),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 8.0),
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 2,
+                        ),
+                        Expanded(
+                          child: TextField(
+                            textAlign: TextAlign.start,
+                            textAlignVertical: TextAlignVertical.center,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                  left: 10.0,
+                                  right: 10.0,
+                                ),
+                                // isCollapsed: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(70.0),
+                                  borderSide: BorderSide(
+                                    width: 0,
+                                    style: BorderStyle.none,
+                                  ),
+                                ),
+                                filled: true,
+                                hintStyle: TextStyle(color: Colors.grey[350]),
+                                hintText: 'رابط المتجر',
+                                fillColor: Colors.white70),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 8.0),
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 2,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 10.0,right: 10.0),
+                          child: SvgPicture.asset(
+                            'images/link_line_icon.svg',
+                            fit: BoxFit.fill,
+                            height: 18.0,
+                            width: 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                height: 42,
+                margin: EdgeInsets.only(top: 10, left: 22.0, right: 22.0,bottom: 30),
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+                child: Material(
+                  elevation: 6.0,
+                  shadowColor: Colors.grey[200],
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  //borderOnForeground: true,
+                  color: AppColors.saveButtonBottomSheet,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: AppColors.addPhotoBottom, width: 0.5),
+                        borderRadius: BorderRadius.circular(12.0),
+                        color: Colors.white),
+                    child: Row(
+                      children: [
+                        Container(
+                            width: 95,
+                            margin: EdgeInsets.only(
+                                top: 2.0, bottom: 2.0, left: 10.0, right: 10.0),
+                            child: Text(
+                              "تاريخ الانتهاء",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 16.0,color: AppColors.activitiesDropDown.withOpacity(0.73)),
+                            )),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 8.0),
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 2,
+                        ),
+                        Expanded(
+                          child: TextField(
+                            textAlign: TextAlign.start,
+                            textAlignVertical: TextAlignVertical.center,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                  left: 10.0,
+                                  right: 10.0,
+                                ),
+                                // isCollapsed: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(70.0),
+                                  borderSide: BorderSide(
+                                    width: 0,
+                                    style: BorderStyle.none,
+                                  ),
+                                ),
+                                filled: true,
+                                hintStyle: TextStyle(color: Colors.grey[350]),
+                                hintText: 'تاريخ الانتهاء',
+                                fillColor: Colors.white70),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 8.0),
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 2,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 10.0,right: 10.0),
+                          child: Image.asset(
+                            'images/calender_icon.png',
+                            fit: BoxFit.fill,
+                            height: 18.0,
+                            width: 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -194,7 +605,6 @@ class DiscountCouponSheet extends StatelessWidget {
                               fontWeight: FontWeight.w700),
                           textAlign: TextAlign.center,
                         ),
-
                       ),
                     ),
                   ),
@@ -219,13 +629,13 @@ class DiscountCouponSheet extends StatelessWidget {
                               fontWeight: FontWeight.w300),
                           textAlign: TextAlign.center,
                         ),
-
                       ),
                     ),
                   ),
                 ],
               )
-            ],),
+            ],
+          ),
         ],
       ),
     );

@@ -735,7 +735,8 @@ class ClientSettingPage extends StatelessWidget {
                                           /*border: UnderlineInputBorder(
                                         borderSide: BorderSide(color: AppColors.focusedBorder),)*/
                                         ),
-                                        initialSelection: 'sa',
+                                        initialSelection: controller.countryCode.value??'sa',
+
                                         onChanged: (countryCodeVal) {
                                           controller.countryCode.value =
                                               countryCodeVal.code!;
