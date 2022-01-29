@@ -1,5 +1,6 @@
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/responses/GetStopProfileResponse.dart';
+import 'package:advertisers/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -42,10 +43,11 @@ class AdvertiserAccountStatusController extends GetxController {
   GlobalKey<FormState> searchFormKey = GlobalKey<FormState>();
   late TextEditingController searchController;
   var search = '';
-
+  late String token;
   @override
   void onInit() {
     repo = Repository();
+    token =storage.read("token");
     messageController=TextEditingController();
     caseController=TextEditingController();
     // passIndex;
@@ -79,7 +81,7 @@ class AdvertiserAccountStatusController extends GetxController {
   repo.get<GetStopProfileResponse>(
       path: 'profile/stop',
       fromJson: (json) => GetStopProfileResponse.fromJson(json),
-      json: {"token": "Bearer  156|EQUdZIpAmMfekHG0ZO1GQpkAdCtglYF9xj8vNo36"},
+      json: {"token": "Bearer  $token"},
       onSuccess: (res) {
         if (EasyLoading.isShow) {
           EasyLoading.dismiss();
@@ -114,7 +116,7 @@ class AdvertiserAccountStatusController extends GetxController {
     repo.postWithImageMultipart<GetStopProfileResponse>(
         path: 'profile/stop',
         fromJson: (json) => GetStopProfileResponse.fromJson(json),
-        json: {"token": "Bearer  156|EQUdZIpAmMfekHG0ZO1GQpkAdCtglYF9xj8vNo36",
+        json: {"token": "Bearer  $token",
         "stop_account":"1" ,
           "stop_reason_id":"1",
           "stop_from":from.value,

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="19.984" height="19.984" viewBox="0 0 19.984 19.984">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#48dbe1"/>
+      <stop offset="1" stop-color="#4166cd"/>
+      <stop offset="1" stop-color="#236b73"/>
+    </linearGradient>
+  </defs>
+  <path id="android-locate" d="M11.742,8.352a3.39,3.39,0,1,0,3.39,3.39A3.4,3.4,0,0,0,11.742,8.352Zm8.091,2.486a8.167,8.167,0,0,0-7.187-7.187V2.25H10.838v1.4a8.166,8.166,0,0,0-7.187,7.187H2.25v1.808h1.4a8.166,8.166,0,0,0,7.187,7.187v1.4h1.808v-1.4a8.166,8.166,0,0,0,7.187-7.187h1.4V10.838ZM11.742,18.07a6.328,6.328,0,1,1,6.328-6.328A6.347,6.347,0,0,1,11.742,18.07Z" transform="translate(-1.75 -1.75)" stroke="rgba(0,0,0,0)" stroke-width="1" fill="url(#linear-gradient)"/>
+</svg>

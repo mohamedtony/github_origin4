@@ -3,6 +3,7 @@ import 'package:advertisers/app_core/network/models/SettingAdvertiserModel.dart'
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/responses/GetAdvancedOptionsResponse.dart';
 import 'package:advertisers/app_core/network/responses/SettingsAdvertiserProfileResponse.dart';
+import 'package:advertisers/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -50,9 +51,10 @@ var advancedOptionsData=[].obs;
   GlobalKey<FormState> searchFormKey=GlobalKey<FormState>();
   late TextEditingController searchController;
   var search='';
-
+  late String token;
   @override
   void onInit() {
+    token =storage.read("token");
     repo=Repository();
     // passIndex;
     getSettings();
@@ -85,7 +87,7 @@ var advancedOptionsData=[].obs;
     repo.get<SettingsAdvertiserProfileResponse>(
         path: 'profile/settings',
         fromJson: (json) => SettingsAdvertiserProfileResponse.fromJson(json),
-        json: {"token": "Bearer  156|EQUdZIpAmMfekHG0ZO1GQpkAdCtglYF9xj8vNo36"},
+        json: {"token": "Bearer  $token"},
         onSuccess: (res) {
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
@@ -111,7 +113,7 @@ var advancedOptionsData=[].obs;
 
   Map<String,dynamic>map=Map.fromIterable(allListRequest.value, key: (e) => e.key, value: (e) => e.value);
   print(map);
-  map.assign("token", "Bearer  156|EQUdZIpAmMfekHG0ZO1GQpkAdCtglYF9xj8vNo36");
+  map.assign("token", "Bearer  $token");
   repo.postWithImageMultipart<SettingsAdvertiserProfileResponse>(
       path: 'profile/settings',
       fromJson: (json) => SettingsAdvertiserProfileResponse.fromJson(json),

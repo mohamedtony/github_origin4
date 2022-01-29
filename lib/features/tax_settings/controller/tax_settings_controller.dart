@@ -1,6 +1,7 @@
 import 'package:advertisers/app_core/network/models/TaxSettingsModel.dart';
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/responses/TaxSettingsResponse.dart';
+import 'package:advertisers/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -38,9 +39,10 @@ class TaxSettingsController extends GetxController{
   GlobalKey<FormState> searchFormKey=GlobalKey<FormState>();
   late TextEditingController searchController;
   var search='';
-
+  late String token;
   @override
   void onInit() {
+    token =storage.read("token");
     // passIndex;
     repo=Repository();
     getTaxSettings();
@@ -74,7 +76,7 @@ class TaxSettingsController extends GetxController{
      repo.get<TaxSettingsResponse>(
          path: 'profile/taxs',
          fromJson: (json) => TaxSettingsResponse.fromJson(json),
-         json: {"token":"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd"},
+         json: {"token":"Bearer  $token"},
          onSuccess: (res) {
            if (EasyLoading.isShow) {
              EasyLoading.dismiss();
@@ -106,7 +108,7 @@ class TaxSettingsController extends GetxController{
      repo.postWithImageMultipart<TaxSettingsResponse>(
          path: 'profile/taxs',
          fromJson: (json) => TaxSettingsResponse.fromJson(json),
-         json: {"token":"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd",
+         json: {"token":"Bearer  $token",
            "tax_enable":isChecked,
             "tax_number": taxNumberController.text
          },

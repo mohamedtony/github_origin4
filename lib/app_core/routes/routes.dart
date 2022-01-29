@@ -283,5 +283,6 @@ class Routes {
   Get.lazyPut<ClientSettingPageController>(() => ClientSettingPageController());
   }),
     ),
+
   ];
 }

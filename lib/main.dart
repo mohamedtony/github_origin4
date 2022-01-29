@@ -88,7 +88,7 @@ class _MyAppState extends State<MyApp> {
     // var locale=const Locale('ar', 'EG');
     // Get.updateLocale(locale);
     storage=GetStorage();
-
+   // storage.write("token","156|EQUdZIpAmMfekHG0ZO1GQpkAdCtglYF9xj8vNo36");
     super.initState();
 
   }
@@ -108,7 +108,7 @@ class _MyAppState extends State<MyApp> {
          // fallbackLocale: LocalizationService.locale,
           builder: EasyLoading.init(),
           translations: LocalizationService(),
-          initialRoute: '/',
+          initialRoute: '/RequestAdvertisePage',
           getPages: Routes.routes,
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',
