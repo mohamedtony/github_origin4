@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +14,8 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 
 //final logger = Logger();
 String token='';
@@ -102,8 +105,23 @@ class _MyAppState extends State<MyApp> {
       //this line belongs to ali don't touch just commit it if you want
         designSize: const Size(375, 812),
         builder:()=>GetMaterialApp(
+
+          localizationsDelegates: const [
+            // THIS CLASS WILL BE ADDED LATER
+            // A class which loads the translations from JSON files
+            // Built-in localization of basic text for Material widgets
+            GlobalMaterialLocalizations.delegate,
+            // Built-in localization for text direction LTR/RTL
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            DefaultCupertinoLocalizations.delegate
+          ],
+          supportedLocales: const [
+             Locale('ar'),
+          ],
           debugShowCheckedModeBanner: false,
-          locale: LocalizationService.locale,
+          locale: const Locale('ar'),
+          // locale: LocalizationService.locale,
           fallbackLocale: LocalizationService.fallbackLocale,
          // fallbackLocale: LocalizationService.locale,
           builder: EasyLoading.init(),
@@ -116,3 +134,9 @@ class _MyAppState extends State<MyApp> {
         ));
   }
 }
+
+// advertising_channels_sheet.dart
+// attatchements_sheet.dart
+// discount_coupon_sheet.dart
+// notice_sheet.dart
+// urls_bottom_sheet.dart

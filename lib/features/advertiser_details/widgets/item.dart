@@ -1,11 +1,15 @@
+import 'package:advertisers/features/advertiser_details/sheets/advertising_channels_sheet.dart';
+import 'package:advertisers/features/advertiser_details/sheets/advertising_desc_sheet.dart';
+import 'package:advertisers/features/advertiser_details/sheets/notice_sheet.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Item extends StatelessWidget {
+  final VoidCallback onTap;
   final String title;
   final Widget child;
-  const Item({Key? key, required this.title, required this.child})
+  const Item({Key? key, required this.title, required this.child,required this.onTap})
       : super(key: key);
 
   @override
@@ -44,37 +48,51 @@ class Item extends StatelessWidget {
                     ),
                   ),
                 ),
-                ClipRRect(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(7),
-                  ),
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 80.w,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 5,
+                InkWell(
+                  onTap: onTap
+                  //     (){
+                  //   showModalBottomSheet(
+                  //       context: context,
+                  //       isScrollControlled: true,
+                  //       builder: (builder){
+                  //         return AdvertisingNoticsPage();
+                  //       }
+                  //   );
+                  //
+                  // }
+                  ,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(7),
                     ),
-                    decoration: BoxDecoration(
-                      // color: const Color(0xffE8E8E8),
-                      color: Color(0xfff5f5f5),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(7),
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: 80.w,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 5,
                       ),
-                      border: Border.all(color: Colors.blue),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset:
-                              const Offset(0, 5), // changes position of shadow
+                      decoration: BoxDecoration(
+                        // color: const Color(0xffE8E8E8),
+                        color: Color(0xfff5f5f5),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(7),
                         ),
-                      ],
-                    ),
-                    child: Text(
-                      'تعديل',
-                      style: TextStyle(fontSize: 14.sp,color: Color(0xff041D67)),
+                        border: Border.all(color: Colors.blue),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset:
+                                const Offset(0, 5), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        'تعديل',
+                        style: TextStyle(fontSize: 14.sp,color: Color(0xff041D67)),
+                      ),
                     ),
                   ),
                 ),
