@@ -60,6 +60,7 @@ class AdvertiserSettingPageController extends GetxController  {
   @override
   Future<void> onInit() async {
     // TODO: implement onInit
+
     kayanNameController = TextEditingController();
     accountNameEdit= TextEditingController();
     accountOwner= TextEditingController();

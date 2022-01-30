@@ -2,10 +2,12 @@ import 'package:advertisers/features/advertiser_settings_page/widgets/activities
 import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
 import 'package:advertisers/features/home_page/controller/home_navigation_controller.dart';
 import 'package:advertisers/features/home_page/model/SelectedSocialMedia.dart';
+import 'package:advertisers/features/request_advertise_module/view/widgets/address_bottom_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/advertising_channels_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/attatchements_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/discount_coupon_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/notice_sheet.dart';
+import 'package:advertisers/features/request_advertise_module/view/widgets/send_request_success.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/urls_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -98,6 +100,13 @@ class RequestAdvertiseController extends GetxController {
                   scrollController: scrollController);
             }else if(bottomNumber==4){
               return UrlsPage(
+                  scrollController: scrollController);
+            }else if(bottomNumber==20){
+              return AddressBottomSheet(
+                  scrollController: scrollController);
+            }
+            else if(bottomNumber==21){
+              return SendRequestSuccess(
                   scrollController: scrollController);
             }else if(bottomNumber==5){
               return NoticeSheet(

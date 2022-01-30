@@ -1,6 +1,7 @@
 import 'package:advertisers/features/client_setting_page/client_setting_page.dart';
 import 'package:advertisers/features/find_advertise_page/find_advertise_page.dart';
 import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
+import 'package:advertisers/features/request_advertise_module/view/widgets/address_bottom_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/advertising_channels_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/attatchements_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/urls_bottom_sheet.dart';
@@ -364,45 +365,62 @@ class RequestAdvertisePage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  width: 165,
-                  height: 50,
-                  margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 16.0),
-                  child: Material(
-                    elevation: 6.0,
-                    shadowColor: Colors.grey[200],
-                    borderRadius: BorderRadius.all(Radius.circular(18)),
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 24.0),
-                          child: SvgPicture.asset(
-                            'images/location_icon.svg',
-                            fit: BoxFit.fill,
-                            height: 24.0,
-                            width: 15.0,
+                InkWell(
+                  onTap:(){
+                    requestAdvertiseController.showMyBottomSheet(context,20);
+                    // onSheetClicked!(20);
+    },
+                  child: Container(
+                    width: 165,
+                    height: 50,
+                    margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 16.0),
+                    child: Material(
+                      elevation: 6.0,
+                      shadowColor: Colors.grey[200],
+                      borderRadius: BorderRadius.all(Radius.circular(18)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Row(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(right: 24.0),
+                                    child: SvgPicture.asset(
+                                      'images/location_icon.svg',
+                                      fit: BoxFit.fill,
+                                      height: 24.0,
+                                      width: 15.0,
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        left: 12.0, bottom: 4.0, right: 20),
+                                    child: Text(
+                                      'adTitle'.tr,
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          color: AppColors.adVertiserPageDataColor,
+                                          fontWeight: FontWeight.w300),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(
-                              left: 12.0, bottom: 4.0, right: 20),
-                          child: Text(
-                            'adTitle'.tr,
-                            style: TextStyle(
-                                fontSize: 16.0,
-                                color: AppColors.adVertiserPageDataColor,
-                                fontWeight: FontWeight.w300),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
                 InkWell(
                   onTap: (){
                     //requestAdvertiseController.showMyBottomSheet(context,6);
-                    onSheetClicked!(6);
+                   // onSheetClicked!(6);
+                    requestAdvertiseController.showMyBottomSheet(context,21);
                   },
                   child: Container(
                     width: 165,
@@ -448,7 +466,7 @@ class RequestAdvertisePage extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: (){
-                    //requestAdvertiseController.showMyBottomSheet(context,5);
+                   // requestAdvertiseController.showMyBottomSheet(context,5);
                     onSheetClicked!(5);
                   },
                   child: Container(
@@ -624,6 +642,9 @@ class RequestAdvertisePage extends StatelessWidget {
                   scrollController: scrollController);
             }else if(bottomNumber==3){
               return AttatchementPage(
+                  scrollController: scrollController);
+            }else if(bottomNumber==13){
+              return AddressBottomSheet(
                   scrollController: scrollController);
             }else {
               return UrlsPage(

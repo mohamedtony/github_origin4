@@ -11,13 +11,13 @@ class AdvertisersButton extends StatelessWidget {
   late final String text;
   late final Color? backgroundColor,textColor;
   late final void Function()? onPressed;
-  late final double? width;
-  AdvertisersButton({this.width,this.textColor,this.backgroundColor,required this.text,required this.onPressed,Key? key}) : super(key: key);
+  late final double? width,height;
+  AdvertisersButton({this.height,this.width,this.textColor,this.backgroundColor,required this.text,required this.onPressed,Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return  Container(
-      height: 47.h,
+      height: height??47.h,
       margin: EdgeInsets.symmetric(vertical: 0,horizontal: 0),
       padding: EdgeInsets.symmetric(vertical: 0,horizontal: 0),
       width:width ==null?237.w:width,
@@ -36,7 +36,7 @@ class AdvertisersButton extends StatelessWidget {
         //gradient: LinearGradient(begin:Alignment.topCenter ,end:Alignment.bottomCenter , colors:const [AppColors.firstBrownColor,AppColors.secondBrownColor])
       ),
 
-      child: TextButton(onPressed:onPressed, child: Text( text,style: TextStyle(fontSize: 15.sp,fontFamily: 'Arabic-Regular'),),style: ButtonStyle(
+      child: TextButton(onPressed:onPressed, child: Text( text,textAlign: TextAlign.center,style: TextStyle(fontSize: 15.sp,fontFamily: 'Arabic-Regular'),),style: ButtonStyle(
           foregroundColor:MaterialStateProperty.all(textColor==null?AppColors.whiteColor:AppColors.verifyTextColor),
           shape:MaterialStateProperty.all(const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10),
           ))) ),),

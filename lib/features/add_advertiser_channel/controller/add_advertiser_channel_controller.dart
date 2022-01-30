@@ -34,8 +34,10 @@ class AddAdvertiserChannelController extends GetxController {
   var selectedGirlsPercentage = '0'.obs;
   var areas=<Area>[].obs;
   var countries=<Country>[].obs;
+  late String token;
  @override
  void onInit() {
+   token =storage.read("token");
    accountNameController=TextEditingController();
    linkController=TextEditingController();
    //getChannelsAreas();
@@ -97,7 +99,7 @@ class AddAdvertiserChannelController extends GetxController {
       repo.get<ChannelsAndAreasResponse>(
           path: 'profile/channels/form',
           fromJson: (json) => ChannelsAndAreasResponse.fromJson(json),
-          json: {"token":"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd"},
+          json: {"token":"Bearer  $token"},
           onSuccess: (res) {
             if (EasyLoading.isShow) {
               EasyLoading.dismiss();
@@ -127,7 +129,7 @@ class AddAdvertiserChannelController extends GetxController {
     repo.postWithImageMultipart<ChannelsResponse>(
         path: 'profile/channels/add',
         fromJson: (json) => ChannelsResponse.fromJson(json),
-        json: {"token":"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd",
+        json: {"token":"Bearer  $token",
           "channel_id":4,
           "name":accountNameController.text,
        "link":linkController.text,
@@ -174,7 +176,7 @@ class AddAdvertiserChannelController extends GetxController {
     repo.postWithImageMultipart<ChannelsResponse>(
         path: 'profile/channels/add',
         fromJson: (json) => ChannelsResponse.fromJson(json),
-        json: {"token":"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd",
+        json: {"token":"Bearer  $token",
           "channel_id":4,
           "name":accountNameController.text,
           "link":linkController.text,

@@ -1,6 +1,7 @@
 import 'package:advertisers/app_core/network/models/ChannelData.dart';
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/responses/ChannelsResponse.dart';
+import 'package:advertisers/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -52,7 +53,7 @@ class AdvertisingInfluenceChannelsController extends GetxController{
       repo.get<ChannelsResponse>(
           path: 'profile/channels',
           fromJson: (json) => ChannelsResponse.fromJson(json),
-          json: {"token":"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd"},
+          json: {"token":"Bearer  $token"},
           onSuccess: (res) {
             if (EasyLoading.isShow) {
               EasyLoading.dismiss();
@@ -81,7 +82,7 @@ class AdvertisingInfluenceChannelsController extends GetxController{
     repo.get<ChannelsResponse>(
         path: 'profile/channels/$viewId/status',
         fromJson: (json) => ChannelsResponse.fromJson(json),
-        json: {"token":"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd"},
+        json: {"token":"Bearer  $token"},
         onSuccess: (res) {
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
@@ -110,7 +111,7 @@ class AdvertisingInfluenceChannelsController extends GetxController{
     repo.get<ChannelsResponse>(
         path: 'profile/channels/$toggleId/type',
         fromJson: (json) => ChannelsResponse.fromJson(json),
-        json: {"token":"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd"},
+        json: {"token":"Bearer  $token"},
         onSuccess: (res) {
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
@@ -139,7 +140,7 @@ class AdvertisingInfluenceChannelsController extends GetxController{
     repo.get<ChannelsResponse>(
         path: 'profile/channels/$id/delete',
         fromJson: (json) => ChannelsResponse.fromJson(json),
-        json: {"token":"Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd"},
+        json: {"token":"Bearer  $token"},
         onSuccess: (res) {
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
@@ -175,10 +176,11 @@ class AdvertisingInfluenceChannelsController extends GetxController{
   //   update();
   // }
 
-
+ late String token;
   @override
   void onInit() {
     // passIndex;
+    token =storage.read("token");
     repo = Repository();
     getChannels();
     super.onInit();
