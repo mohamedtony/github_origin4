@@ -10,7 +10,8 @@ import 'package:get/get.dart';
 
 class ListPage extends StatelessWidget {
   ListPage({Key? key}) : super(key: key);
-  var controller = Get.put(AdvertiseListController());
+ //var controller = Get.put(AdvertiseListController());
+  AdvertiseListController controller = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

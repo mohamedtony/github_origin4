@@ -152,6 +152,9 @@ class FindAdvertisePage extends StatelessWidget {
                 shadowColor: Colors.grey,
                 child: Container(
                   child: InkWell(
+                    onTap: (){
+                      Get.toNamed("/FilterOrderAdvertisers");
+                    },
                     child: Container(
                       width: 62,
                       height: 62,

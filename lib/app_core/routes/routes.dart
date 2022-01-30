@@ -10,6 +10,8 @@ import 'package:advertisers/features/advanced_options/view/widgets/advanced_opti
 import 'package:advertisers/features/advertiser_account_status/tax_settings/controller/advertiser_account_status_controller.dart';
 import 'package:advertisers/features/advertiser_account_status/tax_settings/view/pages/advertiser_account_status_page.dart';
 import 'package:advertisers/features/advertiser_details/advertiser_details_page.dart';
+import 'package:advertisers/features/advertiser_list_page/advertise_list_controller.dart';
+import 'package:advertisers/features/advertiser_list_page/list_page.dart';
 import 'package:advertisers/features/advertiser_qr/view/page/advertiser_qr_page.dart';
 import 'package:advertisers/features/advertiser_settings_page/advertiser_settings_page.dart';
 import 'package:advertisers/features/advertiser_settings_page/controller/AdvertiserSettingPageController.dart';
@@ -29,6 +31,7 @@ import 'package:advertisers/features/my_orders_and_my_orders_archive/my_orders_a
 import 'package:advertisers/features/my_orders_archive/view/my_orders_archive_page.dart';
 import 'package:advertisers/features/notifications/view/pages/notifications_page.dart';
 import 'package:advertisers/features/notifications_settings/view/pages/notifications_settings_page.dart';
+import 'package:advertisers/features/request_advertise_module/view/pages/filter_order_advertisers.dart';
 import 'package:advertisers/features/request_advertise_module/view/pages/request_advertise_page.dart';
 import 'package:advertisers/features/tax_settings/view/pages/tax_settings_page.dart';
 import 'package:advertisers/features/users_module/controller/baka_details_controller.dart';
@@ -292,6 +295,17 @@ class Routes {
     GetPage(
       name: '/RequestAdvertisePage',
       page: () => RequestAdvertisePage(),
+    ),
+    GetPage(
+      name: '/FilterOrderAdvertisers',
+      page: () => FilterOrderAdvertisers(),
+    ),
+    GetPage(
+      name: '/ListPage',
+      page: () => ListPage(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<AdvertiseListController>(() => AdvertiseListController());
+      }),
     ),
   ];
 }

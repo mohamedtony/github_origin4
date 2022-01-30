@@ -31,12 +31,13 @@ class HomePage extends StatelessWidget {
                   child: AppBar(
                     leading: InkWell(
                       onTap: (){
-                        Navigator.push(
+                        Get.toNamed("/ListPage");
+                        /*Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ListPage()/*ClientSettingPage(),*/
+                            builder: (context) => ListPage()*//*ClientSettingPage(),*//*
                           ),
-                        );
+                        );*/
                       },
                       child: Container(
                         margin: EdgeInsets.only(right: 10.0),

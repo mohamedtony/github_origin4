@@ -11,7 +11,7 @@ class AdvertiseListController extends GetxController with GetSingleTickerProvide
   var isOpend = false;
   var position = -1;
   var tabIndex = 0.obs;
-
+  String? myToken;
   var roleType = ''.obs;
   var clientProfileModel = ClientProfileModel().obs;
   void changeIndex(int position) {
@@ -28,7 +28,8 @@ class AdvertiseListController extends GetxController with GetSingleTickerProvide
    late TabController controller;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
+    myToken  = await storage.read("token");
     super.onInit();
     controller = TabController(vsync: this, length: 3);//Bearer 172|bArU5eQ7MZSTtD4CKY2Wwtvn2onzJlVrG643Vob6
 
@@ -52,8 +53,8 @@ class AdvertiseListController extends GetxController with GetSingleTickerProvide
           ),
         )
     );
-    var myToken  = await storage.read("token");
-    client!.getMyProfile("Bearer "+myToken).then((value) {
+  //  var myToken  = await storage.read("token");
+    client!.getMyProfile("Bearer "+myToken!).then((value) {
       Logger().i(value.data?.toJson());
       if(value.data!=null&&value.status==200){
         Get.back();
