@@ -1,0 +1,11 @@
+<svg id="chat-right-text" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20.893" height="19.969" viewBox="0 0 20.893 19.969">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#48dbe1"/>
+      <stop offset="1" stop-color="#4166cd"/>
+      <stop offset="1" stop-color="#236b73"/>
+    </linearGradient>
+  </defs>
+  <path id="Path_42852" data-name="Path 42852" d="M2.612,1.306H18.281a1.306,1.306,0,0,1,1.306,1.306V17.741l-2.612-2.612a2.612,2.612,0,0,0-1.846-.765H2.612a1.306,1.306,0,0,1-1.306-1.306V2.612A1.306,1.306,0,0,1,2.612,1.306ZM18.281,0a2.612,2.612,0,0,1,2.612,2.612v16.7a.653.653,0,0,1-1.115.461l-3.725-3.725a1.306,1.306,0,0,0-.923-.382H2.612A2.612,2.612,0,0,1,0,13.058V2.612A2.612,2.612,0,0,1,2.612,0Z" fill="url(#linear-gradient)"/>
+  <path id="Path_42853" data-name="Path 42853" d="M6.75,7.4A.653.653,0,0,1,7.4,6.75H19.155a.653.653,0,0,1,0,1.306H7.4A.653.653,0,0,1,6.75,7.4Zm0,3.264a.653.653,0,0,1,.653-.653H19.155a.653.653,0,0,1,0,1.306H7.4A.653.653,0,0,1,6.75,10.667Zm0,3.264a.653.653,0,0,1,.653-.653h6.529a.653.653,0,0,1,0,1.306H7.4A.653.653,0,0,1,6.75,13.932Z" transform="translate(-2.833 -2.833)" fill="url(#linear-gradient)"/>
+</svg>

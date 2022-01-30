@@ -15,6 +15,7 @@ import 'package:advertisers/features/advertiser_settings_page/advertiser_setting
 import 'package:advertisers/features/advertiser_settings_page/controller/AdvertiserSettingPageController.dart';
 import 'package:advertisers/features/advertising_influence_channels/controller/advertising_influence_channels_controller.dart';
 import 'package:advertisers/features/advertising_influence_channels/view/page/advertising_influence_channels_page.dart';
+import 'package:advertisers/features/advertising_requests/view/advertising_requests_page.dart';
 import 'package:advertisers/features/blocked_users_page/blocked_users_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
@@ -28,6 +29,7 @@ import 'package:advertisers/features/my_orders_and_my_orders_archive/my_orders_a
 import 'package:advertisers/features/my_orders_archive/view/my_orders_archive_page.dart';
 import 'package:advertisers/features/notifications/view/pages/notifications_page.dart';
 import 'package:advertisers/features/notifications_settings/view/pages/notifications_settings_page.dart';
+import 'package:advertisers/features/request_advertise_module/view/pages/request_advertise_page.dart';
 import 'package:advertisers/features/tax_settings/view/pages/tax_settings_page.dart';
 import 'package:advertisers/features/users_module/controller/baka_details_controller.dart';
 import 'package:advertisers/features/users_module/controller/choose_baka_controller.dart';
@@ -283,6 +285,13 @@ class Routes {
   Get.lazyPut<ClientSettingPageController>(() => ClientSettingPageController());
   }),
     ),
-
+    GetPage(
+      name: '/AdvertisingRequestsPage',
+      page: () => AdvertisingRequestsPage(),
+    ),
+    GetPage(
+      name: '/RequestAdvertisePage',
+      page: () => RequestAdvertisePage(),
+    ),
   ];
 }
