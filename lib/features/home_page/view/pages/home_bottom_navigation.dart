@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:advertisers/features/advertiser_details/sheets/advertising_channels_sheet.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
@@ -250,11 +251,12 @@ class Home extends StatelessWidget {
             expand: false,
             builder: (context, scrollController) {
               if(bottomNumber==2) {
-                /*return AdvertisingChannelsPage(
-                  scrollController: scrollController);*/
-                return LocationRangeBottomSheet(
+                return AdvertisingChannelsPage(
+                  scrollController: scrollController
+                );
+               /* return LocationRangeBottomSheet(
                     scrollController: scrollController);
-
+*/
               }else if(bottomNumber==3){
                 return AttatchementPage(
                     scrollController: scrollController);

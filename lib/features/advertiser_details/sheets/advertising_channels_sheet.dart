@@ -8,9 +8,9 @@ import 'package:get/get.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 
 class AdvertisingChannelsPage extends StatelessWidget {
-  // ScrollController? scrollController;
+  ScrollController? scrollController;
 
-  // AdvertisingChannelsPage({Key? key, this.scrollController}) : super(key: key);
+ AdvertisingChannelsPage({Key? key, this.scrollController}) : super(key: key);
 
 
   // final AdvertisingDetailsController controller =
@@ -66,21 +66,21 @@ class AdvertisingChannelsPage extends StatelessWidget {
                   color: AppColors.dividerBottom,
                   thickness: 4.0,
                 ),
-                const SizedBox(
-                  height: 25,
+                /*const SizedBox(
+                  height: 10,
+                ),*/
+                Container(
+                  //height: 30.0,
+                 // width: 140.0,
+                  //padding: EdgeInsets.all(8.0),
+                  margin: EdgeInsets.only(top:10.0,right: 18.0,bottom: 10.0),
+                  child: Text(
+                    'اختر من قنوات الاعلان',
+                    style: TextStyle(
+                        color: AppColors.adVertiserPageDataColor,
+                        fontWeight: FontWeight.w600),
+                  ),
                 ),
-                // Container(
-                //   height: 30.0,
-                //   width: 140.0,
-                //   //padding: EdgeInsets.all(8.0),
-                //   margin: EdgeInsets.all(18.0),
-                //   child: Text(
-                //     'chooseChannel'.tr,
-                //     style: TextStyle(
-                //         color: AppColors.adVertiserPageDataColor,
-                //         fontWeight: FontWeight.w600),
-                //   ),
-                // ),
                 Container(
                   height: 200,
                   child: GridView.builder(
