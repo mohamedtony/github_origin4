@@ -9,6 +9,7 @@ import 'package:advertisers/features/home_page/view/pages/add_ad_page.dart';
 import 'package:advertisers/features/home_page/view/pages/favorite_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_tabs_page.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+import 'package:advertisers/features/request_advertise_module/view/widgets/address_bottom_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/attatchements_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/discount_coupon_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/notice_sheet.dart';
@@ -264,10 +265,16 @@ class Home extends StatelessWidget {
                 return UrlsPage(
                     scrollController: scrollController);
               }else if(bottomNumber==5){
+                return AddressBottomSheet(
+                    scrollController: scrollController);
+              }else if(bottomNumber==6){
+                return DiscountCouponSheet(
+                    scrollController: scrollController);
+              }/*else if(bottomNumber==7){
                 return NoticeSheet(
                     scrollController: scrollController);
-              }else{
-                return DiscountCouponSheet(
+              }*/else{
+                return NoticeSheet(
                     scrollController: scrollController);
               }
             },
