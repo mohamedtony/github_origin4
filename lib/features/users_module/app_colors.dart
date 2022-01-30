@@ -33,4 +33,6 @@ class AppColors{
  static const Color circleGreyColor=Color(0xff9DAEE2);
  static const Color blackColor=Colors.black;
  static const Color borderRadiusColor=Color(0xffF5F5F5);
+ static const Color borderCircleColor=Color(0xffD97D54);
+ static const Color textButtonColor=Color(0xff427AD0);
 }

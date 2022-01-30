@@ -7,6 +7,7 @@ import 'package:advertisers/features/request_advertise_module/view/widgets/adver
 import 'package:advertisers/features/request_advertise_module/view/widgets/attatchements_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/discount_coupon_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/notice_sheet.dart';
+import 'package:advertisers/features/request_advertise_module/view/widgets/send_request_success.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/urls_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -102,6 +103,10 @@ class RequestAdvertiseController extends GetxController {
                   scrollController: scrollController);
             }else if(bottomNumber==20){
               return AddressBottomSheet(
+                  scrollController: scrollController);
+            }
+            else if(bottomNumber==21){
+              return SendRequestSuccess(
                   scrollController: scrollController);
             }else if(bottomNumber==5){
               return NoticeSheet(

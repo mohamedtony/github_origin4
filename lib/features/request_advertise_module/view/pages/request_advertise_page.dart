@@ -419,7 +419,8 @@ class RequestAdvertisePage extends StatelessWidget {
                 InkWell(
                   onTap: (){
                     //requestAdvertiseController.showMyBottomSheet(context,6);
-                    onSheetClicked!(6);
+                   // onSheetClicked!(6);
+                    requestAdvertiseController.showMyBottomSheet(context,21);
                   },
                   child: Container(
                     width: 165,
