@@ -833,6 +833,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  quds_popup_menu:
+    dependency: "direct main"
+    description:
+      name: quds_popup_menu
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1+1"
+  quds_ui_kit:
+    dependency: transitive
+    description:
+      name: quds_ui_kit
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.7+5"
   quiver:
     dependency: transitive
     description:

@@ -29,7 +29,7 @@ class AdvertisersGenericField extends StatelessWidget {
         onChanged: onChanged,
         decoration: InputDecoration(
           contentPadding:  EdgeInsets.symmetric(vertical: 5.0.h,horizontal: 10.w),
-          suffixIcon:prefix??const SizedBox.shrink() ,
+          suffixIcon:prefix??const SizedBox(width: 0,),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.h),borderSide: BorderSide(color:borderColor==null?AppColors.borderfayrozy: AppColors.borderAdvertiserRegisterColor)
           ),
