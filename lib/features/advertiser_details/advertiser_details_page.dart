@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:advertisers/features/advertiser_details/controller/advertiser_details_controller.dart';
+import 'package:advertisers/features/advertiser_details/sheets/address_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/advertising_channels_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/advertising_date_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/advertising_desc_sheet.dart';
+import 'package:advertisers/features/advertiser_details/sheets/attatchements_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/discount_coupon_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/notice_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/urls_bottom_sheet.dart';
@@ -26,12 +30,17 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
 
   final AdvertisingDetailsController controller =
   Get.put(AdvertisingDetailsController());
+  // final AddressBottomSheetAdvertiserDetailsPageController addressBottomSheetAdvertiserDetailsPageController =
+  // Get.put(AddressBottomSheetAdvertiserDetailsPageController());
 
   @override
   void initState() {
     // TODO: implement initState
     controller.descController = TextEditingController(
         text: "- تغطية افتتاح الفرع الثالث من فروعنا");
+
+    controller.placeAddressController = TextEditingController(
+        text: "شارع الملز الرياض بجوار مدينة السلام");
 
     controller.noticsController = TextEditingController(
         text: "------------------------------------------- -");
@@ -417,37 +426,51 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
               ),
               Item(
                 onTap: (){
-
+                  showModalBottomSheet(
+                      context: context,
+                      // isScrollControlled: true,
+                      builder: (builder){
+                        return AttatchementPage();
+                        // return AdvertisingNoticsPage();
+                      }
+                  );
                 },
                 title: 'المرفقات',
                 child: Container(
                   height: 100.w,
-                  child: ListView(
-                    padding: const EdgeInsets.all(4.0),
+
+                  child: controller.attachedImagesList.isNotEmpty ? ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    children: [
-                      Stack(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Container(
-                              margin: const EdgeInsets.all(1),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              child: Image.asset(
-                                'images/snapshat_icon.png',
-                                height: 80.w,
-                                width: 80.w,
+                    padding: const EdgeInsets.all(4.0),
+                    // physics: const BouncingScrollPhysics(),
+                    itemCount: controller.attachedImagesList.length,
+                    itemBuilder: (_, index) => Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Container(
+                            margin: const EdgeInsets.all(1),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Colors.grey,
                               ),
                             ),
+                            child: Image.file(
+                              File(controller.attachedImagesList[index].path),
+                              width: 80.w,
+                              height: 80.w,
+                              fit: BoxFit.fill,
+                            ),
                           ),
-                          Positioned(
-                              left: 0,
+                        ),
+                        Positioned(
+                            left: 0,
+                            child: InkWell(
+                              onTap: (){
+                                controller.deleteFromAttachedImagesList(controller.attachedImagesList[index]);
+                              },
                               child: Container(
                                 padding: const EdgeInsets.all(1),
                                 decoration: BoxDecoration(
@@ -462,94 +485,12 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                   color: Colors.red,
                                   size: 12.sp,
                                 ),
-                              ))
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Stack(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Container(
-                              margin: const EdgeInsets.all(1),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                ),
                               ),
-                              child: Image.asset(
-                                'images/youtube.png',
-                                height: 80.w,
-                                width: 80.w,
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                              left: 0,
-                              child: Container(
-                                padding: const EdgeInsets.all(1),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(100),
-                                  border: Border.all(
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                child: Icon(
-                                  Icons.close,
-                                  color: Colors.red,
-                                  size: 12.sp,
-                                ),
-                              ))
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Stack(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Container(
-                              margin: const EdgeInsets.all(1),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              child: Image.asset(
-                                'images/whatsup.png',
-                                height: 80.w,
-                                width: 80.w,
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                              left: 0,
-                              child: Container(
-                                padding: const EdgeInsets.all(1),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(100),
-                                  border: Border.all(
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                child: Icon(
-                                  Icons.close,
-                                  color: Colors.red,
-                                  size: 12.sp,
-                                ),
-                              ))
-                        ],
-                      ),
-                    ],
+                            ))
+                      ],
+                    ),
+                  ):const Center(
+                    child:  Text("لا توجد مرفقات"),
                   ),
                 ),
               ),
@@ -663,7 +604,13 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
               ),
               Item(
                 onTap: (){
-
+                    showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (builder){
+                          return AddressBottomSheetAdvertiserDetailsPage();
+                        }
+                    );
                 },
                 title: 'العنوان',
                 child: Padding(
@@ -685,31 +632,37 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 16.0, vertical: 4),
                               child: Row(
-                                children: const [
-                                  Icon(Icons.add_location),
-                                  SizedBox(
+                                children:  [
+                                const  Icon(Icons.add_location),
+                                  const  SizedBox(
                                     width: 15,
                                   ),
-                                  Text('شارع الملز الرياض بجوار مدينة السلام',style: TextStyle(color:Color(0xff041D67)),),
+                                  Text('${controller.placeAddressController.text}',style: TextStyle(color:Color(0xff041D67)),),
                                 ],
                               ),
                             ),
                           )),
                       Positioned(
                           left: 0,
-                          child: Container(
-                            padding: const EdgeInsets.all(1),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(100),
-                              border: Border.all(
-                                color: Colors.red,
+                          child: InkWell(
+                            onTap: (){
+                              controller.placeAddressController.clear();
+                              controller.setStateBehavior();
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(1),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(100),
+                                border: Border.all(
+                                  color: Colors.red,
+                                ),
                               ),
-                            ),
-                            child: Icon(
-                              Icons.close,
-                              color: Colors.red,
-                              size: 12.sp,
+                              child: Icon(
+                                Icons.close,
+                                color: Colors.red,
+                                size: 12.sp,
+                              ),
                             ),
                           ))
                     ],
