@@ -295,7 +295,114 @@ class FilterOrderAdvertisers extends StatelessWidget {
                           )/*: Container(
                           alignment: Alignment.centerRight,
                           child: const Text("لا يوجد مناطق")),*/
-                    )//),
+                    ),
+                Divider(
+                  color: Colors.black54,
+                  thickness: .5,
+                  endIndent: 20,
+                  indent: 20,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 10,
+                      height: 10,
+                      margin: EdgeInsets.only(right: 10.0),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(right: 5.0,bottom: 3),
+                        child: Text(' عرض المعلنين بحسب أقسام إعلانتهم',style: TextStyle(color: Colors.white),textAlign: TextAlign.center,))
+                  ],
+                ),
+                Container(
+                    margin: const EdgeInsets.only(
+                        top: 10.0, left: 10.0, right: 20.0, bottom: 8.0),
+                    height: 35.0,
+                    child: /*Obx(
+                          () => findOrderAdvertisersController
+                          .isLoadingLocation.value ? Container(
+                        child: const SpinKitThreeBounce(
+                          color: Colors.blue,
+                          size: 25,
+                        ),
+                      )
+                          :controller.countries.isNotEmpty
+                          ?*/ DropdownSearch<String>(
+                        mode: Mode.MENU,
+                        dropDownButton: Container(
+                          margin: const EdgeInsets.only(left: 0.0),
+                          child: SvgPicture.asset(
+                            'images/dropdown_icon.svg',
+                            fit: BoxFit.fill,
+                            height: 8.0,
+                            width: 8.0,
+                            color: AppColors.dropFilterColor,
+                          ),
+                        ),
+                        dropdownBuilder: (BuildContext context, s) {
+                          return Text(
+                            '${(s ?? '')}',
+                            style: TextStyle(
+                                color: AppColors.activitiesDropDown,
+                                /*decoration: TextDecoration.underline,decorationThickness: 2,*/
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w500),
+                            textAlign: TextAlign.start,
+                          );
+                        },
+                        dropdownSearchDecoration: const InputDecoration(
+                            filled: true,
+                            //fillColor: Color(0xFFF2F2F2),
+                            contentPadding: EdgeInsets.only(
+                                right: 20.0, top: 0.0, bottom: 0.0),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(const Radius.circular(12)),
+                              borderSide: BorderSide(
+                                  width: 0.4,
+                                  color: AppColors.borderDropDownColor),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(12)),
+
+                              borderSide: BorderSide(
+                                  width: 0.4,
+                                  color: AppColors.borderDropDownColor),
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(12)),
+                              borderSide: BorderSide(
+                                  width: 0.4,
+                                  color: AppColors.borderDropDownColor),
+                            ),
+                            border: const OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(12)),
+                                borderSide: BorderSide(
+                                  width: 1,
+                                )),
+                            fillColor: Colors.white
+                        ),
+                        items: findOrderAdvertisersController.images,
+                        // label: "Menu mode",
+                        itemAsString: (String? u) => u!,
+                        // hint: "الدولة",
+                        //popupItemDisabled: (String s) => s.startsWith('I'),
+                        onChanged: (country){
+                          //controller.country.value = country!;
+                        },
+                        selectedItem: findOrderAdvertisersController.images[0]
+                    )/*: Container(
+                          alignment: Alignment.centerRight,
+                          child: const Text("لا يوجد مناطق")),*/
+                )//),
               ],
             ),
           ),
