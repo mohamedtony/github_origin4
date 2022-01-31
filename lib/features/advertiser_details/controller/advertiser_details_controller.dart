@@ -10,13 +10,17 @@ import 'package:image_picker/image_picker.dart';
 
 
 class AdvertisingDetailsController extends GetxController{
-
+  late TextEditingController placeNameController;
+  late TextEditingController placeAddressController;
 
   bool isVideo = false;
 
   final ImagePicker picker = ImagePicker();
 
   XFile? _selectedImage;
+
+
+  List<XFile> attachedImagesList = [];
 
   bool get hasSelectedImage => _selectedImage != null;
   XFile? pickedXFile;
@@ -26,6 +30,27 @@ class AdvertisingDetailsController extends GetxController{
     _selectedImage = null;
   }
 
+  getImageToAttachedList({@required bool? fromGallery}) async {
+    pickedXFile =
+    await picker.pickImage(
+        source: fromGallery! ? ImageSource.gallery : ImageSource.camera,imageQuality: 20 );
+    attachedImagesList.add(XFile(pickedXFile!.path));
+    update();
+    // if (pickedXFile != null) {
+    //   _selectedImage = XFile(pickedXFile!.path);
+    //   // controller.setStateBehavior();
+    // }
+    // // hasSelectedImage.;
+    // print('xXx Original Image: $_selectedImage');
+    // return _selectedImage;
+  }
+
+
+  void deleteFromAttachedImagesList(XFile? xItem){
+    attachedImagesList.remove(xItem);
+    update();
+  }
+
   getImage({@required bool? fromGallery}) async {
     pickedXFile = await picker.pickImage(
         source: fromGallery! ? ImageSource.gallery : ImageSource.camera,imageQuality: 20 );
@@ -33,10 +58,8 @@ class AdvertisingDetailsController extends GetxController{
       _selectedImage = XFile(pickedXFile!.path);
       // controller.setStateBehavior();
     }
-
     // hasSelectedImage.;
     print('xXx Original Image: $_selectedImage');
-
     return _selectedImage;
   }
 
@@ -126,7 +149,8 @@ void setStateBehavior(){
   @override
   void onInit() {
     // passIndex;
-
+    placeNameController = TextEditingController();
+    placeAddressController = TextEditingController();
     descController=TextEditingController();
 
     super.onInit();
