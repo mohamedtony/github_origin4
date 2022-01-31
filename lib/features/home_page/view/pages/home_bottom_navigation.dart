@@ -4,6 +4,7 @@ import 'package:advertisers/features/advertiser_details/sheets/advertising_chann
 import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
+import 'package:advertisers/features/find_advertise_page/filter_order_advertisers_sheet.dart';
 import 'package:advertisers/features/home_page/controller/home_navigation_controller.dart';
 import 'package:advertisers/features/home_page/view/pages/add_ad_page.dart';
 import 'package:advertisers/features/home_page/view/pages/favorite_page.dart';
@@ -270,11 +271,11 @@ class Home extends StatelessWidget {
               }else if(bottomNumber==6){
                 return DiscountCouponSheet(
                     scrollController: scrollController);
-              }/*else if(bottomNumber==7){
+              }else if(bottomNumber==7){
                 return NoticeSheet(
                     scrollController: scrollController);
-              }*/else{
-                return NoticeSheet(
+              }else{
+                return FilterOrderAdvertisersSheet(
                     scrollController: scrollController);
               }
             },

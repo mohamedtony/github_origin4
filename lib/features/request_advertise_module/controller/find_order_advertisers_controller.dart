@@ -4,7 +4,13 @@ import 'package:get/get.dart';
 class FindOrderAdvertisersController extends GetxController {
   RxList<SelectedSocialMedia> items = <SelectedSocialMedia>[].obs;
 
-  List<String> images=['الاسرع ردا','الاقدم','الاعلى تقييما','الاعلى تقييما','الاعلى تقييما'];
+  List<String> images=['الاسرع ردا','الاقدم','الاحدث','الاعلى تقييما','الاعلى تقييما'];
+  List<String> sections=['ابحث عن المعلن من خلال القسم','الاقدم','الاعلى تقييما','الاعلى تقييما','الاعلى تقييما'];
+  List<String> socials=['سناب شات','الاقدم','الاعلى تقييما','الاعلى تقييما','الاعلى تقييما'];
+  List<String> numbers=['من 1000 الى 2000','الاقدم','الاعلى تقييما','الاعلى تقييما','الاعلى تقييما'];
+  List<String> countries=['الدولة','الاقدم','الاعلى تقييما','الاعلى تقييما','الاعلى تقييما'];
+  List<String> cities=['المدينة','الاقدم','الاعلى تقييما','الاعلى تقييما','الاعلى تقييما'];
+  List<String> selectedCities=['مكة','جدة','الرياض'];
   @override
   void onInit() {
     // TODO: implement onInit

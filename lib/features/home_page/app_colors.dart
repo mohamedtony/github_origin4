@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
 
   static const Color activitiesDropDown = Color(0xFF182A5E);
+  static const Color buttonDropDown = Color(0xFF378CC3);
   static const Color activitiesSheetRounded = Color(0xFFD5C7E9);
   static const Color activitiesSheetTextColor = Color(0xFF726B65);
   static const Color activitiesSheetTextBg = Color(0xFFFBD098);
@@ -12,10 +13,13 @@ class AppColors {
   static const Color filterAdvertiserColor = Color(0xFF21449F);
   static const Color addPhotoBottom2 = Color(0xFF4D7CC7);
   static const Color editProfileContainerColor = Color(0xFF46BEDC);
+  static const Color selectedCity = Color(0xFF3689C2);
   static const Color addPhotoBottom = Color(0xFF64F5B1);
   static const Color dividerBottom = Color(0xFFD97D54);
   static const Color saveButtonBottomSheet = Color(0xFFE8E8E8);
+  static const Color cancelButtonBottomSheet = Color(0xFFE8E8E8);
   static const Color bottomSheetTabColorRounded = Color(0xFFFF8B08);
+  static const Color dropDownFill = Color(0xFFDD784B);
   static const Color bottomSheetTabColor = Color(0xFFF5F5F5);
   static const Color searchAdsColor = Color(0xFF427FD1);
   static const Color beginSearchAds = Color(0xFFF9F9F9);
