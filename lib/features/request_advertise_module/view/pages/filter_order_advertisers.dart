@@ -214,8 +214,8 @@ class FilterOrderAdvertisers extends StatelessWidget {
                 ),
                 Container(
                     margin: const EdgeInsets.only(
-                        top: 16.0, left: 16.0, right: 20.0, bottom: 8.0),
-                    height: 45.0,
+                        top: 10.0, left: 10.0, right: 20.0, bottom: 8.0),
+                    height: 35.0,
                     child: /*Obx(
                           () => findOrderAdvertisersController
                           .isLoadingLocation.value ? Container(
@@ -255,14 +255,14 @@ class FilterOrderAdvertisers extends StatelessWidget {
                                 right: 20.0, top: 0.0, bottom: 0.0),
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(const Radius.circular(16)),
+                              BorderRadius.all(const Radius.circular(12)),
                               borderSide: BorderSide(
                                   width: 0.4,
                                   color: AppColors.borderDropDownColor),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(16)),
+                              BorderRadius.all(Radius.circular(12)),
 
                               borderSide: BorderSide(
                                   width: 0.4,
@@ -270,14 +270,14 @@ class FilterOrderAdvertisers extends StatelessWidget {
                             ),
                             disabledBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(16)),
+                              BorderRadius.all(Radius.circular(12)),
                               borderSide: BorderSide(
                                   width: 0.4,
                                   color: AppColors.borderDropDownColor),
                             ),
                             border: const OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(16)),
+                                BorderRadius.all(Radius.circular(12)),
                                 borderSide: BorderSide(
                                   width: 1,
                                 )),
