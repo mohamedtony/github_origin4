@@ -4,6 +4,7 @@ import 'package:advertisers/main.dart';
 //import 'package:advertisers/shared/network/models/SubscriptionBaka.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 class ChooseBakaController extends GetxController{
 
   RxList<SubscriptionBaka> subscriptionBaka = <SubscriptionBaka>[].obs;
@@ -31,7 +32,10 @@ class ChooseBakaController extends GetxController{
     client!.getSubscription().then((value){
       if(value.data!=null&&value.status==200){
         subscriptionBaka.value = value.data!;
-        print(value.data![0].name);
+
+        for(SubscriptionBaka subscriptionBaka  in subscriptionBaka.value){
+          Logger().i(subscriptionBaka.toJson());
+        }
       }
     });
     super.onInit();
