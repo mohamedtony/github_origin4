@@ -3,18 +3,23 @@ import 'package:flutter/material.dart';
 class AppColors {
 
   static const Color activitiesDropDown = Color(0xFF182A5E);
+  static const Color buttonDropDown = Color(0xFF378CC3);
   static const Color activitiesSheetRounded = Color(0xFFD5C7E9);
   static const Color activitiesSheetTextColor = Color(0xFF726B65);
   static const Color activitiesSheetTextBg = Color(0xFFFBD098);
   static const Color white = Color(0xFFFFFFFF);
   static const Color editProfileTextColorOpa = Color(0xFF244094);
   static const Color editProfileTextColor = Color(0xFF244094);
+  static const Color filterAdvertiserColor = Color(0xFF21449F);
   static const Color addPhotoBottom2 = Color(0xFF4D7CC7);
   static const Color editProfileContainerColor = Color(0xFF46BEDC);
+  static const Color selectedCity = Color(0xFF3689C2);
   static const Color addPhotoBottom = Color(0xFF64F5B1);
   static const Color dividerBottom = Color(0xFFD97D54);
   static const Color saveButtonBottomSheet = Color(0xFFE8E8E8);
+  static const Color cancelButtonBottomSheet = Color(0xFFE8E8E8);
   static const Color bottomSheetTabColorRounded = Color(0xFFFF8B08);
+  static const Color dropDownFill = Color(0xFFDD784B);
   static const Color bottomSheetTabColor = Color(0xFFF5F5F5);
   static const Color searchAdsColor = Color(0xFF427FD1);
   static const Color beginSearchAds = Color(0xFFF9F9F9);
@@ -24,6 +29,7 @@ class AppColors {
   static const Color borderDropDownColor = Color(0xFF46C2DC);
   static const Color coponPercentColorText = Color(0xFF6574A1);
   static const Color copyCodeColor = Color(0xFFAB99D5);
+  static const Color dropFilterColor = Color(0xFF887FCE);
   static const Color unseletabColor = Color(0xFF707070);
   static const Color coponPercentColor = Color(0xFFF3F3F3);
   static const Color bgTabColor = Color(0xFFE9E9E9);

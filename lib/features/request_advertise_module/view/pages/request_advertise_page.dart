@@ -367,10 +367,10 @@ class RequestAdvertisePage extends StatelessWidget {
               children: [
                 InkWell(
                   onTap:(){
-                    requestAdvertiseController.showMyBottomSheet(context,20);
-                    // onSheetClicked!(20);
+                    //requestAdvertiseController.showMyBottomSheet(context,20);
+                    onSheetClicked!(5);
     },
-                  child: Container(
+                  child:  Container(
                     width: 165,
                     height: 50,
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 16.0),
@@ -378,40 +378,30 @@ class RequestAdvertisePage extends StatelessWidget {
                       elevation: 6.0,
                       shadowColor: Colors.grey[200],
                       borderRadius: BorderRadius.all(Radius.circular(18)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: Row(
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only(right: 24.0),
-                                    child: SvgPicture.asset(
-                                      'images/location_icon.svg',
-                                      fit: BoxFit.fill,
-                                      height: 24.0,
-                                      width: 15.0,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                        left: 12.0, bottom: 4.0, right: 20),
-                                    child: Text(
-                                      'adTitle'.tr,
-                                      style: TextStyle(
-                                          fontSize: 16.0,
-                                          color: AppColors.adVertiserPageDataColor,
-                                          fontWeight: FontWeight.w300),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(right: 24.0),
+                            child: SvgPicture.asset(
+                              'images/location_icon.svg',
+                              fit: BoxFit.fill,
+                              height: 24.0,
+                              width: 15.0,
                             ),
                           ),
-                        ),
+                          Container(
+                            margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),
+                            child: Text(
+                              'adTitle'.tr,
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: AppColors.adVertiserPageDataColor,
+                                  fontWeight: FontWeight.w300),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -419,8 +409,8 @@ class RequestAdvertisePage extends StatelessWidget {
                 InkWell(
                   onTap: (){
                     //requestAdvertiseController.showMyBottomSheet(context,6);
-                   // onSheetClicked!(6);
-                    requestAdvertiseController.showMyBottomSheet(context,21);
+                   onSheetClicked!(6);
+                    //requestAdvertiseController.showMyBottomSheet(context,21);
                   },
                   child: Container(
                     width: 165,
@@ -467,7 +457,7 @@ class RequestAdvertisePage extends StatelessWidget {
                 InkWell(
                   onTap: (){
                    // requestAdvertiseController.showMyBottomSheet(context,5);
-                    onSheetClicked!(5);
+                    onSheetClicked!(7);
                   },
                   child: Container(
                     width: 165,
@@ -615,44 +605,6 @@ class RequestAdvertisePage extends StatelessWidget {
           ],
         ),
       ],
-    );
-  }
-
-  void showMyBottomSheet(BuildContext context,int bottomNumber){
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(10.0),
-            topRight: const Radius.circular(10.0)),
-      ),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      builder: (BuildContext context) {
-        return DraggableScrollableSheet(
-          //maxChildSize: 0.8,
-          //minChildSize: 100.0,
-
-          initialChildSize: 0.67,
-          expand: false,
-          builder: (context, scrollController) {
-            if(bottomNumber==2) {
-              return AdvertisingChannelsPage(
-                  scrollController: scrollController);
-            }else if(bottomNumber==3){
-              return AttatchementPage(
-                  scrollController: scrollController);
-            }else if(bottomNumber==13){
-              return AddressBottomSheet(
-                  scrollController: scrollController);
-            }else {
-              return UrlsPage(
-                  scrollController: scrollController);
-            }
-          },
-        );
-      },
     );
   }
 }
