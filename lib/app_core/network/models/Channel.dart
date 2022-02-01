@@ -6,10 +6,11 @@ part 'Channel.g.dart';
 class Channel {
   int? id;
   String? name;
+  int? channel_type;
   String? image;
 
 
-  Channel({this.id, this.name, this.image});
+  Channel({this.id, this.name, this.image,this.channel_type});
 
   factory Channel.fromJson(Map<String, dynamic> json) => _$ChannelFromJson(json);
 

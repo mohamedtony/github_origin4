@@ -11,7 +11,9 @@ import 'package:get/get.dart';
 class AdvertisingInfluenceChannelsController extends GetxController{
   late Repository repo ;
   var channels=[].obs;
+  var basicChannels=[].obs;
   var checkList = [].obs;
+  var channelId=0.obs;
  // var toggleId=0.obs;
   void addRemoveCheckList(id){
     if(checkList!.contains(id)){
@@ -103,6 +105,9 @@ class AdvertisingInfluenceChannelsController extends GetxController{
         });
 
   }
+
+
+
   channelToggleType({required int toggleId}){
 
     EasyLoading.show();
@@ -132,16 +137,17 @@ class AdvertisingInfluenceChannelsController extends GetxController{
         });
 
   }
-  deleteChannel(){
+  deleteChannel({required int channelId}){
 
     EasyLoading.show();
 
-   int id=4;
+
     repo.get<ChannelsResponse>(
-        path: 'profile/channels/$id/delete',
+        path: 'profile/channels/$channelId/delete',
         fromJson: (json) => ChannelsResponse.fromJson(json),
         json: {"token":"Bearer  $token"},
         onSuccess: (res) {
+          channels.removeWhere((element) =>channelId==element.id);
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }

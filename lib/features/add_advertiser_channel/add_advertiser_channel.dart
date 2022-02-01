@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:advertisers/app_core/network/models/Area.dart';
+import 'package:advertisers/app_core/network/models/Channel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/features/add_advertiser_channel/controller/add_advertiser_channel_controller.dart';
 import 'package:advertisers/features/add_advertiser_channel/controller/add_advertiser_channel_controller.dart';
@@ -67,11 +68,16 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
           ),
           Row(
             children: [
-              QudsPopupButton(
+              Obx(()=>QudsPopupButton(
                   // backgroundColor: Colors.red,
-                  tooltip: 'T',
-                  items: getMenuItems(),
-                  child: Icon(Icons.menu)),
+                  tooltip: 'اختر قناة',
+                  items: getMenuItems(_addAdvertiserChannelController.basicChannels),
+                  child:_addAdvertiserChannelController.choosedChannel.value!=''?Obx(()=>Image.network(_addAdvertiserChannelController.choosedChannel.value,height: 100.w,
+                    width: 100.w,)): Image.asset(
+                      'images/snapshat_icon.png',
+                      height: 100.w,
+                      width: 100.w,
+                    ),)),
               // Image.asset(
               //   'images/snapshat_icon.png',
               //   height: 100.w,
@@ -658,6 +664,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                                       // }
                                     });
                                     controller.addToList(_selectedCountry);
+                                    _addAdvertiserChannelController.countriesIds.add(_selectedCountry?.id??0);
                                   },
                                 ),
                               ),
@@ -745,6 +752,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                                       _selectedCity = newVal;
                                     });
                                     controller.addToList(_selectedCity);
+                                    _addAdvertiserChannelController.areasIds.add(_selectedCity?.id??0);
                                   },
                                 ),
                               ),
@@ -838,43 +846,70 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
       ),
     );
   }
+  late List<Widget> channelsWidgets=[];
+  List<QudsPopupMenuBase> getMenuItems(RxList<Channel> channels) {
+    for(Channel chan in channels){
+      channelsWidgets.add(SizedBox(
+        width: 50.w,
+        height: 50.w,
+        child: Row(
+          children: [
+            IconButton(
+                onPressed: () {
+                  _addAdvertiserChannelController.choosedChannel.value=chan.image??'';
+                  _addAdvertiserChannelController.channelId.value=chan.id??0;
+                },
+                icon: Image.network(chan.image??' ')),
+            VerticalDivider(),
+          ],
+        ),
+      ));}
+     return [QudsPopupMenuWidget(
+                builder: (c) => Container(
+                    padding: EdgeInsets.all(10),
+                    child: IntrinsicHeight(
+                      child: Wrap(
 
-  List<QudsPopupMenuBase> getMenuItems() {
-    return [
-      QudsPopupMenuWidget(
-          builder: (c) => Container(
-              padding: EdgeInsets.all(10),
-              child: IntrinsicHeight(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                        onPressed: () {
-
-                        },
-                        icon: Icon(
-                          Icons.favorite,
-                          color: Colors.red,
-                        )),
-                    VerticalDivider(),
-                    IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.music_note,
-                          color: Colors.blue,
-                        )),
-                    VerticalDivider(),
-                    IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.umbrella,
-                          color: Colors.green,
-                        ))
-                  ],
-                ),
-              )))
-    ];
-  }
+                        children: channelsWidgets)
+                    )
+                )
+     )];
+    }
+    // return [
+    //   QudsPopupMenuWidget(
+    //       builder: (c) => Container(
+    //           padding: EdgeInsets.all(10),
+    //           child: IntrinsicHeight(
+    //             child: Wrap(
+    //
+    //               children: [
+    //                 IconButton(
+    //                     onPressed: () {
+    //
+    //                     },
+    //                     icon: Icon(
+    //                       Icons.favorite,
+    //                       color: Colors.red,
+    //                     )),
+    //                 VerticalDivider(),
+    //                 IconButton(
+    //                     onPressed: () {},
+    //                     icon: Icon(
+    //                       Icons.music_note,
+    //                       color: Colors.blue,
+    //                     )),
+    //                 VerticalDivider(),
+    //                 IconButton(
+    //                     onPressed: () {},
+    //                     icon: Icon(
+    //                       Icons.umbrella,
+    //                       color: Colors.green,
+    //                     ))
+    //               ],
+    //             ),
+    //           )))
+    // ];
+ // }
 }
 
 // class Country {

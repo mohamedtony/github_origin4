@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:advertisers/app_core/network/models/Area.dart';
+import 'package:advertisers/app_core/network/models/Channel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/responses/ChannelsAndAreasResponse.dart';
 import 'package:advertisers/app_core/network/responses/ChannelsResponse.dart';
+import 'package:advertisers/app_core/network/responses/FormChannelsAndAreas.dart';
 import 'package:advertisers/features/add_advertiser_channel/add_advertiser_channel.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,10 @@ import '../../../main.dart';
 
 class AddAdvertiserChannelController extends GetxController {
   static dio.MultipartFile? photo;
+  var choosedChannel=''.obs;
+  var channelId=0.obs;
+  RxList<Channel> basicChannels=<Channel>[].obs;
+  RxList<Area> channelsAreas=<Area>[].obs;
   var savedFile=File(' ').obs;
   var imageBase641=''.obs;
   var selectedRange = '0'.obs;
@@ -32,14 +38,19 @@ class AddAdvertiserChannelController extends GetxController {
   var selectedWomenPercentage = '0'.obs;
   var selectedBoysPercentage = '0'.obs;
   var selectedGirlsPercentage = '0'.obs;
-  var areas=<Area>[].obs;
+  var areas=[].obs;
+  var areasIds=[].obs;
+  var countriesIds=[].obs;
   var countries=<Country>[].obs;
   late String token;
+  late Repository repo;
  @override
  void onInit() {
+   repo=Repository();
    token =storage.read("token");
    accountNameController=TextEditingController();
    linkController=TextEditingController();
+   getBasicChannelsForm();
    //getChannelsAreas();
    client!.getCountries().then((value) {
      if (value.data != null) {
@@ -121,6 +132,37 @@ class AddAdvertiserChannelController extends GetxController {
 
 
   }
+  getBasicChannelsForm(){
+
+    EasyLoading.show();
+
+
+    repo.get<FormChannelsAndAreas>(
+        path: 'profile/channels/form',
+        fromJson: (json) => FormChannelsAndAreas.fromJson(json),
+        json: {"token":"Bearer  $token"},
+        onSuccess: (res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          basicChannels.value=res.data?.channels??[];
+
+
+        },
+        onError: (err, res) {
+
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
+
+  }
   addChannel(){
 
     EasyLoading.show();
@@ -130,7 +172,7 @@ class AddAdvertiserChannelController extends GetxController {
         path: 'profile/channels/add',
         fromJson: (json) => ChannelsResponse.fromJson(json),
         json: {"token":"Bearer  $token",
-          "channel_id":4,
+          "channel_id":channelId.value,
           "name":accountNameController.text,
        "link":linkController.text,
      "followers_from":int.parse(selectedRange.value.substring(0,selectedRange.value.lastIndexOf('-')-1)),
@@ -139,7 +181,9 @@ class AddAdvertiserChannelController extends GetxController {
      "women":int.parse(selectedWomenPercentage.value),
      "boys":int.parse(selectedBoysPercentage.value),
      "girls":int.parse(selectedGirlsPercentage.value),
-          "areas":areas,
+          "areas":areasIds,
+          "countries":countriesIds,
+          "type":"ads"
          },
         onSuccess: (res) {
           if (EasyLoading.isShow) {
@@ -151,6 +195,7 @@ class AddAdvertiserChannelController extends GetxController {
             icon: const Icon(Icons.person, color: Colors.red),
             backgroundColor: Colors.yellow,
             snackPosition: SnackPosition.BOTTOM,);
+          Get.toNamed('/Home');
 
         },
         onError: (err, res) {
@@ -177,7 +222,7 @@ class AddAdvertiserChannelController extends GetxController {
         path: 'profile/channels/add',
         fromJson: (json) => ChannelsResponse.fromJson(json),
         json: {"token":"Bearer  $token",
-          "channel_id":4,
+          "channel_id":channelId.value,
           "name":accountNameController.text,
           "link":linkController.text,
           "followers_from":int.parse(selectedRange.value.substring(0,selectedRange.value.lastIndexOf('-')-1)),
@@ -186,7 +231,8 @@ class AddAdvertiserChannelController extends GetxController {
           "women":int.parse(selectedWomenPercentage.value),
           "boys":int.parse(selectedBoysPercentage.value),
           "girls":int.parse(selectedGirlsPercentage.value),
-          "areas":areas,
+          "areas":areasIds,
+          "countries":countriesIds
         },
         onSuccess: (res) {
           if (EasyLoading.isShow) {

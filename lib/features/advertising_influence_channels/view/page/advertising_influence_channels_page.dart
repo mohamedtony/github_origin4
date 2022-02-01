@@ -20,6 +20,7 @@ class AdvertisingInfluenceChannelsPage extends StatelessWidget {
       InkWell(
         onTap: (){
 
+          Get.offAndToNamed('/AddAdvertiserChannel');
         },
         child: Image.asset("images/AdvertisingInfluenceChannelsButton.png")
     ),
