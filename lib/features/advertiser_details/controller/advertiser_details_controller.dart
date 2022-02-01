@@ -13,6 +13,12 @@ class AdvertisingDetailsController extends GetxController{
   late TextEditingController placeNameController;
   late TextEditingController placeAddressController;
 
+
+  late TextEditingController couponNumberController;
+  late TextEditingController couponNameController;
+  late TextEditingController numberOfUseController;
+  late TextEditingController storeUrlController;
+
   bool isVideo = false;
 
   final ImagePicker picker = ImagePicker();
@@ -45,6 +51,16 @@ class AdvertisingDetailsController extends GetxController{
     // return _selectedImage;
   }
 
+  void deleteCoupon(){
+    removeSelectedImage();
+    couponNumberController.text = "";
+    couponNameController.text = "";
+    numberOfUseController.text = "";
+    storeUrlController.text = "";
+    endAdvertisingDateCoupon = "";
+    selectedDiscountPercentage = "";
+    update();
+  }
 
   void deleteFromAttachedImagesList(XFile? xItem){
     attachedImagesList.remove(xItem);
@@ -77,11 +93,25 @@ void setStateBehavior(){
     selectedTimeCounter = "$count";
     update();
   }
+  String selectedDiscountPercentage = '';
+
+
+  void selectDiscountPercentage(String? count){
+    selectedDiscountPercentage = "$count";
+    update();
+  }
 
   DateRange? dateRange = DateRange(fromDate: "اختر نطاق زمني",toDate: ".........");
 
   void addDateRange(String? fromDate,toDate){
     dateRange = DateRange(fromDate: fromDate,toDate: toDate) ;
+    update();
+  }
+
+  String? endAdvertisingDateCoupon;
+
+  void addendAdvertisingDateCoupon(String? endDate){
+    endAdvertisingDateCoupon = endDate;
     update();
   }
 
@@ -152,6 +182,13 @@ void setStateBehavior(){
     placeNameController = TextEditingController();
     placeAddressController = TextEditingController();
     descController=TextEditingController();
+
+    couponNumberController=TextEditingController();
+    couponNameController=TextEditingController();
+    numberOfUseController=TextEditingController();
+    storeUrlController=TextEditingController();
+
+
 
     super.onInit();
   }
