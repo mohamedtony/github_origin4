@@ -67,13 +67,18 @@ class FilterOrderAdvertisersSheet extends StatelessWidget {
                           borderRadius: BorderRadius.circular(6.0),
                           color: AppColors.tabColor),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(left: 18.0),
-                      child: SvgPicture.asset(
-                        'images/notice_icon.svg',
-                        fit: BoxFit.fill,
-                        height: 22.0,
-                        width: 22.0,
+                    InkWell(
+                      onTap: (){
+                        Get.back();
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 5.0),
+                        child: Image.asset(
+                          'images/dropdown.png',
+                          fit: BoxFit.fill,
+                          height: 35.0,
+                          width: 35.0,
+                        ),
                       ),
                     ),
                   ],
