@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:advertisers/app_core/network/models/ChannelData.dart';
 import 'package:advertisers/features/advertising_influence_channels/controller/advertising_influence_channels_controller.dart';
 import 'package:advertisers/features/advertising_influence_channels/view/widgets/advertising_influence_channels_list_widget.dart';
@@ -72,27 +74,28 @@ class AdvertisingInfluenceChannelsPageWidget extends StatelessWidget {
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          AnimatedSwitcher(
-                                            duration: Duration(milliseconds: 500),
-                                            child: Container(
-                                              key: Key("${Get.find<AdvertisingInfluenceChannelsController>().checkList!}"),
-                                              child:  Transform(
-                                                alignment: Alignment.center,
-                                                transform: Matrix4.rotationY(
-    Get.find<AdvertisingInfluenceChannelsController>().checkList!.contains(advertisingChannels.id)
-                                                        ? math.pi
-                                                        : 0),
-                                                child: Image.asset("images/switchButton.png"),
-                                              ),
-                                            ),
-                                          ),
+    //                                       SizedBox(
+    //                                         width: 10,
+    //                                       ),
+    //
+    //                                       SizedBox(
+    //                                         width: 10,
+    //                                       ),
+    //                                       AnimatedSwitcher(
+    //                                         duration: Duration(milliseconds: 500),
+    //
+    //                                         child: Container(
+    //                                           key: Key("${Get.find<AdvertisingInfluenceChannelsController>().checkList!}"),
+    //                                           child:  Transform(
+    //                                             alignment: Alignment.center,
+    //                                             transform: Matrix4.rotationY(
+    // Get.find<AdvertisingInfluenceChannelsController>().checkList!.contains(advertisingChannels.id)
+    //                                                     ? math.pi
+    //                                                     : 0),
+    //                                             child: Image.asset("images/switchButton.png"),
+    //                                           ),
+    //                                         ),
+    //                                       ),
 
 
                                           SizedBox(
@@ -101,18 +104,19 @@ class AdvertisingInfluenceChannelsPageWidget extends StatelessWidget {
 
                                         ],),
                                     ),
-                                    // Switch(
-                                    //   thumbColor:MaterialStateProperty.all(Colors.grey.withOpacity(.5)),
-                                    //   trackColor: MaterialStateProperty.all(Color(0xff4391D4)),
-                                    //   value: controller.checkList!.contains(advertisingChannels.id),
-                                    //   // value: advertisingChannels.isChecked!,
-                                    //   onChanged: (value) {
-                                    //     if(controller.isChecked == true){
-                                    //       controller.addRemoveCheckList(advertisingChannels.id);
-                                    //       print("${controller.checkList!}");
-                                    //     }
-                                    //   },
-                                    // ),
+                                    Switch(
+                                      thumbColor:MaterialStateProperty.all(Colors.grey.withOpacity(.5)),
+                                      trackColor: MaterialStateProperty.all(Color(0xff4391D4)),
+                                      value: advertisingChannels.type=='ads'?false:true,
+                                      // value: advertisingChannels.isChecked!,
+                                      onChanged: (value) {
+                                        if(value==false) {
+                                          advertisingChannels.type='ads';
+                                        }else if(value==true){
+                                          advertisingChannels.type='ads_effect';
+                                        }
+                                      },
+                                    ),
                                     Text("إعلان وتأثير",style: TextStyle(fontSize: 16.sp,color:Color(0xff244094) ),),
                                   ],
                                 ),
@@ -188,13 +192,14 @@ class AdvertisingInfluenceChannelsPageWidget extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: (){
-                              Get.toNamed('/EditAdvertiserChannel');
+                              Get.toNamed('/EditAdvertiserChannel?channel=${jsonEncode(advertisingChannels)}');
                             },
                             child: Icon(Icons.edit,color: Color(0xff5aa1d0),),
                           ),
                           InkWell(
                             onTap: (){
-                              _advertisingInfluenceChannelsController.deleteChannel();
+                              _advertisingInfluenceChannelsController.deleteChannel(channelId:advertisingChannels.id??0);
+
                             },
                             child: Icon(Icons.delete_forever,color: Color(0xff5aa1d0),),
                           ),

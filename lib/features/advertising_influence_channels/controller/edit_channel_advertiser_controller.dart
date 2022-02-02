@@ -23,7 +23,7 @@ import 'package:logger/logger.dart';
 
 import '../../../main.dart';
 
-class AddAdvertiserChannelController extends GetxController {
+class EditChannelAdvertiserController extends GetxController {
   static dio.MultipartFile? photo;
   var choosedChannel=''.obs;
   var channelId=0.obs;
@@ -32,7 +32,7 @@ class AddAdvertiserChannelController extends GetxController {
   var savedFile=File(' ').obs;
   var imageBase641=''.obs;
   var selectedRange = '0'.obs;
- late TextEditingController accountNameController;
+  late TextEditingController accountNameController;
   late TextEditingController linkController;
   var selectedMenPercentage = '0'.obs;
   var selectedWomenPercentage = '0'.obs;
@@ -44,25 +44,25 @@ class AddAdvertiserChannelController extends GetxController {
   var countries=<Country>[].obs;
   late String token;
   late Repository repo;
- @override
- void onInit() {
-   repo=Repository();
-   token =storage.read("token");
-   accountNameController=TextEditingController();
-   linkController=TextEditingController();
-   getBasicChannelsForm();
-   //getChannelsAreas();
-   client!.getCountries().then((value) {
-     if (value.data != null) {
-       countries.value = value.data!;
-       print(value.data![0].name);
-       Logger().i(value.data);
-       update();
-     }
-   });
+  @override
+  void onInit() {
+    repo=Repository();
+    token =storage.read("token");
+    accountNameController=TextEditingController();
+    linkController=TextEditingController();
+    getBasicChannelsForm();
+    //getChannelsAreas();
+    client!.getCountries().then((value) {
+      if (value.data != null) {
+        countries.value = value.data!;
+        print(value.data![0].name);
+        Logger().i(value.data);
+        update();
+      }
+    });
 
-   super.onInit();
- }
+    super.onInit();
+  }
   List<int>? checkList = [];
   List<int>? checkCitiesCountriesIds = [];
   List <CitiesCountries> citiesCountriesController = [
@@ -104,31 +104,31 @@ class AddAdvertiserChannelController extends GetxController {
   getChannelsAreas(){
 
 
-      EasyLoading.show();
-      Repository repo = Repository();
+    EasyLoading.show();
+    Repository repo = Repository();
 
-      repo.get<ChannelsAndAreasResponse>(
-          path: 'profile/channels/form',
-          fromJson: (json) => ChannelsAndAreasResponse.fromJson(json),
-          json: {"token":"Bearer  $token"},
-          onSuccess: (res) {
-            if (EasyLoading.isShow) {
-              EasyLoading.dismiss();
-            }
-            areas.value=res.data?.areas??[];
-          },
-          onError: (err, res) {
+    repo.get<ChannelsAndAreasResponse>(
+        path: 'profile/channels/form',
+        fromJson: (json) => ChannelsAndAreasResponse.fromJson(json),
+        json: {"token":"Bearer  $token"},
+        onSuccess: (res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          areas.value=res.data?.areas??[];
+        },
+        onError: (err, res) {
 
-            if (EasyLoading.isShow) {
-              EasyLoading.dismiss();
-            }
-            Get.snackbar(
-              "خطأ",
-              res.message.toString(),
-              icon: const Icon(Icons.person, color: Colors.red),
-              backgroundColor: Colors.yellow,
-              snackPosition: SnackPosition.BOTTOM,);
-          });
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
 
 
   }
@@ -163,7 +163,57 @@ class AddAdvertiserChannelController extends GetxController {
         });
 
   }
-  addChannel(){
+  // addChannel(){
+  //
+  //   EasyLoading.show();
+  //   Repository repo = Repository();
+  //
+  //   repo.postWithImageMultipart<ChannelsResponse>(
+  //       path: 'profile/channels/add',
+  //       fromJson: (json) => ChannelsResponse.fromJson(json),
+  //       json: {"token":"Bearer  $token",
+  //         "channel_id":channelId.value,
+  //         "name":accountNameController.text,
+  //         "link":linkController.text,
+  //         "followers_from":int.parse(selectedRange.value.substring(0,selectedRange.value.lastIndexOf('-')-1)),
+  //         "followers_to":int.parse(selectedRange.value.substring(selectedRange.value.lastIndexOf('-')+2)),
+  //         "men":int.parse(selectedMenPercentage.value),
+  //         "women":int.parse(selectedWomenPercentage.value),
+  //         "boys":int.parse(selectedBoysPercentage.value),
+  //         "girls":int.parse(selectedGirlsPercentage.value),
+  //         "areas":areasIds,
+  //         "countries":countriesIds,
+  //         "type":"ads"
+  //       },
+  //       onSuccess: (res) {
+  //         if (EasyLoading.isShow) {
+  //           EasyLoading.dismiss();
+  //         }
+  //         Get.snackbar(
+  //           "نجاح",
+  //           res.message.toString(),
+  //           icon: const Icon(Icons.person, color: Colors.red),
+  //           backgroundColor: Colors.yellow,
+  //           snackPosition: SnackPosition.BOTTOM,);
+  //         Get.toNamed('/Home');
+  //
+  //       },
+  //       onError: (err, res) {
+  //
+  //         if (EasyLoading.isShow) {
+  //           EasyLoading.dismiss();
+  //         }
+  //         Get.snackbar(
+  //           "خطأ",
+  //           res.message.toString(),
+  //           icon: const Icon(Icons.person, color: Colors.red),
+  //           backgroundColor: Colors.yellow,
+  //           snackPosition: SnackPosition.BOTTOM,);
+  //       });
+  //
+  // }
+
+  editChannel({required int id,required String type}){
 
     EasyLoading.show();
     Repository repo = Repository();
@@ -172,57 +222,8 @@ class AddAdvertiserChannelController extends GetxController {
         path: 'profile/channels/add',
         fromJson: (json) => ChannelsResponse.fromJson(json),
         json: {"token":"Bearer  $token",
-          "channel_id":channelId.value,
-          "name":accountNameController.text,
-       "link":linkController.text,
-     "followers_from":int.parse(selectedRange.value.substring(0,selectedRange.value.lastIndexOf('-')-1)),
-     "followers_to":int.parse(selectedRange.value.substring(selectedRange.value.lastIndexOf('-')+2)),
-     "men":int.parse(selectedMenPercentage.value),
-     "women":int.parse(selectedWomenPercentage.value),
-     "boys":int.parse(selectedBoysPercentage.value),
-     "girls":int.parse(selectedGirlsPercentage.value),
-          "areas":areasIds,
-          "countries":countriesIds,
-          "type":"ads"
-         },
-        onSuccess: (res) {
-          if (EasyLoading.isShow) {
-            EasyLoading.dismiss();
-          }
-          Get.snackbar(
-            "نجاح",
-            res.message.toString(),
-            icon: const Icon(Icons.person, color: Colors.red),
-            backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.BOTTOM,);
-          Get.toNamed('/Home');
-
-        },
-        onError: (err, res) {
-
-          if (EasyLoading.isShow) {
-            EasyLoading.dismiss();
-          }
-          Get.snackbar(
-            "خطأ",
-            res.message.toString(),
-            icon: const Icon(Icons.person, color: Colors.red),
-            backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.BOTTOM,);
-        });
-
-  }
-
-  editChannel(){
-
-    EasyLoading.show();
-    Repository repo = Repository();
-
-    repo.postWithImageMultipart<ChannelsResponse>(
-        path: 'profile/channels/add',
-        fromJson: (json) => ChannelsResponse.fromJson(json),
-        json: {"token":"Bearer  $token",
-          "channel_id":channelId.value,
+          "channel_id":id,
+          "type":type,
           "name":accountNameController.text,
           "link":linkController.text,
           "followers_from":int.parse(selectedRange.value.substring(0,selectedRange.value.lastIndexOf('-')-1)),

@@ -8,13 +8,14 @@ class ChannelData {
   int? id,user_id,channel_id;
   String? name;
   String? link;
+  String? type;
   int? followers_from,followers_to,men,women,boys,girls;
   List<Area>? areas;
   int? status;
   Channel? channel;
 
 
-  ChannelData({this.id, this.name,this.followers_to,this.followers_from,this.status,this.areas,this.boys,this.girls,this.link,this.men,this.women,this.channel});
+  ChannelData({this.type,this.id, this.name,this.followers_to,this.followers_from,this.status,this.areas,this.boys,this.girls,this.link,this.men,this.women,this.channel});
 
   factory ChannelData.fromJson(Map<String, dynamic> json) => _$ChannelDataFromJson(json);
 

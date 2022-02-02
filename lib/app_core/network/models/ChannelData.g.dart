@@ -7,6 +7,7 @@ part of 'ChannelData.dart';
 // **************************************************************************
 
 ChannelData _$ChannelDataFromJson(Map<String, dynamic> json) => ChannelData(
+      type: json['type'] as String?,
       id: json['id'] as int?,
       name: json['name'] as String?,
       followers_to: json['followers_to'] as int?,
@@ -34,6 +35,7 @@ Map<String, dynamic> _$ChannelDataToJson(ChannelData instance) =>
       'channel_id': instance.channel_id,
       'name': instance.name,
       'link': instance.link,
+      'type': instance.type,
       'followers_from': instance.followers_from,
       'followers_to': instance.followers_to,
       'men': instance.men,

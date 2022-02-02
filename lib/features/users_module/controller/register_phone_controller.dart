@@ -1,3 +1,5 @@
+import 'package:advertisers/app_core/network/repository.dart';
+import 'package:advertisers/app_core/network/responses/CheckPhoneResponse.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/main.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -18,7 +20,6 @@ class RegisterPhoneController extends GetxController {
   var longitude = 0.0.obs;
   var password = '';
   var phone = '';
-
   var smsOTP = ''.obs;
   var verificationId = ''.obs;
   var errorMessage = '';
@@ -45,15 +46,54 @@ class RegisterPhoneController extends GetxController {
       return;
     }
     registerPhoneFormKey.currentState!.save();
-    print(
-        '>>>>>>>>>>>>>>>>>>>>${countryCode.value.toString() + int.parse(phone).toString()}');
-    // await verifyPhone();
-    Get.toNamed(
-        '/verificationCodePage?route=registerPhone&phone=${countryCode.value.toString() + int.parse(phone).toString()}');
-    // loginClient();
-    // Get.toNamed('/verificationCodePage');
-  }
+    checkPhone();
 
+  }
+  void checkPhone() {
+    EasyLoading.show();
+    Repository repo = Repository();
+
+    repo.postWithImageMultipart<CheckPhoneResponse>(
+        path: 'auth/check_phone',
+        fromJson: (json) => CheckPhoneResponse.fromJson(json),
+        json: {
+          "phone": phoneController.text,
+
+
+        },
+        onSuccess: (res)async {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          //checkPhoneResponse.value = res;
+          if(res.data!=null&&res.data?.exists==true&&res.data?.has_code==true){
+            Get.snackbar(
+              "موجود",
+              "رقم التليفون مسجل لدينا",
+              icon: const Icon(Icons.person, color: Colors.red),
+              backgroundColor: Colors.yellow,
+              snackPosition: SnackPosition.BOTTOM,);
+            Get.toNamed('/loginPage');
+          }else{
+           // await verifyPhone();
+            Get.toNamed(
+                '/verificationCodePage?route=registerPhone&phone=${countryCode.value.toString() + int.parse(phone).toString()}');
+          }
+
+        },
+        onError: (err, res) {
+
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            err.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
+  }
   // void loginClient(){
   //   repo.post<LoginSalonResponse>(path: '/loginClient',fromJson:(json) => LoginSalonResponse.fromJson(json),
   //       json:LoginSalonRequest(phone: phoneController.text,password: passwordController.text),onSuccess:(res) {
