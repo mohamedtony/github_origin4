@@ -1,3 +1,5 @@
+import 'package:advertisers/app_core/network/repository.dart';
+import 'package:advertisers/app_core/network/responses/CheckPhoneResponse.dart';
 import 'package:advertisers/features/users_module/controller/forget_password_for_phone_controller.dart';
 import 'package:advertisers/features/users_module/controller/register_phone_controller.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_button.dart';
@@ -157,45 +159,46 @@ class VerificationCodePage extends StatelessWidget {
                 AdvertisersButton(
                     text: 'verify'.tr,
                     onPressed: () {
-                      print(Get
-                          .parameters['route'].toString()  );
-                      print(auth.currentUser);
-                 ///
-                      if (Get
-                          .parameters['route'].toString()=='registerPhone') {
-
-                        Get.toNamed('/registerAccountType?phone=${Get
-                            .parameters['phone'].toString()}');
-
-                      }else if(Get
-                          .parameters['route'].toString()=='forgetPasswordForPhone'){
-
-                        Get.toNamed('/newPasswordPage?phone=${Get
-                            .parameters['phone'].toString()}');
-
-                      }
-                      ///
-
-                      // if (auth.currentUser != null&&Get
-                      //     .parameters['route'].toString()=='registerPhone') {
-                      //
-                      //   Get.toNamed('/registerAccountType?phone=${Get
-                      //       .parameters['phone'].toString()}');
-                      //
-                      // }else if(auth.currentUser != null&&Get
-                      //     .parameters['route'].toString()=='forgetPasswordForPhone'){
-                      //
-                      //   Get.toNamed('/newPasswordPage?phone=${Get
-                      //       .parameters['phone'].toString()}');
-                      //
-                      // }
-                      // else if(auth.currentUser == null&&Get
-                      //     .parameters['route'].toString()=='registerPhone'){
-                      //   Get.find<RegisterPhoneController>().signIn();
-                      // }else if(auth.currentUser == null&&Get
-                      //     .parameters['route'].toString()=='forgetPasswordForPhone'){
-                      //   Get.find<ForgetPasswordForPhoneController>().signIn();
-                      // }
+                      checkPhone();
+                 //      print(Get
+                 //          .parameters['route'].toString()  );
+                 //      print(auth.currentUser);
+                 // ///
+                 //      if (Get
+                 //          .parameters['route'].toString()=='registerPhone') {
+                 //
+                 //        Get.toNamed('/registerAccountType?phone=${Get
+                 //            .parameters['phone'].toString()}');
+                 //
+                 //      }else if(Get
+                 //          .parameters['route'].toString()=='forgetPasswordForPhone'){
+                 //
+                 //        Get.toNamed('/newPasswordPage?phone=${Get
+                 //            .parameters['phone'].toString()}');
+                 //
+                 //      }
+                 //      ///
+                 //
+                 //      // if (auth.currentUser != null&&Get
+                 //      //     .parameters['route'].toString()=='registerPhone') {
+                 //      //
+                 //      //   Get.toNamed('/registerAccountType?phone=${Get
+                 //      //       .parameters['phone'].toString()}');
+                 //      //
+                 //      // }else if(auth.currentUser != null&&Get
+                 //      //     .parameters['route'].toString()=='forgetPasswordForPhone'){
+                 //      //
+                 //      //   Get.toNamed('/newPasswordPage?phone=${Get
+                 //      //       .parameters['phone'].toString()}');
+                 //      //
+                 //      // }
+                 //      // else if(auth.currentUser == null&&Get
+                 //      //     .parameters['route'].toString()=='registerPhone'){
+                 //      //   Get.find<RegisterPhoneController>().signIn();
+                 //      // }else if(auth.currentUser == null&&Get
+                 //      //     .parameters['route'].toString()=='forgetPasswordForPhone'){
+                 //      //   Get.find<ForgetPasswordForPhoneController>().signIn();
+                 //      // }
                     },
                     backgroundColor: AppColors.verifyButtonColor,
                     textColor: AppColors.verifyTextColor),
@@ -274,5 +277,74 @@ class VerificationCodePage extends StatelessWidget {
         snackPosition: SnackPosition.BOTTOM,
       );
     }
+  }
+  void checkPhone() {
+    EasyLoading.show();
+    Repository repo = Repository();
+
+    repo.postWithImageMultipart<CheckPhoneResponse>(
+        path: 'auth/save_code',
+        fromJson: (json) => CheckPhoneResponse.fromJson(json),
+        json: {
+          "phone": Get.parameters['phone'],
+          "code":smsOTP,
+        },
+        onSuccess: (res)async {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          print(Get
+              .parameters['route'].toString()  );
+          print(auth.currentUser);
+          ///
+          if (Get
+              .parameters['route'].toString()=='registerPhone') {
+
+            Get.toNamed('/registerAccountType?phone=${Get
+                .parameters['phone'].toString()}');
+
+          }else if(Get
+              .parameters['route'].toString()=='forgetPasswordForPhone'){
+
+            Get.toNamed('/newPasswordPage?phone=${Get
+                .parameters['phone'].toString()}');
+
+          }
+          ///
+
+          // if (auth.currentUser != null&&Get
+          //     .parameters['route'].toString()=='registerPhone') {
+          //
+          //   Get.toNamed('/registerAccountType?phone=${Get
+          //       .parameters['phone'].toString()}');
+          //
+          // }else if(auth.currentUser != null&&Get
+          //     .parameters['route'].toString()=='forgetPasswordForPhone'){
+          //
+          //   Get.toNamed('/newPasswordPage?phone=${Get
+          //       .parameters['phone'].toString()}');
+          //
+          // }
+          // else if(auth.currentUser == null&&Get
+          //     .parameters['route'].toString()=='registerPhone'){
+          //   Get.find<RegisterPhoneController>().signIn();
+          // }else if(auth.currentUser == null&&Get
+          //     .parameters['route'].toString()=='forgetPasswordForPhone'){
+          //   Get.find<ForgetPasswordForPhoneController>().signIn();
+          // }
+
+        },
+        onError: (err, res) {
+
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            err.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
   }
 }

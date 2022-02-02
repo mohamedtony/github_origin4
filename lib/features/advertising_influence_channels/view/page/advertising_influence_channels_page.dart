@@ -43,29 +43,29 @@ class AdvertisingInfluenceChannelsPage extends StatelessWidget {
               color: Color(0xc44184ce),
             ),
           ),
-          Padding(padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-            child:  GetBuilder<AdvertisingInfluenceChannelsController>(
-              init: AdvertisingInfluenceChannelsController(),
-              builder: (controller) => InkWell(
-                onTap: (){
-                  controller.changeChecked();
-                  print("${controller.isChecked}");
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    // Expanded(child:
-                    // ),
-                    controller.isChecked == true ? selectedRadio() : unSelectedRadio(),
-                    SizedBox(
-                      width:10,
-                    ),
-                    Text("تعديل",style: TextStyle(fontSize: 16,color:Color(0xff244094)),)
-                  ],
-                ),
-              ),
-            ),
-          ),
+          // Padding(padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+          //   child:  GetBuilder<AdvertisingInfluenceChannelsController>(
+          //     init: AdvertisingInfluenceChannelsController(),
+          //     builder: (controller) => InkWell(
+          //       onTap: (){
+          //         controller.changeChecked();
+          //         print("${controller.isChecked}");
+          //       },
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.end,
+          //         children: [
+          //           // Expanded(child:
+          //           // ),
+          //           controller.isChecked == true ? selectedRadio() : unSelectedRadio(),
+          //           SizedBox(
+          //             width:10,
+          //           ),
+          //           Text("تعديل",style: TextStyle(fontSize: 16,color:Color(0xff244094)),)
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 15,),
             child: Container(

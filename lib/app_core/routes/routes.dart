@@ -3,7 +3,8 @@ import 'package:advertisers/app_core/bindings/client_setting_binding.dart';
 import 'package:advertisers/app_core/bindings/data_binding.dart';
 import 'package:advertisers/features/add_advertiser_channel/add_advertiser_channel.dart';
 import 'package:advertisers/features/add_advertiser_channel/controller/add_advertiser_channel_controller.dart';
-import 'package:advertisers/features/add_advertiser_channel/edit_advertiser_channel.dart';
+import 'package:advertisers/features/advertising_influence_channels/controller/edit_channel_advertiser_controller.dart';
+import 'package:advertisers/features/advertising_influence_channels/view/page/edit_advertiser_channel.dart';
 import 'package:advertisers/features/advanced_options/controller/advanced_options_controller.dart';
 import 'package:advertisers/features/advanced_options/view/pages/advanced_options_page.dart';
 import 'package:advertisers/features/advanced_options/view/widgets/advanced_options_widget.dart';
@@ -88,7 +89,7 @@ class Routes {
       name: '/EditAdvertiserChannel',
       page: () =>EditAdvertiserChannel(),
       binding: BindingsBuilder(() {
-        Get.lazyPut<AddAdvertiserChannelController>(() => AddAdvertiserChannelController());
+        Get.lazyPut<EditChannelAdvertiserController>(() => EditChannelAdvertiserController());
       }),
 
     ),

@@ -83,13 +83,13 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
               //   height: 100.w,
               //   width: 100.w,
               // ),
-              // Text(
-              //   'السناب شات',
-              //   style: TextStyle(
-              //     fontSize: 18.sp,
-              //     color: Color(0xff041D67),
-              //   ),
-              // ),
+              Text(
+                'اختر قناة',
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  color: Color(0xff041D67),
+                ),
+              ),
             ],
           ),
           Container(

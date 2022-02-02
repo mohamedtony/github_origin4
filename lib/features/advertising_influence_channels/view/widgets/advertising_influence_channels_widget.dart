@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:advertisers/app_core/network/models/ChannelData.dart';
 import 'package:advertisers/features/advertising_influence_channels/controller/advertising_influence_channels_controller.dart';
 import 'package:advertisers/features/advertising_influence_channels/view/widgets/advertising_influence_channels_list_widget.dart';
@@ -190,7 +192,7 @@ class AdvertisingInfluenceChannelsPageWidget extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: (){
-                              Get.toNamed('/EditAdvertiserChannel');
+                              Get.toNamed('/EditAdvertiserChannel?channel=${jsonEncode(advertisingChannels)}');
                             },
                             child: Icon(Icons.edit,color: Color(0xff5aa1d0),),
                           ),

@@ -267,8 +267,19 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+
+                        Obx(() => AdvertisersDropDown(
+                              hintText: 'المدينة',
+                              width: 150.w,
+                              items: _registerNewAdvertiserUserController
+                                  .areas.value,
+                              onChanged: (area) {
+                                _registerNewAdvertiserUserController
+                                    .areaId.value = area.id.toString();
+                              },
+                            )),
                         Obx(
-                          () => AdvertisersDropDown(
+                              () => AdvertisersDropDown(
                             hintText: 'الدولة',
                             width: 150.w,
                             items: _registerNewAdvertiserUserController
@@ -281,16 +292,6 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                             },
                           ),
                         ),
-                        Obx(() => AdvertisersDropDown(
-                              hintText: 'المدينة',
-                              width: 150.w,
-                              items: _registerNewAdvertiserUserController
-                                  .areas.value,
-                              onChanged: (area) {
-                                _registerNewAdvertiserUserController
-                                    .areaId.value = area.id.toString();
-                              },
-                            )),
                       ],
                     )),
                 SizedBox(height: 44.6.h),
