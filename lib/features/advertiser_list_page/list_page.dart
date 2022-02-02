@@ -82,7 +82,7 @@ class ListPage extends StatelessWidget {
                 children: [
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 8),
-                    width: 85,
+                    width: 81.5.w,
                     height: 65,
                     decoration:  BoxDecoration(
                         borderRadius: BorderRadius.circular(2),
@@ -128,7 +128,7 @@ class ListPage extends StatelessWidget {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 5),
-                    width: 85,
+                    width: 81.5.w,
                     height: 65,
                     decoration:  BoxDecoration(
                         borderRadius: BorderRadius.circular(2),
@@ -158,7 +158,7 @@ class ListPage extends StatelessWidget {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 5),
-                    width: 85,
+                    width: 81.5.w,
                     height: 65,
                     decoration:  BoxDecoration(
                         borderRadius: BorderRadius.circular(2),
@@ -188,7 +188,7 @@ class ListPage extends StatelessWidget {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 5,vertical: 8.0),
-                    width: 85,
+                    width: 81.5.w,
                     height: 65,
                     decoration:  BoxDecoration(
                         borderRadius: BorderRadius.circular(2),
@@ -224,7 +224,7 @@ class ListPage extends StatelessWidget {
                 children: [
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 8),
-                    width: 85,
+                    width: 81.5.w,
                     height: 65,
                     decoration:  BoxDecoration(
                         borderRadius: BorderRadius.circular(2),
@@ -257,7 +257,7 @@ class ListPage extends StatelessWidget {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 5),
-                    width: 85,
+                    width: 81.5.w,
                     height: 65,
                     decoration:  BoxDecoration(
                         borderRadius: BorderRadius.circular(2),
@@ -287,7 +287,7 @@ class ListPage extends StatelessWidget {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 5),
-                    width: 85,
+                    width: 81.5.w,
                     height: 65,
                     decoration:  BoxDecoration(
                         borderRadius: BorderRadius.circular(2),
@@ -317,7 +317,7 @@ class ListPage extends StatelessWidget {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 5,vertical: 8.0),
-                    width: 85,
+                    width: 81.5.w,
                     height: 65,
                     decoration:  BoxDecoration(
                         borderRadius: BorderRadius.circular(2),

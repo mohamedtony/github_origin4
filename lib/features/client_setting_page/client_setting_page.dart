@@ -716,25 +716,22 @@ class ClientSettingPage extends StatelessWidget {
                             color: (AppColors.editProfileTextColorOpa)
                                 .withOpacity(0.51),
                             fontWeight: FontWeight.w500,
-                            fontSize: 14.0,
+                            fontSize: 14.0.sp,
                           ),
                           decoration: InputDecoration(
-                            suffixIcon: Directionality(
-                              textDirection: mt.TextDirection.ltr,
-                              child: Container(
-                                // width: 100,
-                                child: controller.isEnabled.value
-                                    ? CountryCodePicker(
+                            suffixIcon: Container(
+                              // width: 100,
+                              child: controller.isEnabled.value
+                                  ? Container(
+                                width: 90,
+                                    child: CountryCodePicker(
                                         padding: const EdgeInsets.only(bottom: 2.0),
                                         // showFlag: false,
-                                        flagWidth: 25,
-                                        searchDecoration: const InputDecoration(
-                                          // hintTextDirection: mt.TextDirection.rtl,
-                                          focusColor: AppColors.tabColor,
-                                          focusedBorder: UnderlineInputBorder(),
-                                          /*border: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: AppColors.focusedBorder),)*/
-                                        ),
+                                        flagWidth: 20,
+                                searchDecoration: const InputDecoration(
+                                      focusColor: AppColors.tabColor,focusedBorder:UnderlineInputBorder(),
+                                      border: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: AppColors.tabColor),)),
                                         initialSelection: controller.countryCode.value??'sa',
 
                                         onChanged: (countryCodeVal) {
@@ -743,12 +740,12 @@ class ClientSettingPage extends StatelessWidget {
                                           print(
                                               '>>>>>>>>>>>>>>${countryCodeVal.code}    ${countryCodeVal.dialCode}     ${countryCodeVal.flagUri}');
                                         },
-                                      )
-                                    : const SizedBox(),
-                              ),
+                                      ),
+                                  )
+                                  : const SizedBox(),
                             ),
                             contentPadding: const EdgeInsets.only(
-                                left: 10.0, right: 14.0, bottom: 12.0),
+                                left: 0.0, right: 4.0, bottom: 8.0),
                             // isCollapsed: true,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(70.0),
@@ -1006,7 +1003,7 @@ class ClientSettingPage extends StatelessWidget {
                 child: Container(
                     margin: const EdgeInsets.only(
                         top: 16.0, left: 16.0, right: 20.0, bottom: 8.0),
-                    height: 45.0,
+                   // height: 45.0,
                     child: Obx(
                       () => controller
                           .isLoadingLocation.value ? Container(
@@ -1090,7 +1087,7 @@ class ClientSettingPage extends StatelessWidget {
                 child: Container(
                     margin: const EdgeInsets.only(
                         top: 16.0, left: 20.0, right: 10.0, bottom: 8.0),
-                    height: 45.0,
+                   // height: 45.0,
                     child: Obx(
                       () =>  controller
                           .isLoadingLocation.value ? Container(
