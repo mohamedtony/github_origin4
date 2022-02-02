@@ -1,7 +1,4 @@
 import 'dart:ui';
-
-import 'package:advertisers/features/advertiser_details/sheets/advertising_channels_sheet.dart';
-import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/features/find_advertise_page/filter_order_advertisers_sheet.dart';
@@ -11,6 +8,7 @@ import 'package:advertisers/features/home_page/view/pages/favorite_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_tabs_page.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/address_bottom_sheet.dart';
+import 'package:advertisers/features/request_advertise_module/view/widgets/advertising_channels_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/attatchements_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/discount_coupon_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/notice_sheet.dart';

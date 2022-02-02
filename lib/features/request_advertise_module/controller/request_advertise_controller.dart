@@ -1,3 +1,7 @@
+import 'package:advertisers/app_core/network/models/AdTypeModel.dart';
+import 'package:advertisers/app_core/network/models/CategoryModel.dart';
+import 'package:advertisers/app_core/network/models/Channel.dart';
+import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
 import 'package:advertisers/features/home_page/controller/home_navigation_controller.dart';
@@ -9,11 +13,19 @@ import 'package:advertisers/features/request_advertise_module/view/widgets/disco
 import 'package:advertisers/features/request_advertise_module/view/widgets/notice_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/send_request_success.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/urls_bottom_sheet.dart';
+import 'package:advertisers/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 
 class RequestAdvertiseController extends GetxController {
+  var isLoadingTypes = true.obs;
+  RxList<CategoryModel> categories = <CategoryModel>[].obs;
+  RxList<AdTypeModel> ads_types = <AdTypeModel>[].obs;
+  RxList<Channel> channels = <Channel>[].obs;
+  String? myToken ;
+
   RxList<SelectedSocialMedia> items = <SelectedSocialMedia>[].obs;
   final ImagePicker _picker = ImagePicker();
   late final List<XFile>? images2;
@@ -21,8 +33,34 @@ class RequestAdvertiseController extends GetxController {
   List<String> images=['images/snapshat_icon.png','images/instegram.png',
     'images/twitter.png','images/youtube.png','images/facebook.png','images/whatsup.png',];
   @override
-  void onInit() {
+  Future<void> onInit() async {
     // TODO: implement onInit
+
+     myToken  = await storage.read("token");
+    client!.getProductsAndAdsTypes("Bearer "+myToken!).then((value) {
+      Logger().i(value.data?.toJson());
+      if(value.data!=null&&value.status==200){
+        //Get.back();
+
+        if(value.data!=null) {
+          if(value.data!.product_types!=null) {
+            categories.value = value.data!.product_types!;
+            categories.value.insert(0, CategoryModel(id: -1,name: 'نوع المنتج'));
+
+          }
+          if(value.data!.ads_types!=null) {
+            ads_types.value = value.data!.ads_types!;
+            ads_types.value.insert(0, AdTypeModel(id: -1,name: 'نوع الاعلان'));
+          }
+          if(value.data!.channels!=null) {
+            channels.value = value.data!.channels!;
+          }
+        }
+        isLoadingTypes.value =false;
+      }
+    });
+
+
      controller = Get.find<HomeNavController>();
     SelectedSocialMedia selectedSocialMedia =SelectedSocialMedia();
     selectedSocialMedia.changeMyModel(0, false);
@@ -64,10 +102,10 @@ class RequestAdvertiseController extends GetxController {
 
   }
   void changeTabIndex(int indexCome,bool isTap) {
-    if(items.value[indexCome].isTapped!.value==true){
-      items.value[indexCome].isTapped!.value=false;
+    if(channels.value[indexCome].isTapped.value==true){
+      channels.value[indexCome].isTapped.value=false;
     }else{
-      items.value[indexCome].isTapped!.value=true;
+      channels.value[indexCome].isTapped.value=true;
     }
   }
 
@@ -125,4 +163,5 @@ class RequestAdvertiseController extends GetxController {
     images2 = await _picker.pickMultiImage();
     print("imagemm"+images2.toString());
   }
+
 }
