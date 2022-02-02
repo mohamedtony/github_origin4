@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:advertisers/features/advertiser_details/controller/advertiser_details_controller.dart';
+import 'package:advertisers/features/advertiser_details/sheets/address_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/advertising_channels_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/advertising_date_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/advertising_desc_sheet.dart';
+import 'package:advertisers/features/advertiser_details/sheets/attatchements_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/discount_coupon_sheet.dart';
+import 'package:advertisers/features/advertiser_details/sheets/discount_coupon_sheet_advertising_details.dart';
 import 'package:advertisers/features/advertiser_details/sheets/notice_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/urls_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_details/widgets/channel_single_item.dart';
@@ -11,9 +16,11 @@ import 'package:advertisers/features/advertiser_details/widgets/title.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AdvertiserDetailsPage extends StatefulWidget {
   const AdvertiserDetailsPage({Key? key}) : super(key: key);
@@ -26,12 +33,26 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
 
   final AdvertisingDetailsController controller =
   Get.put(AdvertisingDetailsController());
+  // final AddressBottomSheetAdvertiserDetailsPageController addressBottomSheetAdvertiserDetailsPageController =
+  // Get.put(AddressBottomSheetAdvertiserDetailsPageController());
+
+  launchURL(urlLink) async {
+    var url = urlLink;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     controller.descController = TextEditingController(
         text: "- تغطية افتتاح الفرع الثالث من فروعنا");
+
+    controller.placeAddressController = TextEditingController(
+        text: "شارع الملز الرياض بجوار مدينة السلام");
 
     controller.noticsController = TextEditingController(
         text: "------------------------------------------- -");
@@ -417,37 +438,51 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
               ),
               Item(
                 onTap: (){
-
+                  showModalBottomSheet(
+                      context: context,
+                      // isScrollControlled: true,
+                      builder: (builder){
+                        return AttatchementPage();
+                        // return AdvertisingNoticsPage();
+                      }
+                  );
                 },
                 title: 'المرفقات',
                 child: Container(
                   height: 100.w,
-                  child: ListView(
-                    padding: const EdgeInsets.all(4.0),
+
+                  child: controller.attachedImagesList.isNotEmpty ? ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    children: [
-                      Stack(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Container(
-                              margin: const EdgeInsets.all(1),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              child: Image.asset(
-                                'images/snapshat_icon.png',
-                                height: 80.w,
-                                width: 80.w,
+                    padding: const EdgeInsets.all(4.0),
+                    // physics: const BouncingScrollPhysics(),
+                    itemCount: controller.attachedImagesList.length,
+                    itemBuilder: (_, index) => Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Container(
+                            margin: const EdgeInsets.all(1),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Colors.grey,
                               ),
                             ),
+                            child: Image.file(
+                              File(controller.attachedImagesList[index].path),
+                              width: 80.w,
+                              height: 80.w,
+                              fit: BoxFit.fill,
+                            ),
                           ),
-                          Positioned(
-                              left: 0,
+                        ),
+                        Positioned(
+                            left: 0,
+                            child: InkWell(
+                              onTap: (){
+                                controller.deleteFromAttachedImagesList(controller.attachedImagesList[index]);
+                              },
                               child: Container(
                                 padding: const EdgeInsets.all(1),
                                 decoration: BoxDecoration(
@@ -462,94 +497,12 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                   color: Colors.red,
                                   size: 12.sp,
                                 ),
-                              ))
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Stack(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Container(
-                              margin: const EdgeInsets.all(1),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                ),
                               ),
-                              child: Image.asset(
-                                'images/youtube.png',
-                                height: 80.w,
-                                width: 80.w,
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                              left: 0,
-                              child: Container(
-                                padding: const EdgeInsets.all(1),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(100),
-                                  border: Border.all(
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                child: Icon(
-                                  Icons.close,
-                                  color: Colors.red,
-                                  size: 12.sp,
-                                ),
-                              ))
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Stack(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Container(
-                              margin: const EdgeInsets.all(1),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              child: Image.asset(
-                                'images/whatsup.png',
-                                height: 80.w,
-                                width: 80.w,
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                              left: 0,
-                              child: Container(
-                                padding: const EdgeInsets.all(1),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(100),
-                                  border: Border.all(
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                child: Icon(
-                                  Icons.close,
-                                  color: Colors.red,
-                                  size: 12.sp,
-                                ),
-                              ))
-                        ],
-                      ),
-                    ],
+                            ))
+                      ],
+                    ),
+                  ):const Center(
+                    child:  Text("لا توجد مرفقات"),
                   ),
                 ),
               ),
@@ -663,7 +616,13 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
               ),
               Item(
                 onTap: (){
-
+                    showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (builder){
+                          return AddressBottomSheetAdvertiserDetailsPage();
+                        }
+                    );
                 },
                 title: 'العنوان',
                 child: Padding(
@@ -685,31 +644,37 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 16.0, vertical: 4),
                               child: Row(
-                                children: const [
-                                  Icon(Icons.add_location),
-                                  SizedBox(
+                                children:  [
+                                const  Icon(Icons.add_location),
+                                  const  SizedBox(
                                     width: 15,
                                   ),
-                                  Text('شارع الملز الرياض بجوار مدينة السلام',style: TextStyle(color:Color(0xff041D67)),),
+                                  Text('${controller.placeAddressController.text}',style: TextStyle(color:Color(0xff041D67)),),
                                 ],
                               ),
                             ),
                           )),
                       Positioned(
                           left: 0,
-                          child: Container(
-                            padding: const EdgeInsets.all(1),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(100),
-                              border: Border.all(
-                                color: Colors.red,
+                          child: InkWell(
+                            onTap: (){
+                              controller.placeAddressController.clear();
+                              controller.setStateBehavior();
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(1),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(100),
+                                border: Border.all(
+                                  color: Colors.red,
+                                ),
                               ),
-                            ),
-                            child: Icon(
-                              Icons.close,
-                              color: Colors.red,
-                              size: 12.sp,
+                              child: Icon(
+                                Icons.close,
+                                color: Colors.red,
+                                size: 12.sp,
+                              ),
                             ),
                           ))
                     ],
@@ -722,7 +687,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                       context: context,
                       isScrollControlled: true,
                       builder: (builder){
-                        return DiscountCouponSheet();
+                        return DiscountCouponSheetAdvertisingDetails();
                       }
                   );
 
@@ -750,6 +715,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                               children: [
                                 Container(
                                   margin: const EdgeInsets.all(1),
+                                  padding: const EdgeInsets.all(1),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(12),
@@ -757,29 +723,39 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                       color: Colors.grey,
                                     ),
                                   ),
-                                  child: Image.asset(
-                                    'images/whatsup.png',
-                                    height: 60.w,
-                                    width: 60.w,
-                                  ),
+                                  child: controller.hasSelectedImage ?
+                                  ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                 child: Image.file(
+                                    File(controller.selectedImage.path),
+                                    fit: BoxFit.fill,
+                                    height: 60.h,
+                                    width: 60.h,
+                                  )):Container(),
                                 ),
-                                Column(
-                                  children: [
-                                    Text('خصم منتجات رمضان',style: TextStyle(color:Color(0xff041D67))),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Text('الانتهاء في 1/5/2021',style: TextStyle(color:Color(0xff041D67))),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Text('www.namshi.com',style: TextStyle(color:Color(0xff041D67))),
-                                  ],
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Text('${controller.couponNameController.text}',style: TextStyle(color:Color(0xff041D67))),
+                                      SizedBox(
+                                        height: 8,
+                                      ),
+                                      controller.endAdvertisingDateCoupon != null ? Text('الانتهاء في ${controller.endAdvertisingDateCoupon}',style: TextStyle(color:Color(0xff041D67))):Container(),
+                                      SizedBox(
+                                        height: 8,
+                                      ),
+                                      InkWell(
+                                          onTap: (){
+                                            launchURL("${controller.storeUrlController.text}");
+                                          },
+                                          child: Text('${controller.storeUrlController.text}',style: TextStyle(color:Color(0xff041D67)))),
+                                    ],
+                                  ),
                                 ),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Container(
+                                    controller.couponNumberController.text != "" ? Container(
                                       decoration: BoxDecoration(
                                         color: Colors.grey[300],
                                         borderRadius: BorderRadius.circular(8),
@@ -787,33 +763,41 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                           color: Colors.grey[300]!,
                                         ),
                                       ),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                              padding: EdgeInsets.all(4),
-                                              color: Colors.transparent,
-                                              child: Text('51469')),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Container(
-                                              padding: EdgeInsets.all(4),
-                                              decoration: BoxDecoration(
-                                                color: Colors.brown[200],
-                                                borderRadius:
-                                                BorderRadius.circular(8),
-                                                border: Border.all(
-                                                  color: Colors.brown[200]!,
+                                      child: InkWell(
+                                        onTap: (){
+
+                                          Clipboard.setData(new ClipboardData(text: controller.couponNumberController.text)).then((_){
+                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("تم نسخ الكود")));
+                                          });
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                                padding: EdgeInsets.all(4),
+                                                color: Colors.transparent,
+                                                child: Text('${controller.couponNumberController.text}')),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Container(
+                                                padding: EdgeInsets.all(4),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.brown[200],
+                                                  borderRadius:
+                                                  BorderRadius.circular(8),
+                                                  border: Border.all(
+                                                    color: Colors.brown[200]!,
+                                                  ),
                                                 ),
-                                              ),
-                                              child: Text('% 15')),
-                                        ],
+                                                child: Text('${controller.selectedDiscountPercentage}')),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Row(
+                                    ):Container(),
+                                    controller.numberOfUseController.text != "" ? Row(
                                       children: [
                                         Text(
-                                          '400 كوبون',
+                                          '${controller.numberOfUseController.text} كوبون',
                                           style: TextStyle(fontSize: 10.sp,color: Color(0xff041D67)),
                                         ),
                                         const SizedBox(
@@ -840,7 +824,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                           ),
                                         ),
                                       ],
-                                    ),
+                                    ):Container(),
                                   ],
                                 ),
                               ],
@@ -850,19 +834,24 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                       ),
                       Positioned(
                         left: 0,
-                        child: Container(
-                          padding: const EdgeInsets.all(1),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(
-                              color: Colors.red,
+                        child: InkWell(
+                          onTap: (){
+                            controller.deleteCoupon();
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(1),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(100),
+                              border: Border.all(
+                                color: Colors.red,
+                              ),
                             ),
-                          ),
-                          child: Icon(
-                            Icons.close,
-                            color: Colors.red,
-                            size: 12.sp,
+                            child: Icon(
+                              Icons.close,
+                              color: Colors.red,
+                              size: 12.sp,
+                            ),
                           ),
                         ),
                       ),

@@ -101,7 +101,7 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                       child: mt.InkWell(
                           onTap: (){
                             _chooseBakaController.changeBakaID( subscriptionBaka.id!);
-                            Get.toNamed('/bakaDetails');
+                              Get.toNamed('/chooseBakaDetails');
                           },
                           child: Text('مميزات الباقة',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 18.sp,decoration: TextDecoration.underline,fontWeight: FontWeight.w600))),
                     ),
@@ -204,7 +204,7 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                       child: mt.InkWell(
                           onTap: (){
                             _chooseBakaController.changeBakaID( subscriptionBaka.id!);
-                            Get.toNamed('/bakaDetails');
+                            Get.toNamed('/chooseBakaDetails');
                           },
                           child: Text('مميزات الباقة',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 18.sp,decoration: TextDecoration.underline,fontWeight: FontWeight.w600))),
                     ),
@@ -217,8 +217,13 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                   children: [
                     Container(
                       margin: EdgeInsets.only(top: 10.0),
-                      child: Image.asset(
-                        subscriptionBaka.image!=null && subscriptionBaka.image!=""?subscriptionBaka.image!:imageStr,
+                      child: subscriptionBaka.image!=null && subscriptionBaka.image!=""?Image.network(
+                        subscriptionBaka.image!,
+                        height: 96.h,
+                        width: 98.w,
+                        fit: BoxFit.fitHeight,
+                      ):Image.asset(
+                        imageStr,
                         height: 96.h,
                         width: 98.w,
                         fit: BoxFit.fitHeight,

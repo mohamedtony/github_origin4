@@ -13,7 +13,7 @@ class SelectedTab extends StatelessWidget {
     return  GetBuilder<WalletController>(
       init: WalletController(),
       builder: (controller) => Container(
-        padding: EdgeInsets.symmetric(horizontal: 25,vertical: 3),
+        padding: EdgeInsets.symmetric(horizontal: 15,vertical: 3),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(7),
             color:controller.tabId != id? Colors.transparent :  Color(0xff4184CE)

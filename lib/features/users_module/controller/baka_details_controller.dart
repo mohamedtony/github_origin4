@@ -78,14 +78,16 @@ class BakaDetailsController extends GetxController{
         //update();
         //}
       }
-      Fluttertoast.showToast(
-        msg: value.message??'',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.black.withOpacity(0.6),
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
+      if(value.message!=null&&value.message!.isNotEmpty) {
+        Fluttertoast.showToast(
+          msg: value.message ?? '',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.black.withOpacity(0.6),
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+      }
 
     });
     client!.getSubscriptionDetails(_chooseBakaController.selectedBakaId).then((value){
@@ -95,8 +97,8 @@ class BakaDetailsController extends GetxController{
         subscriptionBakaDetail.value = value.data! ;
         subscriptionBakaDetail.value.settings?.forEach((element) {
           if(element!=null && element.name!=null) {
-            print("ininininininini");
-            print(element.name);
+            //print("ininininininini");
+           // print(element.name);
             items.value.add(element.name!);
           }
         });
@@ -201,6 +203,7 @@ class BakaDetailsController extends GetxController{
       if(value.data!=null&&value.status==200){
         priceAfterDiscount.value = (CreateSubscriptionModel.fromJson(value.data)).total!;
         createSubscriptionModel.value = CreateSubscriptionModel.fromJson(value.data);
+        Logger().i(value.data);
         //update();
         //  Get.toNamed('/payVerification');
       }

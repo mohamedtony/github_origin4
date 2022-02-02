@@ -10,13 +10,23 @@ import 'package:image_picker/image_picker.dart';
 
 
 class AdvertisingDetailsController extends GetxController{
+  late TextEditingController placeNameController;
+  late TextEditingController placeAddressController;
 
+
+  late TextEditingController couponNumberController;
+  late TextEditingController couponNameController;
+  late TextEditingController numberOfUseController;
+  late TextEditingController storeUrlController;
 
   bool isVideo = false;
 
   final ImagePicker picker = ImagePicker();
 
   XFile? _selectedImage;
+
+
+  List<XFile> attachedImagesList = [];
 
   bool get hasSelectedImage => _selectedImage != null;
   XFile? pickedXFile;
@@ -26,6 +36,37 @@ class AdvertisingDetailsController extends GetxController{
     _selectedImage = null;
   }
 
+  getImageToAttachedList({@required bool? fromGallery}) async {
+    pickedXFile =
+    await picker.pickImage(
+        source: fromGallery! ? ImageSource.gallery : ImageSource.camera,imageQuality: 20 );
+    attachedImagesList.add(XFile(pickedXFile!.path));
+    update();
+    // if (pickedXFile != null) {
+    //   _selectedImage = XFile(pickedXFile!.path);
+    //   // controller.setStateBehavior();
+    // }
+    // // hasSelectedImage.;
+    // print('xXx Original Image: $_selectedImage');
+    // return _selectedImage;
+  }
+
+  void deleteCoupon(){
+    removeSelectedImage();
+    couponNumberController.text = "";
+    couponNameController.text = "";
+    numberOfUseController.text = "";
+    storeUrlController.text = "";
+    endAdvertisingDateCoupon = "";
+    selectedDiscountPercentage = "";
+    update();
+  }
+
+  void deleteFromAttachedImagesList(XFile? xItem){
+    attachedImagesList.remove(xItem);
+    update();
+  }
+
   getImage({@required bool? fromGallery}) async {
     pickedXFile = await picker.pickImage(
         source: fromGallery! ? ImageSource.gallery : ImageSource.camera,imageQuality: 20 );
@@ -33,10 +74,8 @@ class AdvertisingDetailsController extends GetxController{
       _selectedImage = XFile(pickedXFile!.path);
       // controller.setStateBehavior();
     }
-
     // hasSelectedImage.;
     print('xXx Original Image: $_selectedImage');
-
     return _selectedImage;
   }
 
@@ -54,11 +93,25 @@ void setStateBehavior(){
     selectedTimeCounter = "$count";
     update();
   }
+  String selectedDiscountPercentage = '';
+
+
+  void selectDiscountPercentage(String? count){
+    selectedDiscountPercentage = "$count";
+    update();
+  }
 
   DateRange? dateRange = DateRange(fromDate: "اختر نطاق زمني",toDate: ".........");
 
   void addDateRange(String? fromDate,toDate){
     dateRange = DateRange(fromDate: fromDate,toDate: toDate) ;
+    update();
+  }
+
+  String? endAdvertisingDateCoupon;
+
+  void addendAdvertisingDateCoupon(String? endDate){
+    endAdvertisingDateCoupon = endDate;
     update();
   }
 
@@ -126,8 +179,16 @@ void setStateBehavior(){
   @override
   void onInit() {
     // passIndex;
-
+    placeNameController = TextEditingController();
+    placeAddressController = TextEditingController();
     descController=TextEditingController();
+
+    couponNumberController=TextEditingController();
+    couponNameController=TextEditingController();
+    numberOfUseController=TextEditingController();
+    storeUrlController=TextEditingController();
+
+
 
     super.onInit();
   }
