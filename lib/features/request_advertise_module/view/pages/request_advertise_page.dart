@@ -139,7 +139,12 @@ class RequestAdvertisePage extends StatelessWidget {
                   // label: "Menu mode",
                   itemAsString: (CategoryModel? u) =>
                   u?.itemAsStringByName() ?? '',
-                  onChanged: print,
+                  onChanged: (categoryModel){
+                    if(categoryModel!.id!=-1) {
+                      requestAdvertiseController.categoryId =
+                      categoryModel.id!;
+                    }
+                  },
                   selectedItem: requestAdvertiseController.categories.value[0]
               ): Container(
                   alignment: Alignment.centerRight,
@@ -203,7 +208,11 @@ class RequestAdvertisePage extends StatelessWidget {
                   // label: "Menu mode",
                   itemAsString: (AdTypeModel? u) =>
                   u?.itemAsStringByName() ?? '',
-                  onChanged: print,
+                  onChanged: (adTypeModel){
+                    if(adTypeModel!.id!=-1) {
+                      requestAdvertiseController.adTypeId = adTypeModel.id!;
+                    }
+                  },
                   selectedItem: requestAdvertiseController.ads_types.value[0]
               ): Container(
                   alignment: Alignment.centerRight,
@@ -257,6 +266,7 @@ class RequestAdvertisePage extends StatelessWidget {
                           hintStyle: TextStyle(color: AppColors.adVertiserPageDataColor),
                           //hintText: 'adDescription'.tr,
                           fillColor:Colors.white70),
+                      controller: requestAdvertiseController.descriptionController,
                     ),
                   )
                 ],
@@ -265,38 +275,43 @@ class RequestAdvertisePage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  width: 165,
-                  height: 50,
-                  margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 8.0),
-                  child: Material(
-                    elevation: 6.0,
-                    shadowColor: Colors.grey[200],
-                    borderRadius: BorderRadius.all(Radius.circular(18)),
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 20.0),
-                          child: Image.asset(
-                            'images/calender_icon.png',
-                            fit: BoxFit.fill,
-                            height: 22.0,
-                            width: 22.0,
+                InkWell(
+                  onTap: (){
+                    onSheetClicked!(1);
+                  },
+                  child: Container(
+                    width: 165,
+                    height: 50,
+                    margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 8.0),
+                    child: Material(
+                      elevation: 6.0,
+                      shadowColor: Colors.grey[200],
+                      borderRadius: BorderRadius.all(Radius.circular(18)),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(right: 20.0),
+                            child: Image.asset(
+                              'images/calender_icon.png',
+                              fit: BoxFit.fill,
+                              height: 22.0,
+                              width: 22.0,
+                            ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                              left: 12.0, bottom: 4.0, right: 20),
-                          child: Text(
-                            'adDate'.tr,
-                            style: TextStyle(
-                                fontSize: 16.0,
-                                color: AppColors.adVertiserPageDataColor,
-                                fontWeight: FontWeight.w300),
-                            textAlign: TextAlign.center,
+                          Container(
+                            margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),
+                            child: Text(
+                              'adDate'.tr,
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: AppColors.adVertiserPageDataColor,
+                                  fontWeight: FontWeight.w300),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

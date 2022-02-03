@@ -1,8 +1,12 @@
+import 'dart:io';
+
+import 'package:advertisers/features/advertiser_details/sheets/advertising_date_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/controller/adertising_channels_controller.dart';
 import 'package:advertisers/features/request_advertise_module/controller/attatchement_page_controller.dart';
 import 'package:advertisers/features/request_advertise_module/SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight.dart';
 import 'package:advertisers/features/home_page/view/widgets/advertise_item_home_page.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -11,8 +15,7 @@ class DiscountCouponSheet extends StatelessWidget {
   ScrollController? scrollController;
 
   DiscountCouponSheet({Key? key, this.scrollController}) : super(key: key);
-  final AttatchementPageController controller =
-      Get.put(AttatchementPageController());
+  RequestAdvertiseController requestAdvertiseController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -85,12 +88,18 @@ class DiscountCouponSheet extends StatelessWidget {
                         child: Container(
                             width: 170.0,
                             height: 170.0,
-                            child: Image.asset(
+                            child:  Obx(()=>requestAdvertiseController.imagePath.value.isNotEmpty
+                                ? Image.file(
+                              File(requestAdvertiseController.imagePath.value),
+                              width: 170.0,
+                              height: 170.0,
+                              fit: BoxFit.fitHeight,
+                            ):Image.asset(
                               'images/namshi_logo.jpg',
                               width: 170.0,
                               height: 170.0,
                               fit: BoxFit.fitHeight,
-                            ),
+                            )),
                             decoration: BoxDecoration(
                               border: Border.all(
                                   color: AppColors.dividerBottom, width: 0.5),
@@ -107,6 +116,7 @@ class DiscountCouponSheet extends StatelessWidget {
                       top:1,
                       child: InkWell(
                         onTap: (){
+                          requestAdvertiseController.showChoiceImageDialog(context);
                         },
                         child:Container(
                           margin: EdgeInsets.only(left: 10.0),
@@ -510,73 +520,99 @@ class DiscountCouponSheet extends StatelessWidget {
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(6.0),
                 ),
-                child: Material(
-                  elevation: 6.0,
-                  shadowColor: Colors.grey[200],
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                  //borderOnForeground: true,
-                  color: AppColors.saveButtonBottomSheet,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: AppColors.addPhotoBottom, width: 0.5),
-                        borderRadius: BorderRadius.circular(12.0),
-                        color: Colors.white),
-                    child: Row(
-                      children: [
-                        Container(
-                            width: 95,
-                            margin: EdgeInsets.only(
-                                top: 2.0, bottom: 2.0, left: 10.0, right: 10.0),
-                            child: Text(
-                              "تاريخ الانتهاء",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 16.0,color: AppColors.activitiesDropDown.withOpacity(0.73)),
-                            )),
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 8.0),
-                          color: Colors.grey.withOpacity(0.2),
-                          width: 2,
-                        ),
-                        Expanded(
-                          child: TextField(
-                            textAlign: TextAlign.start,
-                            textAlignVertical: TextAlignVertical.center,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(
-                                  left: 10.0,
-                                  right: 10.0,
-                                ),
-                                // isCollapsed: true,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(70.0),
-                                  borderSide: BorderSide(
-                                    width: 0,
-                                    style: BorderStyle.none,
+                child: InkWell(
+                  onTap: (){
+                    DateTime selectedDate = DateTime.now();
+
+                    Future<void> _selectDate(BuildContext context) async {
+                      final DateTime? picked = await showDatePicker(
+                          context: context,
+                          initialDate: ( DateTime.now()).add( Duration(days: 1)),
+                          firstDate:( DateTime.now()),
+                          lastDate: ( DateTime.now()).add( Duration(days: 600)));
+                      // if (picked != null && picked != selectedDate)
+                      if (picked != null && picked != selectedDate)
+                      {
+                        requestAdvertiseController.addendAdvertisingDateCoupon(dateFormat.format(picked));
+                        // controller.endAdvertisingDate = dateFormat.format(picked);
+                      }
+                      // selectedDate = picked;
+
+                    }
+
+                    _selectDate(context);
+
+
+                  },
+                  child: Material(
+                    elevation: 6.0,
+                    shadowColor: Colors.grey[200],
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    //borderOnForeground: true,
+                    color: AppColors.saveButtonBottomSheet,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: AppColors.addPhotoBottom, width: 0.5),
+                          borderRadius: BorderRadius.circular(12.0),
+                          color: Colors.white),
+                      child: Row(
+                        children: [
+                          Container(
+                              width: 95,
+                              margin: EdgeInsets.only(
+                                  top: 2.0, bottom: 2.0, left: 10.0, right: 10.0),
+                              child: Text(
+                                "تاريخ الانتهاء",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 16.0,color: AppColors.activitiesDropDown.withOpacity(0.73)),
+                              )),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 8.0),
+                            color: Colors.grey.withOpacity(0.2),
+                            width: 2,
+                          ),
+                          Expanded(
+                            child: Obx(()=>TextField(
+                              enabled: false,
+                              textAlign: TextAlign.start,
+                              textAlignVertical: TextAlignVertical.center,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                    left: 10.0,
+                                    right: 10.0,
                                   ),
-                                ),
-                                filled: true,
-                                hintStyle: TextStyle(color: Colors.grey[350]),
-                                hintText: 'تاريخ الانتهاء',
-                                fillColor: Colors.white70),
+                                  // isCollapsed: true,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(70.0),
+                                    borderSide: BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
+                                  filled: true,
+                                  hintStyle: requestAdvertiseController.endAdvertisingDateCoupon.value.isNotEmpty ? TextStyle(color: AppColors.adVertiserPageDataColor.withOpacity(0.51),decoration: TextDecoration.underline,decorationThickness: 4): TextStyle(color: Colors.grey[350],),
+                                  hintText: requestAdvertiseController.endAdvertisingDateCoupon.value.isNotEmpty ? "${requestAdvertiseController.endAdvertisingDateCoupon.value}" :  "تاريخ الانتهاء",
+                                  fillColor: Colors.white70),
+                            )),
                           ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 8.0),
-                          color: Colors.grey.withOpacity(0.2),
-                          width: 2,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10.0,right: 10.0),
-                          child: Image.asset(
-                            'images/calender_icon.png',
-                            fit: BoxFit.fill,
-                            height: 18.0,
-                            width: 18.0,
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 8.0),
+                            color: Colors.grey.withOpacity(0.2),
+                            width: 2,
                           ),
-                        ),
-                      ],
+                          Container(
+                            margin: EdgeInsets.only(left: 10.0,right: 10.0),
+                            child: Image.asset(
+                              'images/calender_icon.png',
+                              fit: BoxFit.fill,
+                              height: 18.0,
+                              width: 18.0,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
