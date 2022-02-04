@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
   static const Color activitiesDropDown = Color(0xFF182A5E);
   static const Color buttonDropDown = Color(0xFF378CC3);
   static const Color activitiesSheetRounded = Color(0xFFD5C7E9);

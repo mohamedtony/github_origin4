@@ -1,6 +1,4 @@
-// import 'package:advertisers/advertiser_list_page/advertise_list_controller.dart';
-// import 'package:advertisers/advertiser_list_page/advertiser_list_item.dart';
-// import 'package:advertisers/home_page/app_colors.dart';
+
 import 'package:advertisers/features/advertiser_list_page/advertise_list_controller.dart';
 import 'package:advertisers/features/advertiser_list_page/advertiser_list_item.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +7,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../main.dart';
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 class AdvertiserListPage extends StatelessWidget {
    AdvertiserListPage({Key? key}) : super(key: key);
    var controller = Get.put(AdvertiseListController());

@@ -1,12 +1,13 @@
-import 'package:advertisers/features/request_advertise_module/controller/adertising_channels_controller.dart';
-import 'package:advertisers/features/request_advertise_module/SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight.dart';
-import 'package:advertisers/features/home_page/view/widgets/advertise_item_home_page.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+//=========================================================================================
+
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 
 class UrlsPage extends StatefulWidget {
   ScrollController? scrollController;
@@ -169,7 +170,8 @@ class _UrlsPageState extends State<UrlsPage>  {
                                 margin: EdgeInsets.only(right: 10.0, left: 28.0, top: 30.0,bottom:30),
                                 child: InkWell(
                                   onTap: (){
-                                   // requestAdvertiseController.insertNewLinkFields(context);
+                                    requestAdvertiseController.insertNewLinkFields(context);
+                                   // requestAdvertiseController.animationControllers[index].forward(from: 0.6).whenComplete(() => requestAdvertiseController.deleteLink(index));
                                   },
                                   child: Material(
                                     elevation: 6.0,

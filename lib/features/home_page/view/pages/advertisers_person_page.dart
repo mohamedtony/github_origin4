@@ -1,6 +1,10 @@
 import 'package:advertisers/features/home_page/view/widgets/advertiser_person_item.dart';
 import 'package:flutter/material.dart';
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 class AdvertisersPage extends StatelessWidget {
   const AdvertisersPage({Key? key}) : super(key: key);
 

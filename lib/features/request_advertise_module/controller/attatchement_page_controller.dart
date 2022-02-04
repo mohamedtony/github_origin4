@@ -3,7 +3,11 @@ import 'dart:io';
 import 'package:advertisers/features/home_page/model/SelectedSocialMedia.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 class AttatchementPageController extends GetxController {
   RxList<SelectedSocialMedia> items = <SelectedSocialMedia>[].obs;
   final ImagePicker _picker = ImagePicker();

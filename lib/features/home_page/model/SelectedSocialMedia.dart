@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 class SelectedSocialMedia {
   int? tabIndex = -1;
   RxBool? isTapped = false.obs;

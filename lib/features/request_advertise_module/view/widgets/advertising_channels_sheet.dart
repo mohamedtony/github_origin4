@@ -8,7 +8,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 class AdvertisingChannelsPage extends StatelessWidget {
   ScrollController? scrollController;
 

@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 class CoponsPageController extends GetxController {
   var isOpend = false;
   var position = -1;

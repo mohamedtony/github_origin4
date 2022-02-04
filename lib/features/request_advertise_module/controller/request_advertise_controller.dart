@@ -24,7 +24,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 class RequestAdvertiseController extends GetxController with GetTickerProviderStateMixin{
 
   //----------------------- for request ads == request advertise page---------------
@@ -54,6 +58,8 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   List<AnimationController> animationControllers = [];
   List<Animation<Offset>> animationTextFields = [];
   List<Animation<Offset>> animationsClose = [];
+  /// Will used to access the Animated list
+  final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
 
  // TextEditingController? textUrlController;
   //TextEditingController? urlController;
@@ -270,7 +276,36 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
 
 //================================== url sheet ==========================================
  void insertNewLinkFields(BuildContext context){
-    if(textUrlControllers[numOfLinks.value-1].text.isNotEmpty && urlControllers[numOfLinks.value-1].text.isNotEmpty){
+    if(numOfLinks.value==0){
+      textUrlControllers.add(TextEditingController());
+      urlControllers.add(TextEditingController());
+      animationControllers.add(AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 200),
+      ));
+
+      animationTextFields.add(Tween(
+        begin: const Offset(0.0, 0.0),
+        end: const Offset(0.2, 0.0),
+      ).animate(
+        CurvedAnimation(
+          curve: Curves.decelerate,
+          parent: animationControllers[numOfLinks.value],
+        ),
+      ));
+
+      animationsClose.add(Tween(
+        begin: const Offset(0.0, 0.0),
+        end: const Offset(1.0, 0.0),
+      ).animate(
+        CurvedAnimation(
+          curve: Curves.decelerate,
+          parent:  animationControllers[numOfLinks.value],
+        ),
+      ));
+      numOfLinks.value ++;
+    }
+    else if(textUrlControllers[numOfLinks.value-1].text.isNotEmpty && urlControllers[numOfLinks.value-1].text.isNotEmpty){
       textUrlControllers.add(TextEditingController());
       urlControllers.add(TextEditingController());
       animationControllers.add(AnimationController(
@@ -310,7 +345,10 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     }
  }
   void onSaveUrlsClicked(BuildContext context) {
-    if(textUrlControllers[numOfLinks.value-1].text.isNotEmpty && urlControllers[numOfLinks.value-1].text.isNotEmpty){
+    if(numOfLinks.value==0){
+      Get.back();
+    }
+    else if(textUrlControllers[numOfLinks.value-1].text.isNotEmpty && urlControllers[numOfLinks.value-1].text.isNotEmpty){
       isUrlSaveClicked.value = true;
       Get.back();
       for(int i=0;i<numOfLinks.value;i++){
@@ -427,6 +465,35 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
         parent:  animationControllers[0],
       ),
     ));
+  }
+
+  void deleteLink(int index) {
+    print(index);
+    if(links.value.length>0) {
+      links.value.removeAt(index);
+    }
+    if(textUrlControllers.length>0) {
+      textUrlControllers.removeAt(index);
+    }
+    if(urlControllers.length>0) {
+      urlControllers.removeAt(index);
+    }
+    if(animationControllers.length>0) {
+      animationControllers.removeAt(index);
+    }
+    if(animationTextFields.length>0) {
+      animationTextFields.removeAt(index);
+    }
+    if(animationsClose.length>0) {
+      animationsClose.removeAt(index);
+    }
+    numOfLinks.value --;
+   /* List<TextEditingController> textUrlControllers = [];
+    List<TextEditingController> urlControllers = [];
+
+    List<AnimationController> animationControllers = [];
+    List<Animation<Offset>> animationTextFields = [];
+    List<Animation<Offset>> animationsClose = [];*/
   }
 
 
