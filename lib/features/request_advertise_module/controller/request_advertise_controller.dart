@@ -25,7 +25,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 
-class RequestAdvertiseController extends GetxController {
+class RequestAdvertiseController extends GetxController with GetTickerProviderStateMixin{
 
   //----------------------- for request ads == request advertise page---------------
   var isLoadingTypes = true.obs;
@@ -50,6 +50,10 @@ class RequestAdvertiseController extends GetxController {
   var isUrlSaveClicked = false.obs;
   List<TextEditingController> textUrlControllers = [];
   List<TextEditingController> urlControllers = [];
+
+  List<AnimationController> animationControllers = [];
+  List<Animation<Offset>> animationTextFields = [];
+  List<Animation<Offset>> animationsClose = [];
 
  // TextEditingController? textUrlController;
   //TextEditingController? urlController;
@@ -99,8 +103,32 @@ class RequestAdvertiseController extends GetxController {
      //---------------------- for urls page ------------------------------------------------
      textUrlControllers.add(TextEditingController());
      urlControllers.add(TextEditingController());
+     animationControllers.add(AnimationController(
+       vsync: this,
+       duration: const Duration(milliseconds: 200),
+     ));
 
+     animationTextFields.add(Tween(
+       begin: const Offset(0.0, 0.0),
+       end: const Offset(0.2, 0.0),
+     ).animate(
+       CurvedAnimation(
+         curve: Curves.decelerate,
+         parent: animationControllers[0],
+       ),
+     ));
 
+     animationsClose.add(Tween(
+       begin: const Offset(0.0, 0.0),
+       end: const Offset(1.0, 0.0),
+     ).animate(
+       CurvedAnimation(
+         curve: Curves.decelerate,
+         parent:  animationControllers[0],
+       ),
+     ));
+
+     //List<Animation<Offset>> animationsClose = [];
      controller = Get.find<HomeNavController>();
     SelectedSocialMedia selectedSocialMedia =SelectedSocialMedia();
     selectedSocialMedia.changeMyModel(0, false);
@@ -141,6 +169,7 @@ class RequestAdvertiseController extends GetxController {
     super.onInit();
 
   }
+
   void changeTabIndex(int indexCome,bool isTap) {
     if(channels.value[indexCome].isTapped.value==true){
       channels.value[indexCome].isTapped.value=false;
@@ -244,6 +273,30 @@ class RequestAdvertiseController extends GetxController {
     if(textUrlControllers[numOfLinks.value-1].text.isNotEmpty && urlControllers[numOfLinks.value-1].text.isNotEmpty){
       textUrlControllers.add(TextEditingController());
       urlControllers.add(TextEditingController());
+      animationControllers.add(AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 200),
+      ));
+
+      animationTextFields.add(Tween(
+        begin: const Offset(0.0, 0.0),
+        end: const Offset(0.2, 0.0),
+      ).animate(
+        CurvedAnimation(
+          curve: Curves.decelerate,
+          parent: animationControllers[numOfLinks.value],
+        ),
+      ));
+
+      animationsClose.add(Tween(
+        begin: const Offset(0.0, 0.0),
+        end: const Offset(1.0, 0.0),
+      ).animate(
+        CurvedAnimation(
+          curve: Curves.decelerate,
+          parent:  animationControllers[numOfLinks.value],
+        ),
+      ));
       numOfLinks.value ++;
     }else{
       Fluttertoast.showToast(
@@ -348,6 +401,34 @@ class RequestAdvertiseController extends GetxController {
   void addendAdvertisingDateCoupon(String? endDate){
     endAdvertisingDateCoupon.value = endDate!;
   }
+
+  void disposeAnimation() {
+    animationControllers.add(AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    ));
+
+    animationTextFields.add(Tween(
+      begin: const Offset(0.0, 0.0),
+      end: const Offset(0.2, 0.0),
+    ).animate(
+      CurvedAnimation(
+        curve: Curves.decelerate,
+        parent: animationControllers[0],
+      ),
+    ));
+
+    animationsClose.add(Tween(
+      begin: const Offset(0.0, 0.0),
+      end: const Offset(1.0, 0.0),
+    ).animate(
+      CurvedAnimation(
+        curve: Curves.decelerate,
+        parent:  animationControllers[0],
+      ),
+    ));
+  }
+
 
 /*  String? endAdvertisingDate;
 
