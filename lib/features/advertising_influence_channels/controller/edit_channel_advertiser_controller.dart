@@ -239,6 +239,7 @@ class EditChannelAdvertiserController extends GetxController {
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
+          Get.offAndToNamed('/AdvertiserSettingsPage');
           Get.snackbar(
             "نجاح",
             res.message.toString(),

@@ -32,7 +32,7 @@ class DataBinding extends Bindings {
     Get.lazyPut(() => AdvertisingInfluenceChannelsController());
     Get.lazyPut(() =>AddAdvertiserChannelController());
     Get.lazyPut(() =>EditChannelAdvertiserController());
-
+    Get.lazyPut(()=>ForgetPasswordForPhoneController());
 
 
   }

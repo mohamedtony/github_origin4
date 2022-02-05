@@ -139,6 +139,8 @@ class VerificationCodePage extends StatelessWidget {
                       Get.find<RegisterPhoneController>().smsOTP.value = value;}
                       else if(Get.parameters['route'].toString()=='forgetPasswordForPhone'){
                       Get.find<ForgetPasswordForPhoneController>().smsOTP.value = value;}
+                      ///this is sended to database
+                      Get.find<RegisterPhoneController>().publicSmsOtp.value=value;
                       print(value);
                       // setState(() {
                       //   currentText = value;
@@ -159,7 +161,7 @@ class VerificationCodePage extends StatelessWidget {
                 AdvertisersButton(
                     text: 'verify'.tr,
                     onPressed: () {
-                      checkPhone();
+                      saveCode();
                  //      print(Get
                  //          .parameters['route'].toString()  );
                  //      print(auth.currentUser);
@@ -278,7 +280,8 @@ class VerificationCodePage extends StatelessWidget {
       );
     }
   }
-  void checkPhone() {
+  void saveCode() {
+
     EasyLoading.show();
     Repository repo = Repository();
 
@@ -287,7 +290,7 @@ class VerificationCodePage extends StatelessWidget {
         fromJson: (json) => CheckPhoneResponse.fromJson(json),
         json: {
           "phone": Get.parameters['phone'],
-          "code":smsOTP,
+          "code":Get.find<RegisterPhoneController>().publicSmsOtp.value,
         },
         onSuccess: (res)async {
           if (EasyLoading.isShow) {

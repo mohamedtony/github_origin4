@@ -16,6 +16,9 @@ ChannelData _$ChannelDataFromJson(Map<String, dynamic> json) => ChannelData(
       areas: (json['areas'] as List<dynamic>?)
           ?.map((e) => Area.fromJson(e as Map<String, dynamic>))
           .toList(),
+      countries: (json['countries'] as List<dynamic>?)
+          ?.map((e) => Country.fromJson(e as Map<String, dynamic>))
+          .toList(),
       boys: json['boys'] as int?,
       girls: json['girls'] as int?,
       link: json['link'] as String?,
@@ -45,4 +48,5 @@ Map<String, dynamic> _$ChannelDataToJson(ChannelData instance) =>
       'areas': instance.areas,
       'status': instance.status,
       'channel': instance.channel,
+       'countries':instance.countries,
     };

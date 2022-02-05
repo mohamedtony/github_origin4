@@ -195,7 +195,7 @@ class AddAdvertiserChannelController extends GetxController {
             icon: const Icon(Icons.person, color: Colors.red),
             backgroundColor: Colors.yellow,
             snackPosition: SnackPosition.BOTTOM,);
-          Get.toNamed('/Home');
+          Get.offAndToNamed('/AdvertiserSettingsPage');
 
         },
         onError: (err, res) {
