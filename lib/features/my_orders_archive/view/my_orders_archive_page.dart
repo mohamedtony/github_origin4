@@ -190,7 +190,11 @@ class MyOrdersArchivePage extends StatelessWidget {
                                                           children: [
                                                             Expanded(child: Text("${orders![index].ownerName
                                                             }",style: TextStyle(fontSize: 17.sp,color: Color(0xff000000)),)),
-                                                            Text("تفاصيل الطلب",style: TextStyle( decoration: TextDecoration.underline,fontSize: 15.sp,color: Color(0xff244094)),),
+                                                            InkWell(
+                                                                onTap: (){
+                                                                  Get.toNamed('/AdvertiserDetailsPage');
+                                                                },
+                                                                child: Text("تفاصيل الطلب",style: TextStyle( decoration: TextDecoration.underline,fontSize: 15.sp,color: Color(0xff244094)),)),
                                                           ],
                                                         ),
                                                         const SizedBox(

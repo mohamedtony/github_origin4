@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AddAdvertiserDetailsTitle extends StatelessWidget {
   const AddAdvertiserDetailsTitle({Key? key}) : super(key: key);
@@ -17,7 +18,9 @@ class AddAdvertiserDetailsTitle extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Get.toNamed('/CustomerOrderInvoiceOutPutsPage');
+            },
             child: Card(
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
