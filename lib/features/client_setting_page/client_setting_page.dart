@@ -20,7 +20,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 class ClientSettingPage extends StatelessWidget {
   ClientSettingPage({Key? key}) : super(key: key);
   ClientSettingPageController controller = Get.find();

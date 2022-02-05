@@ -1,3 +1,5 @@
+import 'package:advertisers/app_core/network/models/AdTypeModel.dart';
+import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page.dart';
 import 'package:advertisers/features/find_advertise_page/find_advertise_page.dart';
 import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
@@ -9,10 +11,15 @@ import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 class RequestAdvertisePage extends StatelessWidget {
    RequestAdvertisePage({Key? key,this.onSheetClicked}) : super(key: key);
     Function(int x)? onSheetClicked;
@@ -83,7 +90,13 @@ class RequestAdvertisePage extends StatelessWidget {
               margin: EdgeInsets.only(
                   top: 16.0, left: 16.0, right: 16.0, bottom: 8.0),
               height: 45.0,
-              child: DropdownSearch<String>(
+              child:Obx(()=> requestAdvertiseController.isLoadingTypes.value?Container(
+                child: const SpinKitThreeBounce(
+                  color: Colors.blue,
+                  size: 25,
+                ),
+              )
+                  :requestAdvertiseController.categories.isNotEmpty?DropdownSearch<CategoryModel>(
                   mode: Mode.MENU,
                   dropDownButton: Container(
                     margin: EdgeInsets.only(left: 0.0),
@@ -98,7 +111,7 @@ class RequestAdvertisePage extends StatelessWidget {
                     // filled: true,
                     //fillColor: Color(0xFFF2F2F2),
                     contentPadding:
-                        EdgeInsets.only(right: 20.0, top: 0.0, bottom: 0.0),
+                    EdgeInsets.only(right: 20.0, top: 0.0, bottom: 0.0),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                       borderSide: BorderSide(
@@ -115,18 +128,43 @@ class RequestAdvertisePage extends StatelessWidget {
                           width: 1,
                         )),
                   ),
-                  items: ["Brazil", "Italia (Disabled)", "Tunisia", 'Canada'],
+                  items: requestAdvertiseController.categories.value,
+                  dropdownBuilder: (BuildContext context, s) {
+                    return Text(
+                      '${(s?.name ?? '')}',
+                      style: TextStyle(
+                          color: AppColors.tabColor.withOpacity(0.73),
+                          /*decoration: TextDecoration.underline,decorationThickness: 2,*/
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.start,
+                    );
+                  },
                   // label: "Menu mode",
-                  hint: "country in menu mode",
-                  popupItemDisabled: (String s) => s.startsWith('I'),
-                  onChanged: print,
-                  selectedItem: 'productType'.tr),
+                  itemAsString: (CategoryModel? u) =>
+                  u?.itemAsStringByName() ?? '',
+                  onChanged: (categoryModel){
+                    if(categoryModel!.id!=-1) {
+                      requestAdvertiseController.categoryId =
+                      categoryModel.id!;
+                    }
+                  },
+                  selectedItem: requestAdvertiseController.categories.value[0]
+              ): Container(
+                  alignment: Alignment.centerRight,
+                  child: const Text("لا يوجد منتجات"))),
             ),
             Container(
               margin: EdgeInsets.only(
                   top: 8.0, left: 16.0, right: 16.0, bottom: 16.0),
               height: 45.0,
-              child: DropdownSearch<String>(
+              child: Obx(()=>requestAdvertiseController.isLoadingTypes.value?Container(
+                child: const SpinKitThreeBounce(
+                  color: Colors.blue,
+                  size: 25,
+                ),
+              )
+                  :requestAdvertiseController.ads_types.isNotEmpty?DropdownSearch<AdTypeModel>(
                   mode: Mode.MENU,
                   //showSelectedItem: true,
                   dropDownButton: Container(
@@ -142,7 +180,7 @@ class RequestAdvertisePage extends StatelessWidget {
                     // filled: true,
                     //fillColor: Color(0xFFF2F2F2),
                     contentPadding:
-                        EdgeInsets.only(right: 20.0, top: 0.0, bottom: 0.0),
+                    EdgeInsets.only(right: 20.0, top: 0.0, bottom: 0.0),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                       borderSide: BorderSide(
@@ -159,15 +197,33 @@ class RequestAdvertisePage extends StatelessWidget {
                           width: 1,
                         )),
                   ),
-                  items: ["Brazil", "Italia (Disabled)", "Tunisia", 'Canada'],
+                  items: requestAdvertiseController.ads_types.value,
+                  dropdownBuilder: (BuildContext context, s) {
+                    return Text(
+                      '${(s?.name ?? '')}',
+                      style: TextStyle(
+                          color: AppColors.tabColor.withOpacity(0.73),
+                          /*decoration: TextDecoration.underline,decorationThickness: 2,*/
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.start,
+                    );
+                  },
                   // label: "Menu mode",
-                  hint: "country in menu mode",
-                  popupItemDisabled: (String s) => s.startsWith('I'),
-                  onChanged: print,
-                  selectedItem: 'adType'.tr),
+                  itemAsString: (AdTypeModel? u) =>
+                  u?.itemAsStringByName() ?? '',
+                  onChanged: (adTypeModel){
+                    if(adTypeModel!.id!=-1) {
+                      requestAdvertiseController.adTypeId = adTypeModel.id!;
+                    }
+                  },
+                  selectedItem: requestAdvertiseController.ads_types.value[0]
+              ): Container(
+                  alignment: Alignment.centerRight,
+                  child: const Text("لا يوجد اعلانات"))),
             ),
             Container(
-              height: 85.0,
+              height: 90.0,
               margin: EdgeInsets.only(
                   top: 0.0, left: 16.0, right: 16.0, bottom: 16.0),
               decoration: DottedDecoration(
@@ -178,54 +234,88 @@ class RequestAdvertisePage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(
                     10), //remove this to get plane rectange
               ),
-              child: Row(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                      margin: EdgeInsets.only(top: 8.0, right: 16.0),
+                      margin: EdgeInsets.only(top: 4.0, right: 16.0),
                       child: Text(
                         'adDescription'.tr,
                         style:
                             TextStyle(color: AppColors.adVertiserPageDataColor),
                       )),
+                  Expanded(
+                    child: TextField(
+                      textAlign: TextAlign.start,
+                      textAlignVertical: TextAlignVertical.center,
+                      //controller: controller.kayanNameController,
+                      //enabled: controller.isEnabled.value,
+                      maxLines: 2,
+                      style: TextStyle(
+                          color:  AppColors.tabColor.withOpacity(0.73),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.0),
+                      decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.only(
+                              left: 4.0, right: 4.0, bottom: 4.0),
+                          // isCollapsed: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: const BorderSide(
+                              width: 0,
+                              style: BorderStyle.none,
+                            ),
+                          ),
+                          filled: true,
+                          hintStyle: TextStyle(color: AppColors.adVertiserPageDataColor),
+                          //hintText: 'adDescription'.tr,
+                          fillColor:Colors.white70),
+                      controller: requestAdvertiseController.descriptionController,
+                    ),
+                  )
                 ],
               ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  width: 165,
-                  height: 50,
-                  margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 8.0),
-                  child: Material(
-                    elevation: 6.0,
-                    shadowColor: Colors.grey[200],
-                    borderRadius: BorderRadius.all(Radius.circular(18)),
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 20.0),
-                          child: Image.asset(
-                            'images/calender_icon.png',
-                            fit: BoxFit.fill,
-                            height: 22.0,
-                            width: 22.0,
+                InkWell(
+                  onTap: (){
+                    onSheetClicked!(1);
+                  },
+                  child: Container(
+                    width: 165,
+                    height: 50,
+                    margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 8.0),
+                    child: Material(
+                      elevation: 6.0,
+                      shadowColor: Colors.grey[200],
+                      borderRadius: BorderRadius.all(Radius.circular(18)),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(right: 20.0),
+                            child: Image.asset(
+                              'images/calender_icon.png',
+                              fit: BoxFit.fill,
+                              height: 22.0,
+                              width: 22.0,
+                            ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                              left: 12.0, bottom: 4.0, right: 20),
-                          child: Text(
-                            'adDate'.tr,
-                            style: TextStyle(
-                                fontSize: 16.0,
-                                color: AppColors.adVertiserPageDataColor,
-                                fontWeight: FontWeight.w300),
-                            textAlign: TextAlign.center,
+                          Container(
+                            margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),
+                            child: Text(
+                              'adDate'.tr,
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: AppColors.adVertiserPageDataColor,
+                                  fontWeight: FontWeight.w300),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

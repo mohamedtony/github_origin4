@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 class MyShimmerWidget extends StatelessWidget {
 
   final double width;

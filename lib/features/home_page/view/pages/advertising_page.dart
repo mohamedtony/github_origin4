@@ -5,7 +5,11 @@ import 'package:advertisers/features/request_advertise_module/view/widgets/attat
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 class AdvertisingPage extends StatelessWidget {
    AdvertisingPage({Key? key,this.onSheetClicked}) : super(key: key);
    Function(int x)? onSheetClicked;

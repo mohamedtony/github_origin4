@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 class AdvertiseItem extends StatelessWidget {
   const AdvertiseItem({Key? key}) : super(key: key);
 

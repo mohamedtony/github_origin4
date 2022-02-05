@@ -13,6 +13,7 @@ import 'package:advertisers/app_core/network/responses/CreateSubscriptionRespons
 import 'package:advertisers/app_core/network/responses/GetBlockedUsersResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetCategoriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetMyProfileInfoResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetProductsAndAdsTypesResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetUseLocationsResponse.dart';
 import 'package:advertisers/app_core/network/responses/LoginClientResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
@@ -89,4 +90,8 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   @POST('https://advertiser.cefour.com/api/v1/profile/update')
   @MultiPart()
   Future<GetMyProfileInfoResponse> updateMyProfile(@Header("Accept") String accept,@Header("Authorization") String token,{@Part(name: 'company_name') String? company_name ,@Part(name: 'username') String? username ,@Part(name: 'account_name') String? account_name ,@Part(name: 'manager_name') String? manager_name,@Part(name: 'email') String? email,@Part(name: 'phone') String? phone ,@Part(name: 'country_id') int? country_id ,@Part(name: 'area_id') int? area_id ,@Part(name: 'role') String? role ,@Part(name: 'type') String? type ,@Part(name: 'personal_id') String? personal_id ,@Part(name: 'sgl') String? sgl ,@Part(name: 'chat') int? isChat ,@Part(name: 'notifiable') int? isNotification ,@Part(name: 'image') File? file});
+
+  @GET('https://advertiser.cefour.com/api/v1/requests/form')
+  Future<GetProductsAndAdsTypesResponse> getProductsAndAdsTypes(@Header("Authorization") String token);
+
 }
