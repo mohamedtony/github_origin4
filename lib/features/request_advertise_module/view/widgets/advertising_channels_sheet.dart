@@ -8,7 +8,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 class AdvertisingChannelsPage extends StatelessWidget {
   ScrollController? scrollController;
 
@@ -149,22 +153,25 @@ class AdvertisingChannelsPage extends StatelessWidget {
                     width: 135,
                     height: 35,
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 45.0),
-                    child: Material(
-                      elevation: 6.0,
-                      shadowColor: Colors.grey[200],
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      color: AppColors.saveButtonBottomSheet,
-                      child: Container(
-                        /*margin: EdgeInsets.only(
-                              left: 12.0, bottom: 4.0, right: 20),*/
-                        alignment: Alignment.center,
-                        child: Text(
-                          'save'.tr,
-                          style: TextStyle(
-                              fontSize: 16.0,
-                              color: AppColors.tabColor,
-                              fontWeight: FontWeight.w700),
-                          textAlign: TextAlign.center,
+                    child: InkWell(
+                      onTap: requestAdvertiseController.onSaveChannelsClicked,
+                      child: Material(
+                        elevation: 6.0,
+                        shadowColor: Colors.grey[200],
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: AppColors.saveButtonBottomSheet,
+                        child: Container(
+                          /*margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),*/
+                          alignment: Alignment.center,
+                          child: Text(
+                            'save'.tr,
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                color: AppColors.tabColor,
+                                fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                     ),
@@ -201,4 +208,5 @@ class AdvertisingChannelsPage extends StatelessWidget {
       ),
     );
   }
+
 }

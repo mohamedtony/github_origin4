@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:advertisers/features/advertiser_details/sheets/advertising_date_sheet.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/features/find_advertise_page/filter_order_advertisers_sheet.dart';
@@ -17,7 +18,11 @@ import 'package:advertisers/features/wallet_module/wallet_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 class Home extends StatelessWidget {
     Home({Key? key}) : super(key: key);
  // final HomeNavController _loginController=Get.put(HomeNavController());
@@ -250,7 +255,10 @@ class Home extends StatelessWidget {
             initialChildSize: bottomNumber==6?0.84:0.67,
             expand: false,
             builder: (context, scrollController) {
-              if(bottomNumber==2) {
+              if(bottomNumber==1){
+                return AdvertisingDatePage();
+              }
+              else if(bottomNumber==2) {
                 return AdvertisingChannelsPage(
                   scrollController: scrollController
                 );

@@ -1,6 +1,10 @@
 import 'package:advertisers/features/home_page/model/SelectedSocialMedia.dart';
 import 'package:get/get.dart';
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 class FindOrderAdvertisersController extends GetxController {
   RxList<SelectedSocialMedia> items = <SelectedSocialMedia>[].obs;
 

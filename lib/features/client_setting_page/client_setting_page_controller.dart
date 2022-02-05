@@ -21,7 +21,11 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:phone_number/phone_number.dart';
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 class ClientSettingPageController extends GetxController  {
   var isOpend = false;
   var position = -1;
@@ -44,7 +48,8 @@ class ClientSettingPageController extends GetxController  {
   var isChat = false.obs;
   var isNotification = false.obs;
    late XFile xFile ;
-   File? imageFile;var imagePath = ''.obs;
+   File? imageFile;
+   var imagePath = ''.obs;
   var accountType = ''.obs;
   var isLoadingLocation = true.obs;
   var isValidPhone = false.obs;

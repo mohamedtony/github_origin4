@@ -6,7 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
 class AdvertiseListController extends GetxController with GetSingleTickerProviderStateMixin {
   var isOpend = false;
   var position = -1;
