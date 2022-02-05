@@ -460,7 +460,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(4.0),
-                          child: Container(
+                          child: controller.attachedImagesList[index].isVideo == 0 ? Container(
                             margin: const EdgeInsets.all(1),
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -470,11 +470,13 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                               ),
                             ),
                             child: Image.file(
-                              File(controller.attachedImagesList[index].path),
+                              File(controller.attachedImagesList[index].file!.path),
                               width: 80.w,
                               height: 80.w,
                               fit: BoxFit.fill,
                             ),
+                          ):VideoApp(
+                            file: File(controller.attachedImagesList[index].file!.path),
                           ),
                         ),
                         Positioned(

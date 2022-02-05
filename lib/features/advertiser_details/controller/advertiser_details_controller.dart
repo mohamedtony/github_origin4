@@ -26,7 +26,7 @@ class AdvertisingDetailsController extends GetxController{
   XFile? _selectedImage;
 
 
-  List<XFile> attachedImagesList = [];
+  List<XFileType> attachedImagesList = [];
 
   bool get hasSelectedImage => _selectedImage != null;
   XFile? pickedXFile;
@@ -40,15 +40,25 @@ class AdvertisingDetailsController extends GetxController{
     pickedXFile =
     await picker.pickImage(
         source: fromGallery! ? ImageSource.gallery : ImageSource.camera,imageQuality: 20 );
-    attachedImagesList.add(XFile(pickedXFile!.path));
+    attachedImagesList.add(
+        XFileType(
+            file: XFile(pickedXFile!.path),
+            isVideo: 0
+        )
+        );
     update();
-    // if (pickedXFile != null) {
-    //   _selectedImage = XFile(pickedXFile!.path);
-    //   // controller.setStateBehavior();
-    // }
-    // // hasSelectedImage.;
-    // print('xXx Original Image: $_selectedImage');
-    // return _selectedImage;
+  }
+
+
+  getVideoToAttachedList({@required bool? fromGallery}) async {
+    pickedXFile =
+    await picker.pickVideo(
+        source: fromGallery! ? ImageSource.gallery : ImageSource.camera,);
+    attachedImagesList.add(        XFileType(
+        file: XFile(pickedXFile!.path),
+        isVideo: 1
+    ));
+    update();
   }
 
   void deleteCoupon(){
@@ -62,7 +72,7 @@ class AdvertisingDetailsController extends GetxController{
     update();
   }
 
-  void deleteFromAttachedImagesList(XFile? xItem){
+  void deleteFromAttachedImagesList(XFileType? xItem){
     attachedImagesList.remove(xItem);
     update();
   }
@@ -215,4 +225,11 @@ void setStateBehavior(){
 class DateRange {
   String? fromDate,toDate;
   DateRange({this.fromDate,this.toDate});
+}
+
+
+class XFileType{
+  XFile? file;
+  int? isVideo;
+  XFileType({this.file,this.isVideo});
 }
