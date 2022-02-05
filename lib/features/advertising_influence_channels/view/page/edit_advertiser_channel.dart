@@ -65,7 +65,13 @@ class _EditAdvertiserChannelState extends State<EditAdvertiserChannel> {
   _editChannelAdvertiserController.choosedChannel.value=channel.channel?.image??'';
   for(Area are in channel.areas??[] ){
     print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>${are.name}");
+    _editChannelAdvertiserController.areasIds.add(are.id);
     _editChannelAdvertiserController.addToList(are);
+  }
+  for(Country count in channel.countries??[] ){
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>${count.name}");
+    _editChannelAdvertiserController.countriesIds.add(count.id);
+    _editChannelAdvertiserController.addToList(count);
   }
 
 

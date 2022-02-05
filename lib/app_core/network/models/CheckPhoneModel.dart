@@ -6,10 +6,10 @@ part 'CheckPhoneModel.g.dart';
 @JsonSerializable()
 class CheckPhoneModel {
 
-  bool? exists,has_code;
+  bool? exists,has_code,has_account;
 
 
-  CheckPhoneModel({this.exists,this.has_code});
+  CheckPhoneModel({this.exists,this.has_code,this.has_account});
 
   factory CheckPhoneModel.fromJson(Map<String, dynamic> json) => _$CheckPhoneModelFromJson(json);
 
