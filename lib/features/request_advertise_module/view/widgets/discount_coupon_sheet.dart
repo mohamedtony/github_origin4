@@ -15,17 +15,36 @@ import 'package:get/get.dart';
 //                         By Mohamed T. Hammad
 
 //=========================================================================================
-class DiscountCouponSheet extends StatelessWidget {
+class DiscountCouponSheet extends StatefulWidget {
   ScrollController? scrollController;
 
   DiscountCouponSheet({Key? key, this.scrollController}) : super(key: key);
+
+  @override
+  State<DiscountCouponSheet> createState() => _DiscountCouponSheetState();
+}
+
+class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
   RequestAdvertiseController requestAdvertiseController = Get.find();
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if(requestAdvertiseController.isDiscountSaveClicked.isFalse){
+      //----------------------------------------- for discount sheet ------------------------------------
+      requestAdvertiseController.coponNumberController=  TextEditingController();
+      requestAdvertiseController.coponNameController=  TextEditingController();
+      requestAdvertiseController.coponDiscountController=  TextEditingController();
+      requestAdvertiseController.coponUsesController=  TextEditingController();
+      requestAdvertiseController.coponLinkController=  TextEditingController();
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
       child: ListView(
-        controller: this.scrollController,
+        controller: this.widget.scrollController,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -193,58 +212,64 @@ class DiscountCouponSheet extends StatelessWidget {
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(6.0),
                 ),
-                child: Material(
-                  elevation: 6.0,
-                  shadowColor: Colors.grey[200],
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                  //borderOnForeground: true,
-                  color: AppColors.saveButtonBottomSheet,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: AppColors.addPhotoBottom, width: 0.5),
-                        borderRadius: BorderRadius.circular(12.0),
-                        color: Colors.white),
-                    child: Row(
-                      children: [
-                        Container(
-                            width: 95,
-                            margin: EdgeInsets.only(
-                                top: 2.0, bottom: 2.0, left: 10.0, right: 10.0),
-                            child: Text(
-                              "رقم الكوبون",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 16.0,color:AppColors.activitiesDropDown.withOpacity(0.73)),
-                            )),
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 8.0),
-                          color: Colors.grey.withOpacity(0.2),
-                          width: 2,
-                        ),
-                        Expanded(
-                          child: TextField(
-                            textAlign: TextAlign.start,
-                            textAlignVertical: TextAlignVertical.center,
-                            decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(
-                                  left: 10.0,
-                                  right: 10.0,
-                                ),
-                                // isCollapsed: true,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(70.0),
-                                  borderSide: BorderSide(
-                                    width: 0,
-                                    style: BorderStyle.none,
-                                  ),
-                                ),
-                                filled: true,
-                                hintStyle: TextStyle(color: Colors.grey[350]),
-                                hintText: 'رقم الكوبون',
-                                fillColor: Colors.white70),
+                child: InkWell(
+                  onTap: (){
+                    requestAdvertiseController.onDiscountCoponSaveClicked(context);
+                  },
+                  child: Material(
+                    elevation: 6.0,
+                    shadowColor: Colors.grey[200],
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    //borderOnForeground: true,
+                    color: AppColors.saveButtonBottomSheet,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: AppColors.addPhotoBottom, width: 0.5),
+                          borderRadius: BorderRadius.circular(12.0),
+                          color: Colors.white),
+                      child: Row(
+                        children: [
+                          Container(
+                              width: 95,
+                              margin: EdgeInsets.only(
+                                  top: 2.0, bottom: 2.0, left: 10.0, right: 10.0),
+                              child: Text(
+                                "رقم الكوبون",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 16.0,color:AppColors.activitiesDropDown.withOpacity(0.73)),
+                              )),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 8.0),
+                            color: Colors.grey.withOpacity(0.2),
+                            width: 2,
                           ),
-                        ),
-                      ],
+                          Expanded(
+                            child: TextField(
+                              textAlign: TextAlign.start,
+                              textAlignVertical: TextAlignVertical.center,
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                    left: 10.0,
+                                    right: 10.0,
+                                  ),
+                                  // isCollapsed: true,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(70.0),
+                                    borderSide: BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
+                                  filled: true,
+                                  hintStyle: TextStyle(color: Colors.grey[350]),
+                                  hintText: 'رقم الكوبون',
+                                  fillColor: Colors.white70),
+                              controller: requestAdvertiseController.coponNumberController,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -305,6 +330,7 @@ class DiscountCouponSheet extends StatelessWidget {
                                 hintStyle: TextStyle(color: Colors.grey[350]),
                                 hintText: 'اسم الكوبون',
                                 fillColor: Colors.white70),
+                            controller: requestAdvertiseController.coponNameController,
                           ),
                         ),
                       ],
@@ -368,6 +394,7 @@ class DiscountCouponSheet extends StatelessWidget {
                                 hintStyle: TextStyle(color: Colors.grey[350]),
                                 hintText: 'نسبة الخصم',
                                 fillColor: Colors.white70),
+                            controller: requestAdvertiseController.coponDiscountController,
                           ),
                         ),
                       ],
@@ -432,6 +459,7 @@ class DiscountCouponSheet extends StatelessWidget {
                                 hintStyle: TextStyle(color: Colors.grey[350]),
                                 hintText: 'عدد الاستخدام',
                                 fillColor: Colors.white70),
+                            controller: requestAdvertiseController.coponUsesController,
                           ),
                         ),
                       ],
@@ -478,7 +506,8 @@ class DiscountCouponSheet extends StatelessWidget {
                           child: TextField(
                             textAlign: TextAlign.start,
                             textAlignVertical: TextAlignVertical.center,
-                            keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.text,
+                            maxLines: 1,
                             decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(
                                   left: 10.0,
@@ -493,9 +522,11 @@ class DiscountCouponSheet extends StatelessWidget {
                                   ),
                                 ),
                                 filled: true,
+
                                 hintStyle: TextStyle(color: Colors.grey[350]),
                                 hintText: 'رابط المتجر',
                                 fillColor: Colors.white70),
+                            controller: requestAdvertiseController.coponLinkController,
                           ),
                         ),
                         Container(
@@ -599,6 +630,7 @@ class DiscountCouponSheet extends StatelessWidget {
                                   hintStyle: requestAdvertiseController.endAdvertisingDateCoupon.value.isNotEmpty ? TextStyle(color: AppColors.adVertiserPageDataColor.withOpacity(0.51),decoration: TextDecoration.underline,decorationThickness: 4): TextStyle(color: Colors.grey[350],),
                                   hintText: requestAdvertiseController.endAdvertisingDateCoupon.value.isNotEmpty ? "${requestAdvertiseController.endAdvertisingDateCoupon.value}" :  "تاريخ الانتهاء",
                                   fillColor: Colors.white70),
+                              //controller: requestAdvertiseController.dat,
                             )),
                           ),
                           Container(
@@ -628,22 +660,27 @@ class DiscountCouponSheet extends StatelessWidget {
                     width: 135,
                     height: 35,
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
-                    child: Material(
-                      elevation: 6.0,
-                      shadowColor: Colors.grey[200],
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      color: AppColors.saveButtonBottomSheet,
-                      child: Container(
-                        /*margin: EdgeInsets.only(
-                              left: 12.0, bottom: 4.0, right: 20),*/
-                        alignment: Alignment.center,
-                        child: Text(
-                          'save'.tr,
-                          style: TextStyle(
-                              fontSize: 16.0,
-                              color: AppColors.tabColor,
-                              fontWeight: FontWeight.w700),
-                          textAlign: TextAlign.center,
+                    child: InkWell(
+                      onTap: (){
+                        requestAdvertiseController.onDiscountCoponSaveClicked(context);
+                      },
+                      child: Material(
+                        elevation: 6.0,
+                        shadowColor: Colors.grey[200],
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: AppColors.saveButtonBottomSheet,
+                        child: Container(
+                          /*margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),*/
+                          alignment: Alignment.center,
+                          child: Text(
+                            'save'.tr,
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                color: AppColors.tabColor,
+                                fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                     ),
@@ -652,22 +689,28 @@ class DiscountCouponSheet extends StatelessWidget {
                     width: 135,
                     height: 35,
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
-                    child: Material(
-                      elevation: 6.0,
-                      shadowColor: Colors.grey[200],
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      color: AppColors.tabColor,
-                      child: Container(
-                        /*margin: EdgeInsets.only(
-                              left: 12.0, bottom: 4.0, right: 20),*/
-                        alignment: Alignment.center,
-                        child: Text(
-                          'cancel'.tr,
-                          style: TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w300),
-                          textAlign: TextAlign.center,
+                    child: InkWell(
+                      onTap: (){
+                        requestAdvertiseController.isDiscountSaveClicked.value = false;
+                        Get.back();
+                      },
+                      child: Material(
+                        elevation: 6.0,
+                        shadowColor: Colors.grey[200],
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: AppColors.tabColor,
+                        child: Container(
+                          /*margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),*/
+                          alignment: Alignment.center,
+                          child: Text(
+                            'cancel'.tr,
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                     ),
@@ -679,5 +722,21 @@ class DiscountCouponSheet extends StatelessWidget {
         ],
       ),
     );
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    if(requestAdvertiseController.isDiscountSaveClicked.isFalse){
+      //----------------------------------------- for discount sheet ------------------------------------
+      requestAdvertiseController.coponNumberController?.dispose();
+      requestAdvertiseController.coponNameController?.dispose();
+      requestAdvertiseController.coponDiscountController?.dispose();
+      requestAdvertiseController.coponUsesController?.dispose();
+      requestAdvertiseController.coponLinkController?.dispose();
+      requestAdvertiseController.imagePath.value = "";
+      requestAdvertiseController.endAdvertisingDateCoupon.value = "";
+    }
+    super.dispose();
   }
 }

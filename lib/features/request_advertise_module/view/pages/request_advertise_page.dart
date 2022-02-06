@@ -234,6 +234,7 @@ class RequestAdvertisePage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(
                     10), //remove this to get plane rectange
               ),
+
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -269,7 +270,9 @@ class RequestAdvertisePage extends StatelessWidget {
                           filled: true,
                           hintStyle: TextStyle(color: AppColors.adVertiserPageDataColor),
                           //hintText: 'adDescription'.tr,
-                          fillColor:Colors.white70),
+                          //
+                        // fillColor:Colors.white70
+                      ),
                       controller: requestAdvertiseController.descriptionController,
                     ),
                   )

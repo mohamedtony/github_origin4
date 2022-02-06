@@ -83,7 +83,7 @@ class AdvertiserSettingPageController extends GetxController  {
   @override
   Future<void> onReady() async {
     // TODO: implement onReady
-    Get.dialog(
+    /*Get.dialog(
         Dialog(
           child: Container(
             height: 100.0,
@@ -98,11 +98,14 @@ class AdvertiserSettingPageController extends GetxController  {
             ),
           ),
         )
-    );
+    );*/
+    EasyLoading.show();
     client!.getMyProfile("Bearer "+myToken!).then((value) {
       Logger().i(value.data?.toJson());
       if(value.data!=null&&value.status==200){
-        Get.back();
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
         clientProfileModel.value = value.data!;
        // kayanNameController?.text = "tony";
         if(clientProfileModel.value.company_name!=null) {
@@ -338,6 +341,7 @@ class AdvertiserSettingPageController extends GetxController  {
       selectedCategoriesIds.add(element.id!);
     });
     client!.updateUserCategories(UpdateUserCategoryRequest(categories:selectedCategoriesIds.value),"Bearer "+myToken!).then((value) {
+      Get.back();
       if(value.status==200){
         Fluttertoast.showToast(
           msg: value.message??'',
@@ -528,6 +532,7 @@ class AdvertiserSettingPageController extends GetxController  {
         }
       });
       client!.setMultipleCountry(OneCountryAndCitiesRequest(countries:countriesId,areas: areasIds),"Bearer "+myToken!).then((value) {
+        Get.back();
         if(value.status==200){
           Fluttertoast.showToast(
             msg: value.message??'',

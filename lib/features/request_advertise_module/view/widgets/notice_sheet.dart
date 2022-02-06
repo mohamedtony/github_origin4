@@ -1,4 +1,5 @@
 import 'package:advertisers/features/home_page/app_colors.dart';
+import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -7,16 +8,31 @@ import 'package:get/get.dart';
 //                         By Mohamed T. Hammad
 
 //=========================================================================================
-class NoticeSheet extends StatelessWidget {
+class NoticeSheet extends StatefulWidget {
   ScrollController? scrollController;
 
   NoticeSheet({Key? key, this.scrollController}) : super(key: key);
 
   @override
+  State<NoticeSheet> createState() => _NoticeSheetState();
+}
+
+class _NoticeSheetState extends State<NoticeSheet> {
+  RequestAdvertiseController requestAdvertiseController=Get.find();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if(requestAdvertiseController.isNoticeSaveClicked.isFalse){
+      //----------------------------------------- for discount sheet ------------------------------------
+      requestAdvertiseController.noticeController=  TextEditingController();
+    }
+  }
+  @override
   Widget build(BuildContext context) {
     return Container(
       child: ListView(
-        controller: this.scrollController,
+        controller: this.widget.scrollController,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -86,9 +102,10 @@ class NoticeSheet extends StatelessWidget {
                       textAlign: TextAlign.start,
                       textAlignVertical:
                       TextAlignVertical.center,
+                      maxLines: 10,
                       decoration: InputDecoration(
                           contentPadding:
-                          EdgeInsets.only(right: 20.0),
+                          EdgeInsets.only(right: 20.0,left: 10.0),
                           // isCollapsed: true,
                           border: OutlineInputBorder(
                             borderRadius:
@@ -103,6 +120,7 @@ class NoticeSheet extends StatelessWidget {
                               color: AppColors.tabColor),
                           hintText: 'noticeable'.tr,
                           fillColor: Colors.white70),
+                      controller: requestAdvertiseController.noticeController,
                     ),
                   ),
                 ),
@@ -114,22 +132,27 @@ class NoticeSheet extends StatelessWidget {
                     width: 135,
                     height: 35,
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 50.0),
-                    child: Material(
-                      elevation: 6.0,
-                      shadowColor: Colors.grey[200],
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      color: AppColors.saveButtonBottomSheet,
-                      child: Container(
-                        /*margin: EdgeInsets.only(
-                              left: 12.0, bottom: 4.0, right: 20),*/
-                        alignment: Alignment.center,
-                        child: Text(
-                          'save'.tr,
-                          style: TextStyle(
-                              fontSize: 16.0,
-                              color: AppColors.tabColor,
-                              fontWeight: FontWeight.w700),
-                          textAlign: TextAlign.center,
+                    child: InkWell(
+                      onTap: (){
+                        requestAdvertiseController.onNoticeSavedClicked(context);
+                      },
+                      child: Material(
+                        elevation: 6.0,
+                        shadowColor: Colors.grey[200],
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: AppColors.saveButtonBottomSheet,
+                        child: Container(
+                          /*margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),*/
+                          alignment: Alignment.center,
+                          child: Text(
+                            'save'.tr,
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                color: AppColors.tabColor,
+                                fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                     ),
@@ -138,22 +161,28 @@ class NoticeSheet extends StatelessWidget {
                     width: 135,
                     height: 35,
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 50.0),
-                    child: Material(
-                      elevation: 6.0,
-                      shadowColor: Colors.grey[200],
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      color: AppColors.tabColor,
-                      child: Container(
-                        /*margin: EdgeInsets.only(
-                              left: 12.0, bottom: 4.0, right: 20),*/
-                        alignment: Alignment.center,
-                        child: Text(
-                          'cancel'.tr,
-                          style: TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w300),
-                          textAlign: TextAlign.center,
+                    child: InkWell(
+                      onTap: (){
+                        requestAdvertiseController.isNoticeSaveClicked.value = false;
+                        Get.back();
+                      },
+                      child: Material(
+                        elevation: 6.0,
+                        shadowColor: Colors.grey[200],
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: AppColors.tabColor,
+                        child: Container(
+                          /*margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),*/
+                          alignment: Alignment.center,
+                          child: Text(
+                            'cancel'.tr,
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                     ),
@@ -165,5 +194,15 @@ class NoticeSheet extends StatelessWidget {
         ],
       ),
     );
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    if(requestAdvertiseController.isNoticeSaveClicked.isFalse){
+      //----------------------------------------- for discount sheet ------------------------------------
+      requestAdvertiseController.noticeController?.dispose();
+    }
+    super.dispose();
   }
 }

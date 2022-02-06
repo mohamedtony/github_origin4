@@ -13,17 +13,23 @@ import 'package:advertisers/features/home_page/app_colors.dart';
 //                         By Mohamed T. Hammad
 
 //=========================================================================================
-class AdvertisingChannelsPage extends StatelessWidget {
+class AdvertisingChannelsPage extends StatefulWidget {
   ScrollController? scrollController;
 
   AdvertisingChannelsPage({Key? key, this.scrollController}) : super(key: key);
+
+  @override
+  State<AdvertisingChannelsPage> createState() => _AdvertisingChannelsPageState();
+}
+
+class _AdvertisingChannelsPageState extends State<AdvertisingChannelsPage> {
   RequestAdvertiseController requestAdvertiseController=Get.find();
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: ListView(
-        controller: this.scrollController,
+        controller: this.widget.scrollController,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,7 +160,7 @@ class AdvertisingChannelsPage extends StatelessWidget {
                     height: 35,
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 45.0),
                     child: InkWell(
-                      onTap: requestAdvertiseController.onSaveChannelsClicked,
+                      onTap: ()=> requestAdvertiseController.onSaveChannelsClicked(context),
                       child: Material(
                         elevation: 6.0,
                         shadowColor: Colors.grey[200],
@@ -180,22 +186,29 @@ class AdvertisingChannelsPage extends StatelessWidget {
                     width: 135,
                     height: 35,
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 45.0),
-                    child: Material(
-                      elevation: 6.0,
-                      shadowColor: Colors.grey[200],
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      color: AppColors.tabColor,
-                      child: Container(
-                        /*margin: EdgeInsets.only(
-                              left: 12.0, bottom: 4.0, right: 20),*/
-                        alignment: Alignment.center,
-                        child: Text(
-                          'cancel'.tr,
-                          style: TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w300),
-                          textAlign: TextAlign.center,
+                    child: InkWell(
+                      onTap: (){
+                        requestAdvertiseController
+                            .isChannelSaveClicked.value = false;
+                        Get.back();
+                      },
+                      child: Material(
+                        elevation: 6.0,
+                        shadowColor: Colors.grey[200],
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: AppColors.tabColor,
+                        child: Container(
+                          /*margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),*/
+                          alignment: Alignment.center,
+                          child: Text(
+                            'cancel'.tr,
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                     ),
@@ -209,4 +222,15 @@ class AdvertisingChannelsPage extends StatelessWidget {
     );
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    if(requestAdvertiseController.isChannelSaveClicked.isFalse){
+      requestAdvertiseController.channelsIds = [];
+      requestAdvertiseController.channels.forEach((element) {
+        element.isTapped.value = false;
+      });
+    }
+    super.dispose();
+  }
 }

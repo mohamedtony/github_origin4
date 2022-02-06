@@ -393,13 +393,14 @@ class AdvertiserListPage extends StatelessWidget {
             Get.toNamed('/AdvertiserSettingsPage');
           },),
           AdvertiseListItem(icon: 'images/menu_icon.svg',title: 'الطلبات',listTilePressed: (){
-            print('pressed2');
+            Get.toNamed('/AdvertisingRequestsPage');
           },),
           AdvertiseListItem(icon: 'images/my_ads_icon.svg',title: 'اعلاناتى',listTilePressed: (){
             print('pressed2');
           },),
           AdvertiseListItem(icon: 'images/discount_copon_img.svg',title: 'الخوصومات والكوبوناتي',listTilePressed: (){
             print('pressed2');
+           // Get.toNamed('/DiscountPage');
           },),
           AdvertiseListItem(icon: 'images/gallery_icon.svg',title: 'المعرض',listTilePressed: (){
             print('pressed2');

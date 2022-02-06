@@ -3,6 +3,7 @@ import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/main.dart';
 import 'package:advertisers/shared/loading_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
@@ -41,7 +42,7 @@ class AdvertiseListController extends GetxController with GetSingleTickerProvide
   @override
   Future<void> onReady() async {
     // TODO: implement onReady
-    Get.dialog(
+   /* Get.dialog(
         Dialog(
           child: Container(
             height: 100.0,
@@ -56,12 +57,16 @@ class AdvertiseListController extends GetxController with GetSingleTickerProvide
             ),
           ),
         )
-    );
+    );*/
+    EasyLoading.show();
   //  var myToken  = await storage.read("token");
     client!.getMyProfile("Bearer "+myToken!).then((value) {
       Logger().i(value.data?.toJson());
       if(value.data!=null&&value.status==200){
-        Get.back();
+       // Get.back();
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
         if(value.data!=null) {
           clientProfileModel.value = value.data!;
         }
