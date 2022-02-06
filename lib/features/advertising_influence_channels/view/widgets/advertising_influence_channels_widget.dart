@@ -163,7 +163,7 @@ class AdvertisingInfluenceChannelsPageWidget extends StatelessWidget {
                             Column(
                               children: [
                                 Text("${advertisingChannels.women}",style: TextStyle(fontSize: 14.sp,color: Colors.grey),),
-                                Text("70 % فتيات",style: TextStyle(fontSize: 14.sp,color: Colors.grey),),
+                                Text("${advertisingChannels.girls} % فتيات",style: TextStyle(fontSize: 14.sp,color: Colors.grey),),
                               ],
                             ),
                           ],

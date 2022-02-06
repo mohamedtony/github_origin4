@@ -14,7 +14,7 @@ class RegisterPhoneController extends GetxController {
   GlobalKey<FormState> registerPhoneFormKey = GlobalKey<FormState>();
 
   late TextEditingController phoneController;
-
+  var publicSmsOtp=''.obs;
   var countryCode = '+966'.obs;
   var latitude = 0.0.obs;
   var longitude = 0.0.obs;
@@ -57,7 +57,7 @@ class RegisterPhoneController extends GetxController {
         path: 'auth/check_phone',
         fromJson: (json) => CheckPhoneResponse.fromJson(json),
         json: {
-          "phone": phoneController.text,
+          "phone": countryCode.value.toString().substring(1) + int.parse(phone).toString(),
 
 
         },
@@ -66,14 +66,18 @@ class RegisterPhoneController extends GetxController {
             EasyLoading.dismiss();
           }
           //checkPhoneResponse.value = res;
-          if(res.data!=null&&res.data?.exists==true&&res.data?.has_code==true){
+          if(res.data!=null&&res.data?.exists==true&&res.data?.has_code==true&&res.data?.has_account==true){
+            Get.back();
             Get.snackbar(
               "موجود",
               "رقم التليفون مسجل لدينا",
               icon: const Icon(Icons.person, color: Colors.red),
               backgroundColor: Colors.yellow,
               snackPosition: SnackPosition.BOTTOM,);
-            Get.toNamed('/loginPage');
+
+          }else if(res.data!=null&&res.data?.exists==true&&res.data?.has_code==true&&res.data?.has_account==false){
+            // await verifyPhone();
+            Get.toNamed('/registerAccountType');
           }else{
            // await verifyPhone();
             Get.toNamed(

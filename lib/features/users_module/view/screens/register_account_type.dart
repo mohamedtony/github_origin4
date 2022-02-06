@@ -89,9 +89,9 @@ class _RegisterAccountTypeState extends State<RegisterAccountType> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             SizedBox(
-                              width:185.46.w,
+                              width:185.46,
                               child: ListTile(
-                                title: Text('client'.tr,style: TextStyle(fontSize:20.sp ,color:AppColors.whiteColor,),),
+                                title: Text('client'.tr,overflow:TextOverflow.clip,style: TextStyle(fontSize:20 ,color:AppColors.whiteColor,),),
                                 leading: Radio(
                                   value: ClientType.client,overlayColor:  MaterialStateProperty.all(AppColors.whiteColor),fillColor: MaterialStateProperty.all(AppColors.whiteColor) ,
                                   groupValue: _type,activeColor:AppColors.heavyBlueColor,focusColor:AppColors.whiteColor ,hoverColor: AppColors.whiteColor,
@@ -105,9 +105,9 @@ class _RegisterAccountTypeState extends State<RegisterAccountType> {
                               ),
                             ),
                             SizedBox(
-                              width:125.46.w,
+                              width:125.46,
                               child: ListTile(
-                                title: Text('company'.tr,style: TextStyle(fontSize:20.sp ,color:AppColors.whiteColor,),),
+                                title: Text('company'.tr,style: TextStyle(fontSize:20 ,overflow:TextOverflow.clip,color:AppColors.whiteColor,),),
                                 leading:
                                  Radio(
                                     value: ClientType.company,

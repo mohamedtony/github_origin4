@@ -25,6 +25,7 @@ import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page_controller.dart';
 import 'package:advertisers/features/customer_order_invoice/view/customer_order_invoice_page.dart';
+import 'package:advertisers/features/customer_order_invoice_out_puts/view/customer_order_invoice_out_puts.dart';
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation.dart';
 import 'package:advertisers/features/my_orders/view/my_orders_page.dart';
@@ -32,6 +33,7 @@ import 'package:advertisers/features/my_orders_and_my_orders_archive/my_orders_a
 import 'package:advertisers/features/my_orders_archive/view/my_orders_archive_page.dart';
 import 'package:advertisers/features/notifications/view/pages/notifications_page.dart';
 import 'package:advertisers/features/notifications_settings/view/pages/notifications_settings_page.dart';
+import 'package:advertisers/features/reason_rejecting_advertisement/view/page/reason_rejecting_advertisement.dart';
 import 'package:advertisers/features/request_advertise_module/view/pages/request_advertise_page.dart';
 import 'package:advertisers/features/tax_settings/view/pages/tax_settings_page.dart';
 import 'package:advertisers/features/users_module/controller/baka_details_controller.dart';
@@ -58,6 +60,7 @@ import 'package:advertisers/features/users_module/view/screens/start_page.dart';
 import 'package:advertisers/features/users_module/view/screens/successful_paying_page.dart';
 import 'package:advertisers/features/users_module/view/screens/verification_code_page.dart';
 import 'package:advertisers/features/wallet_module/wallet_page.dart';
+import 'package:advertisers/reason_rejecting_advertisement_customer/view/page/reason_rejecting_advertisement_customer.dart';
 import 'package:get/get.dart';
 
 class Routes {
@@ -302,6 +305,21 @@ class Routes {
       binding: BindingsBuilder(() {
         Get.lazyPut<AdvertiseListController>(() => AdvertiseListController());
       }),
+    ),
+    GetPage(
+      name: '/ReasonRejectingAdvertisement',
+      page: () => ReasonRejectingAdvertisement(),
+
+    ),
+    GetPage(
+      name: '/ReasonRejectingAdvertisementCustomer',
+      page: () => ReasonRejectingAdvertisementCustomer(),
+
+    ),
+    GetPage(
+      name: '/CustomerOrderInvoiceOutPutsPage',
+      page: () => CustomerOrderInvoiceOutPutsPage(),
+
     ),
   ];
 }

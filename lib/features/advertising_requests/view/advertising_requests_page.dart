@@ -307,9 +307,14 @@ class _AdvertisingRequestsPageState extends State<AdvertisingRequestsPage>  with
                                                     margin: EdgeInsets.symmetric(horizontal: 15),
                                                   ),
 
-                                                  Padding(
-                                                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                                                    child: Text("تفاصيل الطلب",style: TextStyle(decoration: TextDecoration.underline, fontSize: 15.sp,color: Color(0xff244094),height: 1.5),),
+                                                  InkWell(
+                                                    onTap: (){
+                                                      Get.toNamed('/CustomerOrderInvoiceOutPutsPage');
+                                                    },
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                                                      child: Text("تفاصيل الطلب",style: TextStyle(decoration: TextDecoration.underline, fontSize: 15.sp,color: Color(0xff244094),height: 1.5),),
+                                                    ),
                                                   )
                                                   ,
                                                 ],
