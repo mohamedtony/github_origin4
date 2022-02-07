@@ -19,6 +19,7 @@ import 'package:advertisers/features/request_advertise_module/view/widgets/notic
 import 'package:advertisers/features/request_advertise_module/view/widgets/send_request_success.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/urls_bottom_sheet.dart';
 import 'package:advertisers/main.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -75,6 +76,9 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
 //---------------------- for notice sheet --------------------------------------------
   TextEditingController? noticeController;
   var isNoticeSaveClicked = false.obs;
+
+  //---------------------- for plan sheet --------------------------------------------
+  File? planFile;
 
   RxList<SelectedSocialMedia> items = <SelectedSocialMedia>[].obs;
   final ImagePicker _picker = ImagePicker();
@@ -483,19 +487,39 @@ void showToast(msg){
 }
 
 
-  DateRange? dateRange = DateRange(fromDate: "اختر نطاق زمني",toDate: ".........");
-
+  var dateRange = DateRange(fromDate: "اختر نطاق زمني",toDate: ".........").obs;
+  var isDateSaveClicked  = false.obs;
   void addDateRange(String? fromDate,toDate){
-    dateRange = DateRange(fromDate: fromDate,toDate: toDate) ;
-    update();
+    dateRange.value = DateRange(fromDate: fromDate,toDate: toDate) ;
+    endAdvertisingDate.value = toDate;
   }
+  var selectedTimeCounter = ''.obs;
 
+
+  void selectCounter(String? count){
+    selectedTimeCounter.value = "$count";
+  }
   var endAdvertisingDateCoupon = ''.obs;
-
+  var endAdvertisingDate = ''.obs;
+  void addendAdvertisingDate(String? endDate){
+    endAdvertisingDate.value = endDate!;
+  }
   void addendAdvertisingDateCoupon(String? endDate){
     endAdvertisingDateCoupon.value = endDate!;
   }
+  void onDateClickedSaved(BuildContext context) {
 
+    if(dateRange.value.fromDate=='اختر نطاق زمني'){
+      showToast("من فضلك يرجى إختيار تاريخ الاعلان !");
+      return;
+    }else if(selectedTimeCounter.value.isEmpty){
+      showToast("من فضلك يرجى إختيار عدد مرات الاعلان !");
+      return;
+    }else{
+      isDateSaveClicked.value = true;
+      Navigator.pop(context);
+    }
+  }
   void disposeAnimation() {
     animationControllers.add(AnimationController(
       vsync: this,
@@ -563,7 +587,26 @@ void showToast(msg){
     Get.back();
   }
 
+  onPlanClicked(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
 
+    if (result != null) {
+       planFile = File(result.files.single.path!);
+    } else {
+      // User canceled the picker
+    }
+  }
+
+
+
+  //------------------------------------ for select date sheet --------------------------------
+  /*DateRange? dateRange = DateRange(fromDate: "اختر نطاق زمني",toDate: ".........");
+
+  void addDateRange(String? fromDate,toDate){
+    dateRange = DateRange(fromDate: fromDate,toDate: toDate) ;
+    update();
+  }
+*/
 
 
 /*  String? endAdvertisingDate;
