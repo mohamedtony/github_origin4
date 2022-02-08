@@ -7,8 +7,8 @@ class OneCountryAndCitiesRequest {
 
   List<int>?countries;
   List<int>? areas;
-
-  OneCountryAndCitiesRequest({this.countries, this.areas});
+  List<int>? country_category;
+  OneCountryAndCitiesRequest({this.countries, this.areas,this.country_category});
 
   factory OneCountryAndCitiesRequest.fromJson(Map<String, dynamic> json) =>
       _$OneCountryAndCitiesRequestFromJson(json);

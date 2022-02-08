@@ -14,12 +14,14 @@ class Country {
   String? phone_key;
   String? iso_name;
   List<Area>? areas;
+  String? type;
 
   Country({
     this.id,
     this.name,
     this.phone_key,
-    this.areas
+    this.areas,
+    this.type
   });
   String itemAsStringByName() {
     return this.name!=null?this.name!:"";

@@ -456,23 +456,44 @@ class AdvertiserSettingPageController extends GetxController  {
     if(c!=null && c.id!=-1) {
       if (selectedUserLocations.isNotEmpty) {
         //country and country
-        if (selectedUserLocations[0] is Country) {
+        if (selectedUserLocations[0] is Country && selectedUserLocations[0].type=='country_category') {
+          if (c.type=='country_category') {
+            Country? country = selectedUserLocations.firstWhereOrNull((
+                element) => element.id == c.id);
+            if (country == null) {
+              selectedUserLocations.add(c);
+            }
+            isAreaEnabled.value = false;
+          }
+        } else {
+          if (selectedUserLocations[0].type=='country_category' && c.type=='country_category') {
+            Country? country = selectedUserLocations.firstWhereOrNull((
+                element) => element.id == c.id);
+            if (country == null) {
+              selectedUserLocations.add(c);
+            }
+          }
+       }
+        if (selectedUserLocations[0] is Country && selectedUserLocations[0].type=='country') {
+          if (c.type=='country') {
+            Country? country = selectedUserLocations.firstWhereOrNull((
+                element) => element.id == c.id);
+            if (country == null) {
+              selectedUserLocations.add(c);
+            }
+            isAreaEnabled.value = false;
+          }
+        }
+      } else {
           Country? country = selectedUserLocations.firstWhereOrNull((
-              element) => element.id == c!.id);
+              element) => element.id == c.id);
           if (country == null) {
             selectedUserLocations.add(c);
           }
-          isAreaEnabled.value = false;
-        }
-      } else {
-        Country? country = selectedUserLocations.firstWhereOrNull((
-            element) => element.id == c!.id);
-        if (country == null) {
-          selectedUserLocations.add(c);
-        }
+
       }
 
-      if (c?.areas != null && c!.areas!.isNotEmpty) {
+      if (c.areas != null && c.areas!.isNotEmpty) {
         areasForLocationSheet.value =
         c.areas!;
         Area? areaIn = areasForLocationSheet.firstWhereOrNull((
@@ -523,15 +544,20 @@ class AdvertiserSettingPageController extends GetxController  {
       print("isCountryEnabledHere");
       List<int> countriesId= [];
       List<int> areasIds= [];
+      List<int> countryCaregoriesIds= [];
       selectedUserLocations.forEach((element) {
-        if(element!=null && element is Country) {
+        if(element!=null && element is Country && element.type=='country') {
           countriesId.add(element.id!);
         }
         if(element!=null && element is Area) {
           areasIds.add(element.id!);
         }
+        if(element!=null && element is Country && element.type=='country_category') {
+          print("isAreaEnabledHere country_category");
+          countryCaregoriesIds.add(element.id!);
+        }
       });
-      client!.setMultipleCountry(OneCountryAndCitiesRequest(countries:countriesId,areas: areasIds),"Bearer "+myToken!).then((value) {
+      client!.setMultipleCountry(OneCountryAndCitiesRequest(countries:countriesId,areas: areasIds,country_category: countryCaregoriesIds),"Bearer "+myToken!).then((value) {
         Get.back();
         if(value.status==200){
           Fluttertoast.showToast(

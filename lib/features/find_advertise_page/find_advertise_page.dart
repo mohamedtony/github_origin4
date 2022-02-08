@@ -1,4 +1,8 @@
+import 'package:advertisers/features/blocked_users_page/AdvertiseBlockedUserItem.dart';
+import 'package:advertisers/features/blocked_users_page/shimmer_widget.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page.dart';
+import 'package:advertisers/features/find_advertise_page/find_advertise_controller.dart';
+import 'package:advertisers/features/find_advertise_page/find_advertise_item.dart';
 import 'package:advertisers/features/home_page/view/widgets/advertiser_person_item.dart';
 import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/advertising_channels_sheet.dart';
@@ -19,10 +23,12 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 class FindAdvertisePage extends StatelessWidget {
   FindAdvertisePage({Key? key,this.onSheetClicked}) : super(key: key);
   Function(int x)? onSheetClicked;
-  RequestAdvertiseController requestAdvertiseController=Get.put(RequestAdvertiseController());
+  final findAdvertiseController=Get.put(FindAdvertiseController());
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return GetBuilder<FindAdvertiseController>(
+    init: findAdvertiseController,
+    builder: (controller) => Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Row(
@@ -32,6 +38,7 @@ class FindAdvertisePage extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: (){
+                    Navigator.of(context).pop();
                   },
                   child: Container(
                     width: 250.0,
@@ -165,17 +172,17 @@ class FindAdvertisePage extends StatelessWidget {
                       height: 62,
                       margin: EdgeInsets.all(4),
                       child: Align(
+                        alignment: Alignment.center,
+                        child: Container(
                           alignment: Alignment.center,
-                          child: Container(
-                            alignment: Alignment.center,
                           child: SvgPicture.asset(
-                              'images/filter_edit.svg',
-                              fit: BoxFit.fill,
-                              //color: Colors.white,
-                              height: 24.0,
-                              width: 30.0,
-                            ),
-                          ),)
+                            'images/filter_edit.svg',
+                            fit: BoxFit.fill,
+                            //color: Colors.white,
+                            height: 24.0,
+                            width: 30.0,
+                          ),
+                        ),)
                       ,decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: LinearGradient(
@@ -196,18 +203,43 @@ class FindAdvertisePage extends StatelessWidget {
           ],
         ),
         Expanded(
-          child: ListView(
-            children: [
-              AdvertiserItem(),
-              AdvertiserItem(),
-              AdvertiserItem(),
-              AdvertiserItem(),
-              AdvertiserItem(),
-              AdvertiserItem(),
-              AdvertiserItem(),
-            ],
-          ),
+            child: Obx(()=>controller.isEmpty.value?Container(
+                margin: EdgeInsets.only(top:20.0),
+                child: Text('لا يوجد بيانات !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600))):ListView.builder(
+              itemCount: findAdvertiseController.isLoading.value?10:findAdvertiseController.advertisersModel.value.length,
+              itemBuilder: (context, position) {
+                if(findAdvertiseController.isLoading.value){
+                  return   Container(
+                    margin: EdgeInsets.only(top: 10.0,),
+                    child: ListTile(
+                      leading: MyShimmerWidget.circular(height: 64, width: 64),
+                      title: Align(
+                        alignment: Alignment.centerLeft,
+                        child: MyShimmerWidget.rectangular(height: 16,
+                          width: MediaQuery.of(context).size.width*2,),
+                      ),
+                      // subtitle: MyShimmerWidget.rectangular(height: 14),
+                    ),
+                  );
+                }else{
+                  return  FindAdvertiseItem(advertisersModel:findAdvertiseController.advertisersModel.value[position],findAdvertiseController: controller,);
+                }
+              },
+            ))
         ),
+        /*Expanded(
+      child: ListView(
+        children: [
+          AdvertiserItem(),
+          AdvertiserItem(),
+          AdvertiserItem(),
+          AdvertiserItem(),
+          AdvertiserItem(),
+          AdvertiserItem(),
+          AdvertiserItem(),
+        ],
+      ),
+    ),*/
         Container(
           //width: 135,
           height: 40,
@@ -220,7 +252,7 @@ class FindAdvertisePage extends StatelessWidget {
             color: AppColors.tabColor,
             child: Container(
               /*margin: EdgeInsets.only(
-                              left: 12.0, bottom: 4.0, right: 20),*/
+                          left: 12.0, bottom: 4.0, right: 20),*/
               alignment: Alignment.center,
               child: Text(
                 'أرسل طلبك',
@@ -235,7 +267,7 @@ class FindAdvertisePage extends StatelessWidget {
           ),
         ),
       ],
-    );
+    ));
   }
 
   void showMyBottomSheet(BuildContext context,int bottomNumber){

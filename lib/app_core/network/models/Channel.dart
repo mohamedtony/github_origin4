@@ -9,6 +9,7 @@ class Channel {
   String? name;
   int? channel_type;
   String? image;
+  @JsonKey(ignore: true)
   var isTapped = false.obs;
 
   Channel({this.id, this.name, this.image,this.channel_type});
