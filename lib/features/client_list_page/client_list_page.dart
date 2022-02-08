@@ -399,10 +399,18 @@ class ClientListPage extends StatelessWidget {
 
               },),
               ClientListItem(icon: 'images/menu_icon.svg',title: 'طلباتى',listTilePressed: (){
-                print('pressed2');
+                Get.toNamed('/MyOrdersAndMyOrdersArchive');
+
+                print('MyOrdersAndMyOrdersArchive');
+              },),
+
+              ClientListItem(icon: 'images/menu_icon.svg',title: ' القائمة الثانية طلباتى',listTilePressed: (){
+                // Get.toNamed('/MyOrdersAndMyOrdersArchive');
+                Get.toNamed('/AdvertisingRequestsPage');
+                print('AdvertisingRequestsPage');
               },),
               ClientListItem(icon: 'images/discount_copon_img.svg',title: 'الخصومات',listTilePressed: (){
-                print('pressed2');
+                Get.toNamed('/DiscountPage');
               },),
               ClientListItem(icon: 'images/notification_icon2.svg',title: 'ادارة التنبيهات',listTilePressed: (){
                 print('pressed2');

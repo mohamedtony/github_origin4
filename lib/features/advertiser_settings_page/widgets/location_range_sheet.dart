@@ -168,7 +168,7 @@ class LocationRangeBottomSheet extends StatelessWidget {
                                     left: 2.0,
                                     right: 2.0,
                                     bottom: 0.0),
-                                height: 45.0,
+                               height: 45.0,
                                 child: Obx(() => advertiserSettingPageController
                                         .isLoadingLocation.value
                                     ? Container(
@@ -201,6 +201,8 @@ class LocationRangeBottomSheet extends StatelessWidget {
                                                 decorationThickness: 2,
                                                 fontSize: 16.0),
                                             textAlign: TextAlign.center,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                           );
                                         },
                                         dropdownSearchDecoration:
@@ -274,7 +276,7 @@ class LocationRangeBottomSheet extends StatelessWidget {
                                     left: 4.0,
                                     right: 4.0),
                                 child: Text(
-                                  "المدينة",
+                                  "المنطقة",
                                   style: TextStyle(
                                       color: AppColors.activitiesDropDown
                                           .withOpacity(0.73),
@@ -336,6 +338,8 @@ class LocationRangeBottomSheet extends StatelessWidget {
                                                     decorationThickness: 2,
                                                     fontSize: 16.0),
                                                 textAlign: TextAlign.center,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                               );
                                             },
                                             dropdownSearchDecoration:

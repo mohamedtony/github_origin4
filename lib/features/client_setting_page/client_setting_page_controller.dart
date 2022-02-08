@@ -122,7 +122,7 @@ class ClientSettingPageController extends GetxController  {
   @override
   Future<void> onReady() async {
     // TODO: implement onReady
-     Get.dialog(
+/*     Get.dialog(
          Dialog(
            child: Container(
              height: 100.0,
@@ -137,12 +137,15 @@ class ClientSettingPageController extends GetxController  {
              ),
            ),
          )
-     );
-
+     );*/
+    EasyLoading.show();
     client!.getMyProfile("Bearer "+myToken!).then((value) {
       Logger().i(value.data?.toJson());
       if(value.data!=null&&value.status==200){
-        Get.back();
+       // Get.back();
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
         clientProfileModel.value = value.data!;
         //kayanNameController?.text = "tony";
         if(clientProfileModel.value.company_name!=null) {

@@ -25,6 +25,7 @@ import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page_controller.dart';
 import 'package:advertisers/features/customer_order_invoice/view/customer_order_invoice_page.dart';
+import 'package:advertisers/features/customer_order_invoice_out_puts/view/customer_order_invoice_out_puts.dart';
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation.dart';
 import 'package:advertisers/features/my_orders/view/my_orders_page.dart';
@@ -313,6 +314,11 @@ class Routes {
     GetPage(
       name: '/ReasonRejectingAdvertisementCustomer',
       page: () => ReasonRejectingAdvertisementCustomer(),
+
+    ),
+    GetPage(
+      name: '/CustomerOrderInvoiceOutPutsPage',
+      page: () => CustomerOrderInvoiceOutPutsPage(),
 
     ),
   ];

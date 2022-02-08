@@ -76,6 +76,7 @@ dependencies:
   url_launcher: ^6.0.18
   quds_popup_menu: ^0.0.1+1
   video_player:
+  file_picker: ^4.3.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

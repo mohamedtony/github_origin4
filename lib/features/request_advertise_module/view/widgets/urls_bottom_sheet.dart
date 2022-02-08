@@ -170,7 +170,7 @@ class _UrlsPageState extends State<UrlsPage>  {
                                 margin: EdgeInsets.only(right: 10.0, left: 28.0, top: 30.0,bottom:30),
                                 child: InkWell(
                                   onTap: (){
-                                    requestAdvertiseController.insertNewLinkFields(context);
+                                    requestAdvertiseController.deleteLink(index);
                                    // requestAdvertiseController.animationControllers[index].forward(from: 0.6).whenComplete(() => requestAdvertiseController.deleteLink(index));
                                   },
                                   child: Material(

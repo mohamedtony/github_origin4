@@ -310,9 +310,14 @@ class _MyOrdersPageState extends State<MyOrdersPage>  with SingleTickerProviderS
                                                     margin: EdgeInsets.symmetric(horizontal: 15),
                                                   ),
 
-                                                  Padding(
-                                                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                                                    child: Text("تفاصيل الطلب",style: TextStyle(decoration: TextDecoration.underline, fontSize: 15.sp,color: Color(0xff244094),height: 1.5),),
+                                                  InkWell(
+                                                    onTap: (){
+                                                      Get.toNamed('/AdvertiserDetailsPage');
+                                                    },
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                                                      child: Text("تفاصيل الطلب",style: TextStyle(decoration: TextDecoration.underline, fontSize: 15.sp,color: Color(0xff244094),height: 1.5),),
+                                                    ),
                                                   )
                                                   ,
                                                 ],
