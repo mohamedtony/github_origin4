@@ -245,6 +245,10 @@ class Routes {
     GetPage(
       name: '/successfulPayingPage',
       page: () => SuccessfulPayingPage(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<BakaDetailsController>(() => BakaDetailsController());
+        Get.lazyPut<ChooseBakaController>(() => ChooseBakaController());
+      }),
 
     ),
     GetPage(

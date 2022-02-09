@@ -217,10 +217,13 @@ class RegisterNewClientCompanyController extends GetxController {
           "manager_name": accountAdminNameController.text,
           "image": photo
         },
-        onSuccess: (res) {
+        onSuccess: (res) async {
           storage.write(
               "data", registerClientUserResponse.value.toJson());
-          Get.toNamed('/chooseBakaPage');
+          print("registerToken ${res.data!.token}");
+          await storage.write("token", res.data!.token);
+          Get.offAllNamed('/Home');
+          //Get.toNamed('/chooseBakaPage');
         },
         onError: (err, res) {
           errorRegister.value = true;

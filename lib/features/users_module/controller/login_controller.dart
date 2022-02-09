@@ -83,7 +83,7 @@ class LoginController extends GetxController{
       }
 
      //account.model=AccountModel.fromJson(res.account!.toJson());
-          Get.toNamed("/Home");
+         Get.offAllNamed('/Home');
         },onError: (err,res){
           errorRegister.value=true;
           isValid.value=false;

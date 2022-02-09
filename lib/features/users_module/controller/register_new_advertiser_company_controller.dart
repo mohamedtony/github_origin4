@@ -213,14 +213,15 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
           "manager_name": accountAdminNameController.text,
           "image": photo
         },
-        onSuccess: (res) {
+        onSuccess: (res) async {
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
           registerCompanyResponse.value = res!;
           storage.write(
               "data", registerCompanyResponse.value.toJson());
-          storage.write("token", res.data!.token);
+          print("registerAdvertiseToken ${res.data!.token}");
+          await storage.write("token", res.data!.token);
           Get.toNamed('/chooseBakaPage');
         },
         onError: (err, res) {
