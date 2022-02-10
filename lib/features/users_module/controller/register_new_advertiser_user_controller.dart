@@ -201,14 +201,15 @@ class RegisterNewAdvertiserUserController extends GetxController{
           "image": photo,
           "gender":gender.value,
         },
-        onSuccess: (res) {
+        onSuccess: (res) async {
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
           registerClientUserResponse.value = res;
           storage.write(
               "data", registerClientUserResponse.value.toJson());
-          storage.write("token", res.data!.token);
+          print("registerToken ${res.data!.token}");
+         await storage.write("token", res.data!.token);
           Get.toNamed('/chooseBakaPage');
         },
         onError: (err, res) {

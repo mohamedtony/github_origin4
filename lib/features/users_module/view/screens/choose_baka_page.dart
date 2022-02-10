@@ -105,6 +105,7 @@ class ChooseBakaPage extends StatelessWidget {
                     children:[
                      Obx(()=> _chooseBakaController.subscriptionBaka.isNotEmpty?ListView.builder(
                          itemCount: _chooseBakaController.subscriptionBaka.length,
+                         physics: const NeverScrollableScrollPhysics(),
                          shrinkWrap: true,
                          itemBuilder: (BuildContext context,int index){
                            return Column(
@@ -141,7 +142,7 @@ class ChooseBakaPage extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal:6.5.w,vertical: 3.62.h),
                         child: BakaAdvertiserCard(bakaName: 'الباقة بريميم', domain: 'تجربة مجانية لمدة شهر',price: '2000',imageStr: 'images/bakaBremuim.png',),
                       ),*/
-                      SizedBox(height: 97.h,),
+                      SizedBox(height: 40.h,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [

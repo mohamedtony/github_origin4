@@ -67,6 +67,7 @@ class BakaDetailsController extends GetxController{
 
     }*/
      myToken  = await storage.read("token");
+     print("Token= $myToken");
     client!.createSubscriptions(CreateSubscriptionRequest(execute: 0,payment_method: "STC",period_id: _chooseBakaController.selectedBakaId), "Bearer "+myToken!).then((value) {
       if(value.data!=null&&value.status==200){
         //subscriptionBakaDetail = value.data!;
@@ -220,6 +221,7 @@ class BakaDetailsController extends GetxController{
   void payNow(BuildContext context) {
     //periodId = id;
     Logger().i(CreateSubscriptionRequest(execute: 1,payment_method: paymentMethod.value,period_id: periodId,copon_id: coponId==-1?null:coponId).toJson());
+    Logger().i("Bearer $myToken");
 
     client!.createSubscriptions(CreateSubscriptionRequest(execute: 1,payment_method: paymentMethod.value,period_id: periodId,copon_id: coponId==-1?null:coponId), "Bearer "+myToken!).then((value) {
       print("mMessage"+value.message!);
@@ -231,6 +233,17 @@ class BakaDetailsController extends GetxController{
         ));
         Navigator.of(context).pop();
         Get.toNamed('/successfulPayingPage');
+      }else if(value.status==400) {
+        if (value.message != null) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(value.message!, style: TextStyle(
+                color: AppColors.whiteColor,
+                fontSize: 17,
+                fontFamily: 'Arabic-Regular'),),
+          ));
+        }
+        Navigator.of(context).pop();
+        Get.offAllNamed('/Home');
       }
     });
 /*    if(subscriptionBakaDetail.periods!=null) {
@@ -271,14 +284,17 @@ class BakaDetailsController extends GetxController{
   }
 
   downloadPDf(String url,BuildContext context){
+    print('here');
     getDirectoryPath().then((path) async {
       String extension=url.substring(url.lastIndexOf("/"));
       File file=File(path+"$extension");
       if(file.existsSync())
       {
         if(file!=null){
-          OpenFile.open(file.path);
+          print('here');
+          await OpenFile.open(file.path);
         }
+        Get.offAllNamed('/Home');
         return;
       }
 
@@ -327,8 +343,8 @@ class BakaDetailsController extends GetxController{
   Future<String>getDirectoryPath() async {
     String? externalStorageDirPath ;
     if (Platform.isAndroid) {
-      /* final directory = await getApplicationDocumentsDirectory();
-  externalStorageDirPath = directory.path;*/
+       /*final directory = await getApplicationDocumentsDirectory();
+       externalStorageDirPath = directory.path;*/
       externalStorageDirPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
       externalStorageDirPath =

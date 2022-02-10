@@ -187,11 +187,11 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   }
 
   void changeTabIndex(int indexCome,bool isTap) {
-    if(channels.value[indexCome].isTapped.value==true){
-      channels.value[indexCome].isTapped.value=false;
+    if(channels.value[indexCome].isTapped?.value==true){
+      channels.value[indexCome].isTapped?.value=false;
       channelsIds.removeWhere((element) => element==channels.value[indexCome].id);
     }else{
-      channels.value[indexCome].isTapped.value=true;
+      channels.value[indexCome].isTapped?.value=true;
       channelsIds.add(channels.value[indexCome].id!);
     }
   }

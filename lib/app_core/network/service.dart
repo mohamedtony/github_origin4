@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:advertisers/app_core/network/models/ChannelData.dart';
 import 'package:advertisers/app_core/network/requests/CreateSubscriptionRequest.dart';
+import 'package:advertisers/app_core/network/requests/GetAdvertisersRequest.dart';
 import 'package:advertisers/app_core/network/requests/OneCountryAndCitiesRequest.dart';
 import 'package:advertisers/app_core/network/requests/UpdateProfileRequest.dart';
 import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
@@ -10,6 +11,7 @@ import 'package:advertisers/app_core/network/requests/login_client_request.dart'
 import 'package:advertisers/app_core/network/responses/AddRemoveBlackListResponse.dart';
 import 'package:advertisers/app_core/network/responses/CountriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateSubscriptionResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetAdvertisersResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetBlockedUsersResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetCategoriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetMyProfileInfoResponse.dart';
@@ -94,4 +96,6 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   @GET('https://advertiser.cefour.com/api/v1/requests/form')
   Future<GetProductsAndAdsTypesResponse> getProductsAndAdsTypes(@Header("Authorization") String token);
 
+  @POST('https://advertiser.cefour.com/api/v1/requests/advertisers')
+  Future<GetAdvertisersResponse> getAdvertisers(@Header("Authorization") String token,@Body() GetAdvertisersRequest getAdvertisersRequest,);
 }
