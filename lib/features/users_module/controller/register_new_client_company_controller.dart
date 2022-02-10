@@ -38,6 +38,7 @@ class RegisterNewClientCompanyController extends GetxController {
   var countryCode = '+966'.obs;
   var latitude = 0.0.obs;
   var longitude = 0.0.obs;
+  var file =File(' ').obs;
   var password = '';
   var phone = '';
   var role=''.obs;
@@ -95,7 +96,7 @@ class RegisterNewClientCompanyController extends GetxController {
     return null;
   }
   String? validatePassword(String val) {
-    if (val.length < 6) {
+    if (val.length < 8) {
       return 'الباسوورد لا يقل عن 6 حروف او ارقام';
     }
     return null;
@@ -158,7 +159,7 @@ class RegisterNewClientCompanyController extends GetxController {
     return null;
   }
 
-  void checkLogin() {
+  void checkLogin() async{
    isValid.value = registerNewCompanyUserControllerKeyForm1.currentState!
         .validate();
     if (!isValid.value||errorRegister.value==true) {
@@ -169,6 +170,11 @@ class RegisterNewClientCompanyController extends GetxController {
    // Get.toNamed('/bakaPage');
 
       if(countryId.isNotEmpty&&areaId.isNotEmpty){
+        photo =
+            await dio.MultipartFile.fromFile(savedFile.value.path,
+            filename: savedFile.value.path
+                .substring(savedFile.value.path.lastIndexOf("/") + 1));
+
         registerCompanyUser();}
       else{
         Get.snackbar(

@@ -29,7 +29,7 @@ class RegisterNewAdvertiserUserController extends GetxController{
   late TextEditingController emailController;
   late TextEditingController nationalIDController;
   late TextEditingController passwordController;
-  var role = ''.obs;
+  var gender = ''.obs;
   static dio.MultipartFile? photo;
   var savedFile = File(' ').obs;
   var imageBase641 = ''.obs;
@@ -44,6 +44,7 @@ class RegisterNewAdvertiserUserController extends GetxController{
   var name = '';
   var nationalID = '';
   var accountName = '';
+  var file =File(' ').obs;
   var email = '';
   RxList<Country> countries = <Country>[].obs;
   RxList<Area> areas = <Area>[].obs;
@@ -86,7 +87,7 @@ class RegisterNewAdvertiserUserController extends GetxController{
     return null;
   }
   String? validatePassword(String val) {
-    if (val.length < 6) {
+    if (val.length < 8) {
       return 'الباسوورد لا يقل عن 6 حروف او ارقام';
     }
     return null;
@@ -142,7 +143,7 @@ class RegisterNewAdvertiserUserController extends GetxController{
     });*/
   }
 
-  void checkLogin() {
+  void checkLogin()async {
     isValid.value = registerNewAdvertiserUserControllerFormKey.currentState!
         .validate();
     if (!isValid.value||errorRegister.value==true) {
@@ -150,8 +151,13 @@ class RegisterNewAdvertiserUserController extends GetxController{
     }
     registerNewAdvertiserUserControllerFormKey.currentState!.save();
     // registerClientUser(context: context);
-    if(role.value.isNotEmpty){
+    if(gender.value.isNotEmpty){
       if(countryId.isNotEmpty&&areaId.isNotEmpty) {
+        photo =
+            await dio.MultipartFile.fromFile(savedFile.value.path,
+            filename: savedFile.value.path
+                .substring(savedFile.value.path.lastIndexOf("/") + 1));
+
         registerAdvertiserUser();
         //registerClientUser();
       }else{
@@ -189,10 +195,11 @@ class RegisterNewAdvertiserUserController extends GetxController{
           "password": passwordController.text,
           "personal_id": nationalIDController.text,
           "phone": phoneController.text,
-          "role": role.value,
+          "role": "advertiser",
           "type": 'client',
           "username": nameController.text,
-          "image": photo
+          "image": photo,
+          "gender":gender.value,
         },
         onSuccess: (res) {
           if (EasyLoading.isShow) {

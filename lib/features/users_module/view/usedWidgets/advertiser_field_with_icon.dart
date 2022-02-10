@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class AdvertisersGenericField extends StatelessWidget {
-   AdvertisersGenericField({this.onChanged,this.width,this.hintColor,this.fontSize,this.borderColor, required this.textAlignment,required this.obscureText,this.onSaved,required this.controller,required this.hintText,this.validator,Key? key}) : super(key: key);
+class AdvertisersFieldWithIcon extends StatelessWidget {
+  AdvertisersFieldWithIcon({this.suffix,this.onChanged,this.width,this.hintColor,this.fontSize,this.borderColor, required this.textAlignment,required this.obscureText,this.onSaved,required this.controller,required this.hintText,this.validator,Key? key}) : super(key: key);
 
   late final String hintText;
   bool  obscureText= false;
@@ -12,11 +12,11 @@ class AdvertisersGenericField extends StatelessWidget {
   final void Function(String?)? onSaved;
   String? Function(String?)? validator;
   double? width;
-  Widget? prefix;
-   void Function(String)? onChanged;
+  Widget? suffix;
+  void Function(String)? onChanged;
   double? fontSize;
   Color? borderColor,hintColor;
-   TextAlign textAlignment=TextAlign.center ;
+  TextAlign textAlignment=TextAlign.center ;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -29,7 +29,7 @@ class AdvertisersGenericField extends StatelessWidget {
         onChanged: onChanged,
         decoration: InputDecoration(
           contentPadding:  EdgeInsets.symmetric(vertical: 5.0.h,horizontal: 10.w),
-         // suffixIcon:prefix??const SizedBox(width: 0,),
+          suffixIcon:suffix??const SizedBox(width: 0,),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.h),borderSide: BorderSide(color:borderColor==null?AppColors.borderfayrozy: AppColors.borderAdvertiserRegisterColor)
           ),
