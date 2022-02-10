@@ -109,6 +109,7 @@ class _RestClient implements RestClient {
       r'code': code,
       r'period_id': period_id
     };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{r'Authorization': token};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};

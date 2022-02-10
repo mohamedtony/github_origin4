@@ -20,6 +20,7 @@ class SubscriptionDetail {
   PeriodModel? first_period;
   List<SubscriptionSettingsModel>? settings;
   List<PeriodModel>? periods;
+  String? free_txt;
 
 
   SubscriptionDetail({
@@ -30,7 +31,8 @@ class SubscriptionDetail {
     this.image,
     this.settings,
     this.periods,
-    this.first_period
+    this.first_period,
+    this.free_txt
   });
 
   factory SubscriptionDetail.fromJson(Map<String, dynamic> json) => _$SubscriptionDetailFromJson(json);
