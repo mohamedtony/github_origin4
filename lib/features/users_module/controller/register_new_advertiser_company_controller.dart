@@ -103,7 +103,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
     if (val.length < 3) {
       return 'الباسوورد لا يقل عن 3 حروف ';
     }else if(companyNameMess.isNotEmpty){
-      return nameMess.value;
+      return companyNameMess.value;
     }
     return null;
   }
@@ -144,7 +144,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
     if (val.length < 3) {
       return 'رقم السجل لا يقل عن 3 ارقام';
     }else if(recordIDMess.isNotEmpty){
-      return nationalIDMess.value;
+      return recordIDMess.value;
     }
     return null;
   }
@@ -238,6 +238,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
           nameMess.value = res.data!.username ?? '';
           accountNameMess.value = res.data!.accountName ?? '';
           emailMess.value = res.data!.email ?? '';
+          recordIDMess.value=res.data!.sgl??'';
           // accountAdminNameMess.value=res.data!.;
           //  companyNameMess.value=''.obs;
           // recordIDMess.value=''.obs;

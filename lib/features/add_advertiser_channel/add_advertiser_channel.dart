@@ -8,6 +8,7 @@ import 'package:advertisers/features/add_advertiser_channel/controller/add_adver
 import 'package:advertisers/features/add_advertiser_channel/controller/add_advertiser_channel_controller.dart';
 import 'package:advertisers/features/add_advertiser_channel/widgets/selected_countery_area_widget.dart';
 import 'package:advertisers/features/add_advertiser_channel/widgets/title.dart';
+import 'package:advertisers/features/advertising_influence_channels/controller/advertising_influence_channels_controller.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -798,6 +799,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                     child: InkWell(
                   onTap: () {
                     _addAdvertiserChannelController.addChannel();
+                    Get.delete<AdvertisingInfluenceChannelsController>();
                   },
                   child: Container(
                     height: 40,

@@ -105,7 +105,7 @@ class RegisterNewClientCompanyController extends GetxController {
     if (val.length < 3) {
       return 'الباسوورد لا يقل عن 3 حروف ';
     }else if(companyNameMess.isNotEmpty){
-      return nameMess.value;
+      return companyNameMess.value;
     }
     return null;
   }
@@ -146,7 +146,7 @@ class RegisterNewClientCompanyController extends GetxController {
     if (val.length < 3) {
       return 'رقم السجل لا يقل عن 3 ارقام';
     }else if(recordIDMess.isNotEmpty){
-      return nationalIDMess.value;
+      return recordIDMess.value;
     }
     return null;
   }
@@ -241,7 +241,7 @@ class RegisterNewClientCompanyController extends GetxController {
           emailMess.value = res.data!.email ?? '';
           // accountAdminNameMess.value=res.data!.;
           //  companyNameMess.value=''.obs;
-          // recordIDMess.value=''.obs;
+           recordIDMess.value=res.data!.sgl??'';
           checkLogin();
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();

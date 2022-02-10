@@ -10,8 +10,8 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AdvertisingInfluenceChannelsPage extends StatelessWidget {
-  const AdvertisingInfluenceChannelsPage({Key? key}) : super(key: key);
-
+   AdvertisingInfluenceChannelsPage({Key? key}) : super(key: key);
+ // AdvertisingInfluenceChannelsController controller=Get.put(AdvertisingInfluenceChannelsController(),permanent: false);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,15 +24,15 @@ class AdvertisingInfluenceChannelsPage extends StatelessWidget {
         },
         child: Image.asset("images/AdvertisingInfluenceChannelsButton.png")
     ),
-      appBar: PreferredSize(
-        child: AppBarWidget(
-          isBack: true,
-          isNotification: false,
-          isSearchBar: false,
-          isSideMenu: false,
-        ),
-        preferredSize: Size(MediaQuery.of(context).size.width, 80.0),
-      ),
+      // appBar: PreferredSize(
+      //   child: AppBarWidget(
+      //     isBack: true,
+      //     isNotification: false,
+      //     isSearchBar: false,
+      //     isSideMenu: false,
+      //   ),
+      //   preferredSize: Size(MediaQuery.of(context).size.width, 80.0),
+      // ),
       body: ListView(
         children: [
           WidgetAndTitle(
@@ -95,7 +95,7 @@ class AdvertisingInfluenceChannelsPage extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(child: InkWell(onTap: (){
-
+Get.back();
                 },
                   child: Container(
                     height: 40,
@@ -112,7 +112,7 @@ class AdvertisingInfluenceChannelsPage extends StatelessWidget {
                   width: 20,
                 ),
                 Expanded(child: InkWell(onTap: (){
-
+                  Get.back();
                 },
                   child: Container(
                     height: 40,

@@ -7,6 +7,7 @@ import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.
 import 'package:advertisers/features/add_advertiser_channel/add_advertiser_channel.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
+import 'package:advertisers/features/advertising_influence_channels/view/page/advertising_influence_channels_page.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/main.dart';
 import 'package:advertisers/shared/loading_dialog.dart';
@@ -625,14 +626,18 @@ class AdvertiserSettingPageController extends GetxController  {
     initialChildSize: 0.67,
     expand: false,
     builder: (context, scrollController) {
-    //if(bottomNumber==1) {
+    if(i==1) {
     /*return AdvertisingChannelsPage(
                   scrollController: scrollController);*/
     return AddAdvertiserChannel(
     //scrollController: scrollController
     );
 
-    // }
+     }else if(i==2){
+      return AdvertisingInfluenceChannelsPage();
+    }else{
+      return SizedBox();
+    }
     },
     );
     },

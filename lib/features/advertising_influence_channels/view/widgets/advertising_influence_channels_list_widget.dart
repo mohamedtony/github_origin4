@@ -9,8 +9,9 @@ class AdvertisingInfluenceChannelsPageListWidget extends StatelessWidget {
   // bool? isChecked;
   // String? socialTitle,iconUrl,minFollower,maxFollower,men,women,boys,girls;
    AdvertisingInfluenceChannelsPageListWidget({Key? key}) : super(key: key);
+   AdvertisingInfluenceChannelsController controller=Get.put(AdvertisingInfluenceChannelsController(),permanent: false);
 
-  @override
+   @override
   Widget build(BuildContext context) {
     return Obx(()=>ListView.builder(
         shrinkWrap: true,

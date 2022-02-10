@@ -763,8 +763,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
           ),
           InkWell(
             onTap: (){
-              //controller.showChannelsSheet(context,1);
-              Get.toNamed('/AdvertisingInfluenceChannelsPage');
+              controller.showChannelsSheet(context,2);
+             // Get.toNamed('/AdvertisingInfluenceChannelsPage');
             },
             child: Container(
               margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),

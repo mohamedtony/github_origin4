@@ -212,12 +212,12 @@ class Routes {
       page: () => AdvancedOptionsPage(),
 
     ),
-    GetPage(
-      name: '/AdvertisingInfluenceChannelsPage',
-      page:() => AdvertisingInfluenceChannelsPage(),
-      binding:BindingsBuilder(() {
-  Get.lazyPut<AdvertisingInfluenceChannelsController>(() => AdvertisingInfluenceChannelsController());
-  }),),
+  //   GetPage(
+  //     name: '/AdvertisingInfluenceChannelsPage',
+  //     page:() => AdvertisingInfluenceChannelsPage(),
+  //     binding:BindingsBuilder(() {
+  // Get.lazyPut<AdvertisingInfluenceChannelsController>(() => AdvertisingInfluenceChannelsController());
+  // }),),
     GetPage(
       name: '/TaxSettingsPage',
       page: () => TaxSettingsPage(),

@@ -156,13 +156,13 @@ class AdvertisingInfluenceChannelsPageWidget extends StatelessWidget {
                             Container(child: Text("شريحة المتأثرين",style: TextStyle(fontSize: 16.sp,color: Colors.grey),)),
                             Column(
                               children: [
-                                Text("${advertisingChannels.men}",style: TextStyle(fontSize: 14.sp,color: Colors.grey),),
-                                Text("${advertisingChannels.boys}",style: TextStyle(fontSize: 14.sp,color: Colors.grey),),
+                                Text("${advertisingChannels.men} % رجال",style: TextStyle(fontSize: 14.sp,color: Colors.grey),),
+                                Text("${advertisingChannels.boys} % شباب",style: TextStyle(fontSize: 14.sp,color: Colors.grey),),
                               ],
                             ),
                             Column(
                               children: [
-                                Text("${advertisingChannels.women}",style: TextStyle(fontSize: 14.sp,color: Colors.grey),),
+                                Text("${advertisingChannels.women} % نساء",style: TextStyle(fontSize: 14.sp,color: Colors.grey),),
                                 Text("${advertisingChannels.girls} % فتيات",style: TextStyle(fontSize: 14.sp,color: Colors.grey),),
                               ],
                             ),
