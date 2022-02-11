@@ -264,7 +264,7 @@ class AdvertiserSettingPageController extends GetxController  {
         }
         if(value.data!.all_categories!=null&&value.data!.all_categories!.isNotEmpty){
           generalCategories.value = value.data!.all_categories!;
-          generalCategories.value.insert(0, CategoryModel(id:-1,name: 'كل النشطات'));
+          generalCategories.value.insert(0, CategoryModel(id:-1,name: 'اختر'));
         }
       }
     });
