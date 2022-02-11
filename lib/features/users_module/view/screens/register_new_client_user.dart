@@ -71,7 +71,7 @@ class RegisterNewClientUser extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
-                          _showBottomSheet1(context);
+                          showChoiceImageDialog(context);
                         },
                         child: Obx(
                           () => Container(
@@ -328,128 +328,219 @@ class RegisterNewClientUser extends StatelessWidget {
     );
   }
 
-  void _showBottomSheet1(BuildContext context) {
+  // void _showBottomSheet1(BuildContext context) {
+  //   ImagePicker _imagePicker = ImagePicker();
+  //   // Future<File> imageFile;
+  //   // ImageProvider provider;
+  //   // String base64;
+  //   showModalBottomSheet(
+  //       context: context,
+  //       builder: (context) {
+  //         return SizedBox(
+  //          // width: 375.w,
+  //           child: Row(
+  //             children: <Widget>[
+  //               ElevatedButton.icon(
+  //                 label: Text("كاميرا"),
+  //                 onPressed: () async {
+  //                   _imagePicker
+  //                       .pickImage(
+  //                           source: ImageSource.camera,
+  //                           imageQuality: 60,
+  //                           maxWidth: 1280,
+  //                           maxHeight: 720)
+  //                       .then((file) async {
+  //                     _registerNewClientUserController.file.value= File.fromUri(Uri.file(file!.path));
+  //                     _registerNewClientUserController.savedFile.value =
+  //                         File.fromUri(Uri.file(file!.path));
+  //                     // RegisterNewClientUserController.photo =
+  //                     //     await dio.MultipartFile.fromFile(file.path,
+  //                     //         filename: file.path
+  //                     //             .substring(file.path.lastIndexOf("/") + 1));
+  //                     RegisterNewClientUserController.photo =
+  //                     await dio.MultipartFile.fromFile(_registerNewClientUserController.savedFile.value.path,
+  //                         filename: _registerNewClientUserController.savedFile.value.path
+  //                             .substring(_registerNewClientUserController.savedFile.value.path.lastIndexOf("/") + 1));
+  //
+  //                     //provider = FileImage(savedFile);
+  //                     //setState(() {
+  //                     _registerNewClientUserController.imageBase641.value =
+  //                         base64Encode(_registerNewClientUserController
+  //                             .savedFile.value
+  //                             .readAsBytesSync());
+  //                     //savedFile = null;
+  //                     //logo=multi1;
+  //                     // });
+  //                   });
+  //                   Navigator.pop(context);
+  //                 },
+  //                 icon:SizedBox(
+  //                  // width: 200,
+  //                   child: Row(
+  //                     mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //                     children:[
+  //                       Icon(Icons.photo_camera),
+  //
+  //                     ],
+  //
+  //
+  //                   ),
+  //                 ),
+  //                 // child:const Text(
+  //                 //   "كاميرا",
+  //                 //   style: TextStyle(
+  //                 //       fontSize: 16,
+  //                 //       fontWeight: FontWeight.w800,
+  //                 //       color: Colors.green),
+  //                 // )
+  //               ),
+  //               SizedBox(width:10.w),
+  //               ElevatedButton.icon(
+  //                 label:  Text("المعرض"),
+  //                 onPressed: () async {
+  //                  _imagePicker
+  //                       .pickImage(
+  //                           source: ImageSource.gallery,
+  //                           imageQuality: 60,
+  //                           maxWidth: 1280,
+  //                           maxHeight: 720)
+  //                       .then((file) async {
+  //                    _registerNewClientUserController.file.value= File.fromUri(Uri.file(file!.path));
+  //                     _registerNewClientUserController.savedFile.value =
+  //                         File.fromUri(Uri.file(file!.path));
+  //                    // RegisterNewClientUserController.photo =
+  //                         // await dio.MultipartFile.fromFile(file.path,
+  //                         //     filename: file.path
+  //                         //         .substring(file.path.lastIndexOf("/") + 1));
+  //                    RegisterNewClientUserController.photo =
+  //                     await dio.MultipartFile.fromFile(_registerNewClientUserController.savedFile.value.path,
+  //                        filename: _registerNewClientUserController.savedFile.value.path
+  //                             .substring(_registerNewClientUserController.savedFile.value.path.lastIndexOf("/") + 1));
+  //
+  //                     //         provider = FileImage(savedFile);
+  //                     //         setState(() {
+  //                     _registerNewClientUserController.imageBase641.value =
+  //                         base64Encode(_registerNewClientUserController
+  //                             .savedFile.value
+  //                             .readAsBytesSync());
+  //                     //           file1=multi1;
+  //                     //         });
+  //                     //
+  //                   });
+  //                   Navigator.pop(context);
+  //                 },
+  //                 icon:Row(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //                   children:[
+  //                     Icon(Icons.photo),
+  //
+  //                   ],
+  //
+  //
+  //                 ),
+  //
+  //                 // label: const Text(
+  //                 //   "المعرض",
+  //                 //   style: TextStyle(
+  //                 //       fontSize: 16,
+  //                 //       fontWeight: FontWeight.w800,
+  //                 //       color: Colors.green),
+  //                 // )
+  //               ),
+  //             ],
+  //           ),
+  //         );
+  //       });
+  // }
+  Future<void> showChoiceImageDialog(BuildContext context)
+  {
     ImagePicker _imagePicker = ImagePicker();
-    // Future<File> imageFile;
-    // ImageProvider provider;
-    // String base64;
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return SizedBox(
-           // width: 375.w,
-            child: Row(
-              children: <Widget>[
-                ElevatedButton.icon(
-                  label: Text("كاميرا"),
-                  onPressed: () async {
-                    _imagePicker
-                        .pickImage(
-                            source: ImageSource.camera,
-                            imageQuality: 60,
-                            maxWidth: 1280,
-                            maxHeight: 720)
-                        .then((file) async {
-                      _registerNewClientUserController.file.value= File.fromUri(Uri.file(file!.path));
-                      _registerNewClientUserController.savedFile.value =
-                          File.fromUri(Uri.file(file!.path));
-                      // RegisterNewClientUserController.photo =
-                      //     await dio.MultipartFile.fromFile(file.path,
-                      //         filename: file.path
-                      //             .substring(file.path.lastIndexOf("/") + 1));
-                      RegisterNewClientUserController.photo =
-                      await dio.MultipartFile.fromFile(_registerNewClientUserController.savedFile.value.path,
-                          filename: _registerNewClientUserController.savedFile.value.path
-                              .substring(_registerNewClientUserController.savedFile.value.path.lastIndexOf("/") + 1));
+    return showDialog(context: context,builder: (BuildContext context){
 
-                      //provider = FileImage(savedFile);
-                      //setState(() {
-                      _registerNewClientUserController.imageBase641.value =
-                          base64Encode(_registerNewClientUserController
-                              .savedFile.value
-                              .readAsBytesSync());
-                      //savedFile = null;
-                      //logo=multi1;
-                      // });
-                    });
-                    Navigator.pop(context);
-                  },
-                  icon:SizedBox(
-                   // width: 200,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children:[
-                        Icon(Icons.photo_camera),
+      return AlertDialog(
+        title: Text("Choose option",style: TextStyle(color: Colors.blue),),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: () async {
+                  _imagePicker
+                      .pickImage(
+                      source: ImageSource.gallery,
+                      imageQuality: 60,
+                      maxWidth: 1280,
+                      maxHeight: 720)
+                      .then((file) async {
+                    _registerNewClientUserController.file.value= File.fromUri(Uri.file(file!.path));
+                    _registerNewClientUserController.savedFile.value =
+                        File.fromUri(Uri.file(file!.path));
+                    // RegisterNewClientUserController.photo =
+                    // await dio.MultipartFile.fromFile(file.path,
+                    //     filename: file.path
+                    //         .substring(file.path.lastIndexOf("/") + 1));
+                    RegisterNewClientUserController.photo =
+                    await dio.MultipartFile.fromFile(_registerNewClientUserController.savedFile.value.path,
+                        filename: _registerNewClientUserController.savedFile.value.path
+                            .substring(_registerNewClientUserController.savedFile.value.path.lastIndexOf("/") + 1));
 
-                      ],
+                    //         provider = FileImage(savedFile);
+                    //         setState(() {
+                    _registerNewClientUserController.imageBase641.value =
+                        base64Encode(_registerNewClientUserController
+                            .savedFile.value
+                            .readAsBytesSync());
+                    //           file1=multi1;
+                    //         });
+                    //
+                  });
+                  Navigator.pop(context);
+                },
+                title: Text("Gallery"),
+                leading: Icon(Icons.account_box,color: Colors.blue,),
+              ),
 
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: ()async {
+                  _imagePicker
+                      .pickImage(
+                      source: ImageSource.camera,
+                      imageQuality: 60,
+                      maxWidth: 1280,
+                      maxHeight: 720)
+                      .then((file) async {
+                    _registerNewClientUserController.file.value= File.fromUri(Uri.file(file!.path));
+                    _registerNewClientUserController.savedFile.value =
+                        File.fromUri(Uri.file(file!.path));
+                    // RegisterNewClientUserController.photo =
+                    //     await dio.MultipartFile.fromFile(file.path,
+                    //         filename: file.path
+                    //             .substring(file.path.lastIndexOf("/") + 1));
+                    RegisterNewClientUserController.photo =
+                    await dio.MultipartFile.fromFile(_registerNewClientUserController.savedFile.value.path,
+                        filename: _registerNewClientUserController.savedFile.value.path
+                            .substring(_registerNewClientUserController.savedFile.value.path.lastIndexOf("/") + 1));
 
-                    ),
-                  ),
-                  // child:const Text(
-                  //   "كاميرا",
-                  //   style: TextStyle(
-                  //       fontSize: 16,
-                  //       fontWeight: FontWeight.w800,
-                  //       color: Colors.green),
-                  // )
-                ),
-                SizedBox(width:10.w),
-                ElevatedButton.icon(
-                  label:  Text("المعرض"),
-                  onPressed: () async {
-                   _imagePicker
-                        .pickImage(
-                            source: ImageSource.gallery,
-                            imageQuality: 60,
-                            maxWidth: 1280,
-                            maxHeight: 720)
-                        .then((file) async {
-                     _registerNewClientUserController.file.value= File.fromUri(Uri.file(file!.path));
-                      _registerNewClientUserController.savedFile.value =
-                          File.fromUri(Uri.file(file!.path));
-                     // RegisterNewClientUserController.photo =
-                          // await dio.MultipartFile.fromFile(file.path,
-                          //     filename: file.path
-                          //         .substring(file.path.lastIndexOf("/") + 1));
-                     RegisterNewClientUserController.photo =
-                      await dio.MultipartFile.fromFile(_registerNewClientUserController.savedFile.value.path,
-                         filename: _registerNewClientUserController.savedFile.value.path
-                              .substring(_registerNewClientUserController.savedFile.value.path.lastIndexOf("/") + 1));
+                    //provider = FileImage(savedFile);
+                    //setState(() {
+                    _registerNewClientUserController.imageBase641.value =
+                        base64Encode(_registerNewClientUserController
+                            .savedFile.value
+                            .readAsBytesSync());
+                    //savedFile = null;
+                    //logo=multi1;
+                    // });
+                  });
 
-                      //         provider = FileImage(savedFile);
-                      //         setState(() {
-                      _registerNewClientUserController.imageBase641.value =
-                          base64Encode(_registerNewClientUserController
-                              .savedFile.value
-                              .readAsBytesSync());
-                      //           file1=multi1;
-                      //         });
-                      //
-                    });
-                    Navigator.pop(context);
-                  },
-                  icon:Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children:[
-                      Icon(Icons.photo),
-
-                    ],
-
-
-                  ),
-
-                  // label: const Text(
-                  //   "المعرض",
-                  //   style: TextStyle(
-                  //       fontSize: 16,
-                  //       fontWeight: FontWeight.w800,
-                  //       color: Colors.green),
-                  // )
-                ),
-              ],
-            ),
-          );
-        });
+                  Navigator.pop(context);
+                },
+                title: Text("Camera"),
+                leading: Icon(Icons.camera,color: Colors.blue,),
+              ),
+            ],
+          ),
+        ),);
+    });
   }
 }
