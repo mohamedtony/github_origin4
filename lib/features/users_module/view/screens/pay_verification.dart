@@ -196,7 +196,7 @@ class PayVerification extends StatelessWidget {
                               fontFamily: 'Arabic-Regular'),
                           children: <TextSpan>[
                             TextSpan(
-                                text: _chooseBakaController.createSubscriptionModel.value.period?.price?.toString()??'',
+                                text: _chooseBakaController.createSubscriptionModel.value.period?.price_after_discount!=null ? _chooseBakaController.createSubscriptionModel.value.period?.price_after_discount?.toString()??'': _chooseBakaController.createSubscriptionModel.value.period?.price?.toString()??'',
                                 style: TextStyle(
                                     fontSize: 19.sp,
                                     color: AppColors.fontColorBlue,

@@ -23,6 +23,7 @@ SubscriptionDetail _$SubscriptionDetailFromJson(Map<String, dynamic> json) =>
       first_period: json['first_period'] == null
           ? null
           : PeriodModel.fromJson(json['first_period'] as Map<String, dynamic>),
+      free_txt: json['free_txt'] as String?,
     );
 
 Map<String, dynamic> _$SubscriptionDetailToJson(SubscriptionDetail instance) =>
@@ -35,4 +36,5 @@ Map<String, dynamic> _$SubscriptionDetailToJson(SubscriptionDetail instance) =>
       'first_period': instance.first_period,
       'settings': instance.settings,
       'periods': instance.periods,
+      'free_txt': instance.free_txt,
     };

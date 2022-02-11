@@ -67,7 +67,7 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                                     subscriptionBaka.first_period?.price?.toString()??"",style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
                                 ),
                               ),
-                              SizedBox(
+                              subscriptionBaka.first_period?.price_after_discount!=null?SizedBox(
                                 child: RotationTransition(
                                   turns:  AlwaysStoppedAnimation(25 / 360),
                                   child:  Text(
@@ -75,12 +75,12 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                                     style: TextStyle(fontSize: 25.sp),
                                   ),
                                 ),
-                              )
+                              ):const SizedBox()
                             ])):const SizedBox(),
-                        SizedBox(
+                        subscriptionBaka.first_period?.price_after_discount!=null?SizedBox(
                           child: Text(
                               '  /  ',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 18.sp)
-                          ),),
+                          ),):const SizedBox(),
                         SizedBox(
                           child: Text(
                               '${subscriptionBaka.first_period?.price_after_discount ?? ""}',style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
@@ -170,7 +170,7 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                                     subscriptionBaka.first_period?.price?.toString()??"",style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
                                 ),
                               ),
-                              SizedBox(
+                              subscriptionBaka.first_period?.price_after_discount!=null?SizedBox(
                                 child: RotationTransition(
                                   turns:  AlwaysStoppedAnimation(25 / 360),
                                   child:  Text(
@@ -178,12 +178,12 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                                     style: TextStyle(fontSize: 25.sp),
                                   ),
                                 ),
-                              )
+                              ):const SizedBox()
                             ])):const SizedBox(),
-                        SizedBox(
+                        subscriptionBaka.first_period?.price_after_discount!=null?SizedBox(
                           child: Text(
                               '  /  ',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 18.sp)
-                          ),),
+                          ),):SizedBox(),
                         SizedBox(
                           child: Text(
                               '${subscriptionBaka.first_period?.price_after_discount ?? ""}',style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)

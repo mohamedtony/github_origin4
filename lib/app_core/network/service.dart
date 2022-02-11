@@ -47,7 +47,7 @@ Future<LoginClientResponse> login(@Body() LoginClientRequest mLoginRequest);
 Future<CreateSubscriptionResponse> createSubscriptions(@Body() CreateSubscriptionRequest createSubscriptionRequest,@Header("Authorization") String token);
 
 @POST('https://advertiser.cefour.com/api/v1/check_copon')
-Future<CreateSubscriptionResponse> checkCopon(@Query('code') String code,@Query('period_id') int period_id,@Header("Authorization") String token);
+Future<CreateSubscriptionResponse> checkCopon(@Query('code') String code,@Query('period_id') int? period_id,@Header("Authorization") String token);
 
 @GET('https://advertiser.cefour.com/api/v1/profile')
 Future<GetMyProfileInfoResponse> getMyProfile(@Header("Authorization") String token);
