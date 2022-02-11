@@ -425,8 +425,9 @@ class ClientListPage extends StatelessWidget {
               ClientListItem(icon: 'images/like_icon2.svg',title: 'قيمنا على ابل ستور',listTilePressed: (){
                 print('pressed2');
               },),
-              ClientListItem(icon: 'images/logout_icon.svg',title: 'خروج',listTilePressed: (){
-               storage.remove("data");
+              ClientListItem(icon: 'images/logout_icon.svg',title: 'خروج',listTilePressed: () async {
+                await storage.remove("data");
+                await storage.remove("token");
                Get.offAllNamed('/loginPage');
                 print('pressed2');
               },),

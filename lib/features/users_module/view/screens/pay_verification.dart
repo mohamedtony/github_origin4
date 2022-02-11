@@ -125,13 +125,13 @@ class PayVerification extends StatelessWidget {
                   ),
                 ],
               ),
-              Row(
+              _chooseBakaController.subscriptionBakaDetail.value.first_period?.free_days!=null?Row(
                 children: [
                   CircleAvatar(
                     radius: 6,
                     backgroundColor: AppColors.circleGreyColor,
                   ),
-                  SizedBox(
+                   SizedBox(
                     child: Obx(()=>RichText(
                       text: TextSpan(
                         text: '  المدة المجانية       ',
@@ -157,7 +157,7 @@ class PayVerification extends StatelessWidget {
                     ),)
                   ),
                 ],
-              ),
+              ):SizedBox(height: 10.0,),
             ],
           ),
         ),
