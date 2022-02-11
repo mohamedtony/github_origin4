@@ -110,13 +110,13 @@ class Routes {
         Get.lazyPut<AdvertiserSettingPageController>(() => AdvertiserSettingPageController());
       }),
     ),
-    GetPage(
-      name: '/AdvancedOptionsPage',
-      page: () => AdvancedOptionsPage(),
-      binding: BindingsBuilder(() {
-        Get.lazyPut<AdvancedOptionsController>(() => AdvancedOptionsController());
-      }),
-    ),
+    // GetPage(
+    //   name: '/AdvancedOptionsPage',
+    //   page: () => AdvancedOptionsPage(),
+    //   binding: BindingsBuilder(() {
+    //     Get.lazyPut<AdvancedOptionsController>(() => AdvancedOptionsController());
+    //   }),
+    // ),
     GetPage(
       name: '/BlockedUsersPage',
       page: () => BlockedUsersPage(),
@@ -207,22 +207,22 @@ class Routes {
       page: () => DiscountPage(),
 
     ),
-    GetPage(
-      name: '/advancedOptionsPage',
-      page: () => AdvancedOptionsPage(),
-
-    ),
+    // GetPage(
+    //   name: '/advancedOptionsPage',
+    //   page: () => AdvancedOptionsPage(),
+    //
+    // ),
   //   GetPage(
   //     name: '/AdvertisingInfluenceChannelsPage',
   //     page:() => AdvertisingInfluenceChannelsPage(),
   //     binding:BindingsBuilder(() {
   // Get.lazyPut<AdvertisingInfluenceChannelsController>(() => AdvertisingInfluenceChannelsController());
   // }),),
-    GetPage(
-      name: '/TaxSettingsPage',
-      page: () => TaxSettingsPage(),
-
-    ),
+  //   GetPage(
+  //     name: '/TaxSettingsPage',
+  //     page: () => TaxSettingsPage(),
+  //
+  //   ),
     GetPage(
       name: '/chooseBakaDetails',
       page: () => BakaDetails(),
@@ -250,12 +250,12 @@ class Routes {
       name: '/AdvertiserQrPage',
       page: () => AdvertiserQrPage(),
     ),
-    GetPage(
-      name: '/AdvertiserAccountStatusPage',
-      page: () => AdvertiserAccountStatusPage(),
-  binding: BindingsBuilder(() {
-  Get.lazyPut<AdvertiserAccountStatusController>(() => AdvertiserAccountStatusController());
-  })),
+  //   GetPage(
+  //     name: '/AdvertiserAccountStatusPage',
+  //     page: () => AdvertiserAccountStatusPage(),
+  // binding: BindingsBuilder(() {
+  // Get.lazyPut<AdvertiserAccountStatusController>(() => AdvertiserAccountStatusController());
+  // })),
     GetPage(
       name: '/AddAdvertiserChannel',
       page: () => AddAdvertiserChannel(),

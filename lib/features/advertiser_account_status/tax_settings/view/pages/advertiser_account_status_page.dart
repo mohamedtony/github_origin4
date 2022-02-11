@@ -8,14 +8,15 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AdvertiserAccountStatusPage extends StatefulWidget {
-  const AdvertiserAccountStatusPage({Key? key}) : super(key: key);
+ late ScrollController scrollController;
+ AdvertiserAccountStatusPage({required this.scrollController,Key? key}) : super(key: key);
 
   @override
   State<AdvertiserAccountStatusPage> createState() => _AdvertiserAccountStatusPageState();
 }
 
 class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPage> {
-
+  AdvertiserAccountStatusController _advertiserAccountStatusController=Get.put(AdvertiserAccountStatusController());
   String? _selectedFromDate;
   String? _selectedToDate;
 
@@ -30,17 +31,18 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        child: AdvertiserAccountStatusAppBarWidget(
-          isSearchBar: false,
-          isNotification: false,
-          isBack: true,
-          isSideMenu: false,
-        ),
-        preferredSize: Size(MediaQuery.of(context).size.width, 300.h),
-      ),
+      // appBar: PreferredSize(
+      //   child: AdvertiserAccountStatusAppBarWidget(
+      //     isSearchBar: false,
+      //     isNotification: false,
+      //     isBack: true,
+      //     isSideMenu: false,
+      //   ),
+      //   preferredSize: Size(MediaQuery.of(context).size.width, 300.h),
+      // ),
       body: ListView(
         // crossAxisAlignment: CrossAxisAlignment.start,
+        controller: widget.scrollController,
         children: [
           WidgetAndTitle(
             containerColor: Color(0xffF5F5F5),
@@ -295,6 +297,9 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
               children: [
                 Expanded(child: InkWell(onTap: (){
                  Get.find<AdvertiserAccountStatusController>().postStopProfile();
+                 Get.find<AdvertiserAccountStatusController>().isChecked.value=false;
+                 Get.delete<AdvertiserAccountStatusController>();
+                 Get.back();
                 },
                   child: Container(
                     height: 40,

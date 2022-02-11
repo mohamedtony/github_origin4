@@ -5,10 +5,13 @@ import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/app_core/network/requests/OneCountryAndCitiesRequest.dart';
 import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
 import 'package:advertisers/features/add_advertiser_channel/add_advertiser_channel.dart';
+import 'package:advertisers/features/advanced_options/view/pages/advanced_options_page.dart';
+import 'package:advertisers/features/advertiser_account_status/tax_settings/view/pages/advertiser_account_status_page.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
 import 'package:advertisers/features/advertising_influence_channels/view/page/advertising_influence_channels_page.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+import 'package:advertisers/features/tax_settings/view/pages/tax_settings_page.dart';
 import 'package:advertisers/main.dart';
 import 'package:advertisers/shared/loading_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -634,8 +637,23 @@ class AdvertiserSettingPageController extends GetxController  {
     );
 
      }else if(i==2){
-      return AdvertisingInfluenceChannelsPage();
-    }else{
+      return AdvertisingInfluenceChannelsPage(
+          scrollController: scrollController
+      );
+    }else if(i==3){
+      return TaxSettingsPage(
+          scrollController: scrollController
+      );
+    }else if(i==4){
+      return AdvertiserAccountStatusPage(
+          scrollController: scrollController
+      );
+    }else if(i==5){
+      return AdvancedOptionsPage(
+          scrollController: scrollController
+      );
+    }
+    else{
       return SizedBox();
     }
     },

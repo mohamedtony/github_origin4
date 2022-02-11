@@ -841,7 +841,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
           ),
           InkWell(
             onTap: (){
-              Get.toNamed('/TaxSettingsPage');
+              controller.showChannelsSheet(context,3);
+             // Get.toNamed('/TaxSettingsPage');
             },
             child: Container(
               margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
@@ -918,7 +919,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
           ),
           InkWell(
             onTap: (){
-              Get.toNamed('/AdvertiserAccountStatusPage');
+              controller.showChannelsSheet(context,4);
+             // Get.toNamed('/AdvertiserAccountStatusPage');
             },
             child: Container(
               margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
@@ -995,7 +997,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
           ),
           InkWell(
             onTap: (){
-              Get.toNamed('/AdvancedOptionsPage');
+              controller.showChannelsSheet(context,5);
+             // Get.toNamed('/AdvancedOptionsPage');
             },
             child: Container(
               margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
