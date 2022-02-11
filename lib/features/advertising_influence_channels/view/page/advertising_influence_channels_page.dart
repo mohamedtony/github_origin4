@@ -10,7 +10,8 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AdvertisingInfluenceChannelsPage extends StatelessWidget {
-   AdvertisingInfluenceChannelsPage({Key? key}) : super(key: key);
+  late ScrollController scrollController;
+   AdvertisingInfluenceChannelsPage({required this.scrollController,Key? key}) : super(key: key);
  // AdvertisingInfluenceChannelsController controller=Get.put(AdvertisingInfluenceChannelsController(),permanent: false);
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,7 @@ class AdvertisingInfluenceChannelsPage extends StatelessWidget {
       //   preferredSize: Size(MediaQuery.of(context).size.width, 80.0),
       // ),
       body: ListView(
+        controller:scrollController,
         children: [
           WidgetAndTitle(
             title: "قنوات الإعلان والتأثير",

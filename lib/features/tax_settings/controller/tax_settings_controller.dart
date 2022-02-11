@@ -12,7 +12,7 @@ class TaxSettingsController extends GetxController{
    late TextEditingController taxNumberController;
    late Repository repo;
    List<int>? checkList = [];
-
+var  tax_enable=true.obs;
    void addRemoveCheckList(id){
      if(checkList!.contains(id)){
        checkList!.remove(id);
@@ -82,7 +82,7 @@ class TaxSettingsController extends GetxController{
              EasyLoading.dismiss();
            }
            taxs.value=res.data!;
-           isChecked=res.data?.tax_enable==0?false:true;
+           tax_enable.value=res.data?.tax_enable=="true"?true:false;
            taxNumberController.text=res.data!.tax_number.toString();
            update();
          },

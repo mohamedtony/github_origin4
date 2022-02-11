@@ -10,8 +10,8 @@ part 'TaxSettingsModel.g.dart';
 
 @JsonSerializable()
 class TaxSettingsModel {
-  int? tax_enable;
-  int? tax_number;
+  String? tax_enable;
+  String? tax_number;
 
   TaxSettingsModel({
     this.tax_enable,this.tax_number

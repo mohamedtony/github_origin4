@@ -1,3 +1,4 @@
+import 'package:advertisers/features/users_module/app_colors.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:advertisers/shared/radio_buttons/radio_buttons.dart';
 import 'package:advertisers/shared/widget_and_title/widget_and_title.dart';
@@ -9,22 +10,24 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TaxSettingsPage extends StatelessWidget {
-  const TaxSettingsPage({Key? key}) : super(key: key);
-
+  late ScrollController scrollController;
+  TaxSettingsPage({required this.scrollController,Key? key}) : super(key: key);
+  TaxSettingsController taxSettingsController=Get.put(TaxSettingsController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        child: TaxSettingsAppBarWidget(
-          isSearchBar: false,
-          isNotification: false,
-          isBack: true,
-          isSideMenu: false,
-        ),
-        preferredSize: Size(MediaQuery.of(context).size.width, 300.h),
-      ),
+      // appBar: PreferredSize(
+      //   child: TaxSettingsAppBarWidget(
+      //     isSearchBar: false,
+      //     isNotification: false,
+      //     isBack: true,
+      //     isSideMenu: false,
+      //   ),
+      //   preferredSize: Size(MediaQuery.of(context).size.width, 300.h),
+      // ),
       body: ListView(
         // crossAxisAlignment: CrossAxisAlignment.start,
+        controller:scrollController,
         children: [
           WidgetAndTitle(
             containerColor: Color(0xffF5F5F5),
@@ -54,14 +57,19 @@ class TaxSettingsPage extends StatelessWidget {
                               Radius.circular(50.0),
                             ),
                           ),
-                          child: Container(
-                            margin: EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                              color: Color(0xc6244094),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(50.0),
+                          child: InkWell(
+                            onTap: (){
+                              Get.find<TaxSettingsController>().tax_enable.value=!Get.find<TaxSettingsController>().tax_enable.value;
+                            },
+                            child: Obx(()=>Container(
+                              margin: EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                color: Get.find<TaxSettingsController>().tax_enable.value==true?Color(0xc6244094):AppColors.whiteColor,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(50.0),
+                                ),
                               ),
-                            ),
+                            )),
                           ),
                         ),
                         SizedBox(
@@ -185,6 +193,11 @@ class TaxSettingsPage extends StatelessWidget {
               children: [
                 Expanded(child: InkWell(onTap: (){
                 Get.find<TaxSettingsController>().postTaxSettings();
+               // Get.find<TaxSettingsController>().isChecked=false;
+                //Get.find<TaxSettingsController>().changeChecked();
+
+                Get.back();
+                Get.delete<TaxSettingsController>();
                 },
                   child: Container(
                     height: 40,
@@ -201,7 +214,7 @@ class TaxSettingsPage extends StatelessWidget {
                   width: 20,
                 ),
                 Expanded(child: InkWell(onTap: (){
-
+                   Get.back();
                 },
                   child: Container(
                     height: 40,

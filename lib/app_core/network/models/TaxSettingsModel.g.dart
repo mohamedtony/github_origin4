@@ -8,8 +8,8 @@ part of 'TaxSettingsModel.dart';
 
 TaxSettingsModel _$TaxSettingsModelFromJson(Map<String, dynamic> json) =>
     TaxSettingsModel(
-      tax_enable: json['tax_enable'] as int?,
-      tax_number: json['tax_number'] as int?,
+      tax_enable: json['tax_enable'] as String?,
+      tax_number: json['tax_number'] as String?,
     );
 
 Map<String, dynamic> _$TaxSettingsModelToJson(TaxSettingsModel instance) =>
