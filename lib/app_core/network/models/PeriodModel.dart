@@ -9,7 +9,7 @@ class PeriodModel {
   double? price;
   double? price_after_discount;
   int? free_days;
-
+  String? free_txt;
   PeriodModel({
     this.id,
     this.subscription_id,
@@ -17,7 +17,9 @@ class PeriodModel {
     this.price,
     this.price_after_discount,
     this.free_days,
+    this.free_txt
   });
+
   String itemAsStringByName() {
     return this.months_count.toString()+" أشهر ";
   }

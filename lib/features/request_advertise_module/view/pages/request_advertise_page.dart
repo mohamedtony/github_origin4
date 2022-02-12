@@ -234,6 +234,7 @@ class RequestAdvertisePage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(
                     10), //remove this to get plane rectange
               ),
+
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -269,7 +270,9 @@ class RequestAdvertisePage extends StatelessWidget {
                           filled: true,
                           hintStyle: TextStyle(color: AppColors.adVertiserPageDataColor),
                           //hintText: 'adDescription'.tr,
-                          fillColor:Colors.white70),
+                          //
+                         fillColor:Colors.white10
+                      ),
                       controller: requestAdvertiseController.descriptionController,
                     ),
                   )
@@ -589,35 +592,38 @@ class RequestAdvertisePage extends StatelessWidget {
                   width: 165,
                   height: 50,
                   margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 16.0),
-                  child: Material(
-                    elevation: 6.0,
-                    shadowColor: Colors.grey[200],
-                    borderRadius: BorderRadius.all(Radius.circular(18)),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 18.0),
-                          child: SvgPicture.asset(
-                            'images/newspaper_outline.svg',
-                            fit: BoxFit.fill,
-                            height: 22.0,
-                            width: 22.0,
+                  child: InkWell(
+                    onTap: ()=>requestAdvertiseController.onPlanClicked(context),
+                    child: Material(
+                      elevation: 6.0,
+                      shadowColor: Colors.grey[200],
+                      borderRadius: BorderRadius.all(Radius.circular(18)),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(right: 18.0),
+                            child: SvgPicture.asset(
+                              'images/newspaper_outline.svg',
+                              fit: BoxFit.fill,
+                              height: 22.0,
+                              width: 22.0,
+                            ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                              left: 12.0, bottom: 4.0, right: 20, top: 4.0),
-                          child: Text(
-                            'adPlan'.tr,
-                            style: TextStyle(
-                                fontSize: 16.0,
-                                color: AppColors.adVertiserPageDataColor,
-                                fontWeight: FontWeight.w300),
-                            textAlign: TextAlign.center,
+                          Container(
+                            margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20, top: 4.0),
+                            child: Text(
+                              'adPlan'.tr,
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: AppColors.adVertiserPageDataColor,
+                                  fontWeight: FontWeight.w300),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

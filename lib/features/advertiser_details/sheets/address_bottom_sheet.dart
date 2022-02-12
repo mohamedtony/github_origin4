@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:advertisers/features/advertiser_details/controller/advertiser_details_controller.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/users_module/app_colors.dart' as aliColors;
+import 'package:advertisers/features/users_module/view/usedWidgets/advertiser_field_with_icon.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_generic_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -87,7 +88,7 @@ class AddressBottomSheetAdvertiserDetailsPage extends StatelessWidget {
                         child:  Text('اسم المكان',style: TextStyle(color: aliColors.AppColors.arrowBlueColor,fontSize: 16.sp),)),
                     AdvertisersGenericField(textAlignment: TextAlign.right, obscureText: false, controller: controller.placeNameController, hintText: 'اسم المكان'),
                     SizedBox(height:5.h),
-                    AdvertisersGenericField(textAlignment: TextAlign.right,prefix: SizedBox(
+                    AdvertisersFieldWithIcon(textAlignment: TextAlign.right,suffix: SizedBox(
                       width: 25.w,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,

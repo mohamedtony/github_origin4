@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:advertisers/app_core/network/models/CoponModel.dart';
 import 'package:advertisers/app_core/network/models/CreateSubscriptionModel.dart';
 import 'package:advertisers/app_core/network/models/CreateSuscriptionWithReciet.dart';
+import 'package:advertisers/app_core/network/models/SubscriptionSettingsModel.dart';
 import 'package:advertisers/app_core/network/requests/CreateSubscriptionRequest.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/features/users_module/app_colors.dart';
@@ -36,8 +37,9 @@ class BakaDetailsController extends GetxController{
   Rx<SubscriptionDetail> subscriptionBakaDetail=SubscriptionDetail().obs;
   Rx<CreateSubscriptionModel> createSubscriptionModel=CreateSubscriptionModel().obs;
   //Repository repo=Repository();
-  RxList<String> items=<String>[].obs;
+  RxList<SubscriptionSettingsModel> items=<SubscriptionSettingsModel>[].obs;
   var periodId=-1.obs;
+  String? coponCode;
   Rx<double> priceAfterDiscount =  (-0.1).obs;
   int coponId =-1;
   var paymentMethod = ''.obs;
@@ -67,9 +69,10 @@ class BakaDetailsController extends GetxController{
 
     }*/
      myToken  = await storage.read("token");
+     print("Token= $myToken");
     client!.createSubscriptions(CreateSubscriptionRequest(execute: 0,payment_method: "STC",period_id: _chooseBakaController.selectedBakaId), "Bearer "+myToken!).then((value) {
       if(value.data!=null&&value.status==200){
-        //subscriptionBakaDetail = value.data!;
+        //subscriptionBakaDetail.value = value.data!;
         //print("mTotal: "+value.data!.total!.toString());
         // if(value.data.total!=null){
         priceAfterDiscount.value = (CreateSubscriptionModel.fromJson(value.data)).total!;
@@ -96,10 +99,10 @@ class BakaDetailsController extends GetxController{
         //print("BakaDetails"+ value.data!.settings![0].name!);
         subscriptionBakaDetail.value = value.data! ;
         subscriptionBakaDetail.value.settings?.forEach((element) {
-          if(element!=null && element.name!=null) {
+          if(element!=null && element!=null) {
             //print("ininininininini");
            // print(element.name);
-            items.value.add(element.name!);
+            items.value.add(element);
           }
         });
       ///  update();
@@ -120,16 +123,16 @@ class BakaDetailsController extends GetxController{
   // List<List<String>> blocOfWidgetst=[];
   // List<String> itemsAsWidgetst=[];
 
-  RxList buildItems(List<String> items){
+  RxList buildItems(List<SubscriptionSettingsModel> items){
 
     // List<List<Widget>> blocOfWidgets=[];
     // List<Widget> itemsAsWidgets=[];
 
     int counter=0,iterate=(items.length/9).floor();
-    for(String text in items){
-      print(text);
+    for(SubscriptionSettingsModel subSetting in items){
+     // print(text);
       itemsAsWidgets.add(AdvantagesBakaCard(//key: UniqueKey(),
-        text: text,
+        text: /*(subSetting.value??'')+' ' + */(subSetting.name??''),
       ),);
       print(itemsAsWidgets.length%9);
       if(itemsAsWidgets.length%9==0){
@@ -197,15 +200,21 @@ class BakaDetailsController extends GetxController{
       }
     }*/
 
-  void changePeriod(int id) {
+  void changePeriod(int id, {String? type}) {
     periodId = id;
-    client!.createSubscriptions(CreateSubscriptionRequest(execute: 0,payment_method: "STC",period_id: id),"Bearer "+myToken!).then((value) {
+    if(discountCodeController.text.isEmpty){
+      coponId = -1;
+    }
+    client!.createSubscriptions(CreateSubscriptionRequest(execute: 0,payment_method: "STC",period_id: id,copon_id: coponId==-1?null:coponId),"Bearer "+myToken!).then((value) {
       if(value.data!=null&&value.status==200){
         priceAfterDiscount.value = (CreateSubscriptionModel.fromJson(value.data)).total!;
         createSubscriptionModel.value = CreateSubscriptionModel.fromJson(value.data);
         Logger().i(value.data);
         //update();
         //  Get.toNamed('/payVerification');
+        if(type=="payNow"){
+          Get.toNamed('/payVerification');
+        }
       }
     });
 /*    if(subscriptionBakaDetail.periods!=null) {
@@ -217,9 +226,13 @@ class BakaDetailsController extends GetxController{
     }*/
   }
 
-  void payNow(BuildContext context) {
+  Future<void> payNow(BuildContext context) async {
     //periodId = id;
     Logger().i(CreateSubscriptionRequest(execute: 1,payment_method: paymentMethod.value,period_id: periodId,copon_id: coponId==-1?null:coponId).toJson());
+    Logger().i("Bearer $myToken");
+    /*if(discountCodeController.text.isNotEmpty) {
+      await checkCopon(context, type: "payNow");
+    }*/
 
     client!.createSubscriptions(CreateSubscriptionRequest(execute: 1,payment_method: paymentMethod.value,period_id: periodId,copon_id: coponId==-1?null:coponId), "Bearer "+myToken!).then((value) {
       print("mMessage"+value.message!);
@@ -231,6 +244,17 @@ class BakaDetailsController extends GetxController{
         ));
         Navigator.of(context).pop();
         Get.toNamed('/successfulPayingPage');
+      }else if(value.status==400) {
+        if (value.message != null) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(value.message!, style: TextStyle(
+                color: AppColors.whiteColor,
+                fontSize: 17,
+                fontFamily: 'Arabic-Regular'),),
+          ));
+        }
+        Navigator.of(context).pop();
+        Get.offAllNamed('/Home');
       }
     });
 /*    if(subscriptionBakaDetail.periods!=null) {
@@ -249,10 +273,17 @@ class BakaDetailsController extends GetxController{
 
   }
 
-  void checkCopon(context) {
+  Future<void> checkCopon(context, {String? type}) async {
+    if(discountCodeController.text.isEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content:  Text('يرجى إدخال كوبون الخصم !',style: TextStyle(color: AppColors.whiteColor,fontSize: 17,fontFamily: 'Arabic-Regular'),),
+      ));
+      return;
+    }
     LoadingDailog().showLoading(context);
-    print("controller= "+discountCodeController.text);
-    client!.checkCopon(discountCodeController.text!=null && discountCodeController.text.isNotEmpty && discountCodeController.text!="" ? discountCodeController.text:"123123", periodId,"Bearer "+myToken!).then((value) {
+    coponCode = discountCodeController.text;
+    print("controller= "+discountCodeController.text+" "+"$periodId");
+    await client!.checkCopon(/*discountCodeController.text.isNotEmpty? */discountCodeController.text/*:"123123"*/, periodId==-1?null:periodId,"Bearer "+myToken!).then((value) {
       print("mMessage"+value.message!);
       if(value.status==200&&value.data!=null){
         // String msg = value.message.toString();
@@ -261,24 +292,42 @@ class BakaDetailsController extends GetxController{
         ));
         Navigator.of(context).pop();
         //Get.toNamed('/successfulPayingPage');
+        FocusManager.instance.primaryFocus?.unfocus();
         priceAfterDiscount.value = (CoponModel.fromJson(value.data)).total!;
         coponId = (CoponModel.fromJson(value.data)).copon_id!;
+       // if(type=="payNow") {
+          //Get.toNamed('/payVerification');
+          changePeriod(periodId,type:type);
+        //}
         //update();
-      }else{
+      }else if(value.status==400){
+        coponId = -1;
+        coponCode = null;
         Navigator.of(context).pop();
+        FocusManager.instance.primaryFocus?.unfocus();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:  Text('هذا الكوبون غير صالح ',style: TextStyle(color: AppColors.whiteColor,fontSize: 17,fontFamily: 'Arabic-Regular'),),
+        ));
+       if(type=="payNow"){
+         return;
+       }
+
       }
     });
   }
 
   downloadPDf(String url,BuildContext context){
+    print('here');
     getDirectoryPath().then((path) async {
       String extension=url.substring(url.lastIndexOf("/"));
       File file=File(path+"$extension");
       if(file.existsSync())
       {
         if(file!=null){
-          OpenFile.open(file.path);
+          print('here');
+          await OpenFile.open(file.path);
         }
+        Get.offAllNamed('/Home');
         return;
       }
 
@@ -327,8 +376,8 @@ class BakaDetailsController extends GetxController{
   Future<String>getDirectoryPath() async {
     String? externalStorageDirPath ;
     if (Platform.isAndroid) {
-      /* final directory = await getApplicationDocumentsDirectory();
-  externalStorageDirPath = directory.path;*/
+       /*final directory = await getApplicationDocumentsDirectory();
+       externalStorageDirPath = directory.path;*/
       externalStorageDirPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
       externalStorageDirPath =

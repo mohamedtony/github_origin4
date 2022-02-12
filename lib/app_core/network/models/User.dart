@@ -27,7 +27,7 @@ class User {
   @JsonKey(name: 'blocked_at')
   bool? blockedAt;
   String? token;
-
+  String? sgl;
   User({
     this.id,
     this.username,
@@ -36,7 +36,7 @@ class User {
     this.type,
     this.role,this.personalId,
     this.password,
-    //this.image,
+    this.sgl,
     this.countryId,
     this.areaId,
     this.accountName

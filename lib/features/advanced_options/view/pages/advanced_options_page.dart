@@ -10,21 +10,23 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AdvancedOptionsPage extends StatelessWidget {
-  AdvancedOptionsPage({Key? key}) : super(key: key);
-  AdvancedOptionsController _advancedOptionsController=Get.find();
+  late ScrollController scrollController;
+  AdvancedOptionsPage({required this.scrollController,Key? key}) : super(key: key);
+ final AdvancedOptionsController _advancedOptionsController=Get.put(AdvancedOptionsController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        child: AppBarWidget(
-          isBack: true,
-          isNotification: false,
-          isSearchBar: false,
-          isSideMenu: false,
-        ),
-        preferredSize: Size(MediaQuery.of(context).size.width, 80.0),
-      ),
+      // appBar: PreferredSize(
+      //   child: AppBarWidget(
+      //     isBack: true,
+      //     isNotification: false,
+      //     isSearchBar: false,
+      //     isSideMenu: false,
+      //   ),
+      //   preferredSize: Size(MediaQuery.of(context).size.width, 80.0),
+      // ),
       body: Column(
+
         children: [
           WidgetAndTitle(
             title: "الاعدادات المتقدمة",
@@ -91,6 +93,7 @@ class AdvancedOptionsPage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 25),
                 child: Obx(()=>ListView.separated(
+                  controller:scrollController,
                   padding: const EdgeInsets.symmetric(
                     vertical: 8,
                     horizontal: 4,
@@ -132,7 +135,7 @@ class AdvancedOptionsPage extends StatelessWidget {
                   width: 20,
                 ),
                 Expanded(child: InkWell(onTap: (){
-
+                 Get.back();
                 },
                   child: Container(
                     height: 40,

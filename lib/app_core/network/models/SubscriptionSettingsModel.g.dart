@@ -17,6 +17,7 @@ SubscriptionSettingsModel _$SubscriptionSettingsModelFromJson(
           ? null
           : SubscriptionPivotModel.fromJson(
               json['pivot'] as Map<String, dynamic>),
+      value: json['value'] as String?,
     );
 
 Map<String, dynamic> _$SubscriptionSettingsModelToJson(
@@ -25,6 +26,7 @@ Map<String, dynamic> _$SubscriptionSettingsModelToJson(
       'id': instance.id,
       'name': instance.name,
       'key': instance.key,
+      'value': instance.value,
       'group': instance.group,
       'pivot': instance.pivot,
     };

@@ -7,6 +7,9 @@ part of 'ChannelData.dart';
 // **************************************************************************
 
 ChannelData _$ChannelDataFromJson(Map<String, dynamic> json) => ChannelData(
+      countries: (json['countries'] as List<dynamic>?)
+          ?.map((e) => Country.fromJson(e as Map<String, dynamic>))
+          .toList(),
       type: json['type'] as String?,
       id: json['id'] as int?,
       name: json['name'] as String?,
@@ -15,9 +18,6 @@ ChannelData _$ChannelDataFromJson(Map<String, dynamic> json) => ChannelData(
       status: json['status'] as int?,
       areas: (json['areas'] as List<dynamic>?)
           ?.map((e) => Area.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      countries: (json['countries'] as List<dynamic>?)
-          ?.map((e) => Country.fromJson(e as Map<String, dynamic>))
           .toList(),
       boys: json['boys'] as int?,
       girls: json['girls'] as int?,
@@ -46,7 +46,7 @@ Map<String, dynamic> _$ChannelDataToJson(ChannelData instance) =>
       'boys': instance.boys,
       'girls': instance.girls,
       'areas': instance.areas,
+      'countries': instance.countries,
       'status': instance.status,
       'channel': instance.channel,
-       'countries':instance.countries,
     };

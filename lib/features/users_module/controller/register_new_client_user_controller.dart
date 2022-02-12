@@ -36,10 +36,11 @@ class RegisterNewClientUserController extends GetxController {
   var countryCode = '+966'.obs;
   var latitude = 0.0.obs;
   var savedFile = File(' ').obs;
+  var file =File(' ').obs;
   var longitude = 0.0.obs;
   var password = '';
   var phone = '';
-  var role = ''.obs;
+  var gender = ''.obs;
   static dio.MultipartFile? photo;
   var imageBase641 = ''.obs;
   var areaId = ''.obs;
@@ -93,8 +94,8 @@ class RegisterNewClientUserController extends GetxController {
     return null;
   }
   String? validatePassword(String val) {
-    if (val.length < 6) {
-      return 'الباسوورد لا يقل عن 6 حروف او ارقام';
+    if (val.length < 8) {
+      return 'الباسوورد لا يقل عن 8 حروف او ارقام';
     }
     return null;
   }
@@ -149,7 +150,7 @@ class RegisterNewClientUserController extends GetxController {
     });*/
   }
 
-  void checkLogin() {
+  void checkLogin() async{
      isValid.value = registerNewClientUserControllerFormKey.currentState!
         .validate();
     if (!isValid.value||errorRegister.value==true) {
@@ -157,8 +158,13 @@ class RegisterNewClientUserController extends GetxController {
     }
     registerNewClientUserControllerFormKey.currentState!.save();
    // registerClientUser(context: context);
-    if(role.value.isNotEmpty){
+    if(gender.value.isNotEmpty){
     if(countryId.isNotEmpty&&areaId.isNotEmpty) {
+      RegisterNewClientUserController.photo =
+          await dio.MultipartFile.fromFile(savedFile.value.path,
+          filename: savedFile.value.path
+              .substring(savedFile.value.path.lastIndexOf("/") + 1));
+
       registerClientUser();
       //registerClientUser();
     }else{
@@ -196,10 +202,11 @@ class RegisterNewClientUserController extends GetxController {
           "password": passwordController.text,
           "personal_id": nationalIDController.text,
           "phone": phoneController.text,
-          "role": role.value,
+          "role": "user",
           "type": 'client',
           "username": nameController.text,
           "image": photo,
+          "gender":gender.value,
 
         },
         onSuccess: (res) {
@@ -210,7 +217,8 @@ class RegisterNewClientUserController extends GetxController {
           storage.write("token", res.data!.token);
           storage.write(
               "data", registerClientUserResponse.value.toJson());
-          Get.toNamed('/chooseBakaPage');
+          Get.offAllNamed('/Home');
+          //Get.toNamed('/chooseBakaPage');
         },
         onError: (err, res) {
           errorRegister.value = true;
@@ -283,6 +291,38 @@ class RegisterNewClientUserController extends GetxController {
     //   );
     //
     // }
+
+  // Future<void> showChoiceImageDialog(BuildContext context)
+  // {
+  //   return showDialog(context: context,builder: (BuildContext context){
+  //
+  //     return AlertDialog(
+  //       title: Text("Choose option",style: TextStyle(color: Colors.blue),),
+  //       content: SingleChildScrollView(
+  //         child: ListBody(
+  //           children: [
+  //             Divider(height: 1,color: Colors.blue,),
+  //             ListTile(
+  //               onTap: (){
+  //                 //_openGallery(context);
+  //               },
+  //               title: Text("Gallery"),
+  //               leading: Icon(Icons.account_box,color: Colors.blue,),
+  //             ),
+  //
+  //             Divider(height: 1,color: Colors.blue,),
+  //             ListTile(
+  //               onTap: (){
+  //                 //_openCamera(context);
+  //               },
+  //               title: Text("Camera"),
+  //               leading: Icon(Icons.camera,color: Colors.blue,),
+  //             ),
+  //           ],
+  //         ),
+  //       ),);
+  //   });
+  // }
     @override
     void onClose() {
       phoneController.dispose();

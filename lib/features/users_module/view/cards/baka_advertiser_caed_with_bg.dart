@@ -67,7 +67,7 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                                     subscriptionBaka.first_period?.price?.toString()??"",style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
                                 ),
                               ),
-                              SizedBox(
+                              subscriptionBaka.first_period?.price_after_discount!=null?SizedBox(
                                 child: RotationTransition(
                                   turns:  AlwaysStoppedAnimation(25 / 360),
                                   child:  Text(
@@ -75,12 +75,12 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                                     style: TextStyle(fontSize: 25.sp),
                                   ),
                                 ),
-                              )
+                              ):const SizedBox()
                             ])):const SizedBox(),
-                        SizedBox(
+                        subscriptionBaka.first_period?.price_after_discount!=null?SizedBox(
                           child: Text(
                               '  /  ',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 18.sp)
-                          ),),
+                          ),):const SizedBox(),
                         SizedBox(
                           child: Text(
                               '${subscriptionBaka.first_period?.price_after_discount ?? ""}',style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
@@ -113,7 +113,7 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 10.0),
+                      margin: subscriptionBaka.first_period?.free_days!=null? EdgeInsets.only(top: 10.0):EdgeInsets.only(top: 10.0,left: 10.0),
                       child: subscriptionBaka.image!=null && subscriptionBaka.image!=""?Image.network(
                         subscriptionBaka.image!,
                         height: 96.h,
@@ -127,14 +127,16 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 28.h,),
-                    Padding(
+                    subscriptionBaka.first_period?.free_days!=null?Padding(
                       padding: EdgeInsetsDirectional.only(end :26.6.w),
                       child: SizedBox(
                         height: 35.h,
                         child: Text(' مجانية لمدة ${subscriptionBaka.first_period?.free_days??''} أيام ',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 12.sp,),textDirection: mt.TextDirection.rtl,
                         ),
                       ),
-                    ),
+                    ):Padding(
+                        padding: EdgeInsetsDirectional.only(end :26.6.w),
+                        child: SizedBox(height: 35.h,)),
 
                   ],
                 ),
@@ -170,7 +172,7 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                                     subscriptionBaka.first_period?.price?.toString()??"",style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
                                 ),
                               ),
-                              SizedBox(
+                              subscriptionBaka.first_period?.price_after_discount!=null?SizedBox(
                                 child: RotationTransition(
                                   turns:  AlwaysStoppedAnimation(25 / 360),
                                   child:  Text(
@@ -178,12 +180,12 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                                     style: TextStyle(fontSize: 25.sp),
                                   ),
                                 ),
-                              )
+                              ):const SizedBox()
                             ])):const SizedBox(),
-                        SizedBox(
+                        subscriptionBaka.first_period?.price_after_discount!=null?SizedBox(
                           child: Text(
                               '  /  ',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 18.sp)
-                          ),),
+                          ),):SizedBox(),
                         SizedBox(
                           child: Text(
                               '${subscriptionBaka.first_period?.price_after_discount ?? ""}',style:TextStyle(color: AppColors.bakaPriceColor,fontSize: 16.sp)
@@ -216,7 +218,7 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 10.0),
+                      margin: subscriptionBaka.first_period?.free_days!=null? EdgeInsets.only(top: 10.0):EdgeInsets.only(top: 10.0,left: 10.0),
                       child: subscriptionBaka.image!=null && subscriptionBaka.image!=""?Image.network(
                         subscriptionBaka.image!,
                         height: 96.h,
@@ -230,14 +232,16 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 28.h,),
-                    Padding(
+                    subscriptionBaka.first_period?.free_days!=null?Padding(
                       padding: EdgeInsetsDirectional.only(end :26.6.w),
                       child: SizedBox(
                         height: 35.h,
                         child: Text(' مجانية لمدة ${subscriptionBaka.first_period?.free_days??''} أيام ',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 12.sp,),textDirection: mt.TextDirection.rtl,
                         ),
                       ),
-                    ),
+                    ): Padding(
+                        padding: EdgeInsetsDirectional.only(end :26.6.w),
+                        child: SizedBox(height: 35.h,)),
 
                   ],
                 ),

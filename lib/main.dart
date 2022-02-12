@@ -15,6 +15,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:logger/logger.dart';
 
 
 //final logger = Logger();
@@ -31,6 +32,28 @@ void main() async{
 
   dio = Dio();
   dio?.options.headers['Content-Type'] = 'application/json';
+  dio?.interceptors.add(InterceptorsWrapper(
+    onError: (DioError e, ErrorInterceptorHandler handler){
+      final r = e.response;
+      Logger().i(e.response);
+      if (r != null && r.statusCode == 401) {
+        //dio.interceptors.requestLock.lock();
+        //dio.interceptors.responseLock.lock();
+        print("in_status_401");
+        /*if (context == null) {
+          print("context_is_null");
+        }
+        Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (BuildContext context) => LoginPage(),
+            ),
+                (route) => false);
+        return e;
+      }*/
+    }}
+  ));
+
+
   //dio?.options.headers['Content-Type'] = 'multipart/form-data';
 /*  dio?.options = BaseOptions(
       receiveTimeout: 30000,

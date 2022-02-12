@@ -5,9 +5,13 @@ import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/app_core/network/requests/OneCountryAndCitiesRequest.dart';
 import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
 import 'package:advertisers/features/add_advertiser_channel/add_advertiser_channel.dart';
+import 'package:advertisers/features/advanced_options/view/pages/advanced_options_page.dart';
+import 'package:advertisers/features/advertiser_account_status/tax_settings/view/pages/advertiser_account_status_page.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
+import 'package:advertisers/features/advertising_influence_channels/view/page/advertising_influence_channels_page.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+import 'package:advertisers/features/tax_settings/view/pages/tax_settings_page.dart';
 import 'package:advertisers/main.dart';
 import 'package:advertisers/shared/loading_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -83,7 +87,7 @@ class AdvertiserSettingPageController extends GetxController  {
   @override
   Future<void> onReady() async {
     // TODO: implement onReady
-    Get.dialog(
+    /*Get.dialog(
         Dialog(
           child: Container(
             height: 100.0,
@@ -98,11 +102,14 @@ class AdvertiserSettingPageController extends GetxController  {
             ),
           ),
         )
-    );
+    );*/
+    EasyLoading.show();
     client!.getMyProfile("Bearer "+myToken!).then((value) {
       Logger().i(value.data?.toJson());
       if(value.data!=null&&value.status==200){
-        Get.back();
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
         clientProfileModel.value = value.data!;
        // kayanNameController?.text = "tony";
         if(clientProfileModel.value.company_name!=null) {
@@ -260,7 +267,7 @@ class AdvertiserSettingPageController extends GetxController  {
         }
         if(value.data!.all_categories!=null&&value.data!.all_categories!.isNotEmpty){
           generalCategories.value = value.data!.all_categories!;
-          generalCategories.value.insert(0, CategoryModel(id:-1,name: 'كل النشطات'));
+          generalCategories.value.insert(0, CategoryModel(id:-1,name: 'اختر'));
         }
       }
     });
@@ -338,6 +345,7 @@ class AdvertiserSettingPageController extends GetxController  {
       selectedCategoriesIds.add(element.id!);
     });
     client!.updateUserCategories(UpdateUserCategoryRequest(categories:selectedCategoriesIds.value),"Bearer "+myToken!).then((value) {
+      Get.back();
       if(value.status==200){
         Fluttertoast.showToast(
           msg: value.message??'',
@@ -452,23 +460,44 @@ class AdvertiserSettingPageController extends GetxController  {
     if(c!=null && c.id!=-1) {
       if (selectedUserLocations.isNotEmpty) {
         //country and country
-        if (selectedUserLocations[0] is Country) {
+        if (selectedUserLocations[0] is Country && selectedUserLocations[0].type=='country_category') {
+          if (c.type=='country_category') {
+            Country? country = selectedUserLocations.firstWhereOrNull((
+                element) => element.id == c.id);
+            if (country == null) {
+              selectedUserLocations.add(c);
+            }
+            isAreaEnabled.value = false;
+          }
+        } else {
+          if (selectedUserLocations[0].type=='country_category' && c.type=='country_category') {
+            Country? country = selectedUserLocations.firstWhereOrNull((
+                element) => element.id == c.id);
+            if (country == null) {
+              selectedUserLocations.add(c);
+            }
+          }
+       }
+        if (selectedUserLocations[0] is Country && selectedUserLocations[0].type=='country') {
+          if (c.type=='country') {
+            Country? country = selectedUserLocations.firstWhereOrNull((
+                element) => element.id == c.id);
+            if (country == null) {
+              selectedUserLocations.add(c);
+            }
+            isAreaEnabled.value = false;
+          }
+        }
+      } else {
           Country? country = selectedUserLocations.firstWhereOrNull((
-              element) => element.id == c!.id);
+              element) => element.id == c.id);
           if (country == null) {
             selectedUserLocations.add(c);
           }
-          isAreaEnabled.value = false;
-        }
-      } else {
-        Country? country = selectedUserLocations.firstWhereOrNull((
-            element) => element.id == c!.id);
-        if (country == null) {
-          selectedUserLocations.add(c);
-        }
+
       }
 
-      if (c?.areas != null && c!.areas!.isNotEmpty) {
+      if (c.areas != null && c.areas!.isNotEmpty) {
         areasForLocationSheet.value =
         c.areas!;
         Area? areaIn = areasForLocationSheet.firstWhereOrNull((
@@ -519,15 +548,21 @@ class AdvertiserSettingPageController extends GetxController  {
       print("isCountryEnabledHere");
       List<int> countriesId= [];
       List<int> areasIds= [];
+      List<int> countryCaregoriesIds= [];
       selectedUserLocations.forEach((element) {
-        if(element!=null && element is Country) {
+        if(element!=null && element is Country && element.type=='country') {
           countriesId.add(element.id!);
         }
         if(element!=null && element is Area) {
           areasIds.add(element.id!);
         }
+        if(element!=null && element is Country && element.type=='country_category') {
+          print("isAreaEnabledHere country_category");
+          countryCaregoriesIds.add(element.id!);
+        }
       });
-      client!.setMultipleCountry(OneCountryAndCitiesRequest(countries:countriesId,areas: areasIds),"Bearer "+myToken!).then((value) {
+      client!.setMultipleCountry(OneCountryAndCitiesRequest(countries:countriesId,areas: areasIds,country_category: countryCaregoriesIds),"Bearer "+myToken!).then((value) {
+        Get.back();
         if(value.status==200){
           Fluttertoast.showToast(
             msg: value.message??'',
@@ -594,14 +629,33 @@ class AdvertiserSettingPageController extends GetxController  {
     initialChildSize: 0.67,
     expand: false,
     builder: (context, scrollController) {
-    //if(bottomNumber==1) {
+    if(i==1) {
     /*return AdvertisingChannelsPage(
                   scrollController: scrollController);*/
     return AddAdvertiserChannel(
     //scrollController: scrollController
     );
 
-    // }
+     }else if(i==2){
+      return AdvertisingInfluenceChannelsPage(
+          scrollController: scrollController
+      );
+    }else if(i==3){
+      return TaxSettingsPage(
+          scrollController: scrollController
+      );
+    }else if(i==4){
+      return AdvertiserAccountStatusPage(
+          scrollController: scrollController
+      );
+    }else if(i==5){
+      return AdvancedOptionsPage(
+          scrollController: scrollController
+      );
+    }
+    else{
+      return SizedBox();
+    }
     },
     );
     },

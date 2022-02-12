@@ -24,6 +24,7 @@ class Company {
   int? areaId;
   String? password;
   String? image;
+  String? sgl;
   @JsonKey(name: 'blocked_at')
   bool? blockedAt;
   String? token;
@@ -39,7 +40,8 @@ class Company {
     this.image,
     this.countryId,
     this.areaId,
-    this.accountName
+    this.accountName,
+    this.sgl,
   });
 
   factory Company.fromJson(Map<String, dynamic> json) => _$CompanyFromJson(json);

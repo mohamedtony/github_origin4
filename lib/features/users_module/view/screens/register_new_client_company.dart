@@ -65,7 +65,7 @@ class RegisterNewClientCompany extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
-                          _showBottomSheet1(context);
+                          showChoiceImageDialog(context);
                         },
                         child: Obx(
                           () => Container(
@@ -303,8 +303,8 @@ class RegisterNewClientCompany extends StatelessWidget {
                         snackPosition: SnackPosition.BOTTOM,
                       );
                     } else {
-                      _registerNewClientCompanyController.savedFile.value =
-                          File(' ');
+                      // _registerNewClientCompanyController.savedFile.value =
+                      //     File(' ');
                       _registerNewClientCompanyController.phoneMess.value = '';
                       _registerNewClientCompanyController.nameMess.value = '';
                       _registerNewClientCompanyController.nationalIDMess.value =
@@ -332,73 +332,38 @@ class RegisterNewClientCompany extends StatelessWidget {
     );
   }
 
-  void _showBottomSheet1(BuildContext context) {
+  Future<void> showChoiceImageDialog(BuildContext context)
+  {
     ImagePicker _imagePicker = ImagePicker();
-    // Future<File> imageFile;
-    // ImageProvider provider;
-    // String base64;
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Row(
-            children: <Widget>[
-              IconButton(
-                onPressed: () async {
-                  _imagePicker
-                      .pickImage(
-                          source: ImageSource.camera,
-                          imageQuality: 60,
-                          maxWidth: 1280,
-                          maxHeight: 720)
-                      .then((file) async {
-                    _registerNewClientCompanyController.savedFile.value =
-                        File.fromUri(Uri.file(file!.path));
-                    RegisterNewClientCompanyController.photo =
-                        await dio.MultipartFile.fromFile(file.path,
-                            filename: file.path
-                                .substring(file.path.lastIndexOf("/") + 1));
+    return showDialog(context: context,builder: (BuildContext context){
 
-                    //provider = FileImage(savedFile);
-                    //setState(() {
-                    _registerNewClientCompanyController.imageBase641.value =
-                        base64Encode(_registerNewClientCompanyController
-                            .savedFile.value
-                            .readAsBytesSync());
-                    //savedFile = null;
-                    //logo=multi1;
-                    // });
-                  });
-                  Navigator.pop(context);
-                },
-                icon: const Icon(
-                  Icons.photo_camera,
-                  color: Colors.green,
-                  size: 20,
-                  semanticLabel: "كاميرا",
-                ),
-                // child:const Text(
-                //   "كاميرا",
-                //   style: TextStyle(
-                //       fontSize: 16,
-                //       fontWeight: FontWeight.w800,
-                //       color: Colors.green),
-                // )
-              ),
-              IconButton(
-                onPressed: () async {
+      return AlertDialog(
+        title: Text("Choose option",style: TextStyle(color: Colors.blue),),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: () async {
                   _imagePicker
                       .pickImage(
-                          source: ImageSource.gallery,
-                          imageQuality: 60,
-                          maxWidth: 1280,
-                          maxHeight: 720)
+                      source: ImageSource.gallery,
+                      imageQuality: 60,
+                      maxWidth: 1280,
+                      maxHeight: 720)
                       .then((file) async {
+                    _registerNewClientCompanyController.file.value= File.fromUri(Uri.file(file!.path));
                     _registerNewClientCompanyController.savedFile.value =
                         File.fromUri(Uri.file(file!.path));
+                    // RegisterNewClientUserController.photo =
+                    // await dio.MultipartFile.fromFile(file.path,
+                    //     filename: file.path
+                    //         .substring(file.path.lastIndexOf("/") + 1));
                     RegisterNewClientCompanyController.photo =
-                        await dio.MultipartFile.fromFile(file.path,
-                            filename: file.path
-                                .substring(file.path.lastIndexOf("/") + 1));
+                    await dio.MultipartFile.fromFile(_registerNewClientCompanyController.savedFile.value.path,
+                        filename: _registerNewClientCompanyController.savedFile.value.path
+                            .substring(_registerNewClientCompanyController.savedFile.value.path.lastIndexOf("/") + 1));
+
                     //         provider = FileImage(savedFile);
                     //         setState(() {
                     _registerNewClientCompanyController.imageBase641.value =
@@ -411,22 +376,51 @@ class RegisterNewClientCompany extends StatelessWidget {
                   });
                   Navigator.pop(context);
                 },
-                icon: const Icon(
-                  Icons.photo,
-                  color: Colors.green,
-                  size: 20,
-                  semanticLabel: "المعرض",
-                ),
-                // label: const Text(
-                //   "المعرض",
-                //   style: TextStyle(
-                //       fontSize: 16,
-                //       fontWeight: FontWeight.w800,
-                //       color: Colors.green),
-                // )
+                title: Text("Gallery"),
+                leading: Icon(Icons.account_box,color: Colors.blue,),
+              ),
+
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: ()async {
+                  _imagePicker
+                      .pickImage(
+                      source: ImageSource.camera,
+                      imageQuality: 60,
+                      maxWidth: 1280,
+                      maxHeight: 720)
+                      .then((file) async {
+                    _registerNewClientCompanyController.file.value= File.fromUri(Uri.file(file!.path));
+                    _registerNewClientCompanyController.savedFile.value =
+                        File.fromUri(Uri.file(file!.path));
+                    // RegisterNewClientUserController.photo =
+                    //     await dio.MultipartFile.fromFile(file.path,
+                    //         filename: file.path
+                    //             .substring(file.path.lastIndexOf("/") + 1));
+                    RegisterNewClientCompanyController.photo =
+                    await dio.MultipartFile.fromFile(_registerNewClientCompanyController.savedFile.value.path,
+                        filename: _registerNewClientCompanyController.savedFile.value.path
+                            .substring(_registerNewClientCompanyController.savedFile.value.path.lastIndexOf("/") + 1));
+
+                    //provider = FileImage(savedFile);
+                    //setState(() {
+                    _registerNewClientCompanyController.imageBase641.value =
+                        base64Encode(_registerNewClientCompanyController
+                            .savedFile.value
+                            .readAsBytesSync());
+                    //savedFile = null;
+                    //logo=multi1;
+                    // });
+                  });
+
+                  Navigator.pop(context);
+                },
+                title: Text("Camera"),
+                leading: Icon(Icons.camera,color: Colors.blue,),
               ),
             ],
-          );
-        });
+          ),
+        ),);
+    });
   }
 }

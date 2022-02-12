@@ -9,6 +9,7 @@ import 'package:advertisers/features/add_advertiser_channel/controller/add_adver
 import 'package:advertisers/features/add_advertiser_channel/controller/add_advertiser_channel_controller.dart';
 import 'package:advertisers/features/add_advertiser_channel/widgets/selected_countery_area_widget.dart';
 import 'package:advertisers/features/add_advertiser_channel/widgets/title.dart';
+import 'package:advertisers/features/advertising_influence_channels/controller/advertising_influence_channels_controller.dart';
 import 'package:advertisers/features/advertising_influence_channels/controller/edit_channel_advertiser_controller.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -827,8 +828,9 @@ class _EditAdvertiserChannelState extends State<EditAdvertiserChannel> {
                 Expanded(
                     child: InkWell(
                       onTap: () {
-                        _editChannelAdvertiserController.editChannel(id:channel.id??0,type: channel.type??'');
-                      },
+                        _editChannelAdvertiserController.editChannel(id:channel.channel_id??0,type: channel?.type??'');
+                        Get.delete<AdvertisingInfluenceChannelsController>();
+                        },
                       child: Container(
                         height: 40,
                         child: Center(

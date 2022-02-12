@@ -489,11 +489,11 @@ class AdvertiserSettingsPage extends StatelessWidget {
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
                     child: TextField(
-                      textAlign: TextAlign.end,
+                      textAlign: TextAlign.start,
                       enabled: false,
                       textAlignVertical: TextAlignVertical.center,
                       controller: controller.accountNameEdit,
-                      textDirection: mt.TextDirection.ltr,
+                     // textDirection: mt.TextDirection.ltr,
                       style: TextStyle(
                         color: (AppColors.editProfileTextColorOpa)
                             .withOpacity(0.51),
@@ -566,11 +566,11 @@ class AdvertiserSettingsPage extends StatelessWidget {
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
                     child: TextField(
-                      textAlign: TextAlign.end,
+                      textAlign: TextAlign.start,
                       textAlignVertical: TextAlignVertical.center,
                       enabled: false,
                       controller: controller.sglNumberController,
-                      textDirection: mt.TextDirection.ltr,
+                      //textDirection: mt.TextDirection.ltr,
                       style: TextStyle(
                         color: (AppColors.editProfileTextColorOpa)
                             .withOpacity(0.51),
@@ -763,8 +763,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
           ),
           InkWell(
             onTap: (){
-              //controller.showChannelsSheet(context,1);
-              Get.toNamed('/AdvertisingInfluenceChannelsPage');
+              controller.showChannelsSheet(context,2);
+             // Get.toNamed('/AdvertisingInfluenceChannelsPage');
             },
             child: Container(
               margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
@@ -841,7 +841,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
           ),
           InkWell(
             onTap: (){
-              Get.toNamed('/TaxSettingsPage');
+              controller.showChannelsSheet(context,3);
+             // Get.toNamed('/TaxSettingsPage');
             },
             child: Container(
               margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
@@ -918,7 +919,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
           ),
           InkWell(
             onTap: (){
-              Get.toNamed('/AdvertiserAccountStatusPage');
+              controller.showChannelsSheet(context,4);
+             // Get.toNamed('/AdvertiserAccountStatusPage');
             },
             child: Container(
               margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
@@ -993,56 +995,62 @@ class AdvertiserSettingsPage extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Flexible(
-                  child: Container(
-                    //height: 42,
+          InkWell(
+            onTap: (){
+              controller.showChannelsSheet(context,5);
+             // Get.toNamed('/AdvancedOptionsPage');
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: Container(
+                      //height: 42,
 
-                    // width: 110,
-                      padding: EdgeInsets.only(bottom: 12.0),
-                      child: Text(
-                        "اعدادات متقدمة",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.0,
-                          color: AppColors.tabColor,
-                        ),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                      // width: 110,
+                        padding: EdgeInsets.only(bottom: 12.0),
+                        child: Text(
+                          "اعدادات متقدمة",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: AppColors.tabColor,
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        )),
+                  ),
+                  Container(
+                      padding: EdgeInsets.only(
+                        //top: 4.0,
+                          right: 8.0
+                      ),
+                      child: SvgPicture.asset(
+                        'images/advanced_settings.svg',
+                        width: 40.0,
+                        height: 40.0,
+                        fit: BoxFit.fill,
+                        //color: AppColors.bottomSheetTabColorRounded,
+                      ),
+                      decoration: BoxDecoration(
+                        //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                        borderRadius: BorderRadius.circular(8.0),
+                        /*image: DecorationImage(
+                                                image: AssetImage("images/image1.jpg"),
+                                                fit: BoxFit.cover,
+                                              )*/
                       )),
-                ),
-                Container(
-                    padding: EdgeInsets.only(
-                      //top: 4.0,
-                        right: 8.0
-                    ),
-                    child: SvgPicture.asset(
-                      'images/advanced_settings.svg',
-                      width: 40.0,
-                      height: 40.0,
-                      fit: BoxFit.fill,
-                      //color: AppColors.bottomSheetTabColorRounded,
-                    ),
-                    decoration: BoxDecoration(
-                      //border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
-                      borderRadius: BorderRadius.circular(8.0),
-                      /*image: DecorationImage(
-                                              image: AssetImage("images/image1.jpg"),
-                                              fit: BoxFit.cover,
-                                            )*/
-                    )),
-              ],
+                ],
+              ),
             ),
           ),
 
 
-          Container(
+          /*Container(
             margin: EdgeInsets.only(bottom: 20.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1057,8 +1065,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                     color: AppColors.saveButtonBottomSheet,
                     child: Container(
-                      /*margin: EdgeInsets.only(
-                                left: 12.0, bottom: 4.0, right: 20),*/
+                      *//*margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),*//*
                       alignment: Alignment.center,
                       child: Text(
                         'save'.tr,
@@ -1082,8 +1090,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                     color: AppColors.tabColor,
                     child: Container(
-                      /*margin: EdgeInsets.only(
-                                left: 12.0, bottom: 4.0, right: 20),*/
+                      *//*margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),*//*
                       alignment: Alignment.center,
                       child: Text(
                         'cancel'.tr,
@@ -1099,7 +1107,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          )*/
         ],
       ),
     );

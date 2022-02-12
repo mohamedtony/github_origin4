@@ -19,6 +19,7 @@ import 'package:advertisers/features/request_advertise_module/view/widgets/notic
 import 'package:advertisers/features/request_advertise_module/view/widgets/send_request_success.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/urls_bottom_sheet.dart';
 import 'package:advertisers/main.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -43,6 +44,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   // -------------------- for channel sheet  --------------------------------------------
   RxList<Channel> channels = <Channel>[].obs;
   List<int> channelsIds = [];
+  var isChannelSaveClicked = false.obs;
 
   // -------------------- for attachement sheet  ----------------------------------------
   var realImages =[].obs;
@@ -68,7 +70,15 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   late XFile xFile ;
   File? imageFile;
   var imagePath = ''.obs;
+  var isDiscountSaveClicked = false.obs;
+  TextEditingController? coponNumberController,coponNameController,coponDiscountController,coponUsesController,coponLinkController;
 
+//---------------------- for notice sheet --------------------------------------------
+  TextEditingController? noticeController;
+  var isNoticeSaveClicked = false.obs;
+
+  //---------------------- for plan sheet --------------------------------------------
+  File? planFile;
 
   RxList<SelectedSocialMedia> items = <SelectedSocialMedia>[].obs;
   final ImagePicker _picker = ImagePicker();
@@ -177,11 +187,11 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   }
 
   void changeTabIndex(int indexCome,bool isTap) {
-    if(channels.value[indexCome].isTapped.value==true){
-      channels.value[indexCome].isTapped.value=false;
+    if(channels.value[indexCome].isTapped?.value==true){
+      channels.value[indexCome].isTapped?.value=false;
       channelsIds.removeWhere((element) => element==channels.value[indexCome].id);
     }else{
-      channels.value[indexCome].isTapped.value=true;
+      channels.value[indexCome].isTapped?.value=true;
       channelsIds.add(channels.value[indexCome].id!);
     }
   }
@@ -241,10 +251,16 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     print("imagemm"+images2.toString());
   }*/
 
-  void onSaveChannelsClicked() {
+  void onSaveChannelsClicked(BuildContext context) {
     Logger().i(channelsIds);
     Logger().i("categoryId= ",categoryId);
     Logger().i("typeId= ",adTypeId);
+    Get.back();
+    if(channelsIds.isNotEmpty) {
+      isChannelSaveClicked.value = true;
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("تم حفظ قنوات الاعلان بنجاح !")));
+    }
   }
 
   //================================== attatchement sheet ===============================
@@ -425,21 +441,85 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     }
     Navigator.pop(context);
   }
+  void onDiscountCoponSaveClicked(BuildContext context) {
 
+    if(imagePath.value.isEmpty){
+      showToast("من فضلك قم بإدخال صورة كوبون الخصم !");
+    return;
+    }
+    else if(coponNumberController?.text!=null && coponNumberController!.text.isEmpty){
+      showToast("من فضلك قم بإدخال رقم كوبون الخصم !");
+      return;
+    }else if(coponNameController?.text!=null && coponNameController!.text.isEmpty){
+      showToast("من فضلك قم بإدخال اسم كوبون الخصم !");
+      return;
+    }
+    else if(coponDiscountController?.text!=null && coponDiscountController!.text.isEmpty){
+      showToast("من فضلك قم بإدخال نسبة الخصم!");
+      return;
+    }else if(coponUsesController?.text!=null && coponUsesController!.text.isEmpty){
+      showToast("من فضلك قم بإدخال عدد إستخدامات الكوبون !");
+      return;
+    }else if(coponLinkController?.text!=null && coponLinkController!.text.isEmpty){
+      showToast("من فضلك قم بإدخال رابط المتجر !");
+      return;
+    }else if(endAdvertisingDateCoupon!=null && endAdvertisingDateCoupon.isEmpty){
+      showToast("من فضلك قم بإدخال تاريخ إنتهاء الكوبون !");
+      return;
+    }else{
+      isDiscountSaveClicked.value = true;
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("تم حفظ بيانات الكوبون بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+      Get.back();
+    }
 
-  DateRange? dateRange = DateRange(fromDate: "اختر نطاق زمني",toDate: ".........");
-
-  void addDateRange(String? fromDate,toDate){
-    dateRange = DateRange(fromDate: fromDate,toDate: toDate) ;
-    update();
   }
 
-  var endAdvertisingDateCoupon = ''.obs;
+void showToast(msg){
+  Fluttertoast.showToast(
+    msg: msg,
+    toastLength: Toast.LENGTH_SHORT,
+    gravity: ToastGravity.BOTTOM,
+    backgroundColor: Colors.red,
+    textColor: Colors.white,
+    fontSize: 14.0,
+  );
+}
 
+
+  var dateRange = DateRange(fromDate: "اختر نطاق زمني",toDate: ".........").obs;
+  var isDateSaveClicked  = false.obs;
+  void addDateRange(String? fromDate,toDate){
+    dateRange.value = DateRange(fromDate: fromDate,toDate: toDate) ;
+    endAdvertisingDate.value = toDate;
+  }
+  var selectedTimeCounter = ''.obs;
+
+
+  void selectCounter(String? count){
+    selectedTimeCounter.value = "$count";
+  }
+  var endAdvertisingDateCoupon = ''.obs;
+  var endAdvertisingDate = ''.obs;
+  void addendAdvertisingDate(String? endDate){
+    endAdvertisingDate.value = endDate!;
+  }
   void addendAdvertisingDateCoupon(String? endDate){
     endAdvertisingDateCoupon.value = endDate!;
   }
+  void onDateClickedSaved(BuildContext context) {
 
+    if(dateRange.value.fromDate=='اختر نطاق زمني'){
+      showToast("من فضلك يرجى إختيار تاريخ الاعلان !");
+      return;
+    }else if(selectedTimeCounter.value.isEmpty){
+      showToast("من فضلك يرجى إختيار عدد مرات الاعلان !");
+      return;
+    }else{
+      isDateSaveClicked.value = true;
+      Navigator.pop(context);
+    }
+  }
   void disposeAnimation() {
     animationControllers.add(AnimationController(
       vsync: this,
@@ -495,6 +575,38 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     List<Animation<Offset>> animationTextFields = [];
     List<Animation<Offset>> animationsClose = [];*/
   }
+
+  void onNoticeSavedClicked(BuildContext context) {
+    if(noticeController?.text!=null && noticeController!.text.isEmpty){
+      showToast("من فضلك يرجى إضافة ملاحظة !");
+      return;
+    }
+    isNoticeSaveClicked.value = true;
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("تم حفظ الملاحظة بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+    Get.back();
+  }
+
+  onPlanClicked(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+       planFile = File(result.files.single.path!);
+    } else {
+      // User canceled the picker
+    }
+  }
+
+
+
+  //------------------------------------ for select date sheet --------------------------------
+  /*DateRange? dateRange = DateRange(fromDate: "اختر نطاق زمني",toDate: ".........");
+
+  void addDateRange(String? fromDate,toDate){
+    dateRange = DateRange(fromDate: fromDate,toDate: toDate) ;
+    update();
+  }
+*/
 
 
 /*  String? endAdvertisingDate;

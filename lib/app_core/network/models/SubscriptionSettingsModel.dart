@@ -13,6 +13,7 @@ class SubscriptionSettingsModel {
   int? id;
   String? name;
   String? key;
+  String?value;
   String? group;
   SubscriptionPivotModel? pivot;
 
@@ -22,6 +23,7 @@ class SubscriptionSettingsModel {
     this.key,
     this.group,
     this.pivot,
+    this.value
   });
 
   factory SubscriptionSettingsModel.fromJson(Map<String, dynamic> json) => _$SubscriptionSettingsModelFromJson(json);

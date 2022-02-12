@@ -38,6 +38,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
   static dio.MultipartFile? photo;
   var imageBase641 = ''.obs;
   var areaId = ''.obs;
+  var file =File(' ').obs;
   var countryId = ''.obs;
   var logoPath = ''.obs;
   var countryCode = '+966'.obs;
@@ -93,16 +94,16 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
     return null;
   }
   String? validatePassword(String val) {
-    if (val.length < 6) {
-      return 'الباسوورد لا يقل عن 6 حروف او ارقام';
+    if (val.length < 8) {
+      return 'الباسوورد لا يقل عن 8 حروف او ارقام';
     }
     return null;
   }
   String? validateCompanyName(String val) {
     if (val.length < 3) {
-      return 'الباسوورد لا يقل عن 3 حروف ';
+      return 'الاسم لا يقل عن 3 حروف ';
     }else if(companyNameMess.isNotEmpty){
-      return nameMess.value;
+      return companyNameMess.value;
     }
     return null;
   }
@@ -143,19 +144,19 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
     if (val.length < 3) {
       return 'رقم السجل لا يقل عن 3 ارقام';
     }else if(recordIDMess.isNotEmpty){
-      return nationalIDMess.value;
+      return recordIDMess.value;
     }
     return null;
   }
   String? validateAccountAdminName(String val) {
     if (val.length < 3) {
-      return 'رقم الادمن لا يقل عن 3 ارقام';
+      return 'اسم الادمن لا يقل عن 3 حروف';
     }else if(accountAdminNameMess.isNotEmpty){
       return accountAdminNameMess.value;
     }
     return null;
   }
-  void checkLogin() {
+  void checkLogin()async {
     final isValid = registerNewAdvertiserCompanyControllerKeyForm.currentState!
         .validate();
     if (!isValid) {
@@ -166,6 +167,11 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
     // Get.toNamed('/bakaPage');
 
     if(countryId.isNotEmpty&&areaId.isNotEmpty){
+      photo =
+          await dio.MultipartFile.fromFile(savedFile.value.path,
+          filename: savedFile.value.path
+              .substring(savedFile.value.path.lastIndexOf("/") + 1));
+
       registerCompanyUser();}
     else{
       Get.snackbar(
@@ -213,14 +219,15 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
           "manager_name": accountAdminNameController.text,
           "image": photo
         },
-        onSuccess: (res) {
+        onSuccess: (res) async {
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
           registerCompanyResponse.value = res!;
           storage.write(
               "data", registerCompanyResponse.value.toJson());
-          storage.write("token", res.data!.token);
+          print("registerAdvertiseToken ${res.data!.token}");
+          await storage.write("token", res.data!.token);
           Get.toNamed('/chooseBakaPage');
         },
         onError: (err, res) {
@@ -231,6 +238,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
           nameMess.value = res.data!.username ?? '';
           accountNameMess.value = res.data!.accountName ?? '';
           emailMess.value = res.data!.email ?? '';
+          recordIDMess.value=res.data!.sgl??'';
           // accountAdminNameMess.value=res.data!.;
           //  companyNameMess.value=''.obs;
           // recordIDMess.value=''.obs;

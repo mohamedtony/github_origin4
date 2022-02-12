@@ -13,6 +13,7 @@ PeriodModel _$PeriodModelFromJson(Map<String, dynamic> json) => PeriodModel(
       price: (json['price'] as num?)?.toDouble(),
       price_after_discount: (json['price_after_discount'] as num?)?.toDouble(),
       free_days: json['free_days'] as int?,
+      free_txt: json['free_txt'] as String?,
     );
 
 Map<String, dynamic> _$PeriodModelToJson(PeriodModel instance) =>
@@ -23,4 +24,5 @@ Map<String, dynamic> _$PeriodModelToJson(PeriodModel instance) =>
       'price': instance.price,
       'price_after_discount': instance.price_after_discount,
       'free_days': instance.free_days,
+      'free_txt': instance.free_txt,
     };

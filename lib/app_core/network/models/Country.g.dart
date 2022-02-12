@@ -13,6 +13,7 @@ Country _$CountryFromJson(Map<String, dynamic> json) => Country(
       areas: (json['areas'] as List<dynamic>?)
           ?.map((e) => Area.fromJson(e as Map<String, dynamic>))
           .toList(),
+      type: json['type'] as String?,
     )..iso_name = json['iso_name'] as String?;
 
 Map<String, dynamic> _$CountryToJson(Country instance) => <String, dynamic>{
@@ -21,4 +22,5 @@ Map<String, dynamic> _$CountryToJson(Country instance) => <String, dynamic>{
       'phone_key': instance.phone_key,
       'iso_name': instance.iso_name,
       'areas': instance.areas,
+      'type': instance.type,
     };

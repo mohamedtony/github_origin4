@@ -38,6 +38,7 @@ class RegisterNewClientCompanyController extends GetxController {
   var countryCode = '+966'.obs;
   var latitude = 0.0.obs;
   var longitude = 0.0.obs;
+  var file =File(' ').obs;
   var password = '';
   var phone = '';
   var role=''.obs;
@@ -95,16 +96,16 @@ class RegisterNewClientCompanyController extends GetxController {
     return null;
   }
   String? validatePassword(String val) {
-    if (val.length < 6) {
-      return 'الباسوورد لا يقل عن 6 حروف او ارقام';
+    if (val.length < 8) {
+      return 'الباسوورد لا يقل عن 8 حروف او ارقام';
     }
     return null;
   }
   String? validateCompanyName(String val) {
     if (val.length < 3) {
-      return 'الباسوورد لا يقل عن 3 حروف ';
+      return 'الاسم لا يقل عن 3 حروف ';
     }else if(companyNameMess.isNotEmpty){
-      return nameMess.value;
+      return companyNameMess.value;
     }
     return null;
   }
@@ -145,20 +146,20 @@ class RegisterNewClientCompanyController extends GetxController {
     if (val.length < 3) {
       return 'رقم السجل لا يقل عن 3 ارقام';
     }else if(recordIDMess.isNotEmpty){
-      return nationalIDMess.value;
+      return recordIDMess.value;
     }
     return null;
   }
   String? validateAccountAdminName(String val) {
     if (val.length < 3) {
-      return 'رقم الادمن لا يقل عن 3 ارقام';
+      return 'الام الادمن لا يقل عن 3 حروف';
     }else if(accountAdminNameMess.isNotEmpty){
       return accountAdminNameMess.value;
     }
     return null;
   }
 
-  void checkLogin() {
+  void checkLogin() async{
    isValid.value = registerNewCompanyUserControllerKeyForm1.currentState!
         .validate();
     if (!isValid.value||errorRegister.value==true) {
@@ -169,6 +170,11 @@ class RegisterNewClientCompanyController extends GetxController {
    // Get.toNamed('/bakaPage');
 
       if(countryId.isNotEmpty&&areaId.isNotEmpty){
+        photo =
+            await dio.MultipartFile.fromFile(savedFile.value.path,
+            filename: savedFile.value.path
+                .substring(savedFile.value.path.lastIndexOf("/") + 1));
+
         registerCompanyUser();}
       else{
         Get.snackbar(
@@ -217,10 +223,13 @@ class RegisterNewClientCompanyController extends GetxController {
           "manager_name": accountAdminNameController.text,
           "image": photo
         },
-        onSuccess: (res) {
+        onSuccess: (res) async {
           storage.write(
               "data", registerClientUserResponse.value.toJson());
-          Get.toNamed('/chooseBakaPage');
+          print("registerToken ${res.data!.token}");
+          await storage.write("token", res.data!.token);
+          Get.offAllNamed('/Home');
+          //Get.toNamed('/chooseBakaPage');
         },
         onError: (err, res) {
           errorRegister.value = true;
@@ -232,7 +241,7 @@ class RegisterNewClientCompanyController extends GetxController {
           emailMess.value = res.data!.email ?? '';
           // accountAdminNameMess.value=res.data!.;
           //  companyNameMess.value=''.obs;
-          // recordIDMess.value=''.obs;
+           recordIDMess.value=res.data!.sgl??'';
           checkLogin();
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
