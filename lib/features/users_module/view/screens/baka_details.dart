@@ -94,7 +94,8 @@ class BakaDetails extends StatelessWidget {
                                           style: TextStyle(
                                               fontSize: 27.sp,
                                               color: AppColors.bakaDetailsTextColor,
-                                              fontFamily: 'Arabic-Regular')),
+                                              fontFamily: 'Arabic-Regular'),textAlign: TextAlign.start,),
+
                                       )),
                                   Row(
                                     children: [
@@ -194,7 +195,7 @@ class BakaDetails extends StatelessWidget {
                                         width: 119.5.w,
                                         fit: BoxFit.fitHeight,
                                       )*/    Container(
-                                  margin: EdgeInsets.only(top: 10.0),
+                                  margin:_bakaDetailsController.subscriptionBakaDetail.value.first_period?.free_days!=null?EdgeInsets.only(top: 10.0):EdgeInsets.only(top: 10.0,left: 10.0),
                                   child: Obx(()=>_bakaDetailsController.subscriptionBakaDetail.value.image!=null && _bakaDetailsController.subscriptionBakaDetail.value.image!.isNotEmpty?Image.network(
                                     _bakaDetailsController.subscriptionBakaDetail.value.image!,
                                     height: 79.52.h,
@@ -208,7 +209,7 @@ class BakaDetails extends StatelessWidget {
                                   )),
                                 ),
                                       // SizedBox(height: 28.h,),
-                                      SizedBox(
+                                      _bakaDetailsController.subscriptionBakaDetail.value.first_period?.free_days!=null? SizedBox(
                                         height: 35.h,
                                         child:  Obx(()=> Text(
                                           'تجربة مجانية لمدة ' + (_bakaDetailsController.subscriptionBakaDetail.value.first_period?.free_days?.toString()??"")+' أيام ' ,
@@ -218,7 +219,7 @@ class BakaDetails extends StatelessWidget {
                                               fontSize: 12.sp),
                                         ),
                                         ),
-                                      ),
+                                      ):SizedBox(  height: 35.h,),
                                     ],
                                   ),
                                 ),

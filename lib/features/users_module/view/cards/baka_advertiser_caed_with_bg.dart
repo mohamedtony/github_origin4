@@ -113,7 +113,7 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 10.0),
+                      margin: subscriptionBaka.first_period?.free_days!=null? EdgeInsets.only(top: 10.0):EdgeInsets.only(top: 10.0,left: 10.0),
                       child: subscriptionBaka.image!=null && subscriptionBaka.image!=""?Image.network(
                         subscriptionBaka.image!,
                         height: 96.h,
@@ -127,14 +127,16 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 28.h,),
-                    Padding(
+                    subscriptionBaka.first_period?.free_days!=null?Padding(
                       padding: EdgeInsetsDirectional.only(end :26.6.w),
                       child: SizedBox(
                         height: 35.h,
                         child: Text(' مجانية لمدة ${subscriptionBaka.first_period?.free_days??''} أيام ',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 12.sp,),textDirection: mt.TextDirection.rtl,
                         ),
                       ),
-                    ),
+                    ):Padding(
+                        padding: EdgeInsetsDirectional.only(end :26.6.w),
+                        child: SizedBox(height: 35.h,)),
 
                   ],
                 ),
@@ -216,7 +218,7 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 10.0),
+                      margin: subscriptionBaka.first_period?.free_days!=null? EdgeInsets.only(top: 10.0):EdgeInsets.only(top: 10.0,left: 10.0),
                       child: subscriptionBaka.image!=null && subscriptionBaka.image!=""?Image.network(
                         subscriptionBaka.image!,
                         height: 96.h,
@@ -230,14 +232,16 @@ class BakaAdvertiserCardBG extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 28.h,),
-                    Padding(
+                    subscriptionBaka.first_period?.free_days!=null?Padding(
                       padding: EdgeInsetsDirectional.only(end :26.6.w),
                       child: SizedBox(
                         height: 35.h,
                         child: Text(' مجانية لمدة ${subscriptionBaka.first_period?.free_days??''} أيام ',style:TextStyle(color: AppColors.arrowBlueColor,fontSize: 12.sp,),textDirection: mt.TextDirection.rtl,
                         ),
                       ),
-                    ),
+                    ): Padding(
+                        padding: EdgeInsetsDirectional.only(end :26.6.w),
+                        child: SizedBox(height: 35.h,)),
 
                   ],
                 ),

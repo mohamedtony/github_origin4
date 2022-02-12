@@ -417,8 +417,9 @@ class AdvertiserListPage extends StatelessWidget {
           AdvertiseListItem(icon: 'images/manage_icon.svg',title: 'ادارة حسابات المعلنين',listTilePressed: (){
             print('pressed2');
           },),
-          AdvertiseListItem(icon: 'images/logout_icon.svg',title: 'خروج',listTilePressed: (){
-            storage.remove("data");
+          AdvertiseListItem(icon: 'images/logout_icon.svg',title: 'خروج',listTilePressed: () async {
+            await storage.remove("data");
+            await storage.remove("token");
             Get.offAllNamed('/loginPage');
             print('pressed2');
           },),

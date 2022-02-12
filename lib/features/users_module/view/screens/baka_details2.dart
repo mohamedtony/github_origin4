@@ -212,7 +212,7 @@ class PayVerification2 extends StatelessWidget {
                                             )),
                                           ),
                                           // SizedBox(height: 28.h,),
-                                          SizedBox(
+                                          _bakaDetailsController.subscriptionBakaDetail.value.first_period?.free_days!=null?SizedBox(
                                             height: 35.h,
                                             child: Text(
                                               'تجربة مجانية لمدة '+ (_bakaDetailsController.subscriptionBakaDetail.value.first_period?.free_days?.toString()??"") + ' أيام ' ,
@@ -220,7 +220,7 @@ class PayVerification2 extends StatelessWidget {
                                                   color: AppColors.arrowBlueColor,
                                                   fontSize: 12.sp),
                                             ),
-                                          ),
+                                          ):const SizedBox(),
                                         ],
                                       ),
                                     )
