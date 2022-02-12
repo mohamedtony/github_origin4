@@ -2,10 +2,12 @@ import 'package:advertisers/features/advertiser_details/controller/advertiser_de
 import 'package:advertisers/features/request_advertise_module/controller/adertising_channels_controller.dart';
 import 'package:advertisers/features/request_advertise_module/SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight.dart';
 import 'package:advertisers/features/home_page/view/widgets/advertise_item_home_page.dart';
+import 'package:advertisers/shared/gradient_check_box/gradient_check_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AdvertisingChannelsPage extends StatelessWidget {
   ScrollController? scrollController;
@@ -135,6 +137,26 @@ class AdvertisingChannelsPage extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
+                InkWell(
+                  onTap: (){
+                    controller.switchShowInPlatform();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      children: [
+                        controller.showInPlatform! ? selectedBigCheckBox() : unSelectedBigCheckBox(),
+                       const SizedBox(
+                         width: 15,
+                       ),
+                        Text("العرض في منصة ( المعلنين )",style: TextStyle(fontSize: 15.sp,color:const Color(0xff041D67)),)
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -155,6 +177,9 @@ class AdvertisingChannelsPage extends StatelessWidget {
                       ),
                     )
                   ],
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
               ],
             ),

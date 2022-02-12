@@ -105,7 +105,6 @@ class _MyAppState extends State<MyApp> {
       //this line belongs to ali don't touch just commit it if you want
         designSize: const Size(375, 812),
         builder:()=>GetMaterialApp(
-
           localizationsDelegates: const [
             // THIS CLASS WILL BE ADDED LATER
             // A class which loads the translations from JSON files
@@ -126,7 +125,7 @@ class _MyAppState extends State<MyApp> {
          // fallbackLocale: LocalizationService.locale,
           builder: EasyLoading.init(),
           translations: LocalizationService(),
-          initialRoute: '/Home',
+          initialRoute: '/',
           getPages: Routes.routes,
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',

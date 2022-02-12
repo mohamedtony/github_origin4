@@ -19,6 +19,18 @@ class AdvertisingDetailsController extends GetxController{
   late TextEditingController numberOfUseController;
   late TextEditingController storeUrlController;
 
+
+  bool? showInPlatform = false;
+
+  void switchShowInPlatform (){
+    if(showInPlatform == true){
+      showInPlatform = false;
+    }else{
+      showInPlatform = true;
+    }
+    update();
+  }
+
   bool isVideo = false;
 
   final ImagePicker picker = ImagePicker();
@@ -27,6 +39,7 @@ class AdvertisingDetailsController extends GetxController{
 
 
   List<XFileType> attachedImagesList = [];
+  List<XFile> multiImageVideoList = [];
 
   bool get hasSelectedImage => _selectedImage != null;
   XFile? pickedXFile;
@@ -54,10 +67,26 @@ class AdvertisingDetailsController extends GetxController{
     pickedXFile =
     await picker.pickVideo(
         source: fromGallery! ? ImageSource.gallery : ImageSource.camera,);
-    attachedImagesList.add(        XFileType(
+    attachedImagesList.add(XFileType(
         file: XFile(pickedXFile!.path),
         isVideo: 1
     ));
+    update();
+  }
+
+
+  getImageListToAttachedList({@required bool? fromGallery}) async {
+    multiImageVideoList.clear();
+    multiImageVideoList =
+    (await picker.pickMultiImage())!;
+
+    for (var element in multiImageVideoList) {
+      attachedImagesList.add(XFileType(
+          file: XFile(element!.path),
+          isVideo: 0
+      ));
+    }
+    multiImageVideoList.clear();
     update();
   }
 

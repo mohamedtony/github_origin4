@@ -123,7 +123,7 @@ class AttatchementPage extends StatelessWidget {
                                                   'معرض الصور'),
                                               onPressed: () async {
                                                 Navigator.pop(context);
-                                                await controller.getImageToAttachedList(fromGallery: true);
+                                                await controller.getImageListToAttachedList(fromGallery: true);
                                               },
                                             )
                                           ],
@@ -182,71 +182,72 @@ class AttatchementPage extends StatelessWidget {
                     ),
                   ],
                 ),
-      GridView.builder(
-        padding: EdgeInsets.only(right: 18.0,left: 18.0,bottom: 8.0,top: 12.0),
-        shrinkWrap: true,
-        itemCount: controller.attachedImagesList.length??0,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
-          //childAspectRatio: 100 / 150,
-          height: 100.0,
-          crossAxisSpacing: 1,
-          mainAxisSpacing: 1,
-          crossAxisCount: 4,
-        ),
-        itemBuilder: (context, index) =>
+                GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.only(right: 18.0,left: 18.0,bottom: 8.0,top: 12.0),
+                  shrinkWrap: true,
+                  itemCount: controller.attachedImagesList.length??0,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+                    //childAspectRatio: 100 / 150,
+                    height: 100.0,
+                    crossAxisSpacing: 1,
+                    mainAxisSpacing: 1,
+                    crossAxisCount: 4,
+                  ),
+                  itemBuilder: (context, index) =>
 
-            Stack(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top:10,left: 5.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(6.0),
-                  ),
-                  child: Material(
-                    elevation: 6.0,
-                    shadowColor: Colors.grey[200],
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    //borderOnForeground: true,
-                    color: AppColors.saveButtonBottomSheet,
-                    child: controller.attachedImagesList[index].isVideo == 0 ? Container(
-                        child: Image.file(
-                          File(controller.attachedImagesList[index].file!.path),
-                          width: 200.0,
-                          height: 200.0,
-                          fit: BoxFit.fitHeight,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
-                          borderRadius: BorderRadius.circular(8.0),
-                          /*image: DecorationImage(
-                                    image: AssetImage("images/image1.jpg"),
-                                    fit: BoxFit.cover,
-                                  )*/
-                        )):VideoApp(
-                      file: File(controller.attachedImagesList[index].file!.path),
-                    ),
-                  ),
+                      Stack(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top:10,left: 5.0),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
+                            child: Material(
+                              elevation: 6.0,
+                              shadowColor: Colors.grey[200],
+                              borderRadius: BorderRadius.all(Radius.circular(8)),
+                              //borderOnForeground: true,
+                              color: AppColors.saveButtonBottomSheet,
+                              child: controller.attachedImagesList[index].isVideo == 0 ? Container(
+                                  child: Image.file(
+                                    File(controller.attachedImagesList[index].file!.path),
+                                    width: 200.0,
+                                    height: 200.0,
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: AppColors.addPhotoBottom,width: 0.5),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    /*image: DecorationImage(
+                                        image: AssetImage("images/image1.jpg"),
+                                        fit: BoxFit.cover,
+                                      )*/
+                                  )):VideoApp(
+                                file: File(controller.attachedImagesList[index].file!.path),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: InkWell(
+                              onTap: (){
+                                controller.deleteFromAttachedImagesList(controller.attachedImagesList[index]);
+                              },
+                              child: Container(
+                                // alignment: Alignment.topLeft,
+                                  decoration:const BoxDecoration(
+                                      shape: BoxShape.circle
+                                      ,color: Colors.white
+                                  ),
+                                  child: Icon(Icons.cancel_outlined,color: AppColors.bottomSheetTabColorRounded,)),
+                            ),
+                          )
+                        ],
+                      ),
+
                 ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: InkWell(
-                    onTap: (){
-                      controller.deleteFromAttachedImagesList(controller.attachedImagesList[index]);
-                    },
-                    child: Container(
-                      // alignment: Alignment.topLeft,
-                        decoration:const BoxDecoration(
-                            shape: BoxShape.circle
-                            ,color: Colors.white
-                        ),
-                        child: Icon(Icons.cancel_outlined,color: AppColors.bottomSheetTabColorRounded,)),
-                  ),
-                )
-              ],
-            ),
-
-      ) ,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -301,7 +302,11 @@ class AttatchementPage extends StatelessWidget {
                       ),
                     ),
                   ],
-                )
+                ),
+               const SizedBox(
+                  height: 25,
+                ),
+
               ],),
           ],
         ),

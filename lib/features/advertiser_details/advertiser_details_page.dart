@@ -336,6 +336,8 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                           onTap: (){
                             void _modalBottomSheetMenu(){
                               showModalBottomSheet(
+
+                                // isScrollControlled: true,
                                   context: context,
                                   builder: (builder){
                                     return AdvertisingChannelsPage();

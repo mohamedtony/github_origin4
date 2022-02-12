@@ -66,6 +66,11 @@ class CustomerOrderInvoicePage extends StatelessWidget {
                     price: "1200",
                     currency: "ر.س",
                   ),
+                  StaticsWidget(
+                    title: "اضافة الخصم الخاص",
+                    price: "-120",
+                    currency: "ر.س",
+                  ),
                 ],
               ),
             ),
