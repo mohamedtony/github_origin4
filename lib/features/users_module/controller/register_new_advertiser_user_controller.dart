@@ -88,7 +88,7 @@ class RegisterNewAdvertiserUserController extends GetxController{
   }
   String? validatePassword(String val) {
     if (val.length < 8) {
-      return 'الباسوورد لا يقل عن 6 حروف او ارقام';
+      return 'الباسوورد لا يقل عن 8 حروف او ارقام';
     }
     return null;
   }

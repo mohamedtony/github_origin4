@@ -97,13 +97,13 @@ class RegisterNewClientCompanyController extends GetxController {
   }
   String? validatePassword(String val) {
     if (val.length < 8) {
-      return 'الباسوورد لا يقل عن 6 حروف او ارقام';
+      return 'الباسوورد لا يقل عن 8 حروف او ارقام';
     }
     return null;
   }
   String? validateCompanyName(String val) {
     if (val.length < 3) {
-      return 'الباسوورد لا يقل عن 3 حروف ';
+      return 'الاسم لا يقل عن 3 حروف ';
     }else if(companyNameMess.isNotEmpty){
       return companyNameMess.value;
     }
@@ -152,7 +152,7 @@ class RegisterNewClientCompanyController extends GetxController {
   }
   String? validateAccountAdminName(String val) {
     if (val.length < 3) {
-      return 'رقم الادمن لا يقل عن 3 ارقام';
+      return 'الام الادمن لا يقل عن 3 حروف';
     }else if(accountAdminNameMess.isNotEmpty){
       return accountAdminNameMess.value;
     }
