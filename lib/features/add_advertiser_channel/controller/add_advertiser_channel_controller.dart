@@ -164,7 +164,74 @@ class AddAdvertiserChannelController extends GetxController {
 
   }
   addChannel(){
-
+if(channelId.value==0){
+  Get.snackbar(
+    "تنبيه",
+    "يجب اختيار قناة",
+    icon: const Icon(Icons.person, color: Colors.red),
+    backgroundColor: Colors.yellow,
+    snackPosition: SnackPosition.BOTTOM,);
+  return;
+} if(accountNameController.text.isEmpty){
+  Get.snackbar(
+    "تنبيه",
+    "يجب اسم الحساب",
+    icon: const Icon(Icons.person, color: Colors.red),
+    backgroundColor: Colors.yellow,
+    snackPosition: SnackPosition.BOTTOM,);
+  return;
+} if(linkController.text.isEmpty){
+  Get.snackbar(
+    "تنبيه",
+    "يجب اسم لينك الحساب",
+    icon: const Icon(Icons.person, color: Colors.red),
+    backgroundColor: Colors.yellow,
+    snackPosition: SnackPosition.BOTTOM,);
+  return;
+} if(selectedRange.value.isEmpty||selectedRange.value=='0'){
+  Get.snackbar(
+    "تنبيه",
+    "يجب اختيار مدى المتاثرين",
+    icon: const Icon(Icons.person, color: Colors.red),
+    backgroundColor: Colors.yellow,
+    snackPosition: SnackPosition.BOTTOM,);
+  return;
+}
+// if(selectedMenPercentage.value.isEmpty){
+//   Get.snackbar(
+//     "تنبيه",
+//     "يجب اختيار نسبة الرجال",
+//     icon: const Icon(Icons.person, color: Colors.red),
+//     backgroundColor: Colors.yellow,
+//     snackPosition: SnackPosition.BOTTOM,);
+//   return;
+// } if(selectedWomenPercentage.value.isEmpty){
+//   Get.snackbar(
+//     "تنبيه",
+//     "يجب اختيار نسبة النساء",
+//     icon: const Icon(Icons.person, color: Colors.red),
+//     backgroundColor: Colors.yellow,
+//     snackPosition: SnackPosition.BOTTOM,);
+//   return;
+// }
+// if(selectedBoysPercentage.value.isEmpty){
+//   Get.snackbar(
+//     "تنبيه",
+//     "يجب اختيار نسبة الشباب",
+//     icon: const Icon(Icons.person, color: Colors.red),
+//     backgroundColor: Colors.yellow,
+//     snackPosition: SnackPosition.BOTTOM,);
+//   return;
+// }
+// if(selectedGirlsPercentage.value.isEmpty){
+//   Get.snackbar(
+//     "تنبيه",
+//     "يجب اختيار نسبة الفتيات",
+//     icon: const Icon(Icons.person, color: Colors.red),
+//     backgroundColor: Colors.yellow,
+//     snackPosition: SnackPosition.BOTTOM,);
+//   return;
+// }
     EasyLoading.show();
     Repository repo = Repository();
 
@@ -214,7 +281,74 @@ class AddAdvertiserChannelController extends GetxController {
   }
 
   editChannel(){
-
+    if(channelId.value==0){
+      Get.snackbar(
+        "تنبيه",
+        "يجب اختيار قناة",
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
+      return;
+    } if(accountNameController.text.isEmpty){
+      Get.snackbar(
+        "تنبيه",
+        "يجب اسم الحساب",
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
+      return;
+    } if(linkController.text.isEmpty){
+      Get.snackbar(
+        "تنبيه",
+        "يجب اسم لينك الحساب",
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
+      return;
+    } if(selectedRange.value.isEmpty||selectedRange.value=='0'){
+      Get.snackbar(
+        "تنبيه",
+        "يجب اختيار مدى المتاثرين",
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
+      return;
+    }
+    // if(selectedMenPercentage.value.isEmpty||selectedMenPercentage.value=='0'){
+    //   Get.snackbar(
+    //     "تنبيه",
+    //     "يجب اختيار نسبة الرجال",
+    //     icon: const Icon(Icons.person, color: Colors.red),
+    //     backgroundColor: Colors.yellow,
+    //     snackPosition: SnackPosition.BOTTOM,);
+    //   return;
+    // } if(selectedWomenPercentage.value.isEmpty){
+    //   Get.snackbar(
+    //     "تنبيه",
+    //     "يجب اختيار نسبة النساء",
+    //     icon: const Icon(Icons.person, color: Colors.red),
+    //     backgroundColor: Colors.yellow,
+    //     snackPosition: SnackPosition.BOTTOM,);
+    //   return;
+    // }
+    // if(selectedBoysPercentage.value.isEmpty){
+    //   Get.snackbar(
+    //     "تنبيه",
+    //     "يجب اختيار نسبة الشباب",
+    //     icon: const Icon(Icons.person, color: Colors.red),
+    //     backgroundColor: Colors.yellow,
+    //     snackPosition: SnackPosition.BOTTOM,);
+    //   return;
+    // }
+    // if(selectedGirlsPercentage.value.isEmpty){
+    //   Get.snackbar(
+    //     "تنبيه",
+    //     "يجب اختيار نسبة الفتيات",
+    //     icon: const Icon(Icons.person, color: Colors.red),
+    //     backgroundColor: Colors.yellow,
+    //     snackPosition: SnackPosition.BOTTOM,);
+    //   return;
+    // }
     EasyLoading.show();
     Repository repo = Repository();
 
