@@ -256,7 +256,9 @@ class Home extends StatelessWidget {
             expand: false,
             builder: (context, scrollController) {
               if(bottomNumber==1){
-                return AdvertisingDatePage();
+                return AdvertisingDatePage(
+                    scrollController: scrollController
+                );
               }
               else if(bottomNumber==2) {
                 return AdvertisingChannelsPage(

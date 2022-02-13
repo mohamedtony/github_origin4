@@ -78,6 +78,7 @@ class LoginPage extends StatelessWidget {
                     Obx(()=>AdvertisersPhone(hintText: 'phone'.tr,initialSelection: _loginController.countryCode.value,flag: true,
                         onChanged: (countryCodeVal){
                           _loginController.countryCode.value=countryCodeVal.dialCode!;
+                          _loginController.regionCode.value=countryCodeVal.code! ;
                         },controller: _loginController.phoneController,
                       onSaved: (value){
                         _loginController.phone=value!;
@@ -128,7 +129,7 @@ class LoginPage extends StatelessWidget {
                      _loginController.errorRegister.value=false;
                      _loginController.isValid.value=false;
 
-                     _loginController.checkLogin();}),
+                     _loginController.checkLogin(context);}),
                     SizedBox(height:17.h),
                     SizedBox(
                       height: 29.h,

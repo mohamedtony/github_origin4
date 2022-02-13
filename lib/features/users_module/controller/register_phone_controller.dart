@@ -8,7 +8,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:phone_number/phone_number.dart';
 
 class RegisterPhoneController extends GetxController {
   GlobalKey<FormState> registerPhoneFormKey = GlobalKey<FormState>();
@@ -16,6 +18,9 @@ class RegisterPhoneController extends GetxController {
   late TextEditingController phoneController;
   var publicSmsOtp=''.obs;
   var countryCode = '+966'.obs;
+  var regionCode = 'SA'.obs;
+  var isValidPhone = false.obs;
+  var   e164 =''.obs;
   var latitude = 0.0.obs;
   var longitude = 0.0.obs;
   var password = '';
@@ -40,16 +45,31 @@ class RegisterPhoneController extends GetxController {
     return null;
   }
 
-  void checkLogin() async {
+  Future<void> checkValidPhoneWithCountry() async {
+    try {
+      final parsed = await PhoneNumberUtil().parse(phoneController.text, regionCode: regionCode.value);
+      e164.value = parsed.e164;
+      isValidPhone.value = true;
+    } catch (e) {
+      isValidPhone.value = false;
+    }
+  }
+
+  void checkLogin(BuildContext context) async {
     final isValid = registerPhoneFormKey.currentState!.validate();
     if (!isValid) {
       return;
     }
     registerPhoneFormKey.currentState!.save();
-    checkPhone();
+    checkPhone(context);
 
   }
-  void checkPhone() {
+  Future<void> checkPhone(BuildContext context) async {
+    await checkValidPhoneWithCountry();
+    if (!isValidPhone.value) {
+      showMyToast("رقم الجوال وكود الدولة غير متطابقين !",true,context);
+      return;
+    }
     EasyLoading.show();
     Repository repo = Repository();
 
@@ -97,6 +117,25 @@ class RegisterPhoneController extends GetxController {
             backgroundColor: Colors.yellow,
             snackPosition: SnackPosition.BOTTOM,);
         });
+  }
+
+  void showMyToast(String msg,bool error,BuildContext context) {
+
+  /*  Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: error?Colors.red:Colors.grey,
+        textColor: Colors.white,
+        //fontFamily: 'Arabic-Regular',
+        fontSize: 16.0);*/
+    FocusManager.instance.primaryFocus?.unfocus();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content:  Text(msg,style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),
+      ),
+      backgroundColor: error?Colors.red:Colors.grey,
+    ));
   }
   // void loginClient(){
   //   repo.post<LoginSalonResponse>(path: '/loginClient',fromJson:(json) => LoginSalonResponse.fromJson(json),

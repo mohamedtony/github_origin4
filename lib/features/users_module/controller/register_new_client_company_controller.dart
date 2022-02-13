@@ -159,7 +159,7 @@ class RegisterNewClientCompanyController extends GetxController {
     return null;
   }
 
-  void checkLogin() async{
+  void checkLogin(BuildContext context) async{
    isValid.value = registerNewCompanyUserControllerKeyForm1.currentState!
         .validate();
     if (!isValid.value||errorRegister.value==true) {
@@ -175,7 +175,7 @@ class RegisterNewClientCompanyController extends GetxController {
             filename: savedFile.value.path
                 .substring(savedFile.value.path.lastIndexOf("/") + 1));
 
-        registerCompanyUser();}
+        registerCompanyUser(context);}
       else{
         Get.snackbar(
           "خطأ",
@@ -201,7 +201,7 @@ class RegisterNewClientCompanyController extends GetxController {
     });*/
   }
 
-  void registerCompanyUser() {
+  void registerCompanyUser(BuildContext context) {
     Repository repo = Repository();
 
     repo.postWithImageMultipart<RegisterClientUserResponse>(
@@ -228,6 +228,9 @@ class RegisterNewClientCompanyController extends GetxController {
               "data", registerClientUserResponse.value.toJson());
           print("registerToken ${res.data!.token}");
           await storage.write("token", res.data!.token);
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content:  Text('لقد تم تسجيلك بنجاح !',style: TextStyle(color:Colors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),),
+          ));
           Get.offAllNamed('/Home');
           //Get.toNamed('/chooseBakaPage');
         },
@@ -242,7 +245,7 @@ class RegisterNewClientCompanyController extends GetxController {
           // accountAdminNameMess.value=res.data!.;
           //  companyNameMess.value=''.obs;
            recordIDMess.value=res.data!.sgl??'';
-          checkLogin();
+          checkLogin(context);
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
