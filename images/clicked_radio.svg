@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48.485" height="48.485" viewBox="0 0 48.485 48.485">
+  <defs>
+    <filter id="Rectangle_8168" x="0" y="0" width="48.485" height="48.485" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-color="#bbb" flood-opacity="0.4"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#48dbe1"/>
+      <stop offset="1" stop-color="#4166cd"/>
+      <stop offset="1" stop-color="#236b73"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_17376" data-name="Group 17376" transform="translate(12523.155 -7493.5)">
+    <g transform="matrix(1, 0, 0, 1, -12523.16, 7493.5)" filter="url(#Rectangle_8168)">
+      <rect id="Rectangle_8168-2" data-name="Rectangle 8168" width="17.485" height="17.485" rx="8.743" transform="translate(15.5 12.5)" fill="#f5f5f5" stroke="#6c84c8" stroke-width="1" opacity="0.5"/>
+    </g>
+    <rect id="Rectangle_8169" data-name="Rectangle 8169" width="7.948" height="7.948" rx="3.974" transform="translate(-12502.887 7510.769)" stroke="rgba(0,0,0,0)" stroke-width="1" fill="url(#linear-gradient)"/>
+  </g>
+</svg>

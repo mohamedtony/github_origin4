@@ -81,6 +81,7 @@ class RegisterPhone extends StatelessWidget {
                         Obx(()=>AdvertisersPhone(hintText: 'phone'.tr,initialSelection: _registerPhoneController.countryCode.toString(),flag: true,
                           onChanged: (countryCodeVal){
                             _registerPhoneController.countryCode.value=countryCodeVal.dialCode! ;
+                            _registerPhoneController.regionCode.value=countryCodeVal.code! ;
                             print('>>>>>>>>>>>>>>${countryCodeVal.name}  ${countryCodeVal.code}    ${countryCodeVal.dialCode}     ${countryCodeVal.flagUri}');
                           },controller: _registerPhoneController.phoneController,
                           onSaved: (value){
@@ -101,7 +102,7 @@ class RegisterPhone extends StatelessWidget {
                         //       child: SizedBox(child: Text('forgetPassword'.tr,style: TextStyle(color:AppColors.heavyBlueColor,decoration: TextDecoration.underline,fontSize: 15.sp),))),
                         // ),
                         SizedBox(height:32.h),
-                        AdvertisersButton(text: 'register'.tr,textColor:AppColors.verifyTextColor ,backgroundColor: AppColors.verifyButtonColor, onPressed: (){_registerPhoneController.checkLogin();
+                        AdvertisersButton(text: 'register'.tr,textColor:AppColors.verifyTextColor ,backgroundColor: AppColors.verifyButtonColor, onPressed: (){_registerPhoneController.checkLogin(context);
                         }),
 
                       ],

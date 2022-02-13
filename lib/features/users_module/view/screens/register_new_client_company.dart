@@ -317,7 +317,7 @@ class RegisterNewClientCompany extends StatelessWidget {
                           false;
                       _registerNewClientCompanyController.isValid.value = false;
 
-                      _registerNewClientCompanyController.checkLogin();
+                      _registerNewClientCompanyController.checkLogin(context);
                     }
                   },
                   backgroundColor: AppColors.verifyButtonColor,

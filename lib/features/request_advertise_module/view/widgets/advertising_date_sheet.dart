@@ -15,6 +15,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 DateFormat dateFormat = DateFormat("yyyy-MM-dd");
 class AdvertisingDatePage extends StatefulWidget {
+  ScrollController? scrollController;
+  AdvertisingDatePage({Key? key, this.scrollController}) : super(key: key);
   @override
   State<AdvertisingDatePage> createState() => _AdvertisingDatePageState();
 }
@@ -47,7 +49,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
 
     return  Container(
       child: ListView(
-        // controller: this.scrollController,
+         controller: widget.scrollController,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,6 +87,113 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                 color: AppColors.dividerBottom,
                 thickness: 4.0,
               ),
+              Row(
+                children: [
+                  Row(children: [
+                    Container(
+                      //margin: const EdgeInsets.only(left: 20.0),
+                      child: Image.asset(
+                        "images/radio_clicked.png",height: 60,width: 60,),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(bottom: 8.0),
+                      child: const   Text(
+                        'مرن',
+                        style: TextStyle(
+                            color: AppColors.adVertiserPageDataColor,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ],),
+                  Row(children: [
+                    Container(
+                      //margin: const EdgeInsets.only(left: 20.0),
+                      child: Image.asset(
+                        "images/not_radio_clicked.png",height: 60,width: 60,),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(bottom: 8.0),
+                      child: const   Text(
+                        'محدد',
+                        style: TextStyle(
+                            color: AppColors.adVertiserPageDataColor,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ],)
+                ],
+              ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const   Text(
+                            'من',
+                            style: TextStyle(
+                                color: AppColors.adVertiserPageDataColor,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          Container(
+                            height: 40,
+                            width: double.infinity,
+                            margin: EdgeInsets.only(left: 20,right: 20),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(16),),
+                              border: Border.all(width: 0.4,
+                                  color: AppColors.borderDropDownColor)
+                            ),
+                            child: Container(
+                              margin: EdgeInsets.only(top: 3),
+                              child: Text(
+                                '22-10-2202',
+                                textAlign: TextAlign.center,
+                                style:TextStyle(fontSize: 18),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        //mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const   Text(
+                            'الى',
+                            style: TextStyle(
+                                color: AppColors.adVertiserPageDataColor,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          Container(
+                            height: 40,
+                            width: double.infinity,
+                            margin: EdgeInsets.only(left: 20,right: 20),
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(16),),
+                                border: Border.all(width: 0.4,
+                                    color: AppColors.borderDropDownColor)
+                            ),
+                            child: Container(
+                             margin: EdgeInsets.only(top: 3),
+                              child: Text(
+                                  '22-10-2202',
+                                textAlign: TextAlign.center,
+                                style:TextStyle(fontSize: 18),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               Container(
                 height: 30.0,
                 // width: 140.0,
