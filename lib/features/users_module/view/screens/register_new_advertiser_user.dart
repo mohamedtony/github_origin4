@@ -188,7 +188,7 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                 ),
                 Obx(() => AdvertisersPhone(
                       hintText: 'phone'.tr,
-                     // enabled: false,
+                      enabled: false,
                       flag: false,
                       borderColor: AppColors.borderAdvertiserRegisterColor,
                       initialSelection: _registerNewAdvertiserUserController

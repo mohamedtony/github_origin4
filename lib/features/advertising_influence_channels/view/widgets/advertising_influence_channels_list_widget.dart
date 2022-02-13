@@ -13,7 +13,7 @@ class AdvertisingInfluenceChannelsPageListWidget extends StatelessWidget {
 
    @override
   Widget build(BuildContext context) {
-    return Obx(()=>ListView.builder(
+    return  Obx(()=>Get.find<AdvertisingInfluenceChannelsController>().channels.isNotEmpty?ListView.builder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         itemCount: Get.find<AdvertisingInfluenceChannelsController>().channels.length,
@@ -25,7 +25,9 @@ class AdvertisingInfluenceChannelsPageListWidget extends StatelessWidget {
               index: index,
             ),
             );
-        }));
+        }):Center(
+      child: Text("لا يوجد قنوات لهذا المعلن"),
+    ));
   }
 }
 
