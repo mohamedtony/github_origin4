@@ -1,3 +1,4 @@
+import 'package:advertisers/app_core/network/models/ReasonModel.dart';
 import 'package:advertisers/features/advertiser_account_status/tax_settings/controller/advertiser_account_status_controller.dart';
 import 'package:advertisers/features/advertiser_account_status/tax_settings/view/widgets/advertiser_account_status_app_bar_widget.dart';
 import 'package:advertisers/features/users_module/app_colors.dart';
@@ -85,7 +86,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                         SizedBox(
                           width: 8,
                         ),
-                        Text("تعليق حالة الحساب",style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),),
+                        Text("تعليق حالة الحساب",style: TextStyle(color:controller.status.value=='1'?Color(0xff041D67):AppColors.whiteColor ,fontSize: 16.sp),),
                       ],
                     )),
                     controller.isChecked.value == true ? selectedRadio() : unSelectedRadio(),
@@ -151,13 +152,15 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                             padding: const EdgeInsets.symmetric(horizontal: 7),
                             child: const Icon(Icons.keyboard_arrow_down,color: Colors.grey,),
                           ),
+
                           hint: _selectedRange.isNotEmpty
                               ? Center(child: Text(_selectedRange,style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),))
                               : const Center(child: Text('السبب',style: TextStyle(color:Color(0xff041D67) ,fontSize: 16),)),
                           items: controller.ranges.map((value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),enabled: controller.isChecked.value == true ?true:false,
+                            controller.id.value=value.id.toString();
+                            return DropdownMenuItem(
+                              value: value.reason,
+                              child: Text(value.reason),enabled: controller.isChecked.value == true ?true:false,
                             );
                           }).toList(),
                           // value: _selectedLocation,
@@ -165,6 +168,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                           isExpanded: true,
                           onChanged: (newVal) {
                             setState(() {
+
                               _selectedRange = newVal.toString();
                             });
                           },
@@ -248,7 +252,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                             Image.asset("images/calender.png",height: 25,)
                           ],
                         ),
-Text("${Get.find<AdvertiserAccountStatusController>().from.value??" "}")
+Text("${Get.find<AdvertiserAccountStatusController>().to.value.isNotEmpty?Get.find<AdvertiserAccountStatusController>().from.value.substring(0,10):" "}")
                       ],
                     ),
                   )),
@@ -285,7 +289,7 @@ Text("${Get.find<AdvertiserAccountStatusController>().from.value??" "}")
                             Image.asset("images/calender.png",height: 25,)
                           ],
                         ),
-                        Text("${Get.find<AdvertiserAccountStatusController>().to.value}")
+                        Text("${Get.find<AdvertiserAccountStatusController>().to.value.isNotEmpty?Get.find<AdvertiserAccountStatusController>().to.value.substring(0,10):' '}")
                       ],
                     ),
                   )),

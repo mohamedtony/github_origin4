@@ -12,7 +12,8 @@ class AdvertiserAccountStatusController extends GetxController {
   late TextEditingController messageController;
   late Repository repo;
   List<int>? checkList = [];
-  var textMessage=''.obs;
+  var id=''.obs;
+  var textMessage=' '.obs;
   var status='0'.obs;
   var from=''.obs;
   var to=''.obs;
@@ -53,6 +54,7 @@ class AdvertiserAccountStatusController extends GetxController {
     // passIndex;
     getStopProfile();
     searchController = TextEditingController();
+
     super.onInit();
   }
 
@@ -93,7 +95,7 @@ class AdvertiserAccountStatusController extends GetxController {
         from.value=res.data!.settings?.stop_from.toString()??'';
         to.value=res.data!.settings?.stop_to.toString()??'';
         getStopProfileResponse.value.data = res.data!;
-
+        messageController.text=res.data?.settings?.stop_text??'';
         update();
       },
       onError: (err, res) {
@@ -118,7 +120,7 @@ class AdvertiserAccountStatusController extends GetxController {
         fromJson: (json) => GetStopProfileResponse.fromJson(json),
         json: {"token": "Bearer  $token",
         "stop_account":"1" ,
-          "stop_reason_id":"1",
+          "stop_reason_id":id.value,
           "stop_from":from.value,
           "stop_to":to.value,
           "stop_text":messageController.text

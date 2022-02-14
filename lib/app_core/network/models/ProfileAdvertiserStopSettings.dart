@@ -7,8 +7,8 @@ class ProfileAdvertiserStopSettings {
  
  String? stop_account;
   String? stop_reason_id;
-  DateTime? stop_from;
-  DateTime? stop_to;
+  String? stop_from;
+  String? stop_to;
   String? stop_text;
 
   ProfileAdvertiserStopSettings({
