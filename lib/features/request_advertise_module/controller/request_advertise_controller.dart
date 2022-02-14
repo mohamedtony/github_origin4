@@ -4,6 +4,7 @@ import 'package:advertisers/app_core/network/models/AdTypeModel.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/app_core/network/models/Channel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
+import 'package:advertisers/app_core/network/models/FileModel.dart';
 import 'package:advertisers/app_core/network/models/LinkModel.dart';
 import 'package:advertisers/features/advertiser_details/controller/advertiser_details_controller.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
@@ -25,6 +26,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
+import 'package:video_player/video_player.dart';
 //=========================================================================================
 
 //                         By Mohamed T. Hammad
@@ -35,6 +37,8 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   //==================================== for date sheet
   var isFlixble = true.obs;
   var isFixed = false.obs;
+  var fromAdvertisingDate = '2022-2-10'.obs;
+
   //----------------------- for request ads == request advertise page---------------
   var isLoadingTypes = true.obs;
   RxList<CategoryModel> categories = <CategoryModel>[].obs;
@@ -50,7 +54,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   var isChannelSaveClicked = false.obs;
 
   // -------------------- for attachement sheet  ----------------------------------------
-  var realImages =[].obs;
+  RxList<FileModel>  attatechedFilesImageAndVideo =<FileModel>[].obs;
   var isAttachementSaveClicked = false.obs;
 
   //---------------------- for urls page ------------------------------------------------
@@ -86,6 +90,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   RxList<SelectedSocialMedia> items = <SelectedSocialMedia>[].obs;
   final ImagePicker _picker = ImagePicker();
    List<XFile>? images2;
+  XFile? mVideo;
   late final  HomeNavController controller;
   List<String> images=['images/snapshat_icon.png','images/instegram.png',
     'images/twitter.png','images/youtube.png','images/facebook.png','images/whatsup.png',];
@@ -268,24 +273,159 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
 
   //================================== attatchement sheet ===============================
   void deleteImage(int index){
-    realImages.removeAt(index);
+    attatechedFilesImageAndVideo.removeAt(index);
   }
+  Future<void> showChoiceImageOrVideoDialogForAttatchement(BuildContext context)
+  {
+    return showDialog(context: context,builder: (BuildContext context){
+
+      return AlertDialog(
+        title: Text("Choose option",style: TextStyle(color: Colors.blue),),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: () async {
+                  Navigator.pop(context);
+                  await showChoiceImageDialogForAttatchement(context);
+                },
+                title: Text("Image"),
+                leading: Icon(Icons.account_box,color: Colors.blue,),
+              ),
+
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: () async {
+                  //getVideoToAttachedList(fromGallery: false) ;
+                  Navigator.pop(context);
+                  await showChoiceVideoFromGallaryCamera(context);
+
+                },
+                title: Text("Video"),
+                leading: Icon(Icons.camera,color: Colors.blue,),
+              ),
+            ],
+          ),
+        ),);
+    });
+  }
+  Future<void> showChoiceVideoFromGallaryCamera(BuildContext context)
+  {
+    return showDialog(context: context,builder: (BuildContext context){
+
+      return AlertDialog(
+        title: Text("Choose option",style: TextStyle(color: Colors.blue),),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: () async {
+                  Navigator.pop(context);
+                  await getVideoToAttachedList(fromGallery: true);
+                },
+                title: Text("Gallery"),
+                leading: Icon(Icons.account_box,color: Colors.blue,),
+              ),
+
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: ()async{
+                  //getVideoToAttachedList(fromGallery: false) ;
+                  Navigator.pop(context);
+                  await getVideoToAttachedList(fromGallery: false);
+
+                },
+                title: Text("Camera"),
+                leading: Icon(Icons.camera,color: Colors.blue,),
+              ),
+            ],
+          ),
+        ),);
+    });
+  }
+  Future<void> showChoiceImageDialogForAttatchement(BuildContext context)
+  {
+    return showDialog(context: context,builder: (BuildContext context){
+
+      return AlertDialog(
+        title: Text("Choose option",style: TextStyle(color: Colors.blue),),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: (){
+                  Navigator.pop(context);
+                  pickImages();
+
+                },
+                title: Text("Gallery"),
+                leading: Icon(Icons.account_box,color: Colors.blue,),
+              ),
+
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: (){
+                  Navigator.pop(context);
+                  takeImage();
+
+                },
+                title: Text("Camera"),
+                leading: Icon(Icons.camera,color: Colors.blue,),
+              ),
+            ],
+          ),
+        ),);
+    });
+  }
+
+  Future<void> takeImage() async {
+    XFile? imageFromFamera = await _picker.pickImage(source: ImageSource.camera);
+    if(imageFromFamera!=null){
+      print("imagemm"+images2.toString());
+      attatechedFilesImageAndVideo.add(
+          FileModel(
+              file:File(imageFromFamera.path),
+              isVideo:false
+          )
+      );
+    }
+
+  }
+
   Future<void> pickImages() async {
     images2 = await _picker.pickMultiImage();
     if(images2!=null && images2!.isNotEmpty){
       print("imagemm"+images2.toString());
-      realImages.value=[];
+      //attatechedFilesImageAndVideo.value=[];
       images2?.forEach((element) {
-        realImages.add(File(element.path));
+        attatechedFilesImageAndVideo.add(
+          FileModel(
+              file:File(element.path),
+               isVideo:false
+          )
+        );
       });
     }
 
   }
+
+  Future<void> getVideoToAttachedList({@required bool? fromGallery}) async {
+    mVideo =
+    await _picker.pickVideo(
+      source: fromGallery! ? ImageSource.gallery : ImageSource.camera,);
+    attatechedFilesImageAndVideo.add(FileModel(
+        file: File(mVideo!.path),
+        isVideo: true
+    ));
+  }
   void onSaveAttachmentClicked(BuildContext context) {
-    Logger().i(realImages);
+    Logger().i(attatechedFilesImageAndVideo);
     isAttachementSaveClicked.value = true;
     Get.back();
-    if(realImages.isNotEmpty) {
+    if(attatechedFilesImageAndVideo.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("تم حفظ المرفقات بنجاح !")));
     }
@@ -490,11 +630,11 @@ void showToast(msg){
 }
 
 
-  var dateRange = DateRange(fromDate: "اختر نطاق زمني",toDate: ".........").obs;
+  var dateRange = DateRange().obs;
   var isDateSaveClicked  = false.obs;
   void addDateRange(String? fromDate,toDate){
     dateRange.value = DateRange(fromDate: fromDate,toDate: toDate) ;
-    endAdvertisingDate.value = toDate;
+    //endAdvertisingDate.value = toDate;
   }
   var selectedTimeCounter = ''.obs;
 
@@ -507,12 +647,21 @@ void showToast(msg){
   void addendAdvertisingDate(String? endDate){
     endAdvertisingDate.value = endDate!;
   }
+  void addAdvertisingFromDate(String? fromDate){
+    fromAdvertisingDate.value = fromDate!;
+  }
   void addendAdvertisingDateCoupon(String? endDate){
     endAdvertisingDateCoupon.value = endDate!;
   }
   void onDateClickedSaved(BuildContext context) {
 
-    if(dateRange.value.fromDate=='اختر نطاق زمني'){
+    if(isFlixble.isTrue){
+      if(dateRange.value.fromDate==null){
+        showToast("من فضلك يرجى إختيار تاريخ الاعلان !");
+        return;
+      }
+    }
+    if(isFixed.isTrue && fromAdvertisingDate.value=='2022-2-10'){
       showToast("من فضلك يرجى إختيار تاريخ الاعلان !");
       return;
     }else if(selectedTimeCounter.value.isEmpty){
