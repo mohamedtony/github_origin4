@@ -7,7 +7,9 @@ part of 'service.dart';
 // **************************************************************************
 
 class _RestClient implements RestClient {
-  _RestClient(this._dio, {this.baseUrl});
+  _RestClient(this._dio, {this.baseUrl}) {
+    baseUrl ??= 'https://advertiser.cefour.com/api/v1/';
+  }
 
   final Dio _dio;
 
@@ -20,12 +22,11 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CountriesResponse>(Options(
-                method: 'GET', headers: _headers, extra: _extra)
-            .compose(
-                _dio.options, 'https://advertiser.cefour.com/api/v1/countries',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<CountriesResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/countries',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CountriesResponse.fromJson(_result.data!);
     return value;
   }
@@ -39,8 +40,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<SubscruptionResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    'https://advertiser.cefour.com/api/v1/subscriptions',
+                .compose(_dio.options, '/subscriptions',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SubscruptionResponse.fromJson(_result.data!);
@@ -56,8 +56,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<SubscriptionDetailsResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    'https://advertiser.cefour.com/api/v1/subscriptions/${id}',
+                .compose(_dio.options, '/subscriptions/${id}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SubscriptionDetailsResponse.fromJson(_result.data!);
@@ -72,12 +71,11 @@ class _RestClient implements RestClient {
     final _data = <String, dynamic>{};
     _data.addAll(mLoginRequest.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<LoginClientResponse>(Options(
-                method: 'POST', headers: _headers, extra: _extra)
-            .compose(
-                _dio.options, 'https://advertiser.cefour.com/api/v1/auth/login',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<LoginClientResponse>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/auth/login',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = LoginClientResponse.fromJson(_result.data!);
     return value;
   }
@@ -94,8 +92,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<CreateSubscriptionResponse>(
             Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    'https://advertiser.cefour.com/api/v1/subscriptions',
+                .compose(_dio.options, '/subscriptions',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CreateSubscriptionResponse.fromJson(_result.data!);
@@ -116,8 +113,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<CreateSubscriptionResponse>(
             Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    'https://advertiser.cefour.com/api/v1/check_copon',
+                .compose(_dio.options, '/check_copon',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CreateSubscriptionResponse.fromJson(_result.data!);
@@ -132,12 +128,11 @@ class _RestClient implements RestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<GetMyProfileInfoResponse>(Options(
-                method: 'GET', headers: _headers, extra: _extra)
-            .compose(
-                _dio.options, 'https://advertiser.cefour.com/api/v1/profile',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<GetMyProfileInfoResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/profile',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = GetMyProfileInfoResponse.fromJson(_result.data!);
     return value;
   }
@@ -152,8 +147,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<RegisterClientUserResponse>(
             Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    'https://advertiser.cefour.com/api/v1/auth/register',
+                .compose(_dio.options, '/auth/register',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = RegisterClientUserResponse.fromJson(_result.data!);
@@ -170,8 +164,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<GetBlockedUsersResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    'https://advertiser.cefour.com/api/v1/profile/blacklist',
+                .compose(_dio.options, '/profile/blacklist',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = GetBlockedUsersResponse.fromJson(_result.data!);
@@ -186,12 +179,11 @@ class _RestClient implements RestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AddRemoveBlackListResponse>(Options(
-                method: 'GET', headers: _headers, extra: _extra)
-            .compose(_dio.options,
-                'https://advertiser.cefour.com/api/v1/profile/blacklist/${id}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AddRemoveBlackListResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/profile/blacklist/${id}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AddRemoveBlackListResponse.fromJson(_result.data!);
     return value;
   }
@@ -206,8 +198,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<GetCategoriesResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    'https://advertiser.cefour.com/api/v1/profile/categories',
+                .compose(_dio.options, '/profile/categories',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = GetCategoriesResponse.fromJson(_result.data!);
@@ -226,8 +217,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<GetCategoriesResponse>(
             Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    'https://advertiser.cefour.com/api/v1/profile/categories',
+                .compose(_dio.options, '/profile/categories',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = GetCategoriesResponse.fromJson(_result.data!);
@@ -244,8 +234,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<GetUseLocationsResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    'https://advertiser.cefour.com/api/v1/profile/areas',
+                .compose(_dio.options, '/profile/areas',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = GetUseLocationsResponse.fromJson(_result.data!);
@@ -263,8 +252,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<CreateSubscriptionResponse>(
             Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    'https://advertiser.cefour.com/api/v1/profile/channels/add',
+                .compose(_dio.options, '/profile/channels/add',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CreateSubscriptionResponse.fromJson(_result.data!);
@@ -283,8 +271,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<GetUseLocationsResponse>(
             Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    'https://advertiser.cefour.com/api/v1/profile/areas',
+                .compose(_dio.options, '/profile/areas',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = GetUseLocationsResponse.fromJson(_result.data!);
@@ -303,8 +290,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<GetUseLocationsResponse>(
             Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    'https://advertiser.cefour.com/api/v1/profile/areas',
+                .compose(_dio.options, '/profile/areas',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = GetUseLocationsResponse.fromJson(_result.data!);
@@ -391,8 +377,7 @@ class _RestClient implements RestClient {
                 headers: _headers,
                 extra: _extra,
                 contentType: 'multipart/form-data')
-            .compose(_dio.options,
-                'https://advertiser.cefour.com/api/v1/profile/update',
+            .compose(_dio.options, '/profile/update',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = GetMyProfileInfoResponse.fromJson(_result.data!);
@@ -409,8 +394,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<GetProductsAndAdsTypesResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    'https://advertiser.cefour.com/api/v1/requests/form',
+                .compose(_dio.options, '/requests/form',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = GetProductsAndAdsTypesResponse.fromJson(_result.data!);
@@ -429,8 +413,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<GetAdvertisersResponse>(
             Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    'https://advertiser.cefour.com/api/v1/requests/advertisers',
+                .compose(_dio.options, '/requests/advertisers',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = GetAdvertisersResponse.fromJson(_result.data!);

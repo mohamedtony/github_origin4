@@ -1,4 +1,5 @@
 import 'package:advertisers/app_core/network/models/ProfileAdvertiserStopSettings.dart';
+import 'package:advertisers/app_core/network/models/ReasonModel.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'ProfileAdvertiserStopSettingsData.g.dart';
 
@@ -6,7 +7,7 @@ part 'ProfileAdvertiserStopSettingsData.g.dart';
 class ProfileAdvertiserStopSettingsData {
 
 
-  List<String>? reasons;
+  List<ReasonModel>? reasons;
   ProfileAdvertiserStopSettings? settings;
 
   ProfileAdvertiserStopSettingsData({

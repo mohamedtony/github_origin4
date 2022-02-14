@@ -97,7 +97,7 @@ class RegisterPhoneController extends GetxController {
 
           }else if(res.data!=null&&res.data?.exists==true&&res.data?.has_code==true&&res.data?.has_account==false){
             // await verifyPhone();
-            Get.toNamed('/registerAccountType');
+            Get.toNamed('/registerAccountType?phone=${countryCode.value.toString() + int.parse(phone).toString()}');
           }else{
            // await verifyPhone();
             Get.toNamed(

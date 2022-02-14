@@ -1,3 +1,4 @@
+import 'package:advertisers/app_core/network/models/ReasonModel.dart';
 import 'package:advertisers/features/advertiser_account_status/tax_settings/controller/advertiser_account_status_controller.dart';
 import 'package:advertisers/features/advertiser_account_status/tax_settings/view/widgets/advertiser_account_status_app_bar_widget.dart';
 import 'package:advertisers/features/users_module/app_colors.dart';
@@ -85,7 +86,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                         SizedBox(
                           width: 8,
                         ),
-                        Text("تعليق حالة الحساب",style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),),
+                        Text("تعليق حالة الحساب",style: TextStyle(color:controller.status.value=='1'?Color(0xff041D67):AppColors.whiteColor ,fontSize: 16.sp),),
                       ],
                     )),
                     controller.isChecked.value == true ? selectedRadio() : unSelectedRadio(),
@@ -151,13 +152,15 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                             padding: const EdgeInsets.symmetric(horizontal: 7),
                             child: const Icon(Icons.keyboard_arrow_down,color: Colors.grey,),
                           ),
+
                           hint: _selectedRange.isNotEmpty
                               ? Center(child: Text(_selectedRange,style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),))
                               : const Center(child: Text('السبب',style: TextStyle(color:Color(0xff041D67) ,fontSize: 16),)),
                           items: controller.ranges.map((value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),enabled: controller.isChecked.value == true ?true:false,
+                            controller.id.value=value.id.toString();
+                            return DropdownMenuItem(
+                              value: value.reason,
+                              child: Text(value.reason),enabled: controller.isChecked.value == true ?true:false,
                             );
                           }).toList(),
                           // value: _selectedLocation,
@@ -165,6 +168,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                           isExpanded: true,
                           onChanged: (newVal) {
                             setState(() {
+
                               _selectedRange = newVal.toString();
                             });
                           },
@@ -214,7 +218,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
 
           Container(
               padding: EdgeInsets.all(15),
-              child: Row(
+              child: Obx(()=>Row(
                 children: [
 
                   Expanded(child: InkWell(
@@ -236,14 +240,19 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                       _showDatePicker();
                       print("_selectedFromDate${_selectedFromDate}");
                     }:null,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Column(
                       children: [
-                        Text("من",style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),),
-                        SizedBox(
-                          width: 15,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("من",style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Image.asset("images/calender.png",height: 25,)
+                          ],
                         ),
-                        Image.asset("images/calender.png",height: 25,)
+Text("${Get.find<AdvertiserAccountStatusController>().to.value.isNotEmpty?Get.find<AdvertiserAccountStatusController>().from.value.substring(0,10):" "}")
                       ],
                     ),
                   )),
@@ -268,20 +277,25 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
 
                       print("_selectedToDate${_selectedToDate}");
                     }:null,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Column(
                       children: [
-                        Text("الى",style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),),
-                        SizedBox(
-                          width: 15,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("الى",style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Image.asset("images/calender.png",height: 25,)
+                          ],
                         ),
-                        Image.asset("images/calender.png",height: 25,)
+                        Text("${Get.find<AdvertiserAccountStatusController>().to.value.isNotEmpty?Get.find<AdvertiserAccountStatusController>().to.value.substring(0,10):' '}")
                       ],
                     ),
                   )),
 
                 ],
-              )),
+              ))),
 
           SizedBox(
             height: 25,
@@ -316,7 +330,8 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                   width: 20,
                 ),
                 Expanded(child: InkWell(onTap: (){
-
+                  Get.delete<AdvertiserAccountStatusController>();
+                  Get.back();
                 },
                   child: Container(
                     height: 40,

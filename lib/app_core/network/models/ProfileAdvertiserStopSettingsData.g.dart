@@ -9,8 +9,9 @@ part of 'ProfileAdvertiserStopSettingsData.dart';
 ProfileAdvertiserStopSettingsData _$ProfileAdvertiserStopSettingsDataFromJson(
         Map<String, dynamic> json) =>
     ProfileAdvertiserStopSettingsData(
-      reasons:
-          (json['reasons'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      reasons: (json['reasons'] as List<dynamic>?)
+          ?.map((e) => ReasonModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
       settings: json['settings'] == null
           ? null
           : ProfileAdvertiserStopSettings.fromJson(
