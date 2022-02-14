@@ -214,7 +214,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
 
           Container(
               padding: EdgeInsets.all(15),
-              child: Row(
+              child: Obx(()=>Row(
                 children: [
 
                   Expanded(child: InkWell(
@@ -236,14 +236,19 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                       _showDatePicker();
                       print("_selectedFromDate${_selectedFromDate}");
                     }:null,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Column(
                       children: [
-                        Text("من",style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),),
-                        SizedBox(
-                          width: 15,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("من",style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Image.asset("images/calender.png",height: 25,)
+                          ],
                         ),
-                        Image.asset("images/calender.png",height: 25,)
+Text("${Get.find<AdvertiserAccountStatusController>().from.value??" "}")
                       ],
                     ),
                   )),
@@ -268,20 +273,25 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
 
                       print("_selectedToDate${_selectedToDate}");
                     }:null,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Column(
                       children: [
-                        Text("الى",style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),),
-                        SizedBox(
-                          width: 15,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("الى",style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Image.asset("images/calender.png",height: 25,)
+                          ],
                         ),
-                        Image.asset("images/calender.png",height: 25,)
+                        Text("${Get.find<AdvertiserAccountStatusController>().to.value}")
                       ],
                     ),
                   )),
 
                 ],
-              )),
+              ))),
 
           SizedBox(
             height: 25,
@@ -316,7 +326,8 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                   width: 20,
                 ),
                 Expanded(child: InkWell(onTap: (){
-
+                  Get.delete<AdvertiserAccountStatusController>();
+                  Get.back();
                 },
                   child: Container(
                     height: 40,

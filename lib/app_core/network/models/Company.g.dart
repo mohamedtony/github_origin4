@@ -16,10 +16,10 @@ Company _$CompanyFromJson(Map<String, dynamic> json) => Company(
       personalId: json['personal_id'] as String?,
       password: json['password'] as String?,
       image: json['image'] as String?,
-      sgl: json['sgl'] as String?,
       countryId: json['country_id'] as int?,
       areaId: json['area_id'] as int?,
       accountName: json['account_name'] as String?,
+      sgl: json['sgl'] as String?,
     )
       ..blockedAt = json['blocked_at'] as bool?
       ..token = json['token'] as String?;
@@ -37,7 +37,7 @@ Map<String, dynamic> _$CompanyToJson(Company instance) => <String, dynamic>{
       'area_id': instance.areaId,
       'password': instance.password,
       'image': instance.image,
+      'sgl': instance.sgl,
       'blocked_at': instance.blockedAt,
       'token': instance.token,
-      'sgl': instance.sgl,
     };

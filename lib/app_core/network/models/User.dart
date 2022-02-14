@@ -12,7 +12,7 @@ part 'User.g.dart';
 @JsonSerializable()
 class User {
   int? id;
-  String? phone,email,role;
+  String? phone,email,role,image;
   String? username,type;
   @JsonKey(name: 'account_name')
   String? accountName;
@@ -30,7 +30,7 @@ class User {
   String? sgl;
   User({
     this.id,
-    this.username,
+    this.username,this.image,
     this.phone,
     this.email,
     this.type,
