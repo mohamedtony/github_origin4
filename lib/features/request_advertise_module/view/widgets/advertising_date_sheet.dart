@@ -4,12 +4,14 @@ import 'package:advertisers/features/request_advertise_module/controller/adertis
 import 'package:advertisers/features/request_advertise_module/SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight.dart';
 import 'package:advertisers/features/home_page/view/widgets/advertise_item_home_page.dart';
 import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'date_picker.dart' as DateRangePicker;
 // import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
 
 
@@ -89,112 +91,166 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
               ),
               Row(
                 children: [
-                  Row(children: [
-                    Container(
-                      //margin: const EdgeInsets.only(left: 20.0),
-                      child: Image.asset(
-                        "images/radio_clicked.png",height: 60,width: 60,),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 8.0),
-                      child: const   Text(
-                        'مرن',
-                        style: TextStyle(
-                            color: AppColors.adVertiserPageDataColor,
-                            fontWeight: FontWeight.w600),
+                  InkWell(
+                    onTap: (){
+                      if(requestAdvertiseController.isFlixble.isFalse){
+                        requestAdvertiseController.isFixed.value = false;
+                        requestAdvertiseController.isFlixble.value = true;
+                      }
+                    },
+                    child: Row(children: [
+                      Container(
+                        //margin: const EdgeInsets.only(left: 20.0),
+                        child: Obx(()=>Image.asset(
+                          requestAdvertiseController.isFlixble.isTrue?"images/radio_clicked.png":"images/not_radio_clicked.png",height: 50,width: 50,)),
                       ),
-                    ),
-                  ],),
-                  Row(children: [
-                    Container(
-                      //margin: const EdgeInsets.only(left: 20.0),
-                      child: Image.asset(
-                        "images/not_radio_clicked.png",height: 60,width: 60,),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 8.0),
-                      child: const   Text(
-                        'محدد',
-                        style: TextStyle(
-                            color: AppColors.adVertiserPageDataColor,
-                            fontWeight: FontWeight.w600),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 8.0,left: 30.0),
+                        child: const   Text(
+                          'مرن',
+                          style: TextStyle(
+                              color: AppColors.adVertiserPageDataColor,
+                              fontWeight: FontWeight.w600),
+                        ),
                       ),
-                    ),
-                  ],)
+                    ],),
+                  ),
+                  InkWell(
+    onTap: (){
+    if(requestAdvertiseController.isFixed.isFalse){
+    requestAdvertiseController.isFixed.value = true;
+    requestAdvertiseController.isFlixble.value = false;
+    }
+    },
+                    child: Row(children: [
+                      Container(
+                        //margin: const EdgeInsets.only(left: 20.0),
+                        child: Obx(()=>Image.asset(
+                          requestAdvertiseController.isFixed.isTrue?"images/radio_clicked.png":"images/not_radio_clicked.png",height: 50,width: 50,)),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 8.0),
+                        child: const   Text(
+                          'محدد',
+                          style: TextStyle(
+                              color: AppColors.adVertiserPageDataColor,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ],),
+                  )
                 ],
               ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const   Text(
-                            'من',
-                            style: TextStyle(
-                                color: AppColors.adVertiserPageDataColor,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          Container(
-                            height: 40,
-                            width: double.infinity,
-                            margin: EdgeInsets.only(left: 20,right: 20),
-                            decoration: BoxDecoration(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(16),),
-                              border: Border.all(width: 0.4,
-                                  color: AppColors.borderDropDownColor)
-                            ),
-                            child: Container(
-                              margin: EdgeInsets.only(top: 3),
-                              child: Text(
-                                '22-10-2202',
-                                textAlign: TextAlign.center,
-                                style:TextStyle(fontSize: 18),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        //mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const   Text(
-                            'الى',
-                            style: TextStyle(
-                                color: AppColors.adVertiserPageDataColor,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          Container(
-                            height: 40,
-                            width: double.infinity,
-                            margin: EdgeInsets.only(left: 20,right: 20),
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(16),),
-                                border: Border.all(width: 0.4,
-                                    color: AppColors.borderDropDownColor)
-                            ),
-                            child: Container(
-                             margin: EdgeInsets.only(top: 3),
-                              child: Text(
-                                  '22-10-2202',
-                                textAlign: TextAlign.center,
-                                style:TextStyle(fontSize: 18),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
               Container(
+                margin: EdgeInsets.only(bottom: 10.0),
+                child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () async {
+                            final picked = await DateRangePicker.showDateRangePicker(
+                                initialEntryMode:DatePickerEntryMode.calendarOnly,
+                              locale : const Locale('ar', 'EG'),
+                              context: context,
+                              firstDate:(new DateTime.now()).add(new Duration(days: 1)),
+                              lastDate: (new DateTime.now()).add(new Duration(days: 600)),
+                            );
+                            if (picked != null && picked != null) {
+                              print(picked);
+                              requestAdvertiseController.addDateRange("  " "${dateFormat.format(picked.start)}" "   ","  " "${dateFormat.format(picked.end)}" "   ");
+                              // setState(() {
+                              // });
+                            }
+                          },
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const   Text(
+                                'من',
+                                style: TextStyle(
+                                    color: AppColors.adVertiserPageDataColor,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Container(
+                                height: 40,
+                                width: double.infinity,
+                                margin: const EdgeInsets.only(left: 20,right: 20),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                  const BorderRadius.all(const Radius.circular(16),),
+                                  border: Border.all(width: 0.4,
+                                      color: AppColors.borderDropDownColor)
+                                ),
+                                child: Container(
+                                  margin: const EdgeInsets.only(top: 3),
+                                  child: Text(
+                                    '22-10-2202',
+                                    textAlign: TextAlign.center,
+                                    style:TextStyle(fontSize: 18,color: AppColors.editProfileTextColorOpa.withOpacity(0.51)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Obx(()=>requestAdvertiseController.isFlixble.isTrue?Expanded(
+                        child: InkWell(
+                          onTap: () async {
+                            final picked = await showDateRangePicker(
+
+
+                              locale : const Locale('ar', 'EG'),
+                              context: context,
+                              firstDate:(new DateTime.now()).add(new Duration(days: 1)),
+                              lastDate: (new DateTime.now()).add(new Duration(days: 600)),
+                            );
+                            if (picked != null && picked != null) {
+                              print(picked);
+                              requestAdvertiseController.addDateRange("  " "${dateFormat.format(picked.start)}" "   ","  " "${dateFormat.format(picked.end)}" "   ");
+                              // setState(() {
+                              // });
+                            }
+                          },
+                          child: Column(
+                            //mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const   Text(
+                                'الى',
+                                style: TextStyle(
+                                    color: AppColors.adVertiserPageDataColor,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Container(
+                                height: 40,
+                                width: double.infinity,
+                                margin: const EdgeInsets.only(left: 20,right: 20),
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                    const BorderRadius.all(Radius.circular(16),),
+                                    border: Border.all(width: 0.4,
+                                        color: AppColors.borderDropDownColor)
+                                ),
+                                child: Container(
+                                  margin: const EdgeInsets.only(top: 3),
+                                  child: Text(
+                                    '22-10-2202',
+                                    textAlign: TextAlign.center,
+                                    style:TextStyle(fontSize: 18,color: AppColors.editProfileTextColorOpa.withOpacity(0.51)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ):const SizedBox())
+                    ],
+                  ),
+              ),
+              /*Container(
                 height: 30.0,
                 // width: 140.0,
                 //padding: EdgeInsets.all(8.0),
@@ -229,14 +285,14 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                       },
                       child: Obx(()=>Text(
                         '${requestAdvertiseController.dateRange.value.fromDate}${requestAdvertiseController.dateRange.value.toDate}',
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: AppColors.adVertiserPageDataColor,
                             fontWeight: FontWeight.w600,decoration: TextDecoration.underline),
                       )),
                     ),
                   ],
                 ),
-              ),
+              ),*/
               const  SizedBox(
                 height: 15,
               ),
@@ -249,6 +305,12 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                   ),
                   child: Container(
                     // color: Colors.white,
+                    decoration: BoxDecoration(
+                        borderRadius:
+                        const BorderRadius.all(const Radius.circular(16),),
+                        border: Border.all(width: 0.6,
+                            color: AppColors.borderDropDownColor)
+                    ),
                     child: Row(
                       children: [
                         ClipRRect(
@@ -266,7 +328,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                             color: const Color(0xfff5f5f5),
                             child: Text(
                               "عدد مرات الإعلان",
-                              style: TextStyle(fontSize: 14.sp,color: Color(0xff041D67)),
+                              style: TextStyle(fontSize: 14.sp,color: const Color(0xff041D67)),
                             ),
                           ),
                         ),
@@ -323,9 +385,9 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                     Future<void> _selectDate(BuildContext context) async {
                       final DateTime? picked = await showDatePicker(
                           context: context,
-                          initialDate: ( DateTime.now()).add( Duration(days: 1)),
+                          initialDate: ( DateTime.now()).add( const Duration(days: 1)),
                           firstDate:( DateTime.now()),
-                          lastDate: ( DateTime.now()).add( Duration(days: 600)));
+                          lastDate: ( DateTime.now()).add( const Duration(days: 600)));
                       // if (picked != null && picked != selectedDate)
                       if (picked != null && picked != selectedDate)
                       {
@@ -342,33 +404,47 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
 
                   },
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        margin: const EdgeInsets.only(left: 10.0),
-                        child: Image.asset("images/calender.png",height: 20,),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      const Text(
-                        'إضافة تاريخ انتهاء الإعلان',
-                        style:  TextStyle(
-                            color: AppColors.adVertiserPageDataColor,
-                            fontWeight: FontWeight.w600,decoration: TextDecoration.underline),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(left: 10.0,right: 40.0),
+                            child: Image.asset("images/calender.png",height: 20,),
+                          ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Flexible(
+                            child: const Text(
+                              'إضافة تاريخ انتهاء مدة العرض ',
+                              style:  TextStyle(
+                                fontSize: 18,
+                                  color: AppColors.adVertiserPageDataColor,
+                                  fontWeight: FontWeight.w400,decoration: TextDecoration.underline,decorationThickness: 4),
+                            ),
+                          ),
+                        ],
                       ),
 
-                      const SizedBox(
+
+                      /*const SizedBox(
                         width: 15,
-                      ),
+                      ),*/
                      Obx(()=> requestAdvertiseController.endAdvertisingDate.value.isNotEmpty?  Text("${requestAdvertiseController.endAdvertisingDate}",style: const TextStyle(
     color: AppColors.adVertiserPageDataColor,
-    fontWeight: FontWeight.w600,),):const SizedBox(
-                     ))
+    fontWeight: FontWeight.w600,),):const Text(
+                       'إختيارى',
+                       style:  TextStyle(
+                           color: AppColors.selectableColor,
+                           fontWeight: FontWeight.w600,decoration: TextDecoration.underline),
+                     ),)
                     ],
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
               Row(
@@ -377,14 +453,14 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                   InkWell(
                     onTap: ()=>requestAdvertiseController.onDateClickedSaved(context),
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 75),
+                      padding: const EdgeInsets.symmetric(horizontal: 75),
                       height: 40,
-                      child: Center(
-                        child: Text("حفظ",style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),),
+                      child: const Center(
+                        child: const Text("حفظ",style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),),
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: Color(0xff4391D4),
+                        color: const Color(0xff4391D4),
                       ),
                     ),
                   )

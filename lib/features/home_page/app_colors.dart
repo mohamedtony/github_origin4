@@ -23,6 +23,7 @@ class AppColors {
   static const Color saveButtonBottomSheet = Color(0xFFE8E8E8);
   static const Color cancelButtonBottomSheet = Color(0xFFE8E8E8);
   static const Color bottomSheetTabColorRounded = Color(0xFFFF8B08);
+  static const Color selectableColor = Color(0xFFFFAD31);
   static const Color dropDownFill = Color(0xFFDD784B);
   static const Color bottomSheetTabColor = Color(0xFFF5F5F5);
   static const Color searchAdsColor = Color(0xFF427FD1);

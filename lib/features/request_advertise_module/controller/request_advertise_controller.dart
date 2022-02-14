@@ -32,6 +32,9 @@ import 'package:logger/logger.dart';
 //=========================================================================================
 class RequestAdvertiseController extends GetxController with GetTickerProviderStateMixin{
 
+  //==================================== for date sheet
+  var isFlixble = true.obs;
+  var isFixed = false.obs;
   //----------------------- for request ads == request advertise page---------------
   var isLoadingTypes = true.obs;
   RxList<CategoryModel> categories = <CategoryModel>[].obs;
