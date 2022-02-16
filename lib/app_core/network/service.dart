@@ -11,6 +11,7 @@ import 'package:advertisers/app_core/network/requests/login_client_request.dart'
 import 'package:advertisers/app_core/network/responses/AddRemoveBlackListResponse.dart';
 import 'package:advertisers/app_core/network/responses/CountriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateSubscriptionResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetAdvertisersFormResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetAdvertisersResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetBlockedUsersResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetCategoriesResponse.dart';
@@ -97,4 +98,9 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
 
   @POST('/requests/advertisers')
   Future<GetAdvertisersResponse> getAdvertisers(@Header("Authorization") String token,@Body() GetAdvertisersRequest getAdvertisersRequest,);
+
+  @GET('/requests/advertisers_form')
+  Future<GetAdvertisersFormResponse> getAdvertisersForm(@Header("Authorization") String token);
+
+
 }

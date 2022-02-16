@@ -280,7 +280,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     return showDialog(context: context,builder: (BuildContext context){
 
       return AlertDialog(
-        title: Text("Choose option",style: TextStyle(color: Colors.blue),),
+        title: Text("إختر",style: TextStyle(color: Colors.blue),),
         content: SingleChildScrollView(
           child: ListBody(
             children: [
@@ -288,9 +288,9 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
               ListTile(
                 onTap: () async {
                   Navigator.pop(context);
-                  await showChoiceImageDialogForAttatchement(context);
+                  await pickImagesOrVideos();
                 },
-                title: Text("Image"),
+                title: Text("معرض الصور"),
                 leading: Icon(Icons.account_box,color: Colors.blue,),
               ),
 
@@ -299,10 +299,10 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
                 onTap: () async {
                   //getVideoToAttachedList(fromGallery: false) ;
                   Navigator.pop(context);
-                  await showChoiceVideoFromGallaryCamera(context);
+                  await showChoiceCamera(context);
 
                 },
-                title: Text("Video"),
+                title: Text("الكاميرا"),
                 leading: Icon(Icons.camera,color: Colors.blue,),
               ),
             ],
@@ -310,12 +310,12 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
         ),);
     });
   }
-  Future<void> showChoiceVideoFromGallaryCamera(BuildContext context)
+  Future<void> showChoiceCamera(BuildContext context)
   {
     return showDialog(context: context,builder: (BuildContext context){
 
       return AlertDialog(
-        title: Text("Choose option",style: TextStyle(color: Colors.blue),),
+        title: Text("إختر",style: TextStyle(color: Colors.blue),),
         content: SingleChildScrollView(
           child: ListBody(
             children: [
@@ -323,9 +323,9 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
               ListTile(
                 onTap: () async {
                   Navigator.pop(context);
-                  await getVideoToAttachedList(fromGallery: true);
+                  takeImage();
                 },
-                title: Text("Gallery"),
+                title: Text("صورة"),
                 leading: Icon(Icons.account_box,color: Colors.blue,),
               ),
 
@@ -337,7 +337,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
                   await getVideoToAttachedList(fromGallery: false);
 
                 },
-                title: Text("Camera"),
+                title: Text("فيديو"),
                 leading: Icon(Icons.camera,color: Colors.blue,),
               ),
             ],
@@ -350,7 +350,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     return showDialog(context: context,builder: (BuildContext context){
 
       return AlertDialog(
-        title: Text("Choose option",style: TextStyle(color: Colors.blue),),
+        title: Text("إختر",style: TextStyle(color: Colors.blue),),
         content: SingleChildScrollView(
           child: ListBody(
             children: [
@@ -381,6 +381,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     });
   }
 
+
   Future<void> takeImage() async {
     XFile? imageFromFamera = await _picker.pickImage(source: ImageSource.camera);
     if(imageFromFamera!=null){
@@ -391,6 +392,58 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
               isVideo:false
           )
       );
+    }
+
+  }
+
+  Future<void> pickImagesOrVideos() async {
+/*    XFile? imageFromFamera = await _picker.pickImage(source: ImageSource.camera);
+    if(imageFromFamera!=null){
+      print("imagemm"+images2.toString());
+      attatechedFilesImageAndVideo.add(
+          FileModel(
+              file:File(imageFromFamera.path),
+              isVideo:false
+          )
+      );
+    }*/
+
+    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+
+    result?.files.forEach((element) {
+      print("exte= "+element.extension!);
+    });
+    if (result != null) {
+      //List<File> files = result.paths.map((path) => File(path!)).toList();
+      result.files.forEach((element) {
+        print("exte= "+element.extension!);
+        if(element.extension=="mp4"){
+          attatechedFilesImageAndVideo.add(
+              FileModel(
+                  file:File(element.path!),
+                  isVideo:true
+              )
+          );
+        }else if(element.extension?.toLowerCase()=="jpg"||element.extension?.toLowerCase()=='png'){
+          attatechedFilesImageAndVideo.add(
+              FileModel(
+                  file:File(element.path!),
+                  isVideo:false
+              )
+          );
+        }
+      });
+      /*files.forEach((element) {
+        element.ex
+        attatechedFilesImageAndVideo.add(
+            FileModel(
+                file:File(element.path),
+                isVideo:false
+            )
+        );
+      });*/
+    } else {
+      // User canceled the picker
     }
 
   }

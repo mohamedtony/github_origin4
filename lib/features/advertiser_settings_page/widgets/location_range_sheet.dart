@@ -97,7 +97,7 @@ class LocationRangeBottomSheet extends StatelessWidget {
               ),
               Container(
                 width: double.infinity,
-                height: 60,
+                height: 70,
                 margin: EdgeInsets.only(left: 14.0, right: 14.0),
                 padding:
                     EdgeInsets.only(left: 14.0, right: 14.0, top: 6, bottom: 6),

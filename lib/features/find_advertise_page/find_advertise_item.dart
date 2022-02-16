@@ -70,12 +70,12 @@ class FindAdvertiseItem extends StatelessWidget {
                     ),
                     Flexible(
                       child: Container(
-                        margin: EdgeInsets.only(right: 6.0),
+                        margin: EdgeInsets.only(right: 6.0,bottom: 8),
                         child: Text(
                           advertisersModel.username ?? '',
                           style: TextStyle(
                               color: AppColors.advertiseNameColor,
-                              fontSize: 24.0.sp,
+                              fontSize: 20.0.sp,
                               fontFamily: 'DecoType-Regular',
                               fontWeight: FontWeight.w400),
                           maxLines: 2,
@@ -120,7 +120,7 @@ class FindAdvertiseItem extends StatelessWidget {
                           //blockedUsersController.removeBlockedUser(blockedUserModel.id!);
                         },
                         child: advertisersModel.is_muted !=
-                                null && /*advertisersModel.is_muted!*/ false
+                                null && /*advertisersModel.is_muted!*/ true
                             ? Image.asset(
                                 'images/icon_eye_off.png',
                                 fit: BoxFit.fill,
@@ -138,7 +138,7 @@ class FindAdvertiseItem extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.only(left: 2.0, right: 2.0),
                       child: advertisersModel.chat != null &&
-                              advertisersModel.chat!
+                              /*advertisersModel.chat!*/true
                           ? SvgPicture.asset(
                               'images/chat_icon_dot.svg',
                               fit: BoxFit.fill,
