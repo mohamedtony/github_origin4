@@ -1,6 +1,9 @@
 
 
 
+import 'package:advertisers/app_core/network/models/AdvertiserStatistics.dart';
+import 'package:advertisers/app_core/network/models/ProductType.dart';
+import 'package:advertisers/app_core/network/models/SocialsModel.dart';
 import 'package:get/get_connect/http/src/multipart/multipart_file.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -11,9 +14,12 @@ part 'User.g.dart';
 
 @JsonSerializable()
 class User {
-  int? id;
-  String? phone,email,role,image;
-  String? username,type;
+  int? id,payments;
+  String? phone,email,role,image,whatsapp,company_name;
+  String? username,type,rate,added_from,created_at;
+  ProductType? product_type;
+  AdvertiserStatistics? requests;
+  SocialsModel? socials;
   @JsonKey(name: 'account_name')
   String? accountName;
   @JsonKey(name: 'personal_id')
@@ -39,7 +45,8 @@ class User {
     this.sgl,
     this.countryId,
     this.areaId,
-    this.accountName
+    this.accountName,this.blockedAt,this.company_name,this.token,this.whatsapp,this.requests,
+    this.added_from,this.created_at,this.payments,this.product_type,this.rate,this.socials
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
