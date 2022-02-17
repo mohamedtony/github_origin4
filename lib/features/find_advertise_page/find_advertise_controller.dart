@@ -4,6 +4,8 @@ import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/app_core/network/models/Channel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
+import 'package:advertisers/app_core/network/models/EffectSlidesModel.dart';
+import 'package:advertisers/app_core/network/models/EffectSlidesNameModel.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersFromModel.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersModel.dart';
 import 'package:advertisers/app_core/network/models/SelectedNotSelectedSortType.dart';
@@ -17,6 +19,7 @@ import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:logger/logger.dart';
 
 //=========================================================================================
 
@@ -55,12 +58,14 @@ class FindAdvertiseController extends GetxController {
   RxList<Area> areasForLocationSheet = <Area>[].obs;
   var selectedCountry  = Country().obs;
   var selectedArea  = Area().obs;
+  var selectedChannel  = Channel().obs;
   RxList<dynamic> selectedUserLocations = <dynamic>[].obs;
   var isFilterSavedClicked  = false.obs;
   var isAreaEnabled = true.obs;
   var isCountryEnabled = true.obs;
   var selectedCategory = CategoryModel().obs;
   late TextEditingController searchAdvertiserController;
+  var selectedEffectSlidesModel= EffectSlidesModel().obs;
   @override
   Future<void> onInit() async {
     // TODO: implement onInit
@@ -107,6 +112,7 @@ class FindAdvertiseController extends GetxController {
 
         advertisersFormModel.value.categories?.insert(0, CategoryModel(id: -1,name: 'ابحث عن المعلن من خلال القسم'));
         advertisersFormModel.value.channels?.insert(0, Channel(id: -1,name: 'اختر'));
+        advertisersFormModel.value.effect_slides?.insert(0, EffectSlidesModel(id: -1,name: EffectSlidesNameModel(ar: 'اختر')));
        // advertisersFormModel.value.countries?.insert(0, Country(id: -1,name: 'اختر'));
         advertisersTopRated.value=[];
         isLoadingGetAdvertisersFromModel.value = false;
@@ -241,8 +247,47 @@ class FindAdvertiseController extends GetxController {
   onDateClickedSaved(BuildContext context) {
     isFilterSavedClicked.value = true;
     ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("تم حفظ بيانات الكوبون بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+        SnackBar(content: Text("تم حفظ البيانات بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
     Get.back();
+    isLoading.value = true;
+    List<String> sortByStrings=[];
+    advertisersTopRated.forEach((element) {
+      if(element.isSelected.isTrue) {
+        sortByStrings.add(element.key!);
+      }
+    });
+    List<int> categoriesId = [];
+    if(selectedCategory.value!=null && selectedCategory.value.id!=null &&selectedCategory.value.id!=-1){
+      categoriesId.add(selectedCategory.value.id!);
+    }
+    List<int> countriesId= [];
+    List<int> areasIds= [];
+    List<int> countryCaregoriesIds= [];
+    selectedUserLocations.forEach((element) {
+      if(element!=null && element is Country && element.type=='country') {
+        countriesId.add(element.id!);
+      }
+      if(element!=null && element is Area) {
+        areasIds.add(element.id!);
+      }
+      if(element!=null && element is Country && element.type=='country_category') {
+        print("isAreaEnabledHere country_category");
+        countryCaregoriesIds.add(element.id!);
+      }
+    });
+    Logger().i(GetAdvertisersRequest(sort_by: sortByStrings.isNotEmpty?sortByStrings[0]:null,categories: categoriesId.isNotEmpty?categoriesId:null,
+        country_category: countryCaregoriesIds.isNotEmpty?countryCaregoriesIds:null,countries: countriesId.isNotEmpty?countriesId:null,areas: areasIds.isNotEmpty?areasIds:null,keyword: searchAdvertiserController.text.isNotEmpty?searchAdvertiserController.text:null).toJson());
+    client!.getAdvertisers("Bearer "+myToken!,GetAdvertisersRequest(sort_by: sortByStrings.isNotEmpty?sortByStrings[0]:null,categories: categoriesId.isNotEmpty?categoriesId:null,
+        country_category: countryCaregoriesIds.isNotEmpty?countryCaregoriesIds:null,countries: countriesId.isNotEmpty?countriesId:null,areas: areasIds.isNotEmpty?areasIds:null,keyword: searchAdvertiserController.text.isNotEmpty?searchAdvertiserController.text:null)).then((value){
+      if(value.status==200 && value.data!=null && value.data!.isNotEmpty){
+        isLoading.value = false;
+        isEmpty.value = false;
+        advertisersModel.value = value.data!;
+      }else{
+        isLoading.value = false;
+        isEmpty.value = true;
+      }
+    });
   }
 
   void showToast(msg){
@@ -262,5 +307,12 @@ class FindAdvertiseController extends GetxController {
     advertisersTopRated.value.forEach((element) {
       element.isSelected.value = false;
     });
+    selectedCategory.value = CategoryModel();
+    selectedCountry.value = Country();
+    selectedArea.value = Area();
+    selectedChannel.value = Channel();
+    selectedUserLocations.value = [];
+    searchAdvertiserController.text ='';
+    selectedEffectSlidesModel.value = EffectSlidesModel();
   }
 }

@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:io';
-
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'package:advertisers/app_core/network/models/AdTypeModel.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/app_core/network/models/Channel.dart';
@@ -22,10 +24,14 @@ import 'package:advertisers/features/request_advertise_module/view/widgets/urls_
 import 'package:advertisers/main.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:location/location.dart' as location;
 import 'package:logger/logger.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:video_player/video_player.dart';
 //=========================================================================================
 
@@ -94,6 +100,15 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   late final  HomeNavController controller;
   List<String> images=['images/snapshat_icon.png','images/instegram.png',
     'images/twitter.png','images/youtube.png','images/facebook.png','images/whatsup.png',];
+
+  //---------------------- for map sheet ========================
+  late TextEditingController placeNameController;
+  late TextEditingController placeAddressController;
+  late Completer<GoogleMapController> mapController;
+  late GoogleMapController googleMapController;
+  BitmapDescriptor? pinLocationIcon;
+
+  late Uint8List markerIcon;
   @override
   Future<void> onInit() async {
     // TODO: implement onInit
@@ -123,6 +138,11 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     });
      descriptionController =  TextEditingController();
 
+     placeNameController = TextEditingController();
+     placeAddressController = TextEditingController();
+     mapController = Completer();
+     setCustomMapPin();
+     markerIcon = await getBytesFromAsset('images/location_icon.png', 70);
 
      //---------------------- for urls page ------------------------------------------------
      textUrlControllers.add(TextEditingController());
@@ -195,11 +215,11 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   }
 
   void changeTabIndex(int indexCome,bool isTap) {
-    if(channels.value[indexCome].isTapped?.value==true){
-      channels.value[indexCome].isTapped?.value=false;
+    if(channels.value[indexCome].isTapped.value==true){
+      channels.value[indexCome].isTapped.value=false;
       channelsIds.removeWhere((element) => element==channels.value[indexCome].id);
     }else{
-      channels.value[indexCome].isTapped?.value=true;
+      channels.value[indexCome].isTapped.value=true;
       channelsIds.add(channels.value[indexCome].id!);
     }
   }
@@ -791,6 +811,23 @@ void showToast(msg){
         SnackBar(content: Text("تم حفظ الملاحظة بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
     Get.back();
   }
+  var isLocationClickedSaved = false.obs;
+  void onLocationClickedSaved (BuildContext context) {
+    if(placeNameController.text!=null && placeNameController.text.isEmpty){
+      showToast("من فضلك يرجى إضافة اسم المكان !");
+      return;
+    } else if(placeAddressController.text!=null && placeAddressController.text.isEmpty){
+      showToast("من فضلك يرجى إضافة عنوان المكان !");
+      return;
+    }else if(latLng==null){
+      showToast("من فضلك يرجى إختيار عنوان من الخريطة !");
+      return;
+    }
+    isLocationClickedSaved.value = true;
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("تم حفظ تفاصيل العنوان بنجاح!",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+    Get.back();
+  }
 
   onPlanClicked(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -801,9 +838,185 @@ void showToast(msg){
       // User canceled the picker
     }
   }
+  LatLng? latLng;
+  Future<void> onMapClicked({LatLng? position}) async {
+    latLng = position;
+      addMarker(position);
+  }
+  var marker = new Set<Marker>().obs;
+  double? lastMarkerColor;
+  double? currentMarkerColor;
+  Future addMarker(LatLng? onValue) async{
+    marker.clear();
+    var point = Marker(
+      markerId: MarkerId("2"),
+      position: onValue!,
+      draggable: false,
+      icon: BitmapDescriptor.fromBytes(markerIcon),
+    );
+    marker.add(point);
+    Timer(Duration(milliseconds: 500), () async {
+      googleMapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: onValue,zoom: 16.5,bearing: 11.0,tilt: 16.0)));
+    });
+  }
+  void setCustomMapPin() async {
+    pinLocationIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 5),
+        'images/location_icon.png');
+  }
+
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+  }
+  getLocation() async {
+    location.Location myLocation = new location.Location();
+
+    bool _serviceEnabled;
+    location.PermissionStatus _permissionGranted;
+    location.LocationData _locationData;
+
+    _serviceEnabled = await myLocation.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await myLocation.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await myLocation.hasPermission();
+    if (_permissionGranted == location.PermissionStatus.denied) {
+      _permissionGranted = await myLocation.requestPermission();
+      if (_permissionGranted != location.PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _locationData = await myLocation.getLocation();
+    print("myLocation${_locationData.latitude}");
+    googleMapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: LatLng(_locationData.latitude!, _locationData.longitude!),zoom: 15),
+      ),
+    );
+  }
+
+/*  getMyLocation() async{
+    Address address;
+    Location location = new Location();
+    LocationData _locationData;
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        final snackBar = SnackBar(
+          content: Text(AppLocalization.of(context).enableLocation),
+          action: SnackBarAction(
+            label: AppLocalization.of(context).retry,
+            onPressed: () {
+              getMyLocation();
+            },
+          ),
+        );
+        globalKey.currentState.showSnackBar(snackBar);
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) {
+              return AlertDetermineMyLocation();
+            });
+        return;
+      }
+    } else if (_permissionGranted == PermissionStatus.deniedForever) {
+      final snackBar = SnackBar(
+        content: Text(AppLocalization.of(context).deniedForEver),
+      );
+      globalKey.currentState.showSnackBar(snackBar);
+      return;
+    }
+
+    _locationData = await location.getLocation();
+    myLoc = LatLng(_locationData?.latitude, _locationData?.longitude);
+    //searchNearby(null,null,myLoc.latitude,myLoc.longitude);
+
+    kGooglePlex = new CameraPosition(
+      target: LatLng(myLoc.latitude, myLoc.longitude),
+      zoom: zoom,
+    );
+    final coordinates = new Coordinates(myLoc.latitude, myLoc.longitude);
+    await Geocoder.local
+        . findAddressesFromCoordinates(coordinates)
+        .then((value) {
+      address = value.first;
+    });
 
 
+    // location is a LatLng object
+    Timer(Duration(milliseconds: 500), () {
+      googleMapController.animateCamera(CameraUpdate.newCameraPosition(kGooglePlex));
+    });
 
+    if(type=="mylocation"){
+      Navigator.pop(context);
+      marker.clear();
+      var point = Marker(
+        markerId: MarkerId("3"),
+        position: LatLng(myLoc.latitude, myLoc.longitude),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      );
+      marker.add(point);
+    }
+
+    // print("address1ID${addressID} - ${ type}");
+    if(type=="mylocation" && addressID!=0){
+      print("addressID${addressID}");
+      addAddressPageMobx.editAddressMethod(
+          context: context,
+          request: EditAddressRequest(
+            parameters: ["all"],
+            type: "user",
+            locationId: addressID,
+            apiToken: account.getAccount.apiToken,
+            description: null,
+            isDefaultAddress: true,
+            location: LocationModel(
+                address: address.addressLine,
+                latitude: myLoc.latitude,
+                longitude: myLoc.longitude),
+          ));
+    }else{
+      addAddressPageMobx.addAddressMethod(
+          context: context,
+          request: AddAddressesRequest(
+            parameters: ["all"],
+            type: "user",
+            apiToken: account.getAccount.apiToken,
+            description: null,
+            isDefaultAddress: true,
+            location: LocationModel(
+                address: address.addressLine,
+                latitude: myLoc.latitude,
+                longitude: myLoc.longitude),
+          ));
+    }
+//    geo.Geolocator().getCurrentPosition(desiredAccuracy: geo.LocationAccuracy.high).then((value){
+//      myLoc =  LatLng(value?.latitude,value?.longitude);
+//    });
+
+  }*/
   //------------------------------------ for select date sheet --------------------------------
   /*DateRange? dateRange = DateRange(fromDate: "اختر نطاق زمني",toDate: ".........");
 

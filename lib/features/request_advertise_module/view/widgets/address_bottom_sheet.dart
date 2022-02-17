@@ -9,36 +9,42 @@ import 'package:advertisers/features/users_module/app_colors.dart' as aliColors;
 import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertiser_field_with_icon.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_generic_field.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-class AddressBottomSheet extends StatelessWidget {
+class AddressBottomSheet extends StatefulWidget {
   ScrollController? scrollController;
 
   AddressBottomSheet({Key? key, this.scrollController}) : super(key: key);
 
-  AddressBottomSheetController addressBottomSheetController=Get.put(AddressBottomSheetController());
-  Completer<GoogleMapController> _controller = Completer();
-
   static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
+    target: LatLng(	24.774265, 46.738586),
     zoom: 14.4746,
   );
 
-  static final CameraPosition _kLake = CameraPosition(
+  @override
+  State<AddressBottomSheet> createState() => _AddressBottomSheetState();
+}
+
+class _AddressBottomSheetState extends State<AddressBottomSheet> {
+  AddressBottomSheetController addressBottomSheetController=Get.put(AddressBottomSheetController());
+
+  RequestAdvertiseController requestAdvertiseController=Get.find();
+
+/*  static final CameraPosition _kLake = CameraPosition(
       bearing: 192.8334901395799,
       target: LatLng(37.43296265331129, -122.08832357078792),
       tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
-
+      zoom: 19.151926040649414);*/
   @override
   Widget build(BuildContext context) {
     return Container(
       child: ListView(
-        controller: this.scrollController,
+        controller: this.widget.scrollController,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -92,7 +98,7 @@ class AddressBottomSheet extends StatelessWidget {
                     Align(
                         alignment: AlignmentDirectional.centerStart,
                         child:  Text('اسم المكان',style: TextStyle(color: aliColors.AppColors.arrowBlueColor,fontSize: 16.sp),)),
-                    AdvertisersGenericField(textAlignment: TextAlign.right, obscureText: false, controller: addressBottomSheetController.placeNameController, hintText: 'اسم المكان'),
+                    AdvertisersGenericField(textAlignment: TextAlign.right, obscureText: false, controller: requestAdvertiseController.placeNameController, hintText: 'اسم المكان'),
                     SizedBox(height:5.h),
                     AdvertisersFieldWithIcon(textAlignment: TextAlign.right,suffix: SizedBox(
                       width: 25.w,
@@ -102,9 +108,9 @@ class AddressBottomSheet extends StatelessWidget {
                         Container(height: 40, color: aliColors.AppColors.greyColor,
                           width: 1,),
                         InkWell(
-                          onTap: (){
+                         /* onTap: (){
                             _goToTheLake();
-                          },
+                          },*/
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: SvgPicture.asset('images/android-locate.svg'),
@@ -112,7 +118,7 @@ class AddressBottomSheet extends StatelessWidget {
                         ),
 
                       ],),
-                    ), obscureText: false, controller: addressBottomSheetController.placeAddressController, hintText: 'عنوان المكان'),
+                    ), obscureText: false, controller: requestAdvertiseController.placeAddressController, hintText: 'عنوان المكان'),
                   ],
                 ),
               ),
@@ -121,13 +127,31 @@ class AddressBottomSheet extends StatelessWidget {
                 child: SizedBox(
                   height: 226.85.h,
                   width: 322.w,
-                  child: GoogleMap(
-                    mapType: MapType.hybrid,
-                    initialCameraPosition: _kGooglePlex,
-                    onMapCreated: (GoogleMapController controller) {
-                      _controller.complete(controller);
+                  child: Obx(()=>GoogleMap(
+                    markers: requestAdvertiseController.marker.value,
+                    onTap: (val){
+                      requestAdvertiseController.onMapClicked(position:val);
                     },
-                  ),
+                    mapType: MapType.terrain,
+                    initialCameraPosition: AddressBottomSheet._kGooglePlex,
+                    zoomControlsEnabled: true,
+                    zoomGesturesEnabled: true,
+                    rotateGesturesEnabled: true,
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: true,
+                    onMapCreated: (GoogleMapController googleMapController) {
+                      //requestAdvertiseController.mapController.complete(controller);
+                      if (!requestAdvertiseController.mapController.isCompleted) requestAdvertiseController.mapController.complete(googleMapController);
+                      requestAdvertiseController.googleMapController = googleMapController;
+                      requestAdvertiseController.getLocation();
+                    },
+                    /* gestureRecognizers: Set()
+                      ..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
+                      ..add(Factory<ScaleGestureRecognizer>(() => ScaleGestureRecognizer()))
+                      ..add(Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
+                      ..add(Factory<VerticalDragGestureRecognizer>(
+                              () => VerticalDragGestureRecognizer())),*/
+                  )),
                 ),
               ),
               // floatingActionButton: FloatingActionButton.extended(
@@ -142,22 +166,27 @@ class AddressBottomSheet extends StatelessWidget {
                     width: 135.w,
                     height: 35.h,
                     margin: EdgeInsets.only(right: 10.0.w, left: 10.0.w, top: 20.0.h),
-                    child: Material(
-                      elevation: 6.0,
-                      shadowColor: Colors.grey[200],
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      color: AppColors.saveButtonBottomSheet,
-                      child: Container(
-                        /*margin: EdgeInsets.only(
-                              left: 12.0, bottom: 4.0, right: 20),*/
-                        alignment: Alignment.center,
-                        child: Text(
-                          'save'.tr,
-                          style: TextStyle(
-                              fontSize: 16.0.sp,
-                              color: AppColors.tabColor,
-                              fontWeight: FontWeight.w700),
-                          textAlign: TextAlign.center,
+                    child: InkWell(
+                      onTap: (){
+                        requestAdvertiseController.onLocationClickedSaved(context);
+                      },
+                      child: Material(
+                        elevation: 6.0,
+                        shadowColor: Colors.grey[200],
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: AppColors.saveButtonBottomSheet,
+                        child: Container(
+                          /*margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),*/
+                          alignment: Alignment.center,
+                          child: Text(
+                            'save'.tr,
+                            style: TextStyle(
+                                fontSize: 16.0.sp,
+                                color: AppColors.tabColor,
+                                fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                     ),
@@ -166,22 +195,28 @@ class AddressBottomSheet extends StatelessWidget {
                     width: 135.w,
                     height: 35.h,
                     margin: EdgeInsets.only(right: 10.0.w, left: 10.0.w, top: 20.0.h),
-                    child: Material(
-                      elevation: 6.0,
-                      shadowColor: Colors.grey[200],
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      color: AppColors.tabColor,
-                      child: Container(
-                        /*margin: EdgeInsets.only(
-                              left: 12.0, bottom: 4.0, right: 20),*/
-                        alignment: Alignment.center,
-                        child: Text(
-                          'cancel'.tr,
-                          style: TextStyle(
-                              fontSize: 16.0.sp,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w300),
-                          textAlign: TextAlign.center,
+                    child: InkWell(
+                      onTap: (){
+                        requestAdvertiseController.isLocationClickedSaved.value = false;
+                        Get.back();
+                      },
+                      child: Material(
+                        elevation: 6.0,
+                        shadowColor: Colors.grey[200],
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: AppColors.tabColor,
+                        child: Container(
+                          /*margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),*/
+                          alignment: Alignment.center,
+                          child: Text(
+                            'cancel'.tr,
+                            style: TextStyle(
+                                fontSize: 16.0.sp,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                     ),
@@ -194,8 +229,15 @@ class AddressBottomSheet extends StatelessWidget {
       ),
     );
   }
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    if(requestAdvertiseController.isLocationClickedSaved.isFalse){
+      requestAdvertiseController.placeAddressController.text='';
+      requestAdvertiseController.placeNameController.text='';
+      requestAdvertiseController.latLng=null;
+      requestAdvertiseController.marker.value = Set();
+    }
+    super.dispose();
   }
 }
