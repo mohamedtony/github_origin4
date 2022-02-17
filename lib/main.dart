@@ -127,6 +127,8 @@ class _MyAppState extends State<MyApp> {
     return  ScreenUtilInit(
       //this line belongs to ali don't touch just commit it if you want
         designSize: const Size(375, 812),
+        minTextAdapt: true,
+        splitScreenMode: true,
         builder:()=>GetMaterialApp(
           localizationsDelegates: const [
             // THIS CLASS WILL BE ADDED LATER

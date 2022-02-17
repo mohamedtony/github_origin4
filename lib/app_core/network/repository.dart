@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart' as dio;
@@ -29,48 +30,67 @@ class Repository {
     Function(int,RES)? onError,
     Function(RES)? onSuccess,
   }) async {
-    // EasyLoading.show();
-    print(json);
+    try {
+      // EasyLoading.show();
+      print(json);
 
-    final encoder = JsonEncoder.withIndent("  ");
-    // final body = encoder.convert(json);
-   // debugPrintSynchronously("POST " + base + path + "\n" + body);
-    debugPrintSynchronously("POST " + base + path!);
-    final formData = dio.FormData.fromMap(
+      final encoder = JsonEncoder.withIndent("  ");
+      // final body = encoder.convert(json);
+      // debugPrintSynchronously("POST " + base + path + "\n" + body);
+      debugPrintSynchronously("POST " + base + path!);
+      final formData = dio.FormData.fromMap(
 
-        json!
-    );
-    dioDio.options.contentType = dio.Headers.formUrlEncodedContentType;
-    dioDio.post(base + path, data: formData, options: dio.Options(
-        followRedirects: false,
-        method: 'POST', validateStatus: (status) { return status! < 500; },
-         contentType: 'multipart/form-data',headers: {"Accept":"application/json", "Authorization":json["token"]},
-        responseType: dio.ResponseType.json
+          json!
+      );
+      dioDio.options.contentType = dio.Headers.formUrlEncodedContentType;
+      dioDio.post(base + path, data: formData, options: dio.Options(
+          followRedirects: false,
+          method: 'POST',
+          validateStatus: (status) {
+            return status! < 500;
+          },
+          contentType: 'multipart/form-data',
+          headers: {
+            "Accept": "application/json",
+            "Authorization": json["token"]
+          },
+          responseType: dio.ResponseType.json
 
-    ))
-        .then((res) {
-          // if(EasyLoading.isShow) {
-          //   EasyLoading.dismiss();
-          // }
-      final data = jsonDecode(jsonEncode(res.data));
-      print(data);
-      final code = data["status"]as int ;
-      //final note = data["message"] as String;
-      // if (note != null && note != "done"){
-      //   print("isisisHere " + path);
-      //   // Toast.show(note, context,
-      //   //     gravity: Toast.BOTTOM, duration: Toast.LENGTH_LONG);
-      // }
-      print("HTTP Status Code: " + res.statusCode.toString());
-      // debugPrint("Internal Status Code: " + code.toString());
-      debugPrintThrottled("Response Body: \n" + encoder.convert(data));
-      if (code != 200) {
-        onError!(code,fromJson!(data));
-        return;
+      ))
+          .then((res) {
+        // if(EasyLoading.isShow) {
+        //   EasyLoading.dismiss();
+        // }
+        final data = jsonDecode(jsonEncode(res.data));
+        print(data);
+        final code = data["status"] as int;
+        //final note = data["message"] as String;
+        // if (note != null && note != "done"){
+        //   print("isisisHere " + path);
+        //   // Toast.show(note, context,
+        //   //     gravity: Toast.BOTTOM, duration: Toast.LENGTH_LONG);
+        // }
+        print("HTTP Status Code: " + res.statusCode.toString());
+        // debugPrint("Internal Status Code: " + code.toString());
+        debugPrintThrottled("Response Body: \n" + encoder.convert(data));
+        if (code != 200) {
+          onError!(code, fromJson!(data));
+          return;
+        }
+        onSuccess!(fromJson!(data));
+      });
+    }on dio.DioError catch(e){
+      if(EasyLoading.isShow){
+        EasyLoading.dismiss();
       }
-      onSuccess!(fromJson!(data));
-    });
+      Get.snackbar(
+        "خطأ",
+       "حدث خطأ ما",
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
 
+    }
   }
 
   void get<RES>({
@@ -83,42 +103,53 @@ class Repository {
     Function(RES)? onSuccess,
     bool? dontShow,
   }) async {
-    if(dontShow!=true) {
-      EasyLoading.show();
-    }
-    final encoder = JsonEncoder.withIndent("  ");
-    final body = encoder.convert(json);
-    debugPrintSynchronously("GET " + base + path! + "\n" + body);
-
-    client
-        .get(Uri.parse(base+ path,),
-      headers: {
-        // 'Content-Type': 'application/json',
-        // 'Accept-Type': 'application/json',
-        "Authorization":json!["token"],
-        "Accept":"application/json",
-      },
-      //body: body,
-    )
-        .then((res) {
-
-      final data = jsonDecode(res.body);
-      final code = data["status"] as int;
-      //final message=data["message"];
-      //final note = data["message"] as String;
-      // if (note != null && note != "done"){
-      //   print("isisisHere " + path);
-      //   // Toast.show(note, context,
-      //   //     gravity: Toast.BOTTOM, duration: Toast.LENGTH_LONG);
-      // }
-      print("HTTP Status Code: " + res.statusCode.toString());
-      debugPrint("Internal Status Code: " + code.toString());
-      debugPrintThrottled("Response Body: \n" + encoder.convert(data));
-      if (code != 200) {
-        onError!(code,fromJson!(data));
-        return;
+    try {
+      if (dontShow != true) {
+        EasyLoading.show();
       }
-      onSuccess!(fromJson!(data));
-    });
+      final encoder = JsonEncoder.withIndent("  ");
+      final body = encoder.convert(json);
+      debugPrintSynchronously("GET " + base + path! + "\n" + body);
+
+      client
+          .get(Uri.parse(base + path,),
+        headers: {
+          // 'Content-Type': 'application/json',
+          // 'Accept-Type': 'application/json',
+          "Authorization": json!["token"],
+          "Accept": "application/json",
+        },
+        //body: body,
+      )
+          .then((res) {
+        final data = jsonDecode(res.body);
+        final code = data["status"] as int;
+        //final message=data["message"];
+        //final note = data["message"] as String;
+        // if (note != null && note != "done"){
+        //   print("isisisHere " + path);
+        //   // Toast.show(note, context,
+        //   //     gravity: Toast.BOTTOM, duration: Toast.LENGTH_LONG);
+        // }
+        print("HTTP Status Code: " + res.statusCode.toString());
+        debugPrint("Internal Status Code: " + code.toString());
+        debugPrintThrottled("Response Body: \n" + encoder.convert(data));
+        if (code != 200) {
+          onError!(code, fromJson!(data));
+          return;
+        }
+        onSuccess!(fromJson!(data));
+      });
+    } on dio.DioError catch (e) {
+      if (EasyLoading.isShow) {
+        EasyLoading.dismiss();
+      }
+      Get.snackbar(
+        "خطأ",
+        "حدث خطأ ما",
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
+    }
   }
 }

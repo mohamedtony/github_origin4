@@ -1,6 +1,8 @@
 import 'package:advertisers/app_core/network/models/ChannelData.dart';
 import 'package:advertisers/app_core/network/repository.dart';
+import 'package:advertisers/app_core/network/responses/ChannelStatusResponse.dart';
 import 'package:advertisers/app_core/network/responses/ChannelsResponse.dart';
+import 'package:advertisers/app_core/network/responses/TypeOfChannelResponse.dart';
 import 'package:advertisers/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,8 @@ import 'package:get/get.dart';
 class AdvertisingInfluenceChannelsController extends GetxController{
   late Repository repo ;
   var channels=[].obs;
+  var status=0.obs;
+  var type=''.obs;
   var basicChannels=[].obs;
   var checkList = [].obs;
   var channelId=0.obs;
@@ -61,6 +65,7 @@ class AdvertisingInfluenceChannelsController extends GetxController{
               EasyLoading.dismiss();
             }
             channels.value=res.data!;
+
           },
           onError: (err, res) {
 
@@ -81,15 +86,15 @@ class AdvertisingInfluenceChannelsController extends GetxController{
     EasyLoading.show();
 
 
-    repo.get<ChannelsResponse>(
+    repo.get<ChannelStatusResponse>(
         path: 'profile/channels/$viewId/status',
-        fromJson: (json) => ChannelsResponse.fromJson(json),
+        fromJson: (json) => ChannelStatusResponse.fromJson(json),
         json: {"token":"Bearer  $token"},
         onSuccess: (res) {
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
-          channels.value=res.data!;
+          status.value=res.data?.status??0;
         },
         onError: (err, res) {
 
@@ -113,15 +118,15 @@ class AdvertisingInfluenceChannelsController extends GetxController{
     EasyLoading.show();
 
 
-    repo.get<ChannelsResponse>(
+    repo.get<TypeOfChannelResponse>(
         path: 'profile/channels/$toggleId/type',
-        fromJson: (json) => ChannelsResponse.fromJson(json),
+        fromJson: (json) => TypeOfChannelResponse.fromJson(json),
         json: {"token":"Bearer  $token"},
         onSuccess: (res) {
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
-          channels.value=res.data!;
+          type.value=res.data?.type??'ads';
         },
         onError: (err, res) {
 

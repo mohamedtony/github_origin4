@@ -11,7 +11,8 @@ GetAdvertisersFromModel _$GetAdvertisersFromModelFromJson(
     GetAdvertisersFromModel(
       sort_types: json['sort_types'] == null
           ? null
-          : SortTypesModel.fromJson(json['sort_types'] as Map<String, dynamic>),
+          : SortTypesAdvertisersModel.fromJson(
+              json['sort_types'] as Map<String, dynamic>),
       categories: (json['categories'] as List<dynamic>?)
           ?.map((e) => CategoryModel.fromJson(e as Map<String, dynamic>))
           .toList(),

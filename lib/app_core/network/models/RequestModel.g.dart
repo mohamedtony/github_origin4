@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'OrderModel.dart';
+part of 'RequestModel.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => OrderModel(
+RequestModel _$RequestModelFromJson(Map<String, dynamic> json) => RequestModel(
       id: json['id'] as int?,
       can_edit: json['can_edit'] as bool?,
       user: json['user'] == null
@@ -19,25 +19,35 @@ OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => OrderModel(
       title: json['title'] as String?,
       description: json['description'] as String?,
       status: json['status'] as String?,
-      advertiserModel: json['advertiserModel'] == null
+      advertiser: json['advertiser'] == null
           ? null
           : AdvertiserModel.fromJson(
-              json['advertiserModel'] as Map<String, dynamic>),
+              json['advertiser'] as Map<String, dynamic>),
       comments: json['comments'] as int?,
       views: json['views'] as int?,
+      address: json['address'] as String?,
+      bill_id: json['bill_id'] as int?,
+      status_txt: json['status_txt'] as String?,
+      statuses: json['statuses'] == null
+          ? null
+          : StatusesModel.fromJson(json['statuses'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$OrderModelToJson(OrderModel instance) =>
+Map<String, dynamic> _$RequestModelToJson(RequestModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'bill_id': instance.bill_id,
+      'status': instance.status,
+      'status_txt': instance.status_txt,
       'can_edit': instance.can_edit,
       'user': instance.user,
+      'address': instance.address,
       'created_at': instance.created_at,
       'product_type': instance.product_type,
       'title': instance.title,
       'description': instance.description,
-      'status': instance.status,
-      'advertiserModel': instance.advertiserModel,
+      'statuses': instance.statuses,
+      'advertiser': instance.advertiser,
       'comments': instance.comments,
       'views': instance.views,
     };

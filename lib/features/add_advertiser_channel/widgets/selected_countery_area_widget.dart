@@ -32,8 +32,8 @@ class SelectedAreaWidget extends StatelessWidget {
               child: InkWell(
                 onTap: onPressed,
                 child: Container(
-                  height: 18,
-                  width: 18,
+                  height: 23,
+                  width: 23,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
                     color: Color(0xffFF9100),

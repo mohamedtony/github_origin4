@@ -99,15 +99,17 @@ class TaxSettingsPage extends StatelessWidget {
           GetBuilder<TaxSettingsController>(
             init: TaxSettingsController(),
             builder: (controller) => ClipRRect(
+
               borderRadius: BorderRadius.circular(15),
               child: Container(
+                height: 100,
                 margin: const EdgeInsets.all(15.0),
                 // padding: const EdgeInsets.all(5.0),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     border: Border.all(color: Color(0xffC3CFE2))
                 ),
-                child: Row(
+                child: Column(
                   children: [
                     Expanded(child: ClipRRect(
                       borderRadius: BorderRadius.only(

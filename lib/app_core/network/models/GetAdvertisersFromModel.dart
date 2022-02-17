@@ -1,6 +1,7 @@
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/app_core/network/models/EffectSlidesModel.dart';
+import 'package:advertisers/app_core/network/models/SortTypesAdvertisersModel.dart';
 import 'package:advertisers/app_core/network/models/SortTypesModel.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,7 +11,7 @@ part 'GetAdvertisersFromModel.g.dart';
 
 @JsonSerializable()
 class GetAdvertisersFromModel {
-  SortTypesModel? sort_types;
+  SortTypesAdvertisersModel? sort_types;
   List<CategoryModel>? categories;
   List<EffectSlidesModel>? effect_slides;
   List<Country>? countries;

@@ -8,22 +8,14 @@ part of 'SortTypesModel.dart';
 
 SortTypesModel _$SortTypesModelFromJson(Map<String, dynamic> json) =>
     SortTypesModel(
-      reply_speed: json['reply_speed'] as String?,
-      oldest: json['oldest'] as String?,
-      latest: json['latest'] as String?,
-      top_rated: json['top_rated'] as String?,
-      most_ads: json['most_ads'] as String?,
-      most_followers: json['most_followers'] as String?,
-      less_folloers: json['less_folloers'] as String?,
+      title: json['title'] as String?,
+      values: json['values'] == null
+          ? null
+          : FilterValuesModel.fromJson(json['values'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SortTypesModelToJson(SortTypesModel instance) =>
     <String, dynamic>{
-      'reply_speed': instance.reply_speed,
-      'oldest': instance.oldest,
-      'latest': instance.latest,
-      'top_rated': instance.top_rated,
-      'most_ads': instance.most_ads,
-      'most_followers': instance.most_followers,
-      'less_folloers': instance.less_folloers,
+      'title': instance.title,
+      'values': instance.values,
     };

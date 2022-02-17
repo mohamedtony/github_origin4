@@ -46,7 +46,7 @@ class AdvancedOptionsWidget extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    Expanded(child: Text( "${advancedOptionsData.txt}",style: TextStyle(fontSize: 16,color:Color(0xff4184CE)),))
+                    Expanded(child: Text( "${advancedOptionsData.txt}",style: TextStyle(fontSize: 13,color:Color(0xff4184CE)),))
                   ],)),
 
                   InkWell(

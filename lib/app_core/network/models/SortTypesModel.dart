@@ -1,26 +1,18 @@
-import 'package:advertisers/app_core/network/models/PeriodModel.dart';
+import 'package:advertisers/app_core/network/models/FilterValuesModel.dart';
+import 'package:advertisers/app_core/network/models/FilterValuesModel.dart';
 import 'package:json_annotation/json_annotation.dart';
-
-import 'Area.dart';
 part 'SortTypesModel.g.dart';
 
 @JsonSerializable()
 class SortTypesModel {
-  String? reply_speed;
-  String? oldest;
-  String? latest;
-  String? top_rated;
-  String? most_ads;
-  String? most_followers;
-  String? less_folloers;
+
+
+  String? title;
+  FilterValuesModel? values;
+
+
   SortTypesModel({
-    this.reply_speed,
-    this.oldest,
-    this.latest,
-    this.top_rated,
-    this.most_ads,
-    this.most_followers,
-    this.less_folloers,
+    this.title,this.values,
   });
 
   factory SortTypesModel.fromJson(Map<String, dynamic> json) => _$SortTypesModelFromJson(json);
