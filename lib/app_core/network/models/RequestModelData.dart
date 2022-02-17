@@ -6,8 +6,8 @@ part 'RequestModelData.g.dart';
 @JsonSerializable()
 class RequestModelData {
 
-  SortTypesModel? sort_types;
-  RequestModel? requests;
+  List<SortTypesModel>? sort_types;
+  List<RequestModel>? requests;
   RequestModelData({
     this.requests,this.sort_types,
   });

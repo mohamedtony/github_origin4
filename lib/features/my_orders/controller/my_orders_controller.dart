@@ -1,10 +1,15 @@
+import 'package:advertisers/app_core/network/repository.dart';
+import 'package:advertisers/app_core/network/responses/MyRequestsResponse.dart';
+import 'package:advertisers/main.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 class MyOrdersController extends GetxController{
 
-
-  List<int>? checkListShare = [];
+  var myRequestsAsClient=MyRequestsResponse().obs;
+  // var myRequestAsClient
+   List<int>? checkListShare = [];
 
   void addAndRemoveOtherFromCheckListShare(id){
     if(checkListShare!.contains(id)){
@@ -65,10 +70,13 @@ class MyOrdersController extends GetxController{
   GlobalKey<FormState> searchFormKey=GlobalKey<FormState>();
   late TextEditingController searchController;
   var search='';
-
+ late Repository repo;
+ late String token;
   @override
   void onInit() {
     // passIndex;
+    repo=Repository();
+    token =storage.read("token");
     searchController=TextEditingController();
     super.onInit();
   }
@@ -90,6 +98,34 @@ class MyOrdersController extends GetxController{
     // loginClient();
   }
 
+  // getMyRequestsAsClient() {
+  //   EasyLoading.show();
+  //
+  //
+  //   repo.get<MyRequestsResponse>(
+  //       path: 'profile/stop',
+  //       fromJson: (json) => MyRequestsResponse.fromJson(json),
+  //       json: {"token": "Bearer  $token"},
+  //       onSuccess: (res) {
+  //         if (EasyLoading.isShow) {
+  //           EasyLoading.dismiss();
+  //         }
+  //         myRequestsAsClient.value.data = res.data!;
+  //
+  //
+  //       },
+  //       onError: (err, res) {
+  //         if (EasyLoading.isShow) {
+  //           EasyLoading.dismiss();
+  //         }
+  //         Get.snackbar(
+  //           "خطأ",
+  //           res.message.toString(),
+  //           icon: const Icon(Icons.person, color: Colors.red),
+  //           backgroundColor: Colors.yellow,
+  //           snackPosition: SnackPosition.BOTTOM,);
+  //       });
+  // }
   @override
   void onClose() {
     searchController.dispose();

@@ -8,12 +8,12 @@ part of 'RequestModelData.dart';
 
 RequestModelData _$RequestModelDataFromJson(Map<String, dynamic> json) =>
     RequestModelData(
-      requests: json['requests'] == null
-          ? null
-          : RequestModel.fromJson(json['requests'] as Map<String, dynamic>),
-      sort_types: json['sort_types'] == null
-          ? null
-          : SortTypesModel.fromJson(json['sort_types'] as Map<String, dynamic>),
+      requests: (json['requests'] as List<dynamic>?)
+          ?.map((e) => RequestModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      sort_types: (json['sort_types'] as List<dynamic>?)
+          ?.map((e) => SortTypesModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$RequestModelDataToJson(RequestModelData instance) =>
