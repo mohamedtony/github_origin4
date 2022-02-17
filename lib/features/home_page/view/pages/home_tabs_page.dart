@@ -44,6 +44,7 @@ class HomePage extends StatelessWidget {
                         );*/
                       },
                       child: Container(
+
                         margin: EdgeInsets.only(right: 10.0),
                         child: SvgPicture.asset(
                           'images/DrawerIcon.svg',

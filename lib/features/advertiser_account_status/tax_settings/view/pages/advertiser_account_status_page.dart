@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AdvertiserAccountStatusPage extends StatefulWidget {
+  final AdvertiserAccountStatusController _advertiserAccountStatusController=Get.put(AdvertiserAccountStatusController());
  late ScrollController scrollController;
  AdvertiserAccountStatusPage({required this.scrollController,Key? key}) : super(key: key);
 
@@ -17,7 +18,14 @@ class AdvertiserAccountStatusPage extends StatefulWidget {
 }
 
 class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPage> {
-  AdvertiserAccountStatusController _advertiserAccountStatusController=Get.put(AdvertiserAccountStatusController());
+  @override
+  dispose(){
+    widget._advertiserAccountStatusController.isChecked.value=false;
+    Get.delete<AdvertiserAccountStatusController>();
+    super.dispose();
+  }
+
+ //Get.put(AdvertiserAccountStatusController());
   String? _selectedFromDate;
   String? _selectedToDate;
 
@@ -155,7 +163,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
 
                           hint: _selectedRange.isNotEmpty
                               ? Center(child: Text(_selectedRange,style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),))
-                              : const Center(child: Text('السبب',style: TextStyle(color:Color(0xff041D67) ,fontSize: 16),)),
+                              : const Center(child: Text('اختر',style: TextStyle(color:Color(0xff041D67) ,fontSize: 16),)),
                           items: controller.ranges.map((value) {
                             controller.id.value=value.id.toString();
                             return DropdownMenuItem(
@@ -185,30 +193,34 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
               child: Text("اكتب رسالة نصية ملائمة",style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),)),
 
           Container(
+
             padding: EdgeInsets.all(15),
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0),
               ),
               elevation: 5,
-              child: TextFormField(
-                maxLines: 2,
-                //initialValue: "...............................................",
-                style: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp),
-                // cursorColor: Colors.black,
-                // keyboardType: inputType,
-                enabled: Get.find<AdvertiserAccountStatusController>().isChecked .value== true ?true:false,
-                controller: Get.find<AdvertiserAccountStatusController>().messageController,
-                decoration: new InputDecoration(
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  contentPadding:
-                  EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                  hintText: "...............................................",hintStyle: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp)),
-                // hintText: "1236532897120",hintStyle: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp),),
+              child: SizedBox(
+                height: 100,
+                child: TextFormField(
+                  maxLines: 10,
+                  //initialValue: "...............................................",
+                  style: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp),
+                  // cursorColor: Colors.black,
+                  // keyboardType: inputType,
+                  enabled: Get.find<AdvertiserAccountStatusController>().isChecked .value== true ?true:false,
+                  controller: Get.find<AdvertiserAccountStatusController>().messageController,
+                  decoration: new InputDecoration(
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    contentPadding:
+                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+                    hintText: "...............................................",hintStyle: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp)),
+                  // hintText: "1236532897120",hintStyle: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp),),
+                ),
               ),
             ),
           ),
@@ -311,8 +323,8 @@ Text("${Get.find<AdvertiserAccountStatusController>().to.value.isNotEmpty?Get.fi
               children: [
                 Expanded(child: InkWell(onTap: (){
                  Get.find<AdvertiserAccountStatusController>().postStopProfile();
-                 Get.find<AdvertiserAccountStatusController>().isChecked.value=false;
-                 Get.delete<AdvertiserAccountStatusController>();
+                // Get.find<AdvertiserAccountStatusController>().isChecked.value=false;
+                 //Get.delete<AdvertiserAccountStatusController>();
                  Get.back();
                 },
                   child: Container(

@@ -8,11 +8,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-class AdvancedOptionsPage extends StatelessWidget {
+class AdvancedOptionsPage extends StatefulWidget {
+  //const AdvancedOptionsPage({Key? key}) : super(key: key);
   late ScrollController scrollController;
   AdvancedOptionsPage({required this.scrollController,Key? key}) : super(key: key);
+  @override
+  _AdvancedOptionsPageState createState() => _AdvancedOptionsPageState();
+}
+
+class _AdvancedOptionsPageState extends State<AdvancedOptionsPage> {
+
+
+//class AdvancedOptionsPage extends StatelessWidget {
+
  final AdvancedOptionsController _advancedOptionsController=Get.put(AdvancedOptionsController());
+ @override
+  void dispose() {
+    Get.delete<AdvancedOptionsController>();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,7 +107,7 @@ class AdvancedOptionsPage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 25),
                 child: Obx(()=>ListView.separated(
-                  controller:scrollController,
+                  controller:widget.scrollController,
                   padding: const EdgeInsets.symmetric(
                     vertical: 8,
                     horizontal: 4,

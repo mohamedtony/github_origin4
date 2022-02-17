@@ -16,13 +16,14 @@ class WidgetAndTitle extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 15,vertical: 2),
+            padding: EdgeInsets.symmetric(horizontal: 15,vertical:4),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
 
                 Container(
+                  height: 30.0,
                   padding: EdgeInsets.symmetric(horizontal: 25,vertical: 1),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(7),

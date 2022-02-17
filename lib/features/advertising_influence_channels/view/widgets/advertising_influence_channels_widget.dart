@@ -23,6 +23,9 @@ class AdvertisingInfluenceChannelsPageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.find<AdvertisingInfluenceChannelsController>().status.value=Get.find<AdvertisingInfluenceChannelsController>().isChecked==true?1:0;
+
+    Get.find<AdvertisingInfluenceChannelsController>().type.value=advertisingChannels.type??'ads';
     final AdvertisingInfluenceChannelsController _advertisingInfluenceChannelsController=Get.put(AdvertisingInfluenceChannelsController());
     _advertisingInfluenceChannelsController.checkListSee!.add(advertisingChannels.status==1?true:false) ;
     // return
@@ -65,10 +68,10 @@ class AdvertisingInfluenceChannelsPageWidget extends StatelessWidget {
                                     InkWell(
                                       onTap: (){
                                         if(Get.find<AdvertisingInfluenceChannelsController>().isChecked == true){
-    Get.find<AdvertisingInfluenceChannelsController>().addRemoveCheckList(advertisingChannels.id);
+    Get.find<AdvertisingInfluenceChannelsController>().addRemoveCheckList(advertisingChannels.channel_id);
                                           print("${Get.find<AdvertisingInfluenceChannelsController>().checkList!}");
 
-    Get.find<AdvertisingInfluenceChannelsController>().channelToggleType(toggleId:advertisingChannels.channel?.id??0);
+    Get.find<AdvertisingInfluenceChannelsController>().channelToggleType(toggleId:advertisingChannels.channel_id??0);
                                         }
                                       },
                                       child: Row(
@@ -104,18 +107,37 @@ class AdvertisingInfluenceChannelsPageWidget extends StatelessWidget {
 
                                         ],),
                                     ),
-                                    Switch(
-                                      thumbColor:MaterialStateProperty.all(Colors.grey.withOpacity(.5)),
-                                      trackColor: MaterialStateProperty.all(Color(0xff4391D4)),
-                                      value: advertisingChannels.type=='ads'?false:true,
-                                      // value: advertisingChannels.isChecked!,
-                                      onChanged: (value) {
-                                        if(value==false) {
-                                          advertisingChannels.type='ads';
-                                        }else if(value==true){
-                                          advertisingChannels.type='ads_effect';
-                                        }
-                                      },
+                                    SizedBox(
+                                      width: 40,
+                                      child:
+                                         Obx(()=>(
+                                           Switch(
+                                            thumbColor:MaterialStateProperty.all(Colors.grey.withOpacity(.5)),
+                                            trackColor: MaterialStateProperty.all(Color(0xff4391D4)),
+                                           // value: advertisingChannels.type=='ads'?false:true,
+                                               value: Get.find<AdvertisingInfluenceChannelsController>().type.value=='ads'?false:true,
+                                            // value: advertisingChannels.isChecked!,
+                                            onChanged: (value) {
+                                              int currentIdex=index!;
+                                              if(currentIdex==index) {
+                                                if (value == false) {
+                                                  advertisingChannels.type =
+                                                  'ads';
+                                                } else if (value == true) {
+                                                  advertisingChannels.type =
+                                                  'ads_effect';
+                                                }
+                                                Get.find<
+                                                    AdvertisingInfluenceChannelsController>()
+                                                    .channelToggleType(
+                                                    toggleId: advertisingChannels
+                                                        .id ?? 0);
+                                              }},
+                                        )),
+                                         ),
+                                      ),
+                                    const SizedBox(
+                                      width: 10,
                                     ),
                                     Text("إعلان وتأثير",style: TextStyle(fontSize: 16.sp,color:Color(0xff244094) ),),
                                   ],
@@ -182,19 +204,38 @@ class AdvertisingInfluenceChannelsPageWidget extends StatelessWidget {
                         children: [
                           InkWell(
                             onTap: (){
+                              int currentIndex=index!;
+                              if(currentIndex==index){
+
                               if(Get.find<AdvertisingInfluenceChannelsController>().isChecked == true){
-    Get.find<AdvertisingInfluenceChannelsController>().addRemoveCheckListSee(index);
+                                Get.find<AdvertisingInfluenceChannelsController>().addRemoveCheckListSee(index);
+                                //Get.find<AdvertisingInfluenceChannelsController>().checkListSee![index!]=Get.find<AdvertisingInfluenceChannelsController>().status.value==1?true:false;
+                                if(Get.find<AdvertisingInfluenceChannelsController>().status.value==0){
+                                  Get.find<AdvertisingInfluenceChannelsController>().status.value=1;
+                                }else{
+                                  Get.find<AdvertisingInfluenceChannelsController>().status.value=0;
+                                }
                               }
-                              Get.find<AdvertisingInfluenceChannelsController>().channelToggleStatusView(viewId: advertisingChannels.id??0);
+                               Get.find<AdvertisingInfluenceChannelsController>().channelToggleStatusView(viewId: advertisingChannels.id??0);
                               print("${Get.find<AdvertisingInfluenceChannelsController>().isChecked} ${advertisingChannels.id}");
-                            },
-                            child: Get.find<AdvertisingInfluenceChannelsController>().checkListSee![index!] == true ? Icon(Icons.remove_red_eye_outlined,color: Color(0xff5aa1d0),):Icon(Icons.remove_red_eye,color: Color(0xff5aa1d0),),
-                          ),
+                            }},
+                           // child: Obx(()=>( Get.find<AdvertisingInfluenceChannelsController>().checkListSee![index!] == true ? Icon(Icons.remove_red_eye_outlined,color: Color(0xff5aa1d0),):Icon(Icons.remove_red_eye,color: Color(0xff5aa1d0),))),
+                            child:   Obx(()=>(Get.find<AdvertisingInfluenceChannelsController>().status.value==1 ? Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Icon(Icons.remove_red_eye_outlined,color: Color(0xff5aa1d0),),
+                            ):Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Icon(Icons.remove_red_eye,color: Color(0xff5aa1d0),),
+                            )))),
+
                           InkWell(
                             onTap: (){
                               Get.toNamed('/EditAdvertiserChannel?channel=${jsonEncode(advertisingChannels)}');
                             },
-                            child: Icon(Icons.edit,color: Color(0xff5aa1d0),),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Icon(Icons.edit,color: Color(0xff5aa1d0),),
+                            ),
                           ),
                           InkWell(
                             onTap: (){
