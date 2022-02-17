@@ -99,11 +99,12 @@ class ClientSettingPage extends StatelessWidget {
                       Positioned(
                         top: 35.0,
                         right: 3.0,
-                        child: InkWell(
-                            onTap: () {
+                        child: Obx(()=>InkWell(
+                            onTap: controller.isEnabled.value
+                                ?() {
                               //controller.deleteImage(index);
                               controller.showChoiceImageDialog(context);
-                            },
+                            }:null,
                             child: Container(
                               // alignment: Alignment.topLeft,
                               /*decoration: BoxDecoration(
@@ -118,7 +119,7 @@ class ClientSettingPage extends StatelessWidget {
                                 width: 45,
                                 //color:  Color(0xff486ac7),
                               ),
-                            )),
+                            ))),
                       ),
                       Positioned(
                           bottom: 10.0,
@@ -1264,7 +1265,7 @@ class ClientSettingPage extends StatelessWidget {
                             ),
                             //margin: EdgeInsets.only(bottom: 10.0),
                             child: Image.asset(
-                              'images/switch_icon_left.png',
+                              'images/no_chat_left.png',
                               scale: 2,
                               width: 45,
                               height: 40,
@@ -1334,7 +1335,7 @@ class ClientSettingPage extends StatelessWidget {
                                 style: TextStyle(
                                     color: AppColors.tabColor,
                                     fontSize: 16.0,
-                                    fontWeight: FontWeight.w400),
+                                    fontWeight: FontWeight.w400 ),
                               ),
                             ),
                             Obx(()=>InkWell(
@@ -1506,14 +1507,14 @@ class ClientSettingPage extends StatelessWidget {
                               }
                                   : null,
                               child: Container(
-                                child:  controller.isNotification.value
+                                child:  controller.isNotification.isFalse
                                     ? Container(
                                   //margin: EdgeInsets.only(left: 10.0,bottom: 10.0),
                                   padding: const EdgeInsets.only(
                                     left: 10.0,
                                   ),
                                   child: Image.asset(
-                                    'images/switch_icon_right.png',
+                                    'images/no_notification_right.png',
                                     scale: 2,
                                     width: 45,
                                     height: 40,

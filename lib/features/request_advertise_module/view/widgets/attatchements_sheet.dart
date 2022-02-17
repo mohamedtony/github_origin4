@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:advertisers/features/request_advertise_module/controller/adertising_channels_controller.dart';
 import 'package:advertisers/features/request_advertise_module/controller/attatchement_page_controller.dart';
 import 'package:advertisers/features/request_advertise_module/SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight.dart';
@@ -7,6 +9,7 @@ import 'package:advertisers/features/request_advertise_module/controller/request
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 //=========================================================================================
 
 //                         By Mohamed T. Hammad
@@ -105,7 +108,7 @@ class _AttatchementPageState extends State<AttatchementPage> {
                       color: AppColors.addPhotoBottom,
                       child: InkWell(
                         onTap: () async {
-                          requestAdvertiseController.pickImages();
+                          await requestAdvertiseController.showChoiceImageOrVideoDialogForAttatchement(context);
                         },
                         child: Container(
                           //margin: EdgeInsets.only(left: 15.0),
@@ -124,13 +127,13 @@ class _AttatchementPageState extends State<AttatchementPage> {
                 ],
               ),
               Obx(
-                () => requestAdvertiseController.realImages.isNotEmpty
+                () => requestAdvertiseController.attatechedFilesImageAndVideo.isNotEmpty
                     ? GridView.builder(
                         padding: EdgeInsets.only(
                             right: 18.0, left: 18.0, bottom: 8.0, top: 12.0),
                         shrinkWrap: true,
                         itemCount:
-                            requestAdvertiseController.realImages.length ?? 0,
+                            requestAdvertiseController.attatechedFilesImageAndVideo.length ?? 0,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
                           //childAspectRatio: 100 / 150,
@@ -155,12 +158,17 @@ class _AttatchementPageState extends State<AttatchementPage> {
                                 //borderOnForeground: true,
                                 color: AppColors.saveButtonBottomSheet,
                                 child: Container(
-                                    child: Image.file(
+                                    child: requestAdvertiseController
+                                        .attatechedFilesImageAndVideo[index].file!=null && requestAdvertiseController
+                                        .attatechedFilesImageAndVideo[index].isVideo==false?Image.file(
                                       requestAdvertiseController
-                                          .realImages[index],
+                                          .attatechedFilesImageAndVideo[index].file!,
                                       width: 200.0,
                                       height: 200.0,
                                       fit: BoxFit.fitHeight,
+                                    ):VideoApp(
+                                      file: File(requestAdvertiseController
+                                          .attatechedFilesImageAndVideo[index].file!.path),
                                     ),
                                     decoration: BoxDecoration(
                                       border: Border.all(
@@ -274,8 +282,67 @@ class _AttatchementPageState extends State<AttatchementPage> {
   void dispose() {
     // TODO: implement dispose
     if (requestAdvertiseController.isAttachementSaveClicked.isFalse) {
-      requestAdvertiseController.realImages.value = [];
+      requestAdvertiseController.attatechedFilesImageAndVideo.value = [];
     }
     super.dispose();
+  }
+}
+
+class VideoApp extends StatefulWidget {
+  final File? file;
+  VideoApp({this.file});
+  @override
+  _VideoAppState createState() => _VideoAppState();
+}
+
+class _VideoAppState extends State<VideoApp> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.file(
+        File(widget.file!.path))
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // title: 'Video Demo',
+      // home: Scaffold(
+
+      width: 200.0,
+      height: 200.0,
+      child:  _controller.value.isInitialized
+          ? AspectRatio(
+        aspectRatio: _controller.value.aspectRatio,
+        child: VideoPlayer(_controller),
+      )
+          : Container(),
+
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     setState(() {
+      //       _controller.value.isPlaying
+      //           ? _controller.pause()
+      //           : _controller.play();
+      //     });
+      //   },
+      //   child: Icon(
+      //     _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+      //   ),
+      // ),
+      // ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 }

@@ -103,7 +103,7 @@ class _AdvertisingChannelsPageState extends State<AdvertisingChannelsPage> {
                   child: Container(
                     //margin: const EdgeInsets.all(15.0),
                     // padding: const EdgeInsets.all(3.0),
-                    decoration: requestAdvertiseController.channels[index].isTapped!=null && requestAdvertiseController.channels[index].isTapped!.isTrue
+                    decoration: requestAdvertiseController.channels[index].isTapped!=null && requestAdvertiseController.channels[index].isTapped.isTrue
                         ? BoxDecoration(
                       border: Border.all(
                           color:
