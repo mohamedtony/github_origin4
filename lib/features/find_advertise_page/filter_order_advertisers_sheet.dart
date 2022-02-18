@@ -2,6 +2,7 @@ import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/app_core/network/models/Channel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
+import 'package:advertisers/app_core/network/models/EffectSlidesModel.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersFromModel.dart';
 import 'package:advertisers/features/find_advertise_page/find_advertise_controller.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
@@ -453,10 +454,11 @@ class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersShee
                             itemAsString: (Channel? u) => u!.name!,
                             // hint: "الدولة",
                             //popupItemDisabled: (String s) => s.startsWith('I'),
-                            onChanged: (country) {
+                            onChanged: (channel) {
                               //controller.country.value = country!;
+                              findOrderAdvertisersController.selectedChannel.value = channel!;
                             },
-                            selectedItem: findOrderAdvertisersController.advertisersFormModel.value.channels![0]) : Container(
+                            selectedItem: findOrderAdvertisersController.selectedChannel.value!=null && findOrderAdvertisersController.selectedChannel.value.id!=null?findOrderAdvertisersController.selectedChannel.value:findOrderAdvertisersController.advertisersFormModel.value.channels![0]) : Container(
                                 alignment: Alignment.centerRight,
                                 child: const Text("لا يوجد قنوات")),
                     ),
@@ -467,17 +469,17 @@ class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersShee
                         margin: const EdgeInsets.only(
                             top: 10.0, left: 10.0, right: 5.0, bottom: 8.0),
                         height: 35.0,
-                        child: /*Obx(
+                        child: Obx(
                             () => findOrderAdvertisersController
-                            .isLoadingLocation.value ? Container(
+                            .isLoadingGetAdvertisersFromModel.value ? Container(
                           child: const SpinKitThreeBounce(
                             color: Colors.blue,
                             size: 25,
                           ),
                         )
-                            :controller.countries.isNotEmpty
-                            ?*/
-                        DropdownSearch<String>(
+                            :findOrderAdvertisersController.advertisersFormModel.value.effect_slides!=null && findOrderAdvertisersController.advertisersFormModel.value.effect_slides!.isNotEmpty
+                            ?
+                        DropdownSearch<EffectSlidesModel>(
                             mode: Mode.MENU,
                             dropDownButton: Container(
                               margin: const EdgeInsets.only(left: 0.0),
@@ -491,7 +493,7 @@ class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersShee
                             ),
                             dropdownBuilder: (BuildContext context, s) {
                               return Text(
-                                '${(s ?? '')}',
+                                '${(s?.name?.ar ?? '')}',
                                 style: TextStyle(
                                     color: AppColors.activitiesDropDown,
                                     /*decoration: TextDecoration.underline,decorationThickness: 2,*/
@@ -539,21 +541,20 @@ class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersShee
                                       width: 1,
                                     )),
                                 fillColor: Colors.white),
-                            items: findOrderAdvertisersController.ranges,
+                            items: findOrderAdvertisersController.advertisersFormModel.value.effect_slides,
                             // label: "Menu mode",
-                            itemAsString: (String? u) => u!,
+                            itemAsString: (EffectSlidesModel? u) => u!.name!.ar!,
                             // hint: "الدولة",
                             //popupItemDisabled: (String s) => s.startsWith('I'),
-                            onChanged: (country) {
+                            onChanged: (effectSlidesModel) {
                               //controller.country.value = country!;
+                              findOrderAdvertisersController.selectedEffectSlidesModel.value = effectSlidesModel!;
                             },
-                            selectedItem: findOrderAdvertisersController
-                                .ranges[
-                            0]) /*: Container(
+                            selectedItem: findOrderAdvertisersController.selectedEffectSlidesModel.value.id!=null? findOrderAdvertisersController.selectedEffectSlidesModel.value:findOrderAdvertisersController.advertisersFormModel.value.effect_slides![0]) : Container(
                             alignment: Alignment.centerRight,
-                            child: const Text("لا يوجد مناطق")),*/
+                            child: const Text("لا يوجد مناطق")),
                     ),
-                  )
+                  ))
                 ],
               ),
 //--------------------------  fourth section chips ترتيب المعلنين حسب نطاقاتهم الجغارفية--------------------
@@ -668,9 +669,10 @@ class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersShee
                           onChanged: (c) {
                             findOrderAdvertisersController
                                 .changeCountry(c);
+                            findOrderAdvertisersController.selectedCountry.value = c!;
                           },
                           selectedItem:
-                          findOrderAdvertisersController
+                          findOrderAdvertisersController.selectedCountry.value!=null &&  findOrderAdvertisersController.selectedCountry.value.id!=null? findOrderAdvertisersController.selectedCountry.value:findOrderAdvertisersController
                               .countriesForLocationSheet[0])),
                     ),
                   ),
@@ -759,9 +761,10 @@ class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersShee
                           onChanged: (area) {
                             findOrderAdvertisersController
                                 .changeArea(area);
+                            findOrderAdvertisersController.selectedArea.value = area!;
                           },
                           selectedItem:
-                          findOrderAdvertisersController
+                          findOrderAdvertisersController.selectedArea.value!=null &&  findOrderAdvertisersController.selectedArea.value.id!=null ?findOrderAdvertisersController.selectedArea.value :findOrderAdvertisersController
                               .areasForLocationSheet
                               .value[0])
                           : Container(
@@ -1019,6 +1022,7 @@ class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersShee
                         .toList(),
                   )
                       : Container(
+                      height: 40.0,
                       alignment: Alignment.center,
                       child: const Text('لا يوجد عناصر')))
                   ,
@@ -1196,7 +1200,8 @@ class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersShee
       findOrderAdvertisersController.selectedUserLocations.value = [];
       findOrderAdvertisersController.isAreaEnabled.value = true;
       findOrderAdvertisersController.isCountryEnabled.value = true;
-      findOrderAdvertisersController.searchAdvertiserController = TextEditingController();
+      findOrderAdvertisersController.searchAdvertiserController.text = '';
+      findOrderAdvertisersController.selectedEffectSlidesModel.value = EffectSlidesModel();
     }
 /*    RxList<Country> countriesForLocationSheet = <Country>[].obs;
     RxList<Area> areasForLocationSheet = <Area>[].obs;

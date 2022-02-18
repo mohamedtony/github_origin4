@@ -1,6 +1,5 @@
 import 'package:advertisers/app_core/network/models/EffectSlidesNameModel.dart';
 import 'package:json_annotation/json_annotation.dart';
-
 part 'EffectSlidesModel.g.dart';
 
 @JsonSerializable()
