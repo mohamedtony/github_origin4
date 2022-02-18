@@ -14,10 +14,15 @@ RequestModelData _$RequestModelDataFromJson(Map<String, dynamic> json) =>
       sort_types: (json['sort_types'] as List<dynamic>?)
           ?.map((e) => SortTypesModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      pagination: json['pagination'] == null
+          ? null
+          : PaginationModel.fromJson(
+              json['pagination'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$RequestModelDataToJson(RequestModelData instance) =>
     <String, dynamic>{
       'sort_types': instance.sort_types,
       'requests': instance.requests,
+      'pagination': instance.pagination,
     };

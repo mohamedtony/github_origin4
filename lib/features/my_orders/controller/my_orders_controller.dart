@@ -1,13 +1,16 @@
+import 'package:advertisers/app_core/network/models/RequestModel.dart';
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/responses/MyRequestsResponse.dart';
 import 'package:advertisers/main.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MyOrdersController extends GetxController{
 
-  var myRequestsAsClient=MyRequestsResponse().obs;
+  var myRequestsAsClient=<RequestModel>[].obs;
   // var myRequestAsClient
    List<int>? checkListShare = [];
 
@@ -98,34 +101,113 @@ class MyOrdersController extends GetxController{
     // loginClient();
   }
 
-  // getMyRequestsAsClient() {
-  //   EasyLoading.show();
-  //
-  //
-  //   repo.get<MyRequestsResponse>(
-  //       path: 'profile/stop',
-  //       fromJson: (json) => MyRequestsResponse.fromJson(json),
-  //       json: {"token": "Bearer  $token"},
-  //       onSuccess: (res) {
-  //         if (EasyLoading.isShow) {
-  //           EasyLoading.dismiss();
-  //         }
-  //         myRequestsAsClient.value.data = res.data!;
-  //
-  //
-  //       },
-  //       onError: (err, res) {
-  //         if (EasyLoading.isShow) {
-  //           EasyLoading.dismiss();
-  //         }
-  //         Get.snackbar(
-  //           "خطأ",
-  //           res.message.toString(),
-  //           icon: const Icon(Icons.person, color: Colors.red),
-  //           backgroundColor: Colors.yellow,
-  //           snackPosition: SnackPosition.BOTTOM,);
-  //       });
-  // }
+
+  int currentPage = 1;
+
+  late int totalPages;
+
+  List<RequestModel> myRequests = [];
+
+  final RefreshController refreshController =
+  RefreshController(initialRefresh: true);
+
+  Future<bool> getRequestsData({bool isRefresh = false}) async {
+    if (isRefresh) {
+      currentPage = 1;
+    } else {
+      if (currentPage >= totalPages) {
+        refreshController.loadNoData();
+        return false;
+      }
+    }
+    EasyLoading.show();
+    repo.get<MyRequestsResponse>(
+        path: 'myrequests',
+        fromJson: (json) => MyRequestsResponse.fromJson(json),
+        json: {"token": "Bearer  $token"},
+        onSuccess: (res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+
+          if (isRefresh) {
+            myRequestsAsClient.value = res.data?.requests??[];
+              }else{
+            myRequestsAsClient.addAll(res.data?.requests??[]);
+              }
+
+              currentPage++;
+
+              totalPages = result.totalPages;
+
+             // print(response.body);
+              //setState(() {});
+              return true;
+
+        },
+        onError: (err, res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
+    // final Uri uri = Uri.parse(
+    //     "https://api.instantwebtools.net/v1/passenger?page=$currentPage&size=10");
+    //
+    // final response = await http.get(uri);
+    //
+    // if (response.statusCode == 200) {
+    //   final result = passengersDataFromJson(response.body);
+    //
+    //   if (isRefresh) {
+    //     passengers = result.data;
+    //   }else{
+    //     passengers.addAll(result.data);
+    //   }
+    //
+    //   currentPage++;
+    //
+    //   totalPages = result.totalPages;
+    //
+    //   print(response.body);
+    //   setState(() {});
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+  }
+
+  getMyRequestsAsClient() {
+    EasyLoading.show();
+    repo.get<MyRequestsResponse>(
+        path: 'myrequests',
+        fromJson: (json) => MyRequestsResponse.fromJson(json),
+        json: {"token": "Bearer  $token"},
+        onSuccess: (res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          myRequestsAsClient.value = res.data?.requests??[];
+
+
+        },
+        onError: (err, res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
+  }
   @override
   void onClose() {
     searchController.dispose();
