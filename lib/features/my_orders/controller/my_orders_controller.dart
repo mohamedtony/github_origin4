@@ -106,7 +106,7 @@ class MyOrdersController extends GetxController{
 
   late int totalPages;
 
-  List<RequestModel> myRequests = [];
+  //List<RequestModel> myRequests = [];
 
   final RefreshController refreshController =
   RefreshController(initialRefresh: true);
@@ -138,7 +138,7 @@ class MyOrdersController extends GetxController{
 
               currentPage++;
 
-              totalPages = result.totalPages;
+              totalPages = res.data?.pagination?.total??0;
 
              // print(response.body);
               //setState(() {});
@@ -155,7 +155,9 @@ class MyOrdersController extends GetxController{
             icon: const Icon(Icons.person, color: Colors.red),
             backgroundColor: Colors.yellow,
             snackPosition: SnackPosition.BOTTOM,);
+          return false;
         });
+
     // final Uri uri = Uri.parse(
     //     "https://api.instantwebtools.net/v1/passenger?page=$currentPage&size=10");
     //
@@ -180,6 +182,7 @@ class MyOrdersController extends GetxController{
     // } else {
     //   return false;
     // }
+    return false;
   }
 
   getMyRequestsAsClient() {
