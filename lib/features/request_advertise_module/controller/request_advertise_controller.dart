@@ -52,7 +52,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   String? myToken ;
   int categoryId = -1;
   int adTypeId = -1;
-  TextEditingController? descriptionController;
+  late TextEditingController descriptionController;
 
   // -------------------- for channel sheet  --------------------------------------------
   RxList<Channel> channels = <Channel>[].obs;
@@ -112,7 +112,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   @override
   Future<void> onInit() async {
     // TODO: implement onInit
-
+    descriptionController =  TextEditingController();
      myToken  = await storage.read("token");
     client!.getProductsAndAdsTypes("Bearer "+myToken!).then((value) {
       Logger().i(value.data?.toJson());
@@ -136,7 +136,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
         isLoadingTypes.value =false;
       }
     });
-     descriptionController =  TextEditingController();
+
 
      placeNameController = TextEditingController();
      placeAddressController = TextEditingController();
@@ -704,9 +704,13 @@ void showToast(msg){
 
 
   var dateRange = DateRange().obs;
+  var fromDate = ''.obs;
+  var toDate = ''.obs;
   var isDateSaveClicked  = false.obs;
   void addDateRange(String? fromDate,toDate){
     dateRange.value = DateRange(fromDate: fromDate,toDate: toDate) ;
+    this.fromDate.value = fromDate!;
+    this.toDate.value = toDate!;
     //endAdvertisingDate.value = toDate;
   }
   var selectedTimeCounter = ''.obs;
@@ -722,6 +726,7 @@ void showToast(msg){
   }
   void addAdvertisingFromDate(String? fromDate){
     fromAdvertisingDate.value = fromDate!;
+    this.fromDate.value = fromDate;
   }
   void addendAdvertisingDateCoupon(String? endDate){
     endAdvertisingDateCoupon.value = endDate!;

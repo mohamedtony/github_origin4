@@ -683,6 +683,8 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
     if (requestAdvertiseController.isDateSaveClicked.isFalse) {
       requestAdvertiseController.endAdvertisingDate.value = '';
       requestAdvertiseController.selectedTimeCounter.value = '';
+      requestAdvertiseController.fromDate.value = '';
+      requestAdvertiseController.toDate.value = '';
       requestAdvertiseController.fromAdvertisingDate.value = '2022-2-10';
       requestAdvertiseController.dateRange.value = DateRange();
     }

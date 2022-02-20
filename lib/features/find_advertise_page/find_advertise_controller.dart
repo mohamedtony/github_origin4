@@ -11,6 +11,7 @@ import 'package:advertisers/app_core/network/models/GetAdvertisersModel.dart';
 import 'package:advertisers/app_core/network/models/SelectedNotSelectedSortType.dart';
 import 'package:advertisers/app_core/network/requests/GetAdvertisersRequest.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
 import 'package:advertisers/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -66,6 +67,7 @@ class FindAdvertiseController extends GetxController {
   var selectedCategory = CategoryModel().obs;
   late TextEditingController searchAdvertiserController;
   var selectedEffectSlidesModel= EffectSlidesModel().obs;
+  late RequestAdvertiseController requestAdvertiseController;
   @override
   Future<void> onInit() async {
     // TODO: implement onInit
@@ -83,6 +85,7 @@ class FindAdvertiseController extends GetxController {
     });
 
     super.onInit();
+    requestAdvertiseController = Get.find();
   }
 
   void getAdvertisersForm(BuildContext context) {
@@ -315,19 +318,48 @@ class FindAdvertiseController extends GetxController {
     searchAdvertiserController.text ='';
     selectedEffectSlidesModel.value = EffectSlidesModel();
   }
-  var indexClicked=-1;
+  RxInt indexClicked=RxInt(-1);
   var selectedAdvertiseId = -1;
   void changeIndex(int index,int bakaId) {
-    print("inIndex"+indexClicked.toString());
-    if(indexClicked==index){
-      indexClicked=-1;
+    print("inIndex"+indexClicked.value.toString());
+    if(indexClicked.value==index){
+      indexClicked.value=-1;
       selectedAdvertiseId = -1;
-      update();
       return;
     }
-
-    indexClicked=index;
+    indexClicked.value=index;
     selectedAdvertiseId = bakaId;
-    update();
+  }
+
+  void onSendRequestClicked(BuildContext context) {
+    if(requestAdvertiseController.categoryId==-1){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("يجب اختيار نوع المنتج !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+       return;
+    }else if(requestAdvertiseController.adTypeId==-1){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("يجب اختيار نوع الاعلان !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+      return;
+    }else if(requestAdvertiseController.descriptionController!.text.isEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("يجب إضافة وصف للاعلان !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+      return;
+    }else if(requestAdvertiseController.fromDate.value.isEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("يجب إضافة تاريخ بداية الاعلان !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+      return;
+    }else if(requestAdvertiseController.isFlixble.isTrue && requestAdvertiseController.toDate.value.isEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("يجب إضافة تاريخ نهاية الاعلان !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+      return;
+    }else if(requestAdvertiseController.channelsIds.isEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("يجب إختيار قنوات الاعلان !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+      return;
+    }else if(selectedAdvertiseId==-1){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("يجب إختيار المعلن !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+      return;
+    }
   }
 }
