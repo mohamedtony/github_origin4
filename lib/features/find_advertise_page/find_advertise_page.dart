@@ -222,7 +222,11 @@ class FindAdvertisePage extends StatelessWidget {
                     ),
                   );
                 }else{
-                  return  FindAdvertiseItem(advertisersModel:findAdvertiseController.advertisersModel.value[position],findAdvertiseController: controller,);
+                  return  InkWell(
+                      onTap: (){
+                        findAdvertiseController.changeIndex(position, findAdvertiseController.advertisersModel.value[position].id!);
+                      },
+                      child: FindAdvertiseItem(advertisersModel:findAdvertiseController.advertisersModel.value[position],findAdvertiseController: controller,index: position,));
                 }
               },
             ))

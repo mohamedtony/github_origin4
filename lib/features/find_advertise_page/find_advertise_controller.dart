@@ -315,4 +315,19 @@ class FindAdvertiseController extends GetxController {
     searchAdvertiserController.text ='';
     selectedEffectSlidesModel.value = EffectSlidesModel();
   }
+  var indexClicked=-1;
+  var selectedAdvertiseId = -1;
+  void changeIndex(int index,int bakaId) {
+    print("inIndex"+indexClicked.toString());
+    if(indexClicked==index){
+      indexClicked=-1;
+      selectedAdvertiseId = -1;
+      update();
+      return;
+    }
+
+    indexClicked=index;
+    selectedAdvertiseId = bakaId;
+    update();
+  }
 }
