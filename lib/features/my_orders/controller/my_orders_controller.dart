@@ -81,6 +81,7 @@ class MyOrdersController extends GetxController{
     repo=Repository();
     token =storage.read("token");
     searchController=TextEditingController();
+    getRequestsData();
     super.onInit();
   }
   String? validatePhone(String phone){
@@ -104,7 +105,7 @@ class MyOrdersController extends GetxController{
 
   int currentPage = 1;
 
-  late int totalPages;
+  late int totalPages=0;
 
   //List<RequestModel> myRequests = [];
 
@@ -124,7 +125,7 @@ class MyOrdersController extends GetxController{
     repo.get<MyRequestsResponse>(
         path: 'myrequests',
         fromJson: (json) => MyRequestsResponse.fromJson(json),
-        json: {"token": "Bearer  $token"},
+        json: {"token": "Bearer 767|ASU4Q35lP3HPA2IDbwbe7ZOAwJycP7ci1geR0icv"},//"Bearer  $token"},
         onSuccess: (res) {
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
@@ -142,6 +143,7 @@ class MyOrdersController extends GetxController{
 
              // print(response.body);
               //setState(() {});
+          update();
               return true;
 
         },
@@ -185,32 +187,32 @@ class MyOrdersController extends GetxController{
     return false;
   }
 
-  getMyRequestsAsClient() {
-    EasyLoading.show();
-    repo.get<MyRequestsResponse>(
-        path: 'myrequests',
-        fromJson: (json) => MyRequestsResponse.fromJson(json),
-        json: {"token": "Bearer  $token"},
-        onSuccess: (res) {
-          if (EasyLoading.isShow) {
-            EasyLoading.dismiss();
-          }
-          myRequestsAsClient.value = res.data?.requests??[];
-
-
-        },
-        onError: (err, res) {
-          if (EasyLoading.isShow) {
-            EasyLoading.dismiss();
-          }
-          Get.snackbar(
-            "خطأ",
-            res.message.toString(),
-            icon: const Icon(Icons.person, color: Colors.red),
-            backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.BOTTOM,);
-        });
-  }
+  // getMyRequestsAsClient() {
+  //   EasyLoading.show();
+  //   repo.get<MyRequestsResponse>(
+  //       path: 'myrequests',
+  //       fromJson: (json) => MyRequestsResponse.fromJson(json),
+  //       json: {"token": "Bearer  $token"},
+  //       onSuccess: (res) {
+  //         if (EasyLoading.isShow) {
+  //           EasyLoading.dismiss();
+  //         }
+  //         myRequestsAsClient.value = res.data?.requests??[];
+  //
+  //
+  //       },
+  //       onError: (err, res) {
+  //         if (EasyLoading.isShow) {
+  //           EasyLoading.dismiss();
+  //         }
+  //         Get.snackbar(
+  //           "خطأ",
+  //           res.message.toString(),
+  //           icon: const Icon(Icons.person, color: Colors.red),
+  //           backgroundColor: Colors.yellow,
+  //           snackPosition: SnackPosition.BOTTOM,);
+  //       });
+  // }
   @override
   void onClose() {
     searchController.dispose();
