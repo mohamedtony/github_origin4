@@ -24,7 +24,10 @@ class FindAdvertiseItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
         elevation: 4.0,
-        shadowColor: Colors.grey[300],
+        //shadowColor: Colors.grey[300],
+        shadowColor: Color(0xFF800066).withOpacity(0.0),
+
+
         margin:
             EdgeInsets.only(top: 9.0, bottom: 10.0, left: 10.0, right: 10.0),
         shape: RoundedRectangleBorder(
@@ -121,14 +124,14 @@ class FindAdvertiseItem extends StatelessWidget {
                         },
                         child: advertisersModel.is_muted !=
                                 null && /*advertisersModel.is_muted!*/ true
-                            ? Image.asset(
-                                'images/icon_eye_off.png',
+                            ? SvgPicture.asset(
+                                'Icon_closed_eye.svg',
                                 fit: BoxFit.fill,
-                                height: 25.0,
-                                width: 25.0,
+                                height: 45.0,
+                                width: 45.0,
                               )
                             : SvgPicture.asset(
-                                'images/eye.svg',
+                                'Icon_open_eye.svg',
                                 fit: BoxFit.fill,
                                 height: 45.0,
                                 width: 45.0,

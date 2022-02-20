@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="55.182" height="51.58" viewBox="0 0 55.182 51.58">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#48dbe1"/>
+      <stop offset="1" stop-color="#4166cd"/>
+      <stop offset="1" stop-color="#236b73"/>
+    </linearGradient>
+    <filter id="Icon_ionic-md-eye-off" x="0" y="0" width="55.182" height="51.58" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-opacity="0.09"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Icon_ionic-md-eye-off)">
+    <path id="Icon_ionic-md-eye-off-2" data-name="Icon ionic-md-eye-off" d="M14.844,9.041a5.708,5.708,0,0,1,5.727,5.682,5.465,5.465,0,0,1-.41,2.079L23.5,20.117a13.435,13.435,0,0,0,3.928-5.4A13.562,13.562,0,0,0,10.275,7l2.473,2.456A5.662,5.662,0,0,1,14.844,9.041ZM3.4,5.944,6.01,8.535l.528.523A13.371,13.371,0,0,0,2.25,14.722a13.582,13.582,0,0,0,17.607,7.564l.483.478L23.7,26.08l1.456-1.444L4.846,4.5Zm6.328,6.277L11.5,13.981a3.219,3.219,0,0,0-.09.736,3.417,3.417,0,0,0,3.434,3.406,3.23,3.23,0,0,0,.742-.09l1.776,1.759a5.7,5.7,0,0,1-8.244-5.08A5.614,5.614,0,0,1,9.724,12.222Zm4.934-.882,3.608,3.58.022-.18a3.417,3.417,0,0,0-3.434-3.406Z" transform="translate(12.75 7.5)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>
