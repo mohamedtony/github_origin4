@@ -8,6 +8,7 @@ import 'package:advertisers/app_core/network/models/Channel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/app_core/network/models/FileModel.dart';
 import 'package:advertisers/app_core/network/models/LinkModel.dart';
+import 'package:advertisers/app_core/network/models/LocationModel.dart';
 import 'package:advertisers/features/advertiser_details/controller/advertiser_details_controller.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
@@ -32,7 +33,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart' as location;
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:video_player/video_player.dart';
+import 'package:dio/dio.dart' as myDio;
 //=========================================================================================
 
 //                         By Mohamed T. Hammad
@@ -74,7 +75,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   List<Animation<Offset>> animationTextFields = [];
   List<Animation<Offset>> animationsClose = [];
   /// Will used to access the Animated list
-  final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
+   GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
 
  // TextEditingController? textUrlController;
   //TextEditingController? urlController;
@@ -82,7 +83,8 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
 //---------------------- for discount sheet --------------------------------------------
   late XFile xFile ;
   File? imageFile;
-  var imagePath = ''.obs;
+  myDio.MultipartFile? imageCoponMultiPart;
+  var imagePathCopon = ''.obs;
   var isDiscountSaveClicked = false.obs;
   TextEditingController? coponNumberController,coponNameController,coponDiscountController,coponUsesController,coponLinkController;
 
@@ -91,7 +93,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   var isNoticeSaveClicked = false.obs;
 
   //---------------------- for plan sheet --------------------------------------------
-  File? planFile;
+  myDio.MultipartFile? planFile;
 
   RxList<SelectedSocialMedia> items = <SelectedSocialMedia>[].obs;
   final ImagePicker _picker = ImagePicker();
@@ -109,10 +111,14 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   BitmapDescriptor? pinLocationIcon;
 
   late Uint8List markerIcon;
+  List<myDio.MultipartFile>? imageFideoFiles = [];
   @override
   Future<void> onInit() async {
     // TODO: implement onInit
     descriptionController =  TextEditingController();
+    placeNameController = TextEditingController();
+    placeAddressController = TextEditingController();
+
      myToken  = await storage.read("token");
     client!.getProductsAndAdsTypes("Bearer "+myToken!).then((value) {
       Logger().i(value.data?.toJson());
@@ -138,8 +144,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     });
 
 
-     placeNameController = TextEditingController();
-     placeAddressController = TextEditingController();
+
      mapController = Completer();
      setCustomMapPin();
      markerIcon = await getBytesFromAsset('images/location_icon.png', 70);
@@ -173,7 +178,9 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
      ));
 
      //List<Animation<Offset>> animationsClose = [];
-     controller = Get.find<HomeNavController>();
+    if(controller.initialized) {
+      controller = Get.find<HomeNavController>();
+    }
     SelectedSocialMedia selectedSocialMedia =SelectedSocialMedia();
     selectedSocialMedia.changeMyModel(0, false);
     items.value.add(selectedSocialMedia);
@@ -286,14 +293,19 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     Get.back();
     if(channelsIds.isNotEmpty) {
       isChannelSaveClicked.value = true;
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("تم حفظ قنوات الاعلان بنجاح !")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("تم حفظ قنوات الاعلان بنجاح !", style: TextStyle(
+            color: Colors.white,
+            fontSize: 17,
+            fontFamily: 'Arabic-Regular'),),
+      ));
     }
   }
 
   //================================== attatchement sheet ===============================
   void deleteImage(int index){
     attatechedFilesImageAndVideo.removeAt(index);
+    imageFideoFiles?.removeAt(index);
   }
   Future<void> showChoiceImageOrVideoDialogForAttatchement(BuildContext context)
   {
@@ -412,6 +424,11 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
               isVideo:false
           )
       );
+      var mFile = await myDio.MultipartFile.fromFileSync(imageFromFamera.path,
+          filename: imageFromFamera.path
+              .split(Platform.pathSeparator)
+              .last);
+      imageFideoFiles?.add(mFile);
     }
 
   }
@@ -435,7 +452,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     });
     if (result != null) {
       //List<File> files = result.paths.map((path) => File(path!)).toList();
-      result.files.forEach((element) {
+      result.files.forEach((element) async {
         print("exte= "+element.extension!);
         if(element.extension=="mp4"){
           attatechedFilesImageAndVideo.add(
@@ -444,6 +461,11 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
                   isVideo:true
               )
           );
+          var mFile = await myDio.MultipartFile.fromFileSync(element.path!,
+              filename: element.path!
+                  .split(Platform.pathSeparator)
+                  .last);
+          imageFideoFiles?.add(mFile);
         }else if(element.extension?.toLowerCase()=="jpg"||element.extension?.toLowerCase()=='png'){
           attatechedFilesImageAndVideo.add(
               FileModel(
@@ -451,6 +473,11 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
                   isVideo:false
               )
           );
+          var mFile = await myDio.MultipartFile.fromFileSync(element.path!,
+              filename: element.path!
+                  .split(Platform.pathSeparator)
+                  .last);
+          imageFideoFiles?.add(mFile);
         }
       });
       /*files.forEach((element) {
@@ -473,13 +500,18 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     if(images2!=null && images2!.isNotEmpty){
       print("imagemm"+images2.toString());
       //attatechedFilesImageAndVideo.value=[];
-      images2?.forEach((element) {
+      images2?.forEach((element) async {
         attatechedFilesImageAndVideo.add(
           FileModel(
               file:File(element.path),
                isVideo:false
           )
         );
+        var mFile = await myDio.MultipartFile.fromFileSync(element.path,
+            filename: element.path
+                .split(Platform.pathSeparator)
+                .last);
+        imageFideoFiles?.add(mFile);
       });
     }
 
@@ -493,14 +525,23 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
         file: File(mVideo!.path),
         isVideo: true
     ));
+    var mFile = await myDio.MultipartFile.fromFileSync(mVideo!.path,
+        filename: mVideo!.path
+            .split(Platform.pathSeparator)
+            .last);
+    imageFideoFiles?.add(mFile);
   }
   void onSaveAttachmentClicked(BuildContext context) {
     Logger().i(attatechedFilesImageAndVideo);
     isAttachementSaveClicked.value = true;
     Get.back();
     if(attatechedFilesImageAndVideo.isNotEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("تم حفظ المرفقات بنجاح !")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("تم حفظ المرفقات بنجاح !", style: TextStyle(
+            color: Colors.white,
+            fontSize: 17,
+            fontFamily: 'Arabic-Regular'),),
+      ));
     }
     /*Logger().i("categoryId= ",categoryId);
     Logger().i("typeId= ",adTypeId);*/
@@ -637,11 +678,15 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     if(pickedFile!=null){
       xFile = pickedFile;
       imageFile = File(xFile.path);
-      imagePath.value =xFile.path;
+      imagePathCopon.value =xFile.path;
     }
     /* setState(() {
       imageFile = pickedFile!;
     });*/
+    imageCoponMultiPart= await myDio.MultipartFile.fromFileSync(xFile.path,
+        filename: xFile.path
+            .split(Platform.pathSeparator)
+            .last);
 
     Navigator.pop(context);
   }
@@ -653,13 +698,17 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     if(pickedFile!=null){
       xFile = pickedFile;
       imageFile = File(xFile.path);
-      imagePath.value =xFile.path;
+      imagePathCopon.value = xFile.path;
+      imageCoponMultiPart =  await myDio.MultipartFile.fromFileSync(xFile.path,
+          filename: xFile.path
+              .split(Platform.pathSeparator)
+              .last);
     }
     Navigator.pop(context);
   }
   void onDiscountCoponSaveClicked(BuildContext context) {
 
-    if(imagePath.value.isEmpty){
+    if(imagePathCopon.value.isEmpty){
       showToast("من فضلك قم بإدخال صورة كوبون الخصم !");
     return;
     }
@@ -817,6 +866,7 @@ void showToast(msg){
     Get.back();
   }
   var isLocationClickedSaved = false.obs;
+  LocationModel locationModel = LocationModel();
   void onLocationClickedSaved (BuildContext context) {
     if(placeNameController.text!=null && placeNameController.text.isEmpty){
       showToast("من فضلك يرجى إضافة اسم المكان !");
@@ -829,6 +879,7 @@ void showToast(msg){
       return;
     }
     isLocationClickedSaved.value = true;
+    locationModel= LocationModel(name: placeNameController.text,address: placeAddressController.text,lat: latLng!.latitude,lng: latLng!.longitude);
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("تم حفظ تفاصيل العنوان بنجاح!",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
     Get.back();
@@ -838,7 +889,16 @@ void showToast(msg){
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
-       planFile = File(result.files.single.path!);
+       //planFile = File(result.files.single.path!);
+       var mFile = await myDio.MultipartFile.fromFileSync(result.files.single.path!,
+           filename: result.files.single.path!
+               .split(Platform.pathSeparator)
+               .last);
+       //imageFideoFiles?.add(mFile);
+       planFile = mFile;
+       ScaffoldMessenger.of(context).showSnackBar(
+           SnackBar(content: Text("تم حفظ ملف خطة الاعلان!",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+
     } else {
       // User canceled the picker
     }

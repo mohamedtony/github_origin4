@@ -437,6 +437,34 @@ class _RestClient implements RestClient {
     return value;
   }
 
+  @override
+  Future<CreateAdvertiseRequestResponse> createAdvertiseRequest(
+      accept, token, json, advertiser_id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{
+      r'Accept': accept,
+      r'Authorization': token
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = FormData();
+    if (advertiser_id != null) {
+      _data.fields.add(MapEntry('advertiser_id', advertiser_id.toString()));
+    }
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CreateAdvertiseRequestResponse>(Options(
+                method: 'POST',
+                headers: _headers,
+                extra: _extra,
+                contentType: 'multipart/form-data')
+            .compose(_dio.options, '/requests',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = CreateAdvertiseRequestResponse.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

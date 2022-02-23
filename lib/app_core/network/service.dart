@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:advertisers/app_core/network/models/ChannelData.dart';
+import 'package:advertisers/app_core/network/requests/CreateAdvertiseRequest.dart';
 import 'package:advertisers/app_core/network/requests/CreateSubscriptionRequest.dart';
 import 'package:advertisers/app_core/network/requests/GetAdvertisersRequest.dart';
 import 'package:advertisers/app_core/network/requests/OneCountryAndCitiesRequest.dart';
@@ -10,6 +11,7 @@ import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.
 import 'package:advertisers/app_core/network/requests/login_client_request.dart';
 import 'package:advertisers/app_core/network/responses/AddRemoveBlackListResponse.dart';
 import 'package:advertisers/app_core/network/responses/CountriesResponse.dart';
+import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateSubscriptionResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetAdvertisersFormResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetAdvertisersResponse.dart';
@@ -101,6 +103,13 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
 
   @GET('/requests/advertisers_form')
   Future<GetAdvertisersFormResponse> getAdvertisersForm(@Header("Authorization") String token);
+
+/*
+  @POST('/requests')
+  //@PATCH('/requests')@MultiPart()
+  Future<CreateAdvertiseRequestResponse> createAdvertiseRequest(@Header("Accept") String accept,@Header("Authorization") String token, @MultiPart() Map<String,void> json);
+*/
+
 
 
 }

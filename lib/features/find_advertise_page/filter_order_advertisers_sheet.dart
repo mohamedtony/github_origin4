@@ -66,7 +66,8 @@ class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersShee
         ],
       ),
       child: ListView(
-        controller: this.widget.scrollController,
+        controller: widget.scrollController,
+        //physics:const AlwaysScrollableScrollPhysics(),
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -493,7 +494,7 @@ class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersShee
                             ),
                             dropdownBuilder: (BuildContext context, s) {
                               return Text(
-                                '${(s?.name?.ar ?? '')}',
+                                '${(s?.name ?? '')}',
                                 style: TextStyle(
                                     color: AppColors.activitiesDropDown,
                                     /*decoration: TextDecoration.underline,decorationThickness: 2,*/
@@ -543,7 +544,7 @@ class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersShee
                                 fillColor: Colors.white),
                             items: findOrderAdvertisersController.advertisersFormModel.value.effect_slides,
                             // label: "Menu mode",
-                            itemAsString: (EffectSlidesModel? u) => u!.name!.ar!,
+                            itemAsString: (EffectSlidesModel? u) => u!.name!,
                             // hint: "الدولة",
                             //popupItemDisabled: (String s) => s.startsWith('I'),
                             onChanged: (effectSlidesModel) {
