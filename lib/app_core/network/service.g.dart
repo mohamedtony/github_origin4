@@ -438,8 +438,19 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<CreateAdvertiseRequestResponse> createAdvertiseRequest(
-      accept, token, json, advertiser_id) async {
+  Future<CreateAdvertiseRequestResponse> createAdvertiseRequest(accept, token,
+      {advertiser_id,
+      product_category_id,
+      description,
+      ads_type_id,
+      date_type,
+      started_at,
+      ended_at,
+      offer_ended_at,
+      repeat_count,
+      channelsIdes,
+      attachments,
+      links}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -452,6 +463,48 @@ class _RestClient implements RestClient {
     if (advertiser_id != null) {
       _data.fields.add(MapEntry('advertiser_id', advertiser_id.toString()));
     }
+    if (product_category_id != null) {
+      _data.fields
+          .add(MapEntry('product_category_id', product_category_id.toString()));
+    }
+    if (description != null) {
+      _data.fields.add(MapEntry('description', description));
+    }
+    if (ads_type_id != null) {
+      _data.fields.add(MapEntry('ads_type_id', ads_type_id.toString()));
+    }
+    if (date_type != null) {
+      _data.fields.add(MapEntry('date_type', date_type));
+    }
+    if (started_at != null) {
+      _data.fields.add(MapEntry('started_at', started_at));
+    }
+    if (ended_at != null) {
+      _data.fields.add(MapEntry('ended_at', ended_at));
+    }
+    if (offer_ended_at != null) {
+      _data.fields.add(MapEntry('offer_ended_at', offer_ended_at));
+    }
+    if (repeat_count != null) {
+      _data.fields.add(MapEntry('repeat_count', repeat_count.toString()));
+    }
+    if (channelsIdes != null) {
+      _data.files.add(MapEntry(
+          'channels[]',
+          MultipartFile.fromBytes(
+            channelsIdes,
+            filename: null,
+          )));
+    }
+    if (attachments != null) {
+      _data.files.addAll(attachments.map((i) => MapEntry(
+          'attachments[]',
+          MultipartFile.fromFileSync(
+            i.path,
+            filename: i.path.split(Platform.pathSeparator).last,
+          ))));
+    }
+    _data.fields.add(MapEntry('links[]', jsonEncode(links)));
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<CreateAdvertiseRequestResponse>(Options(
                 method: 'POST',

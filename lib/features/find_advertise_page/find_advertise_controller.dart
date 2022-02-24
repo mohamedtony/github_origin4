@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
@@ -7,6 +9,7 @@ import 'package:advertisers/app_core/network/models/Channel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/app_core/network/models/EffectSlidesModel.dart';
 import 'package:advertisers/app_core/network/models/EffectSlidesNameModel.dart';
+import 'package:advertisers/app_core/network/models/FileModel.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersFromModel.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersModel.dart';
 import 'package:advertisers/app_core/network/models/SelectedNotSelectedSortType.dart';
@@ -26,6 +29,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:logger/logger.dart';
 import 'package:dio/dio.dart' as myDio;
+import 'package:video_compress/video_compress.dart';
 //=========================================================================================
 
 //                         By Mohamed T. Hammad
@@ -325,7 +329,7 @@ class FindAdvertiseController extends GetxController {
     String? sortByStrings = '';
     advertisersTopRated.forEach((element) {
       if (element.isSelected.isTrue) {
-        sortByStrings = sortByStrings! + ',';
+        sortByStrings = sortByStrings! + '${element.key},';
       }
     });
     List<int> categoriesId = [];
@@ -519,9 +523,23 @@ class FindAdvertiseController extends GetxController {
               .split(Platform.pathSeparator)
               .last);
     }*/
+
     if(requestAdvertiseController.imageFideoFiles!=null && requestAdvertiseController.imageFideoFiles!.isEmpty){
       print("myFilesEmpty");
+    }else{
+      print("videosNum"+requestAdvertiseController.imageFideoFiles!.length.toString());
     }
+/*    requestAdvertiseController.attatechedFilesImageAndVideo.forEach((element) async {
+       compressVideo(element.file!).then((value) async {
+        print("videoLengthIn= "+value.lengthSync().toString());
+        var mFile =  await myDio.MultipartFile.fromFile(value.path,
+            filename: value.path
+                .split(Platform.pathSeparator)
+                .last);
+        requestAdvertiseController.imageFideoFiles?.add(mFile);
+      });
+    });*/
+    //_parseInBackground();
 
     Map<String, dynamic> mymap = {
       "token": "Bearer " + myToken!,
@@ -543,9 +561,12 @@ class FindAdvertiseController extends GetxController {
           int.parse(requestAdvertiseController.selectedTimeCounter.value),
       "channels[]": requestAdvertiseController.channelsIds,
       "attachments[]": requestAdvertiseController.imageFideoFiles!.isNotEmpty ? requestAdvertiseController.imageFideoFiles : null,
-      "links": requestAdvertiseController.links.value.isNotEmpty
-          ? requestAdvertiseController.links.value.isNotEmpty
+ /*     "links[][title]": requestAdvertiseController.links.value.isNotEmpty
+          ? requestAdvertiseController.links.value.map((e) => e.title).toList()
           : null,
+      "links[][link]": requestAdvertiseController.links.value.isNotEmpty
+          ? requestAdvertiseController.links.value.map((e) => e.link).toList()
+          : null,*/
       "location[name]": requestAdvertiseController.locationModel.name,
       "location[address]": requestAdvertiseController.locationModel.address,
       "location[lat]": requestAdvertiseController.locationModel.lat,
@@ -561,21 +582,19 @@ class FindAdvertiseController extends GetxController {
       "notes": requestAdvertiseController.noticeController?.text,
       "plan_file": requestAdvertiseController.planFile
     };
-
-    /*String json = jsonEncode(mymap);
-    Logger().i(json);*/
-
-/*    String json = jsonEncode(mymap);
-    final formData = myDio.FormData.fromMap(
-
-        mymap
-    );*/
-/*    client!.createAdvertiseRequest("application/json","Bearer "+myToken!,mymap).then((value){
-      print('mStatus ${value.status}');
-      print('mStatus ${value.message}');
-      Logger().i(value.data!.toJson());
-    });*/
-
+    Map<String, dynamic> mymap2={};
+    if(requestAdvertiseController.links.value.isNotEmpty){
+      for (var value1 in requestAdvertiseController.links.value) {
+        mymap2={
+         "links[${requestAdvertiseController.links.value.indexOf(value1)}][title]":"${value1.title}",
+          "links[${requestAdvertiseController.links.value.indexOf(value1)}][link]":"${value1.link}"
+        };
+        if(mymap2.isNotEmpty) {
+          mymap.addAll(mymap2);
+        }
+      }
+    }
+    Logger().i("mymap"+mymap.toString());
     Repository repo = Repository();
     repo.postWithImageMultipart<CreateAdvertiseRequestResponse>(
         path: 'requests',
@@ -597,9 +616,6 @@ class FindAdvertiseController extends GetxController {
           Navigator.of(context).pop();
           Get.delete<RequestAdvertiseController>();
           Get.delete<FindAdvertiseController>();
-
-          /*Navigator.of(context).pop();
-          Navigator.of(context).pop();*/
           //Get.offAllNamed('/Home');
         },
         onError: (err, res) {
@@ -607,5 +623,130 @@ class FindAdvertiseController extends GetxController {
           Get.back();
           Logger().i(err);
         });
+
+    /*String json = jsonEncode(mymap);
+    Logger().i(json);*/
+
+/*    String json = jsonEncode(mymap);
+    final formData = myDio.FormData.fromMap(
+
+        mymap
+    );*/
+
+/*    Map<String, dynamic> mymap = {
+      "token": "Bearer " + myToken!,
+      "advertiser_id": selectedAdvertiseId,
+      "product_category_id": requestAdvertiseController.categoryId,
+      "description": requestAdvertiseController.descriptionController.text,
+      "ads_type_id": requestAdvertiseController.adTypeId,
+      "date_type":
+      requestAdvertiseController.isFlixble.isTrue ? "flexible" : "fixed",
+      "started_at": requestAdvertiseController.fromDate.value,
+      "ended_at": requestAdvertiseController.isFlixble.isTrue
+          ? requestAdvertiseController.toDate.value
+          : null,
+      "offer_ended_at":
+      requestAdvertiseController.endAdvertisingDate.value.isNotEmpty
+          ? requestAdvertiseController.endAdvertisingDate.value
+          : null,
+      "repeat_count":
+      int.parse(requestAdvertiseController.selectedTimeCounter.value),
+      "channels[]": requestAdvertiseController.channelsIds,
+      "attachments[]": requestAdvertiseController.imageFideoFiles!.isNotEmpty ? requestAdvertiseController.imageFideoFiles : null,
+      "links": requestAdvertiseController.links.value.isNotEmpty
+          ? requestAdvertiseController.links.value
+          : null,
+      "location[name]": requestAdvertiseController.locationModel.name,
+      "location[address]": requestAdvertiseController.locationModel.address,
+      "location[lat]": requestAdvertiseController.locationModel.lat,
+      "location[lng]": requestAdvertiseController.locationModel.lng,
+      "copon[image]": requestAdvertiseController.imageCoponMultiPart,
+      "copon[code]": requestAdvertiseController.coponNumberController?.text,
+      "copon[name]": requestAdvertiseController.coponNameController?.text,
+      "copon[discount]":
+      requestAdvertiseController.coponDiscountController?.text,
+      "copon[uses]": requestAdvertiseController.coponUsesController?.text,
+      "copon[link]": requestAdvertiseController.coponLinkController?.text,
+      "copon[ended_at]": requestAdvertiseController.endAdvertisingDateCoupon,
+      "notes": requestAdvertiseController.noticeController?.text,
+      "plan_file": requestAdvertiseController.planFile
+    };
+
+    client!.createAdvertiseRequest("application/json","Bearer "+myToken!,advertiser_id: mymap['advertiser_id'],ended_at: mymap['ended_at'],started_at: mymap['started_at'],product_category_id: mymap['product_category_id'],ads_type_id: mymap['ads_type_id'],channelsIdes: mymap['channels[]'],date_type: mymap['date_type'],description: mymap['description'],links: mymap['links'],
+      offer_ended_at: mymap['offer_ended_at'],repeat_count: mymap['repeat_count'],attachments: requestAdvertiseController.attatechedFilesImageAndVideo.value.map((e) => e.file!).toList(),).then((value){
+      print('mStatus ${value.status}');
+      print('mStatus ${value.message}');
+      Logger().i(value.data!.toJson());
+    });*/
+
   }
+  // Spawns an isolate and waits for the first message
+/*  Future<File> _parseInBackground() async {
+    final p = ReceivePort();
+    await Isolate.spawn(_compressVideo, p.sendPort);
+    return await p.first;
+  }
+  late Isolate _isolate;
+  bool _running = false;
+  static int _counter = 0;
+  String notification = "";
+  late ReceivePort _receivePort;
+
+  void _start() async {
+    _receivePort = ReceivePort();
+    _isolate = await Isolate.spawn(_checkTimer, _receivePort.sendPort);
+    _receivePort.listen(_handleMessage, onDone:() {
+      print("done!");
+    });
+  }*/
+
+/*  static void _checkTimer(SendPort sendPort) async {
+*//*    Timer.periodic(new Duration(seconds: 1), (Timer t) {
+      _counter++;
+      String msg = 'notification ' + _counter.toString();
+      print('SEND: ' + msg);
+      sendPort.send(msg);
+    });*//*
+    _compressVideo(sendPort);
+  }
+
+  void _handleMessage(dynamic data) {
+    print('RECEIVED: ' + data);
+  }*/
+
+/*  void _stop() {
+    if (_isolate != null) {
+      setState(() {
+        _running = false;
+        notification = '';
+      });
+      _receivePort.close();
+      _isolate.kill(priority: Isolate.immediate);
+      _isolate = null;
+    }
+  }*/
+
+ // static List<FileModel>  attatechedFilesImageAndVideo = requestAdvertiseController.attatechedFilesImageAndVideo;
+/*  static Future _compressVideo(SendPort p) async {
+    attatechedFilesImageAndVideo.forEach((element) async {
+      MediaInfo? mediaInfo = await VideoCompress.compressVideo(
+        element.file!.path,
+        quality: VideoQuality.LowQuality,
+        deleteOrigin: false, // It's false by default
+      );
+      print("mFime");
+*//*      compressVideo(element.file!).then((value) async {
+        print("videoLengthIn= "+value.lengthSync().toString());
+        var mFile =  await myDio.MultipartFile.fromFile(value.path,
+            filename: value.path
+                .split(Platform.pathSeparator)
+                .last);
+        requestAdvertiseController.imageFideoFiles?.add(mFile);
+      });*//*
+    });
+
+
+   // return mediaInfo!.file!;
+    Isolate.exit(p, File(""));
+  }*/
 }

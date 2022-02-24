@@ -316,7 +316,7 @@ class ClientSettingPageController extends GetxController  {
     return showDialog(context: context,builder: (BuildContext context){
 
       return AlertDialog(
-        title: Text("Choose option",style: TextStyle(color: Colors.blue),),
+        title: Text("إختر",style: TextStyle(color: Colors.blue),),
         content: SingleChildScrollView(
           child: ListBody(
             children: [
@@ -325,7 +325,7 @@ class ClientSettingPageController extends GetxController  {
                 onTap: (){
                   _openGallery(context);
                 },
-                title: Text("Gallery"),
+                title: Text("معرض الصور"),
                 leading: Icon(Icons.account_box,color: Colors.blue,),
               ),
 
@@ -334,7 +334,7 @@ class ClientSettingPageController extends GetxController  {
                 onTap: (){
                   _openCamera(context);
                 },
-                title: Text("Camera"),
+                title: Text("الكاميرا"),
                 leading: Icon(Icons.camera,color: Colors.blue,),
               ),
             ],

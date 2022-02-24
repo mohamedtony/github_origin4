@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:advertisers/app_core/network/models/ChannelData.dart';
+import 'package:advertisers/app_core/network/models/LinkModel.dart';
 import 'package:advertisers/app_core/network/requests/CreateAdvertiseRequest.dart';
 import 'package:advertisers/app_core/network/requests/CreateSubscriptionRequest.dart';
 import 'package:advertisers/app_core/network/requests/GetAdvertisersRequest.dart';
@@ -109,7 +110,29 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   //@PATCH('/requests')@MultiPart()
   Future<CreateAdvertiseRequestResponse> createAdvertiseRequest(@Header("Accept") String accept,@Header("Authorization") String token, @MultiPart() Map<String,void> json);
 */
+  @POST('/requests')
+  @MultiPart()
+  Future<CreateAdvertiseRequestResponse> createAdvertiseRequest(@Header("Accept") String accept,@Header("Authorization") String token, {@Part(name: 'advertiser_id')int? advertiser_id,@Part(name: 'product_category_id')int? product_category_id,@Part(name: 'description')String? description,@Part(name: 'ads_type_id')int? ads_type_id,@Part(name: 'date_type')String? date_type,
+    @Part(name: 'started_at')String? started_at,@Part(name: 'ended_at')String? ended_at,@Part(name: 'offer_ended_at')String? offer_ended_at,@Part(name: 'repeat_count')int? repeat_count,@Part(name: 'channels[]')List<int>? channelsIdes,@Part(name: 'attachments[]')List<File>? attachments,@Part(name: 'links[]')List<LinkModel>? links,});
 
+
+/*  Map<String, dynamic> mymap = {
+
+    "location[name]": requestAdvertiseController.locationModel.name,
+    "location[address]": requestAdvertiseController.locationModel.address,
+    "location[lat]": requestAdvertiseController.locationModel.lat,
+    "location[lng]": requestAdvertiseController.locationModel.lng,
+    "copon[image]": requestAdvertiseController.imageCoponMultiPart,
+    "copon[code]": requestAdvertiseController.coponNumberController?.text,
+    "copon[name]": requestAdvertiseController.coponNameController?.text,
+    "copon[discount]":
+    requestAdvertiseController.coponDiscountController?.text,
+    "copon[uses]": requestAdvertiseController.coponUsesController?.text,
+    "copon[link]": requestAdvertiseController.coponLinkController?.text,
+    "copon[ended_at]": requestAdvertiseController.endAdvertisingDateCoupon,
+    "notes": requestAdvertiseController.noticeController?.text,
+    "plan_file": requestAdvertiseController.planFile
+  };*/
 
 
 }

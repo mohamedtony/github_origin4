@@ -26,6 +26,7 @@ import 'package:advertisers/main.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -34,6 +35,7 @@ import 'package:location/location.dart' as location;
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:dio/dio.dart' as myDio;
+import 'package:video_compress/video_compress.dart';
 //=========================================================================================
 
 //                         By Mohamed T. Hammad
@@ -415,20 +417,23 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
 
 
   Future<void> takeImage() async {
-    XFile? imageFromFamera = await _picker.pickImage(source: ImageSource.camera);
+    XFile? imageFromFamera = await _picker.pickImage(source: ImageSource.camera,);
     if(imageFromFamera!=null){
       print("imagemm"+images2.toString());
+      File file = File(imageFromFamera.path);
       attatechedFilesImageAndVideo.add(
           FileModel(
-              file:File(imageFromFamera.path),
+              file:file,
               isVideo:false
           )
       );
-      var mFile = await myDio.MultipartFile.fromFileSync(imageFromFamera.path,
-          filename: imageFromFamera.path
-              .split(Platform.pathSeparator)
-              .last);
-      imageFideoFiles?.add(mFile);
+      await compressFile(file).then((value) async {
+        var mFile =  await myDio.MultipartFile.fromFile(value.path,
+            filename: value.path
+                .split(Platform.pathSeparator)
+                .last);
+        imageFideoFiles?.add(mFile);
+      });
     }
 
   }
@@ -445,39 +450,53 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
       );
     }*/
 
-    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true,allowCompression: true);
 
     result?.files.forEach((element) {
       print("exte= "+element.extension!);
+      print("size= "+element.size.toString()+" ");
     });
     if (result != null) {
       //List<File> files = result.paths.map((path) => File(path!)).toList();
       result.files.forEach((element) async {
         print("exte= "+element.extension!);
         if(element.extension=="mp4"){
+          File videoFile = File(element.path!);
           attatechedFilesImageAndVideo.add(
               FileModel(
-                  file:File(element.path!),
+                  file:videoFile,
                   isVideo:true
               )
           );
-          var mFile = await myDio.MultipartFile.fromFileSync(element.path!,
-              filename: element.path!
+          var mFile =  await myDio.MultipartFile.fromFile(videoFile.path,
+              filename: videoFile.path
                   .split(Platform.pathSeparator)
                   .last);
           imageFideoFiles?.add(mFile);
-        }else if(element.extension?.toLowerCase()=="jpg"||element.extension?.toLowerCase()=='png'){
+          /*print("videoLength= "+videoFile.lengthSync().toString());
+           await compressVideo(videoFile).then((value) async {
+            print("videoLengthIn= "+value.lengthSync().toString());
+            var mFile =  await myDio.MultipartFile.fromFile(value.path,
+                filename: value.path
+                    .split(Platform.pathSeparator)
+                    .last);
+            imageFideoFiles?.add(mFile);
+          });*/
+
+        }else if(element.extension?.toLowerCase()=="jpg"||element.extension?.toLowerCase()=='png'||element.extension?.toLowerCase()=='jpeg'){
           attatechedFilesImageAndVideo.add(
               FileModel(
                   file:File(element.path!),
                   isVideo:false
               )
           );
-          var mFile = await myDio.MultipartFile.fromFileSync(element.path!,
-              filename: element.path!
-                  .split(Platform.pathSeparator)
-                  .last);
-          imageFideoFiles?.add(mFile);
+           compressFile(File(element.path!)).then((value) async {
+            var mFile =  await myDio.MultipartFile.fromFile(value.path,
+                filename: value.path
+                    .split(Platform.pathSeparator)
+                    .last);
+            imageFideoFiles?.add(mFile);
+          });
         }
       });
       /*files.forEach((element) {
@@ -494,24 +513,35 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     }
 
   }
-
+Future<File> compressVideo(File file) async {
+  MediaInfo? mediaInfo = await VideoCompress.compressVideo(
+    file.path,
+    quality: VideoQuality.LowQuality,
+    deleteOrigin: false, // It's false by default
+  );
+  return mediaInfo!.file!;
+}
   Future<void> pickImages() async {
     images2 = await _picker.pickMultiImage();
     if(images2!=null && images2!.isNotEmpty){
       print("imagemm"+images2.toString());
       //attatechedFilesImageAndVideo.value=[];
+
       images2?.forEach((element) async {
+        File file = File(element.path);
         attatechedFilesImageAndVideo.add(
           FileModel(
-              file:File(element.path),
+              file:file,
                isVideo:false
           )
         );
-        var mFile = await myDio.MultipartFile.fromFileSync(element.path,
-            filename: element.path
-                .split(Platform.pathSeparator)
-                .last);
-        imageFideoFiles?.add(mFile);
+         compressFile(file).then((value) async {
+          var mFile =  await myDio.MultipartFile.fromFile(value.path,
+              filename: value.path
+                  .split(Platform.pathSeparator)
+                  .last);
+          imageFideoFiles?.add(mFile);
+        });
       });
     }
 
@@ -521,15 +551,25 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     mVideo =
     await _picker.pickVideo(
       source: fromGallery! ? ImageSource.gallery : ImageSource.camera,);
+    File videoFile= File(mVideo!.path);
     attatechedFilesImageAndVideo.add(FileModel(
-        file: File(mVideo!.path),
+        file: videoFile,
         isVideo: true
     ));
-    var mFile = await myDio.MultipartFile.fromFileSync(mVideo!.path,
-        filename: mVideo!.path
+    var mFile =  await myDio.MultipartFile.fromFile(videoFile.path,
+        filename: videoFile.path
             .split(Platform.pathSeparator)
             .last);
     imageFideoFiles?.add(mFile);
+    /*print("videoLength= "+videoFile.lengthSync().toString());
+     compressVideo(videoFile).then((value) async {
+      print("videoLengthIn= "+value.lengthSync().toString());
+      var mFile =  await myDio.MultipartFile.fromFile(value.path,
+          filename: value.path
+              .split(Platform.pathSeparator)
+              .last);
+      imageFideoFiles?.add(mFile);
+    });*/
   }
   void onSaveAttachmentClicked(BuildContext context) {
     Logger().i(attatechedFilesImageAndVideo);
@@ -625,7 +665,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
       isUrlSaveClicked.value = true;
       Get.back();
       for(int i=0;i<numOfLinks.value;i++){
-        links.add(LinkModel(title: textUrlControllers[0].text,link: urlControllers[0].text));
+        links.add(LinkModel(title: textUrlControllers[i].text,link: urlControllers[i].text));
       }
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("تم حفظ الروابط بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
@@ -647,7 +687,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     return showDialog(context: context,builder: (BuildContext context){
 
       return AlertDialog(
-        title: Text("Choose option",style: TextStyle(color: Colors.blue),),
+        title: Text("إختر",style: TextStyle(color: Colors.blue),),
         content: SingleChildScrollView(
           child: ListBody(
             children: [
@@ -656,7 +696,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
                 onTap: (){
                   _openGallery(context);
                 },
-                title: Text("Gallery"),
+                title: Text("معرض الصور"),
                 leading: Icon(Icons.account_box,color: Colors.blue,),
               ),
 
@@ -665,7 +705,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
                 onTap: (){
                   _openCamera(context);
                 },
-                title: Text("Camera"),
+                title: Text("الكاميرا"),
                 leading: Icon(Icons.camera,color: Colors.blue,),
               ),
             ],
@@ -673,20 +713,45 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
         ),);
     });
   }
+  // 2. compress file and get file.
+  Future<File> compressFile(File file) async {
+    final filePath = file.absolute.path;
+    // Create output file path
+    // eg:- "Volume/VM/abcd_out.jpeg""/"
+    final lastIndex = filePath.lastIndexOf(new RegExp(r'.jp'));
+    //final lastIndex = filePath.lastIndexOf("/");
+    final splitted = filePath.substring(0, (lastIndex));
+    final outPath = "${splitted}_out${filePath.substring(lastIndex)}";
+    var result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path, outPath,
+      quality: 50,
+    );
+    print("myLength= " + file.lengthSync().toString());
+    print("myLength= " +result!.lengthSync().toString());
+    return result;
+  }
+
   void _openGallery(BuildContext context) async{
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery,imageQuality: 0);
+
     if(pickedFile!=null){
       xFile = pickedFile;
       imageFile = File(xFile.path);
       imagePathCopon.value =xFile.path;
+      print("pickedMFile"+(imageFile!.lengthSync()).toString());
+        compressFile(imageFile!).then((value) async {
+         print("pickedMFile"+(value.lengthSync()).toString());
+         imageCoponMultiPart= await myDio.MultipartFile.fromFile(value.path,
+             filename: value.path
+                 .split(Platform.pathSeparator)
+                 .last);
+       });
+
     }
     /* setState(() {
       imageFile = pickedFile!;
     });*/
-    imageCoponMultiPart= await myDio.MultipartFile.fromFileSync(xFile.path,
-        filename: xFile.path
-            .split(Platform.pathSeparator)
-            .last);
+
 
     Navigator.pop(context);
   }
@@ -699,10 +764,13 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
       xFile = pickedFile;
       imageFile = File(xFile.path);
       imagePathCopon.value = xFile.path;
-      imageCoponMultiPart =  await myDio.MultipartFile.fromFileSync(xFile.path,
-          filename: xFile.path
-              .split(Platform.pathSeparator)
-              .last);
+       compressFile(imageFile!).then((value) async {
+        print("pickedMFile"+(value.lengthSync()).toString());
+        imageCoponMultiPart = await myDio.MultipartFile.fromFile(value.path,
+            filename: value.path
+                .split(Platform.pathSeparator)
+                .last);
+      });
     }
     Navigator.pop(context);
   }
@@ -890,12 +958,13 @@ void showToast(msg){
 
     if (result != null) {
        //planFile = File(result.files.single.path!);
-       var mFile = await myDio.MultipartFile.fromFileSync(result.files.single.path!,
+       var mFile = await myDio.MultipartFile.fromFile(result.files.single.path!,
            filename: result.files.single.path!
                .split(Platform.pathSeparator)
                .last);
        //imageFideoFiles?.add(mFile);
        planFile = mFile;
+      // compressFile(File(result.files.single.path!));
        ScaffoldMessenger.of(context).showSnackBar(
            SnackBar(content: Text("تم حفظ ملف خطة الاعلان!",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
 
