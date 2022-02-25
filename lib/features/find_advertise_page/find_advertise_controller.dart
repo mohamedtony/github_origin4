@@ -187,8 +187,8 @@ class FindAdvertiseController extends GetxController {
           key: "most_followers",
         ));
         advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.less_folloers!,
-          key: "less_folloers",
+          name: advertisersFormModel.value.sort_types!.less_followers!,
+          key: "less_followers",
         ));
       } else {
         isLoadingGetAdvertisersFromModel.value = false;
@@ -197,6 +197,7 @@ class FindAdvertiseController extends GetxController {
   }
 
   void changeCountry(Country? c) {
+    Logger().i(c!.toJson());
     if (c != null && c.id == -2) {
       isAreaEnabled.value = false;
       selectedUserLocations.value = [];
