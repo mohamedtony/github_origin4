@@ -11,9 +11,12 @@ import 'package:advertisers/features/add_advertiser_channel/widgets/selected_cou
 import 'package:advertisers/features/add_advertiser_channel/widgets/title.dart';
 import 'package:advertisers/features/advertising_influence_channels/controller/advertising_influence_channels_controller.dart';
 import 'package:advertisers/features/advertising_influence_channels/controller/edit_channel_advertiser_controller.dart';
+import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -104,7 +107,9 @@ class _EditAdvertiserChannelState extends State<EditAdvertiserChannel> {
                 tooltip: 'اختر قناة',
                 items: getMenuItems(_editChannelAdvertiserController.basicChannels),
                 child:_editChannelAdvertiserController.choosedChannel.value!=''?Obx(()=>Image.network(_editChannelAdvertiserController.choosedChannel.value,height: 100.w,
-                  width: 100.w,)): Image.asset(
+                  width: 100.w,errorBuilder: (context,object,err){
+                    return Image.asset('images/no_image_available.png',height: 70);
+                  },)): Image.asset(
                   'images/snapshat_icon.png',
                   height: 100.w,
                   width: 100.w,
@@ -306,6 +311,7 @@ class _EditAdvertiserChannelState extends State<EditAdvertiserChannel> {
                         setState(() {
                           _editChannelAdvertiserController.selectedRange.value =
                           newVal!;
+
                         });
                       },
                     ),
@@ -387,6 +393,15 @@ class _EditAdvertiserChannelState extends State<EditAdvertiserChannel> {
                             setState(() {
                               _editChannelAdvertiserController
                                   .selectedMenPercentage.value = newVal!;
+                              if (int.parse(_editChannelAdvertiserController.selectedMenPercentage.value)+int.parse(_editChannelAdvertiserController.selectedWomenPercentage.value)+
+                                  int.parse(_editChannelAdvertiserController.selectedBoysPercentage.value)+int.parse(_editChannelAdvertiserController.selectedGirlsPercentage.value)>100){
+                                Get.snackbar(
+                                  "خطأ",
+                                  "مجموع النسب يجب ان لا يتعدى المائة",
+                                  icon: const Icon(Icons.person, color: Colors.red),
+                                  backgroundColor: Colors.yellow,
+                                  snackPosition: SnackPosition.BOTTOM,);
+                              }
                             });
                           },
                         ),
@@ -456,6 +471,15 @@ class _EditAdvertiserChannelState extends State<EditAdvertiserChannel> {
                             setState(() {
                               _editChannelAdvertiserController
                                   .selectedWomenPercentage.value = newVal!;
+                              if (int.parse(_editChannelAdvertiserController.selectedMenPercentage.value)+int.parse(_editChannelAdvertiserController.selectedWomenPercentage.value)+
+                                  int.parse(_editChannelAdvertiserController.selectedBoysPercentage.value)+int.parse(_editChannelAdvertiserController.selectedGirlsPercentage.value)>100){
+                                Get.snackbar(
+                                  "خطأ",
+                                  "مجموع النسب يجب ان لا يتعدى المائة",
+                                  icon: const Icon(Icons.person, color: Colors.red),
+                                  backgroundColor: Colors.yellow,
+                                  snackPosition: SnackPosition.BOTTOM,);
+                              }
                             });
                           },
                         ),
@@ -529,6 +553,15 @@ class _EditAdvertiserChannelState extends State<EditAdvertiserChannel> {
                             setState(() {
                               _editChannelAdvertiserController
                                   .selectedBoysPercentage.value = newVal!;
+                              if (int.parse(_editChannelAdvertiserController.selectedMenPercentage.value)+int.parse(_editChannelAdvertiserController.selectedWomenPercentage.value)+
+                                  int.parse(_editChannelAdvertiserController.selectedBoysPercentage.value)+int.parse(_editChannelAdvertiserController.selectedGirlsPercentage.value)>100){
+                                Get.snackbar(
+                                  "خطأ",
+                                  "مجموع النسب يجب ان لا يتعدى المائة",
+                                  icon: const Icon(Icons.person, color: Colors.red),
+                                  backgroundColor: Colors.yellow,
+                                  snackPosition: SnackPosition.BOTTOM,);
+                              }
                             });
                           },
                         ),
@@ -598,6 +631,15 @@ class _EditAdvertiserChannelState extends State<EditAdvertiserChannel> {
                             setState(() {
                               _editChannelAdvertiserController
                                   .selectedGirlsPercentage.value = newVal!;
+                              if (int.parse(_editChannelAdvertiserController.selectedMenPercentage.value)+int.parse(_editChannelAdvertiserController.selectedWomenPercentage.value)+
+                                  int.parse(_editChannelAdvertiserController.selectedBoysPercentage.value)+int.parse(_editChannelAdvertiserController.selectedGirlsPercentage.value)>100){
+                                Get.snackbar(
+                                  "خطأ",
+                                  "مجموع النسب يجب ان لا يتعدى المائة",
+                                  icon: const Icon(Icons.person, color: Colors.red),
+                                  backgroundColor: Colors.yellow,
+                                  snackPosition: SnackPosition.BOTTOM,);
+                              }
                             });
                           },
                         ),
@@ -626,200 +668,560 @@ class _EditAdvertiserChannelState extends State<EditAdvertiserChannel> {
                   color: Color(0xff041D67)),
             ),
           ),
-          Row(
-            children: [
-              Expanded(
-                child: GetBuilder<EditChannelAdvertiserController>(
-                    init: EditChannelAdvertiserController(),
-                    builder: (controller) => Container(
-                      margin: const EdgeInsets.all(15.0),
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                          color: const Color(0xffC3CFE2),
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       child: GetBuilder<EditChannelAdvertiserController>(
+          //           init: EditChannelAdvertiserController(),
+          //           builder: (controller) => Container(
+          //             margin: const EdgeInsets.all(15.0),
+          //             padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          //             decoration: BoxDecoration(
+          //               borderRadius: BorderRadius.circular(15),
+          //               border: Border.all(
+          //                 color: const Color(0xffC3CFE2),
+          //               ),
+          //             ),
+          //             child: Row(
+          //               children: [
+          //                 ClipRRect(
+          //                   borderRadius: const BorderRadius.only(
+          //                     topRight: Radius.circular(15),
+          //                     bottomRight: Radius.circular(15),
+          //                   ),
+          //                   child: Container(
+          //                     // alignment: Alignment.center,
+          //                     width: 40.w,
+          //                     padding: const EdgeInsets.symmetric(
+          //                       horizontal: 2,
+          //                       vertical: 11,
+          //                     ),
+          //                     // color: const Color(0xffE8E8E8),
+          //                     child: Text(
+          //                       "الدولة",
+          //                       style: TextStyle(
+          //                           fontSize: 10.5.sp,
+          //                           color: Color(0xff041D67)),
+          //                     ),
+          //                   ),
+          //                 ),
+          //                 Container(
+          //                   width: 2,
+          //                   height: 40.h,
+          //                   color: const Color(0xffC3CFE2),
+          //                 ),
+          //                 Expanded(
+          //                   child: DropdownButton<Country>(
+          //                     underline: const SizedBox.shrink(),
+          //                     // icon: const Icon(Icons.keyboard_arrow_down),
+          //                     icon: const SizedBox.shrink(),
+          //                     hint: Center(
+          //                         child:
+          //                         Text(_selectedCountry?.name ?? '',textAlign:TextAlign.center,style: TextStyle(fontSize: 10.5))),
+          //                     items: _editChannelAdvertiserController
+          //                         .countries
+          //                         .map((Country value) {
+          //                       return DropdownMenuItem<Country>(
+          //                         value: value,
+          //                         child: Text(value.name ?? '',style:TextStyle(fontSize: 11)),
+          //                       );
+          //                     }).toList(),
+          //                     // value: _selectedLocation,
+          //                     // isDense: true,
+          //                     isExpanded: true,
+          //                     onChanged: (newVal) {
+          //                       setState(() {
+          //                         _selectedCountry = newVal!;
+          //                         // if (_selectedCountry?.id != newVal.id) {
+          //                         _selectedCity = null;
+          //                         // }
+          //                       });
+          //                       controller.addToList(_selectedCountry);
+          //                       _editChannelAdvertiserController.countriesIds.add(_selectedCountry?.id??0);
+          //                     },
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //           )),
+          //     ),
+          //     Expanded(
+          //       child: GetBuilder<EditChannelAdvertiserController>(
+          //           init: EditChannelAdvertiserController(),
+          //           builder: (controller) => Container(
+          //             margin: const EdgeInsets.all(15.0),
+          //             padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          //             decoration: BoxDecoration(
+          //               borderRadius: BorderRadius.circular(15),
+          //               border: Border.all(
+          //                 color: const Color(0xffC3CFE2),
+          //               ),
+          //             ),
+          //             child: Row(
+          //               children: [
+          //                 ClipRRect(
+          //                   borderRadius: const BorderRadius.only(
+          //                     topRight: Radius.circular(15),
+          //                     bottomRight: Radius.circular(15),
+          //                   ),
+          //                   child: Container(
+          //                     // alignment: Alignment.center,
+          //                     width: 40.w,
+          //                     padding: const EdgeInsets.symmetric(
+          //                       horizontal: 2,
+          //                       vertical: 11,
+          //                     ),
+          //                     // color: const Color(0xffE8E8E8),
+          //                     child: Text(
+          //                       "المدينة",
+          //                       style: TextStyle(
+          //                           fontSize: 10.5.sp,
+          //                           color: Color(0xff041D67)),
+          //                     ),
+          //                   ),
+          //                 ),
+          //                 Container(
+          //                   width: 2,
+          //                   height: 40.h,
+          //                   color: const Color(0xffC3CFE2),
+          //                 ),
+          //                 Expanded(
+          //                   child: DropdownButton<Area>(
+          //                     underline: const SizedBox.shrink(),
+          //                     // icon: const Icon(Icons.keyboard_arrow_down),
+          //                     icon: const SizedBox.shrink(),
+          //                     hint: Center(
+          //                         child: Text(_selectedCity?.name ?? '',textAlign:TextAlign.center,style: TextStyle(fontSize: 10.5))),
+          //                     items: _editChannelAdvertiserController
+          //                         .countries.isNotEmpty
+          //                         ? _editChannelAdvertiserController
+          //                         .countries[_editChannelAdvertiserController
+          //                         .countries
+          //                         .indexWhere((element) =>
+          //                     _selectedCountry
+          //                         ?.id ==
+          //                         element.id) ==
+          //                         -1
+          //                         ? 0
+          //                         : _editChannelAdvertiserController
+          //                         .countries
+          //                         .indexWhere((element) =>
+          //                     _selectedCountry?.id ==
+          //                         element.id)]
+          //                         .areas
+          //                         ?.map((Area value) {
+          //                       return DropdownMenuItem<Area>(
+          //                         value:
+          //                         value,
+          //                         child: Text(value.name ?? '',style: TextStyle(fontSize: 10.5),),
+          //                       );
+          //                     }).toList()
+          //                         : [],
+          //                     // value: _selectedLocation,
+          //                     // isDense: true,
+          //                     isExpanded: true,
+          //                     onChanged: (newVal) {
+          //                       setState(() {
+          //                         _selectedCity = newVal;
+          //                       });
+          //                       controller.addToList(_selectedCity);
+          //                       _editChannelAdvertiserController.areasIds.add(_selectedCity?.id??0);
+          //                     },
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //           )),
+          //     ),
+          //   ],
+          // ),
+          Container(
+            margin: EdgeInsets.only(left: 10.0, right: 10.0),
+            child: Row(
+              //  mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 42,
+                    margin: EdgeInsets.only(top: 10, left: 2.0, right: 2.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(
+                          color: AppColors.activitiesSheetRounded,
+                          width: 0.5),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                            margin: EdgeInsets.only(
+                                top: 2.0,
+                                bottom: 2.0,
+                                left: 2.0,
+                                right: 2.0),
+                            child: Text(
+                              "الدولة",
+                              style: TextStyle(
+                                  color: AppColors.activitiesDropDown
+                                      .withOpacity(0.73),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16.0),
+                            )),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 8.0),
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 2,
                         ),
-                      ),
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(15),
-                              bottomRight: Radius.circular(15),
-                            ),
-                            child: Container(
-                              // alignment: Alignment.center,
-                              width: 40.w,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 2,
-                                vertical: 11,
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(
+                                top: 0.0,
+                                left: 2.0,
+                                right: 2.0,
+                                bottom: 0.0),
+                            height: 45.0,
+                            child: Obx(() => _editChannelAdvertiserController
+                                .isLoadingLocation.value
+                                ? Container(
+                              child: const SpinKitThreeBounce(
+                                color: Colors.blue,
+                                size: 25,
                               ),
-                              // color: const Color(0xffE8E8E8),
-                              child: Text(
-                                "الدولة",
-                                style: TextStyle(
-                                    fontSize: 10.5.sp,
-                                    color: Color(0xff041D67)),
-                              ),
-                            ),
+                            )
+                                : DropdownSearch<Country>(
+                                enabled: _editChannelAdvertiserController
+                                    .isCountryEnabled.value,
+                                mode: Mode.MENU,
+                                dropDownButton: Container(
+                                    margin: EdgeInsets.only(left: 0.0),
+                                    child: Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: Colors.black
+                                          .withOpacity(0.32),
+                                    )),
+                                dropdownBuilder:
+                                    (BuildContext context, s) {
+                                  return Text(
+                                    '${s!.name}',
+                                    style: TextStyle(
+                                        color: AppColors
+                                            .activitiesDropDown
+                                            .withOpacity(0.73),
+                                        decoration:
+                                        TextDecoration.underline,
+                                        decorationThickness: 2,
+                                        fontSize: 16.0),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  );
+                                },
+                                dropdownSearchDecoration:
+                                InputDecoration(
+                                  // filled: true,
+                                  //fillColor: Color(0xFFF2F2F2),
+                                  contentPadding: EdgeInsets.only(
+                                      right: 0.0,
+                                      top: 0.0,
+                                      bottom: 0.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    //borderRadius: BorderRadius.circular(70.0),
+                                    borderSide: BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    // borderRadius: BorderRadius.circular(70.0),
+                                    borderSide: BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    //borderRadius: BorderRadius.circular(70.0),
+                                    borderSide: BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
+                                ),
+                                items: _editChannelAdvertiserController
+                                    .countriesForLocationSheet,
+                                // label: "Menu mode",
+                                itemAsString: (Country? u) =>
+                                u?.itemAsStringByName() ?? '',
+                                /*popupItemDisabled: (String s) => s.startsWith('I'),
+                                    onChanged:  (String? s) => controller.addItem(s!),*/
+                                onChanged: (c) {
+                                  _editChannelAdvertiserController
+                                      .changeCountry(c);
+                                },
+                                selectedItem:
+                                _editChannelAdvertiserController
+                                    .countriesForLocationSheet[0])),
                           ),
-                          Container(
-                            width: 2,
-                            height: 40.h,
-                            color: const Color(0xffC3CFE2),
-                          ),
-                          Expanded(
-                            child: DropdownButton<Country>(
-                              underline: const SizedBox.shrink(),
-                              // icon: const Icon(Icons.keyboard_arrow_down),
-                              icon: const SizedBox.shrink(),
-                              hint: Center(
-                                  child:
-                                  Text(_selectedCountry?.name ?? '')),
-                              items: _editChannelAdvertiserController
-                                  .countries
-                                  .map((Country value) {
-                                return DropdownMenuItem<Country>(
-                                  value: value,
-                                  child: Text(value.name ?? ''),
-                                );
-                              }).toList(),
-                              // value: _selectedLocation,
-                              // isDense: true,
-                              isExpanded: true,
-                              onChanged: (newVal) {
-                                setState(() {
-                                  _selectedCountry = newVal!;
-                                  // if (_selectedCountry?.id != newVal.id) {
-                                  _selectedCity = null;
-                                  // }
-                                });
-                                controller.addToList(_selectedCountry);
-                                _editChannelAdvertiserController.countriesIds.add(_selectedCountry?.id??0);
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    )),
-              ),
-              Expanded(
-                child: GetBuilder<EditChannelAdvertiserController>(
-                    init: EditChannelAdvertiserController(),
-                    builder: (controller) => Container(
-                      margin: const EdgeInsets.all(15.0),
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                          color: const Color(0xffC3CFE2),
                         ),
-                      ),
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(15),
-                              bottomRight: Radius.circular(15),
-                            ),
-                            child: Container(
-                              // alignment: Alignment.center,
-                              width: 40.w,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 2,
-                                vertical: 11,
-                              ),
-                              // color: const Color(0xffE8E8E8),
-                              child: Text(
-                                "المدينة",
-                                style: TextStyle(
-                                    fontSize: 10.5.sp,
-                                    color: Color(0xff041D67)),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 2,
-                            height: 40.h,
-                            color: const Color(0xffC3CFE2),
-                          ),
-                          Expanded(
-                            child: DropdownButton<Area>(
-                              underline: const SizedBox.shrink(),
-                              // icon: const Icon(Icons.keyboard_arrow_down),
-                              icon: const SizedBox.shrink(),
-                              hint: Center(
-                                  child: Text(_selectedCity?.name ?? '')),
-                              items: _editChannelAdvertiserController
-                                  .countries.isNotEmpty
-                                  ? _editChannelAdvertiserController
-                                  .countries[_editChannelAdvertiserController
-                                  .countries
-                                  .indexWhere((element) =>
-                              _selectedCountry
-                                  ?.id ==
-                                  element.id) ==
-                                  -1
-                                  ? 0
-                                  : _editChannelAdvertiserController
-                                  .countries
-                                  .indexWhere((element) =>
-                              _selectedCountry?.id ==
-                                  element.id)]
-                                  .areas
-                                  ?.map((Area value) {
-                                return DropdownMenuItem<Area>(
-                                  value:
-                                  value,
-                                  child: Text(value.name ?? ''),
-                                );
-                              }).toList()
-                                  : [],
-                              // value: _selectedLocation,
-                              // isDense: true,
-                              isExpanded: true,
-                              onChanged: (newVal) {
-                                setState(() {
-                                  _selectedCity = newVal;
-                                });
-                                controller.addToList(_selectedCity);
-                                _editChannelAdvertiserController.areasIds.add(_selectedCity?.id??0);
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    )),
-              ),
-            ],
-          ),
-          GetBuilder<EditChannelAdvertiserController>(
-              init: EditChannelAdvertiserController(),
-              builder: (controller) => Container(
-                padding: EdgeInsets.all(15),
-                child: Wrap(
-                    children: controller.citiesCountriesController
-                        .map<Widget>((e) => SelectedAreaWidget(
-                      title: "${e.name}",
-                      onPressed: () {
-                        controller.removeFromList(e);
-
-                        print(e.name);
-                      },
-                    ))
-                        .toList()
-                  // <Widget>[
-                  //
-                  //   SelectedAreaWidget(title: "العالم العربي",),
-                  //   SelectedAreaWidget(title: "الخليج العربي",),
-                  //   SelectedAreaWidget(title: "السعودية",),
-                  //   SelectedAreaWidget(title: "الرياض",),
-                  //   SelectedAreaWidget(title: "جدة",),
-                  //   SelectedAreaWidget(title: "الرياض",),
-                  //   SelectedAreaWidget(title: "الرياض",),
-                  // ],
+                      ],
+                    ),
+                  ),
                 ),
-              )),
+                Expanded(
+                  child: Container(
+                    height: 42,
+                    margin: EdgeInsets.only(top: 10, left: 6.0, right: 6.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(
+                          color: AppColors.activitiesSheetRounded,
+                          width: 0.5),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                            margin: EdgeInsets.only(
+                                top: 2.0,
+                                bottom: 2.0,
+                                left: 4.0,
+                                right: 4.0),
+                            child: Text(
+                              "المنطقة",
+                              style: TextStyle(
+                                  color: AppColors.activitiesDropDown
+                                      .withOpacity(0.73),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16.0),
+                            )),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 8.0),
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 2,
+                        ),
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(
+                                top: 0.0,
+                                //  left: 4.0,
+                                //right: 4.0,
+                                bottom: 0.0),
+                            height: 45.0,
+                            child: Obx(() => _editChannelAdvertiserController
+                                .isLoadingLocation.value
+                                ? Container(
+                              child: const SpinKitThreeBounce(
+                                color: Colors.blue,
+                                size: 25,
+                              ),
+                            )
+                                : _editChannelAdvertiserController
+                                .areasForLocationSheet.isNotEmpty
+                                ? DropdownSearch<Area>(
+                                mode: Mode.MENU,
+                                enabled:
+                                _editChannelAdvertiserController
+                                    .isAreaEnabled.value,
+                                dropDownButton: Container(
+                                    margin:
+                                    EdgeInsets.zero,
+                                    padding: EdgeInsets.zero,
+                                    child: Icon(
+                                      Icons.keyboard_arrow_down,
+
+                                      color: Colors.black
+                                          .withOpacity(0.32),
+                                      size: 20,
+                                    )),
+                                /*dropdownButtonBuilder: (BuildContext context){
+                                         return Text('mm');
+                                      },*/
+                                dropdownBuilder:
+                                    (BuildContext context, s) {
+                                  return Text(
+                                    '${s!.name}',
+                                    style: TextStyle(
+                                        color: AppColors
+                                            .activitiesDropDown
+                                            .withOpacity(0.73),
+                                        decoration: TextDecoration
+                                            .underline,
+                                        decorationThickness: 2,
+                                        fontSize: 16.0),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  );
+                                },
+                                dropdownSearchDecoration:
+                                InputDecoration(
+                                  // filled: true,
+                                  //fillColor: Color(0xFFF2F2F2),
+                                  contentPadding: EdgeInsets.only(
+                                      right: 0.0,
+                                      top: 0.0,
+                                      bottom: 0.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    //borderRadius: BorderRadius.circular(70.0),
+                                    borderSide: BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    //  borderRadius: BorderRadius.circular(70.0),
+                                    borderSide: BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    // borderRadius: BorderRadius.circular(70.0),
+                                    borderSide: BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
+                                ),
+                                items:
+                                _editChannelAdvertiserController
+                                    .areasForLocationSheet,
+                                // label: "Menu mode",
+                                itemAsString: (Area? u) =>
+                                u?.itemAsStringByName() ?? '',
+                                onChanged: (area) {
+                                  _editChannelAdvertiserController
+                                      .changeArea(area);
+                                },
+                                selectedItem:
+                                _editChannelAdvertiserController
+                                    .areasForLocationSheet
+                                    .value[0])
+                                : Container(
+                                alignment: Alignment.centerRight,
+                                child: Text("لا يوجد مناطق"))),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Obx(
+                () => Container(
+              margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 18),
+              alignment: Alignment.center,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: _editChannelAdvertiserController
+                    .selectedUserLocations.isNotEmpty
+                    ? Wrap(
+                  direction: Axis.horizontal,
+                  children: _editChannelAdvertiserController
+                      .selectedUserLocations.value
+                      .map((value) => Stack(
+                    children: [
+                      Container(
+                        height: 35,
+                        margin: EdgeInsets.only(
+                            left: 18.0, top: 8, bottom: 3),
+                        child: Chip(
+                          elevation: 3.0,
+                          shape: StadiumBorder(
+                              side: BorderSide(
+                                  color: AppColors
+                                      .activitiesSheetRounded,
+                                  width: 0.5)),
+                          labelPadding: EdgeInsets.only(
+                              bottom: 4, left: 6, right: 6),
+                          label: Container(
+                            //margin: EdgeInsets.only(bottom: 4),
+                            child: Text(
+                              value.name ?? '',
+                              style: TextStyle(
+                                color: AppColors
+                                    .activitiesDropDown,
+                                fontSize: 16.0,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          backgroundColor:
+                          AppColors.bottomSheetTabColor,
+                        ),
+                      ),
+                      Positioned(
+                        left: 6,
+                        top: 3,
+                        child: InkWell(
+                          onTap: () {
+                            _editChannelAdvertiserController
+                                .removeCountryOrArea(
+                                value);
+                          },
+                          child: Container(
+                            // alignment: Alignment.topLeft,
+                              padding: EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors
+                                      .bottomSheetTabColorRounded),
+                              child: Icon(
+                                Icons.clear,
+                                color: AppColors.white,
+                                size: 18,
+                              )),
+                        ),
+                      )
+                    ],
+                  ))
+                      .toList(),
+                )
+                    : _editChannelAdvertiserController.isLoadingLocation.value
+                    ? Container(
+                    alignment: Alignment.topCenter,
+                    child: const CircularProgressIndicator(
+                      color: AppColors.tabColor,
+                    ))
+                    : Container(
+                    alignment: Alignment.center,
+                    child: const Text('لا يوجد عناصر')),
+              ),
+            ),
+          ),
+          ///old wrap
+          // GetBuilder<EditChannelAdvertiserController>(
+          //     init: EditChannelAdvertiserController(),
+          //     builder: (controller) => Container(
+          //       padding: EdgeInsets.all(15),
+          //       child: Wrap(
+          //           children: controller.citiesCountriesController
+          //               .map<Widget>((e) => SelectedAreaWidget(
+          //             title: "${e.name}",
+          //             onPressed: () {
+          //               controller.removeFromList(e);
+          //
+          //               print(e.name);
+          //             },
+          //           ))
+          //               .toList()
+          //         // <Widget>[
+          //         //
+          //         //   SelectedAreaWidget(title: "العالم العربي",),
+          //         //   SelectedAreaWidget(title: "الخليج العربي",),
+          //         //   SelectedAreaWidget(title: "السعودية",),
+          //         //   SelectedAreaWidget(title: "الرياض",),
+          //         //   SelectedAreaWidget(title: "جدة",),
+          //         //   SelectedAreaWidget(title: "الرياض",),
+          //         //   SelectedAreaWidget(title: "الرياض",),
+          //         // ],
+          //       ),
+          //     )),
+
           Padding(
             padding:
             const EdgeInsets.only(bottom: 45, left: 35, right: 35, top: 25),
@@ -893,7 +1295,9 @@ class _EditAdvertiserChannelState extends State<EditAdvertiserChannel> {
                   _editChannelAdvertiserController.choosedChannel.value=chan.image??'';
                   _editChannelAdvertiserController.channelId.value=chan.id??0;
                 },
-                icon: Image.network(chan.image??' ')),
+                icon: Image.network(chan.image??' ',errorBuilder: (context,object,err){
+                  return Image.asset('images/no_image_available.png',height: 70);
+                },)),
             VerticalDivider(),
           ],
         ),

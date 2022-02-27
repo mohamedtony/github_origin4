@@ -46,7 +46,7 @@ class AdvancedOptionsWidget extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    Expanded(child: Text( "${advancedOptionsData.txt}",style: TextStyle(fontSize: 13,color:Color(0xff4184CE)),))
+                    Expanded(child: Text( "${advancedOptionsData.txt}",style: TextStyle(fontSize: 11.7,color:Color(0xff4184CE)),))
                   ],)),
 
                   InkWell(
@@ -63,7 +63,13 @@ class AdvancedOptionsWidget extends StatelessWidget {
                         SizedBox(
                           width: 10,
                         ),
-                        controller.checkList!.contains(advancedOptionsData.key) ? selectedBigCheckBox() : unSelectedBigCheckBox(),
+                        controller.checkList!.contains(advancedOptionsData.key) ? Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: selectedBigCheckBox(),
+                        ) : Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: unSelectedBigCheckBox(),
+                        ),
                         SizedBox(
                           width: 15,
                         ),

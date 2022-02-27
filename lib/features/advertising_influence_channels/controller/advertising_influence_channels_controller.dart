@@ -12,21 +12,24 @@ import 'package:get/get.dart';
 
 class AdvertisingInfluenceChannelsController extends GetxController{
   late Repository repo ;
-  var channels=[].obs;
+  var  advertisingChannels2=ChannelData().obs;
+  //var icon=Padding(padding: EdgeInsets.all(0),).obs;
+ var currentIndex2=0.obs;
+  var channels=<ChannelData>[].obs;
   var status=0.obs;
   var type=''.obs;
   var basicChannels=[].obs;
-  var checkList = [].obs;
+  //var checkList = [].obs;
   var channelId=0.obs;
  // var toggleId=0.obs;
-  void addRemoveCheckList(id){
-    if(checkList!.contains(id)){
-      checkList!.remove(id);
-    }else{
-      checkList!.add(id);
-    }
-   // update();
-  }
+ //  void addRemoveCheckList(id){
+ //    if(checkList!.contains(id)){
+ //      checkList!.remove(id);
+ //    }else{
+ //      checkList!.add(id);
+ //    }
+ //   // update();
+ //  }
 
 
   bool isChecked = false;
@@ -81,7 +84,7 @@ class AdvertisingInfluenceChannelsController extends GetxController{
           });
 
   }
-  channelToggleStatusView({required int viewId}){
+  channelToggleStatusView({required int viewId,required int index}){
 
     EasyLoading.show();
 
@@ -94,7 +97,11 @@ class AdvertisingInfluenceChannelsController extends GetxController{
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
           }
-          status.value=res.data?.status??0;
+
+          channels[index].status=res.data?.status??0;
+update();
+         print('>>>>>>>>>>> $index ${channels[index].status}');
+
         },
         onError: (err, res) {
 
@@ -127,6 +134,7 @@ class AdvertisingInfluenceChannelsController extends GetxController{
             EasyLoading.dismiss();
           }
           type.value=res.data?.type??'ads';
+          update();
         },
         onError: (err, res) {
 
@@ -194,6 +202,13 @@ class AdvertisingInfluenceChannelsController extends GetxController{
     token =storage.read("token");
     repo = Repository();
     getChannels();
+    // icon.value=advertisingChannels2.value.status==1 ? Padding(
+    //   padding: const EdgeInsets.all(5.0),
+    //   child: Icon(Icons.remove_red_eye_outlined,color: Color(0xff5aa1d0),),
+    // ):Padding(
+    //     padding: const EdgeInsets.all(5.0),
+    //     child: Image.asset("images/icon_eye_off.png",height: 25,width:25,//Icon(Icons.remove_red_eye,color: Color(0xff5aa1d0),
+    //     ));
     super.onInit();
   }
 

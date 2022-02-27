@@ -1,6 +1,7 @@
 import 'package:advertisers/app_core/network/models/RequestModel.dart';
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/responses/MyRequestsResponse.dart';
+import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,8 @@ class MyOrdersController extends GetxController{
   var myRequestsAsClient=<RequestModel>[].obs;
   // var myRequestAsClient
    List<int>? checkListShare = [];
-
+   var registerClientUserResponse=RegisterClientUserResponse().obs;
+   TextEditingController reasonController=TextEditingController();
   void addAndRemoveOtherFromCheckListShare(id){
     if(checkListShare!.contains(id)){
       checkListShare!.clear();
@@ -125,7 +127,7 @@ class MyOrdersController extends GetxController{
     repo.get<MyRequestsResponse>(
         path: 'myrequests',
         fromJson: (json) => MyRequestsResponse.fromJson(json),
-        json: {"token": "Bearer 767|ASU4Q35lP3HPA2IDbwbe7ZOAwJycP7ci1geR0icv"},//"Bearer  $token"},
+        json: {"token": "Bearer $token"},//"Bearer  $token"},
         onSuccess: (res) {
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
@@ -187,32 +189,70 @@ class MyOrdersController extends GetxController{
     return false;
   }
 
-  // getMyRequestsAsClient() {
-  //   EasyLoading.show();
-  //   repo.get<MyRequestsResponse>(
-  //       path: 'myrequests',
-  //       fromJson: (json) => MyRequestsResponse.fromJson(json),
-  //       json: {"token": "Bearer  $token"},
-  //       onSuccess: (res) {
-  //         if (EasyLoading.isShow) {
-  //           EasyLoading.dismiss();
-  //         }
-  //         myRequestsAsClient.value = res.data?.requests??[];
-  //
-  //
-  //       },
-  //       onError: (err, res) {
-  //         if (EasyLoading.isShow) {
-  //           EasyLoading.dismiss();
-  //         }
-  //         Get.snackbar(
-  //           "خطأ",
-  //           res.message.toString(),
-  //           icon: const Icon(Icons.person, color: Colors.red),
-  //           backgroundColor: Colors.yellow,
-  //           snackPosition: SnackPosition.BOTTOM,);
-  //       });
-  // }
+  void refuseRequest({required int requestId}) {
+    EasyLoading.show();
+    Repository repo = Repository();
+
+    repo.postWithImageMultipart<RegisterClientUserResponse>(
+        path: 'requests/$requestId/reject',
+        fromJson: (json) => RegisterClientUserResponse.fromJson(json),
+        json: {
+    "token": "Bearer $token",
+          "reason": reasonController.text,
+        },
+        onSuccess: (res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          registerClientUserResponse.value = res;
+
+          //Get.toNamed('/chooseBakaPage');
+        },
+        onError: (err, res) {
+
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            err.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
+  }
+  void cancelRequest({required int requestId}) {
+    EasyLoading.show();
+    Repository repo = Repository();
+
+    repo.postWithImageMultipart<RegisterClientUserResponse>(
+        path: 'requests/$requestId/cancel',
+        fromJson: (json) => RegisterClientUserResponse.fromJson(json),
+        json: {
+          "token": "Bearer $token",
+          "reason": ' ',
+        },
+        onSuccess: (res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          registerClientUserResponse.value = res;
+
+          //Get.toNamed('/chooseBakaPage');
+        },
+        onError: (err, res) {
+
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            err.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
+  }
   @override
   void onClose() {
     searchController.dispose();

@@ -1,11 +1,14 @@
+import 'package:advertisers/features/customer_order_invoice/controller/customer_order_invoice_controller.dart';
+
 import 'package:advertisers/features/customer_order_invoice/view/widgets/customer_order_invoice_app_bar.dart';
 import 'package:advertisers/features/customer_order_invoice/view/widgets/staticts_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class CustomerOrderInvoicePage extends StatelessWidget {
-  const CustomerOrderInvoicePage({Key? key}) : super(key: key);
-
+  CustomerOrderInvoicePage({Key? key}) : super(key: key);
+  CustomerOrderInvoiceController customerOrderInvoiceOutputsController=Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +16,7 @@ class CustomerOrderInvoicePage extends StatelessWidget {
         child: CustomerOrderInvoiceBarWidget(),
         preferredSize: Size(MediaQuery.of(context).size.width, 110.h),
       ),
-      body: Container(
+      body: Obx(()=>Container(
         width: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -30,8 +33,8 @@ class CustomerOrderInvoicePage extends StatelessWidget {
         padding: EdgeInsets.only(right: 15,left: 15,bottom: 15),
         child: ListView(
           children: [
-            Text("نوع الإعلان / تغطية مع الحضور ....(1)",style: TextStyle(color: Colors.white,fontSize: 15.sp),),
-           const SizedBox(
+            Text('  ',style: TextStyle(color: Colors.white,fontSize: 15.sp),),
+            const SizedBox(
               height: 15,
             ),
             Row(
@@ -43,70 +46,57 @@ class CustomerOrderInvoicePage extends StatelessWidget {
                       bottom: BorderSide(width: 1.0, color: Colors.grey),
                     ),),
                   padding: EdgeInsets.symmetric(vertical: 5,horizontal: 25),
-                  child: Text("#569851",style: TextStyle(color: Color(0xffD37A47),fontSize: 14.sp),),
+                  child: Text(customerOrderInvoiceOutputsController.showBillModel.value.id.toString()??" ",style: TextStyle(color: Color(0xffD37A47),fontSize: 14.sp),),
                 ),
               ],
             ),
             Container(
               color: Colors.white,
               child: Column(
-                children: [
-                  StaticsWidget(
-                    title: "إعلان تغطية خاصة بموقع التاجر",
-                    price: "17500",
-                    currency: "ر.س",
-                  ),
-                  StaticsWidget(
-                    title: "تكلفة إقامة لمدة يومين",
-                    price: "1000",
-                    currency: "ر.س",
-                  ),
-                  StaticsWidget(
-                    title: "تكلفة طيران",
-                    price: "1200",
-                    currency: "ر.س",
-                  ),
-                  StaticsWidget(
-                    title: "اضافة الخصم الخاص",
-                    price: "-120",
-                    currency: "ر.س",
-                  ),
-                ],
-              ),
+                  children: customerOrderInvoiceOutputsController.showBillModel.value.items!=null?List.generate(customerOrderInvoiceOutputsController.showBillModel.value.items!.length, (index) =>
+                      StaticsWidget(
+                        title: customerOrderInvoiceOutputsController.showBillModel.value.items![index].text??'',
+                        price:customerOrderInvoiceOutputsController.showBillModel.value.items![index].price?.toStringAsFixed(2)??'',
+                        currency: customerOrderInvoiceOutputsController.showBillModel.value.payment?.currency??'',
+                      ),
+                    //   StaticsWidget(
+                    //     title: "تكلفة إقامة لمدة يومين",
+                    //     price: "1000",
+                    //     currency: "ر.س",
+                    //   ),
+                    //   StaticsWidget(
+                    //     title: "تكلفة طيران",
+                    //     price: "1200",
+                    //     currency: "ر.س",
+                    //   ),
+                    // ],
+                  ) :[const SizedBox()]),
             ),
-          const  SizedBox(
+            const  SizedBox(
               height: 15,
             ),
             Container(
+              padding: EdgeInsets.symmetric(vertical: 7),
               color: Colors.white,
               child: Column(
-                children: [
-                  SizedBox(
-                    height: 7,
-                  ),
-                  StaticsWidget(
-                    isPoint: false,
-                    title: "عمولة المنصة",
-                    price: "17500",
-                    currency: "ر.س",
-                    percent: "7 %",
-                  ),
-                  StaticsWidget(
-                    isPoint: false,
-                    title: "ضريبة القيمة المضافة",
-                    price: "1000",
-                    currency: "ر.س",
-                    percent: "15 %",
-                  ),
-                  SizedBox(
-                    height: 7,
-                  ),
-                ],
-              ),
+                  children: customerOrderInvoiceOutputsController.showBillModel.value.discounts!=null?List.generate(customerOrderInvoiceOutputsController.showBillModel.value.discounts!.length, (index) =>
+
+
+                      StaticsWidget(
+                        isPoint: false,
+                        title: customerOrderInvoiceOutputsController.showBillModel.value.discounts![index].text??'',
+                        price: customerOrderInvoiceOutputsController.showBillModel.value.discounts![index].text??'',
+                        currency:  customerOrderInvoiceOutputsController.showBillModel.value.payment?.currency??'',
+                        percent: "7 %",
+                      ),
+
+
+
+                  ) :[const SizedBox()]),
             ),
-          const  SizedBox(
-            height: 15,
-          ),
+            const  SizedBox(
+              height: 15,
+            ),
 
             Container(
               color: Colors.white,
@@ -125,12 +115,12 @@ class CustomerOrderInvoicePage extends StatelessWidget {
 
                         Row(
                           children: [
-                            Text("19306", style: TextStyle(color: Color(0xffD37A47),fontSize: 16.sp,fontWeight: FontWeight.bold),),
+                            Text(customerOrderInvoiceOutputsController.showBillModel.value.payment?.subtotal?.toStringAsFixed(2)??'', style: TextStyle(color: Color(0xffD37A47),fontSize: 16.sp,fontWeight: FontWeight.bold),),
                             const SizedBox(
                               width: 5,
                             ),
                             // Spacer(),
-                            Text("ر.س",style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),),
+                            Text(customerOrderInvoiceOutputsController.showBillModel.value.payment?.currency??'',style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),),
 
                           ],
                         )
@@ -138,6 +128,135 @@ class CustomerOrderInvoicePage extends StatelessWidget {
                       ],
                     ),
                   ),
+      // appBar: PreferredSize(
+      //   child: CustomerOrderInvoiceBarWidget(),
+      //   preferredSize: Size(MediaQuery.of(context).size.width, 110.h),
+      // ),
+      // body: Container(
+      //   width: double.infinity,
+      //   decoration: const BoxDecoration(
+      //     gradient: LinearGradient(
+      //         begin: Alignment.topRight,
+      //         end: Alignment.bottomRight,
+      //         colors: [
+      //           Color(0xff6cc9db),
+      //           Color(0xff60abd6),
+      //           Color(0xff538bce),
+      //           Color(0xff496ec7),
+      //           // Colors.white
+      //         ]),
+      //   ),
+      //   padding: EdgeInsets.only(right: 15,left: 15,bottom: 15),
+      //   child: ListView(
+      //     children: [
+      //       Text("نوع الإعلان / تغطية مع الحضور ....(1)",style: TextStyle(color: Colors.white,fontSize: 15.sp),),
+      //      const SizedBox(
+      //         height: 15,
+      //       ),
+      //       Row(
+      //         children: [
+      //           Container(
+      //             decoration: const BoxDecoration(
+      //               color: Colors.white,
+      //               border: Border(
+      //                 bottom: BorderSide(width: 1.0, color: Colors.grey),
+      //               ),),
+      //             padding: EdgeInsets.symmetric(vertical: 5,horizontal: 25),
+      //             child: Text("#569851",style: TextStyle(color: Color(0xffD37A47),fontSize: 14.sp),),
+      //           ),
+      //         ],
+      //       ),
+      //       Container(
+      //         color: Colors.white,
+      //         child: Column(
+      //           children: [
+      //             StaticsWidget(
+      //               title: "إعلان تغطية خاصة بموقع التاجر",
+      //               price: "17500",
+      //               currency: "ر.س",
+      //             ),
+      //             StaticsWidget(
+      //               title: "تكلفة إقامة لمدة يومين",
+      //               price: "1000",
+      //               currency: "ر.س",
+      //             ),
+      //             StaticsWidget(
+      //               title: "تكلفة طيران",
+      //               price: "1200",
+      //               currency: "ر.س",
+      //             ),
+      //             StaticsWidget(
+      //               title: "اضافة الخصم الخاص",
+      //               price: "-120",
+      //               currency: "ر.س",
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //     const  SizedBox(
+      //         height: 15,
+      //       ),
+      //       Container(
+      //         color: Colors.white,
+      //         child: Column(
+      //           children: [
+      //             SizedBox(
+      //               height: 7,
+      //             ),
+      //             StaticsWidget(
+      //               isPoint: false,
+      //               title: "عمولة المنصة",
+      //               price: "17500",
+      //               currency: "ر.س",
+      //               percent: "7 %",
+      //             ),
+      //             StaticsWidget(
+      //               isPoint: false,
+      //               title: "ضريبة القيمة المضافة",
+      //               price: "1000",
+      //               currency: "ر.س",
+      //               percent: "15 %",
+      //             ),
+      //             SizedBox(
+      //               height: 7,
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //     const  SizedBox(
+      //       height: 15,
+      //     ),
+      //
+      //       Container(
+      //         color: Colors.white,
+      //         padding: EdgeInsets.all(15),
+      //         child: Column(
+      //           children: [
+      //             Container(
+      //               padding: EdgeInsets.only(bottom: 8),
+      //               child: Row(
+      //                 children: [
+      //
+      //                   SizedBox(
+      //                     width:  15,
+      //                   ),
+      //                   Expanded(child: Text("اجمالي الفاتورة",style: TextStyle(color: Color(0xffD37A47),fontSize: 16.sp,fontWeight: FontWeight.bold),)),
+      //
+      //                   Row(
+      //                     children: [
+      //                       Text("19306", style: TextStyle(color: Color(0xffD37A47),fontSize: 16.sp,fontWeight: FontWeight.bold),),
+      //                       const SizedBox(
+      //                         width: 5,
+      //                       ),
+      //                       // Spacer(),
+      //                       Text("ر.س",style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),),
+      //
+      //                     ],
+      //                   )
+      //
+      //                 ],
+      //               ),
+      //             ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -173,7 +292,7 @@ class CustomerOrderInvoicePage extends StatelessWidget {
                               ),
                               contentPadding:
                               EdgeInsets.only(left: 5, right: 5,bottom: 10,top: 30),
-                              hintText: "............",),
+                              hintText: customerOrderInvoiceOutputsController.showBillModel.value.payment?.copon??' ',),
                             // hintText: "1236532897120",hintStyle: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp),),
                           ),
                         ),
@@ -202,7 +321,7 @@ class CustomerOrderInvoicePage extends StatelessWidget {
                  SizedBox(
                    width: 60,
                  ),
-                  Text("19306", style: TextStyle(color: Color(0xffD37A47),fontSize: 23.sp,fontWeight: FontWeight.bold),),
+                  Text(customerOrderInvoiceOutputsController.showBillModel.value.payment?.total?.toStringAsFixed(2)??'', style: TextStyle(color: Color(0xffD37A47),fontSize: 23.sp,fontWeight: FontWeight.bold),),
                   const SizedBox(
                     width: 15,
                   ),
@@ -224,19 +343,19 @@ class CustomerOrderInvoicePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("عند دفع الفاتورة ستكسب 19306 نقطة",style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),),
+                  Text("عند دفع الفاتورة ستكسب ${customerOrderInvoiceOutputsController.showBillModel.value.earned_points} نقطة",style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),),
                   SizedBox(
                     height: 15,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("19306", style: TextStyle(color: Color(0xffD37A47),fontSize: 16.sp,fontWeight: FontWeight.bold),),
+                      Text(customerOrderInvoiceOutputsController.showBillModel.value.earned_points?.toStringAsFixed(2)??'', style: TextStyle(color: Color(0xffD37A47),fontSize: 16.sp,fontWeight: FontWeight.bold),),
                       const SizedBox(
                         width: 5,
                       ),
                       // Spacer(),
-                      Text("ر.س",style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),),
+                      Text(customerOrderInvoiceOutputsController.showBillModel.value.payment?.currency??'',style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),),
 
                     ],
                   )
@@ -249,6 +368,6 @@ class CustomerOrderInvoicePage extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 }

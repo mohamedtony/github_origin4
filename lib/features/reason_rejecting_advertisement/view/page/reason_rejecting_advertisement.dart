@@ -1,11 +1,15 @@
+import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
+import 'package:advertisers/features/reason_rejecting_advertisement/controller/reason_rejecting_advertisement_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ReasonRejectingAdvertisement extends StatelessWidget {
-  const ReasonRejectingAdvertisement({Key? key}) : super(key: key);
-
+   ReasonRejectingAdvertisement({Key? key}) : super(key: key);
+final ReasonRejectingAdvertisementController reasonRejectingAdvertisementController=Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,7 +101,7 @@ class ReasonRejectingAdvertisement extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            Text("2032012",style: TextStyle(color: Colors.white),)
+                            Text(reasonRejectingAdvertisementController.reasonDataModel.value.id.toString()??'',style: TextStyle(color: Colors.white),)
                           ],
                         ),
                         const  SizedBox(
@@ -106,7 +110,8 @@ class ReasonRejectingAdvertisement extends StatelessWidget {
                         Row(
                           children:  [
                             InkWell(
-                                onTap: (){
+                                onTap: ()async{
+    if (!await launch(reasonRejectingAdvertisementController.reasonDataModel.value.advertiser?.phone??'')) throw 'Could not launch PhoneCall';
 
                                 },
                                 child: const FaIcon(FontAwesomeIcons.phoneAlt,color: Colors.white,size: 20,)),
@@ -131,8 +136,9 @@ class ReasonRejectingAdvertisement extends StatelessWidget {
                               margin:const EdgeInsets.symmetric(horizontal: 25),
                             ),
                             InkWell(
-                                onTap: (){
-
+                                onTap: ()async{
+                                  var whatsappUrl ="whatsapp://send?phone=${reasonRejectingAdvertisementController.reasonDataModel.value.advertiser?.phone??''}";
+                                  await canLaunch(whatsappUrl)? launch(whatsappUrl):print("open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
                                 },
                                 child: const FaIcon(FontAwesomeIcons.whatsapp
                                     ,color: Color(0xff148253),size: 30)),
@@ -149,7 +155,7 @@ class ReasonRejectingAdvertisement extends StatelessWidget {
                                   Radius.circular(12),
                                 ),
                                 child: Image.network(
-                                  'https://roshah.com/wp-content/uploads/2018/04/2986-1.jpg',
+                                  reasonRejectingAdvertisementController.reasonDataModel.value.advertiser?.image??'',
                                   height: 50.w,
                                   width: 50.w,
                                 ),
@@ -182,7 +188,7 @@ class ReasonRejectingAdvertisement extends StatelessWidget {
                                   horizontal: 50,
                                   vertical: 20,
                                 ),
-                                child: Text("العميل رفض التعديل",style: TextStyle(color:const Color(0xff1A2D67),fontWeight: FontWeight.bold,fontSize: 15.sp),),
+                                child: Text("طلب مرفوض",style: TextStyle(color:const Color(0xff1A2D67),fontWeight: FontWeight.bold,fontSize: 15.sp),),
                               ),
                             ),
                           ],
@@ -201,11 +207,11 @@ class ReasonRejectingAdvertisement extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("السبب",style: TextStyle(color: Colors.black,fontSize: 15.sp),),
+                              Text("ملحوظة",style: TextStyle(color: Colors.black,fontSize: 15.sp),),
                               const SizedBox(
                                 width: 15,
                               ),
-                              Expanded(child: Text("لا يمكنني تغيير التوقيت بسبب أن التغطية مرتبطة بموعد افتتاح",style: TextStyle(color:const Color(0xff6D6B6B),fontSize: 13.sp),),)
+                              Expanded(child: Text(reasonRejectingAdvertisementController.reasonDataModel.value.reason??'',style: TextStyle(color:const Color(0xff6D6B6B),fontSize: 13.sp),),)
                             ],
                           ),),
                         const  SizedBox(
@@ -227,7 +233,7 @@ class ReasonRejectingAdvertisement extends StatelessWidget {
                                 child: Container(
                                   height: 40,
                                   child: Center(
-                                    child: Text("الغاء الطلب",style: TextStyle(color: Color(0xff427AD0),fontSize: 18,fontWeight: FontWeight.bold),),
+                                    child: Text("تعديل الطلب",style: TextStyle(color: Color(0xff427AD0),fontSize: 18,fontWeight: FontWeight.bold),),
                                   ),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
@@ -239,12 +245,13 @@ class ReasonRejectingAdvertisement extends StatelessWidget {
                                 width: 35,
                               ),
                               Expanded(child: InkWell(onTap: (){
-
+                                Get.find<MyOrdersController>().refuseRequest(requestId: reasonRejectingAdvertisementController.reasonDataModel.value.id??0);
+                                Get.back();
                               },
                                 child: Container(
                                   height: 40,
                                   child: Center(
-                                    child: Text("قبول الطلب",style: TextStyle(color: Color(0xff244094),fontSize: 16.sp,),),
+                                    child: Text("الغاء الطلب",style: TextStyle(color: Color(0xff244094),fontSize: 16.sp,),),
                                   ),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),

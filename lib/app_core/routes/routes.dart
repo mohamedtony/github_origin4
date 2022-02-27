@@ -27,6 +27,7 @@ import 'package:advertisers/features/chat/view/pages/chat_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page_controller.dart';
+import 'package:advertisers/features/customer_order_invoice/controller/customer_order_invoice_controller.dart';
 import 'package:advertisers/features/customer_order_invoice/view/customer_order_invoice_page.dart';
 import 'package:advertisers/features/customer_order_invoice_out_puts/view/customer_order_invoice_out_puts.dart';
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
@@ -36,6 +37,7 @@ import 'package:advertisers/features/my_orders_and_my_orders_archive/my_orders_a
 import 'package:advertisers/features/my_orders_archive/view/my_orders_archive_page.dart';
 import 'package:advertisers/features/notifications/view/pages/notifications_page.dart';
 import 'package:advertisers/features/notifications_settings/view/pages/notifications_settings_page.dart';
+import 'package:advertisers/features/reason_rejecting_advertisement/controller/reason_rejecting_advertisement_controller.dart';
 import 'package:advertisers/features/reason_rejecting_advertisement/view/page/reason_rejecting_advertisement.dart';
 import 'package:advertisers/features/request_advertise_module/view/pages/request_advertise_page.dart';
 import 'package:advertisers/features/tax_settings/view/pages/tax_settings_page.dart';
@@ -268,7 +270,9 @@ class Routes {
     GetPage(
       name: '/CustomerOrderInvoicePage',
       page: () => CustomerOrderInvoicePage(),
-    ),
+        binding: BindingsBuilder(() {
+          Get.lazyPut<CustomerOrderInvoiceController>(() => CustomerOrderInvoiceController());
+        })),
     // GetPage(
     //   name: '/MyOrdersArchivePage',
     //   page: () => MyOrdersArchivePage(),
@@ -311,7 +315,9 @@ class Routes {
     GetPage(
       name: '/ReasonRejectingAdvertisement',
       page: () => ReasonRejectingAdvertisement(),
-
+      binding: BindingsBuilder(() {
+        Get.lazyPut<ReasonRejectingAdvertisementController>(() => ReasonRejectingAdvertisementController());
+      }),
     ),
     GetPage(
       name: '/ReasonRejectingAdvertisementCustomer',
