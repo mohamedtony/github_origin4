@@ -32,7 +32,13 @@ void main() async{
 
   dio = Dio();
   dio?.options.headers['Content-Type'] = 'application/json';
+  //dio?.options.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+
   dio?.interceptors.add(InterceptorsWrapper(
+    /*onResponse: ( r ,ResponseInterceptorHandler handler){
+      Logger().i(r);
+      //return r;
+    },*/
     onError: (DioError e, ErrorInterceptorHandler handler){
       final r = e.response;
       Logger().i(e.response);

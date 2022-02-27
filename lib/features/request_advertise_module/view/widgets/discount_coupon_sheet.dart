@@ -111,9 +111,9 @@ class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
                         child: Container(
                             width: 170.0,
                             height: 170.0,
-                            child:  Obx(()=>requestAdvertiseController.imagePath.value.isNotEmpty
+                            child:  Obx(()=>requestAdvertiseController.imagePathCopon.value.isNotEmpty
                                 ? Image.file(
-                              File(requestAdvertiseController.imagePath.value),
+                              File(requestAdvertiseController.imagePathCopon.value),
                               width: 170.0,
                               height: 170.0,
                               fit: BoxFit.fitHeight,
@@ -734,7 +734,7 @@ class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
       requestAdvertiseController.coponDiscountController?.dispose();
       requestAdvertiseController.coponUsesController?.dispose();
       requestAdvertiseController.coponLinkController?.dispose();
-      requestAdvertiseController.imagePath.value = "";
+      requestAdvertiseController.imagePathCopon.value = "";
       requestAdvertiseController.endAdvertisingDateCoupon.value = "";
     }
     super.dispose();

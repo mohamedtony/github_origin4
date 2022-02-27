@@ -251,7 +251,7 @@ class Home extends StatelessWidget {
           return DraggableScrollableSheet(
             //maxChildSize: 0.8,
             //minChildSize: 100.0,
-
+            //maxChildSize: 0.9,
             initialChildSize: bottomNumber==6?0.84:0.67,
             expand: false,
             builder: (context, scrollController) {
@@ -284,7 +284,8 @@ class Home extends StatelessWidget {
                     scrollController: scrollController);
               }else{
                 return FilterOrderAdvertisersSheet(
-                    scrollController: scrollController);
+                   scrollController: scrollController
+                );
               }
             },
           );

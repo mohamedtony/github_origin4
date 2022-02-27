@@ -5,10 +5,11 @@ part 'EffectSlidesModel.g.dart';
 @JsonSerializable()
 class EffectSlidesModel {
   int? id;
-  EffectSlidesNameModel? name;
+  String? name;
+  int? count_from;
+  int? count_to;
 
-
-  EffectSlidesModel({this.id, this.name, });
+  EffectSlidesModel({this.id, this.name, this.count_from,this.count_to});
 
   factory EffectSlidesModel.fromJson(Map<String, dynamic> json) => _$EffectSlidesModelFromJson(json);
 

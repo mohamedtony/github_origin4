@@ -15,7 +15,7 @@ SortTypesAdvertisersModel _$SortTypesAdvertisersModelFromJson(
       top_rated: json['top_rated'] as String?,
       most_ads: json['most_ads'] as String?,
       most_followers: json['most_followers'] as String?,
-      less_folloers: json['less_folloers'] as String?,
+      less_followers: json['less_followers'] as String?,
     );
 
 Map<String, dynamic> _$SortTypesAdvertisersModelToJson(
@@ -27,5 +27,5 @@ Map<String, dynamic> _$SortTypesAdvertisersModelToJson(
       'top_rated': instance.top_rated,
       'most_ads': instance.most_ads,
       'most_followers': instance.most_followers,
-      'less_folloers': instance.less_folloers,
+      'less_followers': instance.less_followers,
     };

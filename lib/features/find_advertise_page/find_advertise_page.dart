@@ -222,7 +222,11 @@ class FindAdvertisePage extends StatelessWidget {
                     ),
                   );
                 }else{
-                  return  FindAdvertiseItem(advertisersModel:findAdvertiseController.advertisersModel.value[position],findAdvertiseController: controller,);
+                  return  InkWell(
+                      onTap: (){
+                        findAdvertiseController.changeIndex(position, findAdvertiseController.advertisersModel.value[position].id!);
+                      },
+                      child: FindAdvertiseItem(advertisersModel:findAdvertiseController.advertisersModel.value[position],findAdvertiseController: controller,index: position,));
                 }
               },
             ))
@@ -240,29 +244,34 @@ class FindAdvertisePage extends StatelessWidget {
         ],
       ),
     ),*/
-        Container(
-          //width: 135,
-          height: 40,
-          alignment: Alignment.center,
-          margin: EdgeInsets.only(right:50.0, left: 50.0, top: 10.0,bottom: 10.0),
-          child: Material(
-            elevation: 6.0,
-            shadowColor: Colors.grey[200],
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-            color: AppColors.tabColor,
-            child: Container(
-              /*margin: EdgeInsets.only(
-                          left: 12.0, bottom: 4.0, right: 20),*/
-              alignment: Alignment.center,
-              child: Text(
-                'أرسل طلبك',
-                style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w300),
-                textAlign: TextAlign.center,
-              ),
+        InkWell(
+          onTap: (){
+            findAdvertiseController.onSendRequestClicked(context);
+          },
+          child: Container(
+            //width: 135,
+            height: 40,
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(right:50.0, left: 50.0, top: 10.0,bottom: 10.0),
+            child: Material(
+              elevation: 6.0,
+              shadowColor: Colors.grey[200],
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+              color: AppColors.tabColor,
+              child: Container(
+                /*margin: EdgeInsets.only(
+                            left: 12.0, bottom: 4.0, right: 20),*/
+                alignment: Alignment.center,
+                child: Text(
+                  'أرسل طلبك',
+                  style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w300),
+                  textAlign: TextAlign.center,
+                ),
 
+              ),
             ),
           ),
         ),
