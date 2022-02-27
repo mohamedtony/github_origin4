@@ -104,7 +104,7 @@ class FindAdvertiseController extends GetxController {
   var isCountryEnabled = true.obs;
   var selectedCategory = CategoryModel().obs;
   late TextEditingController searchAdvertiserController;
-  var selectedEffectSlidesModel = EffectSlidesModel().obs;
+  var selectedEffectSlidesModel = EffectSlidesModel(id: -1,).obs;
   late RequestAdvertiseController requestAdvertiseController;
 
   @override
@@ -246,17 +246,27 @@ class FindAdvertiseController extends GetxController {
               }
               isAreaEnabled.value = false;
             }
+           /* if(selectedUserLocations.length==1){
+
+            }*/
           }
         } else {
+          print("inElse");
           Country? country = selectedUserLocations
               .firstWhereOrNull((element) => element.id == c.id);
           if (country == null) {
+            isAreaEnabled.value = true;
             selectedUserLocations.add(c);
+            /*if(c.areas!=null&&c.areas!.isNotEmpty) {
+              areasForLocationSheet.value = c.areas!;
+            }*/
           }
         }
 
         if (c.areas != null && c.areas!.isNotEmpty) {
+          //isAreaEnabled.value = true;
           areasForLocationSheet.value = c.areas!;
+          print("inElseHere");
           Area? areaIn = areasForLocationSheet
               .firstWhereOrNull((element) => element.id == -1);
           if (areaIn == null) {
@@ -266,7 +276,9 @@ class FindAdvertiseController extends GetxController {
         } else {
           areasForLocationSheet.value = [];
         }
-      }
+      }/*else if(c!=null && c.id!=-1&& c.id!=-2){
+
+      }*/
     }
   }
 
@@ -299,12 +311,14 @@ class FindAdvertiseController extends GetxController {
             isCountryEnabled.value = false;
           }
         } else {
-          Area? areaIn = selectedUserLocations.firstWhereOrNull(
-              (element) => element.id == area.id && (element is Area));
-          if (areaIn == null) {
-            selectedUserLocations.add(area);
+          if(area != null && area.id != -2) {
+            Area? areaIn = selectedUserLocations.firstWhereOrNull(
+                    (element) => element.id == area.id && (element is Area));
+            if (areaIn == null) {
+              selectedUserLocations.add(area);
+            }
+            isCountryEnabled.value = false;
           }
-          isCountryEnabled.value = false;
         }
       }
     }
@@ -316,7 +330,19 @@ class FindAdvertiseController extends GetxController {
       areasForLocationSheet.value = [];
     }*/
   }
-
+  void onSelectedLocationClicked(int id) {
+    selectedUserLocations.removeWhere((element) => element.id==id);
+    if(selectedUserLocations.isEmpty){
+      isAreaEnabled.value = true;
+      isCountryEnabled.value = true;
+     // areasForLocationSheet.value.clear();
+     // areasForLocationSheet.insert(0, Area(id: -1,name: 'إختر'));
+      selectedCountry.value = countriesForLocationSheet.first;
+      selectedArea.value = areasForLocationSheet.first;
+      areasForLocationSheet.value = [];
+      areasForLocationSheet.insert(0, Area(id: -1,name: 'إختر'));
+    }
+  }
   onDateClickedSaved(BuildContext context) {
     isFilterSavedClicked.value = true;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -406,6 +432,10 @@ class FindAdvertiseController extends GetxController {
 
   void onReturnClicked(BuildContext context) {
     isFilterSavedClicked.value = false;
+    isCountryEnabled.value = true;
+    isAreaEnabled.value = true;
+    areasForLocationSheet.value = [];
+    areasForLocationSheet.value.insert(0,Area(id: -1,name: 'اختر'));
     selectedCategory.value = CategoryModel();
     advertisersTopRated.value.forEach((element) {
       element.isSelected.value = false;
@@ -681,6 +711,8 @@ class FindAdvertiseController extends GetxController {
     });*/
 
   }
+
+
   // Spawns an isolate and waits for the first message
 /*  Future<File> _parseInBackground() async {
     final p = ReceivePort();
