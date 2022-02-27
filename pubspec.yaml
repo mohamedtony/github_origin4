@@ -48,7 +48,8 @@ dependencies:
   awesome_select: ^5.1.0
   dotted_decoration: ^2.0.0
   flutter_slidable: ^1.1.0
-  image_picker: ^0.8.4+4
+#  image_picker: ^0.8.4+4
+  image_picker: ^0.8.4+9
   fluttertoast: ^8.0.8
   step_progress_indicator: ^1.0.2
   flutter_carousel_widget: ^0.1.0
@@ -73,12 +74,13 @@ dependencies:
   firebase_messaging:
   cached_network_image: ^3.2.0
   google_maps_flutter: ^2.1.1
-  url_launcher: ^6.0.18
+  url_launcher: ^6.0.17
+  flutter_phone_direct_caller: ^2.1.0
   quds_popup_menu: ^0.0.1+1
   video_player:
   file_picker: ^4.3.3
   location: ^4.3.0
-
+  cool_alert: ^1.1.0
   pull_to_refresh: ^2.0.0
 dev_dependencies:
   flutter_test:

@@ -46,7 +46,7 @@ Widget selectedBigCheckBox(){
       ),
     ),
     child: Center(
-      child: Icon(Icons.check,color:Color(0xff486ac7),size: 12.sp,),
+      child: Icon(Icons.check,color:Color(0xff486ac7),size: 20,),
     ),
   );
 }

@@ -183,7 +183,7 @@ class _RegisterAccountTypeState extends State<RegisterAccountType> {
                               image: svg.Svg('images/account_type.svg'),
                               fit: BoxFit.fill))),
                   SizedBox(
-                    width: 140.46.w,
+                    width: 160.46.w,
                     child: ListTile(
                       title: Text(
                         'advertiser'.tr,

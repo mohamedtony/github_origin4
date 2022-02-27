@@ -17,6 +17,7 @@ class RequestModel {
   String? title;
   String? description;
   StatusesModel? statuses;
+  double? bill_total;
   AdvertiserModel? advertiser;
   int? comments;
   int? views;
@@ -28,7 +29,7 @@ class RequestModel {
     this.product_type,
     this.title,
     this.description,this.status,this.advertiser,this.comments,this.views,this.address,this.bill_id,this.status_txt,
-    this.statuses
+    this.statuses,this.bill_total
   });
 
 

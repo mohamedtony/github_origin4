@@ -1,10 +1,12 @@
 import 'package:advertisers/features/customer_order_invoice/view/widgets/customer_order_invoice_app_bar.dart';
 import 'package:advertisers/features/customer_order_invoice/view/widgets/staticts_widget.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class CustomerOrderInvoiceOutPutsPage extends StatelessWidget {
-  const CustomerOrderInvoiceOutPutsPage({Key? key}) : super(key: key);
+   CustomerOrderInvoiceOutPutsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +68,7 @@ class CustomerOrderInvoiceOutPutsPage extends StatelessWidget {
                     price: "1200",
                     currency: "ر.س",
                   ),
-                ],
+              ],
               ),
             ),
           const  SizedBox(

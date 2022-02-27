@@ -31,6 +31,7 @@ RequestModel _$RequestModelFromJson(Map<String, dynamic> json) => RequestModel(
       statuses: json['statuses'] == null
           ? null
           : StatusesModel.fromJson(json['statuses'] as Map<String, dynamic>),
+      bill_total: (json['bill_total'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$RequestModelToJson(RequestModel instance) =>
@@ -47,6 +48,7 @@ Map<String, dynamic> _$RequestModelToJson(RequestModel instance) =>
       'title': instance.title,
       'description': instance.description,
       'statuses': instance.statuses,
+      'bill_total': instance.bill_total,
       'advertiser': instance.advertiser,
       'comments': instance.comments,
       'views': instance.views,
