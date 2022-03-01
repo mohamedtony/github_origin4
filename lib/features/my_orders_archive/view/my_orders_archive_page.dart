@@ -10,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MyOrdersArchivePage extends StatelessWidget {
    MyOrdersArchivePage({Key? key}) : super(key: key);
@@ -31,72 +32,91 @@ class MyOrdersArchivePage extends StatelessWidget {
       //       90.0
       //   ),
       // ),
-      body:  Container(
-        color: Color(0xffF5F5F5),
-        child: Column(
-          children: [
-
-      //       GetBuilder<MyOrdersArchiveController>(
-      //         init: MyOrdersArchiveController(),
-      //         builder: (controller) => Container(
-      //           height: 50,
-      //           child:   Padding(
-      //             padding: const EdgeInsets.only(top: 12),
-      //             child: Center(
-      //               child: ListView.builder(
-      //                   scrollDirection: Axis.horizontal,
-      //                   shrinkWrap: true,
-      //                   itemCount: upperTabItems!.length,
-      //                   itemBuilder: (context, index) {
-      //                     return InkWell(
-      //                         onTap: (){
-      //                           controller.passIndex(upperTabItems![index].id);
-      //                           print("myOrdersArchiveController.tabId ${controller.tabId}");
-      //                         },
-      //                         child:  Padding(
-      //                           padding: const EdgeInsets.symmetric(horizontal: 5),
-      //                           child: Container(
-      //   padding: EdgeInsets.symmetric(horizontal: 25,vertical: 3),
-      //   decoration: BoxDecoration(
-      //       borderRadius: BorderRadius.circular(7),
-      //       color:upperTabItems![index].id! != controller.tabId? Colors.transparent :  Color(0xff4184CE)
-      //   ),
-      //   child: Text("${upperTabItems![index].title}",style: TextStyle(color:upperTabItems![index].id! != controller.tabId? Color(0xff4184CE) : Colors.white,fontSize: 16.sp),),
-      // )
-      //                           // SelectedTab(title: upperTabItems![index].title, id: upperTabItems![index].id,),
-      //                         )
-      //                     ) ;
-      //                   }),
-      //             ),
-      //           ),
-      //         )
-      //       ),
+      // body:  Container(
+      //   color: Color(0xffF5F5F5),
+      //   child: Column(
+      //     children: [
+      //
+      // //       GetBuilder<MyOrdersArchiveController>(
+      // //         init: MyOrdersArchiveController(),
+      // //         builder: (controller) => Container(
+      // //           height: 50,
+      // //           child:   Padding(
+      // //             padding: const EdgeInsets.only(top: 12),
+      // //             child: Center(
+      // //               child: ListView.builder(
+      // //                   scrollDirection: Axis.horizontal,
+      // //                   shrinkWrap: true,
+      // //                   itemCount: upperTabItems!.length,
+      // //                   itemBuilder: (context, index) {
+      // //                     return InkWell(
+      // //                         onTap: (){
+      // //                           controller.passIndex(upperTabItems![index].id);
+      // //                           print("myOrdersArchiveController.tabId ${controller.tabId}");
+      // //                         },
+      // //                         child:  Padding(
+      // //                           padding: const EdgeInsets.symmetric(horizontal: 5),
+      // //                           child: Container(
+      // //   padding: EdgeInsets.symmetric(horizontal: 25,vertical: 3),
+      // //   decoration: BoxDecoration(
+      // //       borderRadius: BorderRadius.circular(7),
+      // //       color:upperTabItems![index].id! != controller.tabId? Colors.transparent :  Color(0xff4184CE)
+      // //   ),
+      // //   child: Text("${upperTabItems![index].title}",style: TextStyle(color:upperTabItems![index].id! != controller.tabId? Color(0xff4184CE) : Colors.white,fontSize: 16.sp),),
+      // // )
+      // //                           // SelectedTab(title: upperTabItems![index].title, id: upperTabItems![index].id,),
+      // //                         )
+      // //                     ) ;
+      // //                   }),
+      // //             ),
+      // //           ),
+      // //         )
+      // //       ),
+      // //
+      // //
+      // //       const SizedBox(
+      // //         height: 12,
+      // //       ),
+      // //
+      // //       Container(
+      // //         color: Colors.grey.withOpacity(.5),
+      // //         height: 1,
+      // //         width: double.infinity,
+      // //       ),
       //
       //
-      //       const SizedBox(
-      //         height: 12,
-      //       ),
-      //
-      //       Container(
-      //         color: Colors.grey.withOpacity(.5),
-      //         height: 1,
-      //         width: double.infinity,
-      //       ),
+      //      Expanded(
+      //        child: Container(
+      //         padding: EdgeInsets.all(10),
+      //         child: ListView(
+      //           children: [
 
-
-           Expanded(
-             child: Container(
-              padding: EdgeInsets.all(10),
-              child: ListView(
-                children: [
-
-                  GetBuilder<MyOrdersArchiveController>(
+             body:     GetBuilder<MyOrdersArchiveController>(
                     init: MyOrdersArchiveController(),
                     builder: (controller) => Container(
-                      child: ListView.builder(
+                      child:SmartRefresher(
+                        controller: controller.refreshController,
+                        enablePullUp: true,
+                        onRefresh: () async {
+                          final result = await controller.getRequestsData(isRefresh: true);
+                          if (result) {
+                            controller.refreshController.refreshCompleted();
+                          } else {
+                            controller.refreshController.refreshFailed();
+                          }
+                        },
+                        onLoading: () async {
+                          final result = await controller.getRequestsData();
+                          if (result) {
+                            controller.refreshController.loadComplete();
+                          } else {
+                            controller.refreshController.loadFailed();
+                          }
+                        },
+                        child:ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: orders!.length,
+                          itemCount: controller.myRequestsAsClient.length,
                           itemBuilder: (context, index) {
                             return  Padding(
                               padding: const EdgeInsets.only(bottom: 10),
@@ -117,50 +137,53 @@ class MyOrdersArchivePage extends StatelessWidget {
                                               Row(
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
-                                                  Text("${orders![index].orderId}",style: TextStyle( decoration: TextDecoration.underline,fontSize: 15.sp,color: Color(0xff4B4B95)),),
-                                                  Text("${orders![index].orderDate}",style: TextStyle(fontSize: 15.sp,color: Color(0xff888888)),),
+                                                  Text("${controller.myRequestsAsClient[index].id}",style: TextStyle( decoration: TextDecoration.underline,fontSize: 15.sp,color: Color(0xff4B4B95)),),
+                                                  Text("${controller.myRequestsAsClient[index].created_at}",style: TextStyle(fontSize: 15.sp,color: Color(0xff888888)),),
                                                   InkWell(
                                                     onTap: (){
                                                       controller.addAndRemoveOtherFromCheckList(orders![index].id);
                                                       print("controller.checkList == > ${controller.checkList} ${controller.checkList!.contains(orders![index].id)}");
                                                     },
-                                                    child: Row(
-                                                      children: [
-                                                        Container(
-                                                          height: 6,
-                                                          width: 6,
-                                                          decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(50),
-                                                              gradient: LinearGradient(colors: [Color(0xff427AD0),Color(0xff48DBE1)],begin: Alignment.bottomCenter,end: Alignment.topCenter,)
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            height: 6,
+                                                            width: 6,
+                                                            decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.circular(50),
+                                                                gradient: LinearGradient(colors: [Color(0xff427AD0),Color(0xff48DBE1)],begin: Alignment.bottomCenter,end: Alignment.topCenter,)
 
+                                                            ),
                                                           ),
-                                                        ),
-                                                        const   SizedBox(
-                                                          width: 8,
-                                                        ),
-                                                        Container(
-                                                          height: 6,
-                                                          width: 6,
-                                                          decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(50),
-                                                              gradient: LinearGradient(colors: [Color(0xff427AD0),Color(0xff48DBE1)],begin: Alignment.bottomCenter,end: Alignment.topCenter,)
-
+                                                          const   SizedBox(
+                                                            width: 8,
                                                           ),
-                                                        ),
-                                                        const   SizedBox(
-                                                          width: 8,
-                                                        ),
-                                                        Container(
-                                                          height: 6,
-                                                          width: 6,
-                                                          decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(50),
-                                                              gradient: LinearGradient(colors: [Color(0xff427AD0),Color(0xff48DBE1)],begin: Alignment.bottomCenter,end: Alignment.topCenter,)
+                                                          Container(
+                                                            height: 6,
+                                                            width: 6,
+                                                            decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.circular(50),
+                                                                gradient: LinearGradient(colors: [Color(0xff427AD0),Color(0xff48DBE1)],begin: Alignment.bottomCenter,end: Alignment.topCenter,)
 
+                                                            ),
                                                           ),
-                                                        ),
+                                                          const   SizedBox(
+                                                            width: 8,
+                                                          ),
+                                                          Container(
+                                                            height: 6,
+                                                            width: 6,
+                                                            decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.circular(50),
+                                                                gradient: LinearGradient(colors: [Color(0xff427AD0),Color(0xff48DBE1)],begin: Alignment.bottomCenter,end: Alignment.topCenter,)
 
-                                                      ],
+                                                            ),
+                                                          ),
+
+                                                        ],
+                                                      ),
                                                     ),
                                                   )
                                                   // Text("تفاصيل الطلب",style: TextStyle( decoration: TextDecoration.underline,fontSize: 15.sp,color: Color(0xff244094)),),
@@ -175,7 +198,9 @@ class MyOrdersArchivePage extends StatelessWidget {
                                                 children: [
                                                   ClipRRect(
                                                       borderRadius: BorderRadius.circular(10),
-                                                      child: Image.network("${orders![index].ownerImage}",height: 75,)
+                                                      child: Image.network("${controller.myRequestsAsClient[index].advertiser?.image}",height: 75,errorBuilder: (context,object,err){
+                                                        return Image.asset('images/no_image_available.png',height: 70);
+                                                      },)
                                                   ),
                                                   const  SizedBox(
                                                     width: 15,
@@ -188,7 +213,7 @@ class MyOrdersArchivePage extends StatelessWidget {
                                                         Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
-                                                            Expanded(child: Text("${orders![index].ownerName
+                                                            Expanded(child: Text("${controller.myRequestsAsClient[index].advertiser?.username??' '
                                                             }",style: TextStyle(fontSize: 17.sp,color: Color(0xff000000)),)),
                                                             InkWell(
                                                                 onTap: (){
@@ -200,8 +225,8 @@ class MyOrdersArchivePage extends StatelessWidget {
                                                         const SizedBox(
                                                           height: 7,
                                                         ),
-                                                        Text("${orders![index].orderTitle}",style: TextStyle(fontSize: 14.sp,color: Color(0xff4B4B95)),),
-                                                        Text("${orders![index].orderDesc}",style: TextStyle(fontSize: 14.sp,color: Color(0xff888888),overflow: TextOverflow.ellipsis),maxLines: 1,),
+                                                        Text("${controller.myRequestsAsClient[index].address}",style: TextStyle(fontSize: 14.sp,color: Color(0xff4B4B95)),),
+                                                        Text("${controller.myRequestsAsClient[index].description}",style: TextStyle(fontSize: 14.sp,color: Color(0xff888888),overflow: TextOverflow.ellipsis),maxLines: 1,),
 
                                                       ],
                                                     ),
@@ -253,7 +278,7 @@ class MyOrdersArchivePage extends StatelessWidget {
                                                     "images/comments-o.svg",
                                                   ),
 
-                                                  Text("${orders![index].orderComments}",style: TextStyle( decoration: TextDecoration.underline,fontSize: 14.sp,color: Color(0xff4B4B95),height: 0),),
+                                                  Text("${controller.myRequestsAsClient[index].comments}",style: TextStyle( decoration: TextDecoration.underline,fontSize: 14.sp,color: Color(0xff4B4B95),height: 0),),
                                                 ],
                                               ),
 
@@ -265,7 +290,7 @@ class MyOrdersArchivePage extends StatelessWidget {
                                                     "images/eye-open.svg",
                                                     height: 50,
                                                   ),
-                                                  Text("${orders![index].orderViews}",style: TextStyle(fontSize: 14.sp,color: Color(0xff4B4B95),height: 0),),
+                                                  Text("${controller.myRequestsAsClient[index].views}",style: TextStyle(fontSize: 14.sp,color: Color(0xff4B4B95),height: 0),),
                                                 ],
                                               ),
                                             ],
@@ -358,20 +383,20 @@ class MyOrdersArchivePage extends StatelessWidget {
                             );
                           }),
                     ),
-                  ),
+                  )),
 
-                ],
-              ),
-          ),
-           ),
+          //       ],
+          //     ),
+          // ),
+          //  ),
 
             // controller.tabId
 
             // const ProcessesWidget()
-          ],
-        ),
-      ),
-    );
+         // ],
+        );
+    //   ),
+    // );
   }
 }
 

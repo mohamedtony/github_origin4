@@ -838,7 +838,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                         .myRequestsAsClient[
                                                             index]
                                                         .statuses
-                                                        ?.reject ==
+                                                        ?.cancel ==
                                                     false
                                                 ? null
                                                 : () {

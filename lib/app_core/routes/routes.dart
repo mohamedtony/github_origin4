@@ -34,8 +34,10 @@ import 'package:advertisers/features/customer_order_invoice/view/customer_order_
 import 'package:advertisers/features/customer_order_invoice_out_puts/view/customer_order_invoice_out_puts.dart';
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation.dart';
+import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
 import 'package:advertisers/features/my_orders/view/my_orders_page.dart';
 import 'package:advertisers/features/my_orders_and_my_orders_archive/my_orders_and_my_orders_archive.dart';
+import 'package:advertisers/features/my_orders_archive/controller/my_orders_archive_controller.dart';
 import 'package:advertisers/features/my_orders_archive/view/my_orders_archive_page.dart';
 import 'package:advertisers/features/notifications/view/pages/notifications_page.dart';
 import 'package:advertisers/features/notifications_settings/view/pages/notifications_settings_page.dart';
@@ -287,6 +289,11 @@ class Routes {
     GetPage(
       name: '/MyOrdersAndMyOrdersArchive',
       page: () => MyOrdersAndMyOrdersArchive(),
+        bindings: [ BindingsBuilder(() {
+          Get.lazyPut<MyOrdersController>(() => MyOrdersController());
+        }), BindingsBuilder(() {
+          Get.lazyPut<MyOrdersArchiveController>(() => MyOrdersArchiveController());
+        })]
     ),
     GetPage(
       name: '/AdvertiserDetailsPage',
