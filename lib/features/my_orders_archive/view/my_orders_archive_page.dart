@@ -127,11 +127,11 @@ class MyOrdersArchivePage extends StatelessWidget {
                                                     child: Row(
                                                       children: [
                                                         Container(
-                                                          height: 10,
-                                                          width: 10,
+                                                          height: 6,
+                                                          width: 6,
                                                           decoration: BoxDecoration(
                                                             borderRadius: BorderRadius.circular(50),
-                                                            color: Colors.black54,
+                                                              gradient: LinearGradient(colors: [Color(0xff427AD0),Color(0xff48DBE1)],begin: Alignment.bottomCenter,end: Alignment.topCenter,)
 
                                                           ),
                                                         ),
@@ -139,11 +139,11 @@ class MyOrdersArchivePage extends StatelessWidget {
                                                           width: 8,
                                                         ),
                                                         Container(
-                                                          height: 10,
-                                                          width: 10,
+                                                          height: 6,
+                                                          width: 6,
                                                           decoration: BoxDecoration(
                                                             borderRadius: BorderRadius.circular(50),
-                                                            color: Colors.black54,
+                                                              gradient: LinearGradient(colors: [Color(0xff427AD0),Color(0xff48DBE1)],begin: Alignment.bottomCenter,end: Alignment.topCenter,)
 
                                                           ),
                                                         ),
@@ -151,11 +151,11 @@ class MyOrdersArchivePage extends StatelessWidget {
                                                           width: 8,
                                                         ),
                                                         Container(
-                                                          height: 10,
-                                                          width: 10,
+                                                          height: 6,
+                                                          width: 6,
                                                           decoration: BoxDecoration(
                                                             borderRadius: BorderRadius.circular(50),
-                                                            color: Colors.black54,
+                                                              gradient: LinearGradient(colors: [Color(0xff427AD0),Color(0xff48DBE1)],begin: Alignment.bottomCenter,end: Alignment.topCenter,)
 
                                                           ),
                                                         ),

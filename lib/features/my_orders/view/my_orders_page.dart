@@ -26,7 +26,7 @@ class MyOrdersPage extends StatefulWidget {
 class _MyOrdersPageState extends State<MyOrdersPage>
     with SingleTickerProviderStateMixin {
   // final MyOrdersController _MyOrdersController = Get.put(MyOrdersController());
-  int currentIndex = 0;
+  //int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,17 +81,19 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                   padding: const EdgeInsets.only(bottom: 10, right: 5, left: 5),
                   child: GestureDetector(
                     onTap: () {
+                      controller.currentIndex.value = index;
                       //controller.closeSingleItemFromCheckListFunctions(controller.orders![index].id);
-                      if (currentIndex == index) {
+                      if (controller.currentIndex.value  == index) {
                         controller.closeSingleItemFromCheckListFunctions(
                             controller.myRequestsAsClient[index].id);
                       }
                     },
                     onPanUpdate: (details) {
+                      controller.currentIndex.value  = index;
                       // Swiping in right direction.
                       if (details.delta.dx > 0) {
                         // controller.closeSingleItemFromCheckListFunctions(orders![index].id);
-                        if (currentIndex == index) {
+                        if (controller.currentIndex.value  == index) {
                           controller.closeSingleItemFromCheckListFunctions(
                               controller.myRequestsAsClient[index].id);
                           print("Dragging in +X direction");
@@ -100,7 +102,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
 
                       // Swiping in left direction.
                       if (details.delta.dx < 0) {
-                        if (currentIndex == index) {
+                        if (controller.currentIndex.value  == index) {
                           print("Dragging in -X direction");
                           //controller.openSingleItemFromCheckListFunctions(orders![index].id);
                           controller.openSingleItemFromCheckListFunctions(
@@ -143,7 +145,8 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                           ),
                                           InkWell(
                                             onTap: () {
-                                              if (currentIndex == index) {
+                                              controller.currentIndex.value=index;
+                                              if (controller.currentIndex.value  == index) {
                                                 controller
                                                     .addAndRemoveOtherFromCheckListShare(
                                                         controller
@@ -154,45 +157,50 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                     "controller.checkList == > ${controller.checkListShare} ${controller.checkListShare!.contains(controller.myRequestsAsClient![index].id)}");
                                               }
                                             },
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  height: 10,
-                                                  width: 10,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                    color: Colors.black54,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(5.0),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    height: 6,
+                                                    width: 6,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                        gradient: LinearGradient(colors: [Color(0xff427AD0),Color(0xff48DBE1)],begin: Alignment.bottomCenter,end: Alignment.topCenter,)
+                                                    ),
                                                   ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 8,
-                                                ),
-                                                Container(
-                                                  height: 10,
-                                                  width: 10,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                    color: Colors.black54,
+                                                  const SizedBox(
+                                                    width: 8,
                                                   ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 8,
-                                                ),
-                                                Container(
-                                                  height: 10,
-                                                  width: 10,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                    color: Colors.black54,
+                                                  Container(
+                                                    height: 6,
+                                                    width: 6,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                        gradient: LinearGradient(colors: [Color(0xff427AD0),Color(0xff48DBE1)],begin: Alignment.bottomCenter,end: Alignment.topCenter,)
+
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
+                                                  const SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  Container(
+                                                    height: 6,
+                                                    width: 6,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                        gradient: LinearGradient(colors: [Color(0xff427AD0),Color(0xff48DBE1)],begin: Alignment.bottomCenter,end: Alignment.topCenter,)
+
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           )
                                           // Text("تفاصيل الطلب",style: TextStyle( decoration: TextDecoration.underline,fontSize: 15.sp,color: Color(0xff244094)),),
@@ -221,7 +229,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                         BorderRadius.circular(
                                                             10),
                                                     child: Image.network(
-                                                      "${controller.myRequestsAsClient[index].user?.image ?? ''}",
+                                                      "${controller.myRequestsAsClient[index].advertiser?.image ?? ''}",
                                                       height: 70,errorBuilder: (context,object,err){
                                                         return Image.asset('images/no_image_available.png',height: 70);
                                                     },
@@ -272,41 +280,44 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                                     0xff000000),
                                                                 height: 1.4),
                                                           )),
-                                                          Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text(
-                                                                controller
-                                                                        .myRequestsAsClient[
-                                                                            index]
-                                                                        .bill_total
-                                                                        ?.toStringAsFixed(
-                                                                            2) ??
-                                                                    '',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        16.sp,
-                                                                    color: Color(
-                                                                        0xffD37A47),
-                                                                    height:
-                                                                        1.5),
-                                                              ),
-                                                              Text(
-                                                                "ريال",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        15.sp,
-                                                                    color: Color(
-                                                                        0xffD37A47),
-                                                                    height:
-                                                                        1.1),
-                                                              ),
-                                                            ],
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(top:8.0),
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Text(
+                                                                  controller
+                                                                          .myRequestsAsClient[
+                                                                              index]
+                                                                          .bill_total
+                                                                          ?.toStringAsFixed(
+                                                                              2) ??
+                                                                      '',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          16.sp,
+                                                                      color: Color(
+                                                                          0xffD37A47),
+                                                                      height:
+                                                                          1.5),
+                                                                ),
+                                                                Text(
+                                                                  "ريال",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          15.sp,
+                                                                      color: Color(
+                                                                          0xffD37A47),
+                                                                      height:
+                                                                          1.1),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                         ],
                                                       ),
@@ -386,7 +397,8 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                           .status_txt ==
                                                       "مرفوض من المعلن"
                                                   ? () {
-                                                      if (currentIndex ==
+                                                controller.currentIndex.value=index;
+                                                if (controller.currentIndex.value  ==
                                                           index) {
                                                         Get.toNamed(
                                                             "/ReasonRejectingAdvertisement?requestId=${controller.myRequestsAsClient[index].id}");
@@ -582,7 +594,8 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                       false
                                                   ? null
                                                   : () {
-                                                      if (currentIndex ==
+                                                controller.currentIndex.value=index;
+                                                if (controller.currentIndex.value  ==
                                                           index) {
                                                         print("money");
                                                       }
@@ -614,7 +627,8 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                             false
                                                         ? null
                                                         : () {
-                                                            if (currentIndex ==
+                                                      controller.currentIndex.value=index;
+                                                      if (controller.currentIndex.value  ==
                                                                 index) {
                                                               CoolAlert.show(
                                                                   context: context,
@@ -743,7 +757,8 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                     false
                                                 ? null
                                                 : () {
-                                                    if (currentIndex == index) {
+                                              controller.currentIndex.value=index;
+                                              if (controller.currentIndex.value  == index) {
                                                       print("refuse");
                                                     }
                                                   },
@@ -769,7 +784,8 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                     false
                                                 ? null
                                                 : () {
-                                                    if (currentIndex == index) {
+                                              controller.currentIndex.value=index;
+                                              if (controller.currentIndex.value  == index) {
                                                       print("refuse");
                                                     }
                                                   },
@@ -799,7 +815,8 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                     false
                                                 ? null
                                                 : () {
-                                                    if (currentIndex == index) {
+                                              controller.currentIndex.value=index;
+                                              if (controller.currentIndex.value  == index) {
                                                       print("refuse");
                                                     }
                                                   },
@@ -825,7 +842,8 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                     false
                                                 ? null
                                                 : () {
-                                                    if (currentIndex == index) {
+                                              controller.currentIndex.value=index;
+                                              if (controller.currentIndex.value  == index) {
                                                       controller.cancelRequest(
                                                           requestId: controller
                                                                   .myRequestsAsClient[

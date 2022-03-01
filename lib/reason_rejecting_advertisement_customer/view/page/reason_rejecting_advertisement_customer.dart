@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
 import 'package:advertisers/reason_rejecting_advertisement_customer/controller/reason_rejecting_advertisement_customer_controller.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +113,7 @@ class ReasonRejectingAdvertisementCustomer extends StatelessWidget {
                           children:  [
                             InkWell(
                                 onTap: ()async{
-                                  if (!await launch(reasonRejectingAdvertisementCustomerController.reasonDataModel.value.advertiser?.phone??'')) throw 'Could not launch PhoneCall';
+                                  if (!await launch("tel:${reasonRejectingAdvertisementCustomerController.reasonDataModel.value.advertiser?.phone??''}")) throw 'Could not launch PhoneCall';
                                 },
                                 child: const FaIcon(FontAwesomeIcons.phoneAlt,color: Colors.white,size: 20,)),
                             Container(
@@ -137,8 +139,9 @@ class ReasonRejectingAdvertisementCustomer extends StatelessWidget {
 
                                   InkWell(
                                       onTap: ()async{
-                                    var whatsappUrl ="whatsapp://send?phone=${reasonRejectingAdvertisementCustomerController.reasonDataModel.value.user?.phone??''}";
-                                    await canLaunch(whatsappUrl)? launch(whatsappUrl):print("open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
+                                        await openwhatsapp(context,reasonRejectingAdvertisementCustomerController.reasonDataModel.value.advertiser?.phone);
+                                    // var whatsappUrl ="whatsapp://send?phone=${reasonRejectingAdvertisementCustomerController.reasonDataModel.value.user?.phone??''}";
+                                    // await canLaunch(whatsappUrl)? launch(whatsappUrl):print("open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
                                 //  },
                                 },
                                 child: const FaIcon(FontAwesomeIcons.whatsapp
@@ -274,5 +277,27 @@ class ReasonRejectingAdvertisementCustomer extends StatelessWidget {
         ],
       ),
     );
+  }
+  openwhatsapp(context,whatsapp) async{
+    //var whatsapp ="+919144040888";
+    var whatsappURl_android = "whatsapp://send?phone="+whatsapp+"&text=hello";
+    var whatappURL_ios ="https://wa.me/$whatsapp?text=${Uri.parse("hello")}";
+    if(Platform.isIOS){
+      // for iOS phone only
+      if( await canLaunch(whatappURL_ios)){
+        await launch(whatappURL_ios, forceSafariVC: false);
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    }else{
+      // android , web
+      if( await canLaunch(whatsappURl_android)){
+        await launch(whatsappURl_android);
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    }
   }
 }

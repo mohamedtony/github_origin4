@@ -1,6 +1,7 @@
 import 'package:advertisers/features/add_advertiser_channel/controller/add_advertiser_channel_controller.dart';
 import 'package:advertisers/features/advertising_influence_channels/controller/advertising_influence_channels_controller.dart';
 import 'package:advertisers/features/advertising_influence_channels/controller/edit_channel_advertiser_controller.dart';
+import 'package:advertisers/features/client_payment_model/controller/client_payment_model_controller.dart';
 import 'package:advertisers/features/customer_order_invoice/controller/customer_order_invoice_controller.dart';
 import 'package:advertisers/features/request_advertise_module/controller/address_bottom_sheet_controller.dart';
 import 'package:advertisers/features/users_module/controller/baka_details_controller.dart';
@@ -35,7 +36,7 @@ class DataBinding extends Bindings {
     Get.lazyPut(() =>EditChannelAdvertiserController());
     Get.lazyPut(()=>ForgetPasswordForPhoneController());
     Get.lazyPut(()=>CustomerOrderInvoiceController());
-
+    Get.lazyPut(()=>ClientPaymentModelController());
 
   }
 }

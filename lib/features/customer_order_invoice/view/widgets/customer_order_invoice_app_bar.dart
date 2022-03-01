@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/features/customer_order_invoice/controller/customer_order_invoice_controller.dart';
@@ -35,8 +36,8 @@ MyOrdersController _myOrdersController=Get.find();
                   InkWell(
                     onTap:()async{
                       RegisterClientUserResponse registerClientUserResponse=RegisterClientUserResponse.fromJson(json.decode(json.encode(storage.read("data"))));
-                      // if (!await launch(registerClientUserResponse.data?.phone??'')) throw 'Could not launch PhoneCall';
-                      bool? res = await FlutterPhoneDirectCaller.callNumber(registerClientUserResponse.data?.phone??'');
+                       if (!await launch("tel:${registerClientUserResponse.data?.phone??''}")) throw 'Could not launch PhoneCall';
+                      //bool? res = await FlutterPhoneDirectCaller.callNumber(registerClientUserResponse.data?.phone??'');
                     },
                     child: Container(
                       padding: EdgeInsets.only(right: 10,left: 25),
@@ -62,8 +63,9 @@ MyOrdersController _myOrdersController=Get.find();
                   InkWell(
                     onTap: ()async{
                       RegisterClientUserResponse registerClientUserResponse=RegisterClientUserResponse.fromJson(json.decode(json.encode(storage.read("data"))));
-                      var whatsappUrl ="whatsapp://send?phone=${registerClientUserResponse.data?.phone??''}";
-                      await canLaunch(whatsappUrl)? launch(whatsappUrl):print("open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
+                      // var whatsappUrl ="whatsapp://send?phone=${registerClientUserResponse.data?.phone??''}";
+                      // await canLaunch(whatsappUrl)? launch(whatsappUrl):print("open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
+                      await openwhatsapp(context,registerClientUserResponse.data?.phone);
 
                     },
                     child: Container(
@@ -105,4 +107,26 @@ MyOrdersController _myOrdersController=Get.find();
       ),
     );
   }
+openwhatsapp(context,whatsapp) async{
+  //var whatsapp ="+919144040888";
+  var whatsappURl_android = "whatsapp://send?phone="+whatsapp+"&text=hello";
+  var whatappURL_ios ="https://wa.me/$whatsapp?text=${Uri.parse("hello")}";
+  if(Platform.isIOS){
+    // for iOS phone only
+    if( await canLaunch(whatappURL_ios)){
+      await launch(whatappURL_ios, forceSafariVC: false);
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: new Text("whatsapp no installed")));
+    }
+  }else{
+    // android , web
+    if( await canLaunch(whatsappURl_android)){
+      await launch(whatsappURl_android);
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: new Text("whatsapp no installed")));
+    }
+  }
+}
 }

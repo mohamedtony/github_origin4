@@ -25,7 +25,7 @@ class SlideRightItemWidget extends StatelessWidget {
               children: [
                 isSvg == true ?  SvgPicture.asset(
                   "$icon",
-                  height: 20.sp,
+                  height: 30.sp,
                   color: Color(0xff459FD4),
                 ):Image.asset("$icon"),
                 const SizedBox(

@@ -12,6 +12,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 class MyOrdersController extends GetxController{
 
   var myRequestsAsClient=<RequestModel>[].obs;
+  var currentIndex=0.obs;
   // var myRequestAsClient
    List<int>? checkListShare = [];
    var registerClientUserResponse=RegisterClientUserResponse().obs;

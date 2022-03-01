@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
 import 'package:advertisers/features/reason_rejecting_advertisement/controller/reason_rejecting_advertisement_controller.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +113,7 @@ final ReasonRejectingAdvertisementController reasonRejectingAdvertisementControl
                           children:  [
                             InkWell(
                                 onTap: ()async{
-    if (!await launch(reasonRejectingAdvertisementController.reasonDataModel.value.advertiser?.phone??'')) throw 'Could not launch PhoneCall';
+    if (!await launch("tel:${reasonRejectingAdvertisementController.reasonDataModel.value.advertiser?.phone??''}")) throw 'Could not launch PhoneCall';
 
                                 },
                                 child: const FaIcon(FontAwesomeIcons.phoneAlt,color: Colors.white,size: 20,)),
@@ -137,9 +139,8 @@ final ReasonRejectingAdvertisementController reasonRejectingAdvertisementControl
                             ),
                             InkWell(
                                 onTap: ()async{
-                                  var whatsappUrl ="whatsapp://send?phone=${reasonRejectingAdvertisementController.reasonDataModel.value.advertiser?.phone??''}";
-                                  await canLaunch(whatsappUrl)? launch(whatsappUrl):print("open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
-                                },
+                                  await openwhatsapp(context,reasonRejectingAdvertisementController.reasonDataModel.value.advertiser?.phone);
+                                    },
                                 child: const FaIcon(FontAwesomeIcons.whatsapp
                                     ,color: Color(0xff148253),size: 30)),
                             SizedBox(
@@ -274,4 +275,26 @@ final ReasonRejectingAdvertisementController reasonRejectingAdvertisementControl
       ),
     );
   }
+   openwhatsapp(context,whatsapp) async{
+     //var whatsapp ="+919144040888";
+     var whatsappURl_android = "whatsapp://send?phone="+whatsapp+"&text=hello";
+     var whatappURL_ios ="https://wa.me/$whatsapp?text=${Uri.parse("hello")}";
+     if(Platform.isIOS){
+       // for iOS phone only
+       if( await canLaunch(whatappURL_ios)){
+         await launch(whatappURL_ios, forceSafariVC: false);
+       }else{
+         ScaffoldMessenger.of(context).showSnackBar(
+             SnackBar(content: new Text("whatsapp no installed")));
+       }
+     }else{
+       // android , web
+       if( await canLaunch(whatsappURl_android)){
+         await launch(whatsappURl_android);
+       }else{
+         ScaffoldMessenger.of(context).showSnackBar(
+             SnackBar(content: new Text("whatsapp no installed")));
+       }
+     }
+   }
 }
