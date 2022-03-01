@@ -494,7 +494,7 @@ class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersShee
                             ),
                             dropdownBuilder: (BuildContext context, s) {
                               return Text(
-                                '${(s?.name ?? '')}',
+                                s!.id==null || s.id==-1?'إختر':'${(s.count_to ?? '')}'+'-'+'${(s.count_from ?? '')}',
                                 style: TextStyle(
                                     color: AppColors.activitiesDropDown,
                                     /*decoration: TextDecoration.underline,decorationThickness: 2,*/
@@ -544,7 +544,7 @@ class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersShee
                                 fillColor: Colors.white),
                             items: findOrderAdvertisersController.advertisersFormModel.value.effect_slides,
                             // label: "Menu mode",
-                            itemAsString: (EffectSlidesModel? u) => u!.name!,
+                            itemAsString: (EffectSlidesModel? u) => u!.itemAsString(),
                             // hint: "الدولة",
                             //popupItemDisabled: (String s) => s.startsWith('I'),
                             onChanged: (effectSlidesModel) {
@@ -553,7 +553,7 @@ class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersShee
                             },
                             selectedItem: findOrderAdvertisersController.selectedEffectSlidesModel.value.id!=null? findOrderAdvertisersController.selectedEffectSlidesModel.value:findOrderAdvertisersController.advertisersFormModel.value.effect_slides![0]) : Container(
                             alignment: Alignment.centerRight,
-                            child: const Text("لا يوجد مناطق")),
+                            child: const Text("لا يوجد شرائح")),
                     ),
                   ))
                 ],
@@ -972,27 +972,32 @@ class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersShee
                     direction: Axis.horizontal,
                     children: findOrderAdvertisersController.selectedUserLocations.value
                         .map(
-                          (value) => Container(
+                          (value) => InkWell(
+                            onTap: (){
+                              findOrderAdvertisersController.onSelectedLocationClicked(value!.id);
+                            },
+                            child: Container(
                         decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(10.0),
-                          color:  AppColors.selectedCity
-                          ,
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(10.0),
+                            color:  AppColors.selectedCity
+                            ,
                         ),
                         margin: EdgeInsets.only(left: 8, bottom: 5,top: 5),
                         // height: 30,
                         padding: EdgeInsets.only(
-                            top: 2, bottom: 2, left: 16, right: 16),
+                              top: 2, bottom: 2, left: 16, right: 16),
                         child: Text(
-                          value?.name ?? '',
-                          style: TextStyle(
-                            color: AppColors.white,
-                            fontSize: 14.0,
-                          )
-                          ,
-                          // textAlign: TextAlign.center,
+                            value?.name ?? '',
+                            style: TextStyle(
+                              color: AppColors.white,
+                              fontSize: 14.0,
+                            )
+                            ,
+                            // textAlign: TextAlign.center,
                         ),
-                      ), /*Container(
+                      ),
+                          ), /*Container(
                         height: 30,
                         margin: EdgeInsets.only(
                             left: 4.0, top: 8, bottom: 6),
@@ -1203,6 +1208,9 @@ class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersShee
       findOrderAdvertisersController.isCountryEnabled.value = true;
       findOrderAdvertisersController.searchAdvertiserController.text = '';
       findOrderAdvertisersController.selectedEffectSlidesModel.value = EffectSlidesModel();
+      findOrderAdvertisersController.selectedCountry.value = Country();
+      findOrderAdvertisersController.selectedArea.value = Area();
+      findOrderAdvertisersController.areasForLocationSheet.value = [];
     }
 /*    RxList<Country> countriesForLocationSheet = <Country>[].obs;
     RxList<Area> areasForLocationSheet = <Area>[].obs;

@@ -9,6 +9,12 @@ class EffectSlidesModel {
   int? count_from;
   int? count_to;
 
+  String itemAsString(){
+    if(id==-1){
+      return "إختر";
+    }
+    return '${count_to}'+' - '+'${count_from}';
+  }
   EffectSlidesModel({this.id, this.name, this.count_from,this.count_to});
 
   factory EffectSlidesModel.fromJson(Map<String, dynamic> json) => _$EffectSlidesModelFromJson(json);
