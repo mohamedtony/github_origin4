@@ -8,6 +8,7 @@ import 'dart:math' as math;
 
 
 class AppBarWidget extends StatelessWidget {
+  TextEditingController? controller;
   bool? isBack, isSearchBar,isSideMenu,isFilter,
       isNotification,searchBarBigLeft,searchBarBigRight;
   VoidCallback?  backPressed,searchPressed,filterPressed,
@@ -18,6 +19,7 @@ class AppBarWidget extends StatelessWidget {
 
   AppBarWidget({
     Key? key,
+    this.controller,
     this.widgetInsteadSearchBar,
     this.isBack = true,
     this.searchBarBigLeft = true,
@@ -66,7 +68,7 @@ class AppBarWidget extends StatelessWidget {
                 ],
               ),
               widgetInsteadSearchBar ?? Container(),
-             if(isSearchBar == true) Expanded(
+              if(isSearchBar == true) Expanded(
                 child: SizedBox(
                   height: 45.h,
                   child: Row(
@@ -78,9 +80,10 @@ class AppBarWidget extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: TextFormField(
+                            controller: controller,
                             style: TextStyle(fontSize: 15.sp),
                             // textAlign: TextAlign.left,
-                            keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               isDense: true,
                               contentPadding:  EdgeInsets.symmetric(vertical: 0),

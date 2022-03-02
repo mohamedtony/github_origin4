@@ -27,7 +27,7 @@ class CustomInterceptor implements Interceptor {
   Future onResponse(Response response, handler) async {
     switch (response.statusCode) {
       case 200:
-      // print(response);
+        // print(response);
         return handler.next(response);
       case 400:
         throw BadRequestException(response.data.toString());
