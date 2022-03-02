@@ -9,6 +9,7 @@ import 'package:advertisers/features/users_module/app_colors.dart' as aliColors;
 import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertiser_field_with_icon.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_generic_field.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -44,7 +45,8 @@ class _AddressBottomSheetState extends State<AddressBottomSheet> {
   Widget build(BuildContext context) {
     return Container(
       child: ListView(
-        controller: this.widget.scrollController,
+      controller: this.widget.scrollController,
+        //physics: NeverScrollableScrollPhysics(),
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -145,12 +147,12 @@ class _AddressBottomSheetState extends State<AddressBottomSheet> {
                       requestAdvertiseController.googleMapController = googleMapController;
                       requestAdvertiseController.getLocation();
                     },
-                    /* gestureRecognizers: Set()
+                     gestureRecognizers: Set()
                       ..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
                       ..add(Factory<ScaleGestureRecognizer>(() => ScaleGestureRecognizer()))
                       ..add(Factory<TapGestureRecognizer>(() => TapGestureRecognizer()))
                       ..add(Factory<VerticalDragGestureRecognizer>(
-                              () => VerticalDragGestureRecognizer())),*/
+                              () => VerticalDragGestureRecognizer())),
                   )),
                 ),
               ),

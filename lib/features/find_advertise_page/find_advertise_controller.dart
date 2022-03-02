@@ -606,18 +606,19 @@ class FindAdvertiseController extends GetxController {
       "copon[code]": requestAdvertiseController.coponNumberController?.text,
       "copon[name]": requestAdvertiseController.coponNameController?.text,
       "copon[discount]":
-          requestAdvertiseController.coponDiscountController?.text,
-      "copon[uses]": requestAdvertiseController.coponUsesController?.text,
+      requestAdvertiseController.coponDiscountController?.text!=null&&requestAdvertiseController.coponDiscountController!.text.isNotEmpty?int.parse(requestAdvertiseController.coponDiscountController!.text):0,
+      "copon[uses]": requestAdvertiseController.coponUsesController?.text!=null&&requestAdvertiseController.coponUsesController!.text.isNotEmpty?int.parse(requestAdvertiseController.coponUsesController!.text):0,
       "copon[link]": requestAdvertiseController.coponLinkController?.text,
       "copon[ended_at]": requestAdvertiseController.endAdvertisingDateCoupon,
       "notes": requestAdvertiseController.noticeController?.text,
-      "plan_file": requestAdvertiseController.planFile
+      "plan_file": requestAdvertiseController.planFile,
+      "inline":requestAdvertiseController.showInPlatform.isTrue?1:0
     };
     Map<String, dynamic> mymap2={};
     if(requestAdvertiseController.links.value.isNotEmpty){
       for (var value1 in requestAdvertiseController.links.value) {
         mymap2={
-         "links[${requestAdvertiseController.links.value.indexOf(value1)}][title]":"${value1.title}",
+         "links[${requestAdvertiseController.links.value.indexOf(value1)}][title]":"${value1.name}",
           "links[${requestAdvertiseController.links.value.indexOf(value1)}][link]":"${value1.link}"
         };
         if(mymap2.isNotEmpty) {

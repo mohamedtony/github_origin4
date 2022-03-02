@@ -3,11 +3,15 @@ part 'LinkModel.g.dart';
 
 @JsonSerializable()
 class LinkModel {
-  String? title;
+  int? id;
+  int? ads_id;
+  String? name;
   String? link;
 
   LinkModel({
-    this.title,
+    this.id,
+    this.ads_id,
+    this.name,
     this.link,
   });
 

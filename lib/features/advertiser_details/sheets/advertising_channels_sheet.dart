@@ -2,261 +2,268 @@ import 'package:advertisers/features/advertiser_details/controller/advertiser_de
 import 'package:advertisers/features/request_advertise_module/controller/adertising_channels_controller.dart';
 import 'package:advertisers/features/request_advertise_module/SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight.dart';
 import 'package:advertisers/features/home_page/view/widgets/advertise_item_home_page.dart';
+import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
 import 'package:advertisers/shared/gradient_check_box/gradient_check_box.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+//=========================================================================================
 
-class AdvertisingChannelsPage extends StatelessWidget {
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
+class AdvertisingChannelsPage extends StatefulWidget {
   ScrollController? scrollController;
 
- AdvertisingChannelsPage({Key? key, this.scrollController}) : super(key: key);
+  AdvertisingChannelsPage({Key? key, this.scrollController}) : super(key: key);
 
+  @override
+  State<AdvertisingChannelsPage> createState() => _AdvertisingChannelsPageState();
+}
 
-  // final AdvertisingDetailsController controller =
-  //     Get.put(AdvertisingDetailsController());
+class _AdvertisingChannelsPageState extends State<AdvertisingChannelsPage> {
+  AdvertisingDetailsController controller=Get.find();
 
   @override
   Widget build(BuildContext context) {
-
-    return GetBuilder<AdvertisingDetailsController>(
-      init: AdvertisingDetailsController(),
-      builder: (controller) => Container(
-        child: ListView(
-          // controller: this.scrollController,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Container(
-                  //margin: EdgeInsets.only(top: 10.0),
-                  padding: EdgeInsets.all(8.0),
-                  color: AppColors.bottomSheetTabColor,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 30.0,
-                        width: 140.0,
-                        //padding: EdgeInsets.all(8.0),
-                        margin: EdgeInsets.only(right: 8.0),
-                        child: Text(
-                          'adChannels'.tr,
-                          style: TextStyle(color: Colors.white),
-                          textAlign: TextAlign.center,
-                        ),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6.0),
-                            color: AppColors.tabColor),
+    return Container(
+      child: ListView(
+        controller: this.widget.scrollController,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                //margin: EdgeInsets.only(top: 10.0),
+                padding: EdgeInsets.all(8.0),
+                color: AppColors.bottomSheetTabColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: 30.0,
+                      width: 140.0,
+                      //padding: EdgeInsets.all(8.0),
+                      margin: EdgeInsets.only(right: 8.0),
+                      child: Text(
+                        'adChannels'.tr,
+                        style: TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
                       ),
-                      Container(
-                        margin: EdgeInsets.only(left: 10.0),
-                        child: SvgPicture.asset(
-                          'images/tv_icon.svg',
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6.0),
+                          color: AppColors.tabColor),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10.0),
+                      child: SvgPicture.asset(
+                        'images/tv_icon.svg',
+                        fit: BoxFit.fill,
+                        height: 20.0,
+                        width: 20.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                color: AppColors.dividerBottom,
+                thickness: 4.0,
+              ),
+              Container(
+                height: 30.0,
+                width: 140.0,
+                //padding: EdgeInsets.all(8.0),
+                margin: EdgeInsets.all(18.0),
+                child: Text(
+                  'اختر من قنوات الاعلان',
+                  style: TextStyle(
+                      color: AppColors.adVertiserPageDataColor,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+              Obx(()=>controller.isLoadingTypes.value?Container(
+                child:const SpinKitThreeBounce(color: Colors.blue, size: 25,) ,
+              ):GridView.builder(
+                  padding: EdgeInsets.only(right: 70.0, left: 70.0, bottom: 20.0),
+                  shrinkWrap: true,
+                  itemCount: controller.channels.value.length??0,
+                  gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+                    //childAspectRatio: 100 / 150,
+                    height: 65.0,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 40,
+                    crossAxisCount: 3,
+                  ),
+                  itemBuilder: (context, index) => Obx(()=>InkWell(
+                    onTap: () => controller.changeTabIndex(index, true),
+                    child: Container(
+                      //margin: const EdgeInsets.all(15.0),
+                      // padding: const EdgeInsets.all(3.0),
+                      decoration: controller.channels.value.length>index && controller.channels.value[index].isTapped!=null && controller.channels.value[index].isTapped.isTrue
+                          ? BoxDecoration(
+                        border: Border.all(
+                            color:
+                            AppColors.bottomSheetTabColorRounded),
+                        color: Colors.white,
+                        boxShadow: [
+                          // so here your custom shadow goes:
+                          BoxShadow(
+                            color: Colors.grey,
+                            // the color of a shadow, you can adjust it
+                            spreadRadius: 0,
+                            //also play with this two values to achieve your ideal result
+                            blurRadius: 4,
+                            offset: Offset(0,
+                                4), // changes position of shadow, negative value on y-axis makes it appering only on the top of a container
+                          ),
+                        ],
+                      )
+                          : BoxDecoration(
+                        //border: Border.all(color: Colors.white)
+                      ),
+                      child: Container(
+                        margin: EdgeInsets.all(4.0),
+                        //padding: EdgeInsets.all(2),
+                        child: /*requestAdvertiseController.channels.value[index].image!=null&& *//*requestAdvertiseController.channels.value[index].image!.isNotEmpty?*/
+                        CachedNetworkImage(
+                          imageUrl: controller.channels.value[index].image??
+                              '',
+                          placeholder: (context, url) =>
+                          const SpinKitThreeBounce(
+                            color: Colors.grey,
+                            size: 25,
+                          ),
+                          errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                           fit: BoxFit.fill,
-                          height: 20.0,
-                          width: 20.0,
-                        ),
+                          height: 40.0,
+                          width: 40.0,
+                        )/*:Image.asset(
+                        requestAdvertiseController.images[index],
+                        fit: BoxFit.cover,
+                        height: 50.0,
+                        width: 30.0,
+                      )*/,
                       ),
+                    ),
+                  ),)
+              )),
+              const SizedBox(
+                height: 20,
+              ),
+              InkWell(
+                onTap: (){
+                  controller.switchShowInPlatform();
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    children: [
+                      controller.showInPlatform.value?Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: selectedBigCheckBox(),
+                      ) : Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: unSelectedBigCheckBox(),
+                      ),
+                      // controller.showInPlatform! ? selectedBigCheckBox() : unSelectedBigCheckBox(),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Text("العرض في منصة ( المعلنين )",style: TextStyle(fontSize: 15,color:const Color(0xff041D67)),)
                     ],
                   ),
                 ),
-                Divider(
-                  color: AppColors.dividerBottom,
-                  thickness: 4.0,
-                ),
-                /*const SizedBox(
-                  height: 10,
-                ),*/
-                Container(
-                  //height: 30.0,
-                 // width: 140.0,
-                  //padding: EdgeInsets.all(8.0),
-                  margin: EdgeInsets.only(top:10.0,right: 18.0,bottom: 10.0),
-                  child: Text(
-                    'اختر من قنوات الاعلان',
-                    style: TextStyle(
-                        color: AppColors.adVertiserPageDataColor,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ),
-                Container(
-                  height: 200,
-                  child: GridView.builder(
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.only(right: 70.0, left: 70.0, bottom: 20.0),
-                    shrinkWrap: true,
-                    itemCount: advertisingItems!.length,
-                    gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
-                      //childAspectRatio: 100 / 150,
-                      height: 65.0,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 40,
-                      crossAxisCount: 2,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 135,
+                    height: 35,
+                    margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 45.0),
+                    child: InkWell(
+                      onTap: ()=> controller.onSaveChannelsClicked(context),
+                      child: Material(
+                        elevation: 6.0,
+                        shadowColor: Colors.grey[200],
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: AppColors.saveButtonBottomSheet,
+                        child: Container(
+                          /*margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),*/
+                          alignment: Alignment.center,
+                          child: Text(
+                            'save'.tr,
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                color: AppColors.tabColor,
+                                fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
                     ),
-                    itemBuilder: (context, index) => InkWell(
+                  ),
+                  Container(
+                    width: 135,
+                    height: 35,
+                    margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 45.0),
+                    child: InkWell(
                       onTap: (){
-                        controller.addRemoveCheckList(advertisingItems![index].id);
+                        controller.isChannelSaveClicked.value = false;
+                        Get.back();
                       },
-                      child: Container(
-                        decoration: controller.checkList!.contains(advertisingItems![index].id) ? BoxDecoration(
-                          border: Border.all(
-                              color:
-                              AppColors.bottomSheetTabColorRounded),
-                          color: Colors.white,
-                          boxShadow: [
-                            // so here your custom shadow goes:
-                            BoxShadow(
-                              color: Colors.grey,
-                              // the color of a shadow, you can adjust it
-                              spreadRadius: 0,
-                              //also play with this two values to achieve your ideal result
-                              blurRadius: 4,
-                              offset: Offset(0,
-                                  4), // changes position of shadow, negative value on y-axis makes it appering only on the top of a container
-                            ),
-                          ],
-                        )
-                              : BoxDecoration(
-                        //border: Border.all(color: Colors.white)
-                      ),
-                        child: Image.asset(
-                          "${advertisingItems![index].imgUrl}",
-                          fit: BoxFit.cover,
-                          height: 50.0,
-                          width: 30.0,
+                      child: Material(
+                        elevation: 6.0,
+                        shadowColor: Colors.grey[200],
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: AppColors.tabColor,
+                        child: Container(
+                          /*margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),*/
+                          alignment: Alignment.center,
+                          child: Text(
+                            'cancel'.tr,
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                InkWell(
-                  onTap: (){
-                    controller.switchShowInPlatform();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-                      children: [
-                        controller.showInPlatform! ? selectedBigCheckBox() : unSelectedBigCheckBox(),
-                       const SizedBox(
-                         width: 15,
-                       ),
-                        Text("العرض في منصة ( المعلنين )",style: TextStyle(fontSize: 15.sp,color:const Color(0xff041D67)),)
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: (){
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 75),
-                        height: 40,
-                        child: Center(
-                          child: Text("حفظ",style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),),
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Color(0xff4391D4),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-              ],
-            ),
-          ],
-        ),
+                ],
+              )
+            ],
+          ),
+        ],
       ),
     );
   }
+
+/*  @override
+  void dispose() {
+    // TODO: implement dispose
+    if(controller.isChannelSaveClicked.isFalse){
+      controller.channelsIds = [];
+      controller.channels.forEach((element) {
+        if(element.isTapped!=null) {
+          element.isTapped.value = false;
+        }
+      });
+    }
+    super.dispose();
+  }*/
 }
-
-
-class AdvertisingItem {
-  int? id;
-  String? name,imgUrl;
-  AdvertisingItem({this.name,this.id,this.imgUrl});
-}
-
-
-List<AdvertisingItem>? advertisingItems = [
-  AdvertisingItem(
-    id: 0,
-    name: "1",
-    imgUrl: 'images/snapshat_icon.png',
-  ),
-  AdvertisingItem(
-    id: 1,
-    name: "2",
-    imgUrl: 'images/instegram.png',
-  ),
-  AdvertisingItem(
-    id: 2,
-    name: "3",
-    imgUrl: 'images/twitter.png',
-  ),
-  AdvertisingItem(
-    id: 3,
-    name: "4",
-    imgUrl: 'images/youtube.png',
-  ),
-  AdvertisingItem(
-    id: 4,
-    name: "5",
-    imgUrl: 'images/facebook.png',
-  ),
-  AdvertisingItem(
-    id: 5,
-    name: "6",
-    imgUrl: 'images/whatsup.png'
-  ),
-  AdvertisingItem(
-    id: 6,
-    name: "1",
-    imgUrl: 'images/snapshat_icon.png',
-  ),
-  AdvertisingItem(
-    id: 7,
-    name: "2",
-    imgUrl: 'images/instegram.png',
-  ),
-  AdvertisingItem(
-    id: 8,
-    name: "3",
-    imgUrl: 'images/twitter.png',
-  ),
-  AdvertisingItem(
-    id: 9,
-    name: "4",
-    imgUrl: 'images/youtube.png',
-  ),
-  AdvertisingItem(
-    id: 10,
-    name: "5",
-    imgUrl: 'images/facebook.png',
-  ),
-  AdvertisingItem(
-    id: 11,
-    name: "6",
-    imgUrl: 'images/whatsup.png'
-  ),
-];
