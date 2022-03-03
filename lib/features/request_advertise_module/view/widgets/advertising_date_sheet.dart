@@ -177,6 +177,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                                         BuildContext context) async {
                                       final DateTime?
                                           picked = await showDatePicker(
+                                          initialEntryMode: DatePickerEntryMode.calendarOnly,
                                               context: context,
                                               initialDate: (DateTime.now())
                                                   .add(const Duration(days: 1)),
@@ -294,7 +295,10 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                         ? Expanded(
                             child: InkWell(
                               onTap: () async {
-                                final picked = await showDateRangePicker(
+                                final picked = await DateRangePicker
+                                    .showDateRangePicker(
+                                  initialEntryMode:
+                                  DatePickerEntryMode.calendarOnly,
                                   locale: const Locale('ar', 'EG'),
                                   context: context,
                                   firstDate: (new DateTime.now())
@@ -514,7 +518,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
               const SizedBox(
                 height: 5,
               ),
-              Padding(
+              requestAdvertiseController.showInPlatform.isTrue?Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: InkWell(
                   onTap: () {
@@ -578,7 +582,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                         width: 15,
                       ),*/
                       Obx(
-                        () => requestAdvertiseController
+                        () => requestAdvertiseController.showInPlatform.isTrue?requestAdvertiseController
                                 .endAdvertisingDate.value.isNotEmpty
                             ? Container(
                                 margin: EdgeInsets.only(top: 6.0, left: 5),
@@ -589,8 +593,8 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                              )
-                            : Container(
+                              ):SizedBox():SizedBox()
+                            /*: Container(
                                 margin: EdgeInsets.only(left: 5),
                                 child: const Text(
                                   'إختيارى',
@@ -599,12 +603,12 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                                       fontWeight: FontWeight.w400,
                                       decoration: TextDecoration.underline),
                                 ),
-                              ),
+                              ),*/
                       )
                     ],
                   ),
                 ),
-              ),
+              ):const SizedBox(),
               const SizedBox(
                 height: 25,
               ),
@@ -616,8 +620,10 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                     height: 35,
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
                     child: InkWell(
-                      onTap: () => requestAdvertiseController
-                          .onDateClickedSaved(context),
+                      onTap: () {
+                        requestAdvertiseController
+                            .onDateClickedSaved(context);
+                      },
                       child: Material(
                         elevation: 6.0,
                         shadowColor: Colors.grey[200],

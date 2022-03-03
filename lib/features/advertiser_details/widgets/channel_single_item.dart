@@ -10,7 +10,7 @@ class ChannelSingleItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Stack(
       children: [
-        Image.asset(
+        Image.network(
           '$imgUrl',
           // ,
           height: 40.w,

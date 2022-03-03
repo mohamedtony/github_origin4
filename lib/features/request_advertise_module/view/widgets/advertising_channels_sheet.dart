@@ -2,6 +2,7 @@ import 'package:advertisers/features/request_advertise_module/controller/adertis
 import 'package:advertisers/features/request_advertise_module/SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight.dart';
 import 'package:advertisers/features/home_page/view/widgets/advertise_item_home_page.dart';
 import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
+import 'package:advertisers/shared/gradient_check_box/gradient_check_box.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -24,7 +25,12 @@ class AdvertisingChannelsPage extends StatefulWidget {
 
 class _AdvertisingChannelsPageState extends State<AdvertisingChannelsPage> {
   RequestAdvertiseController requestAdvertiseController=Get.find();
-
+   @override
+  void initState() {
+    // TODO: implement initState
+     print("sss= "+requestAdvertiseController.showInPlatform.value.toString());
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -152,13 +158,43 @@ class _AdvertisingChannelsPageState extends State<AdvertisingChannelsPage> {
                   ),
                 ),)
               )),
+              const SizedBox(
+                height: 5,
+              ),
+              Obx(()=>InkWell(
+                onTap: (){
+                  requestAdvertiseController.switchShowInPlatform();
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      requestAdvertiseController.showInPlatform.isTrue?Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: selectedBigCheckBox(),
+                      ) : Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: unSelectedBigCheckBox(),
+                      ),
+                      // controller.showInPlatform! ? selectedBigCheckBox() : unSelectedBigCheckBox(),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Text("العرض في منصة ( المعلنين )",style: TextStyle(fontSize: 15,color:const Color(0xff041D67)),)
+                    ],
+                  ),
+                ),
+              )),
+              const SizedBox(
+                height: 10,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     width: 135,
                     height: 35,
-                    margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 45.0),
+                    margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 15.0),
                     child: InkWell(
                       onTap: ()=> requestAdvertiseController.onSaveChannelsClicked(context),
                       child: Material(
@@ -185,7 +221,7 @@ class _AdvertisingChannelsPageState extends State<AdvertisingChannelsPage> {
                   Container(
                     width: 135,
                     height: 35,
-                    margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 45.0),
+                    margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 15.0),
                     child: InkWell(
                       onTap: (){
                         requestAdvertiseController
@@ -214,7 +250,10 @@ class _AdvertisingChannelsPageState extends State<AdvertisingChannelsPage> {
                     ),
                   ),
                 ],
-              )
+              ),
+              const SizedBox(
+                height: 10,
+              ),
             ],
           ),
         ],
@@ -227,9 +266,10 @@ class _AdvertisingChannelsPageState extends State<AdvertisingChannelsPage> {
     // TODO: implement dispose
     if(requestAdvertiseController.isChannelSaveClicked.isFalse){
       requestAdvertiseController.channelsIds = [];
+      requestAdvertiseController.showInPlatform.value = false;
       requestAdvertiseController.channels.forEach((element) {
         if(element.isTapped!=null) {
-          element.isTapped!.value = false;
+          element.isTapped.value = false;
         }
       });
     }

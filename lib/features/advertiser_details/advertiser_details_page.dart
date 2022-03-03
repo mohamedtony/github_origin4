@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:advertisers/app_core/network/models/AdTypeModel.dart';
+import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/features/advertiser_details/controller/advertiser_details_controller.dart';
 import 'package:advertisers/features/advertiser_details/sheets/address_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/advertising_channels_sheet.dart';
@@ -15,9 +17,11 @@ import 'package:advertisers/features/advertiser_details/widgets/item.dart';
 import 'package:advertisers/features/advertiser_details/widgets/title.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -47,7 +51,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+/*    // TODO: implement initState
     controller.descController = TextEditingController(
         text: "- تغطية افتتاح الفرع الثالث من فروعنا");
 
@@ -55,7 +59,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
         text: "شارع الملز الرياض بجوار مدينة السلام");
 
     controller.noticsController = TextEditingController(
-        text: "------------------------------------------- -");
+        text: "------------------------------------------- -");*/
     super.initState();
   }
   final List<String> _productType = [
@@ -140,7 +144,65 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: DropdownButton<String>(
+                          child: Obx(()=> controller.isLoadingTypes.value?Container(
+                            child: const SpinKitThreeBounce(
+                              color: Colors.blue,
+                              size: 25,
+                            ),
+                          )
+                              :controller.categories.isNotEmpty?DropdownSearch<CategoryModel>(
+                              mode: Mode.MENU,
+                              dropDownButton: Container(
+                                margin: EdgeInsets.only(left: 0.0),
+                                child: SvgPicture.asset(
+                                  'images/dropdown_icon.svg',
+                                  fit: BoxFit.fill,
+                                  height: 8.0,
+                                  width: 8.0,
+                                ),
+                              ),
+                              dropdownSearchDecoration: InputDecoration(
+                                // filled: true,
+                                //fillColor: Color(0xFFF2F2F2),
+                                contentPadding:
+                                EdgeInsets.only(right: 20.0, top: 0.0, bottom: 0.0),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                                  borderSide: BorderSide(
+                                      width: 1,),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                                  borderSide: BorderSide(
+                                      width: 1),
+                                ),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                                    borderSide: BorderSide(
+                                      width: 1,
+                                    )),
+                              ),
+                              items: controller.categories.value,
+                              dropdownBuilder: (BuildContext context, s) {
+                                return Text(
+                                  '${(s?.name ?? '')}',
+                                  style: TextStyle(color: Color(0xff041D67),fontSize: 13),
+                                  textAlign: TextAlign.start,
+                                );
+                              },
+                              // label: "Menu mode",
+                              itemAsString: (CategoryModel? u) =>
+                              u?.itemAsStringByName() ?? '',
+                              onChanged: (categoryModel){
+                                if(categoryModel!.id!=-1) {
+                                  controller.categoryId =
+                                  categoryModel.id!;
+                                }
+                              },
+                              selectedItem: controller.categories.value[0]
+                          ): Container(
+                              alignment: Alignment.centerRight,
+                              child: const Text("لا يوجد منتجات")))/*DropdownButton<String>(
                             underline: const SizedBox.shrink(),
                             icon: SvgPicture.asset('images/dropdown_icon.svg'),
                             hint: _selectedProductTyp.isNotEmpty
@@ -172,7 +234,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                 _selectedProductTyp = newVal!;
                               });
                             },
-                          ),
+                          )*/,
                         ),
                       ),
                     ],
@@ -213,7 +275,67 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: DropdownButton<String>(
+                          child: Obx(()=>controller.isLoadingTypes.value?Container(
+                            child: const SpinKitThreeBounce(
+                              color: Colors.blue,
+                              size: 25,
+                            ),
+                          )
+                              :controller.ads_types.isNotEmpty?DropdownSearch<AdTypeModel>(
+                              mode: Mode.MENU,
+                              //showSelectedItem: true,
+                              dropDownButton: Container(
+                                margin: EdgeInsets.only(left: 0.0),
+                                child: SvgPicture.asset(
+                                  'images/dropdown_icon.svg',
+                                  fit: BoxFit.fill,
+                                  height: 8.0,
+                                  width: 8.0,
+                                ),
+                              ),
+                              dropdownSearchDecoration: InputDecoration(
+                                labelStyle: TextStyle(color: Color(0xff041D67),fontSize: 13),
+                                // filled: true,
+                                //fillColor: Color(0xFFF2F2F2),
+                                contentPadding:
+                                EdgeInsets.only(right: 20.0, top: 0.0, bottom: 0.0),
+                                /*focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                                  borderSide: BorderSide(
+                                      width: 1, color: AppColors.borderDropDownColor),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                                  borderSide: BorderSide(
+                                      width: 1, color: AppColors.borderDropDownColor),
+                                ),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                                    borderSide: BorderSide(
+                                      width: 1,
+                                    )),*/
+                              ),
+                              items: controller.ads_types.value,
+                              dropdownBuilder: (BuildContext context, s) {
+                                return Text(
+                                  '${(s?.name ?? '')}',
+                                  style: TextStyle(color: Color(0xff041D67),fontSize: 13),
+                                  textAlign: TextAlign.start,
+                                );
+                              },
+                              // label: "Menu mode",
+                              itemAsString: (AdTypeModel? u) =>
+                              u?.itemAsStringByName() ?? '',
+                              onChanged: (adTypeModel){
+                                if(adTypeModel!.id!=-1) {
+                                  controller.adTypeId = adTypeModel.id!;
+                                }
+                              },
+                              selectedItem: controller.ads_types.value[0],
+
+                          ): Container(
+                              alignment: Alignment.centerRight,
+                              child: const Text("لا يوجد اعلانات")))/*DropdownButton<String>(
                             underline: const SizedBox.shrink(),
                             icon: SvgPicture.asset('images/dropdown_icon.svg'),
                             hint: _selectedProductTyp.isNotEmpty
@@ -245,7 +367,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                 _selectedProductTyp = newVal!;
                               });
                             },
-                          ),
+                          )*/,
                         ),
                       ),
                     ],
@@ -264,12 +386,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                   strokeCap: StrokeCap.butt,
                   child: InkWell(
                     onTap: (){
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (builder){
-                            return AdvertisingDatePage();
-                          }
-                      );
+                      showBottomSheetForRequest(context,1);
 
                     },
                     child: Row(
@@ -298,14 +415,16 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                             padding: const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Row(
                               children: [
-                                 Expanded(child: Text('${controller.dateRange!.fromDate} : ${controller.dateRange!.toDate}', style: TextStyle(color: Color(0xff041D67)),),),
+                                 Expanded(child: Obx(()=>Text('${controller.dateRange.value.fromDate!=null && controller.dateRange.value.fromDate!.isNotEmpty?controller.dateRange.value.fromDate:controller.requestDetailsModel.value.started_at??''} : ${controller.dateRange.value.toDate!=null && controller.dateRange.value.toDate!.isNotEmpty?controller.dateRange.value.toDate:controller.requestDetailsModel.value.ended_at??''}', style: TextStyle(color: Color(0xff041D67)),),
+                                 )
+                                 ),
                                 Container(
                                   margin: const EdgeInsets.symmetric(horizontal: 4.0),
                                   height: 30,
                                   width: 2,
                                   color: Colors.grey[400],
                                 ),
-                                 Text('${controller.selectedTimeCounter}', style: TextStyle(color: Color(0xff041D67)),),
+                                 Obx(()=>Text('${controller.selectedTimeCounter}', style: TextStyle(color: Color(0xff041D67)),),)
                               ],
                             ),
                           ),
@@ -334,17 +453,21 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                         ),
                         child: InkWell(
                           onTap: (){
-                            void _modalBottomSheetMenu(){
+
+                            showBottomSheetForRequest(context,2);
+                            /*void _modalBottomSheetMenu(){
                               showModalBottomSheet(
 
                                 // isScrollControlled: true,
                                   context: context,
-                                  builder: (builder){
-                                    return AdvertisingChannelsPage();
+                                  builder: (builder,){
+                                    return AdvertisingChannelsPage(
+                                     // scrollController: ,
+                                    );
                                   }
                               );
                             }
-                            _modalBottomSheetMenu();
+                            _modalBottomSheetMenu();*/
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -392,22 +515,22 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                         Container(
                           height: 50,
                           child: Center(
-                            child: ListView.builder(
+                            child: Obx(()=>ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 shrinkWrap: true,
-                                itemCount: advertisingItems!.length,
+                                itemCount: controller.channelsForList.value.length??0,
                                 itemBuilder: (context, index) {
-                                  return controller.checkList!.contains(advertisingItems![index].id)?
+                                  return /*controller.checkList!.contains( controller.requestDetailsModel.value.channels![index].id)?*/
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 5),
                                       child: ChannelSingleItem(
                                         onTap: (){
-                                          controller.addRemoveCheckList(advertisingItems![index].id);
+                                          controller.addRemoveCheckList( controller.channelsForList[index].id);
                                         },
-                                        imgUrl: "${advertisingItems![index].imgUrl}",
+                                        imgUrl: "${ controller.channelsForList.value[index].image}",
                                       ),
-                                    ):const SizedBox();
-                                }),
+                                    )/*:const SizedBox()*/;
+                                })),
                           ),
                         ),
                       ),
@@ -896,7 +1019,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text('${controller.noticsController.text}',style: TextStyle(color: Color(0xff041D67)),),
+                                    child: Text('${/*controller.noticsController.text??*/''}',style: TextStyle(color: Color(0xff041D67)),),
                                   ),
                                 ],
                               ),
@@ -978,6 +1101,139 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
       )
       ,
     );
+  }
+
+  void showBottomSheetForRequest(BuildContext context,int bottomNumber){
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(10.0),
+            topRight: const Radius.circular(10.0)),
+      ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      builder: (BuildContext context) {
+        return DraggableScrollableSheet(
+          //maxChildSize: 0.8,
+          //minChildSize: 100.0,
+          //maxChildSize: 0.9,
+          initialChildSize: bottomNumber==6?0.84:0.67,
+          expand: false,
+          builder: (context, scrollController) {
+            if(bottomNumber==1){
+              return AdvertisingDatePage(
+                  scrollController: scrollController
+              );
+            }
+            else /*if(bottomNumber==2)*/ {
+              return AdvertisingChannelsPage(
+                  scrollController: scrollController
+              );
+              /* return LocationRangeBottomSheet(
+                    scrollController: scrollController);
+*/
+            }/*else if(bottomNumber==3){
+              return AttatchementPage(
+                  scrollController: scrollController);
+            }else if(bottomNumber==4){
+              return UrlsPage(
+                  scrollController: scrollController);
+            }else if(bottomNumber==5){
+              return AddressBottomSheet(
+                  scrollController: scrollController);
+            }else if(bottomNumber==6){
+              return DiscountCouponSheet(
+                  scrollController: scrollController);
+            }else if(bottomNumber==7){
+              return NoticeSheet(
+                  scrollController: scrollController);
+            }else{
+              return FilterOrderAdvertisersSheet(
+                  scrollController: scrollController
+              );
+            }*/
+          },
+        );
+      },
+    );
+    /*showMaterialModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+       // expand: true,
+        isDismissible: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+       // clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (context) => BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+
+            initialChildSize: 0.67,
+            expand: false,
+            builder: (context, scrollController) {
+              return AttatchementPage(
+                  scrollController: scrollController);
+            },
+          )
+        ),
+      );*/
+
+/*      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        isDismissible: true,
+        //barrierColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+        //clipBehavior: Clip.antiAliasWithSaveLayer,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (context) =>  BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          child: DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+            initialChildSize: 0.67,
+           // expand: true,
+            builder: (context, scrollController) {
+              return ActivitiesBottomSheet(
+                  scrollController: scrollController);
+            },
+          )),
+      );*/
+
+    /* showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) {
+          return DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+
+            initialChildSize: 0.67,
+            expand: false,
+            builder: (context, scrollController) {
+              return ActivitiesBottomSheet(
+                  scrollController: scrollController);
+            },
+          );
+        },
+      );*/
   }
 }
 

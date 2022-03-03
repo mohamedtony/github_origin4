@@ -418,7 +418,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          Get.toNamed('/AdvertiserDetailsPage');
+                                          Get.toNamed('/AdvertiserDetailsPage?requestId=${controller.myRequestsAsClient[index].id}');
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(

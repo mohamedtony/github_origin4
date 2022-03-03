@@ -10,8 +10,8 @@ LocationModel _$LocationModelFromJson(Map<String, dynamic> json) =>
     LocationModel(
       name: json['name'] as String?,
       address: json['address'] as String?,
-      lat: (json['lat'] as num?)?.toDouble(),
-      lng: (json['lng'] as num?)?.toDouble(),
+      lat: json['lat'] as String?,
+      lng: json['lng'] as String?,
     );
 
 Map<String, dynamic> _$LocationModelToJson(LocationModel instance) =>

@@ -61,7 +61,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   RxList<Channel> channels = <Channel>[].obs;
   List<int> channelsIds = [];
   var isChannelSaveClicked = false.obs;
-
+  var showInPlatform = false.obs;
   // -------------------- for attachement sheet  ----------------------------------------
   RxList<FileModel>  attatechedFilesImageAndVideo =<FileModel>[].obs;
   var isAttachementSaveClicked = false.obs;
@@ -121,6 +121,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     placeNameController = TextEditingController();
     placeAddressController = TextEditingController();
 
+    print("isPlateformmm= "+showInPlatform.value.toString());
      myToken  = await storage.read("token");
     client!.getProductsAndAdsTypes("Bearer "+myToken!).then((value) {
       Logger().i(value.data?.toJson());
@@ -289,9 +290,9 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   }*/
 
   void onSaveChannelsClicked(BuildContext context) {
-    Logger().i(channelsIds);
+   /* Logger().i(channelsIds);
     Logger().i("categoryId= ",categoryId);
-    Logger().i("typeId= ",adTypeId);
+    Logger().i("typeId= ",adTypeId);*/
     Get.back();
     if(channelsIds.isNotEmpty) {
       isChannelSaveClicked.value = true;
@@ -665,7 +666,7 @@ Future<File> compressVideo(File file) async {
       isUrlSaveClicked.value = true;
       Get.back();
       for(int i=0;i<numOfLinks.value;i++){
-        links.add(LinkModel(title: textUrlControllers[i].text,link: urlControllers[i].text));
+        links.add(LinkModel(name: textUrlControllers[i].text,link: urlControllers[i].text));
       }
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("تم حفظ الروابط بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
@@ -830,7 +831,7 @@ void showToast(msg){
     this.toDate.value = toDate!;
     //endAdvertisingDate.value = toDate;
   }
-  var selectedTimeCounter = ''.obs;
+  var selectedTimeCounter = "1".obs;
 
 
   void selectCounter(String? count){
@@ -850,6 +851,8 @@ void showToast(msg){
   }
   void onDateClickedSaved(BuildContext context) {
 
+    print("savedClicked");
+    print("repeated= "+selectedTimeCounter.toString());
     if(isFlixble.isTrue){
       if(dateRange.value.fromDate==null){
         showToast("من فضلك يرجى إختيار تاريخ الاعلان !");
@@ -859,10 +862,10 @@ void showToast(msg){
     if(isFixed.isTrue && fromAdvertisingDate.value=='2022-2-10'){
       showToast("من فضلك يرجى إختيار تاريخ الاعلان !");
       return;
-    }else if(selectedTimeCounter.value.isEmpty){
+    }/*else if(selectedTimeCounter.value.isEmpty){
       showToast("من فضلك يرجى إختيار عدد مرات الاعلان !");
       return;
-    }else{
+    }*/else{
       isDateSaveClicked.value = true;
       Navigator.pop(context);
     }
@@ -947,14 +950,14 @@ void showToast(msg){
       return;
     }
     isLocationClickedSaved.value = true;
-    locationModel= LocationModel(name: placeNameController.text,address: placeAddressController.text,lat: latLng!.latitude,lng: latLng!.longitude);
+    locationModel= LocationModel(name: placeNameController.text,address: placeAddressController.text,lat: latLng!.latitude.toString(),lng: latLng!.longitude.toString());
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("تم حفظ تفاصيل العنوان بنجاح!",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
     Get.back();
   }
 
   onPlanClicked(BuildContext context) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform.pickFiles(allowedExtensions: ['pdf', 'doc'],type: FileType.custom);
 
     if (result != null) {
        //planFile = File(result.files.single.path!);
@@ -1035,6 +1038,18 @@ void showToast(msg){
         CameraPosition(target: LatLng(_locationData.latitude!, _locationData.longitude!),zoom: 15),
       ),
     );
+  }
+
+
+  void switchShowInPlatform (){
+    print("kkk"+showInPlatform.value.toString());
+    if(showInPlatform.isTrue){
+      showInPlatform.value = false;
+    }else{
+      showInPlatform.value = true;
+    }
+    print("kkk"+showInPlatform.value.toString());
+    //update();
   }
 
 /*  getMyLocation() async{
