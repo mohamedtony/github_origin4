@@ -1,7 +1,9 @@
+import 'package:advertisers/app_core/network/models/ReasonDataModel.dart';
 import 'package:advertisers/app_core/network/models/RequestModel.dart';
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/responses/MyRequestsResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
+import 'package:advertisers/app_core/network/responses/RejectRequestResponse.dart';
 import 'package:advertisers/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,7 @@ class MyOrdersController extends GetxController{
 
   var myRequestsAsClient=<RequestModel>[].obs;
   var currentIndex=0.obs;
+  var reasonDataModel=ReasonDataModel().obs;
   // var myRequestAsClient
    List<int>? checkListShare = [];
    var registerClientUserResponse=RegisterClientUserResponse().obs;
@@ -198,7 +201,7 @@ class MyOrdersController extends GetxController{
         path: 'requests/$requestId/reject',
         fromJson: (json) => RegisterClientUserResponse.fromJson(json),
         json: {
-    "token": "Bearer $token",
+          "token": "Bearer $token",
           "reason": reasonController.text,
         },
         onSuccess: (res) {
@@ -238,6 +241,38 @@ class MyOrdersController extends GetxController{
             EasyLoading.dismiss();
           }
           registerClientUserResponse.value = res;
+
+          //Get.toNamed('/chooseBakaPage');
+        },
+        onError: (err, res) {
+
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            err.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
+  }
+
+  void getClientConfirm({required int requestId}) {
+    EasyLoading.show();
+    Repository repo = Repository();
+
+    repo.get<RejectRequestResponse>(
+        path: 'requests/$requestId/confirm',
+        fromJson: (json) => RejectRequestResponse.fromJson(json),
+        json: {
+          "token": "Bearer $token",
+        },
+        onSuccess: (res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          reasonDataModel.value = res.data!;
 
           //Get.toNamed('/chooseBakaPage');
         },

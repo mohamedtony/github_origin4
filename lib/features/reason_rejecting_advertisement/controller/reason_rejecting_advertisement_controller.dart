@@ -54,7 +54,7 @@ class ReasonRejectingAdvertisementController extends GetxController{
     EasyLoading.show();
     Repository repo = Repository();
 
-    repo.postWithImageMultipart<RejectRequestResponse>(
+    repo.get<RejectRequestResponse>(
         path: 'requests/${Get.parameters['requestId'].toString()}/reject',
         fromJson: (json) => RejectRequestResponse.fromJson(json),
         json: {

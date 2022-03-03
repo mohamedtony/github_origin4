@@ -21,8 +21,8 @@ import 'package:group_radio_button/group_radio_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
-class ClientPaymentModel extends StatelessWidget {
-   ClientPaymentModel({Key? key}) : super(key: key);
+class ClientPaymentModelPage extends StatelessWidget {
+   ClientPaymentModelPage({Key? key}) : super(key: key);
    ClientPaymentModelController clientPaymentModelController=Get.find();
 List<String>_status=["مصارف وبنوك","حسابات رقمية"];
    String _verticalGroupValue = "حسابات رقمية";
@@ -110,7 +110,7 @@ border: Border.all(color:ClientModelColor.firstBorderColor),
                           child: Row(
                             children: [
                               Text("التاجر                   :  " ,textAlign:TextAlign.right,style:TextStyle(fontSize: 16.sp,fontFamily: "AbrilFatface-Regular",color: ClientModelColor.depthBlueFont)),
-                              Text("محمد علي عبدالله الراشد",style:TextStyle(fontSize: 16.sp,fontFamily: "AbrilFatface-Regular",color: ClientModelColor.depthBlueFont))
+                              Text(Get.parameters["advertiser"].toString(),style:TextStyle(fontSize: 16.sp,fontFamily: "AbrilFatface-Regular",color: ClientModelColor.depthBlueFont))
                             ],
                           ),
                         ),
@@ -119,7 +119,7 @@ border: Border.all(color:ClientModelColor.firstBorderColor),
                           child: Row(
                             children: [
                               Text("رقم الطلب           :  " ,textAlign:TextAlign.right,style:TextStyle(fontSize: 16.sp,fontFamily: "AbrilFatface-Regular",color: ClientModelColor.greyFont)),
-                              Text("65320  #",style:TextStyle(fontSize: 16.sp,fontFamily: "AbrilFatface-Regular",color: ClientModelColor.depthBlueFont))
+                              Text("${Get.parameters["requestId"].toString()}  #",style:TextStyle(fontSize: 16.sp,fontFamily: "AbrilFatface-Regular",color: ClientModelColor.depthBlueFont))
                             ],
                           ),
                         ),
@@ -128,7 +128,7 @@ border: Border.all(color:ClientModelColor.firstBorderColor),
                           child: Row(
                             children: [
                               Text("قيمة الطلب         :" ,textAlign:TextAlign.right,style:TextStyle(fontSize: 16.sp,fontFamily: "AbrilFatface-Regular",color: ClientModelColor.greyFont)),
-                              Text("   22500",style:TextStyle(fontSize: 16.sp,fontFamily: "AbrilFatface-Regular",color: ClientModelColor.depthBlueFont)),
+                              Text("   ${Get.parameters["total"].toString()}",style:TextStyle(fontSize: 16.sp,fontFamily: "AbrilFatface-Regular",color: ClientModelColor.depthBlueFont)),
                               Text("      ر.س",style:TextStyle(fontSize: 16.sp,fontFamily: "AbrilFatface-Regular",color: ClientModelColor.likeRedFont)),
                             ],
                           ),
@@ -231,6 +231,7 @@ border: Border.all(color:ClientModelColor.firstBorderColor),
                                 hintStyle:TextStyle(color: AppColors.greyColor,fontSize: 15.sp),
                                // hintText: ,
                               ),
+                                  controller: clientPaymentModelController.dateController,
                                   onShowPicker: (context, currentValue) async {
                                     final date = await showDatePicker(
                                         context: context,
@@ -243,7 +244,7 @@ border: Border.all(color:ClientModelColor.firstBorderColor),
                                         initialTime:
                                         TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
                                       );
-                                      return DateTimeField.combine(date, time);
+                                      return date;
                                     } else {
                                       return currentValue;
                                     }
@@ -379,8 +380,12 @@ SizedBox(
                  child: Row(
                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                    children: [
-                     AdvertisersButton(text: 'ارسال التحويل',width:136.w , onPressed: (){
-
+                     AdvertisersButton(text: 'ارسال التحويل',width:136.w , onPressed: ()async{
+                       ClientPaymentModelController.photo =
+                           await dio.MultipartFile.fromFile(clientPaymentModelController.savedFile.value.path,
+                           filename: clientPaymentModelController.savedFile.value.path
+                               .substring(clientPaymentModelController.savedFile.value.path.lastIndexOf("/") + 1));
+                      Get.find<ClientPaymentModelController>().bankTransfer();
                      },backgroundColor: Colors.white,textColor: Colors.blueAccent,),
                      AdvertisersButton(text: 'رجوع',width:136.w , onPressed: (){
 

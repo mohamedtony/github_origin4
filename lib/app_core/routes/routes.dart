@@ -25,7 +25,8 @@ import 'package:advertisers/features/advertising_requests/view/advertising_reque
 import 'package:advertisers/features/blocked_users_page/blocked_users_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
-import 'package:advertisers/features/client_payment_model/client_payment_model.dart';
+
+import 'package:advertisers/features/client_payment_model/client_payment_model_page.dart';
 import 'package:advertisers/features/client_payment_model/controller/client_payment_model_controller.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page_controller.dart';
@@ -76,8 +77,8 @@ class Routes {
   static final routes = [
 
     GetPage(
-      name: '/ClientPaymentModel',
-      page: () =>ClientPaymentModel(),
+      name: '/ClientPaymentModelPage',
+      page: () =>ClientPaymentModelPage(),
   binding: BindingsBuilder(() {
   Get.lazyPut<ClientPaymentModelController>(() => ClientPaymentModelController());
 

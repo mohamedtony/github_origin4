@@ -9,7 +9,7 @@ part 'RequestModel.g.dart';
 class RequestModel {
   int? id,bill_id;
   String? status,status_txt;
-  bool? can_edit;
+  bool? can_edit,inline;
   User? user;
   String? address;
   String? created_at;
@@ -29,7 +29,7 @@ class RequestModel {
     this.product_type,
     this.title,
     this.description,this.status,this.advertiser,this.comments,this.views,this.address,this.bill_id,this.status_txt,
-    this.statuses,this.bill_total
+    this.statuses,this.bill_total,this.inline
   });
 
 

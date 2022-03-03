@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
 import 'package:advertisers/features/my_orders/widgets/slide_right_item.dart';
 import 'package:advertisers/features/my_orders/widgets/slide_right_item_separation.dart';
@@ -15,6 +17,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyOrdersPage extends StatefulWidget {
   MyOrdersPage({Key? key}) : super(key: key);
@@ -375,9 +378,10 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                         children: [
                                           InkWell(
                                             onTap:(){
-                                              if(controller.myRequestsAsClient[index].status_txt=="تم التسعير")
-                                             Get.toNamed("/CustomerOrderInvoicePage?billId=${controller.myRequestsAsClient[index].id}");
-                                },
+                                              if(controller.myRequestsAsClient[index].status_txt=="تم التسعير"){
+                                             Get.toNamed("/CustomerOrderInvoicePage?billId=${controller.myRequestsAsClient[index].id}&phone=${controller.myRequestsAsClient[index].advertiser?.phone}&"
+                                                 "whatsapp=${controller.myRequestsAsClient[index].advertiser?.whatsapp}");
+                                }},
                                             child: Card(
                                               elevation: 5,
                                               color: Colors.white,
@@ -401,10 +405,24 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                 if (controller.currentIndex.value  ==
                                                           index) {
                                                         Get.toNamed(
-                                                            "/ReasonRejectingAdvertisement?requestId=${controller.myRequestsAsClient[index].id}");
+                                                            "/ReasonRejectingAdvertisement?requestId=${controller.myRequestsAsClient[index].id}&"
+                                                                "phone=${controller.myRequestsAsClient[index].advertiser?.phone}&whatsapp${controller.myRequestsAsClient[index].advertiser?.whatsapp}");
                                                       }
-                                                    }
-                                                  : null,
+                                                    }:
+                                              controller
+                                                  .myRequestsAsClient[
+                                              index]
+                                                  .status_txt ==
+                                                  "مرفوض منى"
+                                                  ? () {
+                                                controller.currentIndex.value=index;
+                                                if (controller.currentIndex.value  ==
+                                                    index) {
+                                                  Get.toNamed(
+                                                      "/ReasonRejectingAdvertisementCustomer?requestId=${controller.myRequestsAsClient[index].id}&"
+                                                          "phone=${controller.myRequestsAsClient[index].advertiser?.phone}&whatsapp${controller.myRequestsAsClient[index].advertiser?.phone}");
+                                                }
+                                              }:null,
                                               child: Text(
                                                 controller
                                                         .myRequestsAsClient[
@@ -475,7 +493,14 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                           CrossAxisAlignment.center,
                                       children: [
                                         InkWell(
-                                          onTap: () {},
+                                          onTap: ()async {
+                                            controller.currentIndex.value=index;
+                                            if(controller.currentIndex==index) {
+                                              await openwhatsapp(context,
+                                                  controller
+                                                      .myRequestsAsClient[index]
+                                                      .advertiser?.whatsapp);
+                                            }},
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
@@ -718,6 +743,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                                                     index]
                                                                                 .id ??
                                                                             0);
+                                                                    Get.back();
                                                                   },//cancelBtnTextStyle:TextStyle(color: Colors.blue) ,
                                                                   cancelBtnText:
                                                                       "الغاء",showCancelBtn: true,
@@ -749,19 +775,21 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                           firstWidget: SlideRightItemWidget(
                                             isSvg: true,
                                             title: "تحويل",
+                                            //اعكس /
                                             onPress: controller
                                                         .myRequestsAsClient[
                                                             index]
                                                         .statuses
                                                         ?.transfer ==
                                                     false
-                                                ? null
-                                                : () {
+                                                ? null: () {
                                               controller.currentIndex.value=index;
                                               if (controller.currentIndex.value  == index) {
-                                                      print("refuse");
+                                                     Get.toNamed("/ClientPaymentModelPage?advertiser=${controller.myRequestsAsClient[index].advertiser?.username??' '}"
+                                                         "&requestId=${controller.myRequestsAsClient[index].id}&total=${controller.myRequestsAsClient[index].bill_total}");
                                                     }
-                                                  },
+                                                  }
+                                                ,
                                             icon: "images/Outline.svg",
                                             widgetOpacity: controller
                                                         .myRequestsAsClient[
@@ -817,7 +845,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                 : () {
                                               controller.currentIndex.value=index;
                                               if (controller.currentIndex.value  == index) {
-                                                      print("refuse");
+                                                  controller.getClientConfirm(requestId: controller.myRequestsAsClient[index].id??0);
                                                     }
                                                   },
                                             icon: "images/advertising.svg",
@@ -921,6 +949,28 @@ class _MyOrdersPageState extends State<MyOrdersPage>
         ),
       ),
     );
+  }
+  openwhatsapp(context,whatsapp) async{
+    //var whatsapp ="+919144040888";
+    var whatsappURl_android = "whatsapp://send?phone="+whatsapp+"&text=hello";
+    var whatappURL_ios ="https://wa.me/$whatsapp?text=${Uri.parse("hello")}";
+    if(Platform.isIOS){
+      // for iOS phone only
+      if( await canLaunch(whatappURL_ios)){
+        await launch(whatappURL_ios, forceSafariVC: false);
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    }else{
+      // android , web
+      if( await canLaunch(whatsappURl_android)){
+        await launch(whatsappURl_android);
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    }
   }
 }
 

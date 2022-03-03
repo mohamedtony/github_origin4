@@ -141,8 +141,8 @@ class MyOrdersArchivePage extends StatelessWidget {
                                                   Text("${controller.myRequestsAsClient[index].created_at}",style: TextStyle(fontSize: 15.sp,color: Color(0xff888888)),),
                                                   InkWell(
                                                     onTap: (){
-                                                      controller.addAndRemoveOtherFromCheckList(orders![index].id);
-                                                      print("controller.checkList == > ${controller.checkList} ${controller.checkList!.contains(orders![index].id)}");
+                                                      controller.addAndRemoveOtherFromCheckList(controller.myRequestsAsClient[index].id);
+                                                      print("controller.checkList == > ${controller.checkList} ${controller.checkList!.contains(controller.myRequestsAsClient[index].id)}");
                                                     },
                                                     child: Padding(
                                                       padding: const EdgeInsets.all(8.0),
@@ -242,7 +242,7 @@ class MyOrdersArchivePage extends StatelessWidget {
                                           height: 1,
                                           color: Color(0xffBBBBBB66),
                                         ),
-                                        Container(
+                                        controller.myRequestsAsClient[index].inline==true? Container(
                                           width: double.infinity,
                                           decoration:const  BoxDecoration(
                                             borderRadius:  BorderRadius.only(
@@ -295,7 +295,7 @@ class MyOrdersArchivePage extends StatelessWidget {
                                               ),
                                             ],
                                           ),
-                                        ),
+                                        ):const SizedBox(),
 
                                       ],
                                     ),
@@ -304,8 +304,8 @@ class MyOrdersArchivePage extends StatelessWidget {
                                     top: 45,
                                     right: MediaQuery.of(context).size.width * .73,
                                     left: 10,
-                                    bottom: controller.checkList!.contains(orders![index].id)? 15 : double.infinity,
-                                    child : controller.checkList!.contains(orders![index].id)?
+                                    bottom: controller.checkList!.contains(controller.myRequestsAsClient[index].id)? 15 : double.infinity,
+                                    child : controller.checkList!.contains(controller.myRequestsAsClient[index].id)?
                                     // AnimatedContainer(
                                     //   duration: const Duration(milliseconds: 500),
                                     FadeInDown(
@@ -407,92 +407,92 @@ class MyOrdersArchivePage extends StatelessWidget {
 
 
 
-class Orders {
-  int? id;
-  String? orderId,
-      orderDate,
-      ownerName,
-      ownerImage,
-      orderTitle,
-      orderDesc,
-      orderStatus,
-      orderComments,
-      orderViews;
-  Orders({
-    this.id,
-    this.orderId,
-    this.orderComments,
-    this.orderDate,
-    this.orderDesc,
-    this.orderStatus,
-    this.orderTitle,
-    this.orderViews,
-    this.ownerName,
-    this.ownerImage
-});
-}
-
-List <Orders> orders = [
-  Orders(
-    id: 1,
-    orderStatus: "active",
-    orderId: "523621#",
-    orderComments: "69580",
-    orderDate: "12/02/2021",
-    orderDesc: "تغطية كاملة مع الحضور لافتتاح الفرع لجديد",
-    orderTitle: "منتجات غذائية",
-    orderViews: "65324",
-    ownerName: "حمدي الفريدي",
-    ownerImage: "https://roshah.com/wp-content/uploads/2018/04/2986-1.jpg"
-
-  ),
-  Orders(
-    id: 2,
-    orderStatus: "active",
-    orderId: "523621#",
-    orderComments: "69580",
-    orderDate: "12/02/2021",
-    orderDesc: "تغطية كاملة مع الحضور لافتتاح الفرع لجديد",
-    orderTitle: "منتجات غذائية",
-    orderViews: "65324",
-    ownerName: "حمدي الفريدي",
-      ownerImage: "https://roshah.com/wp-content/uploads/2018/04/2986-1.jpg"
-  ),
-  Orders(
-    id: 3,
-    orderStatus: "active",
-    orderId: "523621#",
-    orderComments: "69580",
-    orderDate: "12/02/2021",
-    orderDesc: "تغطية كاملة مع الحضور لافتتاح الفرع لجديد",
-    orderTitle: "منتجات غذائية",
-    orderViews: "65324",
-    ownerName: "حمدي الفريدي",
-      ownerImage: "https://roshah.com/wp-content/uploads/2018/04/2986-1.jpg"
-  ),
-  Orders(
-    id: 4,
-    orderStatus: "active",
-    orderId: "523621#",
-    orderComments: "69580",
-    orderDate: "12/02/2021",
-    orderDesc: "تغطية كاملة مع الحضور لافتتاح الفرع لجديد",
-    orderTitle: "منتجات غذائية",
-    orderViews: "65324",
-    ownerName: "حمدي الفريدي",
-      ownerImage: "https://roshah.com/wp-content/uploads/2018/04/2986-1.jpg"
-  ),
-  Orders(
-    id: 5,
-    orderStatus: "active",
-    orderId: "523621#",
-    orderComments: "69580",
-    orderDate: "12/02/2021",
-    orderDesc: "تغطية كاملة مع الحضور لافتتاح الفرع لجديد",
-    orderTitle: "منتجات غذائية",
-    orderViews: "65324",
-    ownerName: "حمدي الفريدي",
-      ownerImage: "https://roshah.com/wp-content/uploads/2018/04/2986-1.jpg"
-  ),
-];
+// class Orders {
+//   int? id;
+//   String? orderId,
+//       orderDate,
+//       ownerName,
+//       ownerImage,
+//       orderTitle,
+//       orderDesc,
+//       orderStatus,
+//       orderComments,
+//       orderViews;
+//   Orders({
+//     this.id,
+//     this.orderId,
+//     this.orderComments,
+//     this.orderDate,
+//     this.orderDesc,
+//     this.orderStatus,
+//     this.orderTitle,
+//     this.orderViews,
+//     this.ownerName,
+//     this.ownerImage
+// });
+// }
+//
+// List <Orders> orders = [
+//   Orders(
+//     id: 1,
+//     orderStatus: "active",
+//     orderId: "523621#",
+//     orderComments: "69580",
+//     orderDate: "12/02/2021",
+//     orderDesc: "تغطية كاملة مع الحضور لافتتاح الفرع لجديد",
+//     orderTitle: "منتجات غذائية",
+//     orderViews: "65324",
+//     ownerName: "حمدي الفريدي",
+//     ownerImage: "https://roshah.com/wp-content/uploads/2018/04/2986-1.jpg"
+//
+//   ),
+//   Orders(
+//     id: 2,
+//     orderStatus: "active",
+//     orderId: "523621#",
+//     orderComments: "69580",
+//     orderDate: "12/02/2021",
+//     orderDesc: "تغطية كاملة مع الحضور لافتتاح الفرع لجديد",
+//     orderTitle: "منتجات غذائية",
+//     orderViews: "65324",
+//     ownerName: "حمدي الفريدي",
+//       ownerImage: "https://roshah.com/wp-content/uploads/2018/04/2986-1.jpg"
+//   ),
+//   Orders(
+//     id: 3,
+//     orderStatus: "active",
+//     orderId: "523621#",
+//     orderComments: "69580",
+//     orderDate: "12/02/2021",
+//     orderDesc: "تغطية كاملة مع الحضور لافتتاح الفرع لجديد",
+//     orderTitle: "منتجات غذائية",
+//     orderViews: "65324",
+//     ownerName: "حمدي الفريدي",
+//       ownerImage: "https://roshah.com/wp-content/uploads/2018/04/2986-1.jpg"
+//   ),
+//   Orders(
+//     id: 4,
+//     orderStatus: "active",
+//     orderId: "523621#",
+//     orderComments: "69580",
+//     orderDate: "12/02/2021",
+//     orderDesc: "تغطية كاملة مع الحضور لافتتاح الفرع لجديد",
+//     orderTitle: "منتجات غذائية",
+//     orderViews: "65324",
+//     ownerName: "حمدي الفريدي",
+//       ownerImage: "https://roshah.com/wp-content/uploads/2018/04/2986-1.jpg"
+//   ),
+//   Orders(
+//     id: 5,
+//     orderStatus: "active",
+//     orderId: "523621#",
+//     orderComments: "69580",
+//     orderDate: "12/02/2021",
+//     orderDesc: "تغطية كاملة مع الحضور لافتتاح الفرع لجديد",
+//     orderTitle: "منتجات غذائية",
+//     orderViews: "65324",
+//     ownerName: "حمدي الفريدي",
+//       ownerImage: "https://roshah.com/wp-content/uploads/2018/04/2986-1.jpg"
+//   ),
+// ];
 

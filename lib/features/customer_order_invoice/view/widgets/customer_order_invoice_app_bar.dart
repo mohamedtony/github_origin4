@@ -35,8 +35,8 @@ MyOrdersController _myOrdersController=Get.find();
                 children: [
                   InkWell(
                     onTap:()async{
-                      RegisterClientUserResponse registerClientUserResponse=RegisterClientUserResponse.fromJson(json.decode(json.encode(storage.read("data"))));
-                       if (!await launch("tel:${registerClientUserResponse.data?.phone??''}")) throw 'Could not launch PhoneCall';
+                     // RegisterClientUserResponse registerClientUserResponse=RegisterClientUserResponse.fromJson(json.decode(json.encode(storage.read("data"))));
+                       if (!await launch("tel:${Get.parameters["phone"]}")) throw 'Could not launch PhoneCall';
                       //bool? res = await FlutterPhoneDirectCaller.callNumber(registerClientUserResponse.data?.phone??'');
                     },
                     child: Container(
@@ -62,10 +62,12 @@ MyOrdersController _myOrdersController=Get.find();
                   ),
                   InkWell(
                     onTap: ()async{
-                      RegisterClientUserResponse registerClientUserResponse=RegisterClientUserResponse.fromJson(json.decode(json.encode(storage.read("data"))));
+
+                      // RegisterClientUserResponse registerClientUserResponse=RegisterClientUserResponse.fromJson(json.decode(json.encode(storage.read("data"))));
                       // var whatsappUrl ="whatsapp://send?phone=${registerClientUserResponse.data?.phone??''}";
                       // await canLaunch(whatsappUrl)? launch(whatsappUrl):print("open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
-                      await openwhatsapp(context,registerClientUserResponse.data?.phone);
+
+                      await openwhatsapp(context,Get.parameters["whatsapp"]);
 
                     },
                     child: Container(
