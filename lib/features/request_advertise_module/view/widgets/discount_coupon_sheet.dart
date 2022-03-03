@@ -38,6 +38,9 @@ class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
       requestAdvertiseController.coponDiscountController=  TextEditingController();
       requestAdvertiseController.coponUsesController=  TextEditingController();
       requestAdvertiseController.coponLinkController=  TextEditingController();
+      requestAdvertiseController.coponDiscountController?.addListener(() {
+        print(requestAdvertiseController.coponDiscountController!.text);
+      });
     }
   }
   @override
@@ -248,6 +251,7 @@ class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
                             child: TextField(
                               textAlign: TextAlign.start,
                               textAlignVertical: TextAlignVertical.center,
+                              keyboardType:TextInputType.number,
                               decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(
                                     left: 10.0,
@@ -377,7 +381,15 @@ class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
                           child: TextField(
                             textAlign: TextAlign.start,
                             textAlignVertical: TextAlignVertical.center,
+                            keyboardType:TextInputType.number,
                             decoration: InputDecoration(
+                                 suffixIcon: Container(
+                                   margin: EdgeInsets.only(top:5.0),
+                                   child: Text(
+                                     '%',
+                                     style: TextStyle(fontSize: 18.0),
+                                   ),
+                                 ),
                                 contentPadding: EdgeInsets.only(
                                   left: 10.0,
                                   right: 10.0,
@@ -506,7 +518,7 @@ class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
                           child: TextField(
                             textAlign: TextAlign.start,
                             textAlignVertical: TextAlignVertical.center,
-                            keyboardType: TextInputType.text,
+                            keyboardType: TextInputType.url,
                             maxLines: 1,
                             decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(

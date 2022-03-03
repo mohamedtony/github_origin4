@@ -1,3 +1,4 @@
+import 'package:advertisers/app_core/network/responses/advertising_requests_response.dart';
 import 'package:advertisers/features/advertiser_invoice_input/controller/advertiser_invoice_input_controller.dart';
 import 'package:advertisers/features/advertiser_invoice_input/view/widget/adding_items_widget.dart';
 import 'package:advertisers/features/advertiser_invoice_input/view/widget/advertiser_invoice_input_appbar.dart';
@@ -8,19 +9,26 @@ import 'package:advertisers/features/customer_order_invoice/view/widgets/statict
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
-class AdvertiserInvoiceInputs extends StatelessWidget {
+class AdvertiserInvoiceInputs  extends GetWidget<AdvertiserInvoiceInputsController>  {
+  final Advertiser? user;
 
+  AdvertiserInvoiceInputs({this.user});
 
 
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return controller.obx(
+            (state) =>
+            Scaffold(
       appBar: PreferredSize(
-        child: AdvertiserInvoiceInputAppbar(),
+        child: AdvertiserInvoiceInputAppbar(
+          // user: controller.user,
+        ),
         preferredSize: Size(MediaQuery.of(context).size.width, 110.h),
       ),
       body: GetBuilder<AdvertiserInvoiceInputsController>(
@@ -44,13 +52,16 @@ class AdvertiserInvoiceInputs extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 15,right: 15,left: 15),
-                  child: AdvertisingTypeWidget(),
+                  child: AdvertisingTypeWidget(
+                    // types:
+                    //   state!.data!.types
+                  ),
                 ),
                 Container(
                     padding: const EdgeInsets.only(top: 15,right: 15,left: 15),
                     child: AddingItemsWidget()),
 
-                CostsDiscountsWidget(),
+                CostsDiscountsWidget(data: state!.data,),
                const SizedBox(
                  height: 30,
                ),
@@ -64,6 +75,6 @@ class AdvertiserInvoiceInputs extends StatelessWidget {
             ),
           )
       ),
-    );
+    ));
   }
 }

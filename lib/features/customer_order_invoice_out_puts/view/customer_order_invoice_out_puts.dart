@@ -1,18 +1,24 @@
-import 'package:advertisers/features/customer_order_invoice/view/widgets/customer_order_invoice_app_bar.dart';
 import 'package:advertisers/features/customer_order_invoice/view/widgets/staticts_widget.dart';
-
+import 'package:advertisers/features/customer_order_invoice_out_puts/order_invoice_controller.dart';
+import 'package:advertisers/features/customer_order_invoice_out_puts/view/widgets/customer_order_invoice_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class CustomerOrderInvoiceOutPutsPage extends StatelessWidget {
-   CustomerOrderInvoiceOutPutsPage({Key? key}) : super(key: key);
+class CustomerOrderInvoiceOutPutsPage extends GetWidget<OrderInvoiceController>  {
+  const CustomerOrderInvoiceOutPutsPage({Key? key}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return controller.obx(
+            (state) => Scaffold(
       appBar: PreferredSize(
-        child: CustomerOrderInvoiceBarWidget(),
+        child: CustomerOrderInvoiceBarWidget(
+          user: controller.user,
+        ),
         preferredSize: Size(MediaQuery.of(context).size.width, 110.h),
       ),
       body: Container(
@@ -32,43 +38,71 @@ class CustomerOrderInvoiceOutPutsPage extends StatelessWidget {
         padding: EdgeInsets.only(right: 15,left: 15,bottom: 15),
         child: ListView(
           children: [
-            Text("نوع الإعلان / تغطية مع الحضور ....(1)",style: TextStyle(color: Colors.white,fontSize: 15.sp),),
+            Text("نوع الإعلان / ${state!.data!.adsType!.name}",style: TextStyle(color: Colors.white,fontSize: 15.sp),),
            const SizedBox(
               height: 15,
             ),
-            Row(
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                      bottom: BorderSide(width: 1.0, color: Colors.grey),
-                    ),),
-                  padding: EdgeInsets.symmetric(vertical: 5,horizontal: 25),
-                  child: Text("#569851",style: TextStyle(color: Color(0xffD37A47),fontSize: 14.sp),),
+            Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                // border: Border(
+                //   bottom: BorderSide(width: 1.0, color: Colors.grey),
+                // ),
                 ),
-              ],
+
+              child: Row(
+                children: [
+                  Container(
+                      padding: EdgeInsets.symmetric(vertical: 5,horizontal: 25),
+                      child: Text("#${state!.data!.id}",style: TextStyle(color: Color(0xffD37A47),fontSize: 14.sp),)),
+
+              const SizedBox(
+                width: 15,
+              ),
+                  Expanded(child: Container(
+                    decoration: const BoxDecoration(
+                      // color: Colors.white,
+                      border: Border(
+                        bottom: BorderSide(
+                            width: 2.0, color: Color(0xff60abd6)),
+                        right: BorderSide(
+                            width: 2.0, color: Color(0xff60abd6)),
+                      ),
+                    ),
+                    child:     Container(
+                        padding: EdgeInsets.symmetric(vertical: 5,horizontal: 25),
+                        child: Text("تنفيذ الاعلان يوم ${state!.data!.executionDate}",style: TextStyle(color: const Color(0xff60abd6),fontSize: 14.sp),)),
+                  ))
+                ],
+              ),
             ),
             Container(
               color: Colors.white,
               child: Column(
                 children: [
-                  StaticsWidget(
-                    title: "إعلان تغطية خاصة بموقع التاجر",
-                    price: "17500",
-                    currency: "ر.س",
-                  ),
-                  StaticsWidget(
-                    title: "تكلفة إقامة لمدة يومين",
-                    price: "1000",
-                    currency: "ر.س",
-                  ),
-                  StaticsWidget(
-                    title: "تكلفة طيران",
-                    price: "1200",
-                    currency: "ر.س",
-                  ),
-              ],
+                  ListView.builder(
+                      physics:const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: state!.data!.items!.length,
+                      itemBuilder: (context, index) {
+                        return StaticsWidget(
+                          title: "${state!.data!.items![index].text}",
+                          price: "${state!.data!.items![index].price}",
+                          currency: "${state!.data!.payment!.currency}",
+                        );
+                      }),
+                  ListView.builder(
+                      physics:const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: state!.data!.discounts!.length,
+                      itemBuilder: (context, index) {
+                        return StaticsWidget(
+                          title: "${state!.data!.discounts![index].text}",
+                          price: "${state!.data!.discounts![index].price}",
+                          currency: "${state!.data!.payment!.currency}",
+                        );
+                      }),
+                ],
               ),
             ),
           const  SizedBox(
@@ -78,24 +112,35 @@ class CustomerOrderInvoiceOutPutsPage extends StatelessWidget {
               color: Colors.white,
               child: Column(
                 children: [
-                  SizedBox(
+                const  SizedBox(
                     height: 7,
                   ),
+
+
+
                   StaticsWidget(
                     isPoint: false,
-                    title: "عمولة المنصة",
-                    price: "17500",
-                    currency: "ر.س",
-                    percent: "7 %",
+                    title: "ضريبة القيمة المضافة",
+                    price: "${state!.data!.payment!.addedTax!.value}",
+                    currency: "${state!.data!.payment!.currency}",
+                    percent: "%${state!.data!.payment!.addedTax!.percentage}",
+                  ),
+
+                  StaticsWidget(
+                    isPoint: false,
+                    title: "نقاطي ${state!.data!.payment!.mypoints!.percentage} نقطة",
+                    price: "${state!.data!.payment!.mypoints!.value}",
+                    currency: "${state!.data!.payment!.currency}",
+                    // percent: "${state!.data!.payment!.addedTax!.percentage}",
                   ),
                   StaticsWidget(
                     isPoint: false,
                     title: "ضريبة القيمة المضافة",
-                    price: "1000",
-                    currency: "ر.س",
-                    percent: "15 %",
+                    price: "${state!.data!.payment!.commission!.value}",
+                    currency: "${state!.data!.payment!.currency}",
+                    percent: "%${state!.data!.payment!.commission!.percentage}",
                   ),
-                  SizedBox(
+               const   SizedBox(
                     height: 7,
                   ),
                 ],
@@ -107,7 +152,7 @@ class CustomerOrderInvoiceOutPutsPage extends StatelessWidget {
 
             Container(
               color: Colors.white,
-              padding: EdgeInsets.all(15),
+              padding:const EdgeInsets.all(15),
               child: Column(
                 children: [
                   Container(
@@ -115,19 +160,19 @@ class CustomerOrderInvoiceOutPutsPage extends StatelessWidget {
                     child: Row(
                       children: [
 
-                        SizedBox(
+                       const SizedBox(
                           width:  15,
                         ),
-                        Expanded(child: Text("اجمالي الفاتورة",style: TextStyle(color: Color(0xffD37A47),fontSize: 16.sp,fontWeight: FontWeight.bold),)),
+                        Expanded(child: Text("اجمالي الفاتورة",style: TextStyle(color:const Color(0xffD37A47),fontSize: 16.sp,fontWeight: FontWeight.bold),)),
 
                         Row(
                           children: [
-                            Text("19306", style: TextStyle(color: Color(0xffD37A47),fontSize: 16.sp,fontWeight: FontWeight.bold),),
+                            Text("${state!.data!.payment!.total}", style: TextStyle(color:const Color(0xffD37A47),fontSize: 16.sp,fontWeight: FontWeight.bold),),
                             const SizedBox(
                               width: 5,
                             ),
                             // Spacer(),
-                            Text("ر.س",style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),),
+                            Text("${state!.data!.payment!.currency}",style: TextStyle(color:const Color(0xff2B334D),fontSize: 15.sp),),
 
                           ],
                         )
@@ -178,13 +223,14 @@ class CustomerOrderInvoiceOutPutsPage extends StatelessWidget {
                   //
                   //   ],
                   // )
-                  StaticsWidget(
-                    percent: "% 15",
-                    title: "رقم كود الخصم",
-                    price: "6582",
-                    currency: "",
-                    isPoint: false,
-                  ),
+
+                 if(state!.data!.payment!.discount != 0) StaticsWidget(
+                   // percent: "% 15",
+                   title: "${state!.data!.payment!.copon}",
+                   price: "${state!.data!.payment!.discount}",
+                   currency: "${state!.data!.payment!.currency}",
+                   isPoint: false,
+                 ),
                 ],
               ),
 
@@ -195,7 +241,7 @@ class CustomerOrderInvoiceOutPutsPage extends StatelessWidget {
             ),
 
             Container(
-              padding: EdgeInsets.all(15),
+              padding:const EdgeInsets.all(15),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
@@ -203,14 +249,14 @@ class CustomerOrderInvoiceOutPutsPage extends StatelessWidget {
               child: Row(
                 children: [
                   Text("صافي الفاتورة",style: TextStyle(color: Color(0xff2B334D),fontSize: 17.sp,fontWeight: FontWeight.bold),),
-                 SizedBox(
+               const  SizedBox(
                    width: 60,
                  ),
-                  Text("19306", style: TextStyle(color: Color(0xffD37A47),fontSize: 23.sp,fontWeight: FontWeight.bold),),
+                  Text("${state!.data!.payment!.subtotal}", style: TextStyle(color: Color(0xffD37A47),fontSize: 23.sp,fontWeight: FontWeight.bold),),
                   const SizedBox(
                     width: 15,
                   ),
-                  Text("ر.س",style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),),
+                  Text("${state!.data!.payment!.currency}",style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),),
 
                 ],
               ),
@@ -218,7 +264,7 @@ class CustomerOrderInvoiceOutPutsPage extends StatelessWidget {
             SizedBox(
               height: 25,
             ),
-            Container(
+         if(state!.data!.payment!.mypoints!.value != 0)   Container(
               padding: EdgeInsets.all(15),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -228,31 +274,74 @@ class CustomerOrderInvoiceOutPutsPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("عند دفع الفاتورة ستكسب 19306 نقطة",style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),),
+                  Text("عند دفع الفاتورة ستكسب ${state!.data!.payment!.mypoints!.percentage} نقطة",style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),),
                   SizedBox(
                     height: 15,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("19306", style: TextStyle(color: Color(0xffD37A47),fontSize: 16.sp,fontWeight: FontWeight.bold),),
+                      Text("${state!.data!.payment!.mypoints!.value}", style: TextStyle(color: Color(0xffD37A47),fontSize: 16.sp,fontWeight: FontWeight.bold),),
                       const SizedBox(
                         width: 5,
                       ),
                       // Spacer(),
-                      Text("ر.س",style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),),
+                      Text("${state!.data!.payment!.currency}",style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),),
 
                     ],
                   )
                 ],
               ),
             ),
-            SizedBox(
-              height: 25,
+
+           const SizedBox(
+              height: 45,
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                InkWell(
+                  onTap: (){
+
+                  },
+                  child: Container(
+                    padding:const EdgeInsets.symmetric(vertical: 7),
+                    width: 140.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color:const Color(0xffE8E8E8),
+                    ),
+                    child: Center(
+                      child: Text("تعديل",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14.sp,color:const Color(0xff427AD0)),),
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: (){
+
+                  },
+                  child: Container(
+                    padding:const EdgeInsets.symmetric(vertical: 7),
+                    width: 140.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color:const Color(0xffF9F9F9),
+                    ),
+                    child: Center(
+                      child: Text("رجوع",style: TextStyle(fontSize: 14.sp,color:const Color(0xff427AD0)),),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(
+              height: 30,
             ),
           ],
         ),
       ),
-    );
+    ));
   }
 }

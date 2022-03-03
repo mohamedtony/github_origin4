@@ -3,7 +3,7 @@ import 'package:advertisers/features/users_module/controller/forget_password_for
 import 'package:advertisers/features/users_module/controller/register_phone_controller.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_button.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_phone.dart';
-import 'package:awesome_select/awesome_select.dart';
+// import 'package:awesome_select/awesome_select.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

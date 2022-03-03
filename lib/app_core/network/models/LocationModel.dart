@@ -6,8 +6,8 @@ class LocationModel {
 
   String? name;
   String? address;
-  double? lat;
-  double? lng;
+  String? lat;
+  String? lng;
 
   LocationModel({
     this.name,

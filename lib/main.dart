@@ -41,7 +41,9 @@ void main() async{
     },*/
     onError: (DioError e, ErrorInterceptorHandler handler){
       final r = e.response;
-      Logger().i(e.response);
+      //Logger().i(e.response);
+      if(r!=null)
+      print("MyCode" + r.statusCode.toString());
       if (r != null && r.statusCode == 401) {
         //dio.interceptors.requestLock.lock();
         //dio.interceptors.responseLock.lock();

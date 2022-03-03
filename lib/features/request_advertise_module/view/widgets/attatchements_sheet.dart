@@ -129,6 +129,7 @@ class _AttatchementPageState extends State<AttatchementPage> {
               Obx(
                 () => requestAdvertiseController.attatechedFilesImageAndVideo.isNotEmpty
                     ? GridView.builder(
+                       physics: const NeverScrollableScrollPhysics(),
                         padding: EdgeInsets.only(
                             right: 18.0, left: 18.0, bottom: 8.0, top: 12.0),
                         shrinkWrap: true,

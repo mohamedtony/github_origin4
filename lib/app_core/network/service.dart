@@ -23,9 +23,11 @@ import 'package:advertisers/app_core/network/responses/GetProductsAndAdsTypesRes
 import 'package:advertisers/app_core/network/responses/GetUseLocationsResponse.dart';
 import 'package:advertisers/app_core/network/responses/LoginClientResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
+import 'package:advertisers/app_core/network/responses/RequestDetailsResponse.dart';
 import 'package:advertisers/app_core/network/responses/SubscriptionDetailsResponse.dart';
 import 'package:advertisers/app_core/network/responses/SubscruptionResponse.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:retrofit/retrofit.dart';
 import 'dart:convert';
 
@@ -115,7 +117,8 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   Future<CreateAdvertiseRequestResponse> createAdvertiseRequest(@Header("Accept") String accept,@Header("Authorization") String token, {@Part(name: 'advertiser_id')int? advertiser_id,@Part(name: 'product_category_id')int? product_category_id,@Part(name: 'description')String? description,@Part(name: 'ads_type_id')int? ads_type_id,@Part(name: 'date_type')String? date_type,
     @Part(name: 'started_at')String? started_at,@Part(name: 'ended_at')String? ended_at,@Part(name: 'offer_ended_at')String? offer_ended_at,@Part(name: 'repeat_count')int? repeat_count,@Part(name: 'channels[]')List<int>? channelsIdes,@Part(name: 'attachments[]')List<File>? attachments,@Part(name: 'links[]')List<LinkModel>? links,});
 
-
+  @GET('/requests/{id}')
+  Future<RequestDetailsResponse> getRequestDetail(@Path("id") int? id,@Header("Authorization") String token);
 /*  Map<String, dynamic> mymap = {
 
     "location[name]": requestAdvertiseController.locationModel.name,

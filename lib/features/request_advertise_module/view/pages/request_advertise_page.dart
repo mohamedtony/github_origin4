@@ -288,6 +288,7 @@ class RequestAdvertisePage extends StatelessWidget {
                   InkWell(
                     onTap: (){
                       onSheetClicked!(1);
+                      FocusManager.instance.primaryFocus?.unfocus();
                     },
                     child: Container(
                       width: 165,
@@ -329,6 +330,7 @@ class RequestAdvertisePage extends StatelessWidget {
                     onTap: (){
                       //requestAdvertiseController.showMyBottomSheet(context,2);
                       onSheetClicked!(2);
+                      FocusManager.instance.primaryFocus?.unfocus();
                     },
                     child: Container(
                       width: 165,
@@ -376,6 +378,7 @@ class RequestAdvertisePage extends StatelessWidget {
                     onTap: (){
                       //Get.to(ClientSettingPage());
                     onSheetClicked!(3);
+                    FocusManager.instance.primaryFocus?.unfocus();
                       //requestAdvertiseController.showMyBottomSheet(context,3);
                     },
                     child: Container(
@@ -418,6 +421,7 @@ class RequestAdvertisePage extends StatelessWidget {
                     onTap: (){
                      // requestAdvertiseController.showMyBottomSheet(context,4);
                       onSheetClicked!(4);
+                      FocusManager.instance.primaryFocus?.unfocus();
                     },
                     child: Container(
                       width: 165,
@@ -465,6 +469,7 @@ class RequestAdvertisePage extends StatelessWidget {
                     onTap:(){
                       //requestAdvertiseController.showMyBottomSheet(context,20);
                       onSheetClicked!(5);
+                      FocusManager.instance.primaryFocus?.unfocus();
       },
                     child:  Container(
                       width: 165,
@@ -506,6 +511,7 @@ class RequestAdvertisePage extends StatelessWidget {
                     onTap: (){
                       //requestAdvertiseController.showMyBottomSheet(context,6);
                      onSheetClicked!(6);
+                     FocusManager.instance.primaryFocus?.unfocus();
                       //requestAdvertiseController.showMyBottomSheet(context,21);
                     },
                     child: Container(
@@ -554,6 +560,7 @@ class RequestAdvertisePage extends StatelessWidget {
                     onTap: (){
                      // requestAdvertiseController.showMyBottomSheet(context,5);
                       onSheetClicked!(7);
+                      FocusManager.instance.primaryFocus?.unfocus();
                     },
                     child: Container(
                       width: 165,
@@ -644,7 +651,7 @@ class RequestAdvertisePage extends StatelessWidget {
                         },
                       ),
                     ),
-                  );
+                  ).then((value) => FocusManager.instance.primaryFocus?.unfocus());
                 },
                 child: Container(
                   width: 250.0,
