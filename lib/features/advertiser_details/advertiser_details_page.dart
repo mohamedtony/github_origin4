@@ -161,26 +161,13 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                   width: 8.0,
                                 ),
                               ),
+
                               dropdownSearchDecoration: InputDecoration(
                                 // filled: true,
                                 //fillColor: Color(0xFFF2F2F2),
                                 contentPadding:
                                 EdgeInsets.only(right: 20.0, top: 0.0, bottom: 0.0),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                                  borderSide: BorderSide(
-                                      width: 1,),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                                  borderSide: BorderSide(
-                                      width: 1),
-                                ),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                                    borderSide: BorderSide(
-                                      width: 1,
-                                    )),
+                                border: InputBorder.none,
                               ),
                               items: controller.categories.value,
                               dropdownBuilder: (BuildContext context, s) {
@@ -199,7 +186,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                   categoryModel.id!;
                                 }
                               },
-                              selectedItem: controller.categories.value[0]
+                              selectedItem: controller.selectedCategory.value.id!=null?controller.selectedCategory.value:controller.categories.value[0]
                           ): Container(
                               alignment: Alignment.centerRight,
                               child: const Text("لا يوجد منتجات")))/*DropdownButton<String>(
@@ -299,6 +286,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                 //fillColor: Color(0xFFF2F2F2),
                                 contentPadding:
                                 EdgeInsets.only(right: 20.0, top: 0.0, bottom: 0.0),
+                                border: InputBorder.none,
                                 /*focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(16)),
                                   borderSide: BorderSide(
@@ -331,7 +319,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                   controller.adTypeId = adTypeModel.id!;
                                 }
                               },
-                              selectedItem: controller.ads_types.value[0],
+                              selectedItem: controller.selectedAdType.value.id!=null?controller.selectedAdType.value:controller.ads_types.value[0],
 
                           ): Container(
                               alignment: Alignment.centerRight,

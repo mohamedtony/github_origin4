@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:advertisers/features/advertiser_order_details/widgets/content_widgets/content.dart';
+import 'package:advertisers/features/client_order_details/widgets/content_widgets/content.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
