@@ -5,16 +5,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class AdvertisingRequestsSlideRightItemWidget extends StatelessWidget {
   VoidCallback?  onPress;
-  bool? isSvg;
+  bool? isSvg,isClickable;
   String? icon,title;
   double widgetOpacity,checkOpacity;
-
-  AdvertisingRequestsSlideRightItemWidget({Key? key,this.isSvg,this.onPress,this.icon,this.checkOpacity = 0,this.widgetOpacity = 1,this.title}) : super(key: key);
+  AdvertisingRequestsSlideRightItemWidget({Key? key,this.isSvg,this.isClickable,this.onPress,this.icon,this.checkOpacity = 0,this.widgetOpacity = 1,this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onPress,
+      onTap: isClickable == true ? onPress : null,
       child: Stack(
         children: [
           Opacity(
@@ -26,12 +25,15 @@ class AdvertisingRequestsSlideRightItemWidget extends StatelessWidget {
                 isSvg == true ?  SvgPicture.asset(
                   "$icon",
                   height: 20.sp,
-                  color: Color(0xff459FD4),
+                  color:const Color(0xff459FD4),
                 ):Image.asset("$icon"),
                 const SizedBox(
                   height: 5,
                 ),
-                Text("$title",style: TextStyle(color: const Color(0xff459FD4),fontSize: 15.sp),)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 3),
+                    // color: Colors.red,
+                    child: Text("$title",style: TextStyle(color: const Color(0xff459FD4),fontSize: 14.sp,height: 1.3),textAlign: TextAlign.center))
               ],
             ),
           ),
@@ -42,9 +44,12 @@ class AdvertisingRequestsSlideRightItemWidget extends StatelessWidget {
             bottom: 0,
             child: Opacity(
               opacity: checkOpacity,
-              child: SvgPicture.asset(
-                "images/check_mark_dark.svg",
-                height: 40,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: SvgPicture.asset(
+                  "images/check_mark_dark.svg",
+                  height: 30,
+                ),
               ),
             ),)
         ],

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
 import 'package:advertisers/features/my_orders/widgets/slide_right_item.dart';
 import 'package:advertisers/features/my_orders/widgets/slide_right_item_separation.dart';
@@ -15,6 +17,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyOrdersPage extends StatefulWidget {
   MyOrdersPage({Key? key}) : super(key: key);
@@ -26,7 +29,7 @@ class MyOrdersPage extends StatefulWidget {
 class _MyOrdersPageState extends State<MyOrdersPage>
     with SingleTickerProviderStateMixin {
   // final MyOrdersController _MyOrdersController = Get.put(MyOrdersController());
-  int currentIndex = 0;
+  //int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,17 +84,19 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                   padding: const EdgeInsets.only(bottom: 10, right: 5, left: 5),
                   child: GestureDetector(
                     onTap: () {
+                      controller.currentIndex.value = index;
                       //controller.closeSingleItemFromCheckListFunctions(controller.orders![index].id);
-                      if (currentIndex == index) {
+                      if (controller.currentIndex.value  == index) {
                         controller.closeSingleItemFromCheckListFunctions(
                             controller.myRequestsAsClient[index].id);
                       }
                     },
                     onPanUpdate: (details) {
+                      controller.currentIndex.value  = index;
                       // Swiping in right direction.
                       if (details.delta.dx > 0) {
                         // controller.closeSingleItemFromCheckListFunctions(orders![index].id);
-                        if (currentIndex == index) {
+                        if (controller.currentIndex.value  == index) {
                           controller.closeSingleItemFromCheckListFunctions(
                               controller.myRequestsAsClient[index].id);
                           print("Dragging in +X direction");
@@ -100,7 +105,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
 
                       // Swiping in left direction.
                       if (details.delta.dx < 0) {
-                        if (currentIndex == index) {
+                        if (controller.currentIndex.value  == index) {
                           print("Dragging in -X direction");
                           //controller.openSingleItemFromCheckListFunctions(orders![index].id);
                           controller.openSingleItemFromCheckListFunctions(
@@ -143,7 +148,8 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                           ),
                                           InkWell(
                                             onTap: () {
-                                              if (currentIndex == index) {
+                                              controller.currentIndex.value=index;
+                                              if (controller.currentIndex.value  == index) {
                                                 controller
                                                     .addAndRemoveOtherFromCheckListShare(
                                                         controller
@@ -154,45 +160,50 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                     "controller.checkList == > ${controller.checkListShare} ${controller.checkListShare!.contains(controller.myRequestsAsClient![index].id)}");
                                               }
                                             },
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  height: 10,
-                                                  width: 10,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                    color: Colors.black54,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(5.0),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    height: 6,
+                                                    width: 6,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                        gradient: LinearGradient(colors: [Color(0xff427AD0),Color(0xff48DBE1)],begin: Alignment.bottomCenter,end: Alignment.topCenter,)
+                                                    ),
                                                   ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 8,
-                                                ),
-                                                Container(
-                                                  height: 10,
-                                                  width: 10,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                    color: Colors.black54,
+                                                  const SizedBox(
+                                                    width: 8,
                                                   ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 8,
-                                                ),
-                                                Container(
-                                                  height: 10,
-                                                  width: 10,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                    color: Colors.black54,
+                                                  Container(
+                                                    height: 6,
+                                                    width: 6,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                        gradient: LinearGradient(colors: [Color(0xff427AD0),Color(0xff48DBE1)],begin: Alignment.bottomCenter,end: Alignment.topCenter,)
+
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
+                                                  const SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  Container(
+                                                    height: 6,
+                                                    width: 6,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                        gradient: LinearGradient(colors: [Color(0xff427AD0),Color(0xff48DBE1)],begin: Alignment.bottomCenter,end: Alignment.topCenter,)
+
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           )
                                           // Text("تفاصيل الطلب",style: TextStyle( decoration: TextDecoration.underline,fontSize: 15.sp,color: Color(0xff244094)),),
@@ -221,7 +232,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                         BorderRadius.circular(
                                                             10),
                                                     child: Image.network(
-                                                      "${controller.myRequestsAsClient[index].user?.image ?? ''}",
+                                                      "${controller.myRequestsAsClient[index].advertiser?.image ?? ''}",
                                                       height: 70,errorBuilder: (context,object,err){
                                                         return Image.asset('images/no_image_available.png',height: 70);
                                                     },
@@ -272,41 +283,44 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                                     0xff000000),
                                                                 height: 1.4),
                                                           )),
-                                                          Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text(
-                                                                controller
-                                                                        .myRequestsAsClient[
-                                                                            index]
-                                                                        .bill_total
-                                                                        ?.toStringAsFixed(
-                                                                            2) ??
-                                                                    '',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        16.sp,
-                                                                    color: Color(
-                                                                        0xffD37A47),
-                                                                    height:
-                                                                        1.5),
-                                                              ),
-                                                              Text(
-                                                                "ريال",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        15.sp,
-                                                                    color: Color(
-                                                                        0xffD37A47),
-                                                                    height:
-                                                                        1.1),
-                                                              ),
-                                                            ],
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(top:8.0),
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Text(
+                                                                  controller
+                                                                          .myRequestsAsClient[
+                                                                              index]
+                                                                          .bill_total
+                                                                          ?.toStringAsFixed(
+                                                                              2) ??
+                                                                      '',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          16.sp,
+                                                                      color: Color(
+                                                                          0xffD37A47),
+                                                                      height:
+                                                                          1.5),
+                                                                ),
+                                                                Text(
+                                                                  "ريال",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          15.sp,
+                                                                      color: Color(
+                                                                          0xffD37A47),
+                                                                      height:
+                                                                          1.1),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                         ],
                                                       ),
@@ -364,9 +378,10 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                         children: [
                                           InkWell(
                                             onTap:(){
-                                              if(controller.myRequestsAsClient[index].status_txt=="تم التسعير")
-                                             Get.toNamed("/CustomerOrderInvoicePage?billId=${controller.myRequestsAsClient[index].id}");
-                                },
+                                              if(controller.myRequestsAsClient[index].status_txt=="تم التسعير"){
+                                             Get.toNamed("/CustomerOrderInvoicePage?billId=${controller.myRequestsAsClient[index].id}&phone=${controller.myRequestsAsClient[index].advertiser?.phone}&"
+                                                 "whatsapp=${controller.myRequestsAsClient[index].advertiser?.whatsapp}");
+                                }},
                                             child: Card(
                                               elevation: 5,
                                               color: Colors.white,
@@ -386,13 +401,28 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                           .status_txt ==
                                                       "مرفوض من المعلن"
                                                   ? () {
-                                                      if (currentIndex ==
+                                                controller.currentIndex.value=index;
+                                                if (controller.currentIndex.value  ==
                                                           index) {
                                                         Get.toNamed(
-                                                            "/ReasonRejectingAdvertisement?requestId=${controller.myRequestsAsClient[index].id}");
+                                                            "/ReasonRejectingAdvertisement?requestId=${controller.myRequestsAsClient[index].id}&"
+                                                                "phone=${controller.myRequestsAsClient[index].advertiser?.phone}&whatsapp${controller.myRequestsAsClient[index].advertiser?.whatsapp}");
                                                       }
-                                                    }
-                                                  : null,
+                                                    }:
+                                              controller
+                                                  .myRequestsAsClient[
+                                              index]
+                                                  .status_txt ==
+                                                  "مرفوض منى"
+                                                  ? () {
+                                                controller.currentIndex.value=index;
+                                                if (controller.currentIndex.value  ==
+                                                    index) {
+                                                  Get.toNamed(
+                                                      "/ReasonRejectingAdvertisementCustomer?requestId=${controller.myRequestsAsClient[index].id}&"
+                                                          "phone=${controller.myRequestsAsClient[index].advertiser?.phone}&whatsapp${controller.myRequestsAsClient[index].advertiser?.phone}");
+                                                }
+                                              }:null,
                                               child: Text(
                                                 controller
                                                         .myRequestsAsClient[
@@ -463,7 +493,14 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                           CrossAxisAlignment.center,
                                       children: [
                                         InkWell(
-                                          onTap: () {},
+                                          onTap: ()async {
+                                            controller.currentIndex.value=index;
+                                            if(controller.currentIndex==index) {
+                                              await openwhatsapp(context,
+                                                  controller
+                                                      .myRequestsAsClient[index]
+                                                      .advertiser?.whatsapp);
+                                            }},
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
@@ -582,7 +619,8 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                       false
                                                   ? null
                                                   : () {
-                                                      if (currentIndex ==
+                                                controller.currentIndex.value=index;
+                                                if (controller.currentIndex.value  ==
                                                           index) {
                                                         print("money");
                                                       }
@@ -614,7 +652,8 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                             false
                                                         ? null
                                                         : () {
-                                                            if (currentIndex ==
+                                                      controller.currentIndex.value=index;
+                                                      if (controller.currentIndex.value  ==
                                                                 index) {
                                                               CoolAlert.show(
                                                                   context: context,
@@ -704,6 +743,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                                                     index]
                                                                                 .id ??
                                                                             0);
+                                                                    Get.back();
                                                                   },//cancelBtnTextStyle:TextStyle(color: Colors.blue) ,
                                                                   cancelBtnText:
                                                                       "الغاء",showCancelBtn: true,
@@ -735,18 +775,21 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                           firstWidget: SlideRightItemWidget(
                                             isSvg: true,
                                             title: "تحويل",
+                                            //اعكس /
                                             onPress: controller
                                                         .myRequestsAsClient[
                                                             index]
                                                         .statuses
                                                         ?.transfer ==
                                                     false
-                                                ? null
-                                                : () {
-                                                    if (currentIndex == index) {
-                                                      print("refuse");
+                                                ? null: () {
+                                              controller.currentIndex.value=index;
+                                              if (controller.currentIndex.value  == index) {
+                                                     Get.toNamed("/ClientPaymentModelPage?advertiser=${controller.myRequestsAsClient[index].advertiser?.username??' '}"
+                                                         "&requestId=${controller.myRequestsAsClient[index].id}&total=${controller.myRequestsAsClient[index].bill_total}");
                                                     }
-                                                  },
+                                                  }
+                                                ,
                                             icon: "images/Outline.svg",
                                             widgetOpacity: controller
                                                         .myRequestsAsClient[
@@ -769,7 +812,8 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                     false
                                                 ? null
                                                 : () {
-                                                    if (currentIndex == index) {
+                                              controller.currentIndex.value=index;
+                                              if (controller.currentIndex.value  == index) {
                                                       print("refuse");
                                                     }
                                                   },
@@ -799,8 +843,9 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                     false
                                                 ? null
                                                 : () {
-                                                    if (currentIndex == index) {
-                                                      print("refuse");
+                                              controller.currentIndex.value=index;
+                                              if (controller.currentIndex.value  == index) {
+                                                  controller.getClientConfirm(requestId: controller.myRequestsAsClient[index].id??0);
                                                     }
                                                   },
                                             icon: "images/advertising.svg",
@@ -821,11 +866,12 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                         .myRequestsAsClient[
                                                             index]
                                                         .statuses
-                                                        ?.reject ==
+                                                        ?.cancel ==
                                                     false
                                                 ? null
                                                 : () {
-                                                    if (currentIndex == index) {
+                                              controller.currentIndex.value=index;
+                                              if (controller.currentIndex.value  == index) {
                                                       controller.cancelRequest(
                                                           requestId: controller
                                                                   .myRequestsAsClient[
@@ -903,6 +949,28 @@ class _MyOrdersPageState extends State<MyOrdersPage>
         ),
       ),
     );
+  }
+  openwhatsapp(context,whatsapp) async{
+    //var whatsapp ="+919144040888";
+    var whatsappURl_android = "whatsapp://send?phone="+whatsapp+"&text=hello";
+    var whatappURL_ios ="https://wa.me/$whatsapp?text=${Uri.parse("hello")}";
+    if(Platform.isIOS){
+      // for iOS phone only
+      if( await canLaunch(whatappURL_ios)){
+        await launch(whatappURL_ios, forceSafariVC: false);
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    }else{
+      // android , web
+      if( await canLaunch(whatsappURl_android)){
+        await launch(whatsappURl_android);
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: new Text("whatsapp no installed")));
+      }
+    }
   }
 }
 

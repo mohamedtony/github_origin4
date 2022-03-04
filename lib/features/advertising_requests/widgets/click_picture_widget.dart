@@ -1,3 +1,5 @@
+import 'package:advertisers/app_core/network/responses/advertising_requests_response.dart';
+import 'package:advertisers/app_core/network/responses/advertising_requests_response.dart';
 import 'package:advertisers/features/advertising_requests/controller/advertising_requests_controller.dart';
 import 'package:advertisers/features/advertising_requests/view/advertising_requests_page.dart';
 import 'package:advertisers/features/advertising_requests/widgets/single_statistics_item.dart';
@@ -7,8 +9,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ClickPictureWidget extends StatelessWidget {
-  final Orders? orderData;
-   ClickPictureWidget({Key? key,this.orderData}) : super(key: key);
+  final ParentRequests? parentRequests;
+   ClickPictureWidget({Key? key,this.parentRequests}) : super(key: key);
   final AdvertisingRequestsController _advertisingRequestsController =Get.put(AdvertisingRequestsController());
 
   @override
@@ -16,12 +18,12 @@ class ClickPictureWidget extends StatelessWidget {
     return FadeIn(
       child: InkWell(
         onTap: (){
-          _advertisingRequestsController.addAndRemoveOtherFromCheckProfile(orderData!.id);
+          _advertisingRequestsController.addAndRemoveOtherFromCheckProfile(parentRequests!.id);
         },
         child: Container(
-          padding: EdgeInsets.all(10),
+          padding:const EdgeInsets.all(10),
           decoration:  BoxDecoration(
-              gradient:   LinearGradient(
+              gradient:  const LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomRight,
                 colors: [
@@ -47,16 +49,16 @@ class ClickPictureWidget extends StatelessWidget {
                       children: [
                         ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: Image.network("https://roshah.com/wp-content/uploads/2018/04/2986-1.jpg",height: 65.h,)
+                            child: Image.network("${parentRequests!.advertiser!.image}",height: 65.h,)
                         ),
                         const SizedBox(
                           width: 15,
                         ),
                         Column(
                           children: [
-                            Text("أحمد محمد سالم",style: TextStyle( fontSize: 13.sp,color: Colors.white,),),
+                            Text("${parentRequests!.advertiser!.username}",style: TextStyle( fontSize: 13.sp,color: Colors.white,),),
 
-                            Text("شركة الفصول الأربعة",style: TextStyle( fontSize: 12.sp,color: Colors.white,),)
+                            Text("${parentRequests!.advertiser!.companyName}",style: TextStyle( fontSize: 12.sp,color: Colors.white,),)
 
                           ],
                         )
@@ -69,15 +71,15 @@ class ClickPictureWidget extends StatelessWidget {
                     Row(
                       children: [
                         SingleStatisticsItemWidget(
-                          upperTitle: "4.5",
+                          upperTitle: "${parentRequests!.advertiser!.rate}",
                           desc: "تقييم المعلنين",
                         ),
                         const  SizedBox(
                           width: 8,
                         ),
                         SingleStatisticsItemWidget(
-                          upperTitle: "4.5",
-                          desc: "تقييم المعلنين",
+                          upperTitle: "${parentRequests!.advertiser!.payments}",
+                          desc: "مدفوعات العميل",
                         ),
 
                       ],
@@ -112,7 +114,7 @@ class ClickPictureWidget extends StatelessWidget {
                         children: [
                           SingleStatisticsItemWidget(
                             isCenterMainAxisAlignment: false,
-                            sideTitle: "9",
+                            sideTitle: "${parentRequests!.advertiser!.requests!.finished}",
                             desc: "طلبات صحيحة منتهية",
                           )
                         ],
@@ -124,7 +126,7 @@ class ClickPictureWidget extends StatelessWidget {
                         children: [
                           SingleStatisticsItemWidget(
                             isCenterMainAxisAlignment: false,
-                            sideTitle: "9",
+                            sideTitle: "${parentRequests!.advertiser!.requests!.notFinished}",
                             desc: "طلبات غير مكتملة",
                           )
                         ],
@@ -136,7 +138,7 @@ class ClickPictureWidget extends StatelessWidget {
                         children: [
                           SingleStatisticsItemWidget(
                             isCenterMainAxisAlignment: false,
-                            sideTitle: "9",
+                            sideTitle: "${parentRequests!.advertiser!.requests!.rejected}",
                             desc: "طلبات مرفوضة",
                           )
                         ],
@@ -148,8 +150,8 @@ class ClickPictureWidget extends StatelessWidget {
                         children: [
                           SingleStatisticsItemWidget(
                             isCenterMainAxisAlignment: false,
-                            sideTitle: "6",
-                            desc: "طلبات مرفوضة",
+                            sideTitle: "${parentRequests!.advertiser!.requests!.cancelled}",
+                            desc: "طلبات ملغية",
                           )
                         ],
                       ),
@@ -160,7 +162,7 @@ class ClickPictureWidget extends StatelessWidget {
                         children: [
                           SingleStatisticsItemWidget(
                             isCenterMainAxisAlignment: false,
-                            desc: "متوسط تأخر الدفع 17 ساعة",
+                            desc: "متوسط تأخر الدفع  ${parentRequests!.advertiser!.requests!.lateTime}",
                           )
                         ],
                       ),

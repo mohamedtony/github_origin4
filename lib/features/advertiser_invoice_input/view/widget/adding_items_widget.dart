@@ -150,7 +150,7 @@ showAlertDialog(BuildContext context,bool isCost) {
                     child: Container(
                       padding:const EdgeInsets.symmetric(horizontal: 40,vertical: 3),
                       child: TextFormField(
-                        controller: controller.value,
+                        controller: controller.inputValue,
                         cursorColor: Colors.black,
                         keyboardType:const TextInputType.numberWithOptions(
                             decimal: true,
