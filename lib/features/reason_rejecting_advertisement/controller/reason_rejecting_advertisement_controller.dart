@@ -2,15 +2,22 @@ import 'package:advertisers/app_core/network/models/ReasonDataModel.dart';
 import 'package:advertisers/app_core/network/models/RequestModel.dart';
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/responses/MyRequestsResponse.dart';
+import 'package:advertisers/app_core/network/responses/RefuseOrderReasonResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/app_core/network/responses/RejectRequestResponse.dart';
 import 'package:advertisers/main.dart';
+import 'package:advertisers/shared/networking/api_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:dio/dio.dart';
 
+import 'dart:io';
 class ReasonRejectingAdvertisementController extends GetxController{
 
   var reasonDataModel=ReasonDataModel().obs;
@@ -19,10 +26,12 @@ class ReasonRejectingAdvertisementController extends GetxController{
   @override
   void onInit() {
     // passIndex;
+    myRefuseReason=RefuseOrderReasonResponse();
     repo=Repository();
     token =storage.read("token");
     //searchController=TextEditingController();
-    getRejectRequestData();
+   // getRefuseReason();
+    //getRejectRequestData();
     super.onInit();
   }
   String? validatePhone(String phone){
@@ -35,52 +44,55 @@ class ReasonRejectingAdvertisementController extends GetxController{
 
 
 
+ late int requestId;
 
 
+  final ApiService _apiService = Get.put(ApiService());
   int currentPage = 1;
 
   late int totalPages=0;
-
+  late RefuseOrderReasonResponse myRefuseReason;
   //List<RequestModel> myRequests = [];
 
   final RefreshController refreshController =
   RefreshController(initialRefresh: true);
 
 
-
-
-
-  void getRejectRequestData() {
+  void getRefuseReason({int? requestId}) async {
     EasyLoading.show();
-    Repository repo = Repository();
 
-    repo.get<RejectRequestResponse>(
-        path: 'requests/${Get.parameters['requestId'].toString()}/reject',
-        fromJson: (json) => RejectRequestResponse.fromJson(json),
-        json: {
-          "token": "Bearer $token",
-        },
-        onSuccess: (res) {
-          if (EasyLoading.isShow) {
-            EasyLoading.dismiss();
-          }
-          reasonDataModel.value = res.data!;
+    try {
+      final dio.Response response = await _apiService.dioClient.post(
+        'https://advertiser.cefour.com/api/v1/requests/$requestId/reject',
 
-          //Get.toNamed('/chooseBakaPage');
-        },
-        onError: (err, res) {
+      );
+      final data = RefuseOrderReasonResponse.fromJson(response.data);
+      if (EasyLoading.isShow) {
+        EasyLoading.dismiss();
+      }
 
-          if (EasyLoading.isShow) {
-            EasyLoading.dismiss();
-          }
-          Get.snackbar(
-            "خطأ",
-            err.toString(),
-            icon: const Icon(Icons.person, color: Colors.red),
-            backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.BOTTOM,);
-        });
+        print("my reason# ${data.data}");
+        myRefuseReason.data = data.data;
+        update();
+
+      Get.snackbar("${data.message}", "", snackPosition: SnackPosition.BOTTOM,);
+      update();
+      Logger().i(response!.data);
+    } on dio.DioError catch (error) {
+
+      if (EasyLoading.isShow) {
+        EasyLoading.dismiss();
+      }
+      Get.snackbar(
+        "خطأ",
+        error.toString(),
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
+    }
   }
+
+
   @override
   void onClose() {
     //searchController.dispose();
