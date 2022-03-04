@@ -1,10 +1,11 @@
-import 'package:advertisers/features/advertiser_order_details/controller/advertiser_order_details_controller.dart';
-import 'package:advertisers/features/advertiser_order_details/widgets/content_widgets/address_widget.dart';
-import 'package:advertisers/features/advertiser_order_details/widgets/content_widgets/attachments_widget.dart';
-import 'package:advertisers/features/advertiser_order_details/widgets/content_widgets/coupons_widget.dart';
-import 'package:advertisers/features/advertiser_order_details/widgets/content_widgets/links_widget.dart';
-import 'package:advertisers/features/advertiser_order_details/widgets/content_widgets/note_widget.dart';
-import 'package:advertisers/features/advertiser_order_details/widgets/order_details_title.dart';
+
+import 'package:advertisers/features/client_order_details/controller/client_order_details_controller.dart';
+import 'package:advertisers/features/client_order_details/widgets/content_widgets/address_widget.dart';
+import 'package:advertisers/features/client_order_details/widgets/content_widgets/attachments_widget.dart';
+import 'package:advertisers/features/client_order_details/widgets/content_widgets/coupons_widget.dart';
+import 'package:advertisers/features/client_order_details/widgets/content_widgets/links_widget.dart';
+import 'package:advertisers/features/client_order_details/widgets/content_widgets/note_widget.dart';
+import 'package:advertisers/features/client_order_details/widgets/order_details_title.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:advertisers/shared/gradient_check_box/gradient_check_box.dart';
 // import 'package:adv/shared/advertisers_appbar/advertisers_app_bar.dart';
@@ -13,9 +14,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-class AdvertiserOrderDetails
-    extends GetWidget<AdvertiserOrderDetailsController> {
-  AdvertiserOrderDetails({Key? key}) : super(key: key);
+class CientOrderDetails
+    extends GetWidget<ClientOrderDetailsController> {
+  CientOrderDetails({Key? key}) : super(key: key);
 
   final List<String> titles = ['المرفقات', 'الروابط', 'الكوبونات', 'العنوان'];
   final List<Widget> contentList = [
@@ -368,7 +369,7 @@ class AdvertiserOrderDetails
               ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: GetBuilder<AdvertiserOrderDetailsController>(
+                child: GetBuilder<ClientOrderDetailsController>(
                     id: 'First',
                     builder: (_) {
                       return Column(
@@ -412,7 +413,7 @@ class AdvertiserOrderDetails
               // )
             ],
           ),
-          GetBuilder<AdvertiserOrderDetailsController>(
+          GetBuilder<ClientOrderDetailsController>(
               id: 'SelectedIndex',
               builder: (_) {
                 return Column(

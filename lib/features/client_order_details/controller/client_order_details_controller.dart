@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class AdvertiserOrderDetailsController extends GetxController {
+class ClientOrderDetailsController extends GetxController {
   int? firstSeeMore = 2;
   int? secondSeeMore = 2;
   updateSeeMore({required String builderId}) {
