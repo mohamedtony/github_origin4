@@ -25,6 +25,8 @@ import 'package:advertisers/features/chat/view/pages/chat_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/features/client_order_details/client_order_details.dart';
 import 'package:advertisers/features/client_order_details/controller/client_order_details_controller.dart';
+import 'package:advertisers/features/client_payment_model/client_payment_model_page.dart';
+import 'package:advertisers/features/client_payment_model/controller/client_payment_model_controller.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page_controller.dart';
 import 'package:advertisers/features/customer_order_invoice/controller/customer_order_invoice_controller.dart';
