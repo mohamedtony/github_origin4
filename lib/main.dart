@@ -1,6 +1,7 @@
 import 'package:advertisers/app_core/app_localization/app_localization.dart';
 import 'package:advertisers/app_core/network/service.dart';
 import 'package:advertisers/app_core/routes/routes.dart';
+import 'package:advertisers/features/advertiser_confirm_bank_transportation/AdvertiserConfirmBankTransportation.dart';
 //import 'package:advertisers/shared/network/service.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -158,8 +159,9 @@ class _MyAppState extends State<MyApp> {
          // fallbackLocale: LocalizationService.locale,
           builder: EasyLoading.init(),
           translations: LocalizationService(),
-          initialRoute: '/',
-          getPages: Routes.routes,
+            home: AdvertiserConfirmBankTransportation(),
+          // initialRoute: '/',
+          // getPages: Routes.routes,
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',
           ),
