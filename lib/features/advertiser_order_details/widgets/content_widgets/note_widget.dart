@@ -5,7 +5,9 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import '../../controller/advertiser_order_details_controller.dart';
 
 class NoteWidget extends GetWidget<AdvertiserOrderDetailsController> {
-  const NoteWidget({Key? key}) : super(key: key);
+       String myText;
+
+     NoteWidget(this.myText, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +61,7 @@ class NoteWidget extends GetWidget<AdvertiserOrderDetailsController> {
                     builder: (_) {
                       return Column(
                         children: [
-                          Text(
-                            ' بمناسبة هذا الافتتاح سنمنح عرض 25% لمدة 3 أيام كما أن هناك هداياتغطية افتتاح الفرع الثالث من فروعنا - الرياض . حي الملقى بمناسبة هذا الافتتاح سنمنح عرض 25% لمدة 3 أيام كما أن هناك هدايا',
+                          Text(myText??' بمناسبة هذا الافتتاح سنمنح عرض 25% لمدة 3 أيام كما أن هناك هداياتغطية افتتاح الفرع الثالث من فروعنا - الرياض . حي الملقى بمناسبة هذا الافتتاح سنمنح عرض 25% لمدة 3 أيام كما أن هناك هدايا',
                             style: TextStyle(
                               color: const Color(0xff041D67),
                               fontSize: 12.sp,

@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AdvertisersGenericField extends StatelessWidget {
-   AdvertisersGenericField({this.onChanged,this.width,this.hintColor,this.fontSize,this.borderColor, required this.textAlignment,required this.obscureText,this.onSaved,required this.controller,required this.hintText,this.validator,Key? key}) : super(key: key);
+   AdvertisersGenericField({this.enabled,this.fillColor,this.onChanged,this.width,this.hintColor,this.fontSize,this.borderColor, required this.textAlignment,required this.obscureText,this.onSaved,required this.controller,required this.hintText,this.validator,Key? key}) : super(key: key);
 
   late final String hintText;
   bool  obscureText= false;
@@ -12,7 +12,9 @@ class AdvertisersGenericField extends StatelessWidget {
   final void Function(String?)? onSaved;
   String? Function(String?)? validator;
   double? width;
+  bool? enabled;
   Widget? prefix;
+  Color? fillColor;
    void Function(String)? onChanged;
   double? fontSize;
   Color? borderColor,hintColor;
@@ -34,6 +36,7 @@ class AdvertisersGenericField extends StatelessWidget {
               borderRadius: BorderRadius.circular(12.h),borderSide: BorderSide(color:borderColor==null?AppColors.borderfayrozy: AppColors.borderAdvertiserRegisterColor)
           ),
           filled: true,
+          enabled: enabled??true,
           disabledBorder:OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.h),borderSide: BorderSide(color:borderColor==null?AppColors.borderfayrozy: AppColors.borderAdvertiserRegisterColor)
           ),
@@ -41,8 +44,8 @@ class AdvertisersGenericField extends StatelessWidget {
               borderRadius: BorderRadius.circular(12.h),borderSide: BorderSide(color: borderColor==null?AppColors.borderfayrozy: AppColors.borderAdvertiserRegisterColor)
           ),
           focusColor: AppColors.borderfayrozy,
-          fillColor:AppColors.whiteColor,
-          hintStyle:TextStyle(color: AppColors.greyColor,fontSize: 15.sp),
+          fillColor:fillColor??AppColors.whiteColor,
+          hintStyle:TextStyle(color: hintColor??AppColors.greyColor,fontSize: 15.sp),
           hintText: hintText,
         ),
         controller:controller,

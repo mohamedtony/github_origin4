@@ -1,5 +1,6 @@
 import 'package:advertisers/features/advertiser_invoice_input/controller/advertiser_invoice_input_controller.dart';
 import 'package:advertisers/features/advertiser_invoice_input/view/advertiser_invoice_input_page.dart';
+import 'package:advertisers/features/advertiser_order_details/controller/advertiser_order_details_controller.dart';
 import 'package:advertisers/features/advertising_requests/controller/advertising_requests_controller.dart';
 import 'package:advertisers/features/advertising_requests/widgets/advertising_requests_slide_right_item.dart';
 import 'package:advertisers/features/advertising_requests/widgets/advertising_requests_slide_right_item_separation.dart';
@@ -8,9 +9,13 @@ import 'package:advertisers/features/advertising_requests/widgets/click_picture_
 import 'package:advertisers/features/advertising_requests/widgets/filter_bottom_sheet.dart';
 import 'package:advertisers/features/advertising_requests/widgets/single_statistics_item.dart';
 import 'package:advertisers/features/customer_order_invoice_out_puts/order_invoice_controller.dart';
+import 'package:advertisers/features/reason_rejecting_advertisement/controller/reason_rejecting_advertisement_controller.dart';
 import 'package:advertisers/features/tax_settings/view/widgets/tax_settings_app_bar_widget.dart';
+import 'package:advertisers/features/users_module/app_colors.dart';
+import 'package:advertisers/reason_rejecting_advertisement_customer/controller/reason_rejecting_advertisement_customer_controller.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
@@ -252,7 +257,7 @@ class AdvertisingRequestsPage extends GetWidget<AdvertisingRequestsController>  
                                                                   },
                                                                   child: ClipRRect(
                                                                       borderRadius: BorderRadius.circular(10),
-                                                                      child: Image.network("${uiParentRequests!.advertiser!.image}",height: 80,)
+                                                                      child: Image.network("https://picsum.photos/200/300",height: 80,)//${uiParentRequests!.advertiser!.image}
                                                                   ),
                                                                 ),
                                                                 SizedBox(
@@ -368,19 +373,40 @@ class AdvertisingRequestsPage extends GetWidget<AdvertisingRequestsController>  
                                                               ),
                                                             ),
 
-                                                            Column(
-                                                              children: [
-                                                                Text("${uiParentRequests!.statusTxt}",style: TextStyle( fontSize: 15.sp,color: Color(0xffD37A47),height: 1.5),),
-                                                                if(uiParentRequests!.remainingDays != "null")  if(uiParentRequests!.remainingDays != "")  if(uiParentRequests!.remainingDays != null)
-                                                                  if(uiParentRequests!.executionDate != "null")  if(uiParentRequests!.executionDate != "")  if(uiParentRequests!.executionDate != null)  Row(
-                                                                  children: [
-                                                                   Text("${uiParentRequests!.executionDate??""}",style: TextStyle( fontSize: 13.sp,color: Color(0xff636363),height: 1.5),),
-                                                                    const SizedBox(width: 5,),
-                                                                    Text("بعد ${uiParentRequests!.remainingDays} ايام",style: TextStyle( fontSize: 13.sp,color: Color(0xff1A9B40),height: 1.5),),
-                                                                  ],
-                                                                )
+                                                            InkWell(
+                                                              onTap: (){
+                                                                if(uiParentRequests!.statusTxt == "ملغي من العميل"){
+                                                                  Get.put(ReasonRejectingAdvertisementController()).requestId=  int.parse(uiParentRequests!.id.toString());
+                                                                  Get.put(ReasonRejectingAdvertisementController()).getRefuseReason(requestId: uiParentRequests!.id);
+                                                                  Get.toNamed(
+                                                                      "/ReasonRejectingAdvertisement?requestId=${uiParentRequests.id}&"
+                                                                          "phone=${uiParentRequests.advertiser?.phone}&whatsapp${uiParentRequests.advertiser?.whatsapp}");
 
-                                                              ],
+                                                                }else if( uiParentRequests!.statusTxt == "ملغي من المعلن"||uiParentRequests!.statusTxt == "ملغي منى"){
+                                                                  Get.put(ReasonRejectingAdvertisementCustomerController()).requestId=  int.parse(uiParentRequests!.id.toString());
+                                                                  Get.put(ReasonRejectingAdvertisementCustomerController()).getRefuseReason(requestId: uiParentRequests!.id);
+                                                                  Get.toNamed(
+                                                                      "/ReasonRejectingAdvertisementCustomer?requestId=${uiParentRequests.id}&"
+                                                                          "phone=${uiParentRequests.advertiser?.phone}&whatsapp${uiParentRequests.advertiser?.phone}");
+
+                                                                }
+                                                                print("status is # ${controller.parentRequests[index].status}  ${uiParentRequests!.statusTxt} ${uiParentRequests!.statusTxt == "ملغي من المعلن"}");
+
+                                                              },
+                                                              child: Column(
+                                                                children: [
+                                                                  Text("${uiParentRequests!.statusTxt}",style: TextStyle( fontSize: 15.sp,color: Color(0xffD37A47),height: 1.5),),
+                                                                  if(uiParentRequests!.remainingDays != "null")  if(uiParentRequests!.remainingDays != "")  if(uiParentRequests!.remainingDays != null)
+                                                                    if(uiParentRequests!.executionDate != "null")  if(uiParentRequests!.executionDate != "")  if(uiParentRequests!.executionDate != null)  Row(
+                                                                    children: [
+                                                                     Text("${uiParentRequests!.executionDate??""}",style: TextStyle( fontSize: 13.sp,color: Color(0xff636363),height: 1.5),),
+                                                                      const SizedBox(width: 5,),
+                                                                      Text("بعد ${uiParentRequests!.remainingDays} ايام",style: TextStyle( fontSize: 13.sp,color: Color(0xff1A9B40),height: 1.5),),
+                                                                    ],
+                                                                  )
+
+                                                                ],
+                                                              ),
                                                             ),
 
 
@@ -399,7 +425,9 @@ class AdvertisingRequestsPage extends GetWidget<AdvertisingRequestsController>  
 
                                                         InkWell(
                                                           onTap: (){
-                                                            Get.toNamed('/CustomerOrderInvoiceOutPutsPage');
+                                                            Get.put(AdvertiserOrderDetailsController()).requestId=int.parse(uiParentRequests!.id.toString() );
+                                                            Get.put(AdvertiserOrderDetailsController()).fetchOderDetails(requestId: uiParentRequests!.id);
+                                                            Get.toNamed('/AdvertiserOrderDetails');//CustomerOrderInvoiceOutPutsPage
                                                           },
                                                           child: Padding(
                                                             padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -588,7 +616,7 @@ class AdvertisingRequestsPage extends GetWidget<AdvertisingRequestsController>  
 
                                                           title: "تأكيد التحويل",
                                                           onPress: (){
-                                                            print("refuse");
+                                                            print("refuse1");
                                                             controller.confirmTransferService(requestId:uiParentRequests!.id );
                                                           },
                                                           icon: "images/Outline.svg",
@@ -601,7 +629,7 @@ class AdvertisingRequestsPage extends GetWidget<AdvertisingRequestsController>  
 
                                                           title: "رفض التحويل",
                                                           onPress: (){
-                                                            print("refuse");
+                                                            print("refuse2");
                                                             controller.rejectTransferService(requestId:uiParentRequests!.id );
                                                           },
                                                           icon: "images/Outline.svg",
@@ -633,8 +661,122 @@ class AdvertisingRequestsPage extends GetWidget<AdvertisingRequestsController>  
                                                           isClickable: uiParentRequests!.statuses!.reject!,
                                                           title: "رفض الطلب",
                                                           onPress: (){
-                                                            print("refuse");
-                                                            // controller.rejectRequestService(requestId:uiParentRequests!.id );
+                                                            print("refuse3 ${uiParentRequests!.statuses!.reject} ${controller.parentRequests[index].statuses?.reject}");
+
+                                                              controller.currentIndex.value=index;
+                                                              print("refuse3 ${controller.currentIndex.value  == index}");
+
+                                                              if (controller.currentIndex.value  ==index) {
+                                                                CoolAlert.show(
+                                                                    context: context,
+                                                                    title:
+                                                                    "رفض التسعير",
+                                                                    type: CoolAlertType.info,
+                                                                    //text: "Your transaction was successful!",
+                                                                    widget: SizedBox(
+                                                                      width: 323.w,
+                                                                      height: 120.h,
+                                                                      child:
+                                                                      TextFormField(
+                                                                        maxLines: 20,
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                            14.sp,
+                                                                            fontFamily:
+                                                                            'Arabic-Regular'),
+                                                                        textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                        // onChanged: (val){
+                                                                        //
+                                                                        // },
+                                                                        decoration:
+                                                                        InputDecoration(
+                                                                          contentPadding: EdgeInsets.symmetric(
+                                                                              vertical:
+                                                                              5.0.h,
+                                                                              horizontal:
+                                                                              10.w),
+                                                                          // suffixIcon:prefix??const SizedBox(width: 0,),
+                                                                          border: OutlineInputBorder(
+                                                                              borderRadius:
+                                                                              BorderRadius.circular(12
+                                                                                  .h),
+                                                                              borderSide:
+                                                                              BorderSide(
+                                                                                  color: AppColors.borderfayrozy)),
+                                                                          filled: true,
+
+                                                                          disabledBorder: OutlineInputBorder(
+                                                                              borderRadius:
+                                                                              BorderRadius.circular(12
+                                                                                  .h),
+                                                                              borderSide:
+                                                                              BorderSide(
+                                                                                  color: AppColors.borderfayrozy)),
+                                                                          enabledBorder: OutlineInputBorder(
+                                                                              borderRadius:
+                                                                              BorderRadius.circular(12
+                                                                                  .h),
+                                                                              borderSide:
+                                                                              BorderSide(
+                                                                                  color: AppColors.borderfayrozy)),
+                                                                          focusColor:
+                                                                          AppColors
+                                                                              .borderfayrozy,
+                                                                          fillColor:
+                                                                          AppColors
+                                                                              .whiteColor,
+                                                                          hintStyle: TextStyle(
+                                                                              color: AppColors
+                                                                                  .greyColor,
+                                                                              fontSize:
+                                                                              15.sp),
+                                                                          hintText:
+                                                                          'سبب الرفض',
+                                                                        ),
+                                                                        controller:
+                                                                        controller
+                                                                            .reasonController,
+                                                                      ),
+                                                                    ),
+                                                                    confirmBtnText:
+                                                                    "حفظ",
+                                                                    onConfirmBtnTap:
+                                                                        () {
+                                                                      controller.rejectRequestService(
+                                                                          requestId: controller
+                                                                              .parentRequests[
+                                                                          index].id ?? 0);
+                                                                      Get.back();
+                                                                    },//cancelBtnTextStyle:TextStyle(color: Colors.blue) ,
+                                                                    cancelBtnText:
+                                                                    "الغاء",showCancelBtn: true,
+                                                                    onCancelBtnTap: () {
+                                                                      Get.back();
+                                                                    });
+                                                                print("refuse");
+                                                              }
+
+                                                             // controller.rejectRequestService(requestId:uiParentRequests!.id );
+                                                      /*      controller.parentRequests[index].status == "مرفوض منى"
+                                                                ? () {
+                                                              controller.currentIndex.value=index;
+                                                              if (controller.currentIndex.value  == index) {
+                                                                Get.toNamed(
+                                                                    "/ReasonRejectingAdvertisement?requestId=${controller.parentRequests[index].id}&"
+                                                                        "phone=${controller.parentRequests[index].advertiser?.phone}&whatsapp${controller.parentRequests[index].advertiser?.whatsapp}");
+                                                              }
+                                                            }:
+                                                            controller.parentRequests[index].status == "مرفوض من العميل"
+                                                                ? () {controller.currentIndex.value=index;
+                                                              if (controller.currentIndex.value  == index) {
+                                                                Get.toNamed(
+                                                                    "/ReasonRejectingAdvertisementCustomer?requestId=${controller.parentRequests[index].id}&"
+                                                                        "phone=${controller.parentRequests[index].advertiser?.phone}&whatsapp${controller.parentRequests[index].advertiser?.phone}");
+                                                              }
+                                                            }:null;*/
+
 
                                                           },
                                                           icon: "images/remove-line.svg",

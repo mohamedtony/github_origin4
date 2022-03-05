@@ -1,8 +1,10 @@
+import 'package:advertisers/app_core/network/responses/AdvertiserOrderDetailsResponse.dart';
 import 'package:advertisers/features/advertiser_order_details/widgets/content_widgets/content.dart';
 import 'package:flutter/material.dart';
 
 class LinksWidget extends StatelessWidget {
-  const LinksWidget({Key? key}) : super(key: key);
+  List<Links> myLinks=[];
+    LinksWidget({Key? key,required this.myLinks}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class LinksWidget extends StatelessWidget {
         shrinkWrap: true,
         padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: 2,
+        itemCount:  myLinks.length ,
         separatorBuilder: (_, index) => const SizedBox(
           height: 20,
         ),
@@ -27,9 +29,9 @@ class LinksWidget extends StatelessWidget {
             ),
           ),
           child: Column(
-            children: const [
-              Text('رابط المتجر'),
-              Text('www.dremhaous.com/kasjdh'),
+            children:   [
+              Text(myLinks[index].name??""),
+              Text(myLinks[index].link??""),
             ],
           ),
         ),

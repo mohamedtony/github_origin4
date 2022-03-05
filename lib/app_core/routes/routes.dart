@@ -4,8 +4,6 @@ import 'package:advertisers/app_core/bindings/data_binding.dart';
 import 'package:advertisers/features/add_advertiser_channel/add_advertiser_channel.dart';
 import 'package:advertisers/features/add_advertiser_channel/controller/add_advertiser_channel_controller.dart';
 import 'package:advertisers/features/advertiser_invoice_input/view/advertiser_invoice_input_page.dart';
-import 'package:advertisers/features/advertiser_order_details/advertiser_order_details.dart';
-import 'package:advertisers/features/advertiser_order_details/controller/advertiser_order_details_controller.dart';
 import 'package:advertisers/features/advertising_influence_channels/controller/edit_channel_advertiser_controller.dart';
 import 'package:advertisers/features/advertising_influence_channels/view/page/edit_advertiser_channel.dart';
 import 'package:advertisers/features/advanced_options/controller/advanced_options_controller.dart';
@@ -25,6 +23,10 @@ import 'package:advertisers/features/advertising_requests/view/advertising_reque
 import 'package:advertisers/features/blocked_users_page/blocked_users_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
+import 'package:advertisers/features/client_order_details/client_order_details.dart';
+import 'package:advertisers/features/client_order_details/controller/client_order_details_controller.dart';
+import 'package:advertisers/features/client_payment_model/client_payment_model_page.dart';
+import 'package:advertisers/features/client_payment_model/controller/client_payment_model_controller.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page_controller.dart';
 import 'package:advertisers/features/customer_order_invoice/controller/customer_order_invoice_controller.dart';
@@ -32,8 +34,10 @@ import 'package:advertisers/features/customer_order_invoice/view/customer_order_
 import 'package:advertisers/features/customer_order_invoice_out_puts/view/customer_order_invoice_out_puts.dart';
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation.dart';
+import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
 import 'package:advertisers/features/my_orders/view/my_orders_page.dart';
 import 'package:advertisers/features/my_orders_and_my_orders_archive/my_orders_and_my_orders_archive.dart';
+import 'package:advertisers/features/my_orders_archive/controller/my_orders_archive_controller.dart';
 import 'package:advertisers/features/my_orders_archive/view/my_orders_archive_page.dart';
 import 'package:advertisers/features/notifications/view/pages/notifications_page.dart';
 import 'package:advertisers/features/notifications_settings/view/pages/notifications_settings_page.dart';
@@ -71,12 +75,13 @@ import 'package:get/get.dart';
 class Routes {
   static final routes = [
 
-    // GetPage(
-    //   name: '/',
-    //   page: () =>ChooseBakaPage(),
-    //   binding: ChooseBakaBinding(),
-    //
-    // ),
+    GetPage(
+      name: '/ClientPaymentModelPage',
+      page: () =>ClientPaymentModelPage(),
+  binding: BindingsBuilder(() {
+  Get.lazyPut<ClientPaymentModelController>(() => ClientPaymentModelController());
+
+  })),
     // GetPage(
     //   name: '/',
 
@@ -284,6 +289,11 @@ class Routes {
     GetPage(
       name: '/MyOrdersAndMyOrdersArchive',
       page: () => MyOrdersAndMyOrdersArchive(),
+        bindings: [ BindingsBuilder(() {
+          Get.lazyPut<MyOrdersController>(() => MyOrdersController());
+        }), BindingsBuilder(() {
+          Get.lazyPut<MyOrdersArchiveController>(() => MyOrdersArchiveController());
+        })]
     ),
     GetPage(
       name: '/AdvertiserDetailsPage',
@@ -336,9 +346,9 @@ class Routes {
     ),
     GetPage(
       name: '/AdvertiserOrderDetails',
-      page: () => AdvertiserOrderDetails(),
+      page: () => CientOrderDetails(),
   binding: BindingsBuilder(() {
-  Get.lazyPut<AdvertiserOrderDetailsController>(() => AdvertiserOrderDetailsController());
+  Get.lazyPut<ClientOrderDetailsController>(() => ClientOrderDetailsController());
   }),
 
     ),
