@@ -588,8 +588,8 @@ class FindAdvertiseController extends GetxController {
           requestAdvertiseController.endAdvertisingDate.value.isNotEmpty
               ? requestAdvertiseController.endAdvertisingDate.value
               : null,
-      "repeat_count":
-          int.parse(requestAdvertiseController.selectedTimeCounter.value),
+      "repeat_count":requestAdvertiseController.isFlixble.isTrue?
+          int.parse(requestAdvertiseController.selectedCounterController.text):1,
       "channels[]": requestAdvertiseController.channelsIds,
       "attachments[]": requestAdvertiseController.imageFideoFiles!.isNotEmpty ? requestAdvertiseController.imageFideoFiles : null,
  /*     "links[][title]": requestAdvertiseController.links.value.isNotEmpty

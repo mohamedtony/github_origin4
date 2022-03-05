@@ -132,6 +132,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                       if (requestAdvertiseController.isFixed.isFalse) {
                         requestAdvertiseController.isFixed.value = true;
                         requestAdvertiseController.isFlixble.value = false;
+                        requestAdvertiseController.fromDate.value = "";
                         requestAdvertiseController.fromAdvertisingDate.value = '2022-2-10';
                         requestAdvertiseController.dateRange.value = DateRange();
                       }
@@ -171,7 +172,14 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                       child: Obx(() => InkWell(
                             onTap: requestAdvertiseController.isFixed.isTrue
                                 ? () {
-                                    DateTime selectedDate = DateTime.now();
+                              DateTime selectedDate;
+                              if(requestAdvertiseController.fromDate.isNotEmpty){
+                                print("myDate"+requestAdvertiseController.fromDate.value);
+                                DateTime endAdvertisingDateCouponDate = DateTime.parse(requestAdvertiseController.fromDate.value);
+                                selectedDate = endAdvertisingDateCouponDate;
+                              }else{
+                                selectedDate = (DateTime.now()).add( Duration(days: 1));
+                              }
 
                                     Future<void> _selectDate(
                                         BuildContext context) async {
@@ -179,8 +187,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                                           picked = await showDatePicker(
                                           initialEntryMode: DatePickerEntryMode.calendarOnly,
                                               context: context,
-                                              initialDate: (DateTime.now())
-                                                  .add(const Duration(days: 1)),
+                                              initialDate:selectedDate,
                                               firstDate: (DateTime.now()),
                                               lastDate: (DateTime.now()).add(
                                                   const Duration(days: 600)));
@@ -462,13 +469,46 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                             ),
                           ),
                         ),
+
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(
                               left: 16.0,
                               right: 16.0,
                             ),
-                            child: DropdownButton<String>(
+                            child: Obx(()=>requestAdvertiseController.isFlixble.isTrue ? TextField(
+                              textAlign: TextAlign.center,
+                              // enabled: false,
+                              keyboardType: TextInputType.number,
+                              textAlignVertical: TextAlignVertical.center,
+                              controller: requestAdvertiseController.selectedCounterController,
+                              style: TextStyle(
+                                  color: Color(0xff041D67),
+                                  fontSize: 18),
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                      left: 10.0, right: 14.0, bottom: 12.0),
+                                  // isCollapsed: true,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(70.0),
+                                    borderSide: BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
+                                  filled: true,
+                                  hintStyle: TextStyle(color: Colors.grey[350]),
+                                  hintText: 'عدد مرات الإعلان',
+                                  fillColor: Colors.white70),
+                            ):const Center(
+                              child: Text(
+                                '1',
+                                style: TextStyle(
+                                    color: Color(0xff041D67),
+                                    fontSize: 18),
+                              ),)
+                            ),
+                            /*DropdownButton<String>(
                               underline: const SizedBox.shrink(),
                               icon:
                                   SvgPicture.asset('images/dropdown_icon.svg'),
@@ -507,7 +547,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                                 requestAdvertiseController
                                     .selectCounter(newVal);
                               },
-                            ),
+                            ),*/
                           ),
                         ),
                       ],
@@ -563,7 +603,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                             ),
                             Flexible(
                               child: Text(
-                                'إضافة تاريخ انتهاء مدة العرض ',
+                                'إضافة تاريخ انتهاء مدة العرض فى المنصة ',
                                 style: TextStyle(
                                   fontSize: 18,
                                   color: AppColors.adVertiserPageDataColor,
