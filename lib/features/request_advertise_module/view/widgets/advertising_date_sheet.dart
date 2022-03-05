@@ -562,26 +562,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                 padding: const EdgeInsets.all(15.0),
                 child: InkWell(
                   onTap: () {
-                    DateTime selectedDate = DateTime.now();
-
-                    Future<void> _selectDate(BuildContext context) async {
-                      final DateTime? picked = await showDatePicker(
-                          context: context,
-                          initialDate:
-                              (DateTime.now()).add(const Duration(days: 1)),
-                          firstDate: (DateTime.now()),
-                          lastDate:
-                              (DateTime.now()).add(const Duration(days: 600)));
-                      // if (picked != null && picked != selectedDate)
-                      if (picked != null && picked != selectedDate) {
-                        requestAdvertiseController
-                            .addendAdvertisingDate(dateFormat.format(picked));
-                        // controller.endAdvertisingDate = dateFormat.format(picked);
-                      }
-                      // selectedDate = picked;
-                    }
-
-                    _selectDate(context);
+                    requestAdvertiseController.onSelectedDateEndedAtPlateform(context);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

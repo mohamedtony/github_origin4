@@ -954,6 +954,34 @@ void showToast(msg){
       print(e);
     }
   }
+
+  void onSelectedDateEndedAtPlateform(BuildContext context){
+    DateTime selectedDate;
+    if(endAdvertisingDate.isNotEmpty){
+      print("myDate"+endAdvertisingDate.value);
+      DateTime endAdvertisingDateCouponDate = DateTime.parse(endAdvertisingDate.value);
+      selectedDate = endAdvertisingDateCouponDate;
+    }else{
+      selectedDate = (DateTime.now()).add( Duration(days: 1));
+    }
+    Future<void> _selectDate(BuildContext context) async {
+      final DateTime? picked = await showDatePicker(
+          context: context,
+          initialEntryMode: DatePickerEntryMode.calendarOnly,
+          initialDate:selectedDate,
+          firstDate: (DateTime.now()),
+          lastDate:
+          (DateTime.now()).add(const Duration(days: 600)));
+      // if (picked != null && picked != selectedDate)
+      if (picked != null && picked != selectedDate) {
+        addendAdvertisingDate(dateFormat.format(picked));
+        // controller.endAdvertisingDate = dateFormat.format(picked);
+      }
+      // selectedDate = picked;
+    }
+
+    _selectDate(context);
+  }
   void disposeAnimation() {
     animationControllers.add(AnimationController(
       vsync: this,
