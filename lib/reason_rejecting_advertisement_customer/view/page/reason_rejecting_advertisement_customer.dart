@@ -36,16 +36,19 @@ class ReasonRejectingAdvertisementCustomer extends StatelessWidget {
                     ]
                 ),
             ),
-            child: Container(
-              padding: EdgeInsets.only(top: 35,right: 20,left: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SvgPicture.asset('images/arrow_back.svg',
-                    // matchTextDirection: true,
-                    height: 50, fit: BoxFit.fitHeight,color: Colors.white,),
-                ],
+            child: InkWell(
+              onTap: (){Get.back();},
+              child: Container(
+                padding: EdgeInsets.only(top: 45,right: 20,left: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SvgPicture.asset('images/arrow_back.svg',
+                      // matchTextDirection: true,
+                      height: 50, fit: BoxFit.fitHeight,color: Colors.white,),
+                  ],
+                ),
               ),
             ),
           ),
