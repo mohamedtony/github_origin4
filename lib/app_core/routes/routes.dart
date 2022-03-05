@@ -303,9 +303,9 @@ class Routes {
         name: '/clientSettingPage',
         page: () => ClientSettingPage(),
        // binding: ClientSettingBinding()
-  binding: BindingsBuilder(() {
-  Get.lazyPut<ClientSettingPageController>(() => ClientSettingPageController());
-  }),
+        binding: BindingsBuilder(() {
+        Get.lazyPut<ClientSettingPageController>(() => ClientSettingPageController());
+    }),
     ),
     GetPage(
       name: '/AdvertisingRequestsPage',
