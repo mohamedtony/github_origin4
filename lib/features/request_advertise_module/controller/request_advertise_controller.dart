@@ -117,8 +117,8 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   late Completer<GoogleMapController> mapController;
   late GoogleMapController googleMapController;
   BitmapDescriptor? pinLocationIcon;
-
   late Uint8List markerIcon;
+
   List<myDio.MultipartFile>? imageFideoFiles = [];
   @override
   Future<void> onInit() async {
@@ -191,42 +191,6 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     if(controller.initialized) {
       controller = Get.find<HomeNavController>();
     }
-    SelectedSocialMedia selectedSocialMedia =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia);
-    SelectedSocialMedia selectedSocialMedia1 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia1);
-    SelectedSocialMedia selectedSocialMedia2 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia2);
-    SelectedSocialMedia selectedSocialMedia3 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia3);
-    SelectedSocialMedia selectedSocialMedia4 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia4);
-    SelectedSocialMedia selectedSocialMedia5 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia5);
-    selectedSocialMedia5 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia5);
-    selectedSocialMedia5 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia5);
-    selectedSocialMedia5 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia5);
-    selectedSocialMedia5 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia5);
-    selectedSocialMedia5 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia5);
-    selectedSocialMedia5 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia5);
     super.onInit();
 
   }
@@ -817,6 +781,18 @@ Future<File> compressVideo(File file) async {
       FocusManager.instance.primaryFocus?.unfocus();
       return;
     } else{
+     if(coponDiscountController?.text!=null && coponDiscountController!.text.isNotEmpty){
+       //int.parse(coponDiscountController!.text);
+       if(int.parse(coponDiscountController!.text)>100){
+             showToast("من فضلك قم بإدخال نسبة خصم لا تتعدى 100 %!");
+            coponDiscountNode.requestFocus();
+            return;
+       }else if(int.parse(coponDiscountController!.text)<100){
+         showToast("من فضلك قم بإدخال نسبة خصم صحيحة!");
+         coponDiscountNode.requestFocus();
+         return;
+       }
+    }
       if(endAdvertisingDateCoupon.isNotEmpty&& fromDate.value.isNotEmpty){
         fromDate.value = fromDate.value.replaceAll(" ", "");
         print("myDate"+fromDate.value);
@@ -1048,25 +1024,6 @@ void showToast(msg){
         SnackBar(content: Text("تم حفظ الملاحظة بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
     Get.back();
   }
-  var isLocationClickedSaved = false.obs;
-  LocationModel locationModel = LocationModel();
-  void onLocationClickedSaved (BuildContext context) {
-    if(placeNameController.text!=null && placeNameController.text.isEmpty){
-      showToast("من فضلك يرجى إضافة اسم المكان !");
-      return;
-    } else if(placeAddressController.text!=null && placeAddressController.text.isEmpty){
-      showToast("من فضلك يرجى إضافة عنوان المكان !");
-      return;
-    }else if(latLng==null){
-      showToast("من فضلك يرجى إختيار عنوان من الخريطة !");
-      return;
-    }
-    isLocationClickedSaved.value = true;
-    locationModel= LocationModel(name: placeNameController.text,address: placeAddressController.text,lat: latLng!.latitude.toString(),lng: latLng!.longitude.toString());
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("تم حفظ تفاصيل العنوان بنجاح!",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
-    Get.back();
-  }
 
   onPlanClicked(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(allowedExtensions: ['pdf', 'doc'],type: FileType.custom);
@@ -1087,6 +1044,8 @@ void showToast(msg){
       // User canceled the picker
     }
   }
+
+  //===================== for location sheet =================
   LatLng? latLng;
   Future<void> onMapClicked({LatLng? position}) async {
     latLng = position;
@@ -1151,7 +1110,25 @@ void showToast(msg){
       ),
     );
   }
-
+  var isLocationClickedSaved = false.obs;
+  LocationModel locationModel = LocationModel();
+  void onLocationClickedSaved (BuildContext context) {
+    if(placeNameController.text!=null && placeNameController.text.isEmpty){
+      showToast("من فضلك يرجى إضافة اسم المكان !");
+      return;
+    } else if(placeAddressController.text!=null && placeAddressController.text.isEmpty){
+      showToast("من فضلك يرجى إضافة عنوان المكان !");
+      return;
+    }else if(latLng==null){
+      showToast("من فضلك يرجى إختيار عنوان من الخريطة !");
+      return;
+    }
+    isLocationClickedSaved.value = true;
+    locationModel= LocationModel(name: placeNameController.text,address: placeAddressController.text,lat: latLng!.latitude.toString(),lng: latLng!.longitude.toString());
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("تم حفظ تفاصيل العنوان بنجاح!",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+    Get.back();
+  }
 
   void switchShowInPlatform (){
     print("kkk"+showInPlatform.value.toString());

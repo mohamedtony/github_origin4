@@ -1,26 +1,32 @@
+import 'dart:async';
+import 'dart:typed_data';
+
 import 'package:advertisers/app_core/network/models/AdTypeModel.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/app_core/network/models/Channel.dart';
+import 'package:advertisers/app_core/network/models/LinkModel.dart';
+import 'package:advertisers/app_core/network/models/LocationModel.dart';
 import 'package:advertisers/app_core/network/models/RequestDetailsModel.dart';
 import 'package:advertisers/app_core/network/models/TaxSettingsModel.dart';
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/responses/TaxSettingsResponse.dart';
 import 'package:advertisers/features/advertiser_details/sheets/urls_bottom_sheet.dart';
+import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
-
+import 'dart:ui' as ui;
+import 'package:location/location.dart' as location;
 import '../../../main.dart';
 
 
-class AdvertisingDetailsController extends GetxController{
-  late TextEditingController placeNameController;
-  late TextEditingController placeAddressController;
-
+class AdvertisingDetailsController extends GetxController with GetTickerProviderStateMixin{
 
   late TextEditingController couponNumberController;
   late TextEditingController couponNameController;
@@ -84,8 +90,6 @@ class AdvertisingDetailsController extends GetxController{
         );
     update();
   }
-
-
   getVideoToAttachedList({@required bool? fromGallery}) async {
     pickedXFile =
     await picker.pickVideo(
@@ -96,8 +100,6 @@ class AdvertisingDetailsController extends GetxController{
     ));
     update();
   }
-
-
   getImageListToAttachedList({@required bool? fromGallery}) async {
     multiImageVideoList.clear();
     multiImageVideoList =
@@ -147,7 +149,8 @@ void setStateBehavior(){
 
   late TextEditingController descController;
   late TextEditingController noticsController;
-
+  var decriptionText = ''.obs;
+  var locationText = ''.obs;
 /*  String selectedTimeCounter = '';
 
 
@@ -186,31 +189,13 @@ void setStateBehavior(){
     update();
   }*/
 
-   List<UrlDataType>? urlList = [
-     UrlDataType(
+  /* List<UrlDataType>? urlList = [
+     *//*UrlDataType(
        id: 0,
        urlName: "",
        urlTitle: ""
-     ),
-   ];
-
-  void addToUrlList(){
-    urlList!.add(
-        UrlDataType(
-            id: urlList!.length + 1,
-            urlTitle: "",
-            urlName: ""
-        )
-    );
-    update();
-  }
-
-  void removeFromUrlList(UrlDataType? item){
-    urlList!.remove(item);
-    //update();
-  }
-
-
+     ),*//*
+   ];*/
 
    List<int>? checkList = [];
 
@@ -329,6 +314,95 @@ void setStateBehavior(){
       ));
     }
   }
+  //---------------------- for urls page ------------------------------------------------
+  RxList<LinkModel> links = <LinkModel>[].obs;
+  var numOfLinks = 1.obs;
+  var isUrlSaveClicked = false.obs;
+  List<TextEditingController> textUrlControllers = [];
+  List<TextEditingController> urlControllers = [];
+
+  List<AnimationController> animationControllers = [];
+  List<Animation<Offset>> animationTextFields = [];
+  List<Animation<Offset>> animationsClose = [];
+  RxList<LinkModel> urlList = <LinkModel>[].obs;
+
+ /* void addToUrlList(){
+    urlList!.add(
+        UrlDataType(
+            id: urlList!.length + 1,
+            urlTitle: "",
+            urlName: ""
+        )
+    );
+    update();
+  }*/
+
+  void removeFromUrlList(LinkModel? item){
+    urlList!.remove(item);
+    //update();
+  }
+  void deleteLink(int index) {
+    print(index);
+    if(links.value.length>0) {
+      links.value.removeAt(index);
+    }
+    if(textUrlControllers.length>0) {
+      textUrlControllers.removeAt(index);
+    }
+    if(urlControllers.length>0) {
+      urlControllers.removeAt(index);
+    }
+    if(animationControllers.length>0) {
+      animationControllers.removeAt(index);
+    }
+    if(animationTextFields.length>0) {
+      animationTextFields.removeAt(index);
+    }
+    if(animationsClose.length>0) {
+      animationsClose.removeAt(index);
+    }
+    numOfLinks.value --;
+    /* List<TextEditingController> textUrlControllers = [];
+    List<TextEditingController> urlControllers = [];
+
+    List<AnimationController> animationControllers = [];
+    List<Animation<Offset>> animationTextFields = [];
+    List<Animation<Offset>> animationsClose = [];*/
+  }
+  void disposeAnimation() {
+    animationControllers.add(AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    ));
+
+    animationTextFields.add(Tween(
+      begin: const Offset(0.0, 0.0),
+      end: const Offset(0.2, 0.0),
+    ).animate(
+      CurvedAnimation(
+        curve: Curves.decelerate,
+        parent: animationControllers[0],
+      ),
+    ));
+
+    animationsClose.add(Tween(
+      begin: const Offset(0.0, 0.0),
+      end: const Offset(1.0, 0.0),
+    ).animate(
+      CurvedAnimation(
+        curve: Curves.decelerate,
+        parent:  animationControllers[0],
+      ),
+    ));
+  }
+
+  //---------------------- for map sheet ========================
+  late TextEditingController placeNameController;
+  late TextEditingController placeAddressController;
+  late Completer<GoogleMapController> mapController;
+  late GoogleMapController googleMapController;
+  BitmapDescriptor? pinLocationIcon;
+  late Uint8List markerIcon;
   @override
   Future<void> onInit() async {
     // passIndex;
@@ -370,6 +444,38 @@ void setStateBehavior(){
       }
     });
 
+    mapController = Completer();
+    setCustomMapPin();
+    markerIcon = await getBytesFromAsset('images/location_icon.png', 70);
+
+    //---------------------- for urls page ------------------------------------------------
+    textUrlControllers.add(TextEditingController());
+    urlControllers.add(TextEditingController());
+    animationControllers.add(AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    ));
+
+    animationTextFields.add(Tween(
+      begin: const Offset(0.0, 0.0),
+      end: const Offset(0.2, 0.0),
+    ).animate(
+      CurvedAnimation(
+        curve: Curves.decelerate,
+        parent: animationControllers[0],
+      ),
+    ));
+
+    animationsClose.add(Tween(
+      begin: const Offset(0.0, 0.0),
+      end: const Offset(1.0, 0.0),
+    ).animate(
+      CurvedAnimation(
+        curve: Curves.decelerate,
+        parent:  animationControllers[0],
+      ),
+    ));
+
     super.onInit();
     //if( Get.parameters['requestId']!=null) {
       EasyLoading.show();
@@ -384,6 +490,7 @@ void setStateBehavior(){
     client!.getRequestDetail(145/*+myToken!*/,/*int.parse(parameter!)*/"Bearer 1126|jTxjuJcosyJTaHllWcikzq81KkNFyXXlP0DtWhiC").then((value){
       if(value.status==200 && value.data!=null){
         requestDetailsModel.value = value.data!;
+        Logger().i(value.data!.toJson());
         if (EasyLoading.isShow) {
           EasyLoading.dismiss();
         }
@@ -391,7 +498,19 @@ void setStateBehavior(){
         selectedAdType.value = requestDetailsModel.value.ads_type!;
 
         if(value.data?.description!=null) {
+          print("descController"+value.data!.description!);
+          decriptionText.value = value.data!.description!;
           descController.text = value.data!.description!;
+        }
+        if(value.data?.links!=null){
+          print("descController"+value.data!.links![0].toString());
+          urlList.value = value.data!.links!;
+        }
+        if(value.data?.address!=null){
+
+            placeAddressController.text = value.data!.address!.address!;
+            locationText.value = value.data!.address!.address!;
+            locationModel.value = value.data!.address!;
         }
         Logger().i(value.data!.toJson());
         if(value.data!.channels!=null && value.data!.channels!.isNotEmpty) {
@@ -417,15 +536,199 @@ void setStateBehavior(){
     return null;
   }
 
+//================================== url sheet ==========================================
+  void insertNewLinkFields(BuildContext context){
+    if(numOfLinks.value==0){
+      textUrlControllers.add(TextEditingController());
+      urlControllers.add(TextEditingController());
+      animationControllers.add(AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 200),
+      ));
+
+      animationTextFields.add(Tween(
+        begin: const Offset(0.0, 0.0),
+        end: const Offset(0.2, 0.0),
+      ).animate(
+        CurvedAnimation(
+          curve: Curves.decelerate,
+          parent: animationControllers[numOfLinks.value],
+        ),
+      ));
+
+      animationsClose.add(Tween(
+        begin: const Offset(0.0, 0.0),
+        end: const Offset(1.0, 0.0),
+      ).animate(
+        CurvedAnimation(
+          curve: Curves.decelerate,
+          parent:  animationControllers[numOfLinks.value],
+        ),
+      ));
+      numOfLinks.value ++;
+    }
+    else if(textUrlControllers[numOfLinks.value-1].text.isNotEmpty && urlControllers[numOfLinks.value-1].text.isNotEmpty){
+      textUrlControllers.add(TextEditingController());
+      urlControllers.add(TextEditingController());
+      animationControllers.add(AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 200),
+      ));
+
+      animationTextFields.add(Tween(
+        begin: const Offset(0.0, 0.0),
+        end: const Offset(0.2, 0.0),
+      ).animate(
+        CurvedAnimation(
+          curve: Curves.decelerate,
+          parent: animationControllers[numOfLinks.value],
+        ),
+      ));
+
+      animationsClose.add(Tween(
+        begin: const Offset(0.0, 0.0),
+        end: const Offset(1.0, 0.0),
+      ).animate(
+        CurvedAnimation(
+          curve: Curves.decelerate,
+          parent:  animationControllers[numOfLinks.value],
+        ),
+      ));
+      numOfLinks.value ++;
+    }else{
+      Fluttertoast.showToast(
+        msg: 'يجب ملئ كافة العناصر اولا !',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black.withOpacity(0.6),
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+    }
+  }
+  void onSaveUrlsClicked(BuildContext context) {
+    if(numOfLinks.value==0){
+      Get.back();
+    }
+    else if(textUrlControllers[numOfLinks.value-1].text.isNotEmpty && urlControllers[numOfLinks.value-1].text.isNotEmpty){
+      isUrlSaveClicked.value = true;
+      Get.back();
+      for(int i=0;i<numOfLinks.value;i++){
+        links.add(LinkModel(name: textUrlControllers[i].text,link: urlControllers[i].text));
+        urlList.add(LinkModel(name: textUrlControllers[i].text,link: urlControllers[i].text));
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("تم حفظ الروابط بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+    }else{
+      Fluttertoast.showToast(
+        msg: 'يجب ملئ كافة العناصر اولا !',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black.withOpacity(0.6),
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+    }
+  }
 
 
+  //===================== for location sheet =================
+  LatLng? latLng;
+  Future<void> onMapClicked({LatLng? position}) async {
+    latLng = position;
+    addMarker(position);
+  }
+  var marker = new Set<Marker>().obs;
+  double? lastMarkerColor;
+  double? currentMarkerColor;
+  Future addMarker(LatLng? onValue) async{
+    marker.clear();
+    var point = Marker(
+      markerId: MarkerId("2"),
+      position: onValue!,
+      draggable: false,
+      icon: BitmapDescriptor.fromBytes(markerIcon),
+    );
+    marker.add(point);
+    Timer(Duration(milliseconds: 500), () async {
+      googleMapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: onValue,zoom: 16.5,bearing: 11.0,tilt: 16.0)));
+    });
+  }
+  void setCustomMapPin() async {
+    pinLocationIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 5),
+        'images/location_icon.png');
+  }
 
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+  }
+  getLocation() async {
+    location.Location myLocation = new location.Location();
+
+    bool _serviceEnabled;
+    location.PermissionStatus _permissionGranted;
+    location.LocationData _locationData;
+
+    _serviceEnabled = await myLocation.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await myLocation.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await myLocation.hasPermission();
+    if (_permissionGranted == location.PermissionStatus.denied) {
+      _permissionGranted = await myLocation.requestPermission();
+      if (_permissionGranted != location.PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _locationData = await myLocation.getLocation();
+    print("myLocation${_locationData.latitude}");
+    googleMapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: LatLng(_locationData.latitude!, _locationData.longitude!),zoom: 15),
+      ),
+    );
+  }
+  var isLocationClickedSaved = false.obs;
+  var locationModel = LocationModel().obs;
+  void onLocationClickedSaved (BuildContext context) {
+    if(placeNameController.text!=null && placeNameController.text.isEmpty){
+      showToast("من فضلك يرجى إضافة اسم المكان !");
+      return;
+    } else if(placeAddressController.text!=null && placeAddressController.text.isEmpty){
+      showToast("من فضلك يرجى إضافة عنوان المكان !");
+      return;
+    }else if(latLng==null){
+      showToast("من فضلك يرجى إختيار عنوان من الخريطة !");
+      return;
+    }
+    isLocationClickedSaved.value = true;
+    locationModel.value = LocationModel(name: placeNameController.text,address: placeAddressController.text,lat: latLng!.latitude.toString(),lng: latLng!.longitude.toString());
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("تم حفظ تفاصيل العنوان بنجاح!",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+    Get.back();
+  }
 
   @override
   void onClose() {
     descController.dispose();
-
+    print("onCloseCalled");
+    Get.delete<AdvertisingDetailsController>();
     super.onClose();
+  }
+
+  Future<void> resetClicked(BuildContext context) async {
+    EasyLoading.show();
+    //  var myToken  = await storage.read("token");
+    await getRequestDetails(/*Get.parameters['requestId']*/145);
   }
 
 
