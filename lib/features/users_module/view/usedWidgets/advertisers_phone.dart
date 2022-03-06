@@ -28,7 +28,7 @@ class AdvertisersPhone extends StatelessWidget {
       child: TextFormField(
         style: TextStyle(fontSize: 15.sp ),
         textAlign: TextAlign.center,
-        keyboardType: TextInputType.number,
+        keyboardType: TextInputType.phone,
         enabled: enabled??true,
         decoration: InputDecoration(
           contentPadding:  EdgeInsets.symmetric(vertical: 5.0.h),
