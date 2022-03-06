@@ -505,7 +505,11 @@ class FindAdvertiseController extends GetxController {
             color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
       )));
       return;
-    } else if (requestAdvertiseController.channelsIds.isEmpty) {
+    } else if(requestAdvertiseController.showInPlatform.isTrue && requestAdvertiseController.endAdvertisingDate.isEmpty){
+      showToast("من فضلك يرجى إختيار تاريخ انتهاء مدة العرض فى المنصة!");
+      requestAdvertiseController.onSelectedDateEndedAtPlateform(context);
+      return;
+    }else if (requestAdvertiseController.channelsIds.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "يجب إختيار قنوات الاعلان !",
@@ -571,6 +575,7 @@ class FindAdvertiseController extends GetxController {
       });
     });*/
     //_parseInBackground();
+    print("offer_ended_at"+requestAdvertiseController.endAdvertisingDate.value);
 
     Map<String, dynamic> mymap = {
       "token": "Bearer " + myToken!,
@@ -588,8 +593,8 @@ class FindAdvertiseController extends GetxController {
           requestAdvertiseController.endAdvertisingDate.value.isNotEmpty
               ? requestAdvertiseController.endAdvertisingDate.value
               : null,
-      "repeat_count":
-          int.parse(requestAdvertiseController.selectedTimeCounter.value),
+      "repeat_count":requestAdvertiseController.isFlixble.isTrue?
+          int.parse(requestAdvertiseController.selectedCounterController.text):1,
       "channels[]": requestAdvertiseController.channelsIds,
       "attachments[]": requestAdvertiseController.imageFideoFiles!.isNotEmpty ? requestAdvertiseController.imageFideoFiles : null,
  /*     "links[][title]": requestAdvertiseController.links.value.isNotEmpty
@@ -606,10 +611,10 @@ class FindAdvertiseController extends GetxController {
       "copon[code]": requestAdvertiseController.coponNumberController?.text,
       "copon[name]": requestAdvertiseController.coponNameController?.text,
       "copon[discount]":
-      requestAdvertiseController.coponDiscountController?.text!=null&&requestAdvertiseController.coponDiscountController!.text.isNotEmpty?int.parse(requestAdvertiseController.coponDiscountController!.text):0,
-      "copon[uses]": requestAdvertiseController.coponUsesController?.text!=null&&requestAdvertiseController.coponUsesController!.text.isNotEmpty?int.parse(requestAdvertiseController.coponUsesController!.text):0,
-      "copon[link]": requestAdvertiseController.coponLinkController?.text,
-      "copon[ended_at]": requestAdvertiseController.endAdvertisingDateCoupon,
+      requestAdvertiseController.coponDiscountController?.text!=null&&requestAdvertiseController.coponDiscountController!.text.isNotEmpty?int.parse(requestAdvertiseController.coponDiscountController!.text):null,
+      "copon[uses]": requestAdvertiseController.coponUsesController?.text!=null&&requestAdvertiseController.coponUsesController!.text.isNotEmpty?int.parse(requestAdvertiseController.coponUsesController!.text):null,
+      "copon[link]": requestAdvertiseController.coponLinkController?.text!=null&&requestAdvertiseController.coponLinkController!.text.isNotEmpty?requestAdvertiseController.coponLinkController!.text:null,
+      "copon[ended_at]": requestAdvertiseController.endAdvertisingDateCoupon.value,
       "notes": requestAdvertiseController.noticeController?.text,
       "plan_file": requestAdvertiseController.planFile,
       "inline":requestAdvertiseController.showInPlatform.isTrue?1:0

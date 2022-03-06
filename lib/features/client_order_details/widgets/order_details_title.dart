@@ -1,12 +1,7 @@
-import 'package:advertisers/features/customer_order_invoice_out_puts/order_invoice_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 
 class OrderDetailsTitle extends StatelessWidget {
-    OrderDetailsTitle({Key? key,required, this.requestId}) : super(key: key);
-  final requestId;
+  const OrderDetailsTitle({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,16 +29,7 @@ class OrderDetailsTitle extends StatelessWidget {
               ),
             ),
             InkWell(
-              onTap: () {
-                // Get.put(OrderInvoiceController()).fetchInvoiceData(requestId: requestId);
-                // Get.toNamed(
-                //   '/CustomerOrderInvoiceOutPutsPage',
-                //   //     arguments: [
-                //   //   {"first": 'First data'},
-                //   //   {"second": 'Second data'}
-                //   // ]
-                // );
-              },
+              onTap: () {},
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 3),

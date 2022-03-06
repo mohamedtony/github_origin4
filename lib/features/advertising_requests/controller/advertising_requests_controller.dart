@@ -1,8 +1,13 @@
+import 'package:advertisers/app_core/network/models/ReasonDataModel.dart';
 import 'package:advertisers/app_core/network/repository.dart';
+import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/app_core/network/responses/advertising_requests_response.dart';
 import 'package:advertisers/features/advertiser_details/controller/advertiser_details_controller.dart';
+import 'package:advertisers/main.dart';
 import 'package:advertisers/shared/networking/api_provider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart' hide FormData , Response;
 import 'package:dio/dio.dart' as dio;
 import 'package:dio/dio.dart';
@@ -17,7 +22,9 @@ class AdvertisingRequestsController extends GetxController with StateMixin<Adver
 
   bool? isRepricing = false;
 
-
+  TextEditingController reasonController=TextEditingController();
+  var reasonDataModel=ReasonDataModel().obs;
+  var registerClientUserResponse=RegisterClientUserResponse().obs;
   var selectedCities = '0'.obs;
 
   List <Areas>? areas = [];
@@ -82,7 +89,7 @@ class AdvertisingRequestsController extends GetxController with StateMixin<Adver
   final ApiService _apiService = Get.put(ApiService());
 
   int page = 0;
-
+  var currentIndex=0.obs;
   List <ParentRequests> parentRequests = [];
 
   List<int> parentRequestsIds=[];
@@ -172,6 +179,7 @@ class AdvertisingRequestsController extends GetxController with StateMixin<Adver
 
   @override
   void onInit() {
+    token =storage.read("token");
     repo=Repository();
     loadMore();
     fetchAdvertisingRequests(pageZero: false);
@@ -296,33 +304,41 @@ class AdvertisingRequestsController extends GetxController with StateMixin<Adver
   }
   ///
   ///
-  // void rejectRequestService({int? requestId}) async {
-  //   FormData formData = FormData.fromMap({
-  //     'reason': '',
-  //   });
-  //   try {
-  //     final dio.Response response = await _apiService.dioClient.post(
-  //       'https://advertiser.cefour.com/api/v1/requests/$requestId/reject',
-  //       data: formData,
-  //     );
-  //     final data = AdvertisingRequestsResponse.fromJson(response.data);
-  //     Get.snackbar(
-  //       "${data.message}",
-  //       "",
-  //       snackPosition: SnackPosition.BOTTOM,);
-  //     // change(data, status: RxStatus.success());
-  //     Logger().i(response!.data);
-  //   } on dio.DioError catch (error) {
-  //     if (error.response?.statusCode == 401 ||
-  //         error.response?.statusCode == 422) {
-  //       // Error occurred while fetching data
-  //     } else if (error.error is SocketException) {
-  //     } else {
-  //       String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-  //     }
-  //   }
-  // }
+  void rejectRequestService({int? requestId}) async {
+    EasyLoading.show();
+    FormData formData = FormData.fromMap({
+      'reason': reasonController.text,
+    });
+    try {
+      final dio.Response response = await _apiService.dioClient.post(
+        'https://advertiser.cefour.com/api/v1/requests/$requestId/reject',
+        data: formData,
+      );
+      final data = AdvertisingRequestsResponse.fromJson(response.data);
+      if (EasyLoading.isShow) {
+        EasyLoading.dismiss();
+      }
+      Get.snackbar("${data.message}", "", snackPosition: SnackPosition.BOTTOM,);
+      update();
+      // change(data, status: RxStatus.success());
+      Logger().i(response!.data);
+    } on dio.DioError catch (error) {
+
+      if (EasyLoading.isShow) {
+        EasyLoading.dismiss();
+      }
+      Get.snackbar(
+        "خطأ",
+        error.toString(),
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
+    }
+  }
   ///
+
+
+
 
   /// fetchAdvertisingRequests
   void fetchAdvertisingRequests({bool? pageZero}) async {

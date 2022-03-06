@@ -1,11 +1,11 @@
-import 'package:advertisers/app_core/network/responses/AdvertiserOrderDetailsResponse.dart';
-import 'package:advertisers/features/advertiser_order_details/controller/advertiser_order_details_controller.dart';
-import 'package:advertisers/features/advertiser_order_details/widgets/content_widgets/address_widget.dart';
-import 'package:advertisers/features/advertiser_order_details/widgets/content_widgets/attachments_widget.dart';
-import 'package:advertisers/features/advertiser_order_details/widgets/content_widgets/coupons_widget.dart';
-import 'package:advertisers/features/advertiser_order_details/widgets/content_widgets/links_widget.dart';
-import 'package:advertisers/features/advertiser_order_details/widgets/content_widgets/note_widget.dart';
-import 'package:advertisers/features/advertiser_order_details/widgets/order_details_title.dart';
+
+import 'package:advertisers/features/client_order_details/controller/client_order_details_controller.dart';
+import 'package:advertisers/features/client_order_details/widgets/content_widgets/address_widget.dart';
+import 'package:advertisers/features/client_order_details/widgets/content_widgets/attachments_widget.dart';
+import 'package:advertisers/features/client_order_details/widgets/content_widgets/coupons_widget.dart';
+import 'package:advertisers/features/client_order_details/widgets/content_widgets/links_widget.dart';
+import 'package:advertisers/features/client_order_details/widgets/content_widgets/note_widget.dart';
+import 'package:advertisers/features/client_order_details/widgets/order_details_title.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:advertisers/shared/gradient_check_box/gradient_check_box.dart';
 // import 'package:adv/shared/advertisers_appbar/advertisers_app_bar.dart';
@@ -14,18 +14,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-class AdvertiserOrderDetails
-    extends GetWidget<AdvertiserOrderDetailsController> {
-  AdvertiserOrderDetails({Key? key,}) : super(key: key);
-
+class CientOrderDetails
+    extends GetWidget<ClientOrderDetailsController> {
+  CientOrderDetails({Key? key}) : super(key: key);
 
   final List<String> titles = ['المرفقات', 'الروابط', 'الكوبونات', 'العنوان'];
-  // final List<Widget> contentList = [
-  //     AttachmentsWidget(),
-  //     LinksWidget(),
-  //     CouponsWidget(),
-  //    AddressWidget(),
-  // ];
+  final List<Widget> contentList = [
+    const AttachmentsWidget(),
+    const LinksWidget(),
+    const CouponsWidget(),
+     AddressWidget(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +40,7 @@ class AdvertiserOrderDetails
       ),
       body: ListView(
         children: [
-            OrderDetailsTitle(requestId: controller.requestId,),
+          const OrderDetailsTitle(),
           Column(
             children: [
               Padding(
@@ -72,7 +71,8 @@ class AdvertiserOrderDetails
                       width: 20,
                     ),
                     Expanded(
-                      child: Text(controller.myOderDetails.data?.productType?.name??"" ,
+                      child: Text(
+                        'منتجات مواد غذائية - حلويات وشكولاتة',
                         style: TextStyle(
                             color: const Color(0xff041D67), fontSize: 14.sp),
                       ),
@@ -115,7 +115,8 @@ class AdvertiserOrderDetails
                       width: 20,
                     ),
                     Expanded(
-                      child: Text(controller.myOderDetails.data?.adsType?.name??"",
+                      child: Text(
+                        'تغطية افتتاح مع الحضور',
                         style: TextStyle(
                             color: const Color(0xff041D67), fontSize: 14.sp),
                       ),
@@ -172,7 +173,8 @@ class AdvertiserOrderDetails
                                     color: const Color(0xff041D67), fontSize: 14.sp),
                               ),
 
-                              Text(controller.myOderDetails.data?.startedAt??"",
+                              Text(
+                                '2021/9/10',
                                 style: TextStyle(
                                     color: const Color(0xff041D67), fontSize: 14.sp),
                               ),
@@ -196,7 +198,8 @@ class AdvertiserOrderDetails
                                     color: const Color(0xff041D67), fontSize: 14.sp),
                               ),
 
-                              Text(controller.myOderDetails.data?.endedAt??"",
+                              Text(
+                                '2021/12/10',
                                 style: TextStyle(
                                     color: const Color(0xff041D67), fontSize: 14.sp),
                               ),
@@ -213,11 +216,11 @@ class AdvertiserOrderDetails
                     ),
                     Expanded(
                       flex: 2,
-                      child: controller.myOderDetails.data?.repeatCount!=null?
-                      Text( '${controller.myOderDetails.data?.repeatCount?.toString()}  مرة ',
+                      child: Text(
+                        '2 مرة',
                         style: TextStyle(
                             color: const Color(0xff041D67), fontSize: 14.sp),
-                      ):Container(),
+                      ),
                     ),
                   ],
                 ),
@@ -263,22 +266,11 @@ class AdvertiserOrderDetails
                         physics: const BouncingScrollPhysics(),
                         padding: const EdgeInsets.all(1),
                         scrollDirection: Axis.horizontal,
-                        itemCount: controller.myOderDetails.data?.channels!=null?controller.myOderDetails.data?.channels?.length??0:0,
+                        itemCount: 3,
                         itemBuilder: (context, index) => Container(
                           margin: const EdgeInsets.all(1),
-                          child: Container(
-                            decoration:BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: controller.myOderDetails.data?.channels?[index].image!=null
-                                  ?   DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage('${controller.myOderDetails.data?.channels?[index].image}'),//
-                              )
-                                  : const DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage('images/twitter.png'),
-                              ),
-                            ),
+                          child: Image.asset(
+                            'images/twitter.png',
                             height: 40.w,
                             width: 40.w,
                           ),
@@ -377,20 +369,18 @@ class AdvertiserOrderDetails
               ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: GetBuilder<AdvertiserOrderDetailsController>(
+                child: GetBuilder<ClientOrderDetailsController>(
                     id: 'First',
                     builder: (_) {
                       return Column(
                         children: [
-                          Align(
-                            alignment:Alignment.centerRight,
-                            child: Text(controller.myOderDetails.data?.description??"",
-                              style: TextStyle(
-                                color: const Color(0xff041D67),
-                                fontSize: 14.sp,
-                              ),
-                              maxLines: controller.firstSeeMore,
+                          Text(
+                            'تغطية افتتاح الفرع الثالث من فروعنا - الرياض . حي الملقى بمناسبة هذا الافتتاح سنمنح عرض 25% لمدة 3 أيام كما أن هناك هدايا',
+                            style: TextStyle(
+                              color: const Color(0xff041D67),
+                              fontSize: 14.sp,
                             ),
+                            maxLines: controller.firstSeeMore,
                           ),
                           Align(
                             alignment: Alignment.bottomLeft,
@@ -416,96 +406,14 @@ class AdvertiserOrderDetails
               const Divider(
                 thickness: 1,
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Card(
-                  elevation: 0,
-                  // shape: RoundedRectangleBorder(
-                  //   borderRadius: BorderRadius.circular(8.0),
-                  // ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey[50],
-                      // color: Colors.white,
-                      // color: Color(0xff979797),
-                      borderRadius: BorderRadius.circular(8),
-                      // border: Border.all(
-                      //
-                      // ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 8.0,
-                            left: 8.0,
-                            right: 8.0,
-                          ),
-                          child: Container(
-                            width: 95.w,
-                            alignment: Alignment.center,
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7),
-                              // border: Border.all(color: Colors.grey[300]!),
-                              // color: const Color(0xff4184CE),
-                              color: const Color(0xff979797),
-                            ),
-                            child: Text(
-                              'ملحوظة',
-                              style: TextStyle(color: Colors.white, fontSize: 12.sp),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: GetBuilder<AdvertiserOrderDetailsController>(
-                              id: 'Second',
-                              builder: (_) {
-                                return Column(
-                                  children: [
-                                    Align(
-                                      alignment:Alignment.centerRight,
-                                      child: Text(controller.myOderDetails.data?.notes??"",
-                                        style: TextStyle(
-                                          color: const Color(0xff041D67),
-                                          fontSize: 12.sp,
-                                        ),
-                                        maxLines: controller.secondSeeMore,
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.bottomLeft,
-                                      child: InkWell(
-                                        onTap: () {
-                                          controller.updateSeeMore(builderId: 'Second');
-                                        },
-                                        child: Text(
-                                          controller.secondSeeMore != null
-                                              ? ' المزيد...'
-                                              : ' أقل...',
-                                          style: TextStyle(
-                                            color: const Color(0xffF1924F),
-                                            fontSize: 14.sp,
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                );
-                              }),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
+              NoteWidget(),
 
+              // const Divider(
+              //   thickness: 1,
+              // )
             ],
           ),
-          GetBuilder<AdvertiserOrderDetailsController>(
+          GetBuilder<ClientOrderDetailsController>(
               id: 'SelectedIndex',
               builder: (_) {
                 return Column(
@@ -531,6 +439,8 @@ class AdvertiserOrderDetails
                                 horizontal: 20, vertical: 3),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(7),
+                              // border: Border.all(color: Colors.grey[300]!),
+                              // color: const Color(0xff4184CE),
                               color: controller.selectedIndex == index
                                   ? const Color(0xff979797)
                                   : Colors.transparent,
@@ -556,12 +466,7 @@ class AdvertiserOrderDetails
                             ScaleTransition(child: child, scale: animation),
                         child: Container(
                             key: Key('${controller.selectedIndex}'),
-                            child: [
-                              AttachmentsWidget(myAttachments: controller.myOderDetails.data?.attachments??[],),
-                              LinksWidget(myLinks: controller.myOderDetails.data?.links??[],),
-                              CouponsWidget(copon: controller.myOderDetails.data?.copon??Copon(),),
-                              AddressWidget(address: controller.myOderDetails.data?.address??Address(lat: "37.42796133580664",lng: "-122.085749655962"),),
-                            ][controller.selectedIndex])),
+                            child: contentList[controller.selectedIndex])),
                   ],
                 );
               }),

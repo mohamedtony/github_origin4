@@ -230,7 +230,7 @@ class RequestAdvertisePage extends StatelessWidget {
                 margin: EdgeInsets.only(
                     top: 0.0, left: 16.0, right: 16.0, bottom: 16.0),
                 decoration: DottedDecoration(
-                  dash: <int>[2, 4],
+                  dash: <int>[3, 5],
                   shape: Shape.box,
                   color: AppColors.dottedColor,
                   strokeWidth: 2,

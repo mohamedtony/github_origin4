@@ -110,7 +110,7 @@ class AdvertisingDetailsController extends GetxController{
       ));
     }
     multiImageVideoList.clear();
-    update();
+   // update();
   }
 
   void deleteCoupon(){
@@ -121,12 +121,12 @@ class AdvertisingDetailsController extends GetxController{
     storeUrlController.text = "";
     endAdvertisingDateCoupon.value = "";
     selectedDiscountPercentage = "";
-    update();
+   // update();
   }
 
   void deleteFromAttachedImagesList(XFileType? xItem){
     attachedImagesList.remove(xItem);
-    update();
+    //update();
   }
 
   getImage({@required bool? fromGallery}) async {
@@ -160,7 +160,7 @@ void setStateBehavior(){
 
   void selectDiscountPercentage(String? count){
     selectedDiscountPercentage = "$count";
-    update();
+    //update();
   }
 
 /*
@@ -207,7 +207,7 @@ void setStateBehavior(){
 
   void removeFromUrlList(UrlDataType? item){
     urlList!.remove(item);
-    update();
+    //update();
   }
 
 
@@ -221,7 +221,7 @@ void setStateBehavior(){
      }else{
        checkList!.add(id);
      }
-     update();
+    // update();
    }
 
   bool isChecked = false;
@@ -231,7 +231,7 @@ void setStateBehavior(){
     }else{
       isChecked = false;
     }
-    update();
+   // update();
   }
 
   var isFlixble = true.obs;
@@ -304,7 +304,7 @@ void setStateBehavior(){
       channels.value[indexCome].isTapped.value=false;
      // channelsIds.removeWhere((element) => element==channels.value[indexCome].id);
      // channels.value.removeWhere((element) => element.id == channels.value[indexCome].id);
-      channelsForList.value.removeWhere((element) => element.id==channels.value[indexCome].id);
+      //channelsForList.value.removeWhere((element) => element.id==channels.value[indexCome].id);
     }else{
       channels.value[indexCome].isTapped.value=true;
       channelsIds.add(channels.value[indexCome].id!);
@@ -388,7 +388,7 @@ void setStateBehavior(){
           EasyLoading.dismiss();
         }
         selectedCategory.value = requestDetailsModel.value.product_type!;
-        //selectedAdType.value = requestDetailsModel.value.a!;
+        selectedAdType.value = requestDetailsModel.value.ads_type!;
 
         if(value.data?.description!=null) {
           descController.text = value.data!.description!;

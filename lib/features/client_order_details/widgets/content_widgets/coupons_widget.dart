@@ -1,18 +1,15 @@
-import 'package:advertisers/app_core/network/responses/AdvertiserOrderDetailsResponse.dart';
-import 'package:advertisers/features/advertiser_order_details/widgets/content_widgets/content.dart';
+import 'package:advertisers/features/client_order_details/widgets/content_widgets/content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CouponsWidget extends StatelessWidget {
-  Copon copon=Copon();
-  CouponsWidget({Key? key,required this.copon}) : super(key: key);
-
+  const CouponsWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Content(
       // hasNote: false,
-      title: copon.name??'كوبون الاعلان',
+      title: 'كوبون الاعلان',
       iconUrl: 'images/rate.png',
       child: Container(
         margin: const EdgeInsets.all(12.0),
@@ -28,34 +25,20 @@ class CouponsWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 4.0, right: 4.0, top: 8.0),
               child: Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom:25.0),
-                    child: copon.image!=null? Container(
-                      decoration:BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        image:  DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage('${copon.image}'),//
-                        )
-                      ),
-                      height: 50.w,
-                      width: 50.w,
-                    ):
-                    Card(
-                      elevation: 6,
-                      margin: const EdgeInsets.all(1),
-                      child: Image.asset(
-                        'images/namshi_logo.jpg',
-                        height: 50.w,
-                        width: 50.w,
-                      ),
+                  Card(
+                    elevation: 6,
+                    margin: const EdgeInsets.all(1),
+                    child: Image.asset(
+                      'images/namshi_logo.jpg',
+                      height: 60.w,
+                      width: 60.w,
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top:8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -71,15 +54,19 @@ class CouponsWidget extends StatelessWidget {
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.grey[100],
+                                  // borderRadius: BorderRadius.circular(8),
+                                  // border: Border.all(
+                                  //   color: Colors.grey[100]!,
+                                  // ),
                                 ),
                                 child: Row(
                                   children: [
                                     Container(
                                         padding: const EdgeInsets.all(4),
                                         color: Colors.transparent,
-                                        child:  Text(copon.code??"")),
+                                        child: const Text('M521')),
                                     const SizedBox(
-                                      width: 5,
+                                      width: 10,
                                     ),
                                     Container(
                                         padding: const EdgeInsets.all(4),
@@ -93,9 +80,9 @@ class CouponsWidget extends StatelessWidget {
                                         ),
                                         child: Row(
                                           children: [
-                                              Text(copon.discount!=null?copon.discount.toString():""),
+                                            const Text('15'),
                                             Container(
-                                              width: 15,
+                                              width: 20,
                                               margin:
                                                   const EdgeInsets.symmetric(
                                                       horizontal: 5),
@@ -109,22 +96,21 @@ class CouponsWidget extends StatelessWidget {
                                 ),
                               ),
                             ),
-
-                              copon.endedAt!=null?Text("${copon.endedAt}"+'الانتهاء في',
-                              style: const TextStyle(
+                            SizedBox(
+                              width: 50.w,
+                            ),
+                            const Text(
+                              'الانتهاء في 1/5/2021',
+                              style: TextStyle(
                                 color: Color(0xffFFAA00),
                                 fontSize: 12,
                               ),
-                            ): const Text('الانتهاء في',
-                                style:  TextStyle(
-                                  color: Color(0xffFFAA00),
-                                  fontSize: 12,
-                                ),
-                              ),
+                            ),
                           ],
                         ),
-                          Text(copon.description??"",
-                          style: const TextStyle(
+                        const Text(
+                          'قسيمة تخفيض نون 15 % على كل منتجات نون السعودية',
+                          style: TextStyle(
                             color: Color(0xff041D67),
                             fontSize: 12,
                           ),
@@ -144,8 +130,9 @@ class CouponsWidget extends StatelessWidget {
                             const SizedBox(
                               width: 15,
                             ),
-                             Text('استخدام ${copon.uses??""} مرة',
-                              style: const TextStyle(
+                            const Text(
+                              'استخدام 400 مرة',
+                              style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 10,
                               ),
@@ -259,8 +246,8 @@ class CouponsWidget extends StatelessWidget {
                     ],
                   ),
                   Column(
-                    children:  [
-                    const  Text(
+                    children: const [
+                      Text(
                         'الذهاب لمتجر نمشي',
                         style: TextStyle(
                           color: Colors.grey,
@@ -269,8 +256,9 @@ class CouponsWidget extends StatelessWidget {
                           fontSize: 10,
                         ),
                       ),
-                      Text('عدد مرات الذهاب ${copon.marketerRatio!=null?copon.marketerRatio.toString():""}',
-                        style:const TextStyle(
+                      Text(
+                        'عدد مرات الذهاب 516',
+                        style: TextStyle(
                           color: Colors.grey,
                           fontSize: 12,
                         ),
