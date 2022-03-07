@@ -95,21 +95,21 @@ class RegisterNewClientUserController extends GetxController {
   }
   String? validatePassword(String val) {
     if (val.length < 8) {
-      return 'الباسوورد لا يقل عن 8 حروف او ارقام';
+      return 'كلمة المرور لا يقل عن 8 حروف او ارقام';
     }
     return null;
   }
   String? validateUserName(String val) {
-    if (val.length < 3) {
-      return 'الاسم لا يقل 3 رقم';
+    if (val.length < 5) {
+      return 'الاسم لا يقل 5 حروف';
     }else if(nameMess.isNotEmpty){
       return nameMess.value;
     }
     return null;
   }
   String? validateAccountName(String val) {
-    if (val.length < 3) {
-      return 'الاسم لا يقل 3 رقم';
+    if (val.length < 5) {
+      return 'الاسم لا يقل 5 حروف';
     }else if(accountNameMess.isNotEmpty){
       return accountNameMess.value;
     }
@@ -124,7 +124,7 @@ class RegisterNewClientUserController extends GetxController {
     return null;
   }
   String? validateNationalId(String val) {
-    if (val.length < 8) {
+    if (val.length < 10) {
       return 'رقم الهوية لا يقل عن 10 ارقام';
     }else if(nationalIDMess.isNotEmpty){
       return nationalIDMess.value;

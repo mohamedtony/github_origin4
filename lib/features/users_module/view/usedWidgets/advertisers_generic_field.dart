@@ -4,10 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AdvertisersGenericField extends StatelessWidget {
-   AdvertisersGenericField({this.enabled,this.fillColor,this.onChanged,this.width,this.hintColor,this.fontSize,this.borderColor, required this.textAlignment,required this.obscureText,this.onSaved,required this.controller,required this.hintText,this.validator,Key? key}) : super(key: key);
+   AdvertisersGenericField({this.keyboardType,this.enabled,this.fillColor,this.onChanged,this.width,this.hintColor,this.fontSize,this.borderColor, required this.textAlignment,required this.obscureText,this.onSaved,required this.controller,required this.hintText,this.validator,Key? key}) : super(key: key);
 
   late final String hintText;
   bool  obscureText= false;
+  TextInputType? keyboardType;
   late final TextEditingController controller;
   final void Function(String?)? onSaved;
   String? Function(String?)? validator;
@@ -26,6 +27,7 @@ class AdvertisersGenericField extends StatelessWidget {
       //height: 50.h,
       child: TextFormField(
         obscureText:obscureText,
+        keyboardType: keyboardType??TextInputType.text,
         style: TextStyle(fontSize: fontSize==null?14.sp : 15.sp,fontFamily: 'Arabic-Regular' ),
         textAlign: textAlignment,
         onChanged: onChanged,

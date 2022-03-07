@@ -225,6 +225,7 @@ class RegisterNewClientCompany extends StatelessWidget {
                 ),
                 AdvertisersGenericField(
                   obscureText: false,
+                  keyboardType:TextInputType.number,
                   controller:
                       _registerNewClientCompanyController.recordIDController,
                   textAlignment: TextAlign.end,

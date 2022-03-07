@@ -149,15 +149,15 @@ class RegisterNewClientUser extends StatelessWidget {
                 ),
                 AdvertisersDropDown(
                   hintText: 'type'.tr,
-                  width: 0,
+                  width: 0,showSearchBox: false,
                   itemType: 'String',
-                  items: const ['رجل', 'امرأة'],
+                  items: const ['ذكر', 'أنثى'],
                   onChanged: (val) {
-                    if (val == 'رجل') {
+                    if (val == 'ذكر') {
                       _registerNewClientUserController.gender.value = 'user';
                     } else if (val == 'معلن') {
                       _registerNewClientUserController.gender.value =
-                          'امرأة';
+                          'أنثى';
                     }
                   },
                 ),
@@ -222,6 +222,7 @@ class RegisterNewClientUser extends StatelessWidget {
                 ),
                 AdvertisersGenericField(
                   obscureText: false,
+                  keyboardType:TextInputType.number,
                   controller:
                       _registerNewClientUserController.nationalIDController,
                   textAlignment: TextAlign.end,

@@ -229,6 +229,7 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
                 ),
                 AdvertisersGenericField(
                   obscureText: false,
+                  keyboardType:TextInputType.number,
                   borderColor: AppColors.borderAdvertiserRegisterColor,
                   controller: _registerNewAdvertiserCompanyController
                       .recordIDController,

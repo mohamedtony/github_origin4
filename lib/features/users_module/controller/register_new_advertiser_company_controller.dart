@@ -95,29 +95,29 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
   }
   String? validatePassword(String val) {
     if (val.length < 8) {
-      return 'الباسوورد لا يقل عن 8 حروف او ارقام';
+      return 'كلمة المرور لا يقل عن 8 حروف او ارقام';
     }
     return null;
   }
   String? validateCompanyName(String val) {
-    if (val.length < 3) {
-      return 'الاسم لا يقل عن 3 حروف ';
+    if (val.length < 5) {
+      return 'الاسم لا يقل عن 5 حروف ';
     }else if(companyNameMess.isNotEmpty){
       return companyNameMess.value;
     }
     return null;
   }
   String? validateUserName(String val) {
-    if (val.length < 3) {
-      return 'الاسم لا يقل 3 رقم';
+    if (val.length < 5) {
+      return 'الاسم لا يقل 5 رقم';
     }else if(nameMess.isNotEmpty){
       return nameMess.value;
     }
     return null;
   }
   String? validateAccountName(String val) {
-    if (val.length < 3) {
-      return 'الاسم لا يقل 3 رقم';
+    if (val.length < 5) {
+      return 'الاسم لا يقل 5 حروف';
     }else if(accountNameMess.isNotEmpty){
       return accountNameMess.value;
     }
@@ -132,7 +132,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
     return null;
   }
   String? validateNationalId(String val) {
-    if (val.length < 8) {
+    if (val.length < 10) {
       return 'رقم الهوية لا يقل عن 10 ارقام';
     }else if(nationalIDMess.isNotEmpty){
       return nationalIDMess.value;
@@ -149,8 +149,8 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
     return null;
   }
   String? validateAccountAdminName(String val) {
-    if (val.length < 3) {
-      return 'اسم الادمن لا يقل عن 3 حروف';
+    if (val.length < 5) {
+      return 'اسم الادمن لا يقل عن 5 حروف';
     }else if(accountAdminNameMess.isNotEmpty){
       return accountAdminNameMess.value;
     }
