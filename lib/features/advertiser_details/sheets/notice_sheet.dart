@@ -8,140 +8,207 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 
-class AdvertisingNoticsPage extends StatelessWidget {
+//=========================================================================================
 
+//                         By Mohamed T. Hammad
+
+//=========================================================================================
+class NoticeSheet extends StatefulWidget {
+  ScrollController? scrollController;
+
+  NoticeSheet({Key? key, this.scrollController}) : super(key: key);
 
   @override
+  State<NoticeSheet> createState() => _NoticeSheetState();
+}
+
+class _NoticeSheetState extends State<NoticeSheet> {
+  AdvertisingDetailsController requestAdvertiseController=Get.find();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+/*    if(requestAdvertiseController.isNoticeSaveClicked.isFalse){
+      //----------------------------------------- for discount sheet ------------------------------------
+      requestAdvertiseController.noticeController=  TextEditingController();
+    }*/
+  }
+  @override
   Widget build(BuildContext context) {
-
-
-
-
-    return GetBuilder<AdvertisingDetailsController>(
-      init: AdvertisingDetailsController(),
-      builder: (controller) {
-
-
-
-
-        return Container(
-          child: ListView(
-            // controller: this.scrollController,
+    return Container(
+      child: ListView(
+        controller: this.widget.scrollController,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.max,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
+              Container(
+                //margin: EdgeInsets.only(top: 10.0),
+                padding: EdgeInsets.all(8.0),
+                color: AppColors.bottomSheetTabColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: 30.0,
+                      width: 140.0,
+                      //padding: EdgeInsets.all(8.0),
+                      margin: EdgeInsets.only(right: 8.0),
+                      child: Text(
+                        'noticeable'.tr,
+                        style: TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6.0),
+                          color: AppColors.tabColor),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 18.0),
+                      child: SvgPicture.asset(
+                        'images/notice_icon.svg',
+                        fit: BoxFit.fill,
+                        height: 22.0,
+                        width: 22.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                color: AppColors.dividerBottom,
+                thickness: 4.0,
+              ),
+              Container(
+                height: 220,
+                margin: EdgeInsets.only(
+                    top: 25, left: 22.0, right: 22.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+                child: Material(
+                  elevation: 6.0,
+                  shadowColor: Colors.grey[200],
+                  borderRadius:
+                  BorderRadius.all(Radius.circular(18)),
+                  //borderOnForeground: true,
+                  color: AppColors.saveButtonBottomSheet,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: AppColors.tabColor,
+                            width: 0.7),
+                        borderRadius:
+                        BorderRadius.circular(18.0),
+                        color: Colors.white),
+                    child: TextField(
+                      textAlign: TextAlign.start,
+                      textAlignVertical:
+                      TextAlignVertical.center,
+                      maxLines: 10,
+                      decoration: InputDecoration(
+                          contentPadding:
+                          EdgeInsets.only(right: 20.0,left: 10.0),
+                          // isCollapsed: true,
+                          border: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.circular(70.0),
+                            borderSide: BorderSide(
+                              width: 0,
+                              style: BorderStyle.none,
+                            ),
+                          ),
+                          filled: true,
+                          hintStyle: TextStyle(
+                              color: AppColors.tabColor),
+                          hintText: 'noticeable'.tr,
+                          fillColor: Colors.white70),
+                      controller: requestAdvertiseController.noticeController,
+                    ),
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    //margin: EdgeInsets.only(top: 10.0),
-                    padding: EdgeInsets.all(8.0),
-                    color: AppColors.bottomSheetTabColor,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          height: 30.0,
-                          width: 140.0,
-                          //padding: EdgeInsets.all(8.0),
-                          margin: const EdgeInsets.only(right: 8.0),
-                          child: const Text(
-                            'الوصف',
-                            style:  const TextStyle(color: Colors.white),
+                    width: 135,
+                    height: 35,
+                    margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 50.0),
+                    child: InkWell(
+                      onTap: (){
+                        requestAdvertiseController.onNoticeSavedClicked(context);
+                      },
+                      child: Material(
+                        elevation: 6.0,
+                        shadowColor: Colors.grey[200],
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: AppColors.saveButtonBottomSheet,
+                        child: Container(
+                          /*margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),*/
+                          alignment: Alignment.center,
+                          child: Text(
+                            'save'.tr,
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                color: AppColors.tabColor,
+                                fontWeight: FontWeight.w700),
                             textAlign: TextAlign.center,
                           ),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6.0),
-                              color: AppColors.tabColor),
-                        ),
-
-                        Container(
-                          margin: EdgeInsets.only(left: 10.0),
-                          child: Image.asset(
-                            'images/chat-right-text@3x.png',
-                            height: 20.w,
-                            width: 20.w,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    color: AppColors.dividerBottom,
-                    thickness: 4.0,
-                  ),
-
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Card(
-                      elevation: 8,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 40,vertical: 3),
-                        child: TextFormField(
-                          // initialValue: "تغطية افتتاح الفرع الثالث من فروعنا",
-                          controller: controller.noticsController,
-                          textInputAction: TextInputAction.newline,
-                          maxLines: 6,
-                          // minLines: 5,
-                          cursorColor: Colors.black,
-                          // textAlign: TextAlign.center,
-                          keyboardType: TextInputType.multiline,
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                              hintText: 'إضافة وصف',
-                              contentPadding: const
-                              EdgeInsets.all(0),
-
-                              hintStyle: TextStyle(fontSize: 14.sp,color: Colors.grey)),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: (){
-                          controller.setStateBehavior();
-                          Navigator.pop(context);
-                        },
+                  Container(
+                    width: 135,
+                    height: 35,
+                    margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 50.0),
+                    child: InkWell(
+                      onTap: (){
+                        requestAdvertiseController.isNoticeSaveClicked.value = false;
+                        Get.back();
+                      },
+                      child: Material(
+                        elevation: 6.0,
+                        shadowColor: Colors.grey[200],
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: AppColors.tabColor,
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 75),
-                          height: 40,
-                          child: Center(
-                            child: Text("حفظ",style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),),
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Color(0xff4391D4),
+                          /*margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),*/
+                          alignment: Alignment.center,
+                          child: Text(
+                            'إستعادة',
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300),
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                      )
-                    ],
-                  ),
-
-                  SizedBox(
-                    height: MediaQuery.of(context).viewInsets.bottom,
+                      ),
+                    ),
                   ),
                 ],
-              ),
+              )
             ],
           ),
-        );
-      },
+        ],
+      ),
     );
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    /*if(requestAdvertiseController.isNoticeSaveClicked.isFalse){
+      //----------------------------------------- for discount sheet ------------------------------------
+      requestAdvertiseController.noticeController?.dispose();
+    }*/
+    super.dispose();
   }
 }
 

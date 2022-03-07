@@ -368,6 +368,17 @@ class ClientSettingPageController extends GetxController  {
     Navigator.pop(context);
   }
 
+  FocusNode nameFocusNode = FocusNode();
+  FocusNode kayanNameNode = FocusNode();
+  FocusNode accountNameNode = FocusNode();
+  FocusNode accountOwnerNode = FocusNode();
+  FocusNode userNameNode = FocusNode();
+  FocusNode phoneControllerNode = FocusNode();
+  FocusNode emailControllerNode = FocusNode();
+  FocusNode sglNumberNode = FocusNode();
+  FocusNode personalIdNode = FocusNode();
+
+
   void saveButtonClicked(context) async{
 
  /*   await client!.updateMyProfile(UpdateProfileRequest(username: "MohamedEltony",account_name: " Eltony",email: "mohamedtony349@yahoo.com",phone: "201111046148",country_id: 4,area_id: 9,role: 'user',type: 'client',personal_id: "5666660609"),"application/json",file: File(imagePath.value) ).then((value) {
@@ -379,33 +390,44 @@ class ClientSettingPageController extends GetxController  {
     await initPlatformState();
     if (accountType.value=="client" && userNameController!.text.isEmpty) {
       showMyToast("من فضلك ادخل الاسم !",true,context);
+      userNameNode.requestFocus();
       return;
     }else if (accountType.value=="company" && kayanNameController!.text.isEmpty) {
       showMyToast("من فضلك ادخل اسم الكيان !",true,context);
+      kayanNameNode.requestFocus();
       return;
     }else if (accountNameEdit!.text.isEmpty) {
       showMyToast("من فضلك ادخل اسم الحساب !",true,context);
+      accountNameNode.requestFocus();
       return;
     }else if (accountType.value=="company" && accountOwner!.text.isEmpty) {
       showMyToast("من فضلك ادخل اسم صاحب الحساب !",true,context);
+      accountOwnerNode.requestFocus();
       return;
-    }if (accountType.value=="company" && userNameController!.text.isEmpty) {
+    }
+    if (accountType.value=="company" && userNameController!.text.isEmpty) {
       showMyToast("من فضلك ادخل الاسم !",true,context);
+      userNameNode.requestFocus();
       return;
     } else if (phoneController!.text.isEmpty) {
       showMyToast("من فضلك ادخل رقم الجوال !",true,context);
+      phoneControllerNode.requestFocus();
       return;
     } else if (!isValidPhone.value) {
       showMyToast("رقم الجوال وكود الدولة غير متطابقين !",true,context);
+      phoneControllerNode.requestFocus();
       return;
     }else if (emailController!.text.isEmpty) {
       showMyToast("من فضلك ادخل الايميل الالكترونى !",true,context);
+      emailControllerNode.requestFocus();
       return;
     } else if (accountType.value=="company" && sglNumberController!.text.isEmpty) {
       showMyToast("من فضلك ادخل رقم السجل !",true,context);
+      sglNumberNode.requestFocus();
       return;
     } else if (accountType.value=="client" && personalIdController!.text.isEmpty) {
       showMyToast("من فضلك ادخل رقم الهوية !",true,context);
+      personalIdNode.requestFocus();
       return;
     } else{
       print("hereeee1");
@@ -422,6 +444,7 @@ class ClientSettingPageController extends GetxController  {
         });
       }else{
         print("accountType.value"+accountType.value);
+
         await client!.updateMyProfile("application/json","Bearer "+myToken!,company_name: kayanNameController!.text,account_name: accountNameEdit!.text,manager_name: accountOwner!.text,phone: e164.value.replaceFirst("+", ""),email: emailController!.text,type: accountType.value,role: clientProfileModel.value.role,sgl: sglNumberController!.text.isEmpty?null:sglNumberController!.text,area_id: area.value.id,country_id: country.value.id,isChat:  isChat.value?1:0,isNotification:isNotification.value?1:0,file: imageFile).then((value){
           print("myHere"+value.status.toString());
           print("myHere"+value.message.toString());
@@ -431,6 +454,7 @@ class ClientSettingPageController extends GetxController  {
             showMyToast(value.message!, false, context);
           }
         });
+        FocusManager.instance.primaryFocus?.unfocus();
       }
 
     }
@@ -453,13 +477,22 @@ class ClientSettingPageController extends GetxController  {
        //fontFamily: 'Arabic-Regular',
         fontSize: 16.0);*/
   }
-
   @override
   void onClose() {
     // TODO: implement onClose
-    phoneController?.dispose();
+     nameFocusNode.dispose();
+     kayanNameNode.dispose();
+     accountNameNode.dispose();
+     accountOwnerNode.dispose();
+     userNameNode.dispose();
+     phoneControllerNode.dispose();
+     emailControllerNode.dispose();
+     sglNumberNode.dispose();
+     personalIdNode.dispose();
+
     super.onClose();
   }
+
   @override
   // TODO: implement onDelete
   InternalFinalCallback<void> get onDelete => super.onDelete;
