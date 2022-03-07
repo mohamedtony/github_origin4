@@ -22,6 +22,9 @@ ShowBillModel _$ShowBillModelFromJson(Map<String, dynamic> json) =>
       items: (json['items'] as List<dynamic>?)
           ?.map((e) => Item.fromJson(e as Map<String, dynamic>))
           .toList(),
+      ads_type: json['ads_type'] == null
+          ? null
+          : AdTypeModel.fromJson(json['ads_type'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ShowBillModelToJson(ShowBillModel instance) =>
@@ -30,6 +33,7 @@ Map<String, dynamic> _$ShowBillModelToJson(ShowBillModel instance) =>
       'status': instance.status,
       'status_txt': instance.status_txt,
       'items': instance.items,
+      'ads_type': instance.ads_type,
       'discounts': instance.discounts,
       'payment': instance.payment,
       'earned_points': instance.earned_points,

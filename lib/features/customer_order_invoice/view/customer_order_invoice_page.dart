@@ -33,7 +33,7 @@ class CustomerOrderInvoicePage extends StatelessWidget {
         padding: EdgeInsets.only(right: 15,left: 15,bottom: 15),
         child: ListView(
           children: [
-            Text('  ',style: TextStyle(color: Colors.white,fontSize: 15.sp),),
+            Text(customerOrderInvoiceOutputsController.showBillModel.value.ads_type?.name??' ',style: TextStyle(color: Colors.white,fontSize: 15.sp),),
             const SizedBox(
               height: 15,
             ),
@@ -87,7 +87,7 @@ class CustomerOrderInvoicePage extends StatelessWidget {
                         title: customerOrderInvoiceOutputsController.showBillModel.value.discounts![index].text??'',
                         price: customerOrderInvoiceOutputsController.showBillModel.value.discounts![index].text??'',
                         currency:  customerOrderInvoiceOutputsController.showBillModel.value.payment?.currency??'',
-                        percent: "7 %",
+                        percent:customerOrderInvoiceOutputsController.showBillModel.value.payment?.commissionModel?.percentage.toString()??' ',
                       ),
 
 
