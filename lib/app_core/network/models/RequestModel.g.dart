@@ -9,7 +9,6 @@ part of 'RequestModel.dart';
 RequestModel _$RequestModelFromJson(Map<String, dynamic> json) => RequestModel(
       id: json['id'] as int?,
       can_edit: json['can_edit'] as bool?,
-      inline: json['inline'] as bool?,
       user: json['user'] == null
           ? null
           : User.fromJson(json['user'] as Map<String, dynamic>),
@@ -33,6 +32,7 @@ RequestModel _$RequestModelFromJson(Map<String, dynamic> json) => RequestModel(
           ? null
           : StatusesModel.fromJson(json['statuses'] as Map<String, dynamic>),
       bill_total: (json['bill_total'] as num?)?.toDouble(),
+      inline: json['inline'] as bool?,
     );
 
 Map<String, dynamic> _$RequestModelToJson(RequestModel instance) =>

@@ -250,6 +250,7 @@ class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
                           Expanded(
                             child: TextField(
                               textAlign: TextAlign.start,
+                              focusNode: requestAdvertiseController.coponNumberNode,
                               textAlignVertical: TextAlignVertical.center,
                               keyboardType:TextInputType.number,
                               decoration: InputDecoration(
@@ -315,6 +316,7 @@ class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
                         ),
                         Expanded(
                           child: TextField(
+                            focusNode: requestAdvertiseController.coponNameNode,
                             textAlign: TextAlign.start,
                             textAlignVertical: TextAlignVertical.center,
                             decoration: InputDecoration(
@@ -382,6 +384,7 @@ class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
                             textAlign: TextAlign.start,
                             textAlignVertical: TextAlignVertical.center,
                             keyboardType:TextInputType.number,
+                            focusNode: requestAdvertiseController.coponDiscountNode,
                             decoration: InputDecoration(
                                  suffixIcon: Container(
                                    margin: EdgeInsets.only(top:5.0),
@@ -454,6 +457,7 @@ class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
                             textAlign: TextAlign.start,
                             textAlignVertical: TextAlignVertical.center,
                             keyboardType: TextInputType.number,
+                            focusNode: requestAdvertiseController.coponUsesNode,
                             decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(
                                   left: 10.0,
@@ -520,6 +524,7 @@ class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
                             textAlignVertical: TextAlignVertical.center,
                             keyboardType: TextInputType.url,
                             maxLines: 1,
+                            focusNode: requestAdvertiseController.coponUrlNode,
                             decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(
                                   left: 10.0,
@@ -569,27 +574,7 @@ class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
                 ),
                 child: InkWell(
                   onTap: (){
-                    DateTime selectedDate = DateTime.now();
-
-                    Future<void> _selectDate(BuildContext context) async {
-                      final DateTime? picked = await showDatePicker(
-                          context: context,
-                          initialDate: ( DateTime.now()).add( Duration(days: 1)),
-                          firstDate:( DateTime.now()),
-                          lastDate: ( DateTime.now()).add( Duration(days: 600)));
-                      // if (picked != null && picked != selectedDate)
-                      if (picked != null && picked != selectedDate)
-                      {
-                        requestAdvertiseController.addendAdvertisingDateCoupon(dateFormat.format(picked));
-                        // controller.endAdvertisingDate = dateFormat.format(picked);
-                      }
-                      // selectedDate = picked;
-
-                    }
-
-                    _selectDate(context);
-
-
+                   requestAdvertiseController.onSelectCoponDate(context);
                   },
                   child: Material(
                     elevation: 6.0,
@@ -716,7 +701,7 @@ class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
                                 left: 12.0, bottom: 4.0, right: 20),*/
                           alignment: Alignment.center,
                           child: Text(
-                            'cancel'.tr,
+                            'إستعادة',
                             style: TextStyle(
                                 fontSize: 16.0,
                                 color: Colors.white,

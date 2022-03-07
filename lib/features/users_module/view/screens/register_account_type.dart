@@ -123,8 +123,8 @@ class _RegisterAccountTypeState extends State<RegisterAccountType> {
                                 setState(() {
                                   _type = value as ClientType;
                                 });
-                                Get.toNamed(
-                                    '/registerNewClientTapBar?phone=${Get.parameters['phone'].toString()}');
+                                // Get.toNamed(
+                                //     '/registerNewClientTapBar?phone=${Get.parameters['phone'].toString()}');
                               },
                             ),
                           ),
@@ -154,8 +154,8 @@ class _RegisterAccountTypeState extends State<RegisterAccountType> {
                                 setState(() {
                                   _type = value as ClientType;
                                 });
-                                Get.toNamed(
-                                    '/registerNewClientTapBar?phone=${Get.parameters['phone'].toString()}');
+                                // Get.toNamed(
+                                //     '/registerNewClientTapBar?phone=${Get.parameters['phone'].toString()}');
                               },
                             ),
                           ),
@@ -206,15 +206,34 @@ class _RegisterAccountTypeState extends State<RegisterAccountType> {
                           setState(() {
                             _type = value as ClientType;
                           });
-                          Get.toNamed(
-                              '/registerNewAdvertiserTapBar?phone=${Get.parameters['phone'].toString()}');
+                          // Get.toNamed(
+                          //     '/registerNewAdvertiserTapBar?phone=${Get.parameters['phone'].toString()}');
                         },
                       ),
                     ),
                   ),
-                  SizedBox(height: 24.8.h),
+                  SizedBox(height: 6.8.h),
                   Image.asset('images/photoDecor.png',
                       height: 140.h, width: 140.h, fit: BoxFit.fitHeight),
+                  SizedBox(height: 16.8.h),
+                  AdvertisersButton(text: 'التالى', onPressed: (){
+                    if(_type==ClientType.client||_type==ClientType.company) {
+                      Get.toNamed(
+                          '/registerNewClientTapBar?phone=${Get
+                              .parameters['phone'].toString()}');
+                    }else if(_type==ClientType.advertiser){
+                    Get.toNamed(
+                        '/registerNewAdvertiserTapBar?phone=${Get.parameters['phone'].toString()}');
+                  }else{
+                      Get.snackbar(
+                        "تنبيه",
+                        "يجب اختيار نوع الحساب اولا",
+                        icon: const Icon(Icons.person, color: Colors.red),
+                        backgroundColor: Colors.yellow,
+                        snackPosition: SnackPosition.BOTTOM,);
+                    }
+    },backgroundColor: AppColors.verifyButtonColor,textColor: AppColors.textButtonColor,),
+
                 ],
               ),
             ),

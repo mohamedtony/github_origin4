@@ -17,6 +17,7 @@ import 'package:advertisers/features/home_page/controller/home_navigation_contro
 import 'package:advertisers/features/home_page/model/SelectedSocialMedia.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/address_bottom_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/advertising_channels_sheet.dart';
+import 'package:advertisers/features/request_advertise_module/view/widgets/advertising_date_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/attatchements_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/discount_coupon_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/notice_sheet.dart';
@@ -47,7 +48,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   var isFlixble = true.obs;
   var isFixed = false.obs;
   var fromAdvertisingDate = '2022-2-10'.obs;
-
+   late TextEditingController selectedCounterController;
   //----------------------- for request ads == request advertise page---------------
   var isLoadingTypes = true.obs;
   RxList<CategoryModel> categories = <CategoryModel>[].obs;
@@ -89,7 +90,12 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   var imagePathCopon = ''.obs;
   var isDiscountSaveClicked = false.obs;
   TextEditingController? coponNumberController,coponNameController,coponDiscountController,coponUsesController,coponLinkController;
-
+  FocusNode coponNumberNode = FocusNode();
+  FocusNode coponNameNode = FocusNode();
+  FocusNode coponDiscountNode = FocusNode();
+  FocusNode coponUsesNode = FocusNode();
+  FocusNode coponUrlNode = FocusNode();
+  //FocusNode coponUrlNode = FocusNode();
 //---------------------- for notice sheet --------------------------------------------
   TextEditingController? noticeController;
   var isNoticeSaveClicked = false.obs;
@@ -111,8 +117,8 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   late Completer<GoogleMapController> mapController;
   late GoogleMapController googleMapController;
   BitmapDescriptor? pinLocationIcon;
-
   late Uint8List markerIcon;
+
   List<myDio.MultipartFile>? imageFideoFiles = [];
   @override
   Future<void> onInit() async {
@@ -120,6 +126,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     descriptionController =  TextEditingController();
     placeNameController = TextEditingController();
     placeAddressController = TextEditingController();
+    selectedCounterController = TextEditingController(text: '1');
 
     print("isPlateformmm= "+showInPlatform.value.toString());
      myToken  = await storage.read("token");
@@ -184,42 +191,6 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     if(controller.initialized) {
       controller = Get.find<HomeNavController>();
     }
-    SelectedSocialMedia selectedSocialMedia =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia);
-    SelectedSocialMedia selectedSocialMedia1 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia1);
-    SelectedSocialMedia selectedSocialMedia2 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia2);
-    SelectedSocialMedia selectedSocialMedia3 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia3);
-    SelectedSocialMedia selectedSocialMedia4 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia4);
-    SelectedSocialMedia selectedSocialMedia5 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia5);
-    selectedSocialMedia5 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia5);
-    selectedSocialMedia5 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia5);
-    selectedSocialMedia5 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia5);
-    selectedSocialMedia5 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia5);
-    selectedSocialMedia5 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia5);
-    selectedSocialMedia5 =SelectedSocialMedia();
-    selectedSocialMedia.changeMyModel(0, false);
-    items.value.add(selectedSocialMedia5);
     super.onInit();
 
   }
@@ -451,7 +422,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
       );
     }*/
 
-    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true,allowCompression: true);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom,allowMultiple: true,allowCompression: true,allowedExtensions: ['mp4','mov','m4v','jpg','jpeg','png']);
 
     result?.files.forEach((element) {
       print("exte= "+element.extension!);
@@ -461,7 +432,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
       //List<File> files = result.paths.map((path) => File(path!)).toList();
       result.files.forEach((element) async {
         print("exte= "+element.extension!);
-        if(element.extension=="mp4"){
+        if(element.extension?.toLowerCase()=="mp4" || element.extension?.toLowerCase()=="mov" || element.extension?.toLowerCase()=="m4v"){
           File videoFile = File(element.path!);
           attatechedFilesImageAndVideo.add(
               FileModel(
@@ -779,34 +750,101 @@ Future<File> compressVideo(File file) async {
 
     if(imagePathCopon.value.isEmpty){
       showToast("من فضلك قم بإدخال صورة كوبون الخصم !");
+      showChoiceImageDialog(context);
+      FocusManager.instance.primaryFocus?.unfocus();
     return;
     }
     else if(coponNumberController?.text!=null && coponNumberController!.text.isEmpty){
       showToast("من فضلك قم بإدخال رقم كوبون الخصم !");
+      coponNumberNode.requestFocus();
       return;
     }else if(coponNameController?.text!=null && coponNameController!.text.isEmpty){
       showToast("من فضلك قم بإدخال اسم كوبون الخصم !");
+      coponNameNode.requestFocus();
       return;
     }
     else if(coponDiscountController?.text!=null && coponDiscountController!.text.isEmpty){
       showToast("من فضلك قم بإدخال نسبة الخصم!");
+      coponDiscountNode.requestFocus();
       return;
     }else if(coponUsesController?.text!=null && coponUsesController!.text.isEmpty){
       showToast("من فضلك قم بإدخال عدد إستخدامات الكوبون !");
+      coponUsesNode.requestFocus();
       return;
     }else if(coponLinkController?.text!=null && coponLinkController!.text.isEmpty){
       showToast("من فضلك قم بإدخال رابط المتجر !");
+      coponUrlNode.requestFocus();
       return;
     }else if(endAdvertisingDateCoupon!=null && endAdvertisingDateCoupon.isEmpty){
       showToast("من فضلك قم بإدخال تاريخ إنتهاء الكوبون !");
+      onSelectCoponDate(context);
+      FocusManager.instance.primaryFocus?.unfocus();
       return;
-    }else{
+    } else{
+     if(coponDiscountController?.text!=null && coponDiscountController!.text.isNotEmpty){
+       //int.parse(coponDiscountController!.text);
+       if(int.parse(coponDiscountController!.text)>100){
+             showToast("من فضلك قم بإدخال نسبة خصم لا تتعدى 100 %!");
+            coponDiscountNode.requestFocus();
+            return;
+       }else if(int.parse(coponDiscountController!.text)<100){
+         showToast("من فضلك قم بإدخال نسبة خصم صحيحة!");
+         coponDiscountNode.requestFocus();
+         return;
+       }
+    }
+      if(endAdvertisingDateCoupon.isNotEmpty&& fromDate.value.isNotEmpty){
+        fromDate.value = fromDate.value.replaceAll(" ", "");
+        print("myDate"+fromDate.value);
+        print("myDate"+endAdvertisingDateCoupon.value);
+        DateTime endAdvertisingDateCouponDate = DateTime.parse(endAdvertisingDateCoupon.value);
+        DateTime fromDateAdvertise = DateTime.parse(fromDate.value);
+        if(endAdvertisingDateCouponDate.isBefore(fromDateAdvertise)){
+          showToast("لا يجب ان يكون تاريخ انتهاء الكوبون قبل بداية الاعلان");
+          //onSelectCoponDate(context);
+          FocusManager.instance.primaryFocus?.unfocus();
+          return;
+        }
+      }
+
       isDiscountSaveClicked.value = true;
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("تم حفظ بيانات الكوبون بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
       Get.back();
     }
 
+  }
+
+  void onSelectCoponDate(BuildContext context){
+    DateTime selectedDate;
+    if(endAdvertisingDateCoupon.isNotEmpty){
+      print("myDate"+endAdvertisingDateCoupon.value);
+      DateTime endAdvertisingDateCouponDate = DateTime.parse(endAdvertisingDateCoupon.value);
+       selectedDate = endAdvertisingDateCouponDate;
+    }else{
+       selectedDate = (DateTime.now()).add( Duration(days: 1));
+    }
+
+
+    Future<void> _selectDate(BuildContext context) async {
+      final DateTime? picked = await showDatePicker(
+          context: context,
+          initialEntryMode:
+          DatePickerEntryMode.calendarOnly,
+          initialDate: selectedDate,
+          firstDate:( DateTime.now()),
+          lastDate: ( DateTime.now()).add( Duration(days: 600)));
+      // if (picked != null && picked != selectedDate)
+      if (picked != null && picked != selectedDate)
+      {
+        addendAdvertisingDateCoupon(dateFormat.format(picked));
+        // controller.endAdvertisingDate = dateFormat.format(picked);
+      }
+      // selectedDate = picked;
+
+    }
+
+    _selectDate(context);
   }
 
 void showToast(msg){
@@ -853,6 +891,7 @@ void showToast(msg){
 
     print("savedClicked");
     print("repeated= "+selectedTimeCounter.toString());
+    try{
     if(isFlixble.isTrue){
       if(dateRange.value.fromDate==null){
         showToast("من فضلك يرجى إختيار تاريخ الاعلان !");
@@ -862,13 +901,62 @@ void showToast(msg){
     if(isFixed.isTrue && fromAdvertisingDate.value=='2022-2-10'){
       showToast("من فضلك يرجى إختيار تاريخ الاعلان !");
       return;
-    }/*else if(selectedTimeCounter.value.isEmpty){
+    }else if(isFlixble.isTrue && (selectedCounterController.text.isEmpty || (selectedCounterController.text.isNotEmpty && int.parse(selectedCounterController.text)<=0))){
       showToast("من فضلك يرجى إختيار عدد مرات الاعلان !");
       return;
-    }*/else{
+    }else if(showInPlatform.isTrue && endAdvertisingDate.isEmpty){
+      showToast("من فضلك يرجى إختيار تاريخ انتهاء مدة العرض فى المنصة!");
+      return;
+    }else{
+      if(endAdvertisingDateCoupon.isNotEmpty&& fromDate.value.isNotEmpty){
+        fromDate.value = fromDate.value.replaceAll(" ", "");
+        print("myDate"+fromDate.value);
+        print("myDate"+endAdvertisingDateCoupon.value);
+        DateTime endAdvertisingDateCouponDate = DateTime.parse(endAdvertisingDateCoupon.value);
+        DateTime fromDateAdvertise = DateTime.parse(fromDate.value);
+        if(endAdvertisingDateCouponDate.isBefore(fromDateAdvertise)){
+          showToast("لا يجب ان يكون تاريخ انتهاء الكوبون قبل بداية الاعلان");
+          //onSelectCoponDate(context);
+          FocusManager.instance.primaryFocus?.unfocus();
+          return;
+        }
+      }
       isDateSaveClicked.value = true;
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("تم حفظ تاريخ الاعلان بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+
       Navigator.pop(context);
+    }}catch(e){
+      print(e);
     }
+  }
+
+  void onSelectedDateEndedAtPlateform(BuildContext context){
+    DateTime selectedDate;
+    if(endAdvertisingDate.isNotEmpty){
+      print("myDate"+endAdvertisingDate.value);
+      DateTime endAdvertisingDateCouponDate = DateTime.parse(endAdvertisingDate.value);
+      selectedDate = endAdvertisingDateCouponDate;
+    }else{
+      selectedDate = (DateTime.now()).add( Duration(days: 1));
+    }
+    Future<void> _selectDate(BuildContext context) async {
+      final DateTime? picked = await showDatePicker(
+          context: context,
+          initialEntryMode: DatePickerEntryMode.calendarOnly,
+          initialDate:selectedDate,
+          firstDate: (DateTime.now()),
+          lastDate:
+          (DateTime.now()).add(const Duration(days: 600)));
+      // if (picked != null && picked != selectedDate)
+      if (picked != null && picked != selectedDate) {
+        addendAdvertisingDate(dateFormat.format(picked));
+        // controller.endAdvertisingDate = dateFormat.format(picked);
+      }
+      // selectedDate = picked;
+    }
+
+    _selectDate(context);
   }
   void disposeAnimation() {
     animationControllers.add(AnimationController(
@@ -936,25 +1024,6 @@ void showToast(msg){
         SnackBar(content: Text("تم حفظ الملاحظة بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
     Get.back();
   }
-  var isLocationClickedSaved = false.obs;
-  LocationModel locationModel = LocationModel();
-  void onLocationClickedSaved (BuildContext context) {
-    if(placeNameController.text!=null && placeNameController.text.isEmpty){
-      showToast("من فضلك يرجى إضافة اسم المكان !");
-      return;
-    } else if(placeAddressController.text!=null && placeAddressController.text.isEmpty){
-      showToast("من فضلك يرجى إضافة عنوان المكان !");
-      return;
-    }else if(latLng==null){
-      showToast("من فضلك يرجى إختيار عنوان من الخريطة !");
-      return;
-    }
-    isLocationClickedSaved.value = true;
-    locationModel= LocationModel(name: placeNameController.text,address: placeAddressController.text,lat: latLng!.latitude.toString(),lng: latLng!.longitude.toString());
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("تم حفظ تفاصيل العنوان بنجاح!",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
-    Get.back();
-  }
 
   onPlanClicked(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(allowedExtensions: ['pdf', 'doc'],type: FileType.custom);
@@ -975,6 +1044,8 @@ void showToast(msg){
       // User canceled the picker
     }
   }
+
+  //===================== for location sheet =================
   LatLng? latLng;
   Future<void> onMapClicked({LatLng? position}) async {
     latLng = position;
@@ -1039,12 +1110,31 @@ void showToast(msg){
       ),
     );
   }
-
+  var isLocationClickedSaved = false.obs;
+  LocationModel locationModel = LocationModel();
+  void onLocationClickedSaved (BuildContext context) {
+    if(placeNameController.text!=null && placeNameController.text.isEmpty){
+      showToast("من فضلك يرجى إضافة اسم المكان !");
+      return;
+    } else if(placeAddressController.text!=null && placeAddressController.text.isEmpty){
+      showToast("من فضلك يرجى إضافة عنوان المكان !");
+      return;
+    }else if(latLng==null){
+      showToast("من فضلك يرجى إختيار عنوان من الخريطة !");
+      return;
+    }
+    isLocationClickedSaved.value = true;
+    locationModel= LocationModel(name: placeNameController.text,address: placeAddressController.text,lat: latLng!.latitude.toString(),lng: latLng!.longitude.toString());
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("تم حفظ تفاصيل العنوان بنجاح!",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+    Get.back();
+  }
 
   void switchShowInPlatform (){
     print("kkk"+showInPlatform.value.toString());
     if(showInPlatform.isTrue){
       showInPlatform.value = false;
+      endAdvertisingDate.value = '';
     }else{
       showInPlatform.value = true;
     }
@@ -1182,5 +1272,14 @@ void showToast(msg){
     endAdvertisingDate = endDate;
     update();
   }*/
-
+@override
+  void onClose() {
+    // TODO: implement onClose
+   coponNumberNode.dispose();
+   coponNameNode.dispose();;
+   coponDiscountNode.dispose();
+   coponUsesNode.dispose();
+   coponUrlNode.dispose();
+    super.onClose();
+  }
 }

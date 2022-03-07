@@ -386,7 +386,7 @@ class _UrlsPageState extends State<UrlsPage>  {
                                 left: 12.0, bottom: 4.0, right: 20),*/
                           alignment: Alignment.center,
                           child: Text(
-                            'cancel'.tr,
+                            'إستعادة',
                             style: TextStyle(
                                 fontSize: 16.0,
                                 color: Colors.white,

@@ -16,11 +16,12 @@ class AdvertisersDropDown extends StatelessWidget {
   late List<dynamic> items;
   void Function(dynamic)? onChanged;
   String? itemType;
+  bool? showSearchBox;
    // List<Country>? countries;
    // List<Area>? areas;
    //  Function(int id)? onCountryChanged;
    //  Function(Area area)? onAreaChanged;
-   AdvertisersDropDown({ this.itemType,required this.items,this.onChanged,this.borderColor,this.width,required this.hintText,Key? key,}) : super(key: key);
+   AdvertisersDropDown({this.showSearchBox, this.itemType,required this.items,this.onChanged,this.borderColor,this.width,required this.hintText,Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class AdvertisersDropDown extends StatelessWidget {
         width: width==0?323.w:width,
         // height: 47.h,
         child: DropdownSearch<dynamic>(
-          mode: Mode.MENU,showSearchBox: true,
+          mode: Mode.MENU,showSearchBox: showSearchBox??true,
           dropDownButton: Padding(
             padding: EdgeInsetsDirectional.only(bottom: 20.0.h,top: 0),
             child:const Icon(Icons.arrow_drop_down_sharp,size: 30,color:Color(0xff244094),),

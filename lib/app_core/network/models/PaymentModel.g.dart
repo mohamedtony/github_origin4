@@ -18,6 +18,10 @@ PaymentModel _$PaymentModelFromJson(Map<String, dynamic> json) => PaymentModel(
       mypoints: json['mypoints'] == null
           ? null
           : AddedTax.fromJson(json['mypoints'] as Map<String, dynamic>),
+      commissionModel: json['commissionModel'] == null
+          ? null
+          : CommissionModel.fromJson(
+              json['commissionModel'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PaymentModelToJson(PaymentModel instance) =>
@@ -28,5 +32,6 @@ Map<String, dynamic> _$PaymentModelToJson(PaymentModel instance) =>
       'copon': instance.copon,
       'discount': instance.discount,
       'total': instance.total,
+      'commissionModel': instance.commissionModel,
       'currency': instance.currency,
     };
