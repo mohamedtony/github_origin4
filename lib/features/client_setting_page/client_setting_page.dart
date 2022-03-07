@@ -407,6 +407,7 @@ class ClientSettingPage extends StatelessWidget {
                       textAlign: TextAlign.start,
                       textAlignVertical: TextAlignVertical.center,
                       controller: controller.kayanNameController,
+                      focusNode: controller.kayanNameNode,
                       enabled: controller.isEnabled.value,
                       style: TextStyle(
                           color: (AppColors.editProfileTextColorOpa)
@@ -481,6 +482,7 @@ class ClientSettingPage extends StatelessWidget {
                       textAlign: TextAlign.start,
                       textAlignVertical: TextAlignVertical.center,
                       controller: controller.userNameController,
+                      focusNode: controller.userNameNode,
                       enabled: controller.isEnabled.value,
                       style: TextStyle(
                           color: (AppColors.editProfileTextColorOpa)
@@ -553,11 +555,12 @@ class ClientSettingPage extends StatelessWidget {
                             bottomLeft: const Radius.circular(12.0)),
                         color: Colors.white),
                     child: Obx(() => TextField(
-                          textAlign: TextAlign.end,
+                          textAlign: TextAlign.start,
                           textAlignVertical: TextAlignVertical.center,
                           controller: controller.accountNameEdit,
+                         focusNode: controller.accountNameNode,
                           enabled: controller.isEnabled.value,
-                          textDirection: mt.TextDirection.ltr,
+                          //textDirection: mt.TextDirection.ltr,
                           style: TextStyle(
                             color: (AppColors.editProfileTextColorOpa)
                                 .withOpacity(0.51),
@@ -630,10 +633,11 @@ class ClientSettingPage extends StatelessWidget {
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
                     child: Obx(() => TextField(
-                      textAlign: TextAlign.end,
+                      textAlign: TextAlign.start,
                       textAlignVertical: TextAlignVertical.center,
                       controller: controller.accountOwner,
-                      textDirection: mt.TextDirection.ltr,
+                      focusNode: controller.accountOwnerNode,
+                     // textDirection: mt.TextDirection.ltr,
                       enabled: controller.isEnabled.value,
                       style: TextStyle(
                         color: (AppColors.editProfileTextColorOpa)
@@ -715,6 +719,8 @@ class ClientSettingPage extends StatelessWidget {
                           textAlign: TextAlign.start,
                           textAlignVertical: TextAlignVertical.center,
                           controller: controller.phoneController,
+                      focusNode: controller.phoneControllerNode,
+                          keyboardType: TextInputType.phone,
                           //textDirection: mt.TextDirection.ltr,
                           enabled: controller.isEnabled.value,
                           style: TextStyle(
@@ -818,6 +824,8 @@ class ClientSettingPage extends StatelessWidget {
                           textAlign: TextAlign.start,
                           textAlignVertical: TextAlignVertical.center,
                           controller: controller.emailController,
+                          focusNode: controller.emailControllerNode,
+                          keyboardType: TextInputType.emailAddress,
                           enabled: controller.isEnabled.value,
                           //textDirection: mt.TextDirection.ltr,
                           style: TextStyle(
@@ -892,10 +900,12 @@ class ClientSettingPage extends StatelessWidget {
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
                     child: Obx(() => TextField(
-                      textAlign: TextAlign.end,
+                      textAlign: TextAlign.start,
                       textAlignVertical: TextAlignVertical.center,
                       controller: controller.sglNumberController,
-                      textDirection: mt.TextDirection.ltr,
+                      focusNode: controller.sglNumberNode,
+                      keyboardType: TextInputType.number,
+                     // textDirection: mt.TextDirection.ltr,
                       enabled: controller.isEnabled.value,
                       style: TextStyle(
                         color: (AppColors.editProfileTextColorOpa)
@@ -969,10 +979,12 @@ class ClientSettingPage extends StatelessWidget {
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
                     child: Obx(() => TextField(
-                      textAlign: TextAlign.end,
+                      textAlign: TextAlign.start,
                       textAlignVertical: TextAlignVertical.center,
                       controller: controller.personalIdController,
-                      textDirection: mt.TextDirection.ltr,
+                      focusNode: controller.personalIdNode,
+                      keyboardType: TextInputType.number,
+                      //textDirection: mt.TextDirection.ltr,
                       enabled: controller.isEnabled.value,
                       style: TextStyle(
                         color: (AppColors.editProfileTextColorOpa)
@@ -1578,7 +1590,7 @@ class ClientSettingPage extends StatelessWidget {
               Container(
                 width: 150,
                 height: 40,
-                margin: const EdgeInsets.only(right: 30.0, top: 10.0),
+                margin: const EdgeInsets.only(right: 30.0, top: 10.0,left: 5.0),
                 child: Material(
                   elevation: 6.0,
                   shadowColor: Colors.grey[200],
@@ -1607,7 +1619,7 @@ class ClientSettingPage extends StatelessWidget {
               Container(
                 width: 150,
                 height: 40,
-                margin: const EdgeInsets.only(left: 30.0, top: 10.0),
+                margin: const EdgeInsets.only(left: 30.0, top: 10.0,right: 5.0),
                 child: Material(
                   elevation: 6.0,
                   shadowColor: Colors.grey[200],
@@ -1648,7 +1660,7 @@ class ClientSettingPage extends StatelessWidget {
                 Container(
                   width: 145,
                   height: 35,
-                  margin: const EdgeInsets.only(right: 35.0, top: 35.0),
+                  margin: const EdgeInsets.only(right: 35.0, top: 35.0,left: 5.0),
                   child: Material(
                     elevation: 6.0,
                     shadowColor: Colors.grey[200],
@@ -1677,7 +1689,7 @@ class ClientSettingPage extends StatelessWidget {
                 Container(
                   width: 145,
                   height: 35,
-                  margin: const EdgeInsets.only(left: 35.0, top: 35.0),
+                  margin: const EdgeInsets.only(left: 35.0, top: 35.0,right: 5.0),
                   child: Material(
                     elevation: 6.0,
                     shadowColor: Colors.grey[200],

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:advertisers/features/advertiser_list_page/advertise_list_controller.dart';
 import 'package:advertisers/features/client_list_page/client_list_item.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
@@ -404,11 +406,11 @@ class ClientListPage extends StatelessWidget {
                 print('MyOrdersAndMyOrdersArchive');
               },),
 
-              ClientListItem(icon: 'images/menu_icon.svg',title: ' القائمة الثانية طلباتى',listTilePressed: (){
+             /* ClientListItem(icon: 'images/menu_icon.svg',title: ' القائمة الثانية طلباتى',listTilePressed: (){
                 // Get.toNamed('/MyOrdersAndMyOrdersArchive');
                 Get.toNamed('/AdvertisingRequestsPage');
                 print('AdvertisingRequestsPage');
-              },),
+              },),*/
               ClientListItem(icon: 'images/discount_copon_img.svg',title: 'الخصومات',listTilePressed: (){
                 Get.toNamed('/DiscountPage');
               },),
@@ -422,7 +424,7 @@ class ClientListPage extends StatelessWidget {
               ClientListItem(icon: 'images/share_icon2.svg',title: 'شارك التطبيق',listTilePressed: (){
                 print('pressed2');
               },),
-              ClientListItem(icon: 'images/like_icon2.svg',title: 'قيمنا على ابل ستور',listTilePressed: (){
+              ClientListItem(icon: 'images/like_icon2.svg',title: Platform.isIOS?'قيمنا على ابل ستور':'قيمنا على جوجل بلاى',listTilePressed: (){
                 print('pressed2');
               },),
               ClientListItem(icon: 'images/logout_icon.svg',title: 'خروج',listTilePressed: () async {

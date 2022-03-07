@@ -800,13 +800,15 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
             ),
             Item(
               onTap: (){
-                showModalBottomSheet(
+               /* showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
                     builder: (builder){
                       return DiscountCouponSheetAdvertisingDetails();
                     }
-                );
+                );*/
+
+                showBottomSheetForRequest(context, 5);
 
               },
               title: 'كوبون المعلن',
@@ -978,13 +980,14 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
             ),
             Item(
               onTap: (){
-                showModalBottomSheet(
+                showBottomSheetForRequest(context, 6);
+               /* showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
                     builder: (builder){
                       return AdvertisingNoticsPage();
                     }
-                );
+                );*/
               },
               title: 'ملحوظة',
               child: Padding(
@@ -1009,7 +1012,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Text('${/*controller.noticsController.text??*/''}',style: TextStyle(color: Color(0xff041D67)),),
+                                  child: Obx(()=>Text('${controller.noticeText.value??''}',style: TextStyle(color: Color(0xff041D67)),)),
                                 ),
                               ],
                             ),
@@ -1112,7 +1115,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
           //maxChildSize: 0.8,
           //minChildSize: 100.0,
           //maxChildSize: 0.9,
-          initialChildSize: bottomNumber==6?0.84:0.67,
+          initialChildSize: bottomNumber==5?0.84:0.67,
           expand: false,
           builder: (context, scrollController) {
             if(bottomNumber==1){
@@ -1134,8 +1137,22 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
               /* return LocationRangeBottomSheet(
                     scrollController: scrollController);
 */
-            } /*else if(bottomNumber==3)*/ {
+            } else if(bottomNumber==4) {
               return AddressBottomSheet(
+                  scrollController: scrollController
+              );
+              /* return LocationRangeBottomSheet(
+                    scrollController: scrollController);
+*/
+            }else if(bottomNumber==5) {
+              return DiscountCouponSheet(
+                  scrollController: scrollController
+              );
+              /* return LocationRangeBottomSheet(
+                    scrollController: scrollController);
+*/
+            }else /*if(bottomNumber==6)*/ {
+              return NoticeSheet(
                   scrollController: scrollController
               );
               /* return LocationRangeBottomSheet(

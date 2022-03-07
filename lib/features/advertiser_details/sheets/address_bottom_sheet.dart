@@ -138,7 +138,12 @@ class _AddressBottomSheetState extends State<AddressBottomSheet> {
                       //requestAdvertiseController.mapController.complete(controller);
                       if (!requestAdvertiseController.mapController.isCompleted) requestAdvertiseController.mapController.complete(googleMapController);
                       requestAdvertiseController.googleMapController = googleMapController;
-                      requestAdvertiseController.getLocation();
+                      //requestAdvertiseController.getLocation();
+
+                      requestAdvertiseController.onMapClicked(position: LatLng(
+                            double.parse(requestAdvertiseController.locationModel.value.lat!),
+                            double.parse(requestAdvertiseController.locationModel.value.lng!)));
+
                     },
                     gestureRecognizers: Set()
                       ..add(Factory<PanGestureRecognizer>(() => PanGestureRecognizer()))
