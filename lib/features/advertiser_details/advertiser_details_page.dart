@@ -17,6 +17,7 @@ import 'package:advertisers/features/advertiser_details/widgets/channel_single_i
 import 'package:advertisers/features/advertiser_details/widgets/item.dart';
 import 'package:advertisers/features/advertiser_details/widgets/title.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -400,7 +401,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Row(
                             children: [
-                              Expanded(child: Obx(()=>Text('${controller.dateRange.value.fromDate!=null && controller.dateRange.value.fromDate!.isNotEmpty?controller.dateRange.value.fromDate:controller.requestDetailsModel.value.started_at??''} : ${controller.dateRange.value.toDate!=null && controller.dateRange.value.toDate!.isNotEmpty?controller.dateRange.value.toDate:controller.requestDetailsModel.value.ended_at??''}', style: TextStyle(color: Color(0xff041D67)),),
+                              Expanded(child: Obx(()=>Text('${(controller.dateRange.value.fromDate!=null && controller.dateRange.value.fromDate!.isNotEmpty) ? controller.dateRange.value.fromDate : (controller.requestDetailsModel.value.started_at??'')} ${(controller.dateRange.value.toDate!=null && controller.dateRange.value.toDate!.isNotEmpty)?':':''} ${(controller.dateRange.value.toDate!=null && controller.dateRange.value.toDate!.isNotEmpty) ? controller.dateRange.value.toDate : (controller.requestDetailsModel.value.ended_at ??'')}', style: TextStyle(color: Color(0xff041D67)),),
                               )
                               ),
                               Container(
@@ -561,16 +562,16 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
               child: Container(
                 height: 100.w,
 
-                child: controller.attachedImagesList.isNotEmpty ? ListView.builder(
+                child: Obx(()=>controller.attatechedFilesImageAndVideo.value.isNotEmpty ? ListView.builder(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.all(4.0),
                   // physics: const BouncingScrollPhysics(),
-                  itemCount: controller.attachedImagesList.length,
+                  itemCount:controller.attatechedFilesImageAndVideo.value.length,
                   itemBuilder: (_, index) => Stack(
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(4.0),
-                        child: controller.attachedImagesList[index].isVideo == 0 ? Container(
+                        child: !controller.attatechedFilesImageAndVideo.value[index].isVideo!? Container(
                           margin: const EdgeInsets.all(1),
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -580,20 +581,20 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                             ),
                           ),
                           child: Image.file(
-                            File(controller.attachedImagesList[index].file!.path),
+                            controller.attatechedFilesImageAndVideo.value[index].file!,
                             width: 80.w,
                             height: 80.w,
                             fit: BoxFit.fill,
                           ),
                         ):VideoApp(
-                          file: File(controller.attachedImagesList[index].file!.path),
+                          file: controller.attatechedFilesImageAndVideo.value[index].file!,
                         ),
                       ),
                       Positioned(
                           left: 0,
                           child: InkWell(
                             onTap: (){
-                              controller.deleteFromAttachedImagesList(controller.attachedImagesList[index]);
+                              controller.deleteImage(index);
                             },
                             child: Container(
                               padding: const EdgeInsets.all(1),
@@ -615,7 +616,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                   ),
                 ):const Center(
                   child:  Text("لا توجد مرفقات"),
-                ),
+                )),
               ),
             ),
             Item(
@@ -842,39 +843,47 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                     color: Colors.grey,
                                   ),
                                 ),
-                                child: controller.hasSelectedImage ?
+                                child:  controller.coponModel.value.image!=null && controller.coponModel.value.image!.isNotEmpty ?
                                 ClipRRect(
                                     borderRadius: BorderRadius.circular(12),
-                                    child: Image.file(
-                                      File(controller.selectedImage.path),
+                                    child: CachedNetworkImage(
+                                      imageUrl: controller.coponModel.value.image??
+                                          '',
+                                      placeholder: (context, url) =>
+                                      const SpinKitThreeBounce(
+                                        color: Colors.grey,
+                                        size: 25,
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
                                       fit: BoxFit.fill,
-                                      height: 60.h,
-                                      width: 60.h,
+                                      height: 60.w,
+                                      width: 60.w,
                                     )):Container(),
                               ),
                               Expanded(
                                 child: Column(
                                   children: [
-                                    Text('${controller.couponNameController.text}',style: TextStyle(color:Color(0xff041D67))),
+                                    Text('${controller.coponModel.value.name}',style: TextStyle(color:Color(0xff041D67))),
                                     SizedBox(
                                       height: 8,
                                     ),
-                                    controller.endAdvertisingDateCoupon != null ? Text('الانتهاء في ${controller.endAdvertisingDateCoupon}',style: TextStyle(color:Color(0xff041D67))):Container(),
+                                    controller.coponModel.value.ended_at != null ? Text('الانتهاء في ${controller.coponModel.value.ended_at }',style: TextStyle(color:Color(0xff041D67))):Container(),
                                     SizedBox(
                                       height: 8,
                                     ),
                                     InkWell(
                                         onTap: (){
-                                          launchURL("${controller.storeUrlController.text}");
+                                          launchURL("${controller.coponModel.value.name}");
                                         },
-                                        child: Text('${controller.storeUrlController.text}',style: TextStyle(color:Color(0xff041D67)))),
+                                        child: Text('${controller.coponModel.value.name}',style: TextStyle(color:Color(0xff041D67)))),
                                   ],
                                 ),
                               ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  controller.couponNumberController.text != "" ? Container(
+                                  Container(
                                     decoration: BoxDecoration(
                                       color: Colors.grey[300],
                                       borderRadius: BorderRadius.circular(8),
@@ -885,7 +894,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                     child: InkWell(
                                       onTap: (){
 
-                                        Clipboard.setData(new ClipboardData(text: controller.couponNumberController.text)).then((_){
+                                        Clipboard.setData(new ClipboardData(text: controller.coponModel.value.code)).then((_){
                                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("تم نسخ الكود")));
                                         });
                                       },
@@ -894,7 +903,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                           Container(
                                               padding: EdgeInsets.all(4),
                                               color: Colors.transparent,
-                                              child: Text('${controller.couponNumberController.text}')),
+                                              child: Text('${controller.coponModel.value.code}')),
                                           const SizedBox(
                                             width: 10,
                                           ),
@@ -908,15 +917,15 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                                   color: Colors.brown[200]!,
                                                 ),
                                               ),
-                                              child: Text('${controller.selectedDiscountPercentage}')),
+                                              child: Text('${controller.coponModel.value.discount}')),
                                         ],
                                       ),
                                     ),
-                                  ):Container(),
-                                  controller.numberOfUseController.text != "" ? Row(
+                                  ),
+                                  Row(
                                     children: [
                                       Text(
-                                        '${controller.numberOfUseController.text} كوبون',
+                                        '${controller.coponModel.value.uses} كوبون',
                                         style: TextStyle(fontSize: 10.sp,color: Color(0xff041D67)),
                                       ),
                                       const SizedBox(
@@ -935,15 +944,24 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                           borderRadius: const BorderRadius.all(
                                             Radius.circular(50),
                                           ),
-                                          child: Image.network(
-                                            'https://roshah.com/wp-content/uploads/2018/04/2986-1.jpg',
+                                          child: CachedNetworkImage(
+                                            imageUrl: controller.coponModel.value.image??
+                                                '',
+                                            placeholder: (context, url) =>
+                                            const SpinKitThreeBounce(
+                                              color: Colors.grey,
+                                              size: 25,
+                                            ),
+                                            errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                            fit: BoxFit.fill,
                                             height: 30.w,
                                             width: 30.w,
                                           ),
                                         ),
                                       ),
                                     ],
-                                  ):Container(),
+                                  ),
                                 ],
                               ),
                             ],
@@ -1052,7 +1070,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
               child: Row(
                 children: [
                   Expanded(child: InkWell(onTap: (){
-
+                                     controller.onEditRequestClicked(context);
                   },
                     child: Container(
                       height: 40,
