@@ -62,11 +62,14 @@ class AdvertisingDetailsController extends GetxController with GetTickerProvider
   int adTypeId = -1;
   var showInPlatform = false.obs;
   void switchShowInPlatform (){
+    print("kkk"+showInPlatform.value.toString());
     if(showInPlatform.isTrue){
       showInPlatform.value = false;
+      endAdvertisingDate.value = '';
     }else{
       showInPlatform.value = true;
     }
+    print("kkk"+showInPlatform.value.toString());
     //update();
   }
   // -------------------- for attachement sheet  ----------------------------------------
@@ -77,7 +80,7 @@ class AdvertisingDetailsController extends GetxController with GetTickerProvider
   final ImagePicker _picker = ImagePicker();
   List<XFile>? images2;
   XFile? mVideo;
-
+  late TextEditingController selectedCounterController;
 //---------------------- for discount sheet --------------------------------------------
   late XFile xFile ;
   File? imageFile;
@@ -225,11 +228,19 @@ void setStateBehavior(){
 
 
    void addRemoveCheckList(id){
-     if(checkList!.contains(id)){
+     Channel? channel = channelsForList.value.firstWhereOrNull((element) => element.id==id);
+     if(channel!=null){
+       //int index = channelsForList.indexWhere((element) => channel.id==element.id);
+       channelsForList.removeWhere((element) => element.id==id);
+       int index = channels.indexWhere((element) => element.id==id);
+       channels[index].isTapped.value = false;
+       channelsIds.removeWhere((element) => element==id);
+     }
+     /*if(channelsForList.value.contains(id)){
        checkList!.remove(id);
      }else{
        checkList!.add(id);
-     }
+     }*/
     // update();
    }
 
@@ -276,22 +287,80 @@ void setStateBehavior(){
   }
   void onDateClickedSaved(BuildContext context) {
 
-    if(isFlixble.isTrue){
-      if(dateRange.value.fromDate==null){
+    print("savedClicked");
+    print("repeated= "+selectedTimeCounter.toString());
+    try{
+      if(isFlixble.isTrue){
+        if(dateRange.value.fromDate==null){
+          showToast("من فضلك يرجى إختيار تاريخ الاعلان !");
+          return;
+        }
+      }
+      if(isFixed.isTrue && fromAdvertisingDate.value=='2022-2-10'){
         showToast("من فضلك يرجى إختيار تاريخ الاعلان !");
         return;
-      }
+      }else if(isFlixble.isTrue && (selectedCounterController.text.isEmpty)){
+        showToast("من فضلك يرجى إدخال عدد مرات الاعلان !");
+        return;
+      }else if(isFlixble.isTrue &&  (selectedCounterController.text.isNotEmpty && !isNumericUsingRegularExpression(selectedCounterController.text))){
+        showToast("من فضلك يرجى إدخال عدد مرات الاعلان بشكل صحيح !");
+        return;
+      }else if(isFlixble.isTrue && (selectedCounterController.text.isNotEmpty && int.parse(selectedCounterController.text)<=0)){
+        showToast("من فضلك يرجى إدخال عدد مرات الاعلان بشكل صحيح !");
+        return;
+      }else if(showInPlatform.isTrue && endAdvertisingDate.isEmpty){
+        showToast("من فضلك يرجى إختيار تاريخ انتهاء مدة العرض فى المنصة!");
+        return;
+      }else{
+        if(endAdvertisingDateCoupon.isNotEmpty&& fromDate.value.isNotEmpty){
+          fromDate.value = fromDate.value.replaceAll(" ", "");
+          print("myDate"+fromDate.value);
+          print("myDate"+endAdvertisingDateCoupon.value);
+          DateTime endAdvertisingDateCouponDate = DateTime.parse(endAdvertisingDateCoupon.value);
+          DateTime fromDateAdvertise = DateTime.parse(fromDate.value);
+          if(endAdvertisingDateCouponDate.isBefore(fromDateAdvertise)){
+            showToast("لا يجب ان يكون تاريخ انتهاء الكوبون قبل بداية الاعلان");
+            //onSelectCoponDate(context);
+            FocusManager.instance.primaryFocus?.unfocus();
+            return;
+          }
+        }
+        isDateSaveClicked.value = true;
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("تم حفظ تاريخ الاعلان بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+
+        Navigator.pop(context);
+      }}catch(e){
+      print(e);
     }
-    if(isFixed.isTrue && fromAdvertisingDate.value=='2022-2-10'){
-      showToast("من فضلك يرجى إختيار تاريخ الاعلان !");
-      return;
-    }else if(selectedTimeCounter.value.isEmpty){
-      showToast("من فضلك يرجى إختيار عدد مرات الاعلان !");
-      return;
+  }
+
+  void onSelectedDateEndedAtPlateform(BuildContext context){
+    DateTime selectedDate;
+    if(endAdvertisingDate.isNotEmpty){
+      print("myDate"+endAdvertisingDate.value);
+      DateTime endAdvertisingDateCouponDate = DateTime.parse(endAdvertisingDate.value);
+      selectedDate = endAdvertisingDateCouponDate;
     }else{
-      isDateSaveClicked.value = true;
-      Navigator.pop(context);
+      selectedDate = (DateTime.now()).add( Duration(days: 1));
     }
+    Future<void> _selectDate(BuildContext context) async {
+      final DateTime? picked = await showDatePicker(
+          context: context,
+          initialEntryMode: DatePickerEntryMode.calendarOnly,
+          initialDate:selectedDate,
+          firstDate: (DateTime.now()),
+          lastDate:
+          (DateTime.now()).add(const Duration(days: 600)));
+      // if (picked != null && picked != selectedDate)
+      if (picked != null && picked != selectedDate) {
+        addendAdvertisingDate(dateFormat.format(picked));
+        // controller.endAdvertisingDate = dateFormat.format(picked);
+      }
+      // selectedDate = picked;
+    }
+
+    _selectDate(context);
   }
   void showToast(msg){
     Fluttertoast.showToast(
@@ -313,13 +382,14 @@ void setStateBehavior(){
       channels.value[indexCome].isTapped.value=false;
      // channelsIds.removeWhere((element) => element==channels.value[indexCome].id);
      // channels.value.removeWhere((element) => element.id == channels.value[indexCome].id);
-      //channelsForList.value.removeWhere((element) => element.id==channels.value[indexCome].id);
+      channelsForList.removeWhere((element) => element.id==channels.value[indexCome].id);
+      channelsIds.removeWhere((element) => element==channels.value[indexCome].id);
     }else{
       channels.value[indexCome].isTapped.value=true;
       channelsIds.add(channels.value[indexCome].id!);
       Channel? channel = channelsForList.value.firstWhereOrNull((element) => element.id==channels.value[indexCome].id,);
       if(channel == null){
-        channelsForList.value.add(channels.value[indexCome]);
+        channelsForList.add(channels.value[indexCome]);
       }
     }
   }
@@ -444,6 +514,7 @@ void setStateBehavior(){
     coponUsesController=  TextEditingController();
     coponLinkController=  TextEditingController();
     noticeController = TextEditingController();
+    selectedCounterController = TextEditingController(text: '1');
 
     myToken  = await storage.read("token");
     client!.getProductsAndAdsTypes("Bearer "+myToken!).then((value) {
@@ -463,10 +534,10 @@ void setStateBehavior(){
           }
           if(value.data!.channels!=null && value.data!.channels!.isNotEmpty) {
             channels.value = value.data!.channels!;
-            channelsForList.value = value.data!.channels!;
-            /*value.data!.channels!.asMap().forEach((index,element) {
+            //channelsForList.value = value.data!.channels!;
+            value.data!.channels!.asMap().forEach((index,element) {
               channels.value[index].isTapped.value = true;
-            });*/
+            });
 
           }
         }
@@ -525,7 +596,9 @@ void setStateBehavior(){
           EasyLoading.dismiss();
         }
         selectedCategory.value = requestDetailsModel.value.product_type!;
+        categoryId=selectedCategory.value.id!;
         selectedAdType.value = requestDetailsModel.value.ads_type!;
+        adTypeId= selectedAdType.value.id!;
 
         if(value.data?.description!=null) {
           print("descController"+value.data!.description!);
@@ -549,10 +622,10 @@ void setStateBehavior(){
         }
         Logger().i(value.data!.toJson());
         if(value.data!.channels!=null && value.data!.channels!.isNotEmpty) {
-         // channels.value = value.data!.channels!;
-          value.data!.channels!.asMap().forEach((index,element) {
+          channelsForList.value = value.data!.channels!;
+          /*value.data!.channels!.asMap().forEach((index,element) {
             channels.value[index].isTapped.value = true;
-          });
+          })*/;
 
         }
 
@@ -587,12 +660,19 @@ void setStateBehavior(){
         if(value.data?.ended_at!=null && value.data!.ended_at!.isNotEmpty){
           fromDate.value = value.data!.ended_at!;
         }
-        /*if(value.data?.attachments!=null && value.data!.attachments!.isNotEmpty){
-          fromDate.value = value.data!.ended_at!;
-        }*/
+        if(value.data?.attachments!=null && value.data!.attachments!.isNotEmpty){
+          value.data?.attachments?.forEach((element) {
+            attatechedFilesImageAndVideo.add(FileModel(link: element.path,isVideo:element.type=="image"?false:true ));
+          });
+
+        }
 
         if(value.data?.copon!=null ){
           coponModel.value = value.data!.copon!;
+        }
+
+        if(value.data?.repeat_count!=null){
+          selectedTimeCounter.value = value.data!.repeat_count!.toString();
         }
       }else{
         if (EasyLoading.isShow) {
@@ -959,20 +1039,25 @@ void setStateBehavior(){
         }
       }
       if(endAdvertisingDateCoupon.isNotEmpty&& fromDate.value.isNotEmpty){
-        fromDate.value = fromDate.value.replaceAll(" ", "");
-        print("myDate"+fromDate.value);
-        print("myDate"+endAdvertisingDateCoupon.value);
-        DateTime endAdvertisingDateCouponDate = DateTime.parse(endAdvertisingDateCoupon.value);
-        DateTime fromDateAdvertise = DateTime.parse(fromDate.value);
-        if(endAdvertisingDateCouponDate.isBefore(fromDateAdvertise)){
-          showToast("لا يجب ان يكون تاريخ انتهاء الكوبون قبل بداية الاعلان");
-          //onSelectCoponDate(context);
-          FocusManager.instance.primaryFocus?.unfocus();
-          return;
+        try{
+          fromDate.value = fromDate.value.replaceAll(" ", "");
+          print("myDate"+fromDate.value);
+          print("myDate"+endAdvertisingDateCoupon.value);
+          DateTime endAdvertisingDateCouponDate = DateTime.parse(endAdvertisingDateCoupon.value);
+          DateTime fromDateAdvertise = DateTime.parse(fromDate.value);
+          if(endAdvertisingDateCouponDate.isBefore(fromDateAdvertise)){
+            showToast("لا يجب ان يكون تاريخ انتهاء الكوبون قبل بداية الاعلان");
+            //onSelectCoponDate(context);
+            FocusManager.instance.primaryFocus?.unfocus();
+            return;
+          }
+        }catch(e){
+
         }
       }
 
       isDiscountSaveClicked.value = true;
+      coponModel.value = CoponModelResponse(id: coponModel.value.id,image: imagePathCopon.value,code: coponNumberController?.text,name: coponNameController?.text,discount: int.parse(coponDiscountController!.text),uses: int.parse(coponUsesController!.text),link: coponLinkController!.text,ended_at: endAdvertisingDateCoupon.value,);
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("تم حفظ بيانات الكوبون بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
       Get.back();
@@ -1052,7 +1137,13 @@ void setStateBehavior(){
     DateTime selectedDate;
     if(endAdvertisingDateCoupon.isNotEmpty){
       print("myDate"+endAdvertisingDateCoupon.value);
-      DateTime endAdvertisingDateCouponDate = DateTime.parse(endAdvertisingDateCoupon.value);
+      DateTime endAdvertisingDateCouponDate ;
+      try{
+         endAdvertisingDateCouponDate = DateTime.parse(endAdvertisingDateCoupon.value);
+      }catch(e){
+        endAdvertisingDateCouponDate = DateTime.now();
+      }
+
       selectedDate = endAdvertisingDateCouponDate;
     }else{
       selectedDate = (DateTime.now()).add( Duration(days: 1));
@@ -1374,7 +1465,9 @@ void setStateBehavior(){
   //---------------------- for notice sheet --------------------------------------------
   late TextEditingController? noticeController;
   var isNoticeSaveClicked = false.obs;
+  var isDescSaveClicked = false.obs;
   var noticeText = ''.obs;
+
   void onNoticeSavedClicked(BuildContext context) {
     if(noticeController?.text!=null && noticeController!.text.isEmpty){
       showToast("من فضلك يرجى إضافة ملاحظة !");
@@ -1399,36 +1492,10 @@ void setStateBehavior(){
     //  var myToken  = await storage.read("token");
     await getRequestDetails(/*Get.parameters['requestId']*/145);
   }
-  void onSelectedDateEndedAtPlateform(BuildContext context){
-    DateTime selectedDate;
-    if(endAdvertisingDate.isNotEmpty){
-      print("myDate"+endAdvertisingDate.value);
-      DateTime endAdvertisingDateCouponDate = DateTime.parse(endAdvertisingDate.value);
-      selectedDate = endAdvertisingDateCouponDate;
-    }else{
-      selectedDate = (DateTime.now()).add( Duration(days: 1));
-    }
-    Future<void> _selectDate(BuildContext context) async {
-      final DateTime? picked = await showDatePicker(
-          context: context,
-          initialEntryMode: DatePickerEntryMode.calendarOnly,
-          initialDate:selectedDate,
-          firstDate: (DateTime.now()),
-          lastDate:
-          (DateTime.now()).add(const Duration(days: 600)));
-      // if (picked != null && picked != selectedDate)
-      if (picked != null && picked != selectedDate) {
-        addendAdvertisingDate(dateFormat.format(picked));
-        // controller.endAdvertisingDate = dateFormat.format(picked);
-      }
-      // selectedDate = picked;
-    }
 
-    _selectDate(context);
-  }
   void onEditRequestClicked(BuildContext context) {
 
-      if (categoryId == -1) {
+      if (selectedCategory.value.id == -1) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
               "يجب اختيار نوع المنتج !",
@@ -1436,7 +1503,7 @@ void setStateBehavior(){
                   color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
             )));
         return;
-      } else if (adTypeId == -1) {
+      } else if (selectedAdType.value.id == -1) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
               "يجب اختيار نوع الاعلان !",
@@ -1594,7 +1661,7 @@ void setStateBehavior(){
       }
       Logger().i("mymap"+mymap.toString());
       Repository repo = Repository();
-      repo.postWithImageMultipart<CreateAdvertiseRequestResponse>(
+      repo.putWithImageMultipart<CreateAdvertiseRequestResponse>(
           path: 'requests/${requestDetailsModel.value.id}',
           fromJson: (json) => CreateAdvertiseRequestResponse.fromJson(json),
           json: mymap,
@@ -1678,6 +1745,18 @@ void setStateBehavior(){
     });*/
 
     }
+
+  void onDecriptionSavedClicked(BuildContext context) {
+    if(descController.text!=null && descController.text.isEmpty){
+      showToast("من فضلك يرجى إضافة وصف الاعلان !");
+      return;
+    }
+    isDescSaveClicked.value = true;
+    decriptionText.value = descController.text;
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("تم حفظ الوصف بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+    Get.back();
+  }
 
 
 

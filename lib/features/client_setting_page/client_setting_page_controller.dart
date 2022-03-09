@@ -377,6 +377,18 @@ class ClientSettingPageController extends GetxController  {
   FocusNode emailControllerNode = FocusNode();
   FocusNode sglNumberNode = FocusNode();
   FocusNode personalIdNode = FocusNode();
+  bool isNumericUsingRegularExpression(String string) {
+    final numericRegex =
+    RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+
+    return numericRegex.hasMatch(string);
+  }
+  bool isValidEmailUsingRegularExpression(String string) {
+    final numericRegex =
+    RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
+    return numericRegex.hasMatch(string);
+  }
 
 
   void saveButtonClicked(context) async{
@@ -410,6 +422,10 @@ class ClientSettingPageController extends GetxController  {
       userNameNode.requestFocus();
       return;
     } else if (phoneController!.text.isEmpty) {
+      showMyToast("من فضلك ادخل رقم الجوال بشكل صحيح !",true,context);
+      phoneControllerNode.requestFocus();
+      return;
+    }else if (!isNumericUsingRegularExpression(phoneController!.text)) {
       showMyToast("من فضلك ادخل رقم الجوال !",true,context);
       phoneControllerNode.requestFocus();
       return;
@@ -421,12 +437,24 @@ class ClientSettingPageController extends GetxController  {
       showMyToast("من فضلك ادخل الايميل الالكترونى !",true,context);
       emailControllerNode.requestFocus();
       return;
+    }else if (!isValidEmailUsingRegularExpression(emailController!.text)) {
+      showMyToast("من فضلك ادخل الايميل الالكترونى بشكل صحيح !",true,context);
+      emailControllerNode.requestFocus();
+      return;
     } else if (accountType.value=="company" && sglNumberController!.text.isEmpty) {
       showMyToast("من فضلك ادخل رقم السجل !",true,context);
       sglNumberNode.requestFocus();
       return;
+    }else if (accountType.value=="company" && !isNumericUsingRegularExpression(sglNumberController!.text)) {
+      showMyToast("من فضلك ادخل رقم السجل بشكل صحيح !",true,context);
+      sglNumberNode.requestFocus();
+      return;
     } else if (accountType.value=="client" && personalIdController!.text.isEmpty) {
       showMyToast("من فضلك ادخل رقم الهوية !",true,context);
+      personalIdNode.requestFocus();
+      return;
+    }else if (accountType.value=="client" && !isNumericUsingRegularExpression(personalIdController!.text)) {
+      showMyToast("من فضلك ادخل رقم الهوية بشكل صحيح !",true,context);
       personalIdNode.requestFocus();
       return;
     } else{
@@ -454,9 +482,8 @@ class ClientSettingPageController extends GetxController  {
             showMyToast(value.message!, false, context);
           }
         });
-        FocusManager.instance.primaryFocus?.unfocus();
       }
-
+      FocusManager.instance.primaryFocus?.unfocus();
     }
 
   }

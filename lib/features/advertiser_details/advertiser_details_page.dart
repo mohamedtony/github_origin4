@@ -7,7 +7,7 @@ import 'package:advertisers/features/advertiser_details/controller/advertiser_de
 import 'package:advertisers/features/advertiser_details/sheets/address_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/advertising_channels_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/advertising_date_sheet.dart';
-import 'package:advertisers/features/advertiser_details/sheets/advertising_desc_sheet.dart';
+import 'package:advertisers/features/advertiser_details/sheets/advertising_description_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/attatchements_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/discount_coupon_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/discount_coupon_sheet_advertising_details.dart';
@@ -53,44 +53,9 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
 
   @override
   void initState() {
-/*    // TODO: implement initState
-    controller.descController = TextEditingController(
-        text: "- تغطية افتتاح الفرع الثالث من فروعنا");
-
-    controller.placeAddressController = TextEditingController(
-        text: "شارع الملز الرياض بجوار مدينة السلام");
-
-    controller.noticsController = TextEditingController(
-        text: "------------------------------------------- -");*/
     super.initState();
   }
-  final List<String> _productType = [
-    'منتجات مواد غذائية - حلويات وشكولاتة',
-    'منتجات مواد غذائية - حلويات وشكولاتة',
-    'منتجات مواد غذائية - حلويات وشكولاتة',
-    'منتجات مواد غذائية - حلويات وشكولاتة'
-  ];
-  String _selectedProductTyp = '';
 
-  final List<String> _percentages = [
-    '10',
-    '20',
-    '30',
-    '40',
-    '50',
-    '60',
-    '70',
-    '80',
-    '90',
-    '100',
-  ];
-  String _selectedMenPercentage = '';
-  String _selectedWomenPercentage = '';
-  String _selectedBoysPercentage = '';
-  String _selectedGirlsPercentage = '';
-
-  Country? _selectedCountry;
-  City? _selectedCity;
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +100,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                         color: const Color(0xfff5f5f5),
                         child: Text(
                           "نوع المنتج",
-                          style: TextStyle(fontSize: 14.sp,color: Color(0xff041D67)),
+                          style: TextStyle(fontSize: 16,color: Color(0xff041D67)),
                         ),
                       ),
                     ),
@@ -171,7 +136,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                             dropdownBuilder: (BuildContext context, s) {
                               return Text(
                                 '${(s?.name ?? '')}',
-                                style: TextStyle(color: Color(0xff041D67),fontSize: 13),
+                                style: TextStyle(color: Color(0xff041D67),fontSize: 16),
                                 textAlign: TextAlign.start,
                               );
                             },
@@ -182,6 +147,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                               if(categoryModel!.id!=-1) {
                                 controller.categoryId =
                                 categoryModel.id!;
+                                controller.selectedCategory.value = categoryModel;
                               }
                             },
                             selectedItem: controller.selectedCategory.value.id!=null?controller.selectedCategory.value:controller.categories.value[0]
@@ -279,7 +245,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                             ),
                           ),
                           dropdownSearchDecoration: InputDecoration(
-                            labelStyle: TextStyle(color: Color(0xff041D67),fontSize: 13),
+                            labelStyle: TextStyle(color: Color(0xff041D67),fontSize: 16),
                             // filled: true,
                             //fillColor: Color(0xFFF2F2F2),
                             contentPadding:
@@ -305,7 +271,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                           dropdownBuilder: (BuildContext context, s) {
                             return Text(
                               '${(s?.name ?? '')}',
-                              style: TextStyle(color: Color(0xff041D67),fontSize: 13),
+                              style: TextStyle(color: Color(0xff041D67),fontSize: 16),
                               textAlign: TextAlign.start,
                             );
                           },
@@ -315,6 +281,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                           onChanged: (adTypeModel){
                             if(adTypeModel!.id!=-1) {
                               controller.adTypeId = adTypeModel.id!;
+                              controller.selectedAdType.value = adTypeModel;
                             }
                           },
                           selectedItem: controller.selectedAdType.value.id!=null?controller.selectedAdType.value:controller.ads_types.value[0],
@@ -501,10 +468,10 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                       Container(
                         height: 50,
                         child: Center(
-                          child: Obx(()=>ListView.builder(
+                          child: Obx(()=>controller.channelsForList.value.isNotEmpty?ListView.builder(
                               scrollDirection: Axis.horizontal,
                               shrinkWrap: true,
-                              itemCount: controller.channelsForList.value.length??0,
+                              itemCount: controller.channelsForList.value.length,
                               itemBuilder: (context, index) {
                                 return /*controller.checkList!.contains( controller.requestDetailsModel.value.channels![index].id)?*/
                                   Padding(
@@ -516,7 +483,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                       imgUrl: "${ controller.channelsForList.value[index].image}",
                                     ),
                                   )/*:const SizedBox()*/;
-                              })),
+                              }):Text("لا يوجد قنوات")),
                         ),
                       ),
                     ),
@@ -527,14 +494,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
 
             Item(
               onTap: (){
-                showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (builder){
-                      return AdvertisingDescriptionPage();
-                      // return AdvertisingNoticsPage();
-                    }
-                );
+                showBottomSheetForRequest(context,3);
               },
               title: 'وصف الاعلان',
               child: Column(
@@ -580,14 +540,20 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                               color: Colors.grey,
                             ),
                           ),
-                          child: Image.file(
+                          child: controller.attatechedFilesImageAndVideo.value[index].link!=null && controller.attatechedFilesImageAndVideo.value[index].link!.isNotEmpty? Image.network(
+                            controller.attatechedFilesImageAndVideo.value[index].link!,
+                            width: 80.w,
+                            height: 80.w,
+                            fit: BoxFit.fill,
+                          ):Image.file(
                             controller.attatechedFilesImageAndVideo.value[index].file!,
                             width: 80.w,
                             height: 80.w,
                             fit: BoxFit.fill,
                           ),
                         ):VideoApp(
-                          file: controller.attatechedFilesImageAndVideo.value[index].file!,
+                          path: controller.attatechedFilesImageAndVideo.value[index].link!=null && controller.attatechedFilesImageAndVideo.value[index].link!.isNotEmpty? controller.attatechedFilesImageAndVideo.value[index].link!:null,
+                          file: controller.attatechedFilesImageAndVideo.value[index].file!=null && !controller.attatechedFilesImageAndVideo.value[index].file!.isBlank!?controller.attatechedFilesImageAndVideo.value[index].file:null,
                         ),
                       ),
                       Positioned(
@@ -621,7 +587,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
             ),
             Item(
               onTap: (){
-                showBottomSheetForRequest(context,3);
+                showBottomSheetForRequest(context,4);
               },
               title: 'الروابط',
               child: Obx(()=>controller.urlList.value.length>0?ListView.builder(
@@ -727,7 +693,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
             )),
             Item(
               onTap: (){
-                showBottomSheetForRequest(context,4);
+                showBottomSheetForRequest(context,5);
                 /*showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
@@ -809,7 +775,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                     }
                 );*/
 
-                showBottomSheetForRequest(context, 5);
+                showBottomSheetForRequest(context, 6);
 
               },
               title: 'كوبون المعلن',
@@ -830,7 +796,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
-                          child: Row(
+                          child: Obx(()=>controller.coponModel.value.id!=null?Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
@@ -846,7 +812,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                 child:  controller.coponModel.value.image!=null && controller.coponModel.value.image!.isNotEmpty ?
                                 ClipRRect(
                                     borderRadius: BorderRadius.circular(12),
-                                    child: CachedNetworkImage(
+                                    child: controller.imagePathCopon.value.isNotEmpty && controller.imagePathCopon.value.startsWith('http')?CachedNetworkImage(
                                       imageUrl: controller.coponModel.value.image??
                                           '',
                                       placeholder: (context, url) =>
@@ -859,12 +825,17 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                       fit: BoxFit.fill,
                                       height: 60.w,
                                       width: 60.w,
-                                    )):Container(),
+                                    ):Image.file(
+                                File(controller.coponModel.value.image!),
+                            fit: BoxFit.fill,
+                                      height: 60.w,
+                                      width: 60.w,
+                          )):Container(),
                               ),
                               Expanded(
                                 child: Column(
                                   children: [
-                                    Text('${controller.coponModel.value.name}',style: TextStyle(color:Color(0xff041D67))),
+                                    Text('${controller.coponModel.value.name??''}',style: TextStyle(color:Color(0xff041D67))),
                                     SizedBox(
                                       height: 8,
                                     ),
@@ -874,9 +845,9 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                     ),
                                     InkWell(
                                         onTap: (){
-                                          launchURL("${controller.coponModel.value.name}");
+                                          launchURL("${controller.coponModel.value.link}");
                                         },
-                                        child: Text('${controller.coponModel.value.name}',style: TextStyle(color:Color(0xff041D67)))),
+                                        child: Text('${controller.coponModel.value.link ??''}',style: TextStyle(color:Color(0xff041D67)))),
                                   ],
                                 ),
                               ),
@@ -903,7 +874,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                           Container(
                                               padding: EdgeInsets.all(4),
                                               color: Colors.transparent,
-                                              child: Text('${controller.coponModel.value.code}')),
+                                              child: Text('${controller.coponModel.value.code??''}')),
                                           const SizedBox(
                                             width: 10,
                                           ),
@@ -917,7 +888,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                                   color: Colors.brown[200]!,
                                                 ),
                                               ),
-                                              child: Text('${controller.coponModel.value.discount}')),
+                                              child: Text('${controller.coponModel.value.discount??''}')),
                                         ],
                                       ),
                                     ),
@@ -925,7 +896,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                   Row(
                                     children: [
                                       Text(
-                                        '${controller.coponModel.value.uses} كوبون',
+                                        '${controller.coponModel.value.uses??''} كوبون',
                                         style: TextStyle(fontSize: 10.sp,color: Color(0xff041D67)),
                                       ),
                                       const SizedBox(
@@ -944,7 +915,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                           borderRadius: const BorderRadius.all(
                                             Radius.circular(50),
                                           ),
-                                          child: CachedNetworkImage(
+                                          child: controller.imagePathCopon.value.isNotEmpty && controller.imagePathCopon.value.startsWith('http')?CachedNetworkImage(
                                             imageUrl: controller.coponModel.value.image??
                                                 '',
                                             placeholder: (context, url) =>
@@ -957,6 +928,11 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                             fit: BoxFit.fill,
                                             height: 30.w,
                                             width: 30.w,
+                                          ):Image.file(
+                                            File(controller.coponModel.value.image!),
+                                            fit: BoxFit.fill,
+                                            height: 30.w,
+                                            width: 30.w,
                                           ),
                                         ),
                                       ),
@@ -965,7 +941,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                 ],
                               ),
                             ],
-                          ),
+                          ):Text("لا يوجد كوبون")),
                         ),
                       ),
                     ),
@@ -998,7 +974,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
             ),
             Item(
               onTap: (){
-                showBottomSheetForRequest(context, 6);
+                showBottomSheetForRequest(context, 7);
                /* showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
@@ -1149,20 +1125,27 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                     scrollController: scrollController);
 */
             } else if(bottomNumber==3) {
+              return  DecriptionSheet(
+                  scrollController: scrollController
+              );
+              /* return LocationRangeBottomSheet(
+                    scrollController: scrollController);
+*/
+            }else if(bottomNumber==4) {
               return UrlsPage(
                   scrollController: scrollController
               );
               /* return LocationRangeBottomSheet(
                     scrollController: scrollController);
 */
-            } else if(bottomNumber==4) {
+            } else if(bottomNumber==5) {
               return AddressBottomSheet(
                   scrollController: scrollController
               );
               /* return LocationRangeBottomSheet(
                     scrollController: scrollController);
 */
-            }else if(bottomNumber==5) {
+            }else if(bottomNumber==6) {
               return DiscountCouponSheet(
                   scrollController: scrollController
               );

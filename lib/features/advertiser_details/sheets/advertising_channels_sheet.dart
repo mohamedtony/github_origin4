@@ -91,6 +91,7 @@ class _AdvertisingChannelsPageState extends State<AdvertisingChannelsPage> {
               ):GridView.builder(
                   padding: EdgeInsets.only(right: 70.0, left: 70.0, bottom: 20.0),
                   shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: controller.channels.value.length??0,
                   gridDelegate:
                   const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
@@ -157,7 +158,7 @@ class _AdvertisingChannelsPageState extends State<AdvertisingChannelsPage> {
               const SizedBox(
                 height: 20,
               ),
-              InkWell(
+              Obx(()=>InkWell(
                 onTap: (){
                   controller.switchShowInPlatform();
                 },
@@ -165,7 +166,7 @@ class _AdvertisingChannelsPageState extends State<AdvertisingChannelsPage> {
                   padding: EdgeInsets.symmetric(horizontal: 15),
                   child: Row(
                     children: [
-                      controller.showInPlatform.value?Padding(
+                      controller.showInPlatform.isTrue?Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: selectedBigCheckBox(),
                       ) : Padding(
@@ -180,7 +181,7 @@ class _AdvertisingChannelsPageState extends State<AdvertisingChannelsPage> {
                     ],
                   ),
                 ),
-              ),
+              )),
               const SizedBox(
                 height: 20,
               ),

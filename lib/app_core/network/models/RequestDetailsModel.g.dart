@@ -8,6 +8,7 @@ part of 'RequestDetailsModel.dart';
 
 RequestDetailsModel _$RequestDetailsModelFromJson(Map<String, dynamic> json) =>
     RequestDetailsModel(
+      repeat_count: json['repeat_count'] as int?,
       id: json['id'] as int?,
       address: json['address'] == null
           ? null
@@ -75,4 +76,5 @@ Map<String, dynamic> _$RequestDetailsModelToJson(
       'ended_at': instance.ended_at,
       'offer_ended_at': instance.offer_ended_at,
       'added_to': instance.added_to,
+      'repeat_count': instance.repeat_count,
     };

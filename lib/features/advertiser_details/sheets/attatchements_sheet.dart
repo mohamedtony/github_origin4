@@ -297,9 +297,10 @@ class _AttatchementPageState extends State<AttatchementPage> {
 
 class VideoApp extends StatefulWidget {
   final File? file;
+  String? path;
   bool? isNetwork;
   String? videoLink;
-  VideoApp({this.file,this.isNetwork,this.videoLink});
+  VideoApp({this.file,this.isNetwork,this.videoLink,this.path});
   @override
   _VideoAppState createState() => _VideoAppState();
 }
@@ -310,12 +311,16 @@ class _VideoAppState extends State<VideoApp> {
   @override
   void initState() {
     super.initState();
-    if(widget.isNetwork!){
+    if(widget.path!=null && widget.path!.isNotEmpty){
       _controller = VideoPlayerController.network(
           widget.videoLink!)
         ..initialize().then((_) {
           // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
           setState(() {});
+        })..addListener(() {
+          if (_controller.value.hasError) {
+            setState(() {});
+          }
         });
     }else{
       _controller = VideoPlayerController.file(
@@ -337,10 +342,10 @@ class _VideoAppState extends State<VideoApp> {
       width: 200.0,
       height: 200.0,
       child:  _controller.value.isInitialized
-          ? AspectRatio(
+          ?  _controller.value.hasError?AspectRatio(
         aspectRatio: _controller.value.aspectRatio,
-        child: VideoPlayer(_controller),
-      )
+        child:VideoPlayer(_controller,),
+      ):Text('error')
           : Container(),
 
       // floatingActionButton: FloatingActionButton(

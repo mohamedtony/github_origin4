@@ -26,7 +26,7 @@ class AdvertisingDatePage extends StatefulWidget {
 }
 
 class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
-  AdvertisingDetailsController contriller = Get.find();
+  AdvertisingDetailsController requestAdvertiseController = Get.find();
 
   final List<String> _counterType = [
     "1",
@@ -97,9 +97,9 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                 children: [
                   InkWell(
                     onTap: () {
-                      if (contriller.isFlixble.isFalse) {
-                        contriller.isFixed.value = false;
-                        contriller.isFlixble.value = true;
+                      if (requestAdvertiseController.isFlixble.isFalse) {
+                        requestAdvertiseController.isFixed.value = false;
+                        requestAdvertiseController.isFlixble.value = true;
                       }
                     },
                     child: Row(
@@ -107,7 +107,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                         Container(
                           //margin: const EdgeInsets.only(left: 20.0),
                           child: Obx(() => Image.asset(
-                            contriller.isFlixble.isTrue
+                            requestAdvertiseController.isFlixble.isTrue
                                 ? "images/radio_clicked.png"
                                 : "images/not_radio_clicked.png",
                             height: 50,
@@ -129,11 +129,12 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                   ),
                   InkWell(
                     onTap: () {
-                      if (contriller.isFixed.isFalse) {
-                        contriller.isFixed.value = true;
-                        contriller.isFlixble.value = false;
-                        contriller.fromAdvertisingDate.value = '2022-2-10';
-                        contriller.dateRange.value = DateRange();
+                      if (requestAdvertiseController.isFixed.isFalse) {
+                        requestAdvertiseController.isFixed.value = true;
+                        requestAdvertiseController.isFlixble.value = false;
+                        requestAdvertiseController.fromDate.value = "";
+                        requestAdvertiseController.fromAdvertisingDate.value = '2022-2-10';
+                        requestAdvertiseController.dateRange.value = DateRange();
                       }
                     },
                     child: Row(
@@ -141,7 +142,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                         Container(
                           //margin: const EdgeInsets.only(left: 20.0),
                           child: Obx(() => Image.asset(
-                            contriller.isFixed.isTrue
+                            requestAdvertiseController.isFixed.isTrue
                                 ? "images/radio_clicked.png"
                                 : "images/not_radio_clicked.png",
                             height: 50,
@@ -169,24 +170,31 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                   children: [
                     Expanded(
                       child: Obx(() => InkWell(
-                        onTap: contriller.isFixed.isTrue
+                        onTap: requestAdvertiseController.isFixed.isTrue
                             ? () {
-                          DateTime selectedDate = DateTime.now();
+                          DateTime selectedDate;
+                          if(requestAdvertiseController.fromDate.isNotEmpty){
+                            print("myDate"+requestAdvertiseController.fromDate.value);
+                            DateTime endAdvertisingDateCouponDate = DateTime.parse(requestAdvertiseController.fromDate.value);
+                            selectedDate = endAdvertisingDateCouponDate;
+                          }else{
+                            selectedDate = (DateTime.now()).add( Duration(days: 1));
+                          }
 
                           Future<void> _selectDate(
                               BuildContext context) async {
                             final DateTime?
                             picked = await showDatePicker(
+                                initialEntryMode: DatePickerEntryMode.calendarOnly,
                                 context: context,
-                                initialDate: (DateTime.now())
-                                    .add(const Duration(days: 1)),
+                                initialDate:selectedDate,
                                 firstDate: (DateTime.now()),
                                 lastDate: (DateTime.now()).add(
                                     const Duration(days: 600)));
                             // if (picked != null && picked != selectedDate)
                             if (picked != null &&
                                 picked != selectedDate) {
-                              contriller
+                              requestAdvertiseController
                                   .addAdvertisingFromDate(
                                   dateFormat.format(picked));
                               // controller.endAdvertisingDate = dateFormat.format(picked);
@@ -210,7 +218,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                           );
                           if (picked != null && picked != null) {
                             print(picked);
-                            contriller.addDateRange(
+                            requestAdvertiseController.addDateRange(
                                 "  "
                                     "${dateFormat.format(picked.start)}"
                                     "   ",
@@ -247,15 +255,15 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                               child: Container(
                                 margin: const EdgeInsets.only(top: 3),
                                 child: Obx(() => Text(
-                                  contriller
+                                  requestAdvertiseController
                                       .isFlixble.isTrue
-                                      ? '${(contriller.dateRange.value.fromDate) ?? '2022-2-10'}'
-                                      : contriller
+                                      ? '${(requestAdvertiseController.dateRange.value.fromDate) ?? '2022-2-10'}'
+                                      : requestAdvertiseController
                                       .fromAdvertisingDate.value,
                                   textAlign: TextAlign.center,
-                                  style: contriller
+                                  style: requestAdvertiseController
                                       .isFlixble.isTrue &&
-                                      contriller
+                                      requestAdvertiseController
                                           .dateRange
                                           .value
                                           .fromDate !=
@@ -266,9 +274,9 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                                     //fontWeight: FontWeight.w600,
                                     fontSize: 18,
                                   )
-                                      : contriller
+                                      : requestAdvertiseController
                                       .isFixed.isTrue &&
-                                      contriller
+                                      requestAdvertiseController
                                           .fromAdvertisingDate
                                           .value !=
                                           '2022-2-10'
@@ -290,11 +298,14 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                         ),
                       )),
                     ),
-                    Obx(() => contriller.isFlixble.isTrue
+                    Obx(() => requestAdvertiseController.isFlixble.isTrue
                         ? Expanded(
                       child: InkWell(
                         onTap: () async {
-                          final picked = await showDateRangePicker(
+                          final picked = await DateRangePicker
+                              .showDateRangePicker(
+                            initialEntryMode:
+                            DatePickerEntryMode.calendarOnly,
                             locale: const Locale('ar', 'EG'),
                             context: context,
                             firstDate: (new DateTime.now())
@@ -304,7 +315,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                           );
                           if (picked != null && picked != null) {
                             print(picked);
-                            contriller.addDateRange(
+                            requestAdvertiseController.addDateRange(
                                 "  "
                                     "${dateFormat.format(picked.start)}"
                                     "   ",
@@ -342,11 +353,11 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                               child: Container(
                                 margin: const EdgeInsets.only(top: 3),
                                 child: Text(
-                                  '${(contriller.dateRange.value.toDate) ?? '2022-2-10'}',
+                                  '${(requestAdvertiseController.dateRange.value.toDate) ?? '2022-2-10'}',
                                   textAlign: TextAlign.center,
-                                  style: contriller
+                                  style: requestAdvertiseController
                                       .isFlixble.isTrue &&
-                                      contriller
+                                      requestAdvertiseController
                                           .dateRange
                                           .value
                                           .toDate !=
@@ -401,13 +412,13 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                         );
                         if (picked != null && picked != null) {
                           print(picked);
-                          contriller.addDateRange("  " "${dateFormat.format(picked.start)}" "   ","  " "${dateFormat.format(picked.end)}" "   ");
+                          requestAdvertiseController.addDateRange("  " "${dateFormat.format(picked.start)}" "   ","  " "${dateFormat.format(picked.end)}" "   ");
                           // setState(() {
                           // });
                         }
                       },
                       child: Obx(()=>Text(
-                        '${contriller.dateRange.value.fromDate}${contriller.dateRange.value.toDate}',
+                        '${requestAdvertiseController.dateRange.value.fromDate}${requestAdvertiseController.dateRange.value.toDate}',
                         style: const TextStyle(
                             color: AppColors.adVertiserPageDataColor,
                             fontWeight: FontWeight.w600,decoration: TextDecoration.underline),
@@ -458,34 +469,67 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                             ),
                           ),
                         ),
+
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(
                               left: 16.0,
                               right: 16.0,
                             ),
-                            child: DropdownButton<String>(
+                            child: Obx(()=>requestAdvertiseController.isFlixble.isTrue ? TextField(
+                              textAlign: TextAlign.center,
+                              // enabled: false,
+                              keyboardType: TextInputType.number,
+                              textAlignVertical: TextAlignVertical.center,
+                              controller: requestAdvertiseController.selectedCounterController,
+                              style: TextStyle(
+                                  color: Color(0xff041D67),
+                                  fontSize: 18),
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                      left: 10.0, right: 14.0, bottom: 12.0),
+                                  // isCollapsed: true,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(70.0),
+                                    borderSide: BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
+                                  filled: true,
+                                  hintStyle: TextStyle(color: Colors.grey[350]),
+                                  hintText: 'عدد مرات الإعلان',
+                                  fillColor: Colors.white70),
+                            ):const Center(
+                              child: Text(
+                                '1',
+                                style: TextStyle(
+                                    color: Color(0xff041D67),
+                                    fontSize: 18),
+                              ),)
+                            ),
+                            /*DropdownButton<String>(
                               underline: const SizedBox.shrink(),
                               icon:
-                              SvgPicture.asset('images/dropdown_icon.svg'),
-                              hint: Obx(() => contriller
-                                  .selectedTimeCounter.isNotEmpty
+                                  SvgPicture.asset('images/dropdown_icon.svg'),
+                              hint: Obx(() => requestAdvertiseController
+                                      .selectedTimeCounter.isNotEmpty
                                   ? Center(
-                                  child: Text(
-                                    contriller
-                                        .selectedTimeCounter.value,
-                                    style: const TextStyle(
-                                        color: Color(0xff041D67),
-                                        fontSize: 18),
-                                  ))
+                                      child: Text(
+                                      requestAdvertiseController
+                                          .selectedTimeCounter.value,
+                                      style: const TextStyle(
+                                          color: Color(0xff041D67),
+                                          fontSize: 18),
+                                    ))
                                   : const Center(
-                                child: Text(
-                                  '1',
-                                  style: TextStyle(
-                                      color: Color(0xff041D67),
-                                      fontSize: 18),
-                                ),
-                              )),
+                                      child: Text(
+                                        '1',
+                                        style: TextStyle(
+                                            color: Color(0xff041D67),
+                                            fontSize: 18),
+                                      ),
+                                    )),
                               items: _counterType.map((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
@@ -500,10 +544,10 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                               // isDense: true,
                               isExpanded: true,
                               onChanged: (newVal) {
-                                contriller
+                                requestAdvertiseController
                                     .selectCounter(newVal);
                               },
-                            ),
+                            ),*/
                           ),
                         ),
                       ],
@@ -514,30 +558,11 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
               const SizedBox(
                 height: 5,
               ),
-              Padding(
+              requestAdvertiseController.showInPlatform.isTrue?Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: InkWell(
                   onTap: () {
-                    DateTime selectedDate = DateTime.now();
-
-                    Future<void> _selectDate(BuildContext context) async {
-                      final DateTime? picked = await showDatePicker(
-                          context: context,
-                          initialDate:
-                          (DateTime.now()).add(const Duration(days: 1)),
-                          firstDate: (DateTime.now()),
-                          lastDate:
-                          (DateTime.now()).add(const Duration(days: 600)));
-                      // if (picked != null && picked != selectedDate)
-                      if (picked != null && picked != selectedDate) {
-                        contriller
-                            .addendAdvertisingDate(dateFormat.format(picked));
-                        // controller.endAdvertisingDate = dateFormat.format(picked);
-                      }
-                      // selectedDate = picked;
-                    }
-
-                    _selectDate(context);
+                    requestAdvertiseController.onSelectedDateEndedAtPlateform(context);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -559,7 +584,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                             ),
                             Flexible(
                               child: Text(
-                                'إضافة تاريخ انتهاء مدة العرض ',
+                                'إضافة تاريخ انتهاء مدة العرض فى المنصة ',
                                 style: TextStyle(
                                   fontSize: 18,
                                   color: AppColors.adVertiserPageDataColor,
@@ -578,33 +603,33 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                         width: 15,
                       ),*/
                       Obx(
-                            () => contriller
-                            .endAdvertisingDate.value.isNotEmpty
-                            ? Container(
-                          margin: EdgeInsets.only(top: 6.0, left: 5),
-                          child: Text(
-                            "${contriller.endAdvertisingDate}",
-                            style: const TextStyle(
-                              color: AppColors.adVertiserPageDataColor,
-                              fontWeight: FontWeight.w600,
+                              () => requestAdvertiseController.showInPlatform.isTrue?requestAdvertiseController
+                              .endAdvertisingDate.value.isNotEmpty
+                              ? Container(
+                            margin: EdgeInsets.only(top: 6.0, left: 5),
+                            child: Text(
+                              "${requestAdvertiseController.endAdvertisingDate}",
+                              style: const TextStyle(
+                                color: AppColors.adVertiserPageDataColor,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                        )
-                            : Container(
-                          margin: EdgeInsets.only(left: 5),
-                          child: const Text(
-                            'إختيارى',
-                            style: TextStyle(
-                                color: AppColors.selectableColor,
-                                fontWeight: FontWeight.w400,
-                                decoration: TextDecoration.underline),
-                          ),
-                        ),
+                          ):SizedBox():SizedBox()
+                        /*: Container(
+                                margin: EdgeInsets.only(left: 5),
+                                child: const Text(
+                                  'إختيارى',
+                                  style: TextStyle(
+                                      color: AppColors.selectableColor,
+                                      fontWeight: FontWeight.w400,
+                                      decoration: TextDecoration.underline),
+                                ),
+                              ),*/
                       )
                     ],
                   ),
                 ),
-              ),
+              ):const SizedBox(),
               const SizedBox(
                 height: 25,
               ),
@@ -616,8 +641,10 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                     height: 35,
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
                     child: InkWell(
-                      onTap: () => contriller
-                          .onDateClickedSaved(context),
+                      onTap: () {
+                        requestAdvertiseController
+                            .onDateClickedSaved(context);
+                      },
                       child: Material(
                         elevation: 6.0,
                         shadowColor: Colors.grey[200],
@@ -646,7 +673,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                       EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
                       child: InkWell(
                         onTap: () {
-                          contriller.isDateSaveClicked.value =
+                          requestAdvertiseController.isDateSaveClicked.value =
                           false;
                           Get.back();
                         },
@@ -660,7 +687,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                                 left: 12.0, bottom: 4.0, right: 20),*/
                             alignment: Alignment.center,
                             child: Text(
-                              'cancel'.tr,
+                              'إستعادة',
                               style: TextStyle(
                                   fontSize: 16.0,
                                   color: Colors.white,
@@ -682,13 +709,13 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
   @override
   void dispose() {
     // TODO: implement dispose
-    if (contriller.isDateSaveClicked.isFalse) {
-      contriller.endAdvertisingDate.value = '';
-      contriller.selectedTimeCounter.value = '';
-      contriller.fromDate.value = '';
-      contriller.toDate.value = '';
-      contriller.fromAdvertisingDate.value = '2022-2-10';
-      contriller.dateRange.value = DateRange();
+    if (requestAdvertiseController.isDateSaveClicked.isFalse) {
+      requestAdvertiseController.endAdvertisingDate.value = '';
+      requestAdvertiseController.selectedTimeCounter.value = '';
+      requestAdvertiseController.fromDate.value = '';
+      requestAdvertiseController.toDate.value = '';
+      requestAdvertiseController.fromAdvertisingDate.value = '2022-2-10';
+      requestAdvertiseController.dateRange.value = DateRange();
     }
     super.dispose();
   }
