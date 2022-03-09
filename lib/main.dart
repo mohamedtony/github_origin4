@@ -21,6 +21,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logger/logger.dart';
 
+import 'features/employees/view/EmoployeesPage.dart';
+
 
 //final logger = Logger();
 String token='';
@@ -49,35 +51,12 @@ void main() async{
       if(r!=null)
       print("MyCode" + r.statusCode.toString());
       if (r != null && r.statusCode == 401) {
-        //dio.interceptors.requestLock.lock();
-        //dio.interceptors.responseLock.lock();
         print("in_status_401");
-        /*if (context == null) {
-          print("context_is_null");
-        }
-        Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (BuildContext context) => LoginPage(),
-            ),
-                (route) => false);
-        return e;
-      }*/
     }}
   ));
 
 
-  //dio?.options.headers['Content-Type'] = 'multipart/form-data';
-/*  dio?.options = BaseOptions(
-      receiveTimeout: 30000,
-      connectTimeout: 30000,
-      contentType: 'application/json',
-      *//* If needed headers *//*
-      headers: {
-        'Authorization': 'Bearer  40|UrWNjwnaUs6pK4RjcNztJpB6kK97LlnbKzCEeTpd',
-        //'X-ApiKey': 'ZGslzIzEyMw==',
-        'Content-Type': 'application/json'
-      }
-  );*/
+
   client = RestClient(dio!);
   //client.getTasks().then((it) => logger.i(it));
 
@@ -165,9 +144,10 @@ class _MyAppState extends State<MyApp> {
           fallbackLocale: LocalizationService.fallbackLocale,
          // fallbackLocale: LocalizationService.locale,
           builder: EasyLoading.init(),
+          home: EmployeesPage(),
           translations: LocalizationService(),
-          initialRoute: '/',
-          getPages: Routes.routes,
+          // initialRoute: '/',
+          // getPages: Routes.routes,
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',
           ),

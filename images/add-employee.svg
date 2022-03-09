@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="92" height="92" viewBox="0 0 92 92">
+  <defs>
+    <filter id="Ellipse_104" x="0" y="0" width="92" height="92" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-opacity="0.22"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#48dbe1"/>
+      <stop offset="1" stop-color="#4166cd"/>
+      <stop offset="1" stop-color="#236b73"/>
+    </linearGradient>
+    <filter id="Ellipse_104-2" x="3" y="3" width="86" height="86" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur-2"/>
+      <feFlood flood-opacity="0.09"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_16887" data-name="Group 16887" transform="translate(8 -702)">
+    <g id="Group_13183" data-name="Group 13183" transform="translate(7 72)">
+      <g transform="matrix(1, 0, 0, 1, -15, 630)" filter="url(#Ellipse_104)">
+        <circle id="Ellipse_104-3" data-name="Ellipse 104" cx="31" cy="31" r="31" transform="translate(15 12)" fill="#fff"/>
+      </g>
+    </g>
+    <g id="Group_13184" data-name="Group 13184" transform="translate(10.063 75.063)">
+      <g transform="matrix(1, 0, 0, 1, -18.06, 626.94)" filter="url(#Ellipse_104-2)">
+        <circle id="Ellipse_104-4" data-name="Ellipse 104" cx="28" cy="28" r="28" transform="translate(18 15)" fill="url(#linear-gradient)"/>
+      </g>
+    </g>
+    <g id="icon_41_" transform="translate(30.989 734.239)">
+      <path id="Path_3903" data-name="Path 3903" d="M611.138,1554.121a7.105,7.105,0,1,1,7.105-7.1A7.113,7.113,0,0,1,611.138,1554.121Zm0-11.367a4.263,4.263,0,1,0,4.263,4.263A4.268,4.268,0,0,0,611.138,1542.754Z" transform="translate(-604.033 -1539.91)" fill="#fff"/>
+    </g>
+    <g id="Group_2898" data-name="Group 2898" transform="translate(25.166 750.678)">
+      <path id="Path_3904" data-name="Path 3904" d="M620.679,1571.338h0a1.418,1.418,0,0,1-1.4-1.119,5.673,5.673,0,0,0-5.553-4.545h-9.4a5.674,5.674,0,0,0-5.554,4.545,1.417,1.417,0,0,1-1.4,1.119h0a1.428,1.428,0,0,1-1.419-1.68,8.552,8.552,0,0,1,8.371-6.856h9.4a8.552,8.552,0,0,1,8.371,6.856A1.427,1.427,0,0,1,620.679,1571.338Z" transform="translate(-595.924 -1562.802)" fill="#fff"/>
+    </g>
+    <path id="ios-plus-empty" d="M20.586,15.635h-4.5v4.382H13.654V15.635H9V13.129h4.653V9h2.432v4.129h4.5Z" transform="translate(32.78 716.986)" fill="#fff"/>
+  </g>
+</svg>
