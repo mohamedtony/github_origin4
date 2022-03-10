@@ -325,6 +325,7 @@ void setStateBehavior(){
             return;
           }
         }
+        print("after_return");
         isDateSaveClicked.value = true;
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("تم حفظ تاريخ الاعلان بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
@@ -431,14 +432,15 @@ void setStateBehavior(){
     update();
   }*/
 
-  void removeFromUrlList(LinkModel? item){
-    urlList!.remove(item);
+  void removeFromUrlList(LinkModel? item,int? index){
+    urlList.remove(item);
+    deleteLink(index!);
     //update();
   }
   void deleteLink(int index) {
     print(index);
     if(links.value.length>0) {
-      links.value.removeAt(index);
+      links.removeAt(index);
     }
     if(textUrlControllers.length>0) {
       textUrlControllers.removeAt(index);
@@ -535,9 +537,9 @@ void setStateBehavior(){
           if(value.data!.channels!=null && value.data!.channels!.isNotEmpty) {
             channels.value = value.data!.channels!;
             //channelsForList.value = value.data!.channels!;
-            value.data!.channels!.asMap().forEach((index,element) {
+            /*value.data!.channels!.asMap().forEach((index,element) {
               channels.value[index].isTapped.value = true;
-            });
+            });*/
 
           }
         }
@@ -581,14 +583,30 @@ void setStateBehavior(){
     //if( Get.parameters['requestId']!=null) {
       EasyLoading.show();
       //  var myToken  = await storage.read("token");
-      await getRequestDetails(/*Get.parameters['requestId']*/145);
+    if(Get.parameters['requestId']!=null && Get.parameters['requestId']!.isNotEmpty) {
+      await getRequestDetails(int.parse(Get.parameters['requestId']!));
+    }
    // }
+  }
+  Future<void> deleteLinkApi(LinkModel linkModel,int index,int? link_id) async {
+    print("MyId"+link_id.toString());
+    EasyLoading.show();
+   // myToken = await storage.read("token");
+    client!.deleteLink(requestDetailsModel.value.id, link_id, "Bearer $myToken").then((value){
+      if(value.status!=null && value.status==200 ){
+        print("deleteSucess");
+        removeFromUrlList(linkModel,index);
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
+      }
+    });
   }
   var requestDetailsModel = RequestDetailsModel().obs;
   Future<void> getRequestDetails(int? parameter) async {
     print("MyId"+parameter.toString());
-    myToken = await storage.read("token");
-    client!.getRequestDetail(145/*+myToken!*/,/*int.parse(parameter!)*/"Bearer 1126|jTxjuJcosyJTaHllWcikzq81KkNFyXXlP0DtWhiC").then((value){
+    //myToken = await storage.read("token");
+    client!.getRequestDetail(parameter, "Bearer $myToken").then((value){
       if(value.status==200 && value.data!=null){
         requestDetailsModel.value = value.data!;
         Logger().i(value.data!.toJson());
@@ -599,7 +617,15 @@ void setStateBehavior(){
         categoryId=selectedCategory.value.id!;
         selectedAdType.value = requestDetailsModel.value.ads_type!;
         adTypeId= selectedAdType.value.id!;
-
+        if(value.data?.date_type!=null) {
+          if(value.data?.date_type=="fixed"){
+             isFixed.value = true;
+             isFlixble.value = false;
+          }else{
+            isFixed.value = false;
+            isFlixble.value = true;
+          }
+        }
         if(value.data?.description!=null) {
           print("descController"+value.data!.description!);
           decriptionText.value = value.data!.description!;
@@ -623,9 +649,12 @@ void setStateBehavior(){
         Logger().i(value.data!.toJson());
         if(value.data!.channels!=null && value.data!.channels!.isNotEmpty) {
           channelsForList.value = value.data!.channels!;
-          /*value.data!.channels!.asMap().forEach((index,element) {
+          value.data!.channels!.forEach((element) {
+            channelsIds.add(element.id!);
+          });
+          value.data!.channels!.asMap().forEach((index,element) {
             channels.value[index].isTapped.value = true;
-          })*/;
+          });
 
         }
 
@@ -648,6 +677,10 @@ void setStateBehavior(){
           if(value.data?.copon?.uses!=null)
             endAdvertisingDateCoupon.value = value.data!.copon!.ended_at!.toString();
 
+          if(value.data?.copon?.link!=null)
+            coponLinkController!.text = value.data!.copon!.link!.toString();
+
+
         }
 
         if(value.data?.notes!=null && value.data!.notes!.isNotEmpty) {
@@ -656,16 +689,19 @@ void setStateBehavior(){
         }
         if(value.data?.started_at!=null && value.data!.started_at!.isNotEmpty){
           fromDate.value = value.data!.started_at!;
+          dateRange.value.fromDate = value.data!.started_at!;
+          fromAdvertisingDate.value = value.data!.started_at!;
         }
         if(value.data?.ended_at!=null && value.data!.ended_at!.isNotEmpty){
-          fromDate.value = value.data!.ended_at!;
+          toDate.value = value.data!.ended_at!;
+          dateRange.value.toDate = value.data!.ended_at!;
         }
-        if(value.data?.attachments!=null && value.data!.attachments!.isNotEmpty){
+        /*if(value.data?.attachments!=null && value.data!.attachments!.isNotEmpty){
           value.data?.attachments?.forEach((element) {
             attatechedFilesImageAndVideo.add(FileModel(link: element.path,isVideo:element.type=="image"?false:true ));
           });
 
-        }
+        }*/
 
         if(value.data?.copon!=null ){
           coponModel.value = value.data!.copon!;
@@ -673,6 +709,7 @@ void setStateBehavior(){
 
         if(value.data?.repeat_count!=null){
           selectedTimeCounter.value = value.data!.repeat_count!.toString();
+          selectedCounterController.text = value.data!.repeat_count!.toString();
         }
       }else{
         if (EasyLoading.isShow) {
@@ -1488,9 +1525,12 @@ void setStateBehavior(){
   }
 
   Future<void> resetClicked(BuildContext context) async {
-    EasyLoading.show();
-    //  var myToken  = await storage.read("token");
-    await getRequestDetails(/*Get.parameters['requestId']*/145);
+    if(Get.parameters['requestId']!=null && Get.parameters['requestId']!.isNotEmpty){
+      EasyLoading.show();
+      //  var myToken  = await storage.read("token");
+      await getRequestDetails(int.parse(Get.parameters['requestId']!));
+    }
+
   }
 
   void onEditRequestClicked(BuildContext context) {
@@ -1608,6 +1648,7 @@ void setStateBehavior(){
       print("offer_ended_at"+endAdvertisingDate.value);
 
       Map<String, dynamic> mymap = {
+        "_method":"put",
         "token": "Bearer " + myToken!,
         "advertiser_id": requestDetailsModel.value.advertiser?.id!=null?requestDetailsModel.value.advertiser?.id:null,
         "product_category_id": selectedCategory.value.id,

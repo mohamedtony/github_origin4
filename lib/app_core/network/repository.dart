@@ -37,7 +37,7 @@ class Repository {
       final encoder = JsonEncoder.withIndent("  ");
       // final body = encoder.convert(json);
       // debugPrintSynchronously("POST " + base + path + "\n" + body);
-      debugPrintSynchronously("POST " + base + path!);
+      debugPrintSynchronously("PUT " + base + path!);
       final formData = dio.FormData.fromMap(
 
           json!
@@ -45,7 +45,7 @@ class Repository {
       dioDio.options.contentType = dio.Headers.formUrlEncodedContentType;
       dioDio.post(base + path, data: formData, options: dio.Options(
           followRedirects: false,
-          method: 'PUT',
+         // method: 'Post',
           validateStatus: (status) {
             return status! < 500;
           },

@@ -40,7 +40,7 @@ class ClientSettingPageController extends GetxController  {
   var country = Country().obs;
   var area = Area().obs;
   var smsOTP = ''.obs;
-  var verificationId = '';
+  var verificationId = ''.obs;
   var countryCode ='SA'.obs;
   var phone = '';
 // switches the value between true/false
@@ -255,16 +255,16 @@ class ClientSettingPageController extends GetxController  {
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
       }
-     verificationId = verId;
+      verificationId.value = verId;
       Get.toNamed(
-          '/verificationCodePage?route=registerPhone&phone=${countryCode.value.toString() + int.parse(phoneController!.text).toString()}');
-      /*smsOTPDialog(context).then((value) {
-        print('sign in');
-      });*/
+          '/verificationCodePage?verificationId=${verificationId.value}&&route=registerPhone&phone=${countryCode.value.toString() + int.parse(phone).toString()}');
+      // smsOTPDialog(context).then((value) {
+      //   print('sign in');
+      // });
     };
     try {
-    /*  print(
-          '>>>>>>>>>>>>>>>>>>>>${countryCode.value.toString() + int.parse(phone).toString()}');*/
+      print(
+          '>>>>>>>>>>>>>>>>>>>>${countryCode.value.toString() + int.parse(phone).toString()}');
       await auth.verifyPhoneNumber(
           phoneNumber: countryCode.value.toString() +
               int.parse(phoneController!.text)
@@ -272,7 +272,7 @@ class ClientSettingPageController extends GetxController  {
           codeAutoRetrievalTimeout: (String verId) {
             //Starts the phone number verification process for the given phone number.
             //Either sends an SMS with a 6 digit code to the phone number specified, or sign's the user in and [verificationCompleted] is called.
-            verificationId = verId;
+            verificationId.value = verId;
           },
           codeSent:
           smsOTPSent, // WHEN CODE SENT THEN WE OPEN DIALOG TO ENTER OTP.
@@ -288,7 +288,12 @@ class ClientSettingPageController extends GetxController  {
               backgroundColor: Colors.red,
               snackPosition: SnackPosition.BOTTOM,
             );
-          });
+
+          }).then((value) {
+
+        print('>>>>>>>>>>>>>>${auth.currentUser}');
+      });
+
     } on Exception catch (_, e) {
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
@@ -422,11 +427,11 @@ class ClientSettingPageController extends GetxController  {
       userNameNode.requestFocus();
       return;
     } else if (phoneController!.text.isEmpty) {
-      showMyToast("من فضلك ادخل رقم الجوال بشكل صحيح !",true,context);
+      showMyToast("من فضلك ادخل رقم الجوال !",true,context);
       phoneControllerNode.requestFocus();
       return;
     }else if (!isNumericUsingRegularExpression(phoneController!.text)) {
-      showMyToast("من فضلك ادخل رقم الجوال !",true,context);
+      showMyToast("من فضلك ادخل رقم الجوال بشكل صحيح!",true,context);
       phoneControllerNode.requestFocus();
       return;
     } else if (!isValidPhone.value) {

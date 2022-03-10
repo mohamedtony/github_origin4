@@ -368,7 +368,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Row(
                             children: [
-                              Expanded(child: Obx(()=>Text('${(controller.dateRange.value.fromDate!=null && controller.dateRange.value.fromDate!.isNotEmpty) ? controller.dateRange.value.fromDate : (controller.requestDetailsModel.value.started_at??'')} ${(controller.dateRange.value.toDate!=null && controller.dateRange.value.toDate!.isNotEmpty)?':':''} ${(controller.dateRange.value.toDate!=null && controller.dateRange.value.toDate!.isNotEmpty) ? controller.dateRange.value.toDate : (controller.requestDetailsModel.value.ended_at ??'')}', style: TextStyle(color: Color(0xff041D67)),),
+                              Expanded(child: Obx(()=>Text('${(controller.isDateSaveClicked.isTrue && controller.dateRange.value.fromDate!=null && controller.dateRange.value.fromDate!.isNotEmpty) ? controller.dateRange.value.fromDate : (controller.requestDetailsModel.value.started_at??'')} ${(controller.isDateSaveClicked.isTrue && controller.dateRange.value.toDate!=null && controller.dateRange.value.toDate!.isNotEmpty)?':':''} ${(controller.isDateSaveClicked.isTrue && controller.dateRange.value.toDate!=null && controller.dateRange.value.toDate!.isNotEmpty) ? controller.dateRange.value.toDate : (controller.requestDetailsModel.value.ended_at ??'')}', style: TextStyle(color: Color(0xff041D67)),),
                               )
                               ),
                               Container(
@@ -377,7 +377,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                 width: 2,
                                 color: Colors.grey[400],
                               ),
-                              Obx(()=>Text('${controller.selectedTimeCounter}', style: TextStyle(color: Color(0xff041D67)),),)
+                              Obx(()=>Text('${controller.isDateSaveClicked.isTrue ? controller.selectedCounterController.text : controller.selectedTimeCounter.value}', style: TextStyle(color: Color(0xff041D67)),),)
                             ],
                           ),
                         ),
@@ -638,7 +638,8 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                 left: 0,
                                 child: InkWell(
                                   onTap: (){
-                                    controller.removeFromUrlList(controller.urlList.value[index]);
+                                    controller.deleteLinkApi(controller.urlList.value[index],index,controller.urlList.value[index].id);
+                                    //controller.removeFromUrlList(controller.urlList.value[index],index);
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.all(1),

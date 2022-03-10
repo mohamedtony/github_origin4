@@ -188,7 +188,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                                 initialEntryMode: DatePickerEntryMode.calendarOnly,
                                 context: context,
                                 initialDate:selectedDate,
-                                firstDate: (DateTime.now()),
+                                firstDate: (DateTime.now()).add( Duration(days:-100)),
                                 lastDate: (DateTime.now()).add(
                                     const Duration(days: 600)));
                             // if (picked != null && picked != selectedDate)
@@ -482,6 +482,9 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                               keyboardType: TextInputType.number,
                               textAlignVertical: TextAlignVertical.center,
                               controller: requestAdvertiseController.selectedCounterController,
+                              onChanged: (c){
+                                requestAdvertiseController.selectedTimeCounter.value = c;
+                              },
                               style: TextStyle(
                                   color: Color(0xff041D67),
                                   fontSize: 18),
@@ -711,7 +714,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
     // TODO: implement dispose
     if (requestAdvertiseController.isDateSaveClicked.isFalse) {
       requestAdvertiseController.endAdvertisingDate.value = '';
-      requestAdvertiseController.selectedTimeCounter.value = '';
+      //requestAdvertiseController.selectedTimeCounter.value = '';
       requestAdvertiseController.fromDate.value = '';
       requestAdvertiseController.toDate.value = '';
       requestAdvertiseController.fromAdvertisingDate.value = '2022-2-10';
