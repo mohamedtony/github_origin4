@@ -672,8 +672,8 @@ class ClientSettingPage extends StatelessWidget {
             child: Row(
               children: [
                 InkWell(
-                  onTap: () {
-                    //controller.verifyPhone();
+                  onTap: () async {
+                    //await controller.verifyPhone();
                   },
                   child: Container(
                       height: 42,
@@ -1690,22 +1690,27 @@ class ClientSettingPage extends StatelessWidget {
                   width: 145,
                   height: 35,
                   margin: const EdgeInsets.only(left: 35.0, top: 35.0,right: 5.0),
-                  child: Material(
-                    elevation: 6.0,
-                    shadowColor: Colors.grey[200],
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    color: AppColors.tabColor,
-                    child: Container(
-                      /*margin: EdgeInsets.only(
-                                left: 12.0, bottom: 4.0, right: 20),*/
-                      alignment: Alignment.center,
-                      child: Text(
-                        'cancel'.tr,
-                        style: const TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w300),
-                        textAlign: TextAlign.center,
+                  child: InkWell(
+                    onTap: (){
+                      Get.back();
+                    },
+                    child: Material(
+                      elevation: 6.0,
+                      shadowColor: Colors.grey[200],
+                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                      color: AppColors.tabColor,
+                      child: Container(
+                        /*margin: EdgeInsets.only(
+                                  left: 12.0, bottom: 4.0, right: 20),*/
+                        alignment: Alignment.center,
+                        child: Text(
+                          'cancel'.tr,
+                          style: const TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w300),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ),

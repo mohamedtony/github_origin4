@@ -119,6 +119,10 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
 
   @GET('/requests/{id}')
   Future<RequestDetailsResponse> getRequestDetail(@Path("id") int? id,@Header("Authorization") String token);
+
+  @POST('/requests/{id}/delete_link')
+  @FormUrlEncoded()
+  Future<RequestDetailsResponse> deleteLink(@Path("id") int? id,@Field()int? link_id,@Header("Authorization") String token,);
 /*  Map<String, dynamic> mymap = {
 
     "location[name]": requestAdvertiseController.locationModel.name,

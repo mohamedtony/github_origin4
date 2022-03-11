@@ -471,109 +471,129 @@ class AdvertiserSettingPageController extends GetxController  {
   }
 
   void changeCountry(Country? c) {
-    if(c!=null && c.id==-2) {
+    Logger().i(c!.toJson());
+    if (c != null && c.id == -2) {
       isAreaEnabled.value = false;
       selectedUserLocations.value = [];
       countriesForLocationSheet.forEach((countryForLocationSheet) {
-        Country? categoryModel = selectedUserLocations.firstWhereOrNull((element) => element.id==c.id);
-        if(categoryModel==null && countryForLocationSheet.id!=-1&& countryForLocationSheet.id!=-2 && countryForLocationSheet.type!="country_category"){
+        Country? categoryModel = selectedUserLocations
+            .firstWhereOrNull((element) => element.id == c.id);
+        if (categoryModel == null &&
+            countryForLocationSheet.id != -1 &&
+            countryForLocationSheet.id != -2 &&
+            countryForLocationSheet.type != "country_category") {
           selectedUserLocations.add(countryForLocationSheet);
           //update();
         }
       });
-    }else{
-      if(c!=null && c.id!=-1) {
+    } else {
+      if (c != null && c.id != -1) {
         if (selectedUserLocations.isNotEmpty) {
           //country and country
-          if (selectedUserLocations[0] is Country && selectedUserLocations[0].type=='country_category') {
-            if (c.type=='country_category') {
-              Country? country = selectedUserLocations.firstWhereOrNull((
-                  element) => element.id == c.id);
+          if (selectedUserLocations[0] is Country &&
+              selectedUserLocations[0].type == 'country_category') {
+            if (c.type == 'country_category') {
+              Country? country = selectedUserLocations
+                  .firstWhereOrNull((element) => element.id == c.id);
               if (country == null) {
                 selectedUserLocations.add(c);
               }
               isAreaEnabled.value = false;
             }
           } else {
-            if (selectedUserLocations[0].type=='country_category' && c.type=='country_category') {
-              Country? country = selectedUserLocations.firstWhereOrNull((
-                  element) => element.id == c.id);
+            if (selectedUserLocations[0].type == 'country_category' &&
+                c.type == 'country_category') {
+              Country? country = selectedUserLocations
+                  .firstWhereOrNull((element) => element.id == c.id);
               if (country == null) {
                 selectedUserLocations.add(c);
               }
             }
           }
-          if (selectedUserLocations[0] is Country && selectedUserLocations[0].type=='country') {
-            if (c.type=='country') {
-              Country? country = selectedUserLocations.firstWhereOrNull((
-                  element) => element.id == c.id);
+          if (selectedUserLocations[0] is Country &&
+              selectedUserLocations[0].type == 'country') {
+            if (c.type == 'country') {
+              Country? country = selectedUserLocations
+                  .firstWhereOrNull((element) => element.id == c.id);
               if (country == null) {
                 selectedUserLocations.add(c);
               }
               isAreaEnabled.value = false;
             }
+            /* if(selectedUserLocations.length==1){
+
+            }*/
           }
         } else {
-          Country? country = selectedUserLocations.firstWhereOrNull((
-              element) => element.id == c.id);
+          print("inElse");
+          Country? country = selectedUserLocations
+              .firstWhereOrNull((element) => element.id == c.id);
           if (country == null) {
+            isAreaEnabled.value = true;
             selectedUserLocations.add(c);
+            /*if(c.areas!=null&&c.areas!.isNotEmpty) {
+              areasForLocationSheet.value = c.areas!;
+            }*/
           }
-
         }
 
         if (c.areas != null && c.areas!.isNotEmpty) {
-          areasForLocationSheet.value =
-          c.areas!;
-          Area? areaIn = areasForLocationSheet.firstWhereOrNull((
-              element) => element.id == -1);
-          if(areaIn==null) {
+          //isAreaEnabled.value = true;
+          areasForLocationSheet.value = c.areas!;
+          print("inElseHere");
+          Area? areaIn = areasForLocationSheet
+              .firstWhereOrNull((element) => element.id == -1);
+          if (areaIn == null) {
             areasForLocationSheet.insert(0, Area(id: -2, name: 'كل المناطق'));
             areasForLocationSheet.insert(0, Area(id: -1, name: 'إختر'));
           }
         } else {
           areasForLocationSheet.value = [];
         }
-      }
-    }
+      }/*else if(c!=null && c.id!=-1&& c.id!=-2){
 
+      }*/
+    }
   }
 
   void changeArea(Area? area) {
-    if(area!=null && area.id!=-1) {
+    if (area != null && area.id != -1) {
       if (selectedUserLocations.isNotEmpty) {
         //country and country
-          if (selectedUserLocations[0] is Country &&
-              selectedUserLocations.length == 1) {
-            if(area.id==-2){
-              isCountryEnabled.value = false;
-              //selectedUserLocations.value = [];
-              areasForLocationSheet.forEach((areaForLocationSheet) {
-                Area? areaModel = selectedUserLocations.firstWhereOrNull((element) => element.id==area.id);
-                if(areaModel==null && areaForLocationSheet.id!=-1&& areaForLocationSheet.id!=-2 ){
-                  selectedUserLocations.add(areaForLocationSheet);
-                  //update();
-                }
-              });
-            }else {
-              Area? areaIn = selectedUserLocations.firstWhereOrNull((
-                  element) => element.id == area.id && (element is Area));
-              if (areaIn == null) {
-                selectedUserLocations.add(area);
+        if (selectedUserLocations[0] is Country &&
+            selectedUserLocations.length == 1) {
+          if (area.id == -2) {
+            isCountryEnabled.value = false;
+            //selectedUserLocations.value = [];
+            areasForLocationSheet.forEach((areaForLocationSheet) {
+              Area? areaModel = selectedUserLocations
+                  .firstWhereOrNull((element) => element.id == area.id);
+              if (areaModel == null &&
+                  areaForLocationSheet.id != -1 &&
+                  areaForLocationSheet.id != -2) {
+                selectedUserLocations.add(areaForLocationSheet);
+                //update();
               }
-              //selectedUserLocations.add(area);
-              isCountryEnabled.value = false;
-            }
+            });
           } else {
-            Area? areaIn = selectedUserLocations.firstWhereOrNull((
-                element) => element.id == area.id && (element is Area));
+            Area? areaIn = selectedUserLocations.firstWhereOrNull(
+                    (element) => element.id == area.id && (element is Area));
+            if (areaIn == null) {
+              selectedUserLocations.add(area);
+            }
+            //selectedUserLocations.add(area);
+            isCountryEnabled.value = false;
+          }
+        } else {
+          if(area != null && area.id != -2) {
+            Area? areaIn = selectedUserLocations.firstWhereOrNull(
+                    (element) => element.id == area.id && (element is Area));
             if (areaIn == null) {
               selectedUserLocations.add(area);
             }
             isCountryEnabled.value = false;
           }
-
-
+        }
       }
     }
 
@@ -643,13 +663,26 @@ class AdvertiserSettingPageController extends GetxController  {
       });
     }
   }
+  var selectedCountry = Country().obs;
+  var selectedArea = Area().obs;
 
-  void removeCountryOrArea(dynamic countryOrArea) {
-    selectedUserLocations.removeWhere((element) =>element==countryOrArea);
+  void removeCountryOrArea(int id) {
+    selectedUserLocations.removeWhere((element) => element.id==id);
+    if(selectedUserLocations.isEmpty){
+      isAreaEnabled.value = true;
+      isCountryEnabled.value = true;
+      // areasForLocationSheet.value.clear();
+      // areasForLocationSheet.insert(0, Area(id: -1,name: 'إختر'));
+      selectedCountry.value = countriesForLocationSheet.first;
+      selectedArea.value = areasForLocationSheet.first;
+      areasForLocationSheet.value = [];
+      areasForLocationSheet.insert(0, Area(id: -1,name: 'إختر'));
+    }
+    /*selectedUserLocations.removeWhere((element) =>element==countryOrArea);
    if(selectedUserLocations.length==0){
      isCountryEnabled.value = true;
      isAreaEnabled.value = true;
-   }
+   }*/
   }
 
   void showChannelsSheet(BuildContext context, int i) {

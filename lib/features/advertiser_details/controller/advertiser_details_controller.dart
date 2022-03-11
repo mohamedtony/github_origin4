@@ -5,15 +5,20 @@ import 'dart:typed_data';
 import 'package:advertisers/app_core/network/models/AdTypeModel.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/app_core/network/models/Channel.dart';
+import 'package:advertisers/app_core/network/models/CoponModelResponse.dart';
+import 'package:advertisers/app_core/network/models/FileModel.dart';
 import 'package:advertisers/app_core/network/models/LinkModel.dart';
 import 'package:advertisers/app_core/network/models/LocationModel.dart';
 import 'package:advertisers/app_core/network/models/RequestDetailsModel.dart';
 import 'package:advertisers/app_core/network/models/TaxSettingsModel.dart';
 import 'package:advertisers/app_core/network/repository.dart';
+import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestResponse.dart';
 import 'package:advertisers/app_core/network/responses/TaxSettingsResponse.dart';
 import 'package:advertisers/features/advertiser_details/sheets/advertising_date_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/urls_bottom_sheet.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+import 'package:advertisers/shared/loading_dialog.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,6 +32,7 @@ import 'package:logger/logger.dart';
 import 'dart:ui' as ui;
 import 'package:location/location.dart' as location;
 import 'package:dio/dio.dart' as myDio;
+import 'package:video_compress/video_compress.dart';
 import '../../../main.dart';
 
 
@@ -56,13 +62,25 @@ class AdvertisingDetailsController extends GetxController with GetTickerProvider
   int adTypeId = -1;
   var showInPlatform = false.obs;
   void switchShowInPlatform (){
+    print("kkk"+showInPlatform.value.toString());
     if(showInPlatform.isTrue){
       showInPlatform.value = false;
+      endAdvertisingDate.value = '';
     }else{
       showInPlatform.value = true;
     }
+    print("kkk"+showInPlatform.value.toString());
     //update();
   }
+  // -------------------- for attachement sheet  ----------------------------------------
+  RxList<FileModel>  attatechedFilesImageAndVideo =<FileModel>[].obs;
+  var isAttachementSaveClicked = false.obs;
+  List<myDio.MultipartFile>? imageFideoFiles = [];
+  List<File> imageFideoRealFiles = [];
+  final ImagePicker _picker = ImagePicker();
+  List<XFile>? images2;
+  XFile? mVideo;
+  late TextEditingController selectedCounterController;
 //---------------------- for discount sheet --------------------------------------------
   late XFile xFile ;
   File? imageFile;
@@ -76,7 +94,7 @@ class AdvertisingDetailsController extends GetxController with GetTickerProvider
   FocusNode coponUsesNode = FocusNode();
   FocusNode coponUrlNode = FocusNode();
   //FocusNode coponUrlNode = FocusNode();
-
+  var coponModel=CoponModelResponse().obs;
 
   bool isVideo = false;
 
@@ -108,16 +126,7 @@ class AdvertisingDetailsController extends GetxController with GetTickerProvider
         );
     update();
   }
-  getVideoToAttachedList({@required bool? fromGallery}) async {
-    pickedXFile =
-    await picker.pickVideo(
-        source: fromGallery! ? ImageSource.gallery : ImageSource.camera,);
-    attachedImagesList.add(XFileType(
-        file: XFile(pickedXFile!.path),
-        isVideo: 1
-    ));
-    update();
-  }
+
   getImageListToAttachedList({@required bool? fromGallery}) async {
     multiImageVideoList.clear();
     multiImageVideoList =
@@ -219,11 +228,19 @@ void setStateBehavior(){
 
 
    void addRemoveCheckList(id){
-     if(checkList!.contains(id)){
+     Channel? channel = channelsForList.value.firstWhereOrNull((element) => element.id==id);
+     if(channel!=null){
+       //int index = channelsForList.indexWhere((element) => channel.id==element.id);
+       channelsForList.removeWhere((element) => element.id==id);
+       int index = channels.indexWhere((element) => element.id==id);
+       channels[index].isTapped.value = false;
+       channelsIds.removeWhere((element) => element==id);
+     }
+     /*if(channelsForList.value.contains(id)){
        checkList!.remove(id);
      }else{
        checkList!.add(id);
-     }
+     }*/
     // update();
    }
 
@@ -270,22 +287,81 @@ void setStateBehavior(){
   }
   void onDateClickedSaved(BuildContext context) {
 
-    if(isFlixble.isTrue){
-      if(dateRange.value.fromDate==null){
+    print("savedClicked");
+    print("repeated= "+selectedTimeCounter.toString());
+    try{
+      if(isFlixble.isTrue){
+        if(dateRange.value.fromDate==null){
+          showToast("من فضلك يرجى إختيار تاريخ الاعلان !");
+          return;
+        }
+      }
+      if(isFixed.isTrue && fromAdvertisingDate.value=='2022-2-10'){
         showToast("من فضلك يرجى إختيار تاريخ الاعلان !");
         return;
-      }
+      }else if(isFlixble.isTrue && (selectedCounterController.text.isEmpty)){
+        showToast("من فضلك يرجى إدخال عدد مرات الاعلان !");
+        return;
+      }else if(isFlixble.isTrue &&  (selectedCounterController.text.isNotEmpty && !isNumericUsingRegularExpression(selectedCounterController.text))){
+        showToast("من فضلك يرجى إدخال عدد مرات الاعلان بشكل صحيح !");
+        return;
+      }else if(isFlixble.isTrue && (selectedCounterController.text.isNotEmpty && int.parse(selectedCounterController.text)<=0)){
+        showToast("من فضلك يرجى إدخال عدد مرات الاعلان بشكل صحيح !");
+        return;
+      }else if(showInPlatform.isTrue && endAdvertisingDate.isEmpty){
+        showToast("من فضلك يرجى إختيار تاريخ انتهاء مدة العرض فى المنصة!");
+        return;
+      }else{
+        if(endAdvertisingDateCoupon.isNotEmpty&& fromDate.value.isNotEmpty){
+          fromDate.value = fromDate.value.replaceAll(" ", "");
+          print("myDate"+fromDate.value);
+          print("myDate"+endAdvertisingDateCoupon.value);
+          DateTime endAdvertisingDateCouponDate = DateTime.parse(endAdvertisingDateCoupon.value);
+          DateTime fromDateAdvertise = DateTime.parse(fromDate.value);
+          if(endAdvertisingDateCouponDate.isBefore(fromDateAdvertise)){
+            showToast("لا يجب ان يكون تاريخ انتهاء الكوبون قبل بداية الاعلان");
+            //onSelectCoponDate(context);
+            FocusManager.instance.primaryFocus?.unfocus();
+            return;
+          }
+        }
+        print("after_return");
+        isDateSaveClicked.value = true;
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("تم حفظ تاريخ الاعلان بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+
+        Navigator.pop(context);
+      }}catch(e){
+      print(e);
     }
-    if(isFixed.isTrue && fromAdvertisingDate.value=='2022-2-10'){
-      showToast("من فضلك يرجى إختيار تاريخ الاعلان !");
-      return;
-    }else if(selectedTimeCounter.value.isEmpty){
-      showToast("من فضلك يرجى إختيار عدد مرات الاعلان !");
-      return;
+  }
+
+  void onSelectedDateEndedAtPlateform(BuildContext context){
+    DateTime selectedDate;
+    if(endAdvertisingDate.isNotEmpty){
+      print("myDate"+endAdvertisingDate.value);
+      DateTime endAdvertisingDateCouponDate = DateTime.parse(endAdvertisingDate.value);
+      selectedDate = endAdvertisingDateCouponDate;
     }else{
-      isDateSaveClicked.value = true;
-      Navigator.pop(context);
+      selectedDate = (DateTime.now()).add( Duration(days: 1));
     }
+    Future<void> _selectDate(BuildContext context) async {
+      final DateTime? picked = await showDatePicker(
+          context: context,
+          initialEntryMode: DatePickerEntryMode.calendarOnly,
+          initialDate:selectedDate,
+          firstDate: (DateTime.now()),
+          lastDate:
+          (DateTime.now()).add(const Duration(days: 600)));
+      // if (picked != null && picked != selectedDate)
+      if (picked != null && picked != selectedDate) {
+        addendAdvertisingDate(dateFormat.format(picked));
+        // controller.endAdvertisingDate = dateFormat.format(picked);
+      }
+      // selectedDate = picked;
+    }
+
+    _selectDate(context);
   }
   void showToast(msg){
     Fluttertoast.showToast(
@@ -307,13 +383,14 @@ void setStateBehavior(){
       channels.value[indexCome].isTapped.value=false;
      // channelsIds.removeWhere((element) => element==channels.value[indexCome].id);
      // channels.value.removeWhere((element) => element.id == channels.value[indexCome].id);
-      //channelsForList.value.removeWhere((element) => element.id==channels.value[indexCome].id);
+      channelsForList.removeWhere((element) => element.id==channels.value[indexCome].id);
+      channelsIds.removeWhere((element) => element==channels.value[indexCome].id);
     }else{
       channels.value[indexCome].isTapped.value=true;
       channelsIds.add(channels.value[indexCome].id!);
       Channel? channel = channelsForList.value.firstWhereOrNull((element) => element.id==channels.value[indexCome].id,);
       if(channel == null){
-        channelsForList.value.add(channels.value[indexCome]);
+        channelsForList.add(channels.value[indexCome]);
       }
     }
   }
@@ -355,14 +432,15 @@ void setStateBehavior(){
     update();
   }*/
 
-  void removeFromUrlList(LinkModel? item){
-    urlList!.remove(item);
+  void removeFromUrlList(LinkModel? item,int? index){
+    urlList.remove(item);
+    deleteLink(index!);
     //update();
   }
   void deleteLink(int index) {
     print(index);
     if(links.value.length>0) {
-      links.value.removeAt(index);
+      links.removeAt(index);
     }
     if(textUrlControllers.length>0) {
       textUrlControllers.removeAt(index);
@@ -438,6 +516,7 @@ void setStateBehavior(){
     coponUsesController=  TextEditingController();
     coponLinkController=  TextEditingController();
     noticeController = TextEditingController();
+    selectedCounterController = TextEditingController(text: '1');
 
     myToken  = await storage.read("token");
     client!.getProductsAndAdsTypes("Bearer "+myToken!).then((value) {
@@ -457,7 +536,7 @@ void setStateBehavior(){
           }
           if(value.data!.channels!=null && value.data!.channels!.isNotEmpty) {
             channels.value = value.data!.channels!;
-            channelsForList.value = value.data!.channels!;
+            //channelsForList.value = value.data!.channels!;
             /*value.data!.channels!.asMap().forEach((index,element) {
               channels.value[index].isTapped.value = true;
             });*/
@@ -504,14 +583,30 @@ void setStateBehavior(){
     //if( Get.parameters['requestId']!=null) {
       EasyLoading.show();
       //  var myToken  = await storage.read("token");
-      await getRequestDetails(/*Get.parameters['requestId']*/145);
+    if(Get.parameters['requestId']!=null && Get.parameters['requestId']!.isNotEmpty) {
+      await getRequestDetails(int.parse(Get.parameters['requestId']!));
+    }
    // }
+  }
+  Future<void> deleteLinkApi(LinkModel linkModel,int index,int? link_id) async {
+    print("MyId"+link_id.toString());
+    EasyLoading.show();
+   // myToken = await storage.read("token");
+    client!.deleteLink(requestDetailsModel.value.id, link_id, "Bearer $myToken").then((value){
+      if(value.status!=null && value.status==200 ){
+        print("deleteSucess");
+        removeFromUrlList(linkModel,index);
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
+      }
+    });
   }
   var requestDetailsModel = RequestDetailsModel().obs;
   Future<void> getRequestDetails(int? parameter) async {
     print("MyId"+parameter.toString());
-    myToken = await storage.read("token");
-    client!.getRequestDetail(145/*+myToken!*/,/*int.parse(parameter!)*/"Bearer 1126|jTxjuJcosyJTaHllWcikzq81KkNFyXXlP0DtWhiC").then((value){
+    //myToken = await storage.read("token");
+    client!.getRequestDetail(parameter, "Bearer $myToken").then((value){
       if(value.status==200 && value.data!=null){
         requestDetailsModel.value = value.data!;
         Logger().i(value.data!.toJson());
@@ -519,8 +614,18 @@ void setStateBehavior(){
           EasyLoading.dismiss();
         }
         selectedCategory.value = requestDetailsModel.value.product_type!;
+        categoryId=selectedCategory.value.id!;
         selectedAdType.value = requestDetailsModel.value.ads_type!;
-
+        adTypeId= selectedAdType.value.id!;
+        if(value.data?.date_type!=null) {
+          if(value.data?.date_type=="fixed"){
+             isFixed.value = true;
+             isFlixble.value = false;
+          }else{
+            isFixed.value = false;
+            isFlixble.value = true;
+          }
+        }
         if(value.data?.description!=null) {
           print("descController"+value.data!.description!);
           decriptionText.value = value.data!.description!;
@@ -543,7 +648,10 @@ void setStateBehavior(){
         }
         Logger().i(value.data!.toJson());
         if(value.data!.channels!=null && value.data!.channels!.isNotEmpty) {
-         // channels.value = value.data!.channels!;
+          channelsForList.value = value.data!.channels!;
+          value.data!.channels!.forEach((element) {
+            channelsIds.add(element.id!);
+          });
           value.data!.channels!.asMap().forEach((index,element) {
             channels.value[index].isTapped.value = true;
           });
@@ -569,13 +677,40 @@ void setStateBehavior(){
           if(value.data?.copon?.uses!=null)
             endAdvertisingDateCoupon.value = value.data!.copon!.ended_at!.toString();
 
+          if(value.data?.copon?.link!=null)
+            coponLinkController!.text = value.data!.copon!.link!.toString();
+
+
         }
 
-        if(value.data!.notes!=null && value.data!.notes!.isNotEmpty) {
+        if(value.data?.notes!=null && value.data!.notes!.isNotEmpty) {
           noticeController!.text = value.data!.notes!;
           noticeText.value =  value.data!.notes!;
         }
+        if(value.data?.started_at!=null && value.data!.started_at!.isNotEmpty){
+          fromDate.value = value.data!.started_at!;
+          dateRange.value.fromDate = value.data!.started_at!;
+          fromAdvertisingDate.value = value.data!.started_at!;
+        }
+        if(value.data?.ended_at!=null && value.data!.ended_at!.isNotEmpty){
+          toDate.value = value.data!.ended_at!;
+          dateRange.value.toDate = value.data!.ended_at!;
+        }
+        /*if(value.data?.attachments!=null && value.data!.attachments!.isNotEmpty){
+          value.data?.attachments?.forEach((element) {
+            attatechedFilesImageAndVideo.add(FileModel(link: element.path,isVideo:element.type=="image"?false:true ));
+          });
 
+        }*/
+
+        if(value.data?.copon!=null ){
+          coponModel.value = value.data!.copon!;
+        }
+
+        if(value.data?.repeat_count!=null){
+          selectedTimeCounter.value = value.data!.repeat_count!.toString();
+          selectedCounterController.text = value.data!.repeat_count!.toString();
+        }
       }else{
         if (EasyLoading.isShow) {
           EasyLoading.dismiss();
@@ -864,7 +999,109 @@ void setStateBehavior(){
     }
     Navigator.pop(context);
   }
+
+  bool isNumericUsingRegularExpression(String string) {
+    final numericRegex =
+    RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+
+    return numericRegex.hasMatch(string);
+  }
+  bool isUrlUsingRegularExpression(String string) {
+    final numericRegex =
+    RegExp(r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+');
+
+    return numericRegex.hasMatch(string);
+  }
   void onDiscountCoponSaveClicked(BuildContext context) {
+
+    if(imagePathCopon.value.isEmpty){
+      showToast("من فضلك قم بإدخال صورة كوبون الخصم !");
+      showChoiceImageDialog(context);
+      FocusManager.instance.primaryFocus?.unfocus();
+      return;
+    }
+    else if(coponNumberController?.text!=null && coponNumberController!.text.isEmpty){
+      showToast("من فضلك قم بإدخال رقم كوبون الخصم !");
+      coponNumberNode.requestFocus();
+      return;
+    }/*else if(!isNumericUsingRegularExpression(coponNumberController!.text)){
+      showToast("من فضلك قم بإدخال رقم كوبون صحيح !");
+      coponNumberNode.requestFocus();
+      return;
+    }*/else if(coponNameController?.text!=null && coponNameController!.text.isEmpty){
+      showToast("من فضلك قم بإدخال اسم كوبون الخصم !");
+      coponNameNode.requestFocus();
+      return;
+    }
+    else if(coponDiscountController?.text!=null && coponDiscountController!.text.isEmpty){
+      showToast("من فضلك قم بإدخال نسبة الخصم!");
+      coponDiscountNode.requestFocus();
+      return;
+    }else if(!isNumericUsingRegularExpression(coponDiscountController!.text)){
+      showToast("من فضلك قم بإدخال نسبة خصم صحيحة!");
+      coponDiscountNode.requestFocus();
+      return;
+    }else if(coponUsesController?.text!=null && coponUsesController!.text.isEmpty){
+      showToast("من فضلك قم بإدخال عدد إستخدامات الكوبون !");
+      coponUsesNode.requestFocus();
+      return;
+    }else if(!isNumericUsingRegularExpression(coponUsesController!.text)){
+      showToast("من فضلك قم بإدخال عدد إستخدامات الكوبون بشكل صحيح!");
+      coponUsesNode.requestFocus();
+      return;
+    }else if(coponLinkController?.text!=null && coponLinkController!.text.isEmpty){
+      showToast("من فضلك قم بإدخال رابط المتجر !");
+      coponUrlNode.requestFocus();
+      return;
+    }else if(!isUrlUsingRegularExpression(coponLinkController!.text)){
+      showToast("من فضلك قم بإدخال رابط المتجر المتجر بشكل صحيح!");
+      coponUrlNode.requestFocus();
+      return;
+    }else if(endAdvertisingDateCoupon!=null && endAdvertisingDateCoupon.isEmpty){
+      showToast("من فضلك قم بإدخال تاريخ إنتهاء الكوبون !");
+      onSelectCoponDate(context);
+      FocusManager.instance.primaryFocus?.unfocus();
+      return;
+    } else{
+      if(coponDiscountController?.text!=null && coponDiscountController!.text.isNotEmpty){
+        //int.parse(coponDiscountController!.text);
+        if(int.parse(coponDiscountController!.text)>100){
+          showToast("من فضلك قم بإدخال نسبة خصم لا تتعدى 100 %!");
+          coponDiscountNode.requestFocus();
+          return;
+        }else if(int.parse(coponDiscountController!.text)<0){
+          showToast("من فضلك قم بإدخال نسبة خصم صحيحة!");
+          coponDiscountNode.requestFocus();
+          return;
+        }
+      }
+      if(endAdvertisingDateCoupon.isNotEmpty&& fromDate.value.isNotEmpty){
+        try{
+          fromDate.value = fromDate.value.replaceAll(" ", "");
+          print("myDate"+fromDate.value);
+          print("myDate"+endAdvertisingDateCoupon.value);
+          DateTime endAdvertisingDateCouponDate = DateTime.parse(endAdvertisingDateCoupon.value);
+          DateTime fromDateAdvertise = DateTime.parse(fromDate.value);
+          if(endAdvertisingDateCouponDate.isBefore(fromDateAdvertise)){
+            showToast("لا يجب ان يكون تاريخ انتهاء الكوبون قبل بداية الاعلان");
+            //onSelectCoponDate(context);
+            FocusManager.instance.primaryFocus?.unfocus();
+            return;
+          }
+        }catch(e){
+
+        }
+      }
+
+      isDiscountSaveClicked.value = true;
+      coponModel.value = CoponModelResponse(id: coponModel.value.id,image: imagePathCopon.value,code: coponNumberController?.text,name: coponNameController?.text,discount: int.parse(coponDiscountController!.text),uses: int.parse(coponUsesController!.text),link: coponLinkController!.text,ended_at: endAdvertisingDateCoupon.value,);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("تم حفظ بيانات الكوبون بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+      Get.back();
+    }
+
+  }
+  /*void onDiscountCoponSaveClicked(BuildContext context) {
 
     if(imagePathCopon.value.isEmpty){
       showToast("من فضلك قم بإدخال صورة كوبون الخصم !");
@@ -931,13 +1168,19 @@ void setStateBehavior(){
       Get.back();
     }
 
-  }
+  }*/
 
   void onSelectCoponDate(BuildContext context){
     DateTime selectedDate;
     if(endAdvertisingDateCoupon.isNotEmpty){
       print("myDate"+endAdvertisingDateCoupon.value);
-      DateTime endAdvertisingDateCouponDate = DateTime.parse(endAdvertisingDateCoupon.value);
+      DateTime endAdvertisingDateCouponDate ;
+      try{
+         endAdvertisingDateCouponDate = DateTime.parse(endAdvertisingDateCoupon.value);
+      }catch(e){
+        endAdvertisingDateCouponDate = DateTime.now();
+      }
+
       selectedDate = endAdvertisingDateCouponDate;
     }else{
       selectedDate = (DateTime.now()).add( Duration(days: 1));
@@ -965,11 +1208,303 @@ void setStateBehavior(){
     _selectDate(context);
   }
 
+
+
+  //================================== attatchement sheet ===============================
+  void deleteImage(int index){
+    attatechedFilesImageAndVideo.removeAt(index);
+    imageFideoFiles?.removeAt(index);
+    imageFideoRealFiles?.removeAt(index);
+  }
+  Future<void> showChoiceImageOrVideoDialogForAttatchement(BuildContext context)
+  {
+    return showDialog(context: context,builder: (BuildContext context){
+
+      return AlertDialog(
+        title: Text("إختر",style: TextStyle(color: Colors.blue),),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: () async {
+                  Navigator.pop(context);
+                  await pickImagesOrVideos();
+                },
+                title: Text("معرض الصور"),
+                leading: Icon(Icons.account_box,color: Colors.blue,),
+              ),
+
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: () async {
+                  //getVideoToAttachedList(fromGallery: false) ;
+                  Navigator.pop(context);
+                  await showChoiceCamera(context);
+
+                },
+                title: Text("الكاميرا"),
+                leading: Icon(Icons.camera,color: Colors.blue,),
+              ),
+            ],
+          ),
+        ),);
+    });
+  }
+  Future<void> showChoiceCamera(BuildContext context)
+  {
+    return showDialog(context: context,builder: (BuildContext context){
+
+      return AlertDialog(
+        title: Text("إختر",style: TextStyle(color: Colors.blue),),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: () async {
+                  Navigator.pop(context);
+                  takeImage();
+                },
+                title: Text("صورة"),
+                leading: Icon(Icons.account_box,color: Colors.blue,),
+              ),
+
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: ()async{
+                  //getVideoToAttachedList(fromGallery: false) ;
+                  Navigator.pop(context);
+                  await getVideoToAttachedList(fromGallery: false);
+
+                },
+                title: Text("فيديو"),
+                leading: Icon(Icons.camera,color: Colors.blue,),
+              ),
+            ],
+          ),
+        ),);
+    });
+  }
+  Future<void> showChoiceImageDialogForAttatchement(BuildContext context)
+  {
+    return showDialog(context: context,builder: (BuildContext context){
+
+      return AlertDialog(
+        title: Text("إختر",style: TextStyle(color: Colors.blue),),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: (){
+                  Navigator.pop(context);
+                  pickImages();
+
+                },
+                title: Text("Gallery"),
+                leading: Icon(Icons.account_box,color: Colors.blue,),
+              ),
+
+              Divider(height: 1,color: Colors.blue,),
+              ListTile(
+                onTap: (){
+                  Navigator.pop(context);
+                  takeImage();
+
+                },
+                title: Text("Camera"),
+                leading: Icon(Icons.camera,color: Colors.blue,),
+              ),
+            ],
+          ),
+        ),);
+    });
+  }
+
+
+  Future<void> takeImage() async {
+    XFile? imageFromFamera = await _picker.pickImage(source: ImageSource.camera,);
+    if(imageFromFamera!=null){
+      print("imagemm"+images2.toString());
+      File file = File(imageFromFamera.path);
+      attatechedFilesImageAndVideo.add(
+          FileModel(
+              file:file,
+              isVideo:false
+          )
+      );
+      await compressFile(file).then((value) async {
+        var mFile =  await myDio.MultipartFile.fromFile(value.path,
+            filename: value.path
+                .split(Platform.pathSeparator)
+                .last);
+        imageFideoFiles?.add(mFile);
+        imageFideoRealFiles.add(value);
+      });
+    }
+
+  }
+
+  Future<void> pickImagesOrVideos() async {
+/*    XFile? imageFromFamera = await _picker.pickImage(source: ImageSource.camera);
+    if(imageFromFamera!=null){
+      print("imagemm"+images2.toString());
+      attatechedFilesImageAndVideo.add(
+          FileModel(
+              file:File(imageFromFamera.path),
+              isVideo:false
+          )
+      );
+    }*/
+
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom,allowMultiple: true,allowCompression: true,allowedExtensions: ['mp4','mov','m4v','jpg','jpeg','png']);
+
+    result?.files.forEach((element) {
+      print("exte= "+element.extension!);
+      print("size= "+element.size.toString()+" ");
+    });
+    if (result != null) {
+      //List<File> files = result.paths.map((path) => File(path!)).toList();
+      result.files.forEach((element) async {
+        print("exte= "+element.extension!);
+        if(element.extension?.toLowerCase()=="mp4" || element.extension?.toLowerCase()=="mov" || element.extension?.toLowerCase()=="m4v"){
+          File videoFile = File(element.path!);
+          attatechedFilesImageAndVideo.add(
+              FileModel(
+                  file:videoFile,
+                  isVideo:true
+              )
+          );
+          var mFile =  await myDio.MultipartFile.fromFile(videoFile.path,
+              filename: videoFile.path
+                  .split(Platform.pathSeparator)
+                  .last);
+          imageFideoFiles?.add(mFile);
+          imageFideoRealFiles.add(videoFile);
+          /*print("videoLength= "+videoFile.lengthSync().toString());
+           await compressVideo(videoFile).then((value) async {
+            print("videoLengthIn= "+value.lengthSync().toString());
+            var mFile =  await myDio.MultipartFile.fromFile(value.path,
+                filename: value.path
+                    .split(Platform.pathSeparator)
+                    .last);
+            imageFideoFiles?.add(mFile);
+          });*/
+
+        }else if(element.extension?.toLowerCase()=="jpg"||element.extension?.toLowerCase()=='png'||element.extension?.toLowerCase()=='jpeg'){
+          attatechedFilesImageAndVideo.add(
+              FileModel(
+                  file:File(element.path!),
+                  isVideo:false
+              )
+          );
+          compressFile(File(element.path!)).then((value) async {
+            var mFile =  await myDio.MultipartFile.fromFile(value.path,
+                filename: value.path
+                    .split(Platform.pathSeparator)
+                    .last);
+            imageFideoFiles?.add(mFile);
+            imageFideoRealFiles.add(value);
+          });
+        }
+      });
+      /*files.forEach((element) {
+        element.ex
+        attatechedFilesImageAndVideo.add(
+            FileModel(
+                file:File(element.path),
+                isVideo:false
+            )
+        );
+      });*/
+    } else {
+      // User canceled the picker
+    }
+
+  }
+  Future<File> compressVideo(File file) async {
+    MediaInfo? mediaInfo = await VideoCompress.compressVideo(
+      file.path,
+      quality: VideoQuality.LowQuality,
+      deleteOrigin: false, // It's false by default
+    );
+    return mediaInfo!.file!;
+  }
+  Future<void> pickImages() async {
+    images2 = await _picker.pickMultiImage();
+    if(images2!=null && images2!.isNotEmpty){
+      print("imagemm"+images2.toString());
+      //attatechedFilesImageAndVideo.value=[];
+
+      images2?.forEach((element) async {
+        File file = File(element.path);
+        attatechedFilesImageAndVideo.add(
+            FileModel(
+                file:file,
+                isVideo:false
+            )
+        );
+        compressFile(file).then((value) async {
+          var mFile =  await myDio.MultipartFile.fromFile(value.path,
+              filename: value.path
+                  .split(Platform.pathSeparator)
+                  .last);
+          imageFideoFiles?.add(mFile);
+          imageFideoRealFiles?.add(value);
+        });
+      });
+    }
+
+  }
+
+  Future<void> getVideoToAttachedList({@required bool? fromGallery}) async {
+    mVideo =
+    await _picker.pickVideo(
+      source: fromGallery! ? ImageSource.gallery : ImageSource.camera,);
+    File videoFile= File(mVideo!.path);
+    attatechedFilesImageAndVideo.add(FileModel(
+        file: videoFile,
+        isVideo: true
+    ));
+    var mFile =  await myDio.MultipartFile.fromFile(videoFile.path,
+        filename: videoFile.path
+            .split(Platform.pathSeparator)
+            .last);
+    imageFideoFiles?.add(mFile);
+    imageFideoRealFiles?.add(videoFile);
+    /*print("videoLength= "+videoFile.lengthSync().toString());
+     compressVideo(videoFile).then((value) async {
+      print("videoLengthIn= "+value.lengthSync().toString());
+      var mFile =  await myDio.MultipartFile.fromFile(value.path,
+          filename: value.path
+              .split(Platform.pathSeparator)
+              .last);
+      imageFideoFiles?.add(mFile);
+    });*/
+  }
+  void onSaveAttachmentClicked(BuildContext context) {
+    Logger().i(attatechedFilesImageAndVideo);
+    isAttachementSaveClicked.value = true;
+    Get.back();
+    if(attatechedFilesImageAndVideo.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("تم حفظ المرفقات بنجاح !", style: TextStyle(
+            color: Colors.white,
+            fontSize: 17,
+            fontFamily: 'Arabic-Regular'),),
+      ));
+    }
+    /*Logger().i("categoryId= ",categoryId);
+    Logger().i("typeId= ",adTypeId);*/
+  }
   //========================= notice sheet ===============
   //---------------------- for notice sheet --------------------------------------------
   late TextEditingController? noticeController;
   var isNoticeSaveClicked = false.obs;
+  var isDescSaveClicked = false.obs;
   var noticeText = ''.obs;
+
   void onNoticeSavedClicked(BuildContext context) {
     if(noticeController?.text!=null && noticeController!.text.isEmpty){
       showToast("من فضلك يرجى إضافة ملاحظة !");
@@ -990,10 +1525,280 @@ void setStateBehavior(){
   }
 
   Future<void> resetClicked(BuildContext context) async {
-    EasyLoading.show();
-    //  var myToken  = await storage.read("token");
-    await getRequestDetails(/*Get.parameters['requestId']*/145);
+    if(Get.parameters['requestId']!=null && Get.parameters['requestId']!.isNotEmpty){
+      EasyLoading.show();
+      //  var myToken  = await storage.read("token");
+      await getRequestDetails(int.parse(Get.parameters['requestId']!));
+    }
+
   }
+
+  void onEditRequestClicked(BuildContext context) {
+
+      if (selectedCategory.value.id == -1) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              "يجب اختيار نوع المنتج !",
+              style: TextStyle(
+                  color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
+            )));
+        return;
+      } else if (selectedAdType.value.id == -1) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              "يجب اختيار نوع الاعلان !",
+              style: TextStyle(
+                  color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
+            )));
+        return;
+      } else if (descController.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              "يجب إضافة وصف للاعلان !",
+              style: TextStyle(
+                  color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
+            )));
+        return;
+      } else if (fromDate.value.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              "يجب إضافة تاريخ بداية الاعلان !",
+              style: TextStyle(
+                  color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
+            )));
+        return;
+      } else if (isFlixble.isTrue && toDate.value.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              "يجب إضافة تاريخ نهاية الاعلان !",
+              style: TextStyle(
+                  color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
+            )));
+        return;
+      } else if(showInPlatform.isTrue && endAdvertisingDate.isEmpty){
+        showToast("من فضلك يرجى إختيار تاريخ انتهاء مدة العرض فى المنصة!");
+        onSelectedDateEndedAtPlateform(context);
+        return;
+      }else if (channelsIds.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              "يجب إختيار قنوات الاعلان !",
+              style: TextStyle(
+                  color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
+            )));
+        return;
+      } /*else if (selectedAdvertiseId == -1) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              "يجب إختيار المعلن !",
+              style: TextStyle(
+                  color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
+            )));
+        return;
+      }*/
+      //var file = await MultipartFile(requestAdvertiseController.attatechedFilesImageAndVideo[0].file, filename: "mmm");
+      LoadingDailog().showLoading(context);
+/*     List<myDio.MultipartFile>? _files = [];
+
+     requestAdvertiseController.attatechedFilesImageAndVideo.value.forEach((element) async {
+          if(element.file!=null && element.file!.path.isNotEmpty) {
+            print("inFor");
+            var mFile = await myDio.MultipartFile.fromFile(element.file!.path,
+                filename: element.file!
+                    .path
+                    .split(Platform.pathSeparator)
+                    .last);
+            _files.add(mFile);
+          }
+    });*/
+/*    myDio.MultipartFile? imageCopon;
+    if(requestAdvertiseController.imagePath.value.isNotEmpty) {
+      imageCopon = await myDio.MultipartFile.fromFile(
+          requestAdvertiseController.imagePath.value,
+          filename: requestAdvertiseController.imagePath.value
+              .split(Platform.pathSeparator)
+              .last);
+    }
+
+    myDio.MultipartFile? planFile;
+    if (requestAdvertiseController.planFile?.path != null && requestAdvertiseController.planFile!.path.isNotEmpty) {
+      planFile = await myDio.MultipartFile.fromFile(
+          requestAdvertiseController.planFile!.path,
+          filename: requestAdvertiseController.planFile!.path
+              .split(Platform.pathSeparator)
+              .last);
+    }*/
+
+      /*if(imageFideoFiles!=null && requestAdvertiseController.imageFideoFiles!.isEmpty){
+        print("myFilesEmpty");
+      }else{
+        print("videosNum"+requestAdvertiseController.imageFideoFiles!.length.toString());
+      }*/
+/*    requestAdvertiseController.attatechedFilesImageAndVideo.forEach((element) async {
+       compressVideo(element.file!).then((value) async {
+        print("videoLengthIn= "+value.lengthSync().toString());
+        var mFile =  await myDio.MultipartFile.fromFile(value.path,
+            filename: value.path
+                .split(Platform.pathSeparator)
+                .last);
+        requestAdvertiseController.imageFideoFiles?.add(mFile);
+      });
+    });*/
+      //_parseInBackground();
+      print("offer_ended_at"+endAdvertisingDate.value);
+
+      Map<String, dynamic> mymap = {
+        "_method":"put",
+        "token": "Bearer " + myToken!,
+        "advertiser_id": requestDetailsModel.value.advertiser?.id!=null?requestDetailsModel.value.advertiser?.id:null,
+        "product_category_id": selectedCategory.value.id,
+        "description": descController.text,
+        "ads_type_id": selectedAdType.value.id,
+        "date_type": isFlixble.isTrue ? "flexible" : "fixed",
+        "started_at": fromDate.value,
+        "ended_at": isFlixble.isTrue
+            ? toDate.value
+            : null,
+        "offer_ended_at": endAdvertisingDate.value.isNotEmpty
+            ? endAdvertisingDate.value
+            : null,
+        "repeat_count":isFlixble.isTrue?
+        int.parse(selectedTimeCounter.value):1,
+        "channels[]": channelsIds,
+        "attachments[]": imageFideoFiles!.isNotEmpty ? imageFideoFiles : null,
+        /*     "links[][title]": requestAdvertiseController.links.value.isNotEmpty
+          ? requestAdvertiseController.links.value.map((e) => e.title).toList()
+          : null,
+      "links[][link]": requestAdvertiseController.links.value.isNotEmpty
+          ? requestAdvertiseController.links.value.map((e) => e.link).toList()
+          : null,*/
+        "location[name]": locationModel.value.name,
+        "location[address]": locationModel.value.address,
+        "location[lat]": locationModel.value.lat,
+        "location[lng]": locationModel.value.lng,
+        "copon[image]": imageCoponMultiPart,
+        "copon[code]": coponNumberController?.text,
+        "copon[name]": coponNameController?.text,
+        "copon[discount]":
+        coponDiscountController?.text!=null&&coponDiscountController!.text.isNotEmpty?int.parse(coponDiscountController!.text):null,
+        "copon[uses]": coponUsesController?.text!=null&&coponUsesController!.text.isNotEmpty?int.parse(coponUsesController!.text):null,
+        "copon[link]": coponLinkController?.text!=null&&coponLinkController!.text.isNotEmpty?coponLinkController!.text:null,
+        "copon[ended_at]": endAdvertisingDateCoupon.value,
+        "notes": noticeController?.text,
+        //"plan_file": planFile,
+        "inline":showInPlatform.isTrue?1:0
+      };
+      Map<String, dynamic> mymap2={};
+      if(links.value.isNotEmpty){
+        for (var value1 in links.value) {
+          mymap2={
+            "links[${links.value.indexOf(value1)}][title]":"${value1.name}",
+            "links[${links.value.indexOf(value1)}][link]":"${value1.link}"
+          };
+          if(mymap2.isNotEmpty) {
+            mymap.addAll(mymap2);
+          }
+        }
+      }
+      Logger().i("mymap"+mymap.toString());
+      Repository repo = Repository();
+      repo.putWithImageMultipart<CreateAdvertiseRequestResponse>(
+          path: 'requests/${requestDetailsModel.value.id}',
+          fromJson: (json) => CreateAdvertiseRequestResponse.fromJson(json),
+          json: mymap,
+          onSuccess: (res) async {
+            //Navigator.of(context).pop();
+            Get.back();
+            Logger().i(res.data!.toJson());
+            if (res.message != null) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text('تم تعديل طلبك بنجاح !', style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                    fontFamily: 'Arabic-Regular'),),
+              ));
+            }
+            Navigator.of(context).pop();
+           /* Navigator.of(context).pop();
+            Get.delete<RequestAdvertiseController>();
+            Get.delete<FindAdvertiseController>();*/
+            //Get.offAllNamed('/Home');
+          },
+          onError: (err, res) {
+            //Navigator.of(context).pop();
+            Get.back();
+            Logger().i(err);
+          });
+
+      /*String json = jsonEncode(mymap);
+    Logger().i(json);*/
+
+/*    String json = jsonEncode(mymap);
+    final formData = myDio.FormData.fromMap(
+
+        mymap
+    );*/
+
+/*    Map<String, dynamic> mymap = {
+      "token": "Bearer " + myToken!,
+      "advertiser_id": selectedAdvertiseId,
+      "product_category_id": requestAdvertiseController.categoryId,
+      "description": requestAdvertiseController.descriptionController.text,
+      "ads_type_id": requestAdvertiseController.adTypeId,
+      "date_type":
+      requestAdvertiseController.isFlixble.isTrue ? "flexible" : "fixed",
+      "started_at": requestAdvertiseController.fromDate.value,
+      "ended_at": requestAdvertiseController.isFlixble.isTrue
+          ? requestAdvertiseController.toDate.value
+          : null,
+      "offer_ended_at":
+      requestAdvertiseController.endAdvertisingDate.value.isNotEmpty
+          ? requestAdvertiseController.endAdvertisingDate.value
+          : null,
+      "repeat_count":
+      int.parse(requestAdvertiseController.selectedTimeCounter.value),
+      "channels[]": requestAdvertiseController.channelsIds,
+      "attachments[]": requestAdvertiseController.imageFideoFiles!.isNotEmpty ? requestAdvertiseController.imageFideoFiles : null,
+      "links": requestAdvertiseController.links.value.isNotEmpty
+          ? requestAdvertiseController.links.value
+          : null,
+      "location[name]": requestAdvertiseController.locationModel.name,
+      "location[address]": requestAdvertiseController.locationModel.address,
+      "location[lat]": requestAdvertiseController.locationModel.lat,
+      "location[lng]": requestAdvertiseController.locationModel.lng,
+      "copon[image]": requestAdvertiseController.imageCoponMultiPart,
+      "copon[code]": requestAdvertiseController.coponNumberController?.text,
+      "copon[name]": requestAdvertiseController.coponNameController?.text,
+      "copon[discount]":
+      requestAdvertiseController.coponDiscountController?.text,
+      "copon[uses]": requestAdvertiseController.coponUsesController?.text,
+      "copon[link]": requestAdvertiseController.coponLinkController?.text,
+      "copon[ended_at]": requestAdvertiseController.endAdvertisingDateCoupon,
+      "notes": requestAdvertiseController.noticeController?.text,
+      "plan_file": requestAdvertiseController.planFile
+    };
+
+    client!.createAdvertiseRequest("application/json","Bearer "+myToken!,advertiser_id: mymap['advertiser_id'],ended_at: mymap['ended_at'],started_at: mymap['started_at'],product_category_id: mymap['product_category_id'],ads_type_id: mymap['ads_type_id'],channelsIdes: mymap['channels[]'],date_type: mymap['date_type'],description: mymap['description'],links: mymap['links'],
+      offer_ended_at: mymap['offer_ended_at'],repeat_count: mymap['repeat_count'],attachments: requestAdvertiseController.attatechedFilesImageAndVideo.value.map((e) => e.file!).toList(),).then((value){
+      print('mStatus ${value.status}');
+      print('mStatus ${value.message}');
+      Logger().i(value.data!.toJson());
+    });*/
+
+    }
+
+  void onDecriptionSavedClicked(BuildContext context) {
+    if(descController.text!=null && descController.text.isEmpty){
+      showToast("من فضلك يرجى إضافة وصف الاعلان !");
+      return;
+    }
+    isDescSaveClicked.value = true;
+    decriptionText.value = descController.text;
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("تم حفظ الوصف بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
+    Get.back();
+  }
+
 
 
 }

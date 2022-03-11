@@ -18,6 +18,7 @@ class RequestDetailsModel {
   String? status;
   String? status_txt;
   String? description;
+  String? date_type;
   bool? inline;
   CategoryModel? product_type;
   AdvertiserModel? advertiser;
@@ -29,7 +30,8 @@ class RequestDetailsModel {
   LocationModel? address;
   CoponModelResponse? copon;
   String? notes,plan_file,added_at,started_at,ended_at,offer_ended_at,added_to;
-  RequestDetailsModel({this.id,this.address,this.links,this.status,this.advertiser,this.started_at,this.offer_ended_at,this.notes,this.description,this.copon,this.attachments,this.channels
+  int?repeat_count;
+  RequestDetailsModel({this.date_type,this.repeat_count,this.id,this.address,this.links,this.status,this.advertiser,this.started_at,this.offer_ended_at,this.notes,this.description,this.copon,this.attachments,this.channels
   ,this.ended_at,this.added_at,this.added_to,this.ads_type,this.plan_file,this.product_type,this.status_txt,this.user,this.inline});
 
 

@@ -95,6 +95,7 @@ class _AdvertisingChannelsPageState extends State<AdvertisingChannelsPage> {
               ):GridView.builder(
                 padding: EdgeInsets.only(right: 70.0, left: 70.0, bottom: 20.0),
                 shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                 itemCount: requestAdvertiseController.channels.length??0,
                 gridDelegate:
                 const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(

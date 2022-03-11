@@ -22,6 +22,76 @@ class Repository {
   //String base = "http://192.168.1.16:8000/api";
   //String base = "http://10.0.2.2:8000";
   dio.Dio dioDio = new dio.Dio();
+  void putWithImageMultipart<RES>({
+    String? path,
+    context,
+    Unmarshable<RES>? fromJson,
+    Map<String, dynamic>? json,
+    Function(int,RES)? onError,
+    Function(RES)? onSuccess,
+  }) async {
+    try {
+      // EasyLoading.show();
+      print(json);
+
+      final encoder = JsonEncoder.withIndent("  ");
+      // final body = encoder.convert(json);
+      // debugPrintSynchronously("POST " + base + path + "\n" + body);
+      debugPrintSynchronously("PUT " + base + path!);
+      final formData = dio.FormData.fromMap(
+
+          json!
+      );
+      dioDio.options.contentType = dio.Headers.formUrlEncodedContentType;
+      dioDio.post(base + path, data: formData, options: dio.Options(
+          followRedirects: false,
+         // method: 'Post',
+          validateStatus: (status) {
+            return status! < 500;
+          },
+          contentType: 'multipart/form-data',
+          headers: {
+            "Accept": "application/json",
+            "Authorization": json["token"]
+          },
+          responseType: dio.ResponseType.json
+
+      ))
+          .then((res) {
+        // if(EasyLoading.isShow) {
+        //   EasyLoading.dismiss();
+        // }
+        final data = jsonDecode(jsonEncode(res.data));
+        print(data);
+        final code = data["status"] as int;
+        //final note = data["message"] as String;
+        // if (note != null && note != "done"){
+        //   print("isisisHere " + path);
+        //   // Toast.show(note, context,
+        //   //     gravity: Toast.BOTTOM, duration: Toast.LENGTH_LONG);
+        // }
+        print("HTTP Status Code: " + res.statusCode.toString());
+        // debugPrint("Internal Status Code: " + code.toString());
+        debugPrintThrottled("Response Body: \n" + encoder.convert(data));
+        if (code != 200) {
+          onError!(code, fromJson!(data));
+          return;
+        }
+        onSuccess!(fromJson!(data));
+      });
+    }on dio.DioError catch(e){
+      if(EasyLoading.isShow){
+        EasyLoading.dismiss();
+      }
+      Get.snackbar(
+        "خطأ",
+        "حدث خطأ ما",
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
+
+    }
+  }
 
   void postWithImageMultipart<RES>({
     String? path,

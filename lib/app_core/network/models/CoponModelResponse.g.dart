@@ -8,6 +8,13 @@ part of 'CoponModelResponse.dart';
 
 CoponModelResponse _$CoponModelResponseFromJson(Map<String, dynamic> json) =>
     CoponModelResponse(
+      selected: json['selected'] as bool?,
+      shares: json['shares'] as int?,
+      views: json['views'] as int?,
+      dislikes: json['dislikes'] as int?,
+      likes: json['likes'] as int?,
+      is_liked: json['is_liked'] as bool?,
+      link: json['link'] as String?,
       id: json['id'] as int?,
       started_at: json['started_at'] as String?,
       ended_at: json['ended_at'] as String?,
@@ -35,9 +42,16 @@ Map<String, dynamic> _$CoponModelResponseToJson(CoponModelResponse instance) =>
       'ended_at': instance.ended_at,
       'name': instance.name,
       'image': instance.image,
+      'link': instance.link,
+      'is_liked': instance.is_liked,
       'uses': instance.uses,
       'description': instance.description,
       'user_id': instance.user_id,
       'ads_request_id': instance.ads_request_id,
       'discount_type': instance.discount_type,
+      'likes': instance.likes,
+      'dislikes': instance.dislikes,
+      'views': instance.views,
+      'shares': instance.shares,
+      'selected': instance.selected,
     };

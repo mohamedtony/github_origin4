@@ -40,7 +40,7 @@ class ClientSettingPageController extends GetxController  {
   var country = Country().obs;
   var area = Area().obs;
   var smsOTP = ''.obs;
-  var verificationId = '';
+  var verificationId = ''.obs;
   var countryCode ='SA'.obs;
   var phone = '';
 // switches the value between true/false
@@ -255,16 +255,16 @@ class ClientSettingPageController extends GetxController  {
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
       }
-     verificationId = verId;
+      verificationId.value = verId;
       Get.toNamed(
-          '/verificationCodePage?route=registerPhone&phone=${countryCode.value.toString() + int.parse(phoneController!.text).toString()}');
-      /*smsOTPDialog(context).then((value) {
-        print('sign in');
-      });*/
+          '/verificationCodePage?verificationId=${verificationId.value}&&route=registerPhone&phone=${countryCode.value.toString() + int.parse(phone).toString()}');
+      // smsOTPDialog(context).then((value) {
+      //   print('sign in');
+      // });
     };
     try {
-    /*  print(
-          '>>>>>>>>>>>>>>>>>>>>${countryCode.value.toString() + int.parse(phone).toString()}');*/
+      print(
+          '>>>>>>>>>>>>>>>>>>>>${countryCode.value.toString() + int.parse(phone).toString()}');
       await auth.verifyPhoneNumber(
           phoneNumber: countryCode.value.toString() +
               int.parse(phoneController!.text)
@@ -272,7 +272,7 @@ class ClientSettingPageController extends GetxController  {
           codeAutoRetrievalTimeout: (String verId) {
             //Starts the phone number verification process for the given phone number.
             //Either sends an SMS with a 6 digit code to the phone number specified, or sign's the user in and [verificationCompleted] is called.
-            verificationId = verId;
+            verificationId.value = verId;
           },
           codeSent:
           smsOTPSent, // WHEN CODE SENT THEN WE OPEN DIALOG TO ENTER OTP.
@@ -288,7 +288,12 @@ class ClientSettingPageController extends GetxController  {
               backgroundColor: Colors.red,
               snackPosition: SnackPosition.BOTTOM,
             );
-          });
+
+          }).then((value) {
+
+        print('>>>>>>>>>>>>>>${auth.currentUser}');
+      });
+
     } on Exception catch (_, e) {
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
@@ -377,6 +382,18 @@ class ClientSettingPageController extends GetxController  {
   FocusNode emailControllerNode = FocusNode();
   FocusNode sglNumberNode = FocusNode();
   FocusNode personalIdNode = FocusNode();
+  bool isNumericUsingRegularExpression(String string) {
+    final numericRegex =
+    RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+
+    return numericRegex.hasMatch(string);
+  }
+  bool isValidEmailUsingRegularExpression(String string) {
+    final numericRegex =
+    RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
+    return numericRegex.hasMatch(string);
+  }
 
 
   void saveButtonClicked(context) async{
@@ -413,6 +430,10 @@ class ClientSettingPageController extends GetxController  {
       showMyToast("من فضلك ادخل رقم الجوال !",true,context);
       phoneControllerNode.requestFocus();
       return;
+    }else if (!isNumericUsingRegularExpression(phoneController!.text)) {
+      showMyToast("من فضلك ادخل رقم الجوال بشكل صحيح!",true,context);
+      phoneControllerNode.requestFocus();
+      return;
     } else if (!isValidPhone.value) {
       showMyToast("رقم الجوال وكود الدولة غير متطابقين !",true,context);
       phoneControllerNode.requestFocus();
@@ -421,12 +442,24 @@ class ClientSettingPageController extends GetxController  {
       showMyToast("من فضلك ادخل الايميل الالكترونى !",true,context);
       emailControllerNode.requestFocus();
       return;
+    }else if (!isValidEmailUsingRegularExpression(emailController!.text)) {
+      showMyToast("من فضلك ادخل الايميل الالكترونى بشكل صحيح !",true,context);
+      emailControllerNode.requestFocus();
+      return;
     } else if (accountType.value=="company" && sglNumberController!.text.isEmpty) {
       showMyToast("من فضلك ادخل رقم السجل !",true,context);
       sglNumberNode.requestFocus();
       return;
+    }else if (accountType.value=="company" && !isNumericUsingRegularExpression(sglNumberController!.text)) {
+      showMyToast("من فضلك ادخل رقم السجل بشكل صحيح !",true,context);
+      sglNumberNode.requestFocus();
+      return;
     } else if (accountType.value=="client" && personalIdController!.text.isEmpty) {
       showMyToast("من فضلك ادخل رقم الهوية !",true,context);
+      personalIdNode.requestFocus();
+      return;
+    }else if (accountType.value=="client" && !isNumericUsingRegularExpression(personalIdController!.text)) {
+      showMyToast("من فضلك ادخل رقم الهوية بشكل صحيح !",true,context);
       personalIdNode.requestFocus();
       return;
     } else{
@@ -454,9 +487,8 @@ class ClientSettingPageController extends GetxController  {
             showMyToast(value.message!, false, context);
           }
         });
-        FocusManager.instance.primaryFocus?.unfocus();
       }
-
+      FocusManager.instance.primaryFocus?.unfocus();
     }
 
   }
