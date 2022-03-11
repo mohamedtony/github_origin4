@@ -495,7 +495,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                         InkWell(
                                           onTap: ()async {
                                             controller.currentIndex.value=index;
-                                            if(controller.currentIndex==index) {
+                                            if(controller.currentIndex.value==index) {
                                               await openwhatsapp(context,
                                                   controller
                                                       .myRequestsAsClient[index]

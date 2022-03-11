@@ -129,7 +129,7 @@ class MyOrdersController extends GetxController{
     }
     EasyLoading.show();
     repo.get<MyRequestsResponse>(
-        path: 'myrequests',
+        path: 'myrequests?archive=0',
         fromJson: (json) => MyRequestsResponse.fromJson(json),
         json: {"token": "Bearer $token"},//"Bearer  $token"},
         onSuccess: (res) {
@@ -234,7 +234,7 @@ class MyOrdersController extends GetxController{
         fromJson: (json) => RegisterClientUserResponse.fromJson(json),
         json: {
           "token": "Bearer $token",
-          "reason": 'لسا هنغير فىاسباب الرفض حسب كلام ابو عبدالله',
+          "reason": 'لسا هنغير فى اسباب الرفض حسب كلام ابو عبدالله',
         },
         onSuccess: (res) {
           if (EasyLoading.isShow) {
