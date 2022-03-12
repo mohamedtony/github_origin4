@@ -404,11 +404,11 @@ class ClientListPage extends StatelessWidget {
                 print('MyOrdersAndMyOrdersArchive');
               },),
 
-              ClientListItem(icon: 'images/menu_icon.svg',title: ' القائمة الثانية طلباتى',listTilePressed: (){
-                // Get.toNamed('/MyOrdersAndMyOrdersArchive');
-                Get.toNamed('/AdvertisingRequestsPage');
-                print('AdvertisingRequestsPage');
-              },),
+              // ClientListItem(icon: 'images/menu_icon.svg',title: ' القائمة الثانية طلباتى',listTilePressed: (){
+              //   // Get.toNamed('/MyOrdersAndMyOrdersArchive');
+              //   Get.toNamed('/AdvertisingRequestsPage');
+              //   print('AdvertisingRequestsPage');
+              // },),
               ClientListItem(icon: 'images/discount_copon_img.svg',title: 'الخصومات',listTilePressed: (){
                 Get.toNamed('/DiscountPage');
               },),
