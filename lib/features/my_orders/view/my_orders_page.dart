@@ -448,8 +448,10 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          Get.toNamed('/AdvertiserDetailsPage?requestId=${controller.myRequestsAsClient[index].id}');
-                                        },
+                                          controller.currentIndex.value=index;
+                                          if (controller.currentIndex.value  == index) {
+                                            Get.toNamed('/AdvertiserDetailsPage?requestId=${controller.myRequestsAsClient[index].id}');
+                                          }    },
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 15),
@@ -814,7 +816,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                 : () {
                                               controller.currentIndex.value=index;
                                               if (controller.currentIndex.value  == index) {
-                                                      print("refuse");
+                                                Get.toNamed('/AdvertiserDetailsPage?requestId=${controller.myRequestsAsClient[index].id}');
                                                     }
                                                   },
                                             icon: "images/edit_pen.svg",
