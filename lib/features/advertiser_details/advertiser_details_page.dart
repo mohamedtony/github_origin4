@@ -7,7 +7,7 @@ import 'package:advertisers/features/advertiser_details/controller/advertiser_de
 import 'package:advertisers/features/advertiser_details/sheets/address_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/advertising_channels_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/advertising_date_sheet.dart';
-import 'package:advertisers/features/advertiser_details/sheets/advertising_desc_sheet.dart';
+import 'package:advertisers/features/advertiser_details/sheets/advertising_description_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/attatchements_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/discount_coupon_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/discount_coupon_sheet_advertising_details.dart';
@@ -17,6 +17,7 @@ import 'package:advertisers/features/advertiser_details/widgets/channel_single_i
 import 'package:advertisers/features/advertiser_details/widgets/item.dart';
 import 'package:advertisers/features/advertiser_details/widgets/title.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -52,44 +53,9 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
 
   @override
   void initState() {
-/*    // TODO: implement initState
-    controller.descController = TextEditingController(
-        text: "- تغطية افتتاح الفرع الثالث من فروعنا");
-
-    controller.placeAddressController = TextEditingController(
-        text: "شارع الملز الرياض بجوار مدينة السلام");
-
-    controller.noticsController = TextEditingController(
-        text: "------------------------------------------- -");*/
     super.initState();
   }
-  final List<String> _productType = [
-    'منتجات مواد غذائية - حلويات وشكولاتة',
-    'منتجات مواد غذائية - حلويات وشكولاتة',
-    'منتجات مواد غذائية - حلويات وشكولاتة',
-    'منتجات مواد غذائية - حلويات وشكولاتة'
-  ];
-  String _selectedProductTyp = '';
 
-  final List<String> _percentages = [
-    '10',
-    '20',
-    '30',
-    '40',
-    '50',
-    '60',
-    '70',
-    '80',
-    '90',
-    '100',
-  ];
-  String _selectedMenPercentage = '';
-  String _selectedWomenPercentage = '';
-  String _selectedBoysPercentage = '';
-  String _selectedGirlsPercentage = '';
-
-  Country? _selectedCountry;
-  City? _selectedCity;
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +100,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                         color: const Color(0xfff5f5f5),
                         child: Text(
                           "نوع المنتج",
-                          style: TextStyle(fontSize: 14.sp,color: Color(0xff041D67)),
+                          style: TextStyle(fontSize: 16,color: Color(0xff041D67)),
                         ),
                       ),
                     ),
@@ -170,7 +136,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                             dropdownBuilder: (BuildContext context, s) {
                               return Text(
                                 '${(s?.name ?? '')}',
-                                style: TextStyle(color: Color(0xff041D67),fontSize: 13),
+                                style: TextStyle(color: Color(0xff041D67),fontSize: 16),
                                 textAlign: TextAlign.start,
                               );
                             },
@@ -181,6 +147,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                               if(categoryModel!.id!=-1) {
                                 controller.categoryId =
                                 categoryModel.id!;
+                                controller.selectedCategory.value = categoryModel;
                               }
                             },
                             selectedItem: controller.selectedCategory.value.id!=null?controller.selectedCategory.value:controller.categories.value[0]
@@ -278,7 +245,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                             ),
                           ),
                           dropdownSearchDecoration: InputDecoration(
-                            labelStyle: TextStyle(color: Color(0xff041D67),fontSize: 13),
+                            labelStyle: TextStyle(color: Color(0xff041D67),fontSize: 16),
                             // filled: true,
                             //fillColor: Color(0xFFF2F2F2),
                             contentPadding:
@@ -304,7 +271,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                           dropdownBuilder: (BuildContext context, s) {
                             return Text(
                               '${(s?.name ?? '')}',
-                              style: TextStyle(color: Color(0xff041D67),fontSize: 13),
+                              style: TextStyle(color: Color(0xff041D67),fontSize: 16),
                               textAlign: TextAlign.start,
                             );
                           },
@@ -314,6 +281,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                           onChanged: (adTypeModel){
                             if(adTypeModel!.id!=-1) {
                               controller.adTypeId = adTypeModel.id!;
+                              controller.selectedAdType.value = adTypeModel;
                             }
                           },
                           selectedItem: controller.selectedAdType.value.id!=null?controller.selectedAdType.value:controller.ads_types.value[0],
@@ -400,7 +368,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Row(
                             children: [
-                              Expanded(child: Obx(()=>Text('${controller.dateRange.value.fromDate!=null && controller.dateRange.value.fromDate!.isNotEmpty?controller.dateRange.value.fromDate:controller.requestDetailsModel.value.started_at??''} : ${controller.dateRange.value.toDate!=null && controller.dateRange.value.toDate!.isNotEmpty?controller.dateRange.value.toDate:controller.requestDetailsModel.value.ended_at??''}', style: TextStyle(color: Color(0xff041D67)),),
+                              Expanded(child: Obx(()=>Text('${(controller.isDateSaveClicked.isTrue && controller.dateRange.value.fromDate!=null && controller.dateRange.value.fromDate!.isNotEmpty) ? controller.dateRange.value.fromDate : (controller.requestDetailsModel.value.started_at??'')} ${(controller.isDateSaveClicked.isTrue && controller.dateRange.value.toDate!=null && controller.dateRange.value.toDate!.isNotEmpty)?':':''} ${(controller.isDateSaveClicked.isTrue && controller.dateRange.value.toDate!=null && controller.dateRange.value.toDate!.isNotEmpty) ? controller.dateRange.value.toDate : (controller.requestDetailsModel.value.ended_at ??'')}', style: TextStyle(color: Color(0xff041D67)),),
                               )
                               ),
                               Container(
@@ -409,7 +377,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                 width: 2,
                                 color: Colors.grey[400],
                               ),
-                              Obx(()=>Text('${controller.selectedTimeCounter}', style: TextStyle(color: Color(0xff041D67)),),)
+                              Obx(()=>Text('${controller.isDateSaveClicked.isTrue ? controller.selectedCounterController.text : controller.selectedTimeCounter.value}', style: TextStyle(color: Color(0xff041D67)),),)
                             ],
                           ),
                         ),
@@ -500,10 +468,10 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                       Container(
                         height: 50,
                         child: Center(
-                          child: Obx(()=>ListView.builder(
+                          child: Obx(()=>controller.channelsForList.value.isNotEmpty?ListView.builder(
                               scrollDirection: Axis.horizontal,
                               shrinkWrap: true,
-                              itemCount: controller.channelsForList.value.length??0,
+                              itemCount: controller.channelsForList.value.length,
                               itemBuilder: (context, index) {
                                 return /*controller.checkList!.contains( controller.requestDetailsModel.value.channels![index].id)?*/
                                   Padding(
@@ -515,7 +483,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                       imgUrl: "${ controller.channelsForList.value[index].image}",
                                     ),
                                   )/*:const SizedBox()*/;
-                              })),
+                              }):Text("لا يوجد قنوات")),
                         ),
                       ),
                     ),
@@ -526,14 +494,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
 
             Item(
               onTap: (){
-                showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (builder){
-                      return AdvertisingDescriptionPage();
-                      // return AdvertisingNoticsPage();
-                    }
-                );
+                showBottomSheetForRequest(context,3);
               },
               title: 'وصف الاعلان',
               child: Column(
@@ -561,16 +522,16 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
               child: Container(
                 height: 100.w,
 
-                child: controller.attachedImagesList.isNotEmpty ? ListView.builder(
+                child: Obx(()=>controller.attatechedFilesImageAndVideo.value.isNotEmpty ? ListView.builder(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.all(4.0),
                   // physics: const BouncingScrollPhysics(),
-                  itemCount: controller.attachedImagesList.length,
+                  itemCount:controller.attatechedFilesImageAndVideo.value.length,
                   itemBuilder: (_, index) => Stack(
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(4.0),
-                        child: controller.attachedImagesList[index].isVideo == 0 ? Container(
+                        child: !controller.attatechedFilesImageAndVideo.value[index].isVideo!? Container(
                           margin: const EdgeInsets.all(1),
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -579,21 +540,27 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                               color: Colors.grey,
                             ),
                           ),
-                          child: Image.file(
-                            File(controller.attachedImagesList[index].file!.path),
+                          child: controller.attatechedFilesImageAndVideo.value[index].link!=null && controller.attatechedFilesImageAndVideo.value[index].link!.isNotEmpty? Image.network(
+                            controller.attatechedFilesImageAndVideo.value[index].link!,
+                            width: 80.w,
+                            height: 80.w,
+                            fit: BoxFit.fill,
+                          ):Image.file(
+                            controller.attatechedFilesImageAndVideo.value[index].file!,
                             width: 80.w,
                             height: 80.w,
                             fit: BoxFit.fill,
                           ),
                         ):VideoApp(
-                          file: File(controller.attachedImagesList[index].file!.path),
+                          path: controller.attatechedFilesImageAndVideo.value[index].link!=null && controller.attatechedFilesImageAndVideo.value[index].link!.isNotEmpty? controller.attatechedFilesImageAndVideo.value[index].link!:null,
+                          file: controller.attatechedFilesImageAndVideo.value[index].file!=null && !controller.attatechedFilesImageAndVideo.value[index].file!.isBlank!?controller.attatechedFilesImageAndVideo.value[index].file:null,
                         ),
                       ),
                       Positioned(
                           left: 0,
                           child: InkWell(
                             onTap: (){
-                              controller.deleteFromAttachedImagesList(controller.attachedImagesList[index]);
+                              controller.deleteImage(index);
                             },
                             child: Container(
                               padding: const EdgeInsets.all(1),
@@ -615,12 +582,12 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                   ),
                 ):const Center(
                   child:  Text("لا توجد مرفقات"),
-                ),
+                )),
               ),
             ),
             Item(
               onTap: (){
-                showBottomSheetForRequest(context,3);
+                showBottomSheetForRequest(context,4);
               },
               title: 'الروابط',
               child: Obx(()=>controller.urlList.value.length>0?ListView.builder(
@@ -671,7 +638,8 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                 left: 0,
                                 child: InkWell(
                                   onTap: (){
-                                    controller.removeFromUrlList(controller.urlList.value[index]);
+                                    controller.deleteLinkApi(controller.urlList.value[index],index,controller.urlList.value[index].id);
+                                    //controller.removeFromUrlList(controller.urlList.value[index],index);
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.all(1),
@@ -726,7 +694,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
             )),
             Item(
               onTap: (){
-                showBottomSheetForRequest(context,4);
+                showBottomSheetForRequest(context,5);
                 /*showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
@@ -808,7 +776,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                     }
                 );*/
 
-                showBottomSheetForRequest(context, 5);
+                showBottomSheetForRequest(context, 6);
 
               },
               title: 'كوبون المعلن',
@@ -829,7 +797,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
-                          child: Row(
+                          child: Obx(()=>controller.coponModel.value.id!=null?Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
@@ -842,39 +810,52 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                     color: Colors.grey,
                                   ),
                                 ),
-                                child: controller.hasSelectedImage ?
+                                child:  controller.coponModel.value.image!=null && controller.coponModel.value.image!.isNotEmpty ?
                                 ClipRRect(
                                     borderRadius: BorderRadius.circular(12),
-                                    child: Image.file(
-                                      File(controller.selectedImage.path),
+                                    child: controller.imagePathCopon.value.isNotEmpty && controller.imagePathCopon.value.startsWith('http')?CachedNetworkImage(
+                                      imageUrl: controller.coponModel.value.image??
+                                          '',
+                                      placeholder: (context, url) =>
+                                      const SpinKitThreeBounce(
+                                        color: Colors.grey,
+                                        size: 25,
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
                                       fit: BoxFit.fill,
-                                      height: 60.h,
-                                      width: 60.h,
-                                    )):Container(),
+                                      height: 60.w,
+                                      width: 60.w,
+                                    ):Image.file(
+                                File(controller.coponModel.value.image!),
+                            fit: BoxFit.fill,
+                                      height: 60.w,
+                                      width: 60.w,
+                          )):Container(),
                               ),
                               Expanded(
                                 child: Column(
                                   children: [
-                                    Text('${controller.couponNameController.text}',style: TextStyle(color:Color(0xff041D67))),
+                                    Text('${controller.coponModel.value.name??''}',style: TextStyle(color:Color(0xff041D67))),
                                     SizedBox(
                                       height: 8,
                                     ),
-                                    controller.endAdvertisingDateCoupon != null ? Text('الانتهاء في ${controller.endAdvertisingDateCoupon}',style: TextStyle(color:Color(0xff041D67))):Container(),
+                                    controller.coponModel.value.ended_at != null ? Text('الانتهاء في ${controller.coponModel.value.ended_at }',style: TextStyle(color:Color(0xff041D67))):Container(),
                                     SizedBox(
                                       height: 8,
                                     ),
                                     InkWell(
                                         onTap: (){
-                                          launchURL("${controller.storeUrlController.text}");
+                                          launchURL("${controller.coponModel.value.link}");
                                         },
-                                        child: Text('${controller.storeUrlController.text}',style: TextStyle(color:Color(0xff041D67)))),
+                                        child: Text('${controller.coponModel.value.link ??''}',style: TextStyle(color:Color(0xff041D67)))),
                                   ],
                                 ),
                               ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  controller.couponNumberController.text != "" ? Container(
+                                  Container(
                                     decoration: BoxDecoration(
                                       color: Colors.grey[300],
                                       borderRadius: BorderRadius.circular(8),
@@ -885,7 +866,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                     child: InkWell(
                                       onTap: (){
 
-                                        Clipboard.setData(new ClipboardData(text: controller.couponNumberController.text)).then((_){
+                                        Clipboard.setData(new ClipboardData(text: controller.coponModel.value.code)).then((_){
                                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("تم نسخ الكود")));
                                         });
                                       },
@@ -894,7 +875,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                           Container(
                                               padding: EdgeInsets.all(4),
                                               color: Colors.transparent,
-                                              child: Text('${controller.couponNumberController.text}')),
+                                              child: Text('${controller.coponModel.value.code??''}')),
                                           const SizedBox(
                                             width: 10,
                                           ),
@@ -908,15 +889,15 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                                   color: Colors.brown[200]!,
                                                 ),
                                               ),
-                                              child: Text('${controller.selectedDiscountPercentage}')),
+                                              child: Text('${controller.coponModel.value.discount??''}')),
                                         ],
                                       ),
                                     ),
-                                  ):Container(),
-                                  controller.numberOfUseController.text != "" ? Row(
+                                  ),
+                                  Row(
                                     children: [
                                       Text(
-                                        '${controller.numberOfUseController.text} كوبون',
+                                        '${controller.coponModel.value.uses??''} كوبون',
                                         style: TextStyle(fontSize: 10.sp,color: Color(0xff041D67)),
                                       ),
                                       const SizedBox(
@@ -935,19 +916,33 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                           borderRadius: const BorderRadius.all(
                                             Radius.circular(50),
                                           ),
-                                          child: Image.network(
-                                            'https://roshah.com/wp-content/uploads/2018/04/2986-1.jpg',
+                                          child: controller.imagePathCopon.value.isNotEmpty && controller.imagePathCopon.value.startsWith('http')?CachedNetworkImage(
+                                            imageUrl: controller.coponModel.value.image??
+                                                '',
+                                            placeholder: (context, url) =>
+                                            const SpinKitThreeBounce(
+                                              color: Colors.grey,
+                                              size: 25,
+                                            ),
+                                            errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                            fit: BoxFit.fill,
+                                            height: 30.w,
+                                            width: 30.w,
+                                          ):Image.file(
+                                            File(controller.coponModel.value.image!),
+                                            fit: BoxFit.fill,
                                             height: 30.w,
                                             width: 30.w,
                                           ),
                                         ),
                                       ),
                                     ],
-                                  ):Container(),
+                                  ),
                                 ],
                               ),
                             ],
-                          ),
+                          ):Text("لا يوجد كوبون")),
                         ),
                       ),
                     ),
@@ -980,7 +975,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
             ),
             Item(
               onTap: (){
-                showBottomSheetForRequest(context, 6);
+                showBottomSheetForRequest(context, 7);
                /* showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
@@ -1052,7 +1047,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
               child: Row(
                 children: [
                   Expanded(child: InkWell(onTap: (){
-
+                                     controller.onEditRequestClicked(context);
                   },
                     child: Container(
                       height: 40,
@@ -1131,20 +1126,27 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                     scrollController: scrollController);
 */
             } else if(bottomNumber==3) {
+              return  DecriptionSheet(
+                  scrollController: scrollController
+              );
+              /* return LocationRangeBottomSheet(
+                    scrollController: scrollController);
+*/
+            }else if(bottomNumber==4) {
               return UrlsPage(
                   scrollController: scrollController
               );
               /* return LocationRangeBottomSheet(
                     scrollController: scrollController);
 */
-            } else if(bottomNumber==4) {
+            } else if(bottomNumber==5) {
               return AddressBottomSheet(
                   scrollController: scrollController
               );
               /* return LocationRangeBottomSheet(
                     scrollController: scrollController);
 */
-            }else if(bottomNumber==5) {
+            }else if(bottomNumber==6) {
               return DiscountCouponSheet(
                   scrollController: scrollController
               );

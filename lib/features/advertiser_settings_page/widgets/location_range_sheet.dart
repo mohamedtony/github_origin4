@@ -112,9 +112,9 @@ class LocationRangeBottomSheet extends StatelessWidget {
               Container(
                 width: double.infinity,
                 height: 60,
-                margin: EdgeInsets.only(left: 14.0, right: 14.0, top: 10.0),
+                margin: EdgeInsets.only(left: 14.0, right: 14.0, top: 10.0,bottom: 10.0),
                 padding:
-                    EdgeInsets.only(left: 14.0, right: 14.0, top: 6, bottom: 6),
+                    EdgeInsets.only(left: 14.0, right: 14.0, top: 6, bottom: 2),
                 child: Text(
                   'اضف التوزيع الجغرافى للمتأثرين بإعلانك بحسب احصائات حسابات قنوات الاعلان لديك - بالتقريب',
                   style: TextStyle(
@@ -245,10 +245,10 @@ class LocationRangeBottomSheet extends StatelessWidget {
                                         onChanged: (c) {
                                           advertiserSettingPageController
                                               .changeCountry(c);
+                                          advertiserSettingPageController.selectedCountry.value = c!;
                                         },
-                                        selectedItem:
-                                            advertiserSettingPageController
-                                                .countriesForLocationSheet[0])),
+                                        selectedItem:advertiserSettingPageController.selectedCountry.value!=null && advertiserSettingPageController.selectedCountry.value.id!=null? advertiserSettingPageController.selectedCountry.value:advertiserSettingPageController
+                                            .countriesForLocationSheet[0])),
                               ),
                             ),
                           ],
@@ -381,11 +381,11 @@ class LocationRangeBottomSheet extends StatelessWidget {
                                             onChanged: (area) {
                                               advertiserSettingPageController
                                                   .changeArea(area);
+                                              advertiserSettingPageController.selectedArea.value = area!;
                                             },
-                                            selectedItem:
-                                                advertiserSettingPageController
-                                                    .areasForLocationSheet
-                                                    .value[0])
+                                            selectedItem:advertiserSettingPageController.selectedArea.value!=null && advertiserSettingPageController.selectedArea.value.id!=null?advertiserSettingPageController.selectedArea.value:advertiserSettingPageController
+                                                .areasForLocationSheet
+                                                .value[0])
                                         : Container(
                                             alignment: Alignment.centerRight,
                                             child: Text("لا يوجد مناطق"))),
@@ -447,8 +447,7 @@ class LocationRangeBottomSheet extends StatelessWidget {
                                           child: InkWell(
                                             onTap: () {
                                               advertiserSettingPageController
-                                                  .removeCountryOrArea(
-                                                      value);
+                                                  .removeCountryOrArea(value.id);
                                             },
                                             child: Container(
                                                 // alignment: Alignment.topLeft,

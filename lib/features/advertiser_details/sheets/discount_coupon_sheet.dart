@@ -257,7 +257,7 @@ class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
                               textAlign: TextAlign.start,
                               focusNode: requestAdvertiseController.coponNumberNode,
                               textAlignVertical: TextAlignVertical.center,
-                              keyboardType:TextInputType.number,
+                              //keyboardType:TextInputType.number,
                               decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(
                                     left: 10.0,
