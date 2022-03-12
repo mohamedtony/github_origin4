@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50.318" height="52.012" viewBox="0 0 50.318 52.012">
+  <defs>
+    <filter id="md-hand" x="0" y="0" width="50.318" height="52.012" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-opacity="0.09"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#md-hand)">
+    <path id="md-hand-2" data-name="md-hand" d="M23.185,14.115a1.711,1.711,0,0,0-2.488-.064L18.649,16.1a1.009,1.009,0,0,1-1.551.091c-.249-.293-.15-1.2-.081-1.771l1.027-8.443a1.377,1.377,0,1,0-2.733-.333l-1.133,6.633c-.059.165-.186.194-.2-.029l-.385-8.619a1.377,1.377,0,0,0-2.753,0l-.027,8.684c.007.1-.079.129-.094.015L9.494,5.545a1.377,1.377,0,1,0-2.709.489l1.09,7.933c0,.141-.046.222-.113.041L6.135,9.658a1.4,1.4,0,0,0-1.758-.879,1.423,1.423,0,0,0-.836,1.8L6.392,19.9c.015.052.031.1.047.153l.006.019a.01.01,0,0,1,0,0,6.068,6.068,0,0,0,5.77,4.189A8.205,8.205,0,0,0,17.1,22.607h0c1.474-.887,6.194-5.962,6.194-5.962a1.76,1.76,0,0,0-.107-2.53Z" transform="translate(11.54 9.75)" fill="#ffb300"/>
+  </g>
+</svg>

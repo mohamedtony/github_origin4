@@ -90,6 +90,7 @@ class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
                 // width: 120,
                 margin: EdgeInsets.only(bottom: 20),
                 child: Stack(
+
                   children: [
                     Container(
                       margin: EdgeInsets.only(top: 0, left: 5.0),

@@ -21,7 +21,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logger/logger.dart';
 
-import 'features/employees/view/EmoployeesPage.dart';
+import 'features/employees/view/AddEmployeePage.dart';
+import 'features/employees/view/EmployeesPage.dart';
 
 
 //final logger = Logger();

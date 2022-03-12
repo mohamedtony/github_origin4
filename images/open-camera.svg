@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="63" height="63" viewBox="0 0 63 63">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#48dbe1"/>
+      <stop offset="1" stop-color="#4166cd"/>
+      <stop offset="1" stop-color="#236b73"/>
+    </linearGradient>
+    <filter id="Oval" x="0" y="0" width="63" height="63" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-opacity="0.09"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_14553" data-name="Group 14553" transform="translate(15.046 12)">
+    <g transform="matrix(1, 0, 0, 1, -15.05, -12)" filter="url(#Oval)">
+      <circle id="Oval-2" data-name="Oval" cx="16.5" cy="16.5" r="16.5" transform="translate(15 12)" fill="url(#linear-gradient)"/>
+    </g>
+    <g id="camera" transform="translate(6.921 9.645)">
+      <path id="Path_13192" data-name="Path 13192" d="M17.136,15.924V9.07a1.142,1.142,0,0,0-1.142-1.142H14.655a3.427,3.427,0,0,1-2.422-1l-.948-.946a1.142,1.142,0,0,0-.806-.335H7.8a1.142,1.142,0,0,0-.808.335l-.946.946a3.427,3.427,0,0,1-2.423,1H2.285A1.142,1.142,0,0,0,1.142,9.07v6.854a1.142,1.142,0,0,0,1.142,1.142H15.994A1.142,1.142,0,0,0,17.136,15.924ZM2.285,6.785A2.285,2.285,0,0,0,0,9.07v6.854a2.285,2.285,0,0,0,2.285,2.285H15.994a2.285,2.285,0,0,0,2.285-2.285V9.07a2.285,2.285,0,0,0-2.285-2.285H14.655a2.285,2.285,0,0,1-1.615-.67l-.946-.946A2.285,2.285,0,0,0,10.478,4.5H7.8a2.285,2.285,0,0,0-1.615.67l-.946.946a2.285,2.285,0,0,1-1.616.669Z" transform="translate(0 -4.5)" fill="#fff"/>
+      <path id="Path_13193" data-name="Path 13193" d="M14.123,18.1a2.856,2.856,0,1,0-2.856-2.856A2.856,2.856,0,0,0,14.123,18.1Zm0,1.142a4,4,0,1,0-4-4A4,4,0,0,0,14.123,19.247Z" transform="translate(-4.984 -7.823)" fill="#fff"/>
+      <path id="Path_13194" data-name="Path 13194" d="M5.642,14.071a.571.571,0,1,1-.571-.571A.571.571,0,0,1,5.642,14.071Z" transform="translate(-2.215 -8.93)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

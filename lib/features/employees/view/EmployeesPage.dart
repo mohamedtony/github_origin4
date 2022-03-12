@@ -1,17 +1,12 @@
-import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
-import 'package:advertisers/features/my_orders/widgets/slide_right_item.dart';
-import 'package:advertisers/features/my_orders/widgets/slide_right_item_separation.dart';
-import 'package:advertisers/features/my_orders/widgets/slide_right_items_wraper.dart';
-import 'package:advertisers/features/users_module/app_colors.dart';
+import 'package:advertisers/features/employees/controller/employees_controller.dart';
+import 'package:advertisers/features/employees/view/AddEmployeePage.dart';
+
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
-import 'package:animate_do/animate_do.dart';
-import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
+ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class EmployeesPage extends StatefulWidget{
@@ -37,8 +32,8 @@ class _EmployeesPageState extends State<EmployeesPage> {
         ),
         preferredSize: Size(MediaQuery.of(context).size.width, 93.h),
       ),
-      body: GetBuilder<MyOrdersController>(
-        init: MyOrdersController(),
+      body: GetBuilder<EmployeesController>(
+        init: EmployeesController(),
         builder: (controller) => SmartRefresher(
           controller: controller.refreshController,
           enablePullUp: true,
@@ -110,18 +105,25 @@ class _EmployeesPageState extends State<EmployeesPage> {
                   //physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     //itemCount: orders!.length,
-                    itemCount: /*controller.myRequestsAsClient.length*/12,
+                    itemCount:  controller.employeesJobs.length ,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10, right: 5, left: 5),
                         child: GestureDetector(
                           onTap: () {
-                            controller.currentIndex.value = index;
-                            //controller.closeSingleItemFromCheckListFunctions(controller.orders![index].id);
-                            if (controller.currentIndex.value  == index) {
-                              controller.closeSingleItemFromCheckListFunctions(
-                                  controller.myRequestsAsClient[index].id);
-                            }
+                            //  Get.toNamed('/AddEmployeePage');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddEmployeePage(),
+                              ),
+                            );
+                            // controller.currentIndex.value = index;
+                            // //controller.closeSingleItemFromCheckListFunctions(controller.orders![index].id);
+                            // if (controller.currentIndex.value  == index) {
+                            //   controller.closeSingleItemFromCheckListFunctions(
+                            //       controller.myRequestsAsClient[index].id);
+                            // }
                           },
                           onPanUpdate: (details) {
                             controller.currentIndex.value  = index;
@@ -171,7 +173,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
                                                   padding: const EdgeInsets.only(left:4.0),
                                                   child: Container(
                                                     width: 10,
-                                                    height: MediaQuery.of(context).size.height*.15,
+                                                    height: controller.employeesJobs[index]=="مسؤول / أدمن"?MediaQuery.of(context).size.height*.17:MediaQuery.of(context).size.height*.15,
                                                     decoration:const BoxDecoration(
                                                       borderRadius: BorderRadius.only(topRight: Radius.circular(10.0),bottomRight: Radius.circular(10.0),),
                                                       gradient: LinearGradient(
@@ -218,7 +220,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
                                                                decoration: BoxDecoration(
                                                                  borderRadius:
                                                                  BorderRadius.circular(10),
-                                                                 image: DecorationImage(image: NetworkImage("https://picsum.photos/200/300"),scale: 1,fit: BoxFit.fill)
+                                                                 image: DecorationImage(image: AssetImage('images/man img.png')/*NetworkImage("https://picsum.photos/200/300")*/,scale: 1,fit: BoxFit.fill)
                                                                ),
                                                             ),
                                                           ),
@@ -274,11 +276,11 @@ class _EmployeesPageState extends State<EmployeesPage> {
                                                               ],
                                                             ),
                                                             /// spacer
-                                                            Container(width: MediaQuery.of(context).size.width*.15,),
+                                                            Container(width: MediaQuery.of(context).size.width*.14,),
                                                             /// employee type
                                                             Column(
-                                                              crossAxisAlignment: CrossAxisAlignment.end,
-                                                              mainAxisAlignment: MainAxisAlignment.end,
+                                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                                              mainAxisAlignment: MainAxisAlignment.center,
                                                               children: [
                                                                 Row(
                                                                   mainAxisAlignment: MainAxisAlignment.end,
@@ -286,7 +288,7 @@ class _EmployeesPageState extends State<EmployeesPage> {
                                                                     //
                                                                     Padding(
                                                                       padding: const EdgeInsets.only(top:8.0,left: 12),
-                                                                      child: SvgPicture.asset('images/android-done-all-green.svg',
+                                                                      child: SvgPicture.asset(controller.employeesJobs[index]=="موظف خارجي"?'images/hand.svg':'images/android-done-all-green.svg',
                                                                         width: 50,
                                                                         height: 30,
                                                                         fit: BoxFit.fill,
@@ -296,10 +298,10 @@ class _EmployeesPageState extends State<EmployeesPage> {
                                                                     Padding(
                                                                       padding: const EdgeInsets.only(top:8.0),
                                                                       child: Text(
-                                                                        "نشط",//${controller.myRequestsAsClient[index].advertiser?.username ?? ''}
+                                                                        controller.employeesJobs[index]=="موظف خارجي"? 'موقوف':"نشط",//${controller.myRequestsAsClient[index].advertiser?.username ?? ''}
                                                                         style: TextStyle(
                                                                             fontSize: 15.sp,
-                                                                            color: const Color(
+                                                                            color: controller.employeesJobs[index]=="موظف خارجي"? const Color(0xffFFB300):const Color(
                                                                                 0xff0B9C2D),
                                                                             fontFamily: 'A Jannat LT, Regular'
                                                                         ),
@@ -311,19 +313,25 @@ class _EmployeesPageState extends State<EmployeesPage> {
 
                                                                 Container(
                                                                   decoration: BoxDecoration(
-                                                                      color: Color(0xff4184CE),
-                                                                      borderRadius: BorderRadius.circular(5)
+                                                                      color: controller.employeesJobs[index]=="موظف خارجي"?const Color(0xffD37A47):controller.employeesJobs[index]=="مسؤول / أدمن"?Colors.white:const Color(0xff4184CE),
+                                                                      borderRadius: BorderRadius.circular(5),
+                                                                      border: controller.employeesJobs[index]=="مسؤول / أدمن"? Border.all(color: const Color(0xff4494D5)):Border(),
                                                                   ),
                                                                   child: Padding(
                                                                     padding: const EdgeInsets.symmetric(vertical:8.0,horizontal: 12),
-                                                                    child: Text("موظف داخلي",
+                                                                    child: Text(controller.employeesJobs[index],
                                                                       style: TextStyle(
                                                                           fontSize: 14.sp,
-                                                                          color:   Colors.white,
+                                                                          color:  controller.employeesJobs[index]=="مسؤول / أدمن"?const Color(0xff4494D5): Colors.white,
                                                                           fontFamily: 'A Jannat LT, Regular'
                                                                       ),),
                                                                   ),
-                                                                )
+                                                                ),
+
+                                                                controller.employeesJobs[index]=="مسؤول / أدمن"?Container(
+                                                                  child:   Center(child: Text('صلاحية كاملة',style: TextStyle(color:const Color(0xff00C3FF),fontSize:11.sp),)),
+                                                                ):Container(),
+
                                                               ],
                                                             )
                                                           ],
@@ -371,16 +379,22 @@ class _EmployeesPageState extends State<EmployeesPage> {
 
         floatingActionButton: Padding(
           padding: const EdgeInsets.only(bottom:64.0),
-          child: SvgPicture.asset('images/add-employee.svg',
-            width: MediaQuery.of(context).size.width*.23,
-            height:MediaQuery.of(context).size.width*.23,
-            fit: BoxFit.fill,
+          child: InkWell(
+            onTap: (){
+            //  Get.toNamed('/AddEmployeePage');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddEmployeePage(),
+                ),
+              );
+              },
+            child: SvgPicture.asset('images/add-employee.svg',
+              width: MediaQuery.of(context).size.width*.23,
+              height:MediaQuery.of(context).size.width*.23,
+              fit: BoxFit.fill,
+            ),
           ),
-          /*FloatingActionButton(
-
-              backgroundColor:   const Color(0xFFE57373),
-              onPressed: (){}
-          ),*/
         )
 
     );
