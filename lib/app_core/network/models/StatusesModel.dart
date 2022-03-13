@@ -7,10 +7,11 @@ class StatusesModel {
  bool? reject;
  bool? transfer;
  bool? confirm;
+ bool? confirm_pricing;
  bool? edit;
  bool? cancel;
  StatusesModel({
-    this.payment,this.cancel,this.confirm,this.edit,this.reject,this.transfer,
+    this.payment,this.cancel,this.confirm,this.edit,this.reject,this.transfer,this.confirm_pricing
   });
 
   factory StatusesModel.fromJson(Map<String, dynamic> json) => _$StatusesModelFromJson(json);

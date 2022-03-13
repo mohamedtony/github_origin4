@@ -6,10 +6,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 class SlideRightItemWidget extends StatelessWidget {
   VoidCallback?  onPress;
   bool? isSvg;
+  Color? textColor;
   String? icon,title;
   double widgetOpacity,checkOpacity;
 
-   SlideRightItemWidget({Key? key,this.isSvg,this.onPress,this.icon,this.checkOpacity = 0,this.widgetOpacity = 1,this.title}) : super(key: key);
+   SlideRightItemWidget({Key? key,this.textColor,this.isSvg,this.onPress,this.icon,this.checkOpacity = 0,this.widgetOpacity = 1,this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,28 +26,28 @@ class SlideRightItemWidget extends StatelessWidget {
               children: [
                 isSvg == true ?  SvgPicture.asset(
                   "$icon",
-                  height: 30.sp,
+                  height: 25.sp,
                   color: Color(0xff459FD4),
-                ):Image.asset("$icon"),
+                ):Image.asset("$icon",height: 25.sp,),
                 const SizedBox(
-                  height: 5,
+                  height: 4,
                 ),
-                Text("$title",style: TextStyle(color: const Color(0xff459FD4),fontSize: 15.sp),)
+                Text("$title",textAlign:TextAlign.center,style: TextStyle(color: textColor?? Color(0xff459FD4),fontSize: 13.sp),)
               ],
             ),
           ),
-          Positioned(
-            top:0,
-            right: 0,
-            left: 0,
-            bottom: 0,
-            child: Opacity(
-              opacity: checkOpacity,
-              child: SvgPicture.asset(
-                "images/check_mark_dark.svg",
-                height: 40,
-              ),
-            ),)
+          // Positioned(
+          //   top:0,
+          //   right: 0,
+          //   left: 0,
+          //   bottom: 0,
+          //   child: Opacity(
+          //     opacity: checkOpacity,
+          //     child: SvgPicture.asset(
+          //       "images/check_mark_dark.svg",
+          //       height: 30,
+          //     ),
+          //   ),)
         ],
       ),
     );
