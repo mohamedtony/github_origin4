@@ -126,7 +126,7 @@ class _UrlsPageState extends State<UrlsPage>  {
                 margin: EdgeInsets.only(right: 10.0, left: 30.0, top: 0.0),
                 child: InkWell(
                   onTap: (){
-                    requestAdvertiseController.insertNewLinkFields(context);
+                    requestAdvertiseController.insertNewLinkFields();
                   },
                   child: Material(
                     elevation: 6.0,

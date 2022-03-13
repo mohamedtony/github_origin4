@@ -47,6 +47,29 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
     "16",
   ];
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_){
+
+      // Add Your Code here.
+      if(mounted) {
+        if (requestAdvertiseController.isDateSaveClicked.isFalse) {
+          if (requestAdvertiseController.dateType == "fixed") {
+            print("herehere");
+            requestAdvertiseController.isFixed.value = true;
+            requestAdvertiseController.isFlixble.value = false;
+          } else {
+            requestAdvertiseController.isFixed.value = false;
+            requestAdvertiseController.isFlixble.value = true;
+          }
+        }
+      }
+
+    });
+
+  }
   // ScrollController? scrollController;
   @override
   Widget build(BuildContext context) {
@@ -132,9 +155,10 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                       if (requestAdvertiseController.isFixed.isFalse) {
                         requestAdvertiseController.isFixed.value = true;
                         requestAdvertiseController.isFlixble.value = false;
-                        requestAdvertiseController.fromDate.value = "";
+                        requestAdvertiseController.selectedTimeCounter.value = '1';
+                        /*requestAdvertiseController.fromDate.value = "";
                         requestAdvertiseController.fromAdvertisingDate.value = '2022-2-10';
-                        requestAdvertiseController.dateRange.value = DateRange();
+                        requestAdvertiseController.dateRange.value = DateRange();*/
                       }
                     },
                     child: Row(
@@ -175,6 +199,7 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
                           DateTime selectedDate;
                           if(requestAdvertiseController.fromDate.isNotEmpty){
                             print("myDate"+requestAdvertiseController.fromDate.value);
+                            requestAdvertiseController.fromDate.value = requestAdvertiseController.fromDate.value.replaceAll(" ", "");
                             DateTime endAdvertisingDateCouponDate = DateTime.parse(requestAdvertiseController.fromDate.value);
                             selectedDate = endAdvertisingDateCouponDate;
                           }else{
@@ -710,16 +735,28 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
   }
 
   @override
-  void dispose() {
+  void dispose()  {
     // TODO: implement dispose
     if (requestAdvertiseController.isDateSaveClicked.isFalse) {
-      requestAdvertiseController.endAdvertisingDate.value = '';
+      /*if(requestAdvertiseController.dateType=="fixed"){
+        print("herehere");
+        requestAdvertiseController.isFixed.value = true;
+        requestAdvertiseController.isFlixble.value = false;
+      }else{
+        requestAdvertiseController.isFixed.value = false;
+        requestAdvertiseController.isFlixble.value = true;
+      }*/
+     /* requestAdvertiseController.endAdvertisingDate.value = '';
       //requestAdvertiseController.selectedTimeCounter.value = '';
       requestAdvertiseController.fromDate.value = '';
       requestAdvertiseController.toDate.value = '';
       requestAdvertiseController.fromAdvertisingDate.value = '2022-2-10';
-      requestAdvertiseController.dateRange.value = DateRange();
+      requestAdvertiseController.dateRange.value = DateRange();*/
     }
+
+    /*Future.delayed(Duration.zero, () async {
+      await Future.delayed(Duration(seconds: 1));
+    });*/
     super.dispose();
   }
 }
