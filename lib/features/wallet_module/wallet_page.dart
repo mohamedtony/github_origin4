@@ -92,8 +92,9 @@ class WalletPage extends StatelessWidget {
             _walletController.passIndex(upperTabItems![index].id);
             print("${_walletController.tabId}");
           },
-          child:  Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: Container(
+            width: MediaQuery.of(context).size.width * .24,
+            // padding: const EdgeInsets.symmetric(horizontal: 5),
             child: SelectedTab(title: upperTabItems![index].title, id: upperTabItems![index].id,),
           )
         ) ;
