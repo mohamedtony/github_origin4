@@ -406,7 +406,7 @@ class ClientListPage extends StatelessWidget {
                 print('MyOrdersAndMyOrdersArchive');
               },),
 
-             /* ClientListItem(icon: 'images/menu_icon.svg',title: ' القائمة الثانية طلباتى',listTilePressed: (){
+              /* ClientListItem(icon: 'images/menu_icon.svg',title: ' القائمة الثانية طلباتى',listTilePressed: (){
                 // Get.toNamed('/MyOrdersAndMyOrdersArchive');
                 Get.toNamed('/AdvertisingRequestsPage');
                 print('AdvertisingRequestsPage');
@@ -430,7 +430,7 @@ class ClientListPage extends StatelessWidget {
               ClientListItem(icon: 'images/logout_icon.svg',title: 'خروج',listTilePressed: () async {
                 await storage.remove("data");
                 await storage.remove("token");
-               Get.offAllNamed('/loginPage');
+                Get.offAllNamed('/loginPage');
                 print('pressed2');
               },),
             ],
@@ -450,7 +450,7 @@ class ClientListPage extends StatelessWidget {
                 'images/croped_img.png',
                 fit: BoxFit.fill,
                 height: 500.0.h,
-                 width: 150.0,
+                width: 150.0,
               ),
             ),
           ),

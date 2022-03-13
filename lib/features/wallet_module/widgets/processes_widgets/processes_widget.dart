@@ -2,6 +2,7 @@ import 'package:advertisers/features/wallet_module/wallet_controller.dart';
 import 'package:advertisers/features/wallet_module/widgets/points_widget_chart.dart';
 import 'package:advertisers/features/wallet_module/widgets/processes_widgets/wallet_table_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class ProcessesWidget extends StatelessWidget {
@@ -12,7 +13,7 @@ class ProcessesWidget extends StatelessWidget {
     return  Column(
       children: [
         Container(
-          height: 125,
+          height: 125.h,
           child: Padding(
             padding: const EdgeInsets.only(top: 12),
             child: Center(

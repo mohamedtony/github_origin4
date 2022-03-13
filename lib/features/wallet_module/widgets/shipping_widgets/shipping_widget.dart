@@ -14,7 +14,7 @@ class ShippingWidget extends StatelessWidget {
     return  ListView(
       children: [
         Container(
-          height: 125,
+          height: 125.h,
           child: Padding(
             padding: const EdgeInsets.only(top: 12),
             child: Center(
@@ -106,14 +106,14 @@ class ShippingWidget extends StatelessWidget {
                                 // width: MediaQuery.of(context).size.width * .6,
                                 child: Directionality(
                                     textDirection: TextDirection.rtl,
-                                    child: Text("أدخل مبلغ الشحن",style: TextStyle( fontSize: 21,color: Color(0xff486ac7)),)))),
+                                    child: Text("أدخل مبلغ الشحن",style: TextStyle( fontSize: 18,color: Color(0xff486ac7)),)))),
                             SizedBox(
                               width: 25,
                             ),
 
                             Image.asset(
                               "images/income@3x.png",
-                              width: 50,
+                              width: 40,
                             ),
                           ],
                         ),
@@ -127,6 +127,7 @@ class ShippingWidget extends StatelessWidget {
 
 
                           Expanded(
+                            flex: 6,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -152,19 +153,14 @@ class ShippingWidget extends StatelessWidget {
                                           contentPadding:
                                           EdgeInsets.all(0),
 
-                                          hintStyle: TextStyle(fontSize: 24,color: Color(0XffC8714B))),
+                                          hintStyle: TextStyle(fontSize: 21,color: Color(0XffC8714B))),
                                     ),
-                                    // Text(
-                                    //   '0.0',
-                                    //   style: TextStyle(fontSize: 24,color: Color(0XffC8714B)),
-                                    //   textScaleFactor: 1.2,
-                                    // ),
                                   ),
                                 ),
                                 SizedBox(
                                   height: 4,
                                 ),
-                                Text("ريال",style: TextStyle( fontSize: 21,color: Color(0xff486ac7)),)
+                                Text("ريال",style: TextStyle( fontSize: 18,color: Color(0xff486ac7)),)
                               ],
                             ),
                           ),
@@ -172,48 +168,51 @@ class ShippingWidget extends StatelessWidget {
                             width: 25,
                           ),
 
-                          Container(
-                            // margin: const EdgeInsets.symmetric(horizontal: 5),
-                            width: 125.w,
-                            // height: 75.h,
-                            decoration:  BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                gradient:  const LinearGradient(
-                                    begin: Alignment.topRight,
-                                    end: Alignment.bottomRight,
-                                    colors: [
-                                      Color(0xff6fd3de),
-                                      Color(0xff486ac7),
-                                    ]
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey[300]!,
-                                    blurRadius: 20.0,
-                                    spreadRadius: 1.0,
-                                  )
-                                ]
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: 9,
-                                ),
-                                Image.asset(
-                                  "images/making-money@3x.png",
-                                  width: 50,
-                                ),
-                                SizedBox(
-                                  height: 1,
-                                ),
-                                Text("اشحن",style: TextStyle( fontSize: 21,color:Colors.white)),
-                                SizedBox(
-                                  height: 5,
-                                ),
+                          Expanded(
+                            flex: 4,
+                            child: Container(
+                              // margin: const EdgeInsets.symmetric(horizontal: 5),
+                              width: 105.w,
+                              // height: 75.h,
+                              decoration:  BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  gradient:  const LinearGradient(
+                                      begin: Alignment.topRight,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Color(0xff6fd3de),
+                                        Color(0xff486ac7),
+                                      ]
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey[300]!,
+                                      blurRadius: 20.0,
+                                      spreadRadius: 1.0,
+                                    )
+                                  ]
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 9,
+                                  ),
+                                  Image.asset(
+                                    "images/making-money@3x.png",
+                                    width: 50,
+                                  ),
+                                  SizedBox(
+                                    height: 1,
+                                  ),
+                                  Text("اشحن",style: TextStyle( fontSize: 16,color:Colors.white)),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
 
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ],
