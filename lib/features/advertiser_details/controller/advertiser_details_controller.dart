@@ -72,6 +72,8 @@ class AdvertisingDetailsController extends GetxController with GetTickerProvider
     print("kkk"+showInPlatform.value.toString());
     //update();
   }
+
+  String? dateType;
   // -------------------- for attachement sheet  ----------------------------------------
   RxList<FileModel>  attatechedFilesImageAndVideo =<FileModel>[].obs;
   var isAttachementSaveClicked = false.obs;
@@ -291,8 +293,11 @@ void setStateBehavior(){
     print("repeated= "+selectedTimeCounter.toString());
     try{
       if(isFlixble.isTrue){
-        if(dateRange.value.fromDate==null){
+        if((dateRange.value.fromDate ==null || (dateRange.value.fromDate!=null && dateRange.value.fromDate!.isEmpty))){
           showToast("من فضلك يرجى إختيار تاريخ الاعلان !");
+          return;
+        }else if( dateRange.value.toDate == null || (dateRange.value.toDate!=null && dateRange.value.toDate!.isEmpty)){
+          showToast("من فضلك يرجى إختيار  تاريخ الاعلان !");
           return;
         }
       }
@@ -326,7 +331,17 @@ void setStateBehavior(){
           }
         }
         print("after_return");
+        if(isFlixble.isTrue) {
+          dateType ="flixible";
+        }else{
+          dateType ="fixed";
+        }
         isDateSaveClicked.value = true;
+
+        if(isFixed.isTrue) {
+          selectedTimeCounter.value = "1";
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("تم حفظ تاريخ الاعلان بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
 
@@ -552,8 +567,8 @@ void setStateBehavior(){
     markerIcon = await getBytesFromAsset('images/location_icon.png', 70);
 
     //---------------------- for urls page ------------------------------------------------
-    textUrlControllers.add(TextEditingController());
-    urlControllers.add(TextEditingController());
+   // textUrlControllers.add(TextEditingController());
+   // urlControllers.add(TextEditingController());
     animationControllers.add(AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 200),
@@ -607,17 +622,25 @@ void setStateBehavior(){
     print("MyId"+parameter.toString());
     //myToken = await storage.read("token");
     client!.getRequestDetail(parameter, "Bearer $myToken").then((value){
-      if(value.status==200 && value.data!=null){
+      if(value.status==200 && (value.data)!=null){
         requestDetailsModel.value = value.data!;
         Logger().i(value.data!.toJson());
         if (EasyLoading.isShow) {
           EasyLoading.dismiss();
         }
-        selectedCategory.value = requestDetailsModel.value.product_type!;
-        categoryId=selectedCategory.value.id!;
-        selectedAdType.value = requestDetailsModel.value.ads_type!;
-        adTypeId= selectedAdType.value.id!;
-        if(value.data?.date_type!=null) {
+        if((requestDetailsModel.value.product_type)!=null) {
+          selectedCategory.value = requestDetailsModel.value.product_type!;
+        }
+        if((selectedCategory.value.id)!=null) {
+          categoryId = selectedCategory.value.id!;
+        }
+        if((requestDetailsModel.value.ads_type)!=null){
+          selectedAdType.value = requestDetailsModel.value.ads_type!;
+          adTypeId= selectedAdType.value.id!;
+        }
+
+        if((value.data?.date_type)!=null) {
+          dateType = value.data?.date_type;
           if(value.data?.date_type=="fixed"){
              isFixed.value = true;
              isFlixble.value = false;
@@ -626,73 +649,106 @@ void setStateBehavior(){
             isFlixble.value = true;
           }
         }
-        if(value.data?.description!=null) {
+        if((value.data?.description)!=null && value.data!.description!.isNotEmpty) {
           print("descController"+value.data!.description!);
           decriptionText.value = value.data!.description!;
           descController.text = value.data!.description!;
         }
-        if(value.data?.links!=null){
-          print("descController"+value.data!.links![0].toString());
+        if((value.data?.links)!=null && (value.data?.links?.length)!=null && (value.data?.links!.length)! > 0){
+          //print("descController"+value.data!.links![0].toString());
           urlList.value = value.data!.links!;
+         // numOfLinks.value = value.data!.links!.length;
+          value.data?.links?.asMap().forEach((index,element) {
+            if(index==0){
+              textUrlControllers.add(TextEditingController(text: element.name));
+              urlControllers.add(TextEditingController(text: element.link));
+            }else {
+              insertNewLinkFields(textUrl: element.name, url: element.link);
+            }
+          });
         }
-        if(value.data?.address!=null){
-          placeNameController.text =  value.data!.address!.name!;
+        if((value.data?.address)!=null){
+          if((value.data?.address?.name)!=null && (value.data!.address!.name!.isNotEmpty)) {
+            placeNameController.text = value.data!.address!.name!;
+          }
+          if((value.data?.address?.address)!=null && (value.data!.address!.address!.isNotEmpty)) {
             placeAddressController.text = value.data!.address!.address!;
             locationText.value = value.data!.address!.address!;
+          }
+          if((value.data?.address?.address)!=null && (value.data!.address!.address!.isNotEmpty)) {
+            placeAddressController.text = value.data!.address!.address!;
+          }
+
             locationModel.value = value.data!.address!;
-            if(mapController.isCompleted) {
+
+          if(locationModel.value.lng!=null && locationModel.value.lat!=null) {
+            if (mapController.isCompleted) {
               onMapClicked(position: LatLng(
                   double.parse(locationModel.value.lat!),
                   double.parse(locationModel.value.lng!)));
             }
+          }
         }
         Logger().i(value.data!.toJson());
-        if(value.data!.channels!=null && value.data!.channels!.isNotEmpty) {
+        if((value.data?.channels)!=null && (value.data?.channels?.length)!=null && (value.data!.channels!.length) >0 &&value.data!.channels!.isNotEmpty) {
           channelsForList.value = value.data!.channels!;
           value.data!.channels!.forEach((element) {
             channelsIds.add(element.id!);
           });
+         // List<Channel> tempChannels = [];
           value.data!.channels!.asMap().forEach((index,element) {
-            channels.value[index].isTapped.value = true;
+            int? ind = channels.indexWhere((element2) => element2.id == element.id);
+            if(ind!=null){
+              channels.value[ind].isTapped.value = true;
+            }
           });
 
         }
 
         if(value.data?.copon!=null){
-          if(value.data?.copon?.image!=null && value.data!.copon!.image!.isNotEmpty)
+          if((value.data?.copon?.image)!=null && value.data!.copon!.image!.isNotEmpty) {
             imagePathCopon.value = value.data!.copon!.image!;
+          }
 
-          if(value.data?.copon?.code!=null && value.data!.copon!.code!.isNotEmpty)
+          if((value.data?.copon?.code)!=null && value.data!.copon!.code!.isNotEmpty) {
             coponNumberController!.text = value.data!.copon!.code!;
+          }
 
-          if(value.data?.copon?.name!=null && value.data!.copon!.name!.isNotEmpty)
+          if((value.data?.copon?.name)!=null && value.data!.copon!.name!.isNotEmpty) {
             coponNameController!.text = value.data!.copon!.name!;
+          }
 
-          if(value.data?.copon?.discount!=null)
-            coponDiscountController!.text = value.data!.copon!.discount!.toString();
+          if((value.data?.copon?.discount)!=null) {
+            coponDiscountController!.text =
+                value.data!.copon!.discount!.toString();
+          }
 
-          if(value.data?.copon?.uses!=null)
+          if((value.data?.copon?.uses)!=null ) {
             coponUsesController!.text = value.data!.copon!.uses!.toString();
+          }
 
-          if(value.data?.copon?.uses!=null)
-            endAdvertisingDateCoupon.value = value.data!.copon!.ended_at!.toString();
+          if((value.data?.copon?.ended_at)!=null && value.data!.copon!.ended_at!.isNotEmpty) {
+            endAdvertisingDateCoupon.value =
+                value.data!.copon!.ended_at!.toString();
+          }
 
-          if(value.data?.copon?.link!=null)
+          if((value.data?.copon?.link)!=null && value.data!.copon!.link!.isNotEmpty) {
             coponLinkController!.text = value.data!.copon!.link!.toString();
+          }
 
 
         }
 
-        if(value.data?.notes!=null && value.data!.notes!.isNotEmpty) {
+        if((value.data?.notes)!=null && value.data!.notes!.isNotEmpty) {
           noticeController!.text = value.data!.notes!;
           noticeText.value =  value.data!.notes!;
         }
-        if(value.data?.started_at!=null && value.data!.started_at!.isNotEmpty){
+        if((value.data?.started_at)!=null && value.data!.started_at!.isNotEmpty){
           fromDate.value = value.data!.started_at!;
           dateRange.value.fromDate = value.data!.started_at!;
           fromAdvertisingDate.value = value.data!.started_at!;
         }
-        if(value.data?.ended_at!=null && value.data!.ended_at!.isNotEmpty){
+        if((value.data?.ended_at)!=null && value.data!.ended_at!.isNotEmpty){
           toDate.value = value.data!.ended_at!;
           dateRange.value.toDate = value.data!.ended_at!;
         }
@@ -703,11 +759,11 @@ void setStateBehavior(){
 
         }*/
 
-        if(value.data?.copon!=null ){
+        if((value.data?.copon)!=null && (value.data?.copon?.code)!=null ){
           coponModel.value = value.data!.copon!;
         }
 
-        if(value.data?.repeat_count!=null){
+        if((value.data?.repeat_count)!=null){
           selectedTimeCounter.value = value.data!.repeat_count!.toString();
           selectedCounterController.text = value.data!.repeat_count!.toString();
         }
@@ -727,10 +783,10 @@ void setStateBehavior(){
   }
 
 //================================== url sheet ==========================================
-  void insertNewLinkFields(BuildContext context){
+  void insertNewLinkFields({String? textUrl,String? url}){
     if(numOfLinks.value==0){
-      textUrlControllers.add(TextEditingController());
-      urlControllers.add(TextEditingController());
+      textUrlControllers.add(TextEditingController(text: textUrl ));
+      urlControllers.add(TextEditingController(text: url));
       animationControllers.add(AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 200),
