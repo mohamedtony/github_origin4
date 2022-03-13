@@ -715,7 +715,7 @@ class ClientSettingPage extends StatelessWidget {
                             topLeft: Radius.circular(12.0),
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
-                    child: Obx(() => TextField(
+                    child: Obx(() => TextFormField(
                           textAlign: TextAlign.start,
                           textAlignVertical: TextAlignVertical.center,
                           controller: controller.phoneController,

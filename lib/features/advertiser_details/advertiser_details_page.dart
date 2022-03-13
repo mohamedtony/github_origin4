@@ -368,7 +368,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Row(
                             children: [
-                              Expanded(child: Obx(()=>Text('${(controller.isDateSaveClicked.isTrue && controller.dateRange.value.fromDate!=null && controller.dateRange.value.fromDate!.isNotEmpty) ? controller.dateRange.value.fromDate : (controller.requestDetailsModel.value.started_at??'')} ${(controller.isDateSaveClicked.isTrue && controller.dateRange.value.toDate!=null && controller.dateRange.value.toDate!.isNotEmpty)?':':''} ${(controller.isDateSaveClicked.isTrue && controller.dateRange.value.toDate!=null && controller.dateRange.value.toDate!.isNotEmpty) ? controller.dateRange.value.toDate : (controller.requestDetailsModel.value.ended_at ??'')}', style: TextStyle(color: Color(0xff041D67)),),
+                              Expanded(child: Obx(()=>controller.isFlixble.isTrue ? Text('${(controller.isDateSaveClicked.isTrue && controller.dateRange.value.fromDate!=null && controller.dateRange.value.fromDate!.isNotEmpty) ? controller.dateRange.value.fromDate : (controller.requestDetailsModel.value.started_at??'')} ${(controller.isDateSaveClicked.isTrue && controller.dateRange.value.toDate!=null && controller.dateRange.value.toDate!.isNotEmpty)?':':''} ${(controller.isDateSaveClicked.isTrue && controller.dateRange.value.toDate!=null && controller.dateRange.value.toDate!.isNotEmpty) ? controller.dateRange.value.toDate : (controller.requestDetailsModel.value.ended_at ??'')}', style: TextStyle(color: Color(0xff041D67)),):Text('${(controller.isDateSaveClicked.isTrue && controller.fromAdvertisingDate.value!.isNotEmpty) ? controller.fromAdvertisingDate.value: (controller.requestDetailsModel.value.started_at??'')}', style: TextStyle(color: Color(0xff041D67)),),
                               )
                               ),
                               Container(
@@ -377,7 +377,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                 width: 2,
                                 color: Colors.grey[400],
                               ),
-                              Obx(()=>Text('${controller.isDateSaveClicked.isTrue ? controller.selectedCounterController.text : controller.selectedTimeCounter.value}', style: TextStyle(color: Color(0xff041D67)),),)
+                              Obx(()=>Text('${controller.isDateSaveClicked.isTrue && controller.isFlixble.isTrue ? controller.selectedCounterController.text : controller.selectedTimeCounter.value}', style: TextStyle(color: Color(0xff041D67)),),)
                             ],
                           ),
                         ),
@@ -797,7 +797,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
-                          child: Obx(()=>controller.coponModel.value.id!=null?Row(
+                          child: Obx(()=> (controller.coponModel.value.code)!=null?Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(

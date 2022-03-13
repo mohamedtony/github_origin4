@@ -5,6 +5,7 @@ import 'package:advertisers/features/request_advertise_module/controller/request
 import 'package:advertisers/shared/gradient_check_box/gradient_check_box.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -30,9 +31,11 @@ class _AdvertisingChannelsPageState extends State<AdvertisingChannelsPage> {
     // TODO: implement initState
      print("sss= "+requestAdvertiseController.showInPlatform.value.toString());
     super.initState();
+
   }
   @override
   Widget build(BuildContext context) {
+     print("width: "+MediaQuery.of(context).size.width.toString() + "height: "+MediaQuery.of(context).size.height.toString() );
     return Container(
       child: ListView(
         controller: this.widget.scrollController,
@@ -97,14 +100,20 @@ class _AdvertisingChannelsPageState extends State<AdvertisingChannelsPage> {
                 shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                 itemCount: requestAdvertiseController.channels.length??0,
-                gridDelegate:
+                gridDelegate:MediaQuery.of(context).size.width>700?
                 const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
-                  //childAspectRatio: 100 / 150,
+                 //childAspectRatio: 100 / 150,
                   height: 65.0,
-                  crossAxisSpacing: 20,
+                  crossAxisSpacing: 100,
                   mainAxisSpacing: 40,
-                  crossAxisCount: 3,
-                ),
+                  crossAxisCount: 4,
+                ):const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+    //childAspectRatio: 100 / 150,
+    height: 65.0,
+    crossAxisSpacing: 20,
+    mainAxisSpacing: 40,
+    crossAxisCount: 3,
+    ),
                 itemBuilder: (context, index) => Obx(()=>InkWell(
                   onTap: () => requestAdvertiseController.changeTabIndex(index, true),
                   child: Container(

@@ -438,10 +438,10 @@ class _DatePickerDialogState extends State<DatePickerDialog> with RestorationMix
 
     final Widget actions = Container(
       alignment: AlignmentDirectional.centerEnd,
-      constraints: const BoxConstraints(minHeight: 52.0),
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      constraints: const BoxConstraints(minHeight: 60.0),
+      padding: const EdgeInsets.symmetric(horizontal: 40,vertical: 100),
       child: OverflowBar(
-        spacing: 8,
+        spacing: 20,
         children: <Widget>[
           TextButton(
             onPressed: _handleCancel,
@@ -449,7 +449,9 @@ class _DatePickerDialogState extends State<DatePickerDialog> with RestorationMix
           ),
           TextButton(
             onPressed: _handleOk,
-            child: Text(widget.confirmText ?? localizations.okButtonLabel),
+            child: Container(
+              margin: EdgeInsets.all(40),
+                child: Text(widget.confirmText ?? localizations.okButtonLabel,style: TextStyle(color: Colors.deepPurple),)),
           ),
         ],
       ),
@@ -1373,7 +1375,7 @@ class _DateRangePickerDialogState extends State<DateRangePickerDialog> with Rest
         );
         final DialogTheme dialogTheme = Theme.of(context).dialogTheme;
         size = orientation == Orientation.portrait ? _inputPortraitDialogSize : _inputRangeLandscapeDialogSize;
-        insetPadding = const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0);
+        insetPadding = const EdgeInsets.symmetric(horizontal: 16.0, vertical: 70.0);
         shape = dialogTheme.shape;
         elevation = dialogTheme.elevation ?? 24;
         break;
