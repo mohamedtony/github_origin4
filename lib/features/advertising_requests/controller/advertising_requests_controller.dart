@@ -353,7 +353,7 @@ class AdvertisingRequestsController extends GetxController with StateMixin<Adver
         }
       });
 
-
+print("parentRequests ==> lenght == > ${parentRequests.length}");
       //..
       // Successfully fetched news data
       change(data, status: RxStatus.success());

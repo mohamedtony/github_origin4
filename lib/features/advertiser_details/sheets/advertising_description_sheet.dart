@@ -13,16 +13,16 @@ import 'package:advertisers/features/home_page/app_colors.dart';
 //                         By Mohamed T. Hammad
 
 //=========================================================================================
-class NoticeSheet extends StatefulWidget {
+class DecriptionSheet extends StatefulWidget {
   ScrollController? scrollController;
 
-  NoticeSheet({Key? key, this.scrollController}) : super(key: key);
+  DecriptionSheet({Key? key, this.scrollController}) : super(key: key);
 
   @override
-  State<NoticeSheet> createState() => _NoticeSheetState();
+  State<DecriptionSheet> createState() => _DecriptionSheetState();
 }
 
-class _NoticeSheetState extends State<NoticeSheet> {
+class _DecriptionSheetState extends State<DecriptionSheet> {
   AdvertisingDetailsController requestAdvertiseController=Get.find();
   @override
   void initState() {
@@ -56,7 +56,7 @@ class _NoticeSheetState extends State<NoticeSheet> {
                       //padding: EdgeInsets.all(8.0),
                       margin: EdgeInsets.only(right: 8.0),
                       child: Text(
-                        'noticeable'.tr,
+                        'وصف الاعلان',
                         style: TextStyle(color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
@@ -66,8 +66,8 @@ class _NoticeSheetState extends State<NoticeSheet> {
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 18.0),
-                      child: SvgPicture.asset(
-                        'images/notice_icon.svg',
+                      child: Image.asset(
+                        'images/chat-right-text@3x.png',
                         fit: BoxFit.fill,
                         height: 22.0,
                         width: 22.0,
@@ -123,9 +123,9 @@ class _NoticeSheetState extends State<NoticeSheet> {
                           filled: true,
                           hintStyle: TextStyle(
                               color: AppColors.tabColor),
-                          hintText: 'noticeable'.tr,
+                          hintText: 'وصف الاعلان',
                           fillColor: Colors.white70),
-                      controller: requestAdvertiseController.noticeController,
+                      controller: requestAdvertiseController.descController,
                     ),
                   ),
                 ),
@@ -139,7 +139,7 @@ class _NoticeSheetState extends State<NoticeSheet> {
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 50.0),
                     child: InkWell(
                       onTap: (){
-                        requestAdvertiseController.onNoticeSavedClicked(context);
+                        requestAdvertiseController.onDecriptionSavedClicked(context);
                       },
                       child: Material(
                         elevation: 6.0,
@@ -168,7 +168,7 @@ class _NoticeSheetState extends State<NoticeSheet> {
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 50.0),
                     child: InkWell(
                       onTap: (){
-                        requestAdvertiseController.isNoticeSaveClicked.value = false;
+                        requestAdvertiseController.isDescSaveClicked.value = false;
                         Get.back();
                       },
                       child: Material(
@@ -211,5 +211,3 @@ class _NoticeSheetState extends State<NoticeSheet> {
     super.dispose();
   }
 }
-
-

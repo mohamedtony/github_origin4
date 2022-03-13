@@ -66,6 +66,11 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   // -------------------- for attachement sheet  ----------------------------------------
   RxList<FileModel>  attatechedFilesImageAndVideo =<FileModel>[].obs;
   var isAttachementSaveClicked = false.obs;
+  List<myDio.MultipartFile>? imageFideoFiles = [];
+  List<File> imageFideoRealFiles = [];
+  final ImagePicker _picker = ImagePicker();
+  List<XFile>? images2;
+  XFile? mVideo;
 
   //---------------------- for urls page ------------------------------------------------
   RxList<LinkModel> links = <LinkModel>[].obs;
@@ -104,9 +109,9 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   myDio.MultipartFile? planFile;
 
   RxList<SelectedSocialMedia> items = <SelectedSocialMedia>[].obs;
-  final ImagePicker _picker = ImagePicker();
-   List<XFile>? images2;
-  XFile? mVideo;
+
+
+
   late final  HomeNavController controller;
   List<String> images=['images/snapshat_icon.png','images/instegram.png',
     'images/twitter.png','images/youtube.png','images/facebook.png','images/whatsup.png',];
@@ -119,7 +124,6 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   BitmapDescriptor? pinLocationIcon;
   late Uint8List markerIcon;
 
-  List<myDio.MultipartFile>? imageFideoFiles = [];
   @override
   Future<void> onInit() async {
     // TODO: implement onInit
@@ -280,6 +284,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   void deleteImage(int index){
     attatechedFilesImageAndVideo.removeAt(index);
     imageFideoFiles?.removeAt(index);
+    imageFideoRealFiles?.removeAt(index);
   }
   Future<void> showChoiceImageOrVideoDialogForAttatchement(BuildContext context)
   {
@@ -405,6 +410,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
                 .split(Platform.pathSeparator)
                 .last);
         imageFideoFiles?.add(mFile);
+        imageFideoRealFiles.add(value);
       });
     }
 
@@ -445,6 +451,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
                   .split(Platform.pathSeparator)
                   .last);
           imageFideoFiles?.add(mFile);
+          imageFideoRealFiles.add(videoFile);
           /*print("videoLength= "+videoFile.lengthSync().toString());
            await compressVideo(videoFile).then((value) async {
             print("videoLengthIn= "+value.lengthSync().toString());
@@ -468,6 +475,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
                     .split(Platform.pathSeparator)
                     .last);
             imageFideoFiles?.add(mFile);
+            imageFideoRealFiles.add(value);
           });
         }
       });
@@ -513,6 +521,7 @@ Future<File> compressVideo(File file) async {
                   .split(Platform.pathSeparator)
                   .last);
           imageFideoFiles?.add(mFile);
+          imageFideoRealFiles?.add(value);
         });
       });
     }
@@ -533,6 +542,7 @@ Future<File> compressVideo(File file) async {
             .split(Platform.pathSeparator)
             .last);
     imageFideoFiles?.add(mFile);
+    imageFideoRealFiles?.add(videoFile);
     /*print("videoLength= "+videoFile.lengthSync().toString());
      compressVideo(videoFile).then((value) async {
       print("videoLengthIn= "+value.lengthSync().toString());
@@ -629,19 +639,27 @@ Future<File> compressVideo(File file) async {
       );
     }
  }
+
   void onSaveUrlsClicked(BuildContext context) {
     if(numOfLinks.value==0){
       Get.back();
     }
     else if(textUrlControllers[numOfLinks.value-1].text.isNotEmpty && urlControllers[numOfLinks.value-1].text.isNotEmpty){
       isUrlSaveClicked.value = true;
-      Get.back();
       for(int i=0;i<numOfLinks.value;i++){
+        if(!isUrlUsingRegularExpression(urlControllers[i].text)){
+          showToast("من فضلك يجب ادخال رابط بشكل صحيح");
+          return;
+        }
         links.add(LinkModel(name: textUrlControllers[i].text,link: urlControllers[i].text));
       }
+      Get.back();
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("تم حفظ الروابط بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
     }else{
+      for(int i=0;i<numOfLinks.value;i++){
+
+      }
       Fluttertoast.showToast(
         msg: 'يجب ملئ كافة العناصر اولا !',
         toastLength: Toast.LENGTH_SHORT,
@@ -654,6 +672,20 @@ Future<File> compressVideo(File file) async {
   }
 
 //================================== dicount sheet ==========================================
+  bool isNumericUsingRegularExpression(String string) {
+    final numericRegex =
+    RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+
+    return numericRegex.hasMatch(string);
+  }
+
+  bool isUrlUsingRegularExpression(String string) {
+    final numericRegex =
+    RegExp(r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+');
+
+    return numericRegex.hasMatch(string);
+  }
+
   Future<void> showChoiceImageDialog(BuildContext context)
   {
     return showDialog(context: context,builder: (BuildContext context){
@@ -758,7 +790,11 @@ Future<File> compressVideo(File file) async {
       showToast("من فضلك قم بإدخال رقم كوبون الخصم !");
       coponNumberNode.requestFocus();
       return;
-    }else if(coponNameController?.text!=null && coponNameController!.text.isEmpty){
+    }/*else if(!isNumericUsingRegularExpression(coponNumberController!.text)){
+      showToast("من فضلك قم بإدخال رقم كوبون صحيح !");
+      coponNumberNode.requestFocus();
+      return;
+    }*/else if(coponNameController?.text!=null && coponNameController!.text.isEmpty){
       showToast("من فضلك قم بإدخال اسم كوبون الخصم !");
       coponNameNode.requestFocus();
       return;
@@ -767,12 +803,24 @@ Future<File> compressVideo(File file) async {
       showToast("من فضلك قم بإدخال نسبة الخصم!");
       coponDiscountNode.requestFocus();
       return;
+    }else if(!isNumericUsingRegularExpression(coponDiscountController!.text)){
+      showToast("من فضلك قم بإدخال نسبة خصم صحيحة!");
+      coponDiscountNode.requestFocus();
+      return;
     }else if(coponUsesController?.text!=null && coponUsesController!.text.isEmpty){
       showToast("من فضلك قم بإدخال عدد إستخدامات الكوبون !");
       coponUsesNode.requestFocus();
       return;
+    }else if(!isNumericUsingRegularExpression(coponUsesController!.text)){
+      showToast("من فضلك قم بإدخال عدد إستخدامات الكوبون بشكل صحيح!");
+      coponUsesNode.requestFocus();
+      return;
     }else if(coponLinkController?.text!=null && coponLinkController!.text.isEmpty){
       showToast("من فضلك قم بإدخال رابط المتجر !");
+      coponUrlNode.requestFocus();
+      return;
+    }else if(!isUrlUsingRegularExpression(coponLinkController!.text)){
+      showToast("من فضلك قم بإدخال رابط المتجر المتجر بشكل صحيح!");
       coponUrlNode.requestFocus();
       return;
     }else if(endAdvertisingDateCoupon!=null && endAdvertisingDateCoupon.isEmpty){
@@ -787,7 +835,7 @@ Future<File> compressVideo(File file) async {
              showToast("من فضلك قم بإدخال نسبة خصم لا تتعدى 100 %!");
             coponDiscountNode.requestFocus();
             return;
-       }else if(int.parse(coponDiscountController!.text)<100){
+       }else if(int.parse(coponDiscountController!.text)<0){
          showToast("من فضلك قم بإدخال نسبة خصم صحيحة!");
          coponDiscountNode.requestFocus();
          return;
@@ -901,8 +949,14 @@ void showToast(msg){
     if(isFixed.isTrue && fromAdvertisingDate.value=='2022-2-10'){
       showToast("من فضلك يرجى إختيار تاريخ الاعلان !");
       return;
-    }else if(isFlixble.isTrue && (selectedCounterController.text.isEmpty || (selectedCounterController.text.isNotEmpty && int.parse(selectedCounterController.text)<=0))){
-      showToast("من فضلك يرجى إختيار عدد مرات الاعلان !");
+    }else if(isFlixble.isTrue && (selectedCounterController.text.isEmpty)){
+      showToast("من فضلك يرجى إدخال عدد مرات الاعلان !");
+      return;
+    }else if(isFlixble.isTrue &&  (selectedCounterController.text.isNotEmpty && !isNumericUsingRegularExpression(selectedCounterController.text))){
+      showToast("من فضلك يرجى إدخال عدد مرات الاعلان بشكل صحيح !");
+      return;
+    }else if(isFlixble.isTrue && (selectedCounterController.text.isNotEmpty && int.parse(selectedCounterController.text)<=0)){
+      showToast("من فضلك يرجى إدخال عدد مرات الاعلان بشكل صحيح !");
       return;
     }else if(showInPlatform.isTrue && endAdvertisingDate.isEmpty){
       showToast("من فضلك يرجى إختيار تاريخ انتهاء مدة العرض فى المنصة!");
@@ -1112,6 +1166,7 @@ void showToast(msg){
   }
   var isLocationClickedSaved = false.obs;
   LocationModel locationModel = LocationModel();
+
   void onLocationClickedSaved (BuildContext context) {
     if(placeNameController.text!=null && placeNameController.text.isEmpty){
       showToast("من فضلك يرجى إضافة اسم المكان !");

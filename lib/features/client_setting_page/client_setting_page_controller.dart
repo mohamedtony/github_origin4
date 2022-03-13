@@ -40,7 +40,7 @@ class ClientSettingPageController extends GetxController  {
   var country = Country().obs;
   var area = Area().obs;
   var smsOTP = ''.obs;
-  var verificationId = '';
+  var verificationId = ''.obs;
   var countryCode ='SA'.obs;
   var phone = '';
 // switches the value between true/false
@@ -255,16 +255,16 @@ class ClientSettingPageController extends GetxController  {
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
       }
-     verificationId = verId;
+      verificationId.value = verId;
       Get.toNamed(
-          '/verificationCodePage?route=registerPhone&phone=${countryCode.value.toString() + int.parse(phoneController!.text).toString()}');
-      /*smsOTPDialog(context).then((value) {
-        print('sign in');
-      });*/
+          '/verificationCodePage?verificationId=${verificationId.value}&&route=registerPhone&phone=${countryCode.value.toString() + int.parse(phone).toString()}');
+      // smsOTPDialog(context).then((value) {
+      //   print('sign in');
+      // });
     };
     try {
-    /*  print(
-          '>>>>>>>>>>>>>>>>>>>>${countryCode.value.toString() + int.parse(phone).toString()}');*/
+      print(
+          '>>>>>>>>>>>>>>>>>>>>${countryCode.value.toString() + int.parse(phone).toString()}');
       await auth.verifyPhoneNumber(
           phoneNumber: countryCode.value.toString() +
               int.parse(phoneController!.text)
@@ -272,7 +272,7 @@ class ClientSettingPageController extends GetxController  {
           codeAutoRetrievalTimeout: (String verId) {
             //Starts the phone number verification process for the given phone number.
             //Either sends an SMS with a 6 digit code to the phone number specified, or sign's the user in and [verificationCompleted] is called.
-            verificationId = verId;
+            verificationId.value = verId;
           },
           codeSent:
           smsOTPSent, // WHEN CODE SENT THEN WE OPEN DIALOG TO ENTER OTP.
@@ -288,7 +288,12 @@ class ClientSettingPageController extends GetxController  {
               backgroundColor: Colors.red,
               snackPosition: SnackPosition.BOTTOM,
             );
-          });
+
+          }).then((value) {
+
+        print('>>>>>>>>>>>>>>${auth.currentUser}');
+      });
+
     } on Exception catch (_, e) {
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
@@ -368,6 +373,29 @@ class ClientSettingPageController extends GetxController  {
     Navigator.pop(context);
   }
 
+  FocusNode nameFocusNode = FocusNode();
+  FocusNode kayanNameNode = FocusNode();
+  FocusNode accountNameNode = FocusNode();
+  FocusNode accountOwnerNode = FocusNode();
+  FocusNode userNameNode = FocusNode();
+  FocusNode phoneControllerNode = FocusNode();
+  FocusNode emailControllerNode = FocusNode();
+  FocusNode sglNumberNode = FocusNode();
+  FocusNode personalIdNode = FocusNode();
+  bool isNumericUsingRegularExpression(String string) {
+    final numericRegex =
+    RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+
+    return numericRegex.hasMatch(string);
+  }
+  bool isValidEmailUsingRegularExpression(String string) {
+    final numericRegex =
+    RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
+    return numericRegex.hasMatch(string);
+  }
+
+
   void saveButtonClicked(context) async{
 
  /*   await client!.updateMyProfile(UpdateProfileRequest(username: "MohamedEltony",account_name: " Eltony",email: "mohamedtony349@yahoo.com",phone: "201111046148",country_id: 4,area_id: 9,role: 'user',type: 'client',personal_id: "5666660609"),"application/json",file: File(imagePath.value) ).then((value) {
@@ -379,33 +407,60 @@ class ClientSettingPageController extends GetxController  {
     await initPlatformState();
     if (accountType.value=="client" && userNameController!.text.isEmpty) {
       showMyToast("من فضلك ادخل الاسم !",true,context);
+      userNameNode.requestFocus();
       return;
     }else if (accountType.value=="company" && kayanNameController!.text.isEmpty) {
       showMyToast("من فضلك ادخل اسم الكيان !",true,context);
+      kayanNameNode.requestFocus();
       return;
     }else if (accountNameEdit!.text.isEmpty) {
       showMyToast("من فضلك ادخل اسم الحساب !",true,context);
+      accountNameNode.requestFocus();
       return;
     }else if (accountType.value=="company" && accountOwner!.text.isEmpty) {
       showMyToast("من فضلك ادخل اسم صاحب الحساب !",true,context);
+      accountOwnerNode.requestFocus();
       return;
-    }if (accountType.value=="company" && userNameController!.text.isEmpty) {
+    }
+    if (accountType.value=="company" && userNameController!.text.isEmpty) {
       showMyToast("من فضلك ادخل الاسم !",true,context);
+      userNameNode.requestFocus();
       return;
     } else if (phoneController!.text.isEmpty) {
       showMyToast("من فضلك ادخل رقم الجوال !",true,context);
+      phoneControllerNode.requestFocus();
+      return;
+    }else if (!isNumericUsingRegularExpression(phoneController!.text)) {
+      showMyToast("من فضلك ادخل رقم الجوال بشكل صحيح!",true,context);
+      phoneControllerNode.requestFocus();
       return;
     } else if (!isValidPhone.value) {
       showMyToast("رقم الجوال وكود الدولة غير متطابقين !",true,context);
+      phoneControllerNode.requestFocus();
       return;
     }else if (emailController!.text.isEmpty) {
       showMyToast("من فضلك ادخل الايميل الالكترونى !",true,context);
+      emailControllerNode.requestFocus();
+      return;
+    }else if (!isValidEmailUsingRegularExpression(emailController!.text)) {
+      showMyToast("من فضلك ادخل الايميل الالكترونى بشكل صحيح !",true,context);
+      emailControllerNode.requestFocus();
       return;
     } else if (accountType.value=="company" && sglNumberController!.text.isEmpty) {
       showMyToast("من فضلك ادخل رقم السجل !",true,context);
+      sglNumberNode.requestFocus();
+      return;
+    }else if (accountType.value=="company" && !isNumericUsingRegularExpression(sglNumberController!.text)) {
+      showMyToast("من فضلك ادخل رقم السجل بشكل صحيح !",true,context);
+      sglNumberNode.requestFocus();
       return;
     } else if (accountType.value=="client" && personalIdController!.text.isEmpty) {
       showMyToast("من فضلك ادخل رقم الهوية !",true,context);
+      personalIdNode.requestFocus();
+      return;
+    }else if (accountType.value=="client" && !isNumericUsingRegularExpression(personalIdController!.text)) {
+      showMyToast("من فضلك ادخل رقم الهوية بشكل صحيح !",true,context);
+      personalIdNode.requestFocus();
       return;
     } else{
       print("hereeee1");
@@ -422,6 +477,7 @@ class ClientSettingPageController extends GetxController  {
         });
       }else{
         print("accountType.value"+accountType.value);
+
         await client!.updateMyProfile("application/json","Bearer "+myToken!,company_name: kayanNameController!.text,account_name: accountNameEdit!.text,manager_name: accountOwner!.text,phone: e164.value.replaceFirst("+", ""),email: emailController!.text,type: accountType.value,role: clientProfileModel.value.role,sgl: sglNumberController!.text.isEmpty?null:sglNumberController!.text,area_id: area.value.id,country_id: country.value.id,isChat:  isChat.value?1:0,isNotification:isNotification.value?1:0,file: imageFile).then((value){
           print("myHere"+value.status.toString());
           print("myHere"+value.message.toString());
@@ -432,7 +488,7 @@ class ClientSettingPageController extends GetxController  {
           }
         });
       }
-
+      FocusManager.instance.primaryFocus?.unfocus();
     }
 
   }
@@ -453,13 +509,22 @@ class ClientSettingPageController extends GetxController  {
        //fontFamily: 'Arabic-Regular',
         fontSize: 16.0);*/
   }
-
   @override
   void onClose() {
     // TODO: implement onClose
-    phoneController?.dispose();
+     nameFocusNode.dispose();
+     kayanNameNode.dispose();
+     accountNameNode.dispose();
+     accountOwnerNode.dispose();
+     userNameNode.dispose();
+     phoneControllerNode.dispose();
+     emailControllerNode.dispose();
+     sglNumberNode.dispose();
+     personalIdNode.dispose();
+
     super.onClose();
   }
+
   @override
   // TODO: implement onDelete
   InternalFinalCallback<void> get onDelete => super.onDelete;

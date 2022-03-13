@@ -115,7 +115,7 @@ class ActivitiesBottomSheet extends StatelessWidget {
                 height: 60,
                 margin: const EdgeInsets.only(left: 14.0, right: 14.0, top: 10.0),
                 padding:
-                    const EdgeInsets.only(left: 14.0, right: 14.0, top: 6, bottom: 6),
+                    const EdgeInsets.only(left: 14.0, right: 14.0, top: 6, bottom: 2),
                 child: Text(
                   'اختر النشاطات التجارية التى ترغب أو انت متخصص فى الاعلان لها عادة',
                   style: TextStyle(
