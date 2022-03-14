@@ -45,26 +45,10 @@ class ChatContentWidget extends StatelessWidget {
         elevation: 3,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-            topRight:
-                Get.locale?.languageCode == const Locale('en').languageCode &&
-                        chatUser == ChatUser.sender
-                    ? const Radius.circular(35.0)
-                    : const Radius.circular(15.0),
-            bottomRight:
-                Get.locale?.languageCode == const Locale('en').languageCode &&
-                        chatUser == ChatUser.sender
-                    ? const Radius.circular(35.0)
-                    : const Radius.circular(15.0),
-            topLeft:
-                Get.locale?.languageCode == const Locale('ar').languageCode &&
-                        chatUser == ChatUser.sender
-                    ? const Radius.circular(35.0)
-                    : const Radius.circular(15.0),
-            bottomLeft:
-                Get.locale?.languageCode == const Locale('ar').languageCode &&
-                        chatUser == ChatUser.sender
-                    ? const Radius.circular(35.0)
-                    : const Radius.circular(15.0),
+            topRight:Radius.circular(35.0),
+            bottomRight:Radius.circular(35.0),
+            topLeft:Radius.circular(35.0),
+            bottomLeft:Radius.circular(35.0),
           ),
         ),
         child: Row(
@@ -72,15 +56,25 @@ class ChatContentWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (chatUser == ChatUser.receiver)
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 0.0),
-                child: CircleAvatar(
-                  radius: 35,
-                  foregroundImage: NetworkImage(
-                    'https://www.neshanstyle.com/blog/wp-content/uploads/2019/11/122-1-710x434.jpg',
-                  ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(100.0),
+                child: Image.network(
+                  'https://www.neshanstyle.com/blog/wp-content/uploads/2019/11/122-1-710x434.jpg',
+                  height: 50.0,
+                  width: 50.0,
+                  fit: BoxFit.cover,
                 ),
               ),
+              //  Container(
+              //    height: 50,
+              //    padding: EdgeInsets.symmetric(horizontal: 0.0),
+              //   child: CircleAvatar(
+              //     radius: 35,
+              //     foregroundImage: NetworkImage(
+              //       'https://www.neshanstyle.com/blog/wp-content/uploads/2019/11/122-1-710x434.jpg',
+              //     ),
+              //   ),
+              // ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -101,10 +95,7 @@ class ChatContentWidget extends StatelessWidget {
                       ),
                     ),
                     Align(
-                      alignment: Get.locale?.languageCode ==
-                              const Locale('en').languageCode
-                          ? Alignment.bottomRight
-                          : Alignment.bottomLeft,
+                      alignment: Alignment.bottomLeft,
                       child: Text(
                         'منذ 3.5 ساعة',
                         style: TextStyle(
@@ -121,15 +112,27 @@ class ChatContentWidget extends StatelessWidget {
               ),
             ),
             if (chatUser == ChatUser.sender)
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 0.0),
-                child: CircleAvatar(
-                  radius: 35,
-                  foregroundImage: NetworkImage(
-                    'https://www.neshanstyle.com/blog/wp-content/uploads/2019/11/122-1-710x434.jpg',
-                  ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(100.0),
+                child: Image.network(
+                  'https://www.neshanstyle.com/blog/wp-content/uploads/2019/11/122-1-710x434.jpg',
+                  height: 50.0,
+                  width: 50.0,
+                  fit: BoxFit.cover,
                 ),
               ),
+             //   Center(
+             //     child: Container(
+             //      height: 50,
+             //      padding: EdgeInsets.symmetric(horizontal: 0.0),
+             //      child: CircleAvatar(
+             //        radius: 35,
+             //        foregroundImage: NetworkImage(
+             //          'https://www.neshanstyle.com/blog/wp-content/uploads/2019/11/122-1-710x434.jpg',
+             //        ),
+             //      ),
+             //  ),
+             // ),
           ],
         ),
       ),

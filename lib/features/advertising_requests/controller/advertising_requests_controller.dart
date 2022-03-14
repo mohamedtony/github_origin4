@@ -71,6 +71,8 @@ class AdvertisingRequestsController extends GetxController with StateMixin<Adver
   }
 
   void restAll(){
+   parentRequests.clear();
+    parentRequestsIds.clear();
     selectedCities = '0'.obs;
     areas!.clear();
     searchController.clear();
@@ -83,15 +85,14 @@ class AdvertisingRequestsController extends GetxController with StateMixin<Adver
     searchCustomerController.clear();
   }
 
-  late String token;
-  late Repository repo;
+  // late String token;
+  // late Repository repo;
 
   final ApiService _apiService = Get.put(ApiService());
 
   int page = 0;
   var currentIndex=0.obs;
   List <ParentRequests> parentRequests = [];
-
   List<int> parentRequestsIds=[];
 
   List<int>? checkListClickProfile = [];
@@ -179,21 +180,16 @@ class AdvertisingRequestsController extends GetxController with StateMixin<Adver
 
   @override
   void onInit() {
-    token =storage.read("token");
-    repo=Repository();
+    restAll();
     loadMore();
     fetchAdvertisingRequests(pageZero: false);
-    restAll();
     super.onInit();
   }
 
   void loadMore()async{
     scrollController?.addListener(() async {
-      print("XXXXX ${scrollController?.position.pixels} XXXXXscrollController?.position.pixels");
       if (scrollController?.position.maxScrollExtent ==
           scrollController?.position.pixels) {
-        print("XXXXX ${scrollController?.position.pixels} XXXXXscrollController?.position.pixels");
-        // page++;
         fetchAdvertisingRequests(pageZero: false);
       }
     });
@@ -348,16 +344,16 @@ class AdvertisingRequestsController extends GetxController with StateMixin<Adver
     try {
       final dio.Response response = await _apiService.dioClient.get(
         url,
-        // 'https://advertiser.cefour.com/api/v1/myrequests?page=$page',
       );
       final data = AdvertisingRequestsResponse.fromJson(response.data);
-        data!.data!.parentRequests!.forEach((request) {
-          if(!parentRequestsIds.contains(request.id)){
-            parentRequests.add(request);
-            parentRequestsIds.add(request.id!);
-          }
-        });
+      data!.data!.parentRequests!.forEach((request) {
+        if(!parentRequestsIds.contains(request.id)){
+          parentRequests.add(request);
+          parentRequestsIds.add(request.id!);
+        }
+      });
 
+print("parentRequests ==> lenght == > ${parentRequests.length}");
       //..
       // Successfully fetched news data
       change(data, status: RxStatus.success());

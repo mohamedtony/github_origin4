@@ -251,7 +251,7 @@ class RegisterNewClientUser extends StatelessWidget {
                     _registerNewClientUserController.password = value!;
                   },
                   validator: (value) {
-                    // return _registerNewClientUserController.validatePassword(value!);
+                     return _registerNewClientUserController.validatePassword(value!);
                   },
                 ),
                 SizedBox(height: 16.h),
@@ -459,7 +459,7 @@ class RegisterNewClientUser extends StatelessWidget {
     return showDialog(context: context,builder: (BuildContext context){
 
       return AlertDialog(
-        title: Text("Choose option",style: TextStyle(color: Colors.blue),),
+        title: Text("اختر",style: TextStyle(color: Colors.blue),),
         content: SingleChildScrollView(
           child: ListBody(
             children: [
@@ -497,7 +497,7 @@ class RegisterNewClientUser extends StatelessWidget {
                   });
                   Navigator.pop(context);
                 },
-                title: Text("Gallery"),
+                title: Text("المعرض"),
                 leading: Icon(Icons.account_box,color: Colors.blue,),
               ),
 
@@ -536,7 +536,7 @@ class RegisterNewClientUser extends StatelessWidget {
 
                   Navigator.pop(context);
                 },
-                title: Text("Camera"),
+                title: Text("الكاميرا"),
                 leading: Icon(Icons.camera,color: Colors.blue,),
               ),
             ],
