@@ -36,6 +36,8 @@ import 'package:advertisers/features/customer_order_invoice_out_puts/view/custom
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/features/employees/view/AddEmployeePage.dart';
 import 'package:advertisers/features/employees/view/EmployeesPage.dart';
+import 'package:advertisers/features/help_and_support/help_and_support_page.dart';
+import 'package:advertisers/features/help_and_support/partener_success_page/partner_success_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation.dart';
 import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
 import 'package:advertisers/features/my_orders/view/my_orders_page.dart';
@@ -133,6 +135,15 @@ class Routes {
     GetPage(
       name: '/BlockedUsersPage',
       page: () => BlockedUsersPage(),
+    ),
+    GetPage(
+      name: '/PartnerSuccessPage',
+      page: () => PartnerSuccessPage(),
+
+    ),
+    GetPage(
+      name: '/HelpAndSupportPage',
+      page: () => HelpAndSupportPage(),
 
     ),
     GetPage(

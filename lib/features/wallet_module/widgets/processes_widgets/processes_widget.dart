@@ -3,6 +3,7 @@ import 'package:advertisers/features/wallet_module/widgets/points_widget_chart.d
 import 'package:advertisers/features/wallet_module/widgets/processes_widgets/wallet_table_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class ProcessesWidget extends StatelessWidget {

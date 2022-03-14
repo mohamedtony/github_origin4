@@ -1,4 +1,6 @@
 import 'package:advertisers/features/help_and_support/help_and_support_card.dart';
+import 'package:advertisers/features/help_and_support/title_support_widget.dart';
+import 'package:advertisers/features/users_module/app_colors.dart';
 import 'package:advertisers/shared/widget_and_title/widget_and_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,45 +12,70 @@ class HelpAndSupportPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: [
-          WidgetAndTitle(
-            title: "قنوات الإعلان والتأثير",
-            iconWidget: SvgPicture.asset(
-              "images/lamba.svg",
-              height: 23,
-              color: Color(0xc44184ce),
+      body: SafeArea(
+        child: ListView(
+          children: [
+            Container(
+              height: 60,
+              decoration: BoxDecoration(
+        color: AppColors.verifyFayrouzyFirst,
+          gradient: LinearGradient(
+              colors: [
+                AppColors.verifyFayrouzyFirst.withOpacity(.99),
+                AppColors.verifyBlueSecond.withOpacity(.99),
+                AppColors.verifyGreenThird
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [-.7, 20.5, .5]),
+        ),
+              width: MediaQuery.of(context).size.width,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Padding(
+                  padding: EdgeInsetsDirectional.only(end: 32.8.w),
+                  child: Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: SvgPicture.asset('images/arrow_back.svg',
+                        height: 47.h, fit: BoxFit.fitHeight),
+                  ),
+                ),
+              ),
             ),
-          ),
-          SizedBox(
-            child:SvgPicture.asset(
-              "images/help.svg",
-              height: 269.43.h,
-              width: 322.43.w,
+         const TitleSupportWidget(title: "الدعم والمساعدة", image: 'images/lamba.svg'),
 
+            SizedBox(
+              child:SvgPicture.asset(
+                "images/help.svg",
+                height: 269.43.h,
+                width: 322.43.w,
+
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                HelpAndSupportCard(image: 'images/lamba.svg',title: 'الأسئلة المتكررة',),
-                HelpAndSupportCard(image: 'images/lamba.svg',title: 'الدعم والتواصل',)
-              ],
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  HelpAndSupportCard(image: 'images/questions.svg',title: 'الأسئلة المتكررة',),
+                  HelpAndSupportCard(image: 'images/callSupport.svg',title: 'الدعم والتواصل',)
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                HelpAndSupportCard(image: 'images/lamba.svg',title: 'شركاء النجاح',),
-                HelpAndSupportCard(image: 'images/lamba.svg',title: 'فديوهات تعريفية',)
-              ],
-            ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  HelpAndSupportCard(image: 'images/sucess.svg',title: 'شركاء النجاح',),
+                  HelpAndSupportCard(image: 'images/video-gallery-line.svg',title: 'فديوهات تعريفية',)
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
