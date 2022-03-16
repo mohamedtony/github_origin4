@@ -419,7 +419,7 @@ class ClientListPage extends StatelessWidget {
               },),
 
               ClientListItem(icon: 'images/help_icon.svg',title: 'الدعم والمساعدة',color:AppColors.tabColor,listTilePressed: (){
-                print('pressed2');
+    Get.toNamed("/HelpAndSupportPage");
               },),
               ClientListItem(icon: 'images/share_icon2.svg',title: 'شارك التطبيق',listTilePressed: (){
                 print('pressed2');

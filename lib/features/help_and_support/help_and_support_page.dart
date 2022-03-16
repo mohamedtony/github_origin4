@@ -5,6 +5,7 @@ import 'package:advertisers/shared/widget_and_title/widget_and_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class HelpAndSupportPage extends StatelessWidget {
   const HelpAndSupportPage({Key? key}) : super(key: key);
@@ -59,8 +60,15 @@ class HelpAndSupportPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  HelpAndSupportCard(image: 'images/questions.svg',title: 'الأسئلة المتكررة',),
-                  HelpAndSupportCard(image: 'images/callSupport.svg',title: 'الدعم والتواصل',)
+                  InkWell(
+                      onTap:(){
+              Get.toNamed("/RedudndancyQuestionsPage") ;
+            },
+                      child: HelpAndSupportCard(image: 'images/questions.svg',title: 'الأسئلة المتكررة',)),
+                  InkWell(
+                      onTap:(){
+
+                      },child: HelpAndSupportCard(image: 'images/callSupport.svg',title: 'الدعم والتواصل',))
                 ],
               ),
             ),
@@ -69,8 +77,14 @@ class HelpAndSupportPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  HelpAndSupportCard(image: 'images/sucess.svg',title: 'شركاء النجاح',),
-                  HelpAndSupportCard(image: 'images/video-gallery-line.svg',title: 'فديوهات تعريفية',)
+                  InkWell(
+                      onTap:(){
+                        Get.toNamed("/PartnerSuccessPage") ;
+                      },child: HelpAndSupportCard(image: 'images/sucess.svg',title: 'شركاء النجاح',)),
+                  InkWell(
+                      onTap:(){
+                        Get.toNamed("/GuidesVideosPage") ;
+                      },child: HelpAndSupportCard(image: 'images/video-gallery-line.svg',title: 'فديوهات تعريفية',))
                 ],
               ),
             )
