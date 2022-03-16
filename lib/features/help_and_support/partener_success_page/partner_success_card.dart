@@ -35,8 +35,11 @@ final String title,text,image;
             ),
 
           Positioned(
-            left: -21.5,
-            child: SvgPicture.asset(image,height: 44.h,width: 44.w,),
+            left: -18.5,
+            child: Container(
+                width:34.w,
+              color: Colors.white,
+                child: SvgPicture.asset(image,height: 34.h,width: 34.w,)),
           )
           ],
         ),

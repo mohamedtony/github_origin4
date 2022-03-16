@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/features/users_module/app_colors.dart';
 import 'package:advertisers/features/users_module/controller/login_controller.dart';
 import 'package:advertisers/features/users_module/controller/register_new_client_user_controller.dart';
@@ -149,15 +150,16 @@ class RegisterNewClientUser extends StatelessWidget {
                 ),
                 AdvertisersDropDown(
                   hintText: 'type'.tr,
+                  areas:[Area()],
                   width: 0,showSearchBox: false,
                   itemType: 'String',
                   items: const ['ذكر', 'أنثى'],
                   onChanged: (val) {
                     if (val == 'ذكر') {
-                      _registerNewClientUserController.gender.value = 'user';
-                    } else if (val == 'معلن') {
+                      _registerNewClientUserController.gender.value = 'male';
+                    } else if (val == 'أنثى') {
                       _registerNewClientUserController.gender.value =
-                          'أنثى';
+                          'female';
                     }
                   },
                 ),
@@ -228,7 +230,7 @@ class RegisterNewClientUser extends StatelessWidget {
                   textAlignment: TextAlign.end,
                   hintText: 'nationalId'.tr,
                   onChanged: (val) {
-                    // _registerNewClientUserController.nationalIDMessValid.value=true;
+                     //_registerNewClientUserController.nationalID=val;
                   },
                   onSaved: (value) {
                     _registerNewClientUserController.nationalID = value!;
@@ -261,28 +263,54 @@ class RegisterNewClientUser extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
 
-                        Obx(() => AdvertisersDropDown(
-                              hintText: 'المدينة',
-                              width: 150.w,
-                              items:
-                                  _registerNewClientUserController.areas.value,
-                              onChanged: (area) {
-                                _registerNewClientUserController.areaId.value =
-                                    area.id.toString();
-                              },
-                            )),
+                        Obx(() =>InkWell(
+                          onTap: (){
+                            _registerNewClientUserController.empty.value=false;
+                          },
+                          child: AdvertisersDropDown(
+                            // key: ValueKey('clientCity'),
+                                hintText: 'المدينة',itemType: 'city',
+                                index:_registerNewClientUserController.index.value,
+                                empty: _registerNewClientUserController.empty.value,
+                                areas: Get.find<RegisterNewClientUserController>().areas??[],
+                                width: 150.w,
+                                items:
+                                    _registerNewClientUserController.areas.value,
+                                onChanged: (area) {
+                                  _registerNewClientUserController.index.value=_registerNewClientUserController.areas.indexOf(area);
+                                  _registerNewClientUserController.empty.value=false;
+                                  _registerNewClientUserController.areaId.value =
+                                      area.id.toString();
+
+                                },onBeforeChanged: (l,v){
+                            _registerNewClientUserController.empty.value=false;
+                            return Future.value(true);
+                          },
+                              ),
+                        )),
                         Obx(
                               () => AdvertisersDropDown(
-                            hintText: 'الدولة',
+                            hintText: 'الدولة',itemType: 'country',
+                            key: ValueKey('clientCountry'),
+                            empty:false,
                             width: 150.w,
+                                areas:[Area()],
                             items: _registerNewClientUserController
                                 .countries.value,
                             onChanged: (country) {
+                              _registerNewClientUserController.empty.value=true;
                               _registerNewClientUserController.countryId.value =
                                   country.id.toString();
+                              Get.find<RegisterNewClientUserController>().country.value=country;
                               _registerNewClientUserController
                                   .changeAreas(country);
-                            },
+
+
+
+                            }, onBeforeChanged: (l,v){
+                                _registerNewClientUserController.empty.value=true;
+                                return Future.value(true);
+                              },
                           ),
                         ),
                       ],

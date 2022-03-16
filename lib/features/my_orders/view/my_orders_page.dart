@@ -387,9 +387,9 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                           children: [
                                             InkWell(
                                               onTap:(){
-                                                if(controller.myRequestsAsClient[index].status_txt=="تم التسعير"){
+                                                if(controller.myRequestsAsClient[index].status_txt=="تم التسعير"){//"تم التسعير"
                                                Get.toNamed("/CustomerOrderInvoicePage?billId=${controller.myRequestsAsClient[index].id}&phone=${controller.myRequestsAsClient[index].advertiser?.phone}&"
-                                                   "whatsapp=${controller.myRequestsAsClient[index].advertiser?.whatsapp}");
+                                                   "whatsapp=${controller.myRequestsAsClient[index].advertiser?.whatsapp}&advertiser=${controller.myRequestsAsClient[index].advertiser?.username??' '}");
                                   }},
                                               child: Card(
                                                 elevation: 5,

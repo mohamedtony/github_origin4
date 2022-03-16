@@ -23,6 +23,8 @@ class RegisterNewAdvertiserUserController extends GetxController{
   GlobalKey<FormState> registerNewAdvertiserUserControllerFormKey=GlobalKey<FormState>(debugLabel: 'registerNewAdvertiserUserControllerFormKey');
   var isValid=false.obs;
   var errorRegister=false.obs;
+  var empty=false.obs;
+  var country=Country().obs;
   late TextEditingController phoneController;
   late TextEditingController nameController;
   late TextEditingController accountNameController;
@@ -128,14 +130,15 @@ class RegisterNewAdvertiserUserController extends GetxController{
     return null;
   }
 
-  // void changeAreas(int countryId){
   void changeAreas(Country country2) {
+
     areas.value = [];
     Country? country = countries.firstWhereOrNull((element) =>
     element.id == country2.id);
     if (country != null) {
       areas.value = country.areas!;
     }
+
     /*countries.forEach((element) {
       if(element.id==countryId){
         areas.add(element.)

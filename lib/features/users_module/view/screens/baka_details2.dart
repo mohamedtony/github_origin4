@@ -1,3 +1,4 @@
+import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/app_core/network/models/PeriodModel.dart';
 import 'package:advertisers/features/users_module/app_colors.dart';
 import 'package:advertisers/features/users_module/controller/baka_details_controller.dart';
@@ -251,7 +252,7 @@ class PayVerification2 extends StatelessWidget {
                                         AdvertisersDropDown(hintText: 'مدة الاشتراك',width:217.w,items: _bakaDetailsController.subscriptionBakaDetail.value.periods!,itemType: "bakaDetails",
                                           onChanged: (period){
                                             _bakaDetailsController.changePeriod((period as PeriodModel).id!);
-                                          },
+                                          },areas:[Area()],
                                         ),
                                         SizedBox(height:20.h),
                                         AdvertisersGenericField(textAlignment:TextAlign.center, obscureText: false, controller: _bakaDetailsController.discountCodeController,width:217.w, hintText: 'أدخل كود الخصم التسويقي',onChanged: (text){

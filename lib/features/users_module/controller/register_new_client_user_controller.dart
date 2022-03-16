@@ -46,7 +46,9 @@ class RegisterNewClientUserController extends GetxController {
   var areaId = ''.obs;
   var countryId = ''.obs;
   var name = '';
-
+  var empty=false.obs;
+  var index=0.obs;
+   var country=Country().obs;
   var nationalID = '';
   var accountName = '';
   var email = '';
@@ -137,12 +139,14 @@ class RegisterNewClientUserController extends GetxController {
 
   // void changeAreas(int countryId){
   void changeAreas(Country country2) {
+
     areas.value = [];
     Country? country = countries.firstWhereOrNull((element) =>
     element.id == country2.id);
     if (country != null) {
       areas.value = country.areas!;
     }
+
     /*countries.forEach((element) {
       if(element.id==countryId){
         areas.add(element.)
