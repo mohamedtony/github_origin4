@@ -27,6 +27,7 @@ import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:logger/logger.dart';
 import 'package:dio/dio.dart' as myDio;
 import 'package:video_compress/video_compress.dart';
@@ -107,13 +108,18 @@ class FindAdvertiseController extends GetxController {
   var selectedEffectSlidesModel = EffectSlidesModel(id: -1,).obs;
   late RequestAdvertiseController requestAdvertiseController;
 
+  final PagingController<int, GetAdvertisersModel> pagingController = PagingController(firstPageKey: 0);
+
   @override
   Future<void> onInit() async {
     // TODO: implement onInit
     myToken = await storage.read("token");
+/*    pagingController.addPageRequestListener((pageKey) async {
+      print("hhhhhhhhhhhhhhhhhhhhhhhh");
+      await _fetchPage(pageKey);
+    });*/
     searchAdvertiserController = TextEditingController();
-    client!
-        .getAdvertisers("Bearer " + myToken!, GetAdvertisersRequest())
+    /*client!.getAdvertisers("Bearer " + myToken!, GetAdvertisersRequest())
         .then((value) {
       if (value.status == 200 && value.data != null && value.data!.isNotEmpty) {
         isLoading.value = false;
@@ -123,11 +129,15 @@ class FindAdvertiseController extends GetxController {
         isLoading.value = false;
         isEmpty.value = true;
       }
-    });
+    });*/
+
+
 
     super.onInit();
     requestAdvertiseController = Get.find();
+
   }
+
 
   void getAdvertisersForm(BuildContext context) {
     print("here");
@@ -318,6 +328,19 @@ class FindAdvertiseController extends GetxController {
               selectedUserLocations.add(area);
             }
             isCountryEnabled.value = false;
+          }else if(area.id == -2){
+            isCountryEnabled.value = false;
+            //selectedUserLocations.value = [];
+            areasForLocationSheet.forEach((areaForLocationSheet) {
+              Area? areaModel = selectedUserLocations
+                  .firstWhereOrNull((element) => element.id == areaForLocationSheet.id);
+              if (areaModel == null &&
+                  areaForLocationSheet.id != -1 &&
+                  areaForLocationSheet.id != -2) {
+                selectedUserLocations.add(areaForLocationSheet);
+                //update();
+              }
+            });
           }
         }
       }
@@ -330,8 +353,22 @@ class FindAdvertiseController extends GetxController {
       areasForLocationSheet.value = [];
     }*/
   }
-  void onSelectedLocationClicked(int id) {
-    selectedUserLocations.removeWhere((element) => element.id==id);
+/*  void onSelectedLocationClicked(int id) {
+    dynamic country = selectedUserLocations.firstWhereOrNull((element) => element.id ==id);
+    if(selectedUserLocations.length>=2 && selectedUserLocations[1] is Area && (country!=null && country is Country)) {
+      // selectedUserLocations.removeWhere((element) => element.id == id);
+      Fluttertoast.showToast(
+        msg: " لا يمكن حذف الدولة لانها مرتبطة بالمناطق الرجاء حذف المناطق اولا",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black.withOpacity(0.6),
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+
+    }else{
+      selectedUserLocations.removeWhere((element) => element.id == id);
+    }
     if(selectedUserLocations.isEmpty){
       isAreaEnabled.value = true;
       isCountryEnabled.value = true;
@@ -341,8 +378,70 @@ class FindAdvertiseController extends GetxController {
       selectedArea.value = areasForLocationSheet.first;
       areasForLocationSheet.value = [];
       areasForLocationSheet.insert(0, Area(id: -1,name: 'إختر'));
+
     }
+  }*/
+
+  void onSelectedLocationClicked(int id) {
+
+    dynamic country = selectedUserLocations.firstWhereOrNull((element) => element.id ==id);
+    if(selectedUserLocations.length>=2 && selectedUserLocations[1] is Area && (country!=null && country is Country)) {
+      // selectedUserLocations.removeWhere((element) => element.id == id);
+      Fluttertoast.showToast(
+        msg: " لا يمكن حذف الدولة لانها مرتبطة بالمناطق الرجاء حذف المناطق اولا",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black.withOpacity(0.6),
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+      return;
+
+    }else{
+      selectedUserLocations.removeWhere((element) => element.id == id);
+    }
+    if(selectedUserLocations.isEmpty){
+      isAreaEnabled.value = true;
+      isCountryEnabled.value = true;
+      // areasForLocationSheet.value.clear();
+      // areasForLocationSheet.insert(0, Area(id: -1,name: 'إختر'));
+      selectedCountry.value = countriesForLocationSheet.first;
+      if(areasForLocationSheet!=null && areasForLocationSheet.isNotEmpty) {
+        selectedArea.value = areasForLocationSheet.first;
+      }
+      areasForLocationSheet.value = [];
+      areasForLocationSheet.insert(0, Area(id: -1,name: 'إختر'));
+    }else if(selectedUserLocations.value.length==1 && selectedUserLocations.value[0] is Country){
+      print("jjjjjjjjjjjjjjjj");
+      isAreaEnabled.value = true;
+      isCountryEnabled.value = true;
+      areasForLocationSheet.value = [];
+      if(selectedUserLocations[0].areas!=null) {
+
+        areasForLocationSheet.value = selectedUserLocations[0].areas;
+        Area? area1 = areasForLocationSheet.firstWhereOrNull((element) => element.id==-2);
+        if(area1==null) {
+          areasForLocationSheet.insert(0, Area(id: -2, name: 'كل المناطق'));
+        }
+        Area? area = areasForLocationSheet.firstWhereOrNull((element) => element.id==-1);
+        if(area==null) {
+          areasForLocationSheet.insert(0, Area(id: -1, name: 'إختر'));
+        }
+      }
+      selectedCountry.value = selectedUserLocations[0];
+
+
+    }
+    if(areasForLocationSheet!=null && areasForLocationSheet.isNotEmpty) {
+      selectedArea.value = areasForLocationSheet[0];
+    }
+    /*selectedUserLocations.removeWhere((element) =>element==countryOrArea);
+   if(selectedUserLocations.length==0){
+     isCountryEnabled.value = true;
+     isAreaEnabled.value = true;
+   }*/
   }
+
   onDateClickedSaved(BuildContext context) {
     isFilterSavedClicked.value = true;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -788,4 +887,5 @@ class FindAdvertiseController extends GetxController {
    // return mediaInfo!.file!;
     Isolate.exit(p, File(""));
   }*/
+
 }

@@ -9,6 +9,7 @@ part of 'GetAdvertisersRequest.dart';
 GetAdvertisersRequest _$GetAdvertisersRequestFromJson(
         Map<String, dynamic> json) =>
     GetAdvertisersRequest(
+      page: json['page'] as int?,
       sort_by: json['sort_by'] as String?,
       categories:
           (json['categories'] as List<dynamic>?)?.map((e) => e as int).toList(),
@@ -29,5 +30,6 @@ Map<String, dynamic> _$GetAdvertisersRequestToJson(
       'countries': instance.countries,
       'areas': instance.areas,
       'country_category': instance.country_category,
+      'page': instance.page,
       'keyword': instance.keyword,
     };

@@ -1,10 +1,4 @@
-import 'package:advertisers/features/advertiser_details/controller/advertiser_details_controller.dart';
-import 'package:advertisers/features/request_advertise_module/controller/adertising_channels_controller.dart';
-import 'package:advertisers/features/home_page/app_colors.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/controller/AdvertiserProfileOrderController.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
 import 'package:flutter/material.dart';
@@ -26,30 +20,17 @@ class UrlsPage extends StatefulWidget {
 }
 
 class _UrlsPageState extends State<UrlsPage>  {
-  AdvertisingDetailsController requestAdvertiseController = Get.find();
-
-
+  AdvertiserProfileOrderController advertiserProfileController = Get.find();
 
   @override
   initState() {
     super.initState();
 
-   //animateBegin();
-
-/*    WidgetsBinding.instance?.addPostFrameCallback((_){
-
-      // Add Your Code here.
-      if(mounted) {
-        requestAdvertiseController.insertNewLinkFieldsFromSheet();
-      }
-
-    });*/
+    animateBegin();
 
 
-
-
-    // _controller.reset();
-    //requestAdvertiseController.animationControllers[0].reverse()/*.whenComplete(() => _controller.stop())*/;
+      // _controller.reset();
+      //advertiserProfileController.animationControllers[0].reverse()/*.whenComplete(() => _controller.stop())*/;
 
 /*    _controller = AnimationController(
       vsync: this,
@@ -80,7 +61,7 @@ class _UrlsPageState extends State<UrlsPage>  {
   void didUpdateWidget(covariant UrlsPage oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
-    requestAdvertiseController.animationControllers[0].forward().whenComplete(() => requestAdvertiseController.animationControllers[0].reverse()*//*.whenComplete(() => _controller.stop())*//*);
+    advertiserProfileController.animationControllers[0].forward().whenComplete(() => advertiserProfileController.animationControllers[0].reverse()*//*.whenComplete(() => _controller.stop())*//*);
 
   }*/
 
@@ -137,7 +118,7 @@ class _UrlsPageState extends State<UrlsPage>  {
                 margin: EdgeInsets.only(right: 10.0, left: 30.0, top: 0.0),
                 child: InkWell(
                   onTap: (){
-                    requestAdvertiseController.insertNewLinkFields();
+                    advertiserProfileController.insertNewLinkFields(context);
                   },
                   child: Material(
                     elevation: 6.0,
@@ -159,19 +140,19 @@ class _UrlsPageState extends State<UrlsPage>  {
                 ),
               ),
               Container(
-                child: Obx(()=>requestAdvertiseController.numOfLinks.value!=0
+                child: Obx(()=>advertiserProfileController.numOfLinks.value!=0
                     ? ListView.builder(
-                  itemCount: requestAdvertiseController.numOfLinks.value,
+                  itemCount: advertiserProfileController.numOfLinks.value,
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onPanUpdate: (details) {
                         if (details.delta.dx > 1) {
-                          requestAdvertiseController.animationControllers[index].forward()/*.whenComplete(() => requestAdvertiseController.animationControllers[index].stop())*/;
+                          advertiserProfileController.animationControllers[index].forward()/*.whenComplete(() => advertiserProfileController.animationControllers[index].stop())*/;
                         }
                         if (details.delta.dx < 1) {
                           // _controller.reset();
-                          requestAdvertiseController.animationControllers[index].reverse()/*.whenComplete(() => _controller.stop())*/;
+                          advertiserProfileController.animationControllers[index].reverse()/*.whenComplete(() => _controller.stop())*/;
                         }
                       },
                       child: Stack(
@@ -181,15 +162,15 @@ class _UrlsPageState extends State<UrlsPage>  {
                             top: 5,
                             bottom: 5,
                             child: SlideTransition(
-                              position: requestAdvertiseController.animationsClose[index],
+                              position: advertiserProfileController.animationsClose[index],
                               child: Container(
                                 width: 45,
                                 height: 25,
                                 margin: EdgeInsets.only(right: 10.0, left: 28.0, top: 30.0,bottom:30),
                                 child: InkWell(
                                   onTap: (){
-                                    requestAdvertiseController.deleteLink(index);
-                                    // requestAdvertiseController.animationControllers[index].forward(from: 0.6).whenComplete(() => requestAdvertiseController.deleteLink(index));
+                                    advertiserProfileController.deleteLink(index);
+                                   // advertiserProfileController.animationControllers[index].forward(from: 0.6).whenComplete(() => advertiserProfileController.deleteLink(index));
                                   },
                                   child: Material(
                                     elevation: 6.0,
@@ -214,7 +195,7 @@ class _UrlsPageState extends State<UrlsPage>  {
                             ),
                           ),
                           SlideTransition(
-                            position:  requestAdvertiseController.animationTextFields[index],
+                            position:  advertiserProfileController.animationTextFields[index],
                             child: Container(
                               margin: EdgeInsets.only(bottom: 8),
                               child: Column(
@@ -285,7 +266,7 @@ class _UrlsPageState extends State<UrlsPage>  {
                                                         color: Colors.grey[350]),
                                                     hintText: 'اسم الرابط',
                                                     fillColor: Colors.white70),
-                                                controller: requestAdvertiseController.textUrlControllers[index],
+                                                controller: advertiserProfileController.textUrlControllers[index],
                                               ),
                                             ),
                                           ],
@@ -337,7 +318,7 @@ class _UrlsPageState extends State<UrlsPage>  {
                                                   color: Colors.grey[350]),
                                               hintText: 'عنوان الرابط',
                                               fillColor: Colors.white70),
-                                          controller: requestAdvertiseController.urlControllers[index],
+                                          controller: advertiserProfileController.urlControllers[index],
                                         ),
                                       ),
                                     ),
@@ -362,7 +343,7 @@ class _UrlsPageState extends State<UrlsPage>  {
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
                     child: InkWell(
                       onTap: (){
-                        requestAdvertiseController.onSaveUrlsClicked(context);
+                        advertiserProfileController.onSaveUrlsClicked(context);
                       },
                       child: Material(
                         elevation: 6.0,
@@ -391,7 +372,7 @@ class _UrlsPageState extends State<UrlsPage>  {
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
                     child: InkWell(
                       onTap: (){
-                        requestAdvertiseController.isUrlSaveClicked.value = false;
+                        advertiserProfileController.isUrlSaveClicked.value = false;
                         Get.back();
                       },
                       child: Material(
@@ -404,7 +385,7 @@ class _UrlsPageState extends State<UrlsPage>  {
                                 left: 12.0, bottom: 4.0, right: 20),*/
                           alignment: Alignment.center,
                           child: Text(
-                            'cancel'.tr,
+                            'إستعادة',
                             style: TextStyle(
                                 fontSize: 16.0,
                                 color: Colors.white,
@@ -427,40 +408,40 @@ class _UrlsPageState extends State<UrlsPage>  {
   @override
   void dispose() {
     // TODO: implement dispose
-    if (requestAdvertiseController.isUrlSaveClicked.isFalse) {
-      requestAdvertiseController.links.value = [];
-      requestAdvertiseController.numOfLinks.value = 1;
-      requestAdvertiseController.urlControllers = [];
-      requestAdvertiseController.textUrlControllers = [];
-      requestAdvertiseController.animationsClose = [];
-      requestAdvertiseController.animationTextFields = [];
-      requestAdvertiseController.animationControllers = [];
-      requestAdvertiseController.textUrlControllers.add(
+    if (advertiserProfileController.isUrlSaveClicked.isFalse) {
+      advertiserProfileController.links.value = [];
+      advertiserProfileController.numOfLinks.value = 1;
+      advertiserProfileController.urlControllers = [];
+      advertiserProfileController.textUrlControllers = [];
+      advertiserProfileController.animationsClose = [];
+      advertiserProfileController.animationTextFields = [];
+      advertiserProfileController.animationControllers = [];
+      advertiserProfileController.textUrlControllers.add(
           TextEditingController());
-      requestAdvertiseController.urlControllers.add(TextEditingController());
-      requestAdvertiseController.disposeAnimation();
-/*      requestAdvertiseController.animationControllers.add(AnimationController(
+      advertiserProfileController.urlControllers.add(TextEditingController());
+      advertiserProfileController.disposeAnimation();
+/*      advertiserProfileController.animationControllers.add(AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 200),
       ));
 
-      requestAdvertiseController.animationTextFields.add(Tween(
+      advertiserProfileController.animationTextFields.add(Tween(
         begin: const Offset(0.0, 0.0),
         end: const Offset(0.2, 0.0),
       ).animate(
         CurvedAnimation(
           curve: Curves.decelerate,
-          parent: requestAdvertiseController.animationControllers[0],
+          parent: advertiserProfileController.animationControllers[0],
         ),
       ));
 
-      requestAdvertiseController.animationsClose.add(Tween(
+      advertiserProfileController.animationsClose.add(Tween(
         begin: const Offset(0.0, 0.0),
         end: const Offset(1.0, 0.0),
       ).animate(
         CurvedAnimation(
           curve: Curves.decelerate,
-          parent:  requestAdvertiseController.animationControllers[0],
+          parent:  advertiserProfileController.animationControllers[0],
         ),
       ));
     }*/
@@ -470,19 +451,9 @@ class _UrlsPageState extends State<UrlsPage>  {
   }
 
   Future<void> animateBegin() async {
-    await Future.delayed(Duration(milliseconds: 800), () => requestAdvertiseController.animationControllers[0].forward().whenComplete(() async {
-      await Future.delayed(Duration(milliseconds: 800), () => requestAdvertiseController.animationControllers[0].reverse()/*.whenComplete(() => _controller.stop())*/);
+    await Future.delayed(Duration(milliseconds: 800), () => advertiserProfileController.animationControllers[0].forward().whenComplete(() async {
+      await Future.delayed(Duration(milliseconds: 800), () => advertiserProfileController.animationControllers[0].reverse()/*.whenComplete(() => _controller.stop())*/);
 
     }));
   }
-}
-
-class UrlDataType {
-  int? id;
-  String? urlName,urlTitle;
-  UrlDataType({
-    this.id,
-    this.urlName,
-    this.urlTitle
-});
 }

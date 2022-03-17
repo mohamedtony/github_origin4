@@ -196,10 +196,11 @@ class ClientSettingPageController extends GetxController  {
           isLoadingLocation.value = false;
           if(value.data!=null){
             countries.value = value.data!;
-            countries.insert(0, Country(id: -1,name: 'الدولة'));
+            countries.removeWhere((element) => element.type=="country_category");
             countries.forEach((element) {
               Logger().i(element.toJson());
             });
+            countries.insert(0, Country(id: -1,name: 'الدولة'));
             Country? countryIn = countries.firstWhereOrNull((element) => element.id==clientProfileModel.value.country_id);
             if(countryIn!=null){
               country.value = countryIn;
@@ -462,7 +463,15 @@ class ClientSettingPageController extends GetxController  {
       showMyToast("من فضلك ادخل رقم الهوية بشكل صحيح !",true,context);
       personalIdNode.requestFocus();
       return;
-    } else{
+    } else if (country.value.id==null || country.value.id==-1) {
+      showMyToast("من فضلك ادخل الدولة!",true,context);
+      //personalIdNode.requestFocus();
+      return;
+    } else if (area.value.id==null || area.value.id==-1) {
+      showMyToast("من فضلك ادخل المنطقة !",true,context);
+     // personalIdNode.requestFocus();
+      return;
+    }else{
       print("hereeee1");
       LoadingDailog().showLoading(context);
       if(accountType.value=="client"){

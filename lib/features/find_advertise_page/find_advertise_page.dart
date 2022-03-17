@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'package:advertisers/app_core/network/models/GetAdvertisersModel.dart';
+import 'package:advertisers/app_core/network/requests/GetAdvertisersRequest.dart';
+import 'package:advertisers/app_core/network/responses/GetAdvertisersResponse.dart';
 import 'package:advertisers/features/blocked_users_page/AdvertiseBlockedUserItem.dart';
 import 'package:advertisers/features/blocked_users_page/shimmer_widget.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page.dart';
@@ -15,15 +19,95 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+
+import '../../main.dart';
 //=========================================================================================
 
 //                         By Mohamed T. Hammad
 
 //=========================================================================================
-class FindAdvertisePage extends StatelessWidget {
+class FindAdvertisePage extends StatefulWidget {
   FindAdvertisePage({Key? key,this.onSheetClicked}) : super(key: key);
   Function(int x)? onSheetClicked;
+
+  @override
+  State<FindAdvertisePage> createState() => _FindAdvertisePageState();
+}
+
+class _FindAdvertisePageState extends State<FindAdvertisePage> {
   final findAdvertiseController=Get.put(FindAdvertiseController());
+  final PagingController<int, GetAdvertisersModel> pagingController = PagingController(firstPageKey: 0);
+
+  Future<List<GetAdvertisersModel>> getNotifications(
+      {/*String brandId, String catgegoryId,*/ int? pageKey}) async {
+    String myToken = await storage.read("token");
+
+    GetAdvertisersResponse response = await client!.getAdvertisers("Bearer " + myToken, GetAdvertisersRequest(page: pageKey,));
+
+    final completer = Completer<List<GetAdvertisersModel>>();
+    List<GetAdvertisersModel> notifications = [];
+    if(response.data!=null && response.data!.isNotEmpty) {
+      notifications = response.data!;
+    }
+    completer.complete(notifications);
+    return completer.future;
+    // return topSellingList;
+  }
+
+  Future<void> fetchPage(int pageKey) async {
+    print("hhhhhhhhhhhhhhhhhhhhhhhh");
+    try {
+      //List<GetAdvertisersModel> newItems = await getNotifications(page: pageKey);
+      /*List<GetAdvertisersModel>? newItems = (await client!.getAdvertisers("Bearer " + myToken!, GetAdvertisersRequest(page: pageKey))).data;
+      if(newItems!=null && newItems.isNotEmpty){
+        isLoading.value = false;
+        isEmpty.value = false;
+        //advertisersModel.value = value.data!;
+      }else{
+        isLoading.value = false;
+        isEmpty.value = true;
+      }
+      bool isLastPage = newItems == null || newItems.isEmpty;
+      if (isLastPage) {
+        print("isLast = " + isLastPage.toString());
+        pagingController.appendLastPage(newItems!);
+      } else {
+        //final nextPageKey = pageKey + newItems.length;
+        int nextPageKey = ++pageKey;
+        print("nextPageKey=" + nextPageKey.toString());
+        pagingController.appendPage(newItems, nextPageKey);
+      }*/
+      List<GetAdvertisersModel> newItems = await getNotifications(pageKey: pageKey);
+
+      bool isLastPage = newItems == null || newItems.isEmpty;
+      if (isLastPage) {
+        print("isLast = " + isLastPage.toString());
+        pagingController.appendLastPage(newItems);
+       // pagingController. = "tony";
+      } else {
+        //final nextPageKey = pageKey + newItems.length;
+        int nextPageKey = ++pageKey;
+        print("nextPageKey=" + nextPageKey.toString());
+        pagingController.appendPage(newItems, nextPageKey);
+      }
+      // print("first=" + newItems.first.Code.toString());
+      //print("last=" + newItems.last.Code.toString());
+
+
+    } catch (error) {
+      pagingController.error = error;
+    }
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    pagingController.addPageRequestListener((pageKey) async {
+      print("hhhhhhhhhhhhhhhhhhhhhhhh");
+      await fetchPage(pageKey);
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return GetBuilder<FindAdvertiseController>(
@@ -165,7 +249,7 @@ class FindAdvertisePage extends StatelessWidget {
                   child: InkWell(
                     onTap: (){
                       //Get.toNamed("/FilterOrderAdvertisers");
-                      onSheetClicked!(8);
+                      widget.onSheetClicked!(8);
                     },
                     child: Container(
                       width: 62,
@@ -203,33 +287,88 @@ class FindAdvertisePage extends StatelessWidget {
           ],
         ),
         Expanded(
-            child: Obx(()=>controller.isEmpty.value?Container(
-                margin: EdgeInsets.only(top:20.0),
-                child: Text('لا يوجد بيانات !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600))):ListView.builder(
-              itemCount: findAdvertiseController.isLoading.value?10:findAdvertiseController.advertisersModel.value.length,
-              itemBuilder: (context, position) {
-                if(findAdvertiseController.isLoading.value){
-                  return   Container(
-                    margin: EdgeInsets.only(top: 10.0,),
-                    child: ListTile(
-                      leading: MyShimmerWidget.circular(height: 64, width: 64),
-                      title: Align(
-                        alignment: Alignment.centerLeft,
-                        child: MyShimmerWidget.rectangular(height: 16,
-                          width: MediaQuery.of(context).size.width*2,),
+            child: PagedListView<int, GetAdvertisersModel>(
+              pagingController: pagingController,
+
+              builderDelegate: PagedChildBuilderDelegate<GetAdvertisersModel>(
+                animateTransitions: true,
+                noItemsFoundIndicatorBuilder: (context){
+                  return Container(
+                    alignment: Alignment.topCenter,
+                      margin: EdgeInsets.only(top:20.0),
+                      child: Text('لا يوجد معلنين !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
+                },
+                /*firstPageProgressIndicatorBuilder: (context)=>ListView(
+                  shrinkWrap: true,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 10.0,),
+                      child: ListTile(
+                        leading: MyShimmerWidget.circular(height: 64, width: 64),
+                        title: Align(
+                          alignment: Alignment.centerLeft,
+                          child: MyShimmerWidget.rectangular(height: 16,
+                            width: MediaQuery.of(context).size.width*2,),
+                        ),
+                        // subtitle: MyShimmerWidget.rectangular(height: 14),
                       ),
-                      // subtitle: MyShimmerWidget.rectangular(height: 14),
                     ),
-                  );
-                }else{
+                    Container(
+                      margin: EdgeInsets.only(top: 10.0,),
+                      child: ListTile(
+                        leading: MyShimmerWidget.circular(height: 64, width: 64),
+                        title: Align(
+                          alignment: Alignment.centerLeft,
+                          child: MyShimmerWidget.rectangular(height: 16,
+                            width: MediaQuery.of(context).size.width*2,),
+                        ),
+                        // subtitle: MyShimmerWidget.rectangular(height: 14),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10.0,),
+                      child: ListTile(
+                        leading: MyShimmerWidget.circular(height: 64, width: 64),
+                        title: Align(
+                          alignment: Alignment.centerLeft,
+                          child: MyShimmerWidget.rectangular(height: 16,
+                            width: MediaQuery.of(context).size.width*2,),
+                        ),
+                        // subtitle: MyShimmerWidget.rectangular(height: 14),
+                      ),
+                    )
+                  ],
+                ),*/
+
+                itemBuilder: (context, item, position) {
                   return  InkWell(
                       onTap: (){
-                        findAdvertiseController.changeIndex(position, findAdvertiseController.advertisersModel.value[position].id!);
+                        findAdvertiseController.changeIndex(position, item.id!);
                       },
-                      child: FindAdvertiseItem(advertisersModel:findAdvertiseController.advertisersModel.value[position],findAdvertiseController: controller,index: position,));
-                }
-              },
-            ))
+                      child: FindAdvertiseItem(advertisersModel:item,findAdvertiseController: controller,index: position,));
+                  /*if(findAdvertiseController.isLoading.value){
+                    return   Container(
+                      margin: EdgeInsets.only(top: 10.0,),
+                      child: ListTile(
+                        leading: MyShimmerWidget.circular(height: 64, width: 64),
+                        title: Align(
+                          alignment: Alignment.centerLeft,
+                          child: MyShimmerWidget.rectangular(height: 16,
+                            width: MediaQuery.of(context).size.width*2,),
+                        ),
+                        // subtitle: MyShimmerWidget.rectangular(height: 14),
+                      ),
+                    );
+                  }else{
+                    return  InkWell(
+                        onTap: (){
+                          findAdvertiseController.changeIndex(position, item.id!);
+                        },
+                        child: FindAdvertiseItem(advertisersModel:item,findAdvertiseController: controller,index: position,));
+                  }*/
+                },
+              ),
+            )
         ),
         /*Expanded(
       child: ListView(
@@ -312,5 +451,11 @@ class FindAdvertisePage extends StatelessWidget {
         );
       },
     );
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    pagingController.dispose();
+    super.dispose();
   }
 }

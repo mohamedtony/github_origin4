@@ -31,7 +31,7 @@ class AdvertiserSettingPageController extends GetxController  {
   var isOpend = false;
   var position = -1;
   var tabIndex = 1.obs;
-  TextEditingController? kayanNameController,sglNumberController,accountNameEdit,accountOwner,phoneController,emailController,accountRegisteredNumController;
+  TextEditingController? kayanNameController,sglNumberController,accountNameEdit,accountOwner,phoneController,emailController,accountRegisteredNumController,personalIdController;
   var flag = false.obs;
   var isEnabled=false.obs;
 
@@ -76,6 +76,7 @@ class AdvertiserSettingPageController extends GetxController  {
     emailController = TextEditingController();
     accountRegisteredNumController  = TextEditingController();
     sglNumberController = TextEditingController();
+    personalIdController = TextEditingController();
      myToken  = await storage.read("token");
     super.onInit();
   }
@@ -126,6 +127,10 @@ class AdvertiserSettingPageController extends GetxController  {
         if(clientProfileModel.value.sgl!=null) {
           sglNumberController?.text = clientProfileModel.value.sgl!;
         }
+        if(clientProfileModel.value.personal_id!=null) {
+          personalIdController?.text = clientProfileModel.value.personal_id!;
+        }
+
         if(clientProfileModel.value.profile_completion!=null){
           profile_completion.value = ((clientProfileModel.value.profile_completion)!~/10);
         }
@@ -373,12 +378,12 @@ class AdvertiserSettingPageController extends GetxController  {
   void showLocationBottomSheet(BuildContext context, int bottomNumber) {
 
     client!.getCountries().then((value){
-      isLoadingLocation.value = false;
+      //isLoadingLocation.value = false;
       if(value.data!=null){
         countriesForLocationSheet.value = value.data!;
-        countriesForLocationSheet.forEach((element) {
+        /*countriesForLocationSheet.forEach((element) {
           Logger().i(element.toJson());
-        });
+        });*/
         if(countriesForLocationSheet[0].areas!=null&&countriesForLocationSheet[0].areas!.isNotEmpty) {
           areasForLocationSheet.value =
               countriesForLocationSheet[0].areas!;
@@ -392,6 +397,63 @@ class AdvertiserSettingPageController extends GetxController  {
           areasForLocationSheet.insert(0, Area(id: -2, name: 'كل المناطق'));
           areasForLocationSheet.insert(0, Area(id: -1, name: 'إختر'));
         }
+
+         client!.getUseLocations("Bearer "+myToken!).then((value){
+          isLoadingLocation.value = false;
+          value.data?.countries?.forEach((element) {
+            Logger().i(element.toJson());
+          });
+          if(value.data!=null){
+            if(value.data?.countries!=null && value.data!.countries!.isNotEmpty) {
+              selectedUserLocations.value =[];
+              selectedUserLocations.addAll(value.data!.countries!);
+
+              if(selectedUserLocations.length == 1 && selectedUserLocations[0] is Country) {
+                selectedCountry.value = selectedUserLocations.first;
+                Country? country = countries.firstWhereOrNull((element) => element.id == selectedCountry.value.id);
+                if (country!=null && country.type == 'country_category') {
+                  isAreaEnabled.value = false;
+                }
+                if(country!=null && country.areas!=null){
+                  areasForLocationSheet.value = country.areas!;
+
+                  Area? area1 = areasForLocationSheet.firstWhereOrNull((
+                      element) => element.id == -2);
+                  if (area1 == null) {
+                    areasForLocationSheet.insert(
+                        0, Area(id: -2, name: 'كل المناطق'));
+                  }
+                  Area? area = areasForLocationSheet.firstWhereOrNull((
+                      element) => element.id == -1);
+                  if (area == null) {
+                    areasForLocationSheet.insert(0, Area(id: -1, name: 'إختر'));
+                  }
+                  //selectedArea.value = areasForLocationSheet.value[0];
+                }
+
+
+
+                /*if (selectedCountry.value.areas != null && selectedCountry.value.areas!.isNotEmpty) {
+                  print("llllllllllll");
+                  areasForLocationSheet.value = selectedCountry.value.areas!;
+
+                  Area? area1 = areasForLocationSheet.firstWhereOrNull((
+                      element) => element.id == -2);
+                  if (area1 == null) {
+                    areasForLocationSheet.insert(
+                        0, Area(id: -2, name: 'كل المناطق'));
+                  }
+                  Area? area = areasForLocationSheet.firstWhereOrNull((
+                      element) => element.id == -1);
+                  if (area == null) {
+                    areasForLocationSheet.insert(0, Area(id: -1, name: 'إختر'));
+                  }
+                  //selectedArea.value = areasForLocationSheet.value[0];
+                }*/
+              }
+            }
+          }
+        });
 /*        Country? countryIn = countriesForLocationSheet.firstWhereOrNull((element) => element.id==clientProfileModel.value.country_id);
         if(countryIn!=null){
           countryForLocationSheet.value = countryIn;
@@ -427,15 +489,7 @@ class AdvertiserSettingPageController extends GetxController  {
       }
     });
 
-    client!.getUseLocations("Bearer "+myToken!).then((value){
-      isLoadingLocation.value = false;
-      if(value.data!=null){
-        if(value.data?.countries!=null && value.data!.countries!.isNotEmpty) {
-          selectedUserLocations.value =[];
-          selectedUserLocations.addAll(value.data!.countries!);
-        }
-      }
-    });
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -473,7 +527,7 @@ class AdvertiserSettingPageController extends GetxController  {
   void changeCountry(Country? c) {
     Logger().i(c!.toJson());
     if (c != null && c.id == -2) {
-      isAreaEnabled.value = false;
+        isAreaEnabled.value = false;
       selectedUserLocations.value = [];
       countriesForLocationSheet.forEach((countryForLocationSheet) {
         Country? categoryModel = selectedUserLocations
@@ -528,7 +582,7 @@ class AdvertiserSettingPageController extends GetxController  {
           print("inElse");
           Country? country = selectedUserLocations
               .firstWhereOrNull((element) => element.id == c.id);
-          if (country == null) {
+          if (country == null /*&& selectedUserLocations.isNotEmpty && selectedUserLocations[0].type!="country_category"*/) {
             isAreaEnabled.value = true;
             selectedUserLocations.add(c);
             /*if(c.areas!=null&&c.areas!.isNotEmpty) {
@@ -538,7 +592,11 @@ class AdvertiserSettingPageController extends GetxController  {
         }
 
         if (c.areas != null && c.areas!.isNotEmpty) {
-          //isAreaEnabled.value = true;
+          if((selectedUserLocations.isNotEmpty && selectedUserLocations[0].type!="country_category") && selectedUserLocations.length==1) {
+            isAreaEnabled.value = true;
+          }else if(selectedUserLocations.isNotEmpty && selectedUserLocations[0].type=="country_category"){
+            isAreaEnabled.value = false;
+          }
           areasForLocationSheet.value = c.areas!;
           print("inElseHere");
           Area? areaIn = areasForLocationSheet
@@ -592,6 +650,19 @@ class AdvertiserSettingPageController extends GetxController  {
               selectedUserLocations.add(area);
             }
             isCountryEnabled.value = false;
+          }else if(area.id == -2){
+            isCountryEnabled.value = false;
+            //selectedUserLocations.value = [];
+            areasForLocationSheet.forEach((areaForLocationSheet) {
+              Area? areaModel = selectedUserLocations
+                  .firstWhereOrNull((element) => element.id == areaForLocationSheet.id);
+              if (areaModel == null &&
+                  areaForLocationSheet.id != -1 &&
+                  areaForLocationSheet.id != -2) {
+                selectedUserLocations.add(areaForLocationSheet);
+                //update();
+              }
+            });
           }
         }
       }
@@ -650,6 +721,7 @@ class AdvertiserSettingPageController extends GetxController  {
         }
       });
       client!.setOneCountryAndCities(OneCountryAndCitiesRequest(countries:countriesId,areas: areasIds),"Bearer "+myToken!).then((value) {
+        print("isAreaEnabledHere");
         if(value.status==200){
           Fluttertoast.showToast(
             msg: value.message??'',
@@ -667,16 +739,54 @@ class AdvertiserSettingPageController extends GetxController  {
   var selectedArea = Area().obs;
 
   void removeCountryOrArea(int id) {
-    selectedUserLocations.removeWhere((element) => element.id==id);
+    dynamic country = selectedUserLocations.firstWhereOrNull((element) => element.id ==id);
+    if(selectedUserLocations.length>=2 && selectedUserLocations[1] is Area && (country!=null && country is Country)) {
+     // selectedUserLocations.removeWhere((element) => element.id == id);
+      Fluttertoast.showToast(
+        msg: " لا يمكن حذف الدولة لانها مرتبطة بالمناطق الرجاء حذف المناطق اولا",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black.withOpacity(0.6),
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+      return;
+
+    }else{
+      selectedUserLocations.removeWhere((element) => element.id == id);
+    }
     if(selectedUserLocations.isEmpty){
       isAreaEnabled.value = true;
       isCountryEnabled.value = true;
       // areasForLocationSheet.value.clear();
       // areasForLocationSheet.insert(0, Area(id: -1,name: 'إختر'));
       selectedCountry.value = countriesForLocationSheet.first;
-      selectedArea.value = areasForLocationSheet.first;
+      if(areasForLocationSheet!=null && areasForLocationSheet.isNotEmpty) {
+        selectedArea.value = areasForLocationSheet.first;
+      }
       areasForLocationSheet.value = [];
       areasForLocationSheet.insert(0, Area(id: -1,name: 'إختر'));
+    }else if(selectedUserLocations.value.length==1 && selectedUserLocations.value[0] is Country){
+      print("jjjjjjjjjjjjjjjj");
+      isAreaEnabled.value = true;
+      isCountryEnabled.value = true;
+      areasForLocationSheet.value = [];
+      if(selectedUserLocations[0].areas!=null) {
+        areasForLocationSheet.value = selectedUserLocations[0].areas;
+      }
+      selectedCountry.value = selectedUserLocations[0];
+
+      Area? area1 = areasForLocationSheet.firstWhereOrNull((element) => element.id==-2);
+      if(area1==null) {
+        areasForLocationSheet.insert(0, Area(id: -2, name: 'كل المناطق'));
+      }
+      Area? area = areasForLocationSheet.firstWhereOrNull((element) => element.id==-1);
+      if(area==null) {
+        areasForLocationSheet.insert(0, Area(id: -1, name: 'إختر'));
+      }
+    }
+    if(areasForLocationSheet!=null && areasForLocationSheet.isNotEmpty) {
+      selectedArea.value = areasForLocationSheet[0];
     }
     /*selectedUserLocations.removeWhere((element) =>element==countryOrArea);
    if(selectedUserLocations.length==0){

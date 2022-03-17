@@ -536,7 +536,6 @@ class ListPage extends StatelessWidget {
         children: [
           ClientListPage(),
           AdvertiserListPage(),
-
         ],
       )),
     );
