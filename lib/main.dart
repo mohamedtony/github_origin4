@@ -5,6 +5,7 @@ import 'package:advertisers/app_core/network/service.dart';
 import 'package:advertisers/app_core/routes/routes.dart';
 import 'package:advertisers/features/employees/view/EmployeeArchivePage.dart';
 import 'package:advertisers/features/employees/view/EmployeeAuthorizationPage.dart';
+import 'package:advertisers/features/employees/view/NotificationSettingsPage.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 //import 'package:advertisers/shared/network/service.dart';
 import 'package:dio/dio.dart';
@@ -147,10 +148,10 @@ class _MyAppState extends State<MyApp> {
           fallbackLocale: LocalizationService.fallbackLocale,
          // fallbackLocale: LocalizationService.locale,
           builder: EasyLoading.init(),
-         // home: EmployeesPage(),
+           home: NotificationSettingsPage(),
           translations: LocalizationService(),
-          initialRoute: '/',
-          getPages: Routes.routes,
+          // initialRoute: '/',
+          // getPages: Routes.routes,
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',
           ),
