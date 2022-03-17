@@ -16,7 +16,8 @@ class EmployeesController extends GetxController{
   var myRequestsAsClient=<RequestModel>[].obs;
   var currentIndex=0.obs;
   bool isChecked=true;
-
+  bool isChecked_setting_accept=false;
+  bool isChecked_setting_remove=false;
     String selectedEmployeeJob="";
   ScrollController scrollController = ScrollController();
 
@@ -35,6 +36,12 @@ class EmployeesController extends GetxController{
 
 
   List<String> employeesJobs=['موظف داخلي','موظف خارجي','مسؤول / أدمن','موظف داخلي','موظف داخلي','موظف داخلي','موظف داخلي','موظف داخلي',];
+
+  List<String> privilegedList=['الاعدادات','الطلبات','اعلاناتي','الخصومات والكوبونات','إضافة اعلان','الشات','التنبيهات','المعرض','الموظفين','المحفظة',
+  'الدعم','التقارير','التعليقات'];
+
+  List<String> operationDetails=['تسعير الطلب رقم 4521','إضافة اعلان رقم 5210','تعديل تسعير الطلب رقم 4521','إضافة موظف محمد علي عبدالله','إضافة موظف محمد علي عبدالله',
+  'تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521'];
 
   var reasonDataModel=ReasonDataModel().obs;
   // var myRequestAsClient
