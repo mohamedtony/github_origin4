@@ -36,9 +36,12 @@ import 'package:advertisers/features/customer_order_invoice_out_puts/view/custom
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/features/employees/view/AddEmployeePage.dart';
 import 'package:advertisers/features/employees/view/EmployeesPage.dart';
+import 'package:advertisers/features/help_and_support/guides_videos/controller/guides_videos_controller.dart';
 import 'package:advertisers/features/help_and_support/guides_videos/guides_videos_page.dart';
 import 'package:advertisers/features/help_and_support/help_and_support_page.dart';
+import 'package:advertisers/features/help_and_support/partener_success_page/controller/partener_success_controller.dart';
 import 'package:advertisers/features/help_and_support/partener_success_page/partner_success_page.dart';
+import 'package:advertisers/features/help_and_support/redundancy_questions_page/controller/redundancy_questions_controller.dart';
 import 'package:advertisers/features/help_and_support/redundancy_questions_page/redudndancy_questions_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation.dart';
 import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
@@ -141,12 +144,17 @@ class Routes {
     GetPage(
       name: '/RedudndancyQuestionsPage',
       page: () => RedudndancyQuestionsPage(),
-    ),
+        binding: BindingsBuilder(() {
+          Get.lazyPut<RedundancyQuestionsController>(() => RedundancyQuestionsController());
+
+        })),
     GetPage(
       name: '/PartnerSuccessPage',
       page: () => PartnerSuccessPage(),
+  binding: BindingsBuilder(() {
+  Get.lazyPut<PartnerSuccessController>(() => PartnerSuccessController());
 
-    ),
+  })),
     GetPage(
       name: '/HelpAndSupportPage',
       page: () => HelpAndSupportPage(),
@@ -155,8 +163,10 @@ class Routes {
     GetPage(
       name: '/GuidesVideosPage',
       page: () => GuidesVideosPage(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut<GuidesVideosController>(() => GuidesVideosController());
 
-    ),
+        })),
     GetPage(
       name: '/NotificationsPage',
       page: () => NotificationsPage(),
