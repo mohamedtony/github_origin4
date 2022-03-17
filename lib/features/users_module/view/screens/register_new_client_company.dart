@@ -339,7 +339,7 @@ class RegisterNewClientCompany extends StatelessWidget {
     return showDialog(context: context,builder: (BuildContext context){
 
       return AlertDialog(
-        title: Text("Choose option",style: TextStyle(color: Colors.blue),),
+        title: Text("اختر",style: TextStyle(color: Colors.blue),),
         content: SingleChildScrollView(
           child: ListBody(
             children: [
@@ -377,7 +377,7 @@ class RegisterNewClientCompany extends StatelessWidget {
                   });
                   Navigator.pop(context);
                 },
-                title: Text("Gallery"),
+                title: Text("المعرض"),
                 leading: Icon(Icons.account_box,color: Colors.blue,),
               ),
 
@@ -416,7 +416,7 @@ class RegisterNewClientCompany extends StatelessWidget {
 
                   Navigator.pop(context);
                 },
-                title: Text("Camera"),
+                title: Text("الكاميرا"),
                 leading: Icon(Icons.camera,color: Colors.blue,),
               ),
             ],

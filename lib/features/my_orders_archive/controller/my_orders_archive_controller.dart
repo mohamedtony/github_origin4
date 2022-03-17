@@ -95,7 +95,7 @@ class MyOrdersArchiveController extends GetxController{
     }
     EasyLoading.show();
     repo.get<MyRequestsResponse>(
-        path: 'myrequests?sort_by=cancelled',
+        path: 'myrequests?archive=1',
         fromJson: (json) => MyRequestsResponse.fromJson(json),
         json: {"token": "Bearer $token"},//"Bearer  $token"},
         onSuccess: (res) {

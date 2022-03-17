@@ -13,12 +13,12 @@ class SelectedTab extends StatelessWidget {
     return  GetBuilder<WalletController>(
       init: WalletController(),
       builder: (controller) => Container(
-        padding: EdgeInsets.symmetric(horizontal: 15,vertical: 3),
+        // padding: EdgeInsets.symmetric(horizontal: 5,vertical: 3),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(7),
             color:controller.tabId != id? Colors.transparent :  Color(0xff4184CE)
         ),
-        child: Text("$title",style: TextStyle(color:controller.tabId != id? Color(0xff4184CE) : Colors.white,fontSize: 16.sp),),
+        child: Center(child: Text("$title",style: TextStyle(color:controller.tabId != id? Color(0xff4184CE) : Colors.white,fontSize: 16.sp),)),
       ),
     );
   }

@@ -1,4 +1,6 @@
 import 'package:advertisers/features/employees/controller/employees_controller.dart';
+import 'package:advertisers/features/employees/view/EmployeeArchivePage.dart';
+import 'package:advertisers/features/employees/view/EmployeeAuthorizationPage.dart';
 import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
 import 'package:advertisers/features/my_orders/widgets/slide_right_item.dart';
 import 'package:advertisers/features/my_orders/widgets/slide_right_item_separation.dart';
@@ -278,7 +280,14 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                     children: [
                       /// authorization btn
                       InkWell(
-                        onTap: (){},
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EmployeeAuthorizationPage(),
+                            ),
+                          );
+                        },
                         child: Container(
                           width: MediaQuery.of(context).size.width*.37,
                           decoration: BoxDecoration(
@@ -296,7 +305,14 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
 
                       ///archive btn
                       InkWell(
-                        onTap: (){},
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EmployeeArchivePage(),
+                            ),
+                          );
+                        },
                         child: Container(
                           width: MediaQuery.of(context).size.width*.37,
                           decoration: BoxDecoration(

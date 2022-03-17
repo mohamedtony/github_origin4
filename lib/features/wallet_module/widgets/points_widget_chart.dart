@@ -9,8 +9,8 @@ class PointsChartWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5),
-      width: 125.w,
-      height: 75.h,
+      width: MediaQuery.of(context).size.width * .3,
+      // height: 40.h,
       decoration:  BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           gradient:  const LinearGradient(
@@ -34,9 +34,9 @@ class PointsChartWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
 
-          Text("$title",style: const TextStyle(color: Colors.white,fontSize: 18),),
-          Text("$value",style: const TextStyle(color: Colors.white,fontSize: 18),),
-          Text("$name",style: const TextStyle(color: Colors.white,fontSize: 16),),
+          Text("$title",style: const TextStyle(color: Colors.white,fontSize: 18,height: 1.1),),
+          Text("$value",style: const TextStyle(color: Colors.white,fontSize: 18,height: 1.1),),
+          Text("$name",style: const TextStyle(color: Colors.white,fontSize: 16,height: 1.1),),
         ],
       ),
     );

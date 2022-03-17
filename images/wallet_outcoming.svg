@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="63" height="63" viewBox="0 0 63 63">
+  <defs>
+    <filter id="maxresdefault" x="0" y="0" width="63" height="63" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-opacity="0.09"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="arrow-bottom" x="14.35" y="16.774" width="34.546" height="29.452" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur-2"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_17519" data-name="Group 17519" transform="translate(-564 -406.649)">
+    <g transform="matrix(1, 0, 0, 1, 564, 406.65)" filter="url(#maxresdefault)">
+      <rect id="maxresdefault-2" data-name="maxresdefault" width="33" height="33" rx="16.5" transform="translate(15 12)" fill="#c42929"/>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 564, 406.65)" filter="url(#arrow-bottom)">
+      <path id="arrow-bottom-2" data-name="arrow-bottom" d="M4.581,16.546V6.2H0L5.795,0l5.657,6.2H6.871V16.546Z" transform="translate(39.9 22.77) rotate(90)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

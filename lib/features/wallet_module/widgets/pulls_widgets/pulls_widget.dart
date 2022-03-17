@@ -15,7 +15,7 @@ class PullsWidget extends StatelessWidget {
    return ListView(
       children: [
         Container(
-          height: 125,
+          height: 125.h,
           child: Padding(
             padding: const EdgeInsets.only(top: 12),
             child: Center(
@@ -105,13 +105,13 @@ class PullsWidget extends StatelessWidget {
                                   // width: MediaQuery.of(context).size.width * .6,
                                     child: Directionality(
                                         textDirection: TextDirection.rtl,
-                                        child: Text("أدخل المبلغ الذي تطلب سحبه",style: TextStyle( fontSize: 21,color: Color(0xff486ac7)),)))),
+                                        child: Text("أدخل المبلغ الذي تطلب سحبه",style: TextStyle( fontSize: 18,color: Color(0xff486ac7)),)))),
                                 SizedBox(
                                   width: 25,
                                 ),
                                 Image.asset(
                                   "images/income@3x.png",
-                                  width: 50,
+                                  width: 40,
                                 ),
 
 
@@ -124,6 +124,7 @@ class PullsWidget extends StatelessWidget {
                               children: [
 
                                 Expanded(
+                                  flex: 6,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -149,7 +150,7 @@ class PullsWidget extends StatelessWidget {
                                                 contentPadding:
                                                 EdgeInsets.all(0),
 
-                                                hintStyle: TextStyle(fontSize: 24,color: Color(0XffC8714B))),
+                                                hintStyle: TextStyle(fontSize: 21,color: Color(0XffC8714B))),
                                           ),
                                           // Text(
                                           //   '0.0',
@@ -161,62 +162,102 @@ class PullsWidget extends StatelessWidget {
                                       SizedBox(
                                         height: 4,
                                       ),
-                                      Text("ريال",style: TextStyle( fontSize: 21,color: Color(0xff486ac7)),)
+                                      Text("ريال",style: TextStyle( fontSize: 18,color: Color(0xff486ac7)),)
                                     ],
                                   ),
                                 ),
                                 SizedBox(
                                   width: 25,
                                 ),
-                                Container(
-                                  // margin: const EdgeInsets.symmetric(horizontal: 5),
-                                  width: 125.w,
-                                  // height: 75.h,
-                                  decoration:  BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      gradient:  const LinearGradient(
-                                          begin: Alignment.topRight,
-                                          end: Alignment.bottomRight,
-                                          colors: [
-                                            Color(0xff6fd3de),
-                                            Color(0xff486ac7),
-                                          ]
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey[300]!,
-                                          blurRadius: 20.0,
-                                          spreadRadius: 1.0,
-                                        )
-                                      ]
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                        height: 9,
-                                      ),
-                                      Image.asset(
-                                        "images/making-money@3x.png",
-                                        width: 50,
-                                      ),
-                                      SizedBox(
-                                        height: 1,
-                                      ),
-                                      Text("اسحب",style: TextStyle( fontSize: 21,color:Colors.white)),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
+                                Expanded(
+                                  flex: 4,
+                                  child: Container(
+                                    // margin: const EdgeInsets.symmetric(horizontal: 5),
+                                    width: 105.w,
+                                    // height: 75.h,
+                                    decoration:  BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        gradient:  const LinearGradient(
+                                            begin: Alignment.topRight,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              Color(0xff6fd3de),
+                                              Color(0xff486ac7),
+                                            ]
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey[300]!,
+                                            blurRadius: 20.0,
+                                            spreadRadius: 1.0,
+                                          )
+                                        ]
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          height: 9,
+                                        ),
+                                        Image.asset(
+                                          "images/making-money@3x.png",
+                                          width: 50,
+                                        ),
+                                        SizedBox(
+                                          height: 1,
+                                        ),
+                                        Text("اسحب",style: TextStyle( fontSize: 18,color:Colors.white)),
+                                    const    SizedBox(
+                                          height: 5,
+                                        ),
 
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(
+                          const  SizedBox(
                               height: 60,
                             ),
+
+                            ListView.builder(
+                                shrinkWrap: true,
+                                physics:const NeverScrollableScrollPhysics(),
+                                itemCount: items!.length,
+                                itemBuilder: (context, index) {
+                                  return  Padding(
+                                    padding: EdgeInsets.only(bottom: 15),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.only(top: 8),
+                                          height: 12,
+                                          width: 12,
+                                          decoration:const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(100.0) //                 <--- border radius here
+                                            ),
+                                            color: Color(0xff636363)
+                                          ),
+                                        ),
+                                        const SizedBox(width: 12,),
+                                        Expanded(child: Text("${items![index].desc}",style: TextStyle(fontSize: 14.sp,color:const Color(0xff636363),height: 1.6),))
+                                      ],
+                                    ),
+
+                                  );
+                                }),
+
+                          const  SizedBox(
+                              height: 40,
+                            ),
+
+
+
                             Row(
                               children: [
 
@@ -312,4 +353,20 @@ List<Payments> payments = [
       img: "images/Visa.svg",
       number: "**** **** **** 078"
   ),
+];
+
+
+class PullsPointsItem{
+  int? id;
+  String? desc;
+  PullsPointsItem({this.id,this.desc});
+}
+
+List <PullsPointsItem> items = [
+  PullsPointsItem(
+    id: 0,
+    desc: "لديك طلب سحب قيد المعالجة رقم 5321 بقيمة 15000 ريال"),
+  PullsPointsItem(
+    id: 1,
+    desc: "لديك طلب سحب قيد المعالجة رقم 5321 بقيمة 15000 ريال"),
 ];

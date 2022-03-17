@@ -74,6 +74,8 @@ import 'package:advertisers/features/users_module/view/screens/start_page.dart';
 import 'package:advertisers/features/users_module/view/screens/successful_paying_page.dart';
 import 'package:advertisers/features/users_module/view/screens/verification_code_page.dart';
 import 'package:advertisers/features/wallet_module/wallet_page.dart';
+import 'package:advertisers/features/wallet_module/widgets/wallet_intro/controller/wallet_intro_controller.dart';
+import 'package:advertisers/features/wallet_module/widgets/wallet_intro/wallet_intro_page.dart';
 import 'package:advertisers/reason_rejecting_advertisement_customer/view/page/reason_rejecting_advertisement_customer.dart';
 import 'package:get/get.dart';
 
@@ -362,6 +364,13 @@ class Routes {
     GetPage(
       name: '/EmployeesPage',
       page: () => EmployeesPage(),
+    ),
+    GetPage(
+      name: '/WalletIntroPage',
+      page: () => WalletIntroPage(),
+  binding: BindingsBuilder(() {
+  Get.lazyPut<WalletIntroController>(() => WalletIntroController());
+  }),
     ),
     GetPage(
       name: '/CientOrderDetails',

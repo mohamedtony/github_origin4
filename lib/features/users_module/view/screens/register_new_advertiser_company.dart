@@ -259,7 +259,7 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
                     _registerNewAdvertiserCompanyController.password = value!;
                   },
                   validator: (value) {
-                    // return _registerNewAdvertiserCompanyController.validatePassword(value!);
+                     return _registerNewAdvertiserCompanyController.validatePassword(value!);
                   },
                 ),
                 SizedBox(height: 16.h),
@@ -471,7 +471,7 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
     return showDialog(context: context,builder: (BuildContext context){
 
       return AlertDialog(
-        title: Text("اختر مصدر",style: TextStyle(color: Colors.blue),),
+        title: Text("اخترذ                                                                               ْ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ئ ",style: TextStyle(color: Colors.blue),),
         content: SingleChildScrollView(
           child: ListBody(
             children: [

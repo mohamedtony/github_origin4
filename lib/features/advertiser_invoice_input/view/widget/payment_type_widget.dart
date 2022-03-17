@@ -234,26 +234,35 @@ class PaymentTypeWidget extends StatelessWidget {
                                 print("_advertisingRequestsController.isRepricing==> ${_advertisingRequestsController.isRepricing}");
 
                                 print("id===> ${controller.requestId}");
-                                if(controller.billItemsCoastList.isEmpty){
+                                // if(controller.billItemsCoastList.isEmpty){
+                                //   return;
+                                // }
+                                if(controller.selectedAdvertisingType.id == 0){
+                                  Get.snackbar("برجاء تحديد نوع الاعلان", "", snackPosition: SnackPosition.BOTTOM,);
                                   return;
                                 }
-                                if(controller.billItemsDiscountList.isEmpty){
+                                if(controller.billItemsCoastList.isEmpty){
+                                  Get.snackbar("برجاء اضافه تكلفة", "", snackPosition: SnackPosition.BOTTOM,);
                                   return;
                                 }
                                 if(controller.paymentTypeRadioCheck == 0){
+                                  Get.snackbar("برجاء تحديد نوع الدفع", "", snackPosition: SnackPosition.BOTTOM,);
+
                                   return;
                                 }
-                                if(controller.selectedAdvertisingType.id == 0){
+                                if(controller.sum < 0){
+                                  Get.snackbar("قيمة المبلغ يجب ان تكون رقم صحيح", "", snackPosition: SnackPosition.BOTTOM,);
                                   return;
                                 }
+
 
                                 print("_advertisingRequestsController.isRepricing==> ${_advertisingRequestsController.isRepricing}");
 
-                                if(_advertisingRequestsController.isRepricing = false){
+                                if(_advertisingRequestsController.isRepricing == false){
                                   controller.addRequestBillPost(
                                       requestId: controller.requestId,
                                       request: AdvertiserInvoiceInputsRequest(
-                                        adsTypeId: 1,
+                                        adsTypeId: controller.selectedAdvertisingType.id,
                                         billItems: controller.billItemsCoastList ,
                                         discounts: controller.billItemsDiscountList,
                                         executionDate: controller.endAdvertisingDate.value,

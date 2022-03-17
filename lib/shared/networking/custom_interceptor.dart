@@ -1,18 +1,21 @@
 // import 'dart:io';
-
 // import 'package:bego/app_core/app_core.dart';
 // import 'package:bego/app_core/fcm/FcmTokenManager.dart';
+
+import 'package:advertisers/main.dart';
 import 'package:advertisers/shared/networking/custom_exception.dart';
 import 'package:dio/dio.dart';
 
 class CustomInterceptor implements Interceptor {
+
+ String token = storage.read("token");
   @override
   Future onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     options.headers = {
       "Accept":"application/json",
-      // "Authorization":"Bearer 923|vRQ8dIdUc6LQ7vv5CcFMW4Mo5KoiNtiBBQyROxTn"
-      "Authorization":"Bearer 1174|uRJTjtkcQZFdTLrB12utkLRkkylEJFy7tHeCQjaz",
+      "Authorization":"Bearer  $token",
+      // "Authorization":"Bearer 1174|uRJTjtkcQZFdTLrB12utkLRkkylEJFy7tHeCQjaz",
       // 'FbToken': locator<FcmTokenManager>().currentFcmToken,
       // 'Platform': Platform.isAndroid ? 'android' : 'ios',
       // 'Lang': locator<PrefsService>().appLanguage,

@@ -14,6 +14,7 @@ StatusesModel _$StatusesModelFromJson(Map<String, dynamic> json) =>
       edit: json['edit'] as bool?,
       reject: json['reject'] as bool?,
       transfer: json['transfer'] as bool?,
+      confirm_pricing: json['confirm_pricing'] as bool?,
     );
 
 Map<String, dynamic> _$StatusesModelToJson(StatusesModel instance) =>
@@ -22,6 +23,7 @@ Map<String, dynamic> _$StatusesModelToJson(StatusesModel instance) =>
       'reject': instance.reject,
       'transfer': instance.transfer,
       'confirm': instance.confirm,
+      'confirm_pricing': instance.confirm_pricing,
       'edit': instance.edit,
       'cancel': instance.cancel,
     };

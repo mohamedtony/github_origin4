@@ -217,7 +217,11 @@ class MyOrdersArchivePage extends StatelessWidget {
                                                             }",style: TextStyle(fontSize: 17.sp,color: Color(0xff000000)),)),
                                                             InkWell(
                                                                 onTap: (){
-                                                                  Get.toNamed('/AdvertiserDetailsPage');
+                                                                  controller.currentIndex.value=index;
+                                                                  if (controller.currentIndex.value  == index) {
+                                                                    Get.toNamed('/AdvertiserDetailsPage?requestId=${controller.myRequestsAsClient[index].id}');
+                                                                  }
+
                                                                 },
                                                                 child: Text("تفاصيل الطلب",style: TextStyle( decoration: TextDecoration.underline,fontSize: 15.sp,color: Color(0xff244094)),)),
                                                           ],
