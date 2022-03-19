@@ -40,6 +40,12 @@ class EmployeesController extends GetxController{
   List<String> privilegedList=['الاعدادات','الطلبات','اعلاناتي','الخصومات والكوبونات','إضافة اعلان','الشات','التنبيهات','المعرض','الموظفين','المحفظة',
   'الدعم','التقارير','التعليقات'];
 
+  List<String> notificationSettingsList=['المنصة','الطلبات','المحفظة والنقاط','الشات','التقييم','التعليقات','الموظفين','الاشتراك','المتابعات','الاعلانات',
+    'تذاكر الدعم','الكوبونات','اشعارات المنصه'];
+
+  List<String> notificationSettingsImgsList=['manasa icon.svg','orders icon.svg','ma7faza.svg','chat icon.svg','taqeem.svg','comments.svg','myempolyees.svg','subscripe.svg','heart-solid.svg','advertising2.svg',
+    'bx-support.svg','coupon2.svg','dribbblealt.svg'];
+
   List<String> operationDetails=['تسعير الطلب رقم 4521','إضافة اعلان رقم 5210','تعديل تسعير الطلب رقم 4521','إضافة موظف محمد علي عبدالله','إضافة موظف محمد علي عبدالله',
   'تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521','تسعير طلب رقم 4521'];
 
@@ -103,6 +109,8 @@ class EmployeesController extends GetxController{
 
 
 
+  bool isMuted=false;
+
 
   GlobalKey<FormState> searchFormKey=GlobalKey<FormState>();
   late TextEditingController searchController;
@@ -113,9 +121,9 @@ class EmployeesController extends GetxController{
   void onInit() {
     // passIndex;
     repo=Repository();
-    token =storage.read("token");
+    ///token =storage.read("token");
     searchController=TextEditingController();
-    getRequestsData();
+    ///getRequestsData();
     super.onInit();
   }
 

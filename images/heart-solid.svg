@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48.816" height="46.976" viewBox="0 0 48.816 46.976">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#48dbe1"/>
+      <stop offset="1" stop-color="#4166cd"/>
+      <stop offset="1" stop-color="#236b73"/>
+    </linearGradient>
+    <filter id="heart-solid" x="0" y="0" width="48.816" height="46.976" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-opacity="0.09"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#heart-solid)">
+    <path id="heart-solid-2" data-name="heart-solid" d="M20.232,5.962a4.791,4.791,0,0,0-5.7-2.17,5.8,5.8,0,0,0-3.123,2.217A5.8,5.8,0,0,0,8.288,3.792a4.8,4.8,0,0,0-5.7,2.17c-1.106,2.264-.647,4.811,1.364,7.569a35.746,35.746,0,0,0,7.1,6.887.588.588,0,0,0,.723,0,35.108,35.108,0,0,0,7.1-6.887c2.005-2.758,2.464-5.3,1.359-7.569Z" transform="translate(13 8.43)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>

@@ -162,12 +162,12 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                                                 Padding(
                                                   padding: const EdgeInsets.only(top:4,bottom: 4,right: 8),
                                                   child: Container(
-                                                    child:  SvgPicture.asset('images/manasa icon.svg',height: 30,),
+                                                    child:  SvgPicture.asset('images/${controller.notificationSettingsImgsList[index]}',height: 30,width: 30,fit: BoxFit.contain,),
                                                   ),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.symmetric(horizontal:8.0,vertical:3),
-                                                  child: Text('المنصة',
+                                                  child: Text(controller.notificationSettingsList[index],
                                                     style: TextStyle(
                                                         fontSize: 16.sp,
                                                         color: const Color(
@@ -192,7 +192,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                                                 width: MediaQuery.of(context).size.width*.45,
                                                 decoration: BoxDecoration(
                                                     color: controller.isChecked?const Color(0xffF5F5F5):Colors.white,
-                                                    borderRadius: BorderRadius.circular(10),
+                                                    borderRadius: BorderRadius.circular(6),
                                                     border: Border.all(color: Color(0xff4184CE),width: .5)
                                                 ),
                                                 child: Padding(
@@ -212,13 +212,19 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                                                         ),
                                                       ),
 
-                                                      Padding(
-                                                        padding: const EdgeInsets.only(top:4,bottom: 4,right: 8),
+                                                      InkWell(
+                                                        onTap: (){
+                                                          setState(() {
+                                                            controller.isMuted=!controller.isMuted;
+                                                          });
+
+                                                        },
                                                         child: Container(
-                                                          child:  SvgPicture.asset('images/volume-up.svg',height: 30,),
+                                                          child:  controller.isMuted?SvgPicture.asset('images/volume-up.svg',height: 40,)
+                                                              :SvgPicture.asset('images/mute icon.svg',height: 40,)
                                                         ),
                                                       ),
-                                                    //
+
 
                                                     ],
                                                   ),
@@ -230,11 +236,11 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                                                 width: MediaQuery.of(context).size.width*.45,
                                                 decoration: BoxDecoration(
                                                     color: controller.isChecked?const Color(0xffF5F5F5):Colors.white,
-                                                    borderRadius: BorderRadius.circular(10),
+                                                    borderRadius: BorderRadius.circular(6),
                                                     border: Border.all(color: Color(0xff4184CE),width: .5)
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal:8.0,),
+                                                  padding: const EdgeInsets.symmetric(horizontal:8.0,vertical: 4),
                                                   child: Row(
                                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                     children: [
@@ -253,40 +259,40 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                                                       ),
 
 
-                                                      ClipRRect(
-                                                        clipBehavior: Clip.hardEdge,
-                                                        borderRadius: BorderRadius.all(Radius.circular(2)),
-                                                        child: SizedBox(
-                                                          width: Checkbox.width,
-                                                          height: Checkbox.width,
-                                                          child: Container(
-                                                            decoration: new BoxDecoration(
-                                                              border: Border.all(
-                                                                  width: 1,
-                                                                  color: Color(0xffE5E5E5)
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(top:4,bottom: 4,right: 8),
+                                                        child: ClipRRect(
+                                                          clipBehavior: Clip.hardEdge,
+                                                          borderRadius: BorderRadius.all(Radius.circular(2)),
+                                                          child: SizedBox(
+                                                            width: Checkbox.width,
+                                                            height: Checkbox.width,
+                                                            child: Container(
+                                                              decoration: new BoxDecoration(
+                                                                border: Border.all(
+                                                                    width: 1,
+                                                                    color: Color(0xffE5E5E5)
+                                                                ),
+                                                                borderRadius: new BorderRadius.circular(2),
                                                               ),
-                                                              borderRadius: new BorderRadius.circular(2),
-                                                            ),
-                                                            child: Theme(
-                                                              data: ThemeData(
-                                                                unselectedWidgetColor: Colors.transparent,
-                                                              ),
-                                                              child: Checkbox(
-                                                                value:  controller.isChecked,
-                                                                onChanged: (state) => setState((){
-                                                                  controller.isChecked=!controller.isChecked;
-                                                                }),
-                                                                activeColor: Color(0xFF4184CE),
-                                                                checkColor: Colors.white,
-                                                                materialTapTargetSize: MaterialTapTargetSize.padded,
+                                                              child: Theme(
+                                                                data: ThemeData(
+                                                                  unselectedWidgetColor: Colors.transparent,
+                                                                ),
+                                                                child: Checkbox(
+                                                                  value:  controller.isChecked,
+                                                                  onChanged: (state) => setState((){
+                                                                    controller.isChecked=!controller.isChecked;
+                                                                  }),
+                                                                  activeColor: Color(0xFF4184CE),
+                                                                  checkColor: Colors.white,
+                                                                  materialTapTargetSize: MaterialTapTargetSize.padded,
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
                                                         ),
                                                       ),
-
-
-
 
                                                     ],
                                                   ),
