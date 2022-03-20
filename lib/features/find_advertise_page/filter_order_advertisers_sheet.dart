@@ -1068,16 +1068,21 @@ class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersShee
                   //controller: controller.kayanNameController,
                   //  enabled: controller.isEnabled.value,
                   controller: findOrderAdvertisersController.searchAdvertiserController,
-    style:  TextStyle(
-    color: AppColors.activitiesDropDown,
-    /*decoration: TextDecoration.underline,decorationThickness: 2,*/
-    fontSize: 16.0,
-    fontWeight: FontWeight.w500),
+                  style:  TextStyle(
+                  color: AppColors.activitiesDropDown,
+                  /*decoration: TextDecoration.underline,decorationThickness: 2,*/
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500),
                   /*style: TextStyle(
                       color: (AppColors.editProfileTextColorOpa)
                           .withOpacity(0.51),
                       fontWeight: FontWeight.w500,
                       fontSize: 14.0),*/
+                  onChanged: (s){
+                    if(s.isEmpty){
+                      findOrderAdvertisersController.type=null;
+                    }
+                  },
                   decoration: InputDecoration(
                       contentPadding: const EdgeInsets.only(
                           left: 10.0, right: 14.0, bottom: 12.0),

@@ -385,7 +385,7 @@ class ClientSettingPageController extends GetxController  {
   FocusNode personalIdNode = FocusNode();
   bool isNumericUsingRegularExpression(String string) {
     final numericRegex =
-    RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+    RegExp(r'^-?(([0-9]*)|(([0-9]*)))$');
 
     return numericRegex.hasMatch(string);
   }
@@ -398,7 +398,6 @@ class ClientSettingPageController extends GetxController  {
 
 
   void saveButtonClicked(context) async{
-
  /*   await client!.updateMyProfile(UpdateProfileRequest(username: "MohamedEltony",account_name: " Eltony",email: "mohamedtony349@yahoo.com",phone: "201111046148",country_id: 4,area_id: 9,role: 'user',type: 'client',personal_id: "5666660609"),"application/json",file: File(imagePath.value) ).then((value) {
       print("myHere"+value.status.toString());
       print("myHere"+value.message.toString());

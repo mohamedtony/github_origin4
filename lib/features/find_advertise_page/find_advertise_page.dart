@@ -37,74 +37,14 @@ class FindAdvertisePage extends StatefulWidget {
 
 class _FindAdvertisePageState extends State<FindAdvertisePage> {
   final findAdvertiseController=Get.put(FindAdvertiseController());
-  final PagingController<int, GetAdvertisersModel> pagingController = PagingController(firstPageKey: 0);
-
-  Future<List<GetAdvertisersModel>> getNotifications(
-      {/*String brandId, String catgegoryId,*/ int? pageKey}) async {
-    String myToken = await storage.read("token");
-
-    GetAdvertisersResponse response = await client!.getAdvertisers("Bearer " + myToken, GetAdvertisersRequest(page: pageKey,));
-
-    final completer = Completer<List<GetAdvertisersModel>>();
-    List<GetAdvertisersModel> notifications = [];
-    if(response.data!=null && response.data!.isNotEmpty) {
-      notifications = response.data!;
-    }
-    completer.complete(notifications);
-    return completer.future;
-    // return topSellingList;
-  }
-
-  Future<void> fetchPage(int pageKey) async {
-    print("hhhhhhhhhhhhhhhhhhhhhhhh");
-    try {
-      //List<GetAdvertisersModel> newItems = await getNotifications(page: pageKey);
-      /*List<GetAdvertisersModel>? newItems = (await client!.getAdvertisers("Bearer " + myToken!, GetAdvertisersRequest(page: pageKey))).data;
-      if(newItems!=null && newItems.isNotEmpty){
-        isLoading.value = false;
-        isEmpty.value = false;
-        //advertisersModel.value = value.data!;
-      }else{
-        isLoading.value = false;
-        isEmpty.value = true;
-      }
-      bool isLastPage = newItems == null || newItems.isEmpty;
-      if (isLastPage) {
-        print("isLast = " + isLastPage.toString());
-        pagingController.appendLastPage(newItems!);
-      } else {
-        //final nextPageKey = pageKey + newItems.length;
-        int nextPageKey = ++pageKey;
-        print("nextPageKey=" + nextPageKey.toString());
-        pagingController.appendPage(newItems, nextPageKey);
-      }*/
-      List<GetAdvertisersModel> newItems = await getNotifications(pageKey: pageKey);
-
-      bool isLastPage = newItems == null || newItems.isEmpty;
-      if (isLastPage) {
-        print("isLast = " + isLastPage.toString());
-        pagingController.appendLastPage(newItems);
-       // pagingController. = "tony";
-      } else {
-        //final nextPageKey = pageKey + newItems.length;
-        int nextPageKey = ++pageKey;
-        print("nextPageKey=" + nextPageKey.toString());
-        pagingController.appendPage(newItems, nextPageKey);
-      }
-      // print("first=" + newItems.first.Code.toString());
-      //print("last=" + newItems.last.Code.toString());
 
 
-    } catch (error) {
-      pagingController.error = error;
-    }
-  }
   @override
   void initState() {
     // TODO: implement initState
-    pagingController.addPageRequestListener((pageKey) async {
+    findAdvertiseController.pagingController.addPageRequestListener((pageKey) async {
       print("hhhhhhhhhhhhhhhhhhhhhhhh");
-      await fetchPage(pageKey);
+      await findAdvertiseController.fetchPage(pageKey, type: /*findAdvertiseController?.type??*/null);
     });
     super.initState();
   }
@@ -288,7 +228,7 @@ class _FindAdvertisePageState extends State<FindAdvertisePage> {
         ),
         Expanded(
             child: PagedListView<int, GetAdvertisersModel>(
-              pagingController: pagingController,
+              pagingController: findAdvertiseController.pagingController,
 
               builderDelegate: PagedChildBuilderDelegate<GetAdvertisersModel>(
                 animateTransitions: true,
@@ -455,7 +395,8 @@ class _FindAdvertisePageState extends State<FindAdvertisePage> {
   @override
   void dispose() {
     // TODO: implement dispose
-    pagingController.dispose();
+    //findAdvertiseController.pagingController.dispose();
+    //Get.delete<FindAdvertiseController>();
     super.dispose();
   }
 }

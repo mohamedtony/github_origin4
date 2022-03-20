@@ -16,6 +16,7 @@ import 'package:advertisers/app_core/network/models/SelectedNotSelectedSortType.
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/requests/GetAdvertisersRequest.dart';
 import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetAdvertisersResponse.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
 import 'package:advertisers/main.dart';
@@ -109,6 +110,7 @@ class FindAdvertiseController extends GetxController {
   late RequestAdvertiseController requestAdvertiseController;
 
   final PagingController<int, GetAdvertisersModel> pagingController = PagingController(firstPageKey: 0);
+   String? type;
 
   @override
   Future<void> onInit() async {
@@ -138,6 +140,122 @@ class FindAdvertiseController extends GetxController {
 
   }
 
+  Future<List<GetAdvertisersModel>> getNotifications(
+      {GetAdvertisersRequest? getAdvertisersRequest, int? pageKey}) async {
+    //getAdvertisersRequest!.page=pageKey;
+    String myToken = await storage.read("token");
+
+    GetAdvertisersResponse response = await client!.getAdvertisers("Bearer " + myToken!, /*GetAdvertisersRequest(page: pageKey,)*/getAdvertisersRequest!);
+
+    final completer = Completer<List<GetAdvertisersModel>>();
+    List<GetAdvertisersModel> notifications = [];
+    if(response.data!=null && response.data!.isNotEmpty) {
+      notifications = response.data!;
+    }
+    completer.complete(notifications);
+    return completer.future;
+    // return topSellingList;
+  }
+  GetAdvertisersRequest? getAdvertisersRequest2;
+  Future<void> fetchPage(int pageKey,{GetAdvertisersRequest? getAdvertisersRequest,String? type}) async {
+    print("hhhhhhhhhhhhhhhhhhhhhhhh");
+    try {
+      //List<GetAdvertisersModel> newItems = await getNotifications(page: pageKey);
+      /*List<GetAdvertisersModel>? newItems = (await client!.getAdvertisers("Bearer " + myToken!, GetAdvertisersRequest(page: pageKey))).data;
+      if(newItems!=null && newItems.isNotEmpty){
+        isLoading.value = false;
+        isEmpty.value = false;
+        //advertisersModel.value = value.data!;
+      }else{
+        isLoading.value = false;
+        isEmpty.value = true;
+      }
+      bool isLastPage = newItems == null || newItems.isEmpty;
+      if (isLastPage) {
+        print("isLast = " + isLastPage.toString());
+        pagingController.appendLastPage(newItems!);
+      } else {
+        //final nextPageKey = pageKey + newItems.length;
+        int nextPageKey = ++pageKey;
+        print("nextPageKey=" + nextPageKey.toString());
+        pagingController.appendPage(newItems, nextPageKey);
+      }*/
+      List<GetAdvertisersModel>? newItems;
+      if(type!=null){
+        print("tyyyype");
+        if(pageKey==0){
+          pagingController.itemList = [];
+        }
+        getAdvertisersRequest2!.page = pageKey;
+         newItems = await getNotifications(pageKey: pageKey,getAdvertisersRequest: getAdvertisersRequest2);
+         bool isLastPage = newItems == null || newItems.isEmpty;
+         if (isLastPage) {
+           print("isLast = " + isLastPage.toString());
+           pagingController.appendLastPage(newItems!);
+           // pagingController. = "tony";
+         } else {
+           //final nextPageKey = pageKey + newItems.length;
+           int nextPageKey = ++pageKey;
+           print("nextPageKey=" + nextPageKey.toString());
+           pagingController.appendPage(newItems, nextPageKey);
+           //pagingController.itemList = newItems;
+         }
+      }else{
+        print("tyyyype2");
+        newItems = await getNotifications(pageKey: pageKey,getAdvertisersRequest: GetAdvertisersRequest(page: pageKey));
+        print("tyyyype3");
+        bool isLastPage = newItems == null || newItems.isEmpty;
+        if (isLastPage) {
+          print("isLast = " + isLastPage.toString());
+          pagingController.appendLastPage(newItems);
+          // pagingController. = "tony";
+        } else {
+          //final nextPageKey = pageKey + newItems.length;
+          int nextPageKey = ++pageKey;
+          print("nextPageKey=" + nextPageKey.toString());
+          pagingController.appendPage(newItems, nextPageKey);
+          //pagingController.itemList = newItems;
+        }
+      }
+
+/*      if((type!=null && type=="search") && pageKey==0) {
+        //pagingController.refresh();
+        pagingController.itemList = [];
+        //pagingController.appendPage(newItems);
+        bool isLastPage = newItems == null || newItems.isEmpty;
+        if (isLastPage) {
+          print("isLast = " + isLastPage.toString());
+          pagingController.appendLastPage(newItems!);
+          // pagingController. = "tony";
+        } else {
+          //final nextPageKey = pageKey + newItems.length;
+          int nextPageKey = ++pageKey;
+          print("nextPageKey=" + nextPageKey.toString());
+          pagingController.appendPage(newItems, nextPageKey);
+          //pagingController.itemList = newItems;
+        }
+      }else{
+        bool isLastPage = newItems == null || newItems.isEmpty;
+        if (isLastPage) {
+          print("isLast = " + isLastPage.toString());
+          pagingController.appendLastPage(newItems!);
+          // pagingController. = "tony";
+        } else {
+          //final nextPageKey = pageKey + newItems.length;
+          int nextPageKey = ++pageKey;
+          print("nextPageKey=" + nextPageKey.toString());
+          pagingController.appendPage(newItems, nextPageKey);
+          //pagingController.itemList = newItems;
+        }
+      }*/
+      // print("first=" + newItems.first.Code.toString());
+      //print("last=" + newItems.last.Code.toString());
+
+
+    } catch (error) {
+      pagingController.error = error;
+    }
+  }
 
   void getAdvertisersForm(BuildContext context) {
     print("here");
@@ -481,6 +599,7 @@ class FindAdvertiseController extends GetxController {
         countryCaregoriesIds.add(element.id!);
       }
     });
+    //pagingController.refresh();
     Logger().i(GetAdvertisersRequest(
             sort_by: sortByStrings!.isNotEmpty ? sortByStrings : null,
             categories: categoriesId.isNotEmpty ? categoriesId : null,
@@ -492,7 +611,33 @@ class FindAdvertiseController extends GetxController {
                 ? searchAdvertiserController.text
                 : null)
         .toJson());
-    client!
+    type = "search";
+    getAdvertisersRequest2 = GetAdvertisersRequest(
+        page: 0,
+        sort_by: sortByStrings!.isNotEmpty ? sortByStrings : null,
+        categories: categoriesId.isNotEmpty ? categoriesId : null,
+        country_category: countryCaregoriesIds.isNotEmpty
+            ? countryCaregoriesIds
+            : null,
+        countries: countriesId.isNotEmpty ? countriesId : null,
+        areas: areasIds.isNotEmpty ? areasIds : null,
+        keyword: searchAdvertiserController.text.isNotEmpty
+            ? searchAdvertiserController.text
+            : null);
+    pagingController.refresh();
+    fetchPage(0,getAdvertisersRequest: GetAdvertisersRequest(
+        page: 0,
+        sort_by: sortByStrings!.isNotEmpty ? sortByStrings : null,
+        categories: categoriesId.isNotEmpty ? categoriesId : null,
+        country_category: countryCaregoriesIds.isNotEmpty
+            ? countryCaregoriesIds
+            : null,
+        countries: countriesId.isNotEmpty ? countriesId : null,
+        areas: areasIds.isNotEmpty ? areasIds : null,
+        keyword: searchAdvertiserController.text.isNotEmpty
+            ? searchAdvertiserController.text
+            : null),type:"search");
+/*    client!
         .getAdvertisers(
             "Bearer " + myToken!,
             GetAdvertisersRequest(
@@ -515,7 +660,7 @@ class FindAdvertiseController extends GetxController {
         isLoading.value = false;
         isEmpty.value = true;
       }
-    });
+    });*/
   }
 
   void showToast(msg) {
@@ -545,6 +690,8 @@ class FindAdvertiseController extends GetxController {
     selectedChannel.value = Channel();
     selectedUserLocations.value = [];
     searchAdvertiserController.text = '';
+    type = null;
+    pagingController.refresh();
     selectedEffectSlidesModel.value = EffectSlidesModel();
   }
 

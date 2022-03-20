@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:advertisers/app_core/network/models/AdTypeModel.dart';
+import 'package:advertisers/app_core/network/models/AdvertiserProfileModel.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/app_core/network/models/Channel.dart';
 import 'package:advertisers/app_core/network/models/ClientProfileModel.dart';
@@ -32,6 +33,7 @@ import 'package:advertisers/shared/loading_dialog.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -137,7 +139,7 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
 
 
 
-  late final  HomeNavController controller;
+  // final  HomeNavController controller;
   List<String> images=['images/snapshat_icon.png','images/instegram.png',
     'images/twitter.png','images/youtube.png','images/facebook.png','images/whatsup.png',];
 
@@ -149,6 +151,7 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
   BitmapDescriptor? pinLocationIcon;
   late Uint8List markerIcon;
 
+  AdvertiserProfileModel? advertiserProfileModel;
   @override
   Future<void> onInit() async {
     // TODO: implement onInit
@@ -187,7 +190,21 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
       }
     });
 
+    EasyLoading.show();
+    client!.getAdveriserProfileDetail(vv.id,"Bearer "+myToken!).then((value) {
+     // Logger().i(value.data?.toJson());
+      if(value.data!=null&&value.status==200){
+        //Get.back();
 
+        if(value.data!=null) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          advertiserProfileModel = value.data;
+          update();
+        }
+      }
+    });
 
     mapController = Completer();
     setCustomMapPin();
@@ -222,9 +239,9 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
     ));
 
     //List<Animation<Offset>> animationsClose = [];
-    if(controller.initialized) {
+    /*if(controller.initialized) {
       controller = Get.find<HomeNavController>();
-    }
+    }*/
     super.onInit();
 
   }
@@ -704,11 +721,10 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
 //================================== dicount sheet ==========================================
   bool isNumericUsingRegularExpression(String string) {
     final numericRegex =
-    RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+    RegExp(r'^-?(([0-9]*)|(([0-9]*)))$');
 
     return numericRegex.hasMatch(string);
   }
-
   bool isUrlUsingRegularExpression(String string) {
     final numericRegex =
     RegExp(r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+');
