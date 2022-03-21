@@ -15,9 +15,10 @@ class AdvertiserProfileModel {
   String? image,added_from,reply_speed;
   int? followers,ads_count;
   List<Channel>? channels;
+  bool? is_followed;
 
   AdvertiserProfileModel({this.id, this.username, this.role,this.image,this.type,this.channels,
-    this.rate,this.reply_speed,this.added_from,this.manager_name,this.company_name,this.phone,this.ads_count,this.account_name,this.email,this.followers,this.gender});
+    this.rate,this.reply_speed,this.added_from,this.manager_name,this.company_name,this.phone,this.ads_count,this.account_name,this.email,this.followers,this.gender,this.is_followed});
 
   factory AdvertiserProfileModel.fromJson(Map<String, dynamic> json) => _$AdvertiserProfileModelFromJson(json);
 

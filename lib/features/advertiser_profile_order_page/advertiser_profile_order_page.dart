@@ -205,9 +205,15 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Container(
-                              child: Image.asset(
+                              padding: EdgeInsets.all(3),
+                              child: advertiserProfileController.advertiserProfileModel?.is_followed!=null && advertiserProfileController.advertiserProfileModel!.is_followed!? Image.asset(
+                                'images/heart_outline2.png',
+                                fit: BoxFit.fill,
+                                height: 25.0,
+                                width: 25.0,
+                              ):Image.asset(
                                 'images/heart_dislike.png',
-                                fit: BoxFit.cover,
+                                fit: BoxFit.fill,
                                 height: 25.0,
                                 width: 25.0,
                               ),
@@ -270,6 +276,7 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
                                 advertiserProfileController.isShowDetailsClicked.value = true;
                               },
                               child: Container(
+                                margin: EdgeInsets.all(5),
                                 child: SvgPicture.asset(
                                   'images/dots.svg',
                                   fit: BoxFit.cover,
@@ -556,7 +563,7 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
                       ),
                       alignment: Alignment.center,
                       child: advertiserProfileController.advertiserProfileModel!.channels!.isNotEmpty?ListView.builder(
-                          itemCount:  advertiserProfileController.channels.value.length??0,
+                          itemCount:  advertiserProfileController.advertiserProfileModel!.channels!.length ?? 0,
                           shrinkWrap: true,
                           scrollDirection : Axis.horizontal,
                           itemBuilder:
@@ -564,7 +571,7 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
                             return Container(
                               margin: EdgeInsets.only(left: 10,right: 10,top: 12,bottom: 12),
                               child: CachedNetworkImage(
-                                imageUrl: advertiserProfileController.channels.value[index].image??"",
+                                imageUrl: advertiserProfileController.advertiserProfileModel!.channels![index].image??"",
                                 placeholder: (context, url) =>
                                 const SpinKitThreeBounce(
                                   color: Colors.grey,
@@ -656,6 +663,7 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
                     /*onSheetClicked: (x){
                       this.onSheetClicke!(x);
                     },*/
+                    type: "advertiserOrderProfiel",
                   ),
                   // RequestAdvertisePage(),
 
@@ -672,7 +680,7 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
   }
   Future<bool> onWillPop() async {
     Get.delete<AdvertiserProfileOrderController>();
-    Get.delete<FindAdvertiseController>();
+    //Get.delete<FindAdvertiseController>();
     return true;
   }
 

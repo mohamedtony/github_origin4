@@ -191,7 +191,7 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
     });
 
     EasyLoading.show();
-    client!.getAdveriserProfileDetail(vv.id,"Bearer "+myToken!).then((value) {
+    client!.getAdveriserProfileDetail(selectedAdvertiseId,"Bearer "+myToken!).then((value) {
      // Logger().i(value.data?.toJson());
       if(value.data!=null&&value.status==200){
         //Get.back();

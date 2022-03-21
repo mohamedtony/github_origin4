@@ -27,7 +27,8 @@ class FilterOrderAdvertisersSheet extends StatefulWidget {
 }
 
 class _FilterOrderAdvertisersSheetState extends State<FilterOrderAdvertisersSheet> {
-  FindAdvertiseController findOrderAdvertisersController =Get.find();
+
+  FindAdvertiseController findOrderAdvertisersController =Get.put(FindAdvertiseController());
 
   @override
   void initState() {

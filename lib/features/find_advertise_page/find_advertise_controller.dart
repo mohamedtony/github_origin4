@@ -257,9 +257,10 @@ class FindAdvertiseController extends GetxController {
     }
   }
 
-  void getAdvertisersForm(BuildContext context) {
+  Future<void> getAdvertisersForm(BuildContext context) async {
     print("here");
-    client!.getAdvertisersForm("Bearer " + myToken!).then((value) {
+    String myToken = await storage.read("token");
+    client!.getAdvertisersForm("Bearer " + myToken).then((value) {
       if (value.status == 200 && value.data != null) {
         print("hereHerre");
 
