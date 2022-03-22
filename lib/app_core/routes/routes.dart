@@ -357,7 +357,6 @@ class Routes {
     GetPage(
       name: '/AddEmployeePage',
       page: () => AddEmployeePage(),
-
     ),
     GetPage(
       name: '/EmployeesPage',
@@ -376,7 +375,6 @@ class Routes {
   binding: BindingsBuilder(() {
   Get.lazyPut<ClientOrderDetailsController>(() => ClientOrderDetailsController());
   }),
-
     ),
   ];
 }
