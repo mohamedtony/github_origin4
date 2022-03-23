@@ -32,14 +32,94 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
     final node = FocusScope.of(context);
     return Scaffold(
       appBar: PreferredSize(
+        preferredSize: Size.fromHeight(75.0),
+        child: AppBar(
+          leading: InkWell(
+            onTap: (){
+
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top:8.0),
+              child: Container(
+                margin: EdgeInsets.only(right: 10.0),
+                child: SvgPicture.asset(
+                  'images/DrawerIcon.svg',
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          leadingWidth: 56.0,
+          title: Padding(
+            padding: const EdgeInsets.only(top:8.0),
+            child: Container(
+              height: 40.0,
+              // alignment: Alignment.center,
+              child: TextField(
+                textAlign: TextAlign.center,
+                textAlignVertical: TextAlignVertical.center,
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(10.0),
+                    prefixIcon: Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: SvgPicture.asset(
+                        'images/search_icon.svg',
+                      ),
+                    ),
+                    suffixIcon: Container(
+                      padding: EdgeInsets.all(10.0),
+                      child: SvgPicture.asset(
+                        'images/filter_icon.svg',
+                      ),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(70.0),
+                      borderSide: BorderSide(
+                        width: 0,
+                        style: BorderStyle.none,
+                      ),
+                    ),
+                    filled: true,
+                    hintStyle: TextStyle(color: Colors.grey[800]),
+                    //hintText: "Type in your text",
+                    fillColor: Colors.white70),
+              ),
+            ),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(left:16.0,top: 8),
+              child: InkWell(
+                onTap: (){
+                   Navigator.of(context).pop();
+                },
+                child: SvgPicture.asset('images/arrow_back.svg',
+                  // matchTextDirection: true,
+                  height: 40,width: 40, fit: BoxFit.contain,color: Colors.white,),
+              ),
+            ),
+          ],
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFF48DBE1), Color(0xFF4166CD)],
+              ),
+            ),
+          ),
+          elevation: 2,
+          //  bottom: ,
+        ),
+      ),/*PreferredSize(
         child: AppBarWidget(
-          isSearchBar: false,
+          isSearchBar: true,
           isNotification: false,
           isBack: true,
           isSideMenu: false,
         ),
         preferredSize: Size(MediaQuery.of(context).size.width, 93.h),
-      ),
+      ),*/
       body: GetBuilder<EmployeesController>(
         init: EmployeesController(),
         builder: (controller) =>  SingleChildScrollView(
@@ -160,8 +240,12 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                                             child:  Row(
                                               children: [
                                                 Padding(
-                                                  padding: const EdgeInsets.only(top:4,bottom: 4,right: 8),
+                                                  padding:   EdgeInsets.only(top:4,bottom: 4,right: index==6||index==11||index==12? 16: 8,left: index==6||index==11||index==12? 8: 0),
                                                   child: Container(
+                                                    width: index==6||index==11||index==12?13:30,
+                                                    height: index==6||index==11||index==12?13:30,
+                                                    // decoration: BoxDecoration(
+                                                    //     image: DecorationImage(image: AssetImage('manasa img.png'),fit: BoxFit.fill) ),
                                                     child:  SvgPicture.asset('images/${controller.notificationSettingsImgsList[index]}',height: 30,width: 30,fit: BoxFit.contain,),
                                                   ),
                                                 ),
