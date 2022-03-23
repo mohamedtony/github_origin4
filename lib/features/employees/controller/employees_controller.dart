@@ -68,43 +68,6 @@ class EmployeesController extends GetxController{
   List<int>? checkListFunctions = [];
 
 
-  List<int> solution(List<int> a) {
-
-    List<int> temp=  <int>[];
-
-    for(int i=0;i<a.length;i++){
-      String numAsString = a[i].toString();
-      for (int y = 0; y < numAsString.length; y++) {
-        temp.add(int.parse(numAsString[y]));
-      }
-    }
-
-    List<int> occurence=  <int>[];
-    List<int> occurenceNum=  <int>[];
-
-    for(int o=0;o<temp.length;o++){
-      int count=0;
-      int x=temp[o];
-
-      for(int j=0;j<temp.length;j++){
-        if(x==temp[j]){
-          count++;
-        }
-      }
-      if(count>1){
-        occurenceNum.add(count);
-        occurence.add(x);
-      }
-
-
-
-    }
-    occurence.reversed;
-
-    return occurence;
-
-  }
-  
   
   void openSingleItemFromCheckListFunctions(id){
     checkListShare!.clear();
@@ -163,8 +126,7 @@ class EmployeesController extends GetxController{
     ///token =storage.read("token");
     searchController=TextEditingController();
     ///getRequestsData();
-    mylist=solution([2,23,34,5,24,13,7]);
-    print("mylist $mylist");
+ 
     super.onInit();
   }
 
