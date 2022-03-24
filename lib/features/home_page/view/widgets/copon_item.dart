@@ -165,8 +165,9 @@ CoponModelResponse? coponModelResponse;
                     ),
                   ),
                   Container(
+                    alignment: Alignment.centerRight,
                     margin: EdgeInsets.all(3.0),
-                    child: Text('قسيمة تخفيض نون 15 % على كل منتجات نون السعودية',
+                    child: Text( '${coponModelResponse?.description ?? coponModelResponse?.name}',
                       style: TextStyle(fontSize: 16.0.sp,color: AppColors.coponPercentColorText,fontWeight: FontWeight.bold),textAlign: TextAlign.right,overflow: TextOverflow.ellipsis,maxLines: 2,),),
                   Container(
                     margin: EdgeInsets.only(bottom: 14.0,left: 4.0),

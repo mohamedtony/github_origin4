@@ -17,14 +17,13 @@ class CoponsPageController extends GetxController {
   List<CoponModelResponse>? coponsResponse;
   late String myToken;
 
-  final PagingController<int, CoponModelResponse> pagingController = PagingController(firstPageKey: 0);
+  final PagingController<int, CoponModelResponse> pagingController = PagingController(firstPageKey: 1);
 
   Future<List<CoponModelResponse>> getCopons(
       {/*String brandId, String catgegoryId,*/ int? pageKey}) async {
     String myToken = await storage.read("token");
 
     CoponsResponse response = await client!.getAppCopons(pageKey,"Bearer " + myToken);
-
     final completer = Completer<List<CoponModelResponse>>();
     List<CoponModelResponse> notifications = [];
     if(response.data!=null && response.data!.isNotEmpty) {
@@ -37,6 +36,7 @@ class CoponsPageController extends GetxController {
 
   Future<void> fetchPage(int pageKey) async {
     myToken = await storage.read("token");
+    print("hhhhhhhhhhhhhhhhhhhhhhhhpageKey= "+pageKey.toString());
     print("hhhhhhhhhhhhhhhhhhhhhhhh="+myToken);
     try {
       List<CoponModelResponse> newItems = await getCopons(pageKey: pageKey);

@@ -7,6 +7,7 @@ import 'package:advertisers/app_core/network/requests/CreateAdvertiseRequest.dar
 import 'package:advertisers/app_core/network/requests/CreateSubscriptionRequest.dart';
 import 'package:advertisers/app_core/network/requests/GetAdvertisersRequest.dart';
 import 'package:advertisers/app_core/network/requests/OneCountryAndCitiesRequest.dart';
+import 'package:advertisers/app_core/network/requests/SelectCoponsRequest.dart';
 import 'package:advertisers/app_core/network/requests/UpdateProfileRequest.dart';
 import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
 import 'package:advertisers/app_core/network/requests/login_client_request.dart';
@@ -130,15 +131,31 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   Future<AdvertiserProfileDetailsResponse> getAdveriserProfileDetail(@Path("id") int? id,@Header("Authorization") String token);
 
   //@GET('/copons/app')
+  @GET('copons/app?page={id}')
+  Future<CoponsResponse> getAppCopons( @Path("id") int? id,@Header("Authorization") String token);
+
+
+  @GET('copons/advertisers?page={id}')
+  Future<CoponsResponse> getAdvertisersCopons( @Path("id") int? id,@Header("Authorization") String token);
 
   @GET('/copons/clients?page={id}')
-  Future<CoponsResponse> getAppCopons( @Path("id") int? id,@Header("Authorization") String token);
+  Future<CoponsResponse> getClientsCoponsWhitId( @Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/copons/clients?user_id={userid}&page={id}')
+  Future<CoponsResponse> getClientsCopons( @Path("userid") int? userid,@Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/mycopons?page={id}')
+  Future<CoponsResponse> getMyCopons( @Path("userid") int? userid,@Path("id") int? id,@Header("Authorization") String token);
+
 
   @GET('/copons/{id}/like')
   Future<CoponsResponse> likeCopon(@Path("id") int? id,@Header("Authorization") String token);
 
   @GET('/copons/{id}/dislike')
   Future<CoponsResponse> dislikeCopon(@Path("id") int? id,@Header("Authorization") String token);
+
+  @POST('/select_copons')
+  Future<CoponsResponse> select_copons(@Body()SelectCoponsRequest selectCoponsRequest,@Header("Authorization") String token);
 
 /*  Map<String, dynamic> mymap = {
 
