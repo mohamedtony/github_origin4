@@ -88,6 +88,9 @@ dependencies:
   video_compress: ^3.1.0
   connectivity_plus: ^2.2.1
   rflutter_alert: ^2.0.4
+  readmore: ^2.1.0
+
+  #focused_menu: ^1.0.5
 dev_dependencies:
   flutter_test:
     sdk: flutter

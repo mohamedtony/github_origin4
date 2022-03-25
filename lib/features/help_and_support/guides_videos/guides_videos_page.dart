@@ -21,7 +21,7 @@ class GuidesVideosPage extends StatelessWidget {
             SizedBox(height:33.h),
             Expanded(
               child: Obx(()=>_guidesVideosController.videos.isNotEmpty?ListView(
-                children:List.generate(10, (index) => GuidesVideosCard(text:_guidesVideosController.videos[index].name??' ', url: _guidesVideosController.videos[index].url??' ', )) ,
+                children:List.generate(_guidesVideosController.videos.length, (index) => GuidesVideosCard(text:_guidesVideosController.videos[index].name??' ', url: _guidesVideosController.videos[index].url??' ', )) ,
               ):const Center(child:  SizedBox(child:Text('لا يوجد بيانات')))),
             )
           ],

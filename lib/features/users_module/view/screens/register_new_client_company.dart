@@ -248,6 +248,21 @@ class _RegisterNewClientCompanyState extends State<RegisterNewClientCompany> {
                   },
                 ),
                 SizedBox(height: 16.h),
+                AdvertisersGenericField(
+                  hintText: 'enterPassword'.tr,
+                  borderColor: AppColors.borderAdvertiserRegisterColor,
+                  obscureText: true,
+                  textAlignment: TextAlign.end,
+                  controller: _registerNewClientCompanyController
+                      .passwordController,
+                  onSaved: (value) {
+                    _registerNewClientCompanyController.password = value!;
+                  },
+                  validator: (value) {
+                    return _registerNewClientCompanyController.validatePassword(value!);
+                  },
+                ),
+                SizedBox(height: 16.h),
                 SizedBox(
                     width: 323.w,
                     child: Row(

@@ -18,7 +18,7 @@ class GuidesVideosController extends GetxController {
     token = storage.read("token");
     // passIndex;
     repo = Repository();
-
+    getGuidedVideos();
     super.onInit();
   }
   getGuidedVideos() {

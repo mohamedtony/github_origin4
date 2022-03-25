@@ -36,6 +36,7 @@ import 'package:advertisers/features/customer_order_invoice_out_puts/view/custom
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/features/employees/view/AddEmployeePage.dart';
 import 'package:advertisers/features/employees/view/EmployeesPage.dart';
+import 'package:advertisers/features/gallery/gallery_page.dart';
 import 'package:advertisers/features/help_and_support/guides_videos/controller/guides_videos_controller.dart';
 import 'package:advertisers/features/help_and_support/guides_videos/guides_videos_page.dart';
 import 'package:advertisers/features/help_and_support/help_and_support_page.dart';
@@ -137,6 +138,10 @@ class Routes {
     //     Get.lazyPut<AdvancedOptionsController>(() => AdvancedOptionsController());
     //   }),
     // ),
+    GetPage(
+      name: '/GalleryPage',
+      page: () => GalleryPage(),
+    ),
     GetPage(
       name: '/BlockedUsersPage',
       page: () => BlockedUsersPage(),

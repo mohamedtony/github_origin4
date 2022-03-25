@@ -126,7 +126,7 @@ class RegisterNewClientUserController extends GetxController {
     return null;
   }
   String? validateNationalId(String val) {
-    if (val.length < 10) {
+    if (!GetUtils.isNumericOnly(val)||val.length < 10) {
       return 'رقم الهوية لا يقل عن 10 ارقام';
     }else if(nationalIDMess.isNotEmpty){
       return nationalIDMess.value;
@@ -145,6 +145,7 @@ class RegisterNewClientUserController extends GetxController {
     element.id == country2.id);
     if (country != null) {
       areas.value = country.areas!;
+      areaId.value=areas[0].id.toString()??'0';
     }
 
     /*countries.forEach((element) {
@@ -160,7 +161,7 @@ class RegisterNewClientUserController extends GetxController {
     if (!isValid.value||errorRegister.value==true) {
       return;
     }
-    registerNewClientUserControllerFormKey.currentState!.save();
+   registerNewClientUserControllerFormKey.currentState!.save();
    // registerClientUser(context: context);
     if(gender.value.isNotEmpty){
     if(countryId.isNotEmpty&&areaId.isNotEmpty) {

@@ -89,6 +89,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                 //itemCount: orders!.length,
                 itemCount: controller.myRequestsAsClient.length,
                 itemBuilder: (context, index) {
+                  //controller.myRequestsAsClient[index].bill_total??0;
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10, right: 5, left: 5),
                     child: GestureDetector(
@@ -397,9 +398,9 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                 child: Padding(
                                                   padding:
                                                       const EdgeInsets.all(12.0),
-                                                  child: SvgPicture.asset(
+                                                  child: controller.myRequestsAsClient[index].bill_total!=null?SvgPicture.asset(
                                                     "images/sheet.svg",
-                                                  ),
+                                                  ):SizedBox(),
                                                 ),
                                               ),
                                             ),

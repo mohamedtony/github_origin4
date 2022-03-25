@@ -29,7 +29,7 @@ final String image, title;
                   child: Text(title,style: TextStyle(color: Colors.white,fontSize: 15.sp),),
                 ),
                 SvgPicture.asset(image,height: 32.43.h,
-                  width: 27.43.w,),
+                  width: 37.43.w,fit: BoxFit.fitWidth,),
               ],
             ),
           ),

@@ -61,7 +61,7 @@ class LoginController extends GetxController{
   }
   String? validatePassword(String password){
     if (password.length<8){
-      return 'الباسورد لا يقل عن 8 حروف او ارقام';
+      return 'كلمة المرور لا تقل عن 8 حروف او ارقام';
     }else if(passwordMess.isNotEmpty){
       return passwordMess.value;
     }

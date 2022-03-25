@@ -139,15 +139,15 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                   obscureText: false,
                   borderColor: AppColors.borderAdvertiserRegisterColor,
                   controller:
-                      _registerNewAdvertiserUserController.accountNameController,
+                      _registerNewAdvertiserUserController.nameController,
                   textAlignment: TextAlign.end,
                   hintText: 'name'.tr,
                   onSaved: (value) {
-                    _registerNewAdvertiserUserController.accountName = value!;
+                    _registerNewAdvertiserUserController.name = value!;
                   },
                   validator: (value) {
                     return _registerNewAdvertiserUserController
-                        .validateAccountName(value!);
+                        .validateUserName(value!);
                   },
                 ),
                 SizedBox(
@@ -155,7 +155,7 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                 ),
                 AdvertisersDropDown(
                   hintText: 'type'.tr,
-                  width: 0,showSearchBox: false,
+                  width: 0,showSearchBox: false,empty:false,
                   areas:[Area()],
                   itemType: 'String',
                   items: const ['ذكر', 'أنثى'],

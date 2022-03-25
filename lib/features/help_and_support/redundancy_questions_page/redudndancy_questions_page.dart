@@ -21,8 +21,8 @@ class RedudndancyQuestionsPage extends StatelessWidget {
             SizedBox(height:33.h),
             Expanded(
               child: Obx(()=>_redundancyQuestionsController.questions.isNotEmpty?ListView(
-                children:List.generate(10, (index) => PartnerSuccessCard(image: 'images/questions.svg', title: _redundancyQuestionsController.questions[index].question??' ', text: _redundancyQuestionsController.questions[index].answer??' ')) ,
-              ):const Center(child:  SizedBox(child:Text('لا يوجد بيانات')))),
+                children:List.generate(_redundancyQuestionsController.questions.length, (index) => PartnerSuccessCard(image: 'images/person2.svg', title: _redundancyQuestionsController.questions[index].question??' ', text: _redundancyQuestionsController.questions[index].answer??' ')) ,
+              ):const Center(child:  SizedBox())),
             )
           ],
         ),

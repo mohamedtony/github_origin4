@@ -22,10 +22,10 @@ class RedundancyQuestionsController extends GetxController {
     token = storage.read("token");
     // passIndex;
     repo = Repository();
-
+    getQuestions();
     super.onInit();
   }
-  getGuidedVideos() {
+  getQuestions() {
     EasyLoading.show();
 
 

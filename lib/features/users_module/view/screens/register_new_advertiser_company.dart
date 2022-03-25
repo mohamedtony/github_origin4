@@ -494,7 +494,7 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
     return showDialog(context: context,builder: (BuildContext context){
 
       return AlertDialog(
-        title: Text("اخترذ                                                                               ْ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ئ ",style: TextStyle(color: Colors.blue),),
+        title: Text("اختر",style: TextStyle(color: Colors.blue),),
         content: SingleChildScrollView(
           child: ListBody(
             children: [

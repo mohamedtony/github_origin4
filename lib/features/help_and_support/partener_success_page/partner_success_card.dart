@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:readmore/readmore.dart';
 
 class PartnerSuccessCard extends StatelessWidget {
   const PartnerSuccessCard({required this.image,required this.title,required this.text,Key? key}) : super(key: key);
@@ -28,18 +29,25 @@ final String title,text,image;
                   Align(
                       alignment:Alignment.centerRight,
                       child: Text(title,textAlign:TextAlign.center,style: TextStyle(fontSize: 15.sp,fontWeight: FontWeight.bold),)),
-                  Text(text,textAlign:TextAlign.center,style: TextStyle(fontSize: 15.sp,color: Color(0xff929292))),
-                  Text('اقرأ المزيد...',textAlign:TextAlign.center,style: TextStyle(fontSize: 15.sp,color: Color(0xff929292))),
+                  // Text(text,textAlign:TextAlign.center,style: TextStyle(fontSize: 15.sp,color: Color(0xff929292))),
+                  // Text('اقرأ المزيد...',textAlign:TextAlign.center,style: TextStyle(fontSize: 15.sp,color: Color(0xff929292))),
+        ReadMoreText(
+          text??' ',
+          trimLines: 2,
+          colorClickableText: Colors.pink,
+          trimMode: TrimMode.Line,locale: Locale("ar"),
+          trimCollapsedText: 'اقرا المزيد',
+          trimExpandedText: 'اقرا اقل',
+          moreStyle: TextStyle(fontSize: 14, color: Colors.red),
+          lessStyle:TextStyle(fontSize: 14, color: Colors.red) ,style:TextStyle(fontSize: 13.sp, color: Colors.grey) ,
+        )
                 ],
               ),
             ),
 
           Positioned(
-            left: -18.5,
-            child: Container(
-                width:34.w,
-              color: Colors.white,
-                child: SvgPicture.asset(image,height: 34.h,width: 34.w,)),
+            left: -16.5,
+            child: SvgPicture.asset(image,height: 34.h,width: 34.w,color: Colors.blueAccent,),
           )
           ],
         ),

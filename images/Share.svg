@@ -1,0 +1,13 @@
+<svg id="Share" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30.533" height="30.533" viewBox="0 0 30.533 30.533">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#48dbe1"/>
+      <stop offset="1" stop-color="#4166cd"/>
+      <stop offset="1" stop-color="#236b73"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_15229" data-name="Group 15229">
+    <rect id="Rectangle" width="30.533" height="30.533" rx="15" fill="rgba(230,233,239,0.9)"/>
+    <path id="Path_15204" data-name="Path 15204" d="M8.557,0A.913.913,0,0,1,9.47.913V5.722l4.164-2.4A.913.913,0,1,1,14.547,4.9L10.383,7.3l4.164,2.4a.913.913,0,1,1-.913,1.581L9.47,8.884v4.809a.913.913,0,0,1-1.826,0V8.884l-4.164,2.4a.913.913,0,1,1-.913-1.581L6.731,7.3,2.567,4.9A.913.913,0,1,1,3.48,3.317l4.164,2.4V.913A.913.913,0,0,1,8.557,0Z" transform="translate(6.709 7.963)" stroke="rgba(0,0,0,0)" stroke-width="1" fill="url(#linear-gradient)"/>
+  </g>
+</svg>

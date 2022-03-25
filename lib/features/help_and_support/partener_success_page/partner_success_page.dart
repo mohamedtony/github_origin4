@@ -20,8 +20,8 @@ class PartnerSuccessPage extends StatelessWidget {
           SizedBox(height:33.h),
           Expanded(
             child: Obx(()=>_partnerSuccessController.partners.isNotEmpty?ListView(
-              children:List.generate(10, (index) =>  PartnerSuccessCard(image: 'images/sucess.svg', title: _partnerSuccessController.partners[index].name??' ', text:_partnerSuccessController.partners[index].content??' ' )) ,
-            ):const Center(child:  SizedBox(child:Text('لا يوجد بيانات')))),
+              children:List.generate(_partnerSuccessController.partners.length, (index) =>  PartnerSuccessCard(image: 'images/sucess.svg', title: _partnerSuccessController.partners[index].name??' ', text:_partnerSuccessController.partners[index].content??' ' )) ,
+            ):const Center(child:  SizedBox())),
           )
         ],
       ),

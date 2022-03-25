@@ -150,8 +150,8 @@ class RegisterNewClientUser extends StatelessWidget {
                 ),
                 AdvertisersDropDown(
                   hintText: 'type'.tr,
-                  areas:[Area()],
-                  width: 0,showSearchBox: false,
+                  areas: [],
+                  width: 0,showSearchBox: false,empty: false,
                   itemType: 'String',
                   items: const ['ذكر', 'أنثى'],
                   onChanged: (val) {
@@ -298,6 +298,7 @@ class RegisterNewClientUser extends StatelessWidget {
                             items: _registerNewClientUserController
                                 .countries.value,
                             onChanged: (country) {
+
                               _registerNewClientUserController.empty.value=true;
                               _registerNewClientUserController.countryId.value =
                                   country.id.toString();

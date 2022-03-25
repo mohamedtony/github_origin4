@@ -20,10 +20,10 @@ class PartnerSuccessController extends GetxController {
     token = storage.read("token");
     // passIndex;
     repo = Repository();
-
+    getPartners();
     super.onInit();
   }
-  getGuidedVideos() {
+  getPartners() {
     EasyLoading.show();
 
 

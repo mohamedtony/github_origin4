@@ -141,7 +141,7 @@ class RegisterNewClientCompanyController extends GetxController {
     return null;
   }
   String? validateNationalId(String val) {
-    if (val.length < 10) {
+    if (!GetUtils.isNumericOnly(val)||val.length < 10) {
       return 'رقم الهوية لا يقل عن 10 ارقام';
     }else if(nationalIDMess.isNotEmpty){
       return nationalIDMess.value;
@@ -150,7 +150,7 @@ class RegisterNewClientCompanyController extends GetxController {
   }
 
   String? validateRecordID(String val) {
-    if (val.length < 3) {
+    if (!GetUtils.isNumericOnly(val)||val.length < 3) {
       return 'رقم السجل لا يقل عن 3 ارقام';
     }else if(recordIDMess.isNotEmpty){
       return recordIDMess.value;
@@ -201,6 +201,7 @@ class RegisterNewClientCompanyController extends GetxController {
     element.id == country2.id);
     if (country != null) {
       areas.value = country.areas!;
+      areaId.value=areas[0].id.toString()??'0';
     }
 
     /*countries.forEach((element) {

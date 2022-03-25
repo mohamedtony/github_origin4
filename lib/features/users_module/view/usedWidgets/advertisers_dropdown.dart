@@ -78,7 +78,7 @@ class _AdvertisersDropDownState extends State<AdvertisersDropDown> {
       InkWell(
         onTap: (){
           setState(() {
-            widget.empty=false;
+           // widget.empty=false;
           });
         },
         child: SizedBox(
