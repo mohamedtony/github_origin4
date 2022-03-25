@@ -98,12 +98,12 @@ class ActivitiesBottomSheet extends StatelessWidget {
               ),
               Container(
                 width: double.infinity,
-                height: 60,
+                height: 70,
                 margin: const EdgeInsets.only(left: 14.0, right: 14.0),
                 padding:
                     const EdgeInsets.only(left: 14.0, right: 14.0, top: 6, bottom: 6),
                 child: const Text(
-                  'دقة البيانات تساعد التاجر على الوصول اليك وتعطيك مصداقية اكبر لدلا عملائك',
+                  'دقة البيانات تساعد التاجر على الوصول اليك وتعطيك مصداقية اكبر لدى عملائك',
                   style: const TextStyle(color: AppColors.activitiesSheetTextColor),
                 ),
                 decoration: BoxDecoration(

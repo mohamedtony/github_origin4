@@ -98,6 +98,20 @@ class LocationRangeBottomSheet extends StatelessWidget {
               Container(
                 width: double.infinity,
                 height: 70,
+                margin: const EdgeInsets.only(left: 14.0, right: 14.0),
+                padding:
+                const EdgeInsets.only(left: 14.0, right: 14.0, top: 6, bottom: 6),
+                child:  Text(
+                  'دقة البيانات تساعد التاجر على الوصول اليك وتعطيك مصداقية اكبر لدى عملائك',
+                  style: const TextStyle(color: AppColors.activitiesSheetTextColor),
+                ),
+                decoration: BoxDecoration(
+                    color: AppColors.activitiesSheetTextBg,
+                    borderRadius: BorderRadius.circular(16.0)),
+              ),
+              /*Container(
+                width: double.infinity,
+                height: 70,
                 margin: EdgeInsets.only(left: 14.0, right: 14.0),
                 padding:
                     EdgeInsets.only(left: 14.0, right: 14.0, top: 6, bottom: 6),
@@ -108,7 +122,7 @@ class LocationRangeBottomSheet extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: AppColors.activitiesSheetTextBg,
                     borderRadius: BorderRadius.circular(16.0)),
-              ),
+              ),*/
               Container(
                 width: double.infinity,
                 height: 60,

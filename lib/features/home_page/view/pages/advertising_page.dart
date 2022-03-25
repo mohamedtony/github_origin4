@@ -11,8 +11,9 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 //=========================================================================================
 class AdvertisingPage extends StatelessWidget {
-   AdvertisingPage({Key? key,this.onSheetClicked}) : super(key: key);
+   AdvertisingPage({Key? key,this.onSheetClicked,this.type}) : super(key: key);
    Function(int x)? onSheetClicked;
+   String? type;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -26,7 +27,7 @@ class AdvertisingPage extends StatelessWidget {
             AdvertiseItem(),
           ],
         ),
-        Align(
+        type!=null && type=="advertiserOrderProfiel"?SizedBox():Align(
           alignment: Alignment.centerLeft,
           child: Container(
             child: InkWell(

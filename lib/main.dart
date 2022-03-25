@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:advertisers/app_core/app_localization/app_localization.dart';
 import 'package:advertisers/app_core/network/service.dart';
 import 'package:advertisers/app_core/routes/routes.dart';
+import 'package:advertisers/features/employees/view/EmployeeArchivePage.dart';
+import 'package:advertisers/features/employees/view/EmployeeAuthorizationPage.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 //import 'package:advertisers/shared/network/service.dart';
 import 'package:dio/dio.dart';
@@ -145,7 +147,7 @@ class _MyAppState extends State<MyApp> {
           fallbackLocale: LocalizationService.fallbackLocale,
          // fallbackLocale: LocalizationService.locale,
           builder: EasyLoading.init(),
-          //home: EmployeesPage(),
+         // home: EmployeesPage(),
           translations: LocalizationService(),
           initialRoute: '/GalleryPage',
           getPages: Routes.routes,

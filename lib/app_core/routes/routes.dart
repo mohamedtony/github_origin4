@@ -5,6 +5,8 @@ import 'package:advertisers/features/add_advertiser_channel/add_advertiser_chann
 import 'package:advertisers/features/add_advertiser_channel/controller/add_advertiser_channel_controller.dart';
 import 'package:advertisers/features/advertiser_invoice_input/view/advertiser_invoice_input_page.dart';
 import 'package:advertisers/features/advertiser_order_details/advertiser_order_details.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/advertiser_profile_order_page.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/controller/AdvertiserProfileOrderController.dart';
 import 'package:advertisers/features/advertising_influence_channels/controller/edit_channel_advertiser_controller.dart';
 import 'package:advertisers/features/advertising_influence_channels/view/page/edit_advertiser_channel.dart';
 import 'package:advertisers/features/advanced_options/controller/advanced_options_controller.dart';
@@ -80,6 +82,8 @@ import 'package:advertisers/features/users_module/view/screens/start_page.dart';
 import 'package:advertisers/features/users_module/view/screens/successful_paying_page.dart';
 import 'package:advertisers/features/users_module/view/screens/verification_code_page.dart';
 import 'package:advertisers/features/wallet_module/wallet_page.dart';
+import 'package:advertisers/features/wallet_module/widgets/wallet_intro/controller/wallet_intro_controller.dart';
+import 'package:advertisers/features/wallet_module/widgets/wallet_intro/wallet_intro_page.dart';
 import 'package:advertisers/reason_rejecting_advertisement_customer/view/page/reason_rejecting_advertisement_customer.dart';
 import 'package:get/get.dart';
 
@@ -399,6 +403,13 @@ class Routes {
       page: () => EmployeesPage(),
     ),
     GetPage(
+      name: '/WalletIntroPage',
+      page: () => WalletIntroPage(),
+  binding: BindingsBuilder(() {
+  Get.lazyPut<WalletIntroController>(() => WalletIntroController());
+  }),
+    ),
+    GetPage(
       name: '/CientOrderDetails',
       page: () => CientOrderDetails(),
   binding: BindingsBuilder(() {
@@ -406,5 +417,15 @@ class Routes {
   }),
 
     ),
+
+    GetPage(
+      name: '/AdvertiserProfileOrderPage',
+      page: () => AdvertiserProfileOrderPage(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<AdvertiserProfileOrderController>(() => AdvertiserProfileOrderController());
+      }),
+
+    ),
+
   ];
 }

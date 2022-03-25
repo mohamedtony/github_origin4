@@ -534,41 +534,13 @@ void setStateBehavior(){
     selectedCounterController = TextEditingController(text: '1');
 
     myToken  = await storage.read("token");
-    client!.getProductsAndAdsTypes("Bearer "+myToken!).then((value) {
-      Logger().i(value.data?.toJson());
-      if(value.data!=null&&value.status==200){
-        //Get.back();
-
-        if(value.data!=null) {
-          if(value.data!.product_types!=null) {
-            categories.value = value.data!.product_types!;
-            categories.value.insert(0, CategoryModel(id: -1,name: 'اختر'));
-
-          }
-          if(value.data!.ads_types!=null) {
-            ads_types.value = value.data!.ads_types!;
-            ads_types.value.insert(0, AdTypeModel(id: -1,name: 'اختر'));
-          }
-          if(value.data!.channels!=null && value.data!.channels!.isNotEmpty) {
-            channels.value = value.data!.channels!;
-            //channelsForList.value = value.data!.channels!;
-            /*value.data!.channels!.asMap().forEach((index,element) {
-              channels.value[index].isTapped.value = true;
-            });*/
-
-          }
-        }
-        isLoadingTypes.value =false;
-      }
-    });
-
     mapController = Completer();
     setCustomMapPin();
     markerIcon = await getBytesFromAsset('images/location_icon.png', 70);
 
     //---------------------- for urls page ------------------------------------------------
-   // textUrlControllers.add(TextEditingController());
-   // urlControllers.add(TextEditingController());
+    /*textUrlControllers.add(TextEditingController());
+    urlControllers.add(TextEditingController());
     animationControllers.add(AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 200),
@@ -593,15 +565,46 @@ void setStateBehavior(){
         parent:  animationControllers[0],
       ),
     ));
-
+*/
     super.onInit();
     //if( Get.parameters['requestId']!=null) {
-      EasyLoading.show();
-      //  var myToken  = await storage.read("token");
-    if(Get.parameters['requestId']!=null && Get.parameters['requestId']!.isNotEmpty) {
-      await getRequestDetails(int.parse(Get.parameters['requestId']!));
-    }
+
    // }
+    EasyLoading.show();
+    //  var myToken  = await storage.read("token");
+    client!.getProductsAndAdsTypes("Bearer "+myToken!).then((value) async {
+      if(value.data!=null) {
+        Logger().i(value.data?.toJson());
+      }
+      if(value.data!=null&&value.status==200){
+        //Get.back();
+
+        if(value.data!=null) {
+          if(value.data!.product_types!=null) {
+            categories.value = value.data!.product_types!;
+            categories.value.insert(0, CategoryModel(id: -1,name: 'اختر'));
+
+          }
+          if(value.data!.ads_types!=null) {
+            ads_types.value = value.data!.ads_types!;
+            ads_types.value.insert(0, AdTypeModel(id: -1,name: 'اختر'));
+          }
+          if(value.data!.channels!=null && value.data!.channels!.isNotEmpty) {
+            channels.value = value.data!.channels!;
+            //channelsForList.value = value.data!.channels!;
+            /*value.data!.channels!.asMap().forEach((index,element) {
+              channels.value[index].isTapped.value = true;
+            });*/
+            if(Get.parameters['requestId']!=null && Get.parameters['requestId']!.isNotEmpty) {
+              await getRequestDetails(int.parse(Get.parameters['requestId']!));
+            }
+
+          }
+        }
+        isLoadingTypes.value = false;
+      }
+    });
+
   }
   Future<void> deleteLinkApi(LinkModel linkModel,int index,int? link_id) async {
     print("MyId"+link_id.toString());
@@ -657,15 +660,44 @@ void setStateBehavior(){
         if((value.data?.links)!=null && (value.data?.links?.length)!=null && (value.data?.links!.length)! > 0){
           //print("descController"+value.data!.links![0].toString());
           urlList.value = value.data!.links!;
-         // numOfLinks.value = value.data!.links!.length;
-          value.data?.links?.asMap().forEach((index,element) {
+          //numOfLinks.value = value.data!.links!.length;
+          numOfLinks.value=1;
+          textUrlControllers.add(TextEditingController());
+          urlControllers.add(TextEditingController());
+          animationControllers.add(AnimationController(
+            vsync: this,
+            duration: const Duration(milliseconds: 200),
+          ));
+
+          animationTextFields.add(Tween(
+            begin: const Offset(0.0, 0.0),
+            end: const Offset(0.2, 0.0),
+          ).animate(
+            CurvedAnimation(
+              curve: Curves.decelerate,
+              parent: animationControllers[0],
+            ),
+          ));
+
+          animationsClose.add(Tween(
+            begin: const Offset(0.0, 0.0),
+            end: const Offset(1.0, 0.0),
+          ).animate(
+            CurvedAnimation(
+              curve: Curves.decelerate,
+              parent:  animationControllers[0],
+            ),
+          ));
+
+          /*value.data?.links?.asMap().forEach((index,element) {
             if(index==0){
               textUrlControllers.add(TextEditingController(text: element.name));
               urlControllers.add(TextEditingController(text: element.link));
             }else {
               insertNewLinkFields(textUrl: element.name, url: element.link);
             }
-          });
+          });*/
+
         }
         if((value.data?.address)!=null){
           if((value.data?.address?.name)!=null && (value.data!.address!.name!.isNotEmpty)) {
@@ -689,16 +721,20 @@ void setStateBehavior(){
             }
           }
         }
-        Logger().i(value.data!.toJson());
+        if(value.data!=null){
+          Logger().i(value.data!.toJson());
+        }
+
         if((value.data?.channels)!=null && (value.data?.channels?.length)!=null && (value.data!.channels!.length) >0 &&value.data!.channels!.isNotEmpty) {
           channelsForList.value = value.data!.channels!;
           value.data!.channels!.forEach((element) {
             channelsIds.add(element.id!);
           });
          // List<Channel> tempChannels = [];
-          value.data!.channels!.asMap().forEach((index,element) {
+          value.data?.channels?.forEach((element) {
             int? ind = channels.indexWhere((element2) => element2.id == element.id);
-            if(ind!=null){
+            print(" ind= "+ind.toString()+" "+channels.length.toString());
+            if(ind!=null && ind>=0){
               channels.value[ind].isTapped.value = true;
             }
           });
@@ -1058,7 +1094,7 @@ void setStateBehavior(){
 
   bool isNumericUsingRegularExpression(String string) {
     final numericRegex =
-    RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+    RegExp(r'^-?(([0-9]*)|(([0-9]*)))$');
 
     return numericRegex.hasMatch(string);
   }
@@ -1560,6 +1596,7 @@ void setStateBehavior(){
   var isNoticeSaveClicked = false.obs;
   var isDescSaveClicked = false.obs;
   var noticeText = ''.obs;
+  var addressText = ''.obs;
 
   void onNoticeSavedClicked(BuildContext context) {
     if(noticeController?.text!=null && noticeController!.text.isEmpty){
@@ -1765,7 +1802,10 @@ void setStateBehavior(){
           onSuccess: (res) async {
             //Navigator.of(context).pop();
             Get.back();
-            Logger().i(res.data!.toJson());
+            if(res.data!=null){
+              Logger().i(res.data!.toJson());
+            }
+
             if (res.message != null) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text('تم تعديل طلبك بنجاح !', style: TextStyle(
@@ -1853,6 +1893,44 @@ void setStateBehavior(){
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("تم حفظ الوصف بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
     Get.back();
+  }
+
+  void insertNewLinkFieldsFromSheet() {
+    urlList.asMap().forEach((index,element) {
+      /*if(index==0){
+            requestAdvertiseController.textUrlControllers.add(TextEditingController(text: element.name));
+            requestAdvertiseController.urlControllers.add(TextEditingController(text: element.link));
+          }else {
+            requestAdvertiseController.insertNewLinkFields(textUrl: element.name, url: element.link);
+          }*/
+      textUrlControllers.add(TextEditingController(text: element.name));
+      urlControllers.add(TextEditingController(text: element.link));
+      animationControllers.add(AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 200),
+      ));
+
+      animationTextFields.add(Tween(
+        begin: const Offset(0.0, 0.0),
+        end: const Offset(0.2, 0.0),
+      ).animate(
+        CurvedAnimation(
+          curve: Curves.decelerate,
+          parent: animationControllers[numOfLinks.value],
+        ),
+      ));
+
+      animationsClose.add(Tween(
+        begin: const Offset(0.0, 0.0),
+        end: const Offset(1.0, 0.0),
+      ).animate(
+        CurvedAnimation(
+          curve: Curves.decelerate,
+          parent:  animationControllers[numOfLinks.value],
+        ),
+      ));
+      numOfLinks.value ++;
+    });
   }
 
 

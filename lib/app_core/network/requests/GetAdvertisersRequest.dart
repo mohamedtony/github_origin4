@@ -8,9 +8,10 @@ class GetAdvertisersRequest {
   List<int>?countries;
   List<int>? areas;
   List<int>? country_category;
+  int? page;
  String? keyword;
 
-  GetAdvertisersRequest({this.sort_by,this.categories,this.countries, this.areas,this.country_category,this.keyword});
+  GetAdvertisersRequest({this.page,this.sort_by,this.categories,this.countries, this.areas,this.country_category,this.keyword});
 
   factory GetAdvertisersRequest.fromJson(Map<String, dynamic> json) =>
       _$GetAdvertisersRequestFromJson(json);

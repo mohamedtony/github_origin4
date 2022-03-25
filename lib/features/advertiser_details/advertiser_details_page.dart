@@ -39,6 +39,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
 
   final AdvertisingDetailsController controller =
   Get.put(AdvertisingDetailsController());
+
   // final AddressBottomSheetAdvertiserDetailsPageController addressBottomSheetAdvertiserDetailsPageController =
   // Get.put(AddressBottomSheetAdvertiserDetailsPageController());
 
@@ -50,12 +51,6 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
       throw 'Could not launch $url';
     }
   }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -728,6 +723,8 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                 const  SizedBox(
                                   width: 15,
                                 ),
+                                //Text('${controller.locationModel.value.address}',style: TextStyle(color:Color(0xff041D67)),),
+
                                 Text('${controller.placeAddressController.text}',style: TextStyle(color:Color(0xff041D67)),),
                               ],
                             ),

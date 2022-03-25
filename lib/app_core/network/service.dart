@@ -11,6 +11,8 @@ import 'package:advertisers/app_core/network/requests/UpdateProfileRequest.dart'
 import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
 import 'package:advertisers/app_core/network/requests/login_client_request.dart';
 import 'package:advertisers/app_core/network/responses/AddRemoveBlackListResponse.dart';
+import 'package:advertisers/app_core/network/responses/AdvertiserProfileDetailsResponse.dart';
+import 'package:advertisers/app_core/network/responses/CoponsResponse.dart';
 import 'package:advertisers/app_core/network/responses/CountriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateSubscriptionResponse.dart';
@@ -123,6 +125,21 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   @POST('/requests/{id}/delete_link')
   @FormUrlEncoded()
   Future<RequestDetailsResponse> deleteLink(@Path("id") int? id,@Field()int? link_id,@Header("Authorization") String token,);
+
+  @GET('/advertiser_profile/{id}')
+  Future<AdvertiserProfileDetailsResponse> getAdveriserProfileDetail(@Path("id") int? id,@Header("Authorization") String token);
+
+  //@GET('/copons/app')
+
+  @GET('/copons/clients?page={id}')
+  Future<CoponsResponse> getAppCopons( @Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/copons/{id}/like')
+  Future<CoponsResponse> likeCopon(@Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/copons/{id}/dislike')
+  Future<CoponsResponse> dislikeCopon(@Path("id") int? id,@Header("Authorization") String token);
+
 /*  Map<String, dynamic> mymap = {
 
     "location[name]": requestAdvertiseController.locationModel.name,
