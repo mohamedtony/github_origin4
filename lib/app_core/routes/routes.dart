@@ -35,7 +35,9 @@ import 'package:advertisers/features/customer_order_invoice/view/customer_order_
 import 'package:advertisers/features/customer_order_invoice_out_puts/view/customer_order_invoice_out_puts.dart';
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/features/employees/view/AddEmployeePage.dart';
-import 'package:advertisers/features/employees/view/EmployeesPage.dart';
+import 'package:advertisers/features/employees/view/EmployeeArchivePage.dart';
+import 'package:advertisers/features/employees/view/ShowEmployeePage.dart';
+import 'package:advertisers/features/employees/view/employees_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation.dart';
 import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
 import 'package:advertisers/features/my_orders/view/my_orders_page.dart';
@@ -360,6 +362,14 @@ class Routes {
     GetPage(
       name: '/EmployeesPage',
       page: () => EmployeesPage(),
+    ),
+    GetPage(
+      name: '/ShowEmployeePage',
+      page: () => ShowEmployeePage(),
+    ),
+    GetPage(
+      name: '/EmployeeArchivePage',
+      page: () => EmployeeArchivePage(),
     ),
     GetPage(
       name: '/CientOrderDetails',

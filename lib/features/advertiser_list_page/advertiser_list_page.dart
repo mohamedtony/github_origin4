@@ -409,7 +409,7 @@ class AdvertiserListPage extends StatelessWidget {
             print('pressed2');
           },),
           AdvertiseListItem(icon: 'images/person_icon.svg',title: 'الموظفين',listTilePressed: (){
-            print('pressed2');
+            Get.toNamed('/EmployeesPage');
           },),
           AdvertiseListItem(icon: 'images/subscribe_icon.svg',title: 'الاشتراكات',listTilePressed: (){
             print('pressed2');
