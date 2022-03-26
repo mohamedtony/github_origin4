@@ -208,7 +208,7 @@ class PullsWidget extends StatelessWidget {
                                           height: 1,
                                         ),
                                         Text("اسحب",style: TextStyle( fontSize: 18,color:Colors.white)),
-                                        SizedBox(
+                                    const    SizedBox(
                                           height: 5,
                                         ),
 
@@ -218,9 +218,46 @@ class PullsWidget extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                          const  SizedBox(
                               height: 60,
                             ),
+
+                            ListView.builder(
+                                shrinkWrap: true,
+                                physics:const NeverScrollableScrollPhysics(),
+                                itemCount: items!.length,
+                                itemBuilder: (context, index) {
+                                  return  Padding(
+                                    padding: EdgeInsets.only(bottom: 15),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.only(top: 8),
+                                          height: 12,
+                                          width: 12,
+                                          decoration:const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(100.0) //                 <--- border radius here
+                                            ),
+                                            color: Color(0xff636363)
+                                          ),
+                                        ),
+                                        const SizedBox(width: 12,),
+                                        Expanded(child: Text("${items![index].desc}",style: TextStyle(fontSize: 14.sp,color:const Color(0xff636363),height: 1.6),))
+                                      ],
+                                    ),
+
+                                  );
+                                }),
+
+                          const  SizedBox(
+                              height: 40,
+                            ),
+
+
+
                             Row(
                               children: [
 
@@ -316,4 +353,20 @@ List<Payments> payments = [
       img: "images/Visa.svg",
       number: "**** **** **** 078"
   ),
+];
+
+
+class PullsPointsItem{
+  int? id;
+  String? desc;
+  PullsPointsItem({this.id,this.desc});
+}
+
+List <PullsPointsItem> items = [
+  PullsPointsItem(
+    id: 0,
+    desc: "لديك طلب سحب قيد المعالجة رقم 5321 بقيمة 15000 ريال"),
+  PullsPointsItem(
+    id: 1,
+    desc: "لديك طلب سحب قيد المعالجة رقم 5321 بقيمة 15000 ريال"),
 ];

@@ -1,3 +1,4 @@
+import 'package:advertisers/features/wallet_module/widgets/pulls_widgets/pulls_widget.dart';
 import 'package:advertisers/shared/radio_buttons/radio_buttons.dart';
 import 'package:advertisers/features/wallet_module/wallet_controller.dart';
 import 'package:advertisers/features/wallet_module/widgets/points_widget_chart.dart';
@@ -171,7 +172,41 @@ class PointsWidget extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                          const  SizedBox(
+                              height: 60,
+                            ),
+
+                            ListView.builder(
+                                shrinkWrap: true,
+                                physics:const NeverScrollableScrollPhysics(),
+                                itemCount: items!.length,
+                                itemBuilder: (context, index) {
+                                  return  Padding(
+                                    padding: EdgeInsets.only(bottom: 15),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.only(top: 8),
+                                          height: 12,
+                                          width: 12,
+                                          decoration:const BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(100.0) //                 <--- border radius here
+                                              ),
+                                              color: Color(0xff636363)
+                                          ),
+                                        ),
+                                        const SizedBox(width: 12,),
+                                        Expanded(child: Text("${items![index].desc}",style: TextStyle(fontSize: 14.sp,color:const Color(0xff636363),height: 1.6),))
+                                      ],
+                                    ),
+
+                                  );
+                                }),
+
+                        const    SizedBox(
                               height: 60,
                             ),
                             Row(

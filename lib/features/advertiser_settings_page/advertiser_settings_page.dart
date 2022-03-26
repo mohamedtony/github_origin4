@@ -1,6 +1,7 @@
 import 'package:advertisers/features/advertiser_settings_page/controller/AdvertiserSettingPageController.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page_controller.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+
 // import 'package:advertisers/home_page/app_colors.dart';
 // import 'package:advertisers/home_page/controller/home_navigation_controller.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -20,8 +21,9 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 //=========================================================================================
 class AdvertiserSettingsPage extends StatelessWidget {
-   AdvertiserSettingsPage({Key? key}) : super(key: key);
-   var controller = Get.put(AdvertiserSettingPageController(), permanent: false);
+  AdvertiserSettingsPage({Key? key}) : super(key: key);
+  var controller = Get.put(AdvertiserSettingPageController(), permanent: false);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +47,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                               right: 10.0,
                             ),
                             child: InkWell(
-                              onTap: (){
+                              onTap: () {
                                 Get.toNamed('/AdvertiserQrPage');
                               },
                               child: Image.asset(
@@ -64,10 +66,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                                             )*/
                             )),
                         Container(
-                            padding: EdgeInsets.only(
-                              top: 4.0,
-                              right: 16.0
-                            ),
+                            padding: EdgeInsets.only(top: 4.0, right: 16.0),
                             child: SvgPicture.asset(
                               'images/green_icon.svg',
                               width: 12.0,
@@ -86,17 +85,20 @@ class AdvertiserSettingsPage extends StatelessWidget {
                           margin: EdgeInsets.only(right: 4.0, top: 0.0),
                           child: Text(
                             'نشط',
-                            style: TextStyle(color: Colors.white, fontSize: 16.0,decoration: TextDecoration.underline,decorationThickness: 4,
-                              decorationStyle:
-                              TextDecorationStyle.dashed,),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                              decoration: TextDecoration.underline,
+                              decorationThickness: 4,
+                              decorationStyle: TextDecorationStyle.dashed,
+                            ),
                           ),
                         ),
-
                       ],
                     ),
                   ),
                   InkWell(
-                    onTap: (){
+                    onTap: () {
                       Get.back();
                     },
                     child: Container(
@@ -117,23 +119,20 @@ class AdvertiserSettingsPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(
-                        right: 10.0,
-                        top: 14.0
-                      ),
+                      margin: EdgeInsets.only(right: 10.0, top: 14.0),
                       alignment: Alignment.center,
-                      child:Obx(()=> Text(
-                        '% ${controller.clientProfileModel.value.profile_completion??''}',
-                        textAlign: TextAlign.center,
-                        textDirection: mt.TextDirection.ltr,
-                        style: TextStyle(
-                            color: AppColors.indicatorColor,
-                            fontSize: 22.0,
-                            fontWeight: FontWeight.w600
-                          //  decoration: TextDecoration.underline,
-                          //  decorationThickness: 2
-                        ),
-                      )),
+                      child: Obx(() => Text(
+                            '% ${controller.clientProfileModel.value.profile_completion ?? ''}',
+                            textAlign: TextAlign.center,
+                            textDirection: mt.TextDirection.ltr,
+                            style: TextStyle(
+                                color: AppColors.indicatorColor,
+                                fontSize: 22.0,
+                                fontWeight: FontWeight.w600
+                                //  decoration: TextDecoration.underline,
+                                //  decorationThickness: 2
+                                ),
+                          )),
                     ),
                     Expanded(
                       child: Column(
@@ -141,7 +140,6 @@ class AdvertiserSettingsPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Container(
-
                             alignment: Alignment.center,
                             child: Text(
                               'معدل اكتمال اعدادات الحساب',
@@ -151,22 +149,24 @@ class AdvertiserSettingsPage extends StatelessWidget {
                                   color: AppColors.white,
                                   fontSize: 16.0,
                                   fontWeight: FontWeight.w400
-                                //  decoration: TextDecoration.underline,
-                                //  decorationThickness: 2
-                              ),
+                                  //  decoration: TextDecoration.underline,
+                                  //  decorationThickness: 2
+                                  ),
                             ),
                           ),
-                          Obx(()=>Container(
-                            margin: EdgeInsets.only(right: 14.0,left: 14.0,bottom: 10.0),
-                            child: StepProgressIndicator(
-                              totalSteps: 10,
-                              currentStep: controller.profile_completion.value,
-                              size: 4,
-                              selectedColor: AppColors.indicatorColor,
-                              unselectedColor: Colors.white,
-                              progressDirection: mt.TextDirection.rtl,
-                            ),
-                          ))
+                          Obx(() => Container(
+                                margin: EdgeInsets.only(
+                                    right: 14.0, left: 14.0, bottom: 10.0),
+                                child: StepProgressIndicator(
+                                  totalSteps: 10,
+                                  currentStep:
+                                      controller.profile_completion.value,
+                                  size: 4,
+                                  selectedColor: AppColors.indicatorColor,
+                                  unselectedColor: Colors.white,
+                                  progressDirection: mt.TextDirection.rtl,
+                                ),
+                              ))
                         ],
                       ),
                     )
@@ -207,7 +207,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                         ),
                       ),
                       InkWell(
-                        onTap: (){
+                        onTap: () {
                           Get.toNamed("/clientSettingPage?from=advertiserPage");
                         },
                         child: Container(
@@ -247,33 +247,32 @@ class AdvertiserSettingsPage extends StatelessWidget {
                               fontWeight: FontWeight.w400),
                         ),
                       ),
-                      Obx(() =>
-                      controller.accountType.value.isNotEmpty &&
-                          controller.accountType.value == "client"
+                      Obx(() => controller.accountType.value.isNotEmpty &&
+                              controller.accountType.value == "client"
                           ? Container(
-                        //margin: EdgeInsets.only(left: 10.0,bottom: 10.0),
-                        padding: const EdgeInsets.only(
-                            left: 10.0, bottom: 10.0, top: 2.0),
-                        child: Image.asset(
-                          'images/switch_icon_right.png',
-                          scale: 2,
-                          width: 45,
-                          height: 40,
-                          fit: BoxFit.fill,
-                        ),
-                      )
+                              //margin: EdgeInsets.only(left: 10.0,bottom: 10.0),
+                              padding: const EdgeInsets.only(
+                                  left: 10.0, bottom: 10.0, top: 2.0),
+                              child: Image.asset(
+                                'images/switch_icon_right.png',
+                                scale: 2,
+                                width: 45,
+                                height: 40,
+                                fit: BoxFit.fill,
+                              ),
+                            )
                           : Container(
-                        padding: const EdgeInsets.only(
-                            right: 10.0, bottom: 10.0, top: 2.0),
-                        //margin: EdgeInsets.only(bottom: 10.0),
-                        child: Image.asset(
-                          'images/switch_icon_left.png',
-                          scale: 2,
-                          width: 45,
-                          height: 40,
-                          fit: BoxFit.fill,
-                        ),
-                      )),
+                              padding: const EdgeInsets.only(
+                                  right: 10.0, bottom: 10.0, top: 2.0),
+                              //margin: EdgeInsets.only(bottom: 10.0),
+                              child: Image.asset(
+                                'images/switch_icon_left.png',
+                                scale: 2,
+                                width: 45,
+                                height: 40,
+                                fit: BoxFit.fill,
+                              ),
+                            )),
                       /* Container(
                           // height: 70,
                           margin: EdgeInsets.only(bottom: 6.0),
@@ -337,7 +336,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                             scale: 2,
                           )
 
-                        *//*Switch(
+                        */ /*Switch(
                           onChanged: (s){
 
                           },
@@ -348,7 +347,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                          // inactiveTrackColor: Colors.grey,
                           activeThumbImage: AssetImage('images/switch_icon.png'),
                           inactiveThumbImage: AssetImage('images/inactive_img.png'),
-                        ),*//*
+                        ),*/ /*
                       ),
                       Container(
                         margin: EdgeInsets.only(
@@ -493,7 +492,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                       enabled: false,
                       textAlignVertical: TextAlignVertical.center,
                       controller: controller.accountNameEdit,
-                     // textDirection: mt.TextDirection.ltr,
+                      // textDirection: mt.TextDirection.ltr,
                       style: TextStyle(
                         color: (AppColors.editProfileTextColorOpa)
                             .withOpacity(0.51),
@@ -521,9 +520,89 @@ class AdvertiserSettingsPage extends StatelessWidget {
               ],
             ),
           ),
+          Obx(() => controller.accountType.value == "company"
+              ? Container(
+                  height: 42,
+                  margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
+                  child: Row(
+                    children: [
+                      Container(
+                          height: 42,
+                          width: 110,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.grey, width: 0.2),
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(12.0),
+                                  bottomRight: Radius.circular(12.0)),
+                              color: AppColors.bottomSheetTabColor),
+                          child: Text(
+                            "رقم السجل",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16.0,
+                                color: AppColors.tabColor),
+                          )),
+                      Expanded(
+                        child: Container(
+                          height: 42,
+                          decoration: BoxDecoration(
+                              border: Border(
+                                top: BorderSide(
+                                    color: AppColors.editProfileContainerColor,
+                                    width: 0.4),
+                                bottom: BorderSide(
+                                    color: AppColors.editProfileContainerColor,
+                                    width: 0.4),
+                                left: BorderSide(
+                                    color: AppColors.editProfileContainerColor,
+                                    width: 0.4),
+                                right: BorderSide(
+                                    color: AppColors.editProfileContainerColor,
+                                    width: 0.4),
+                              ),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(12.0),
+                                  bottomLeft: Radius.circular(12.0)),
+                              color: Colors.white),
+                          child: TextField(
+                            textAlign: TextAlign.start,
+                            textAlignVertical: TextAlignVertical.center,
+                            enabled: false,
+                            controller: controller.sglNumberController,
+                            //textDirection: mt.TextDirection.ltr,
+                            style: TextStyle(
+                              color: (AppColors.editProfileTextColorOpa)
+                                  .withOpacity(0.51),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.0,
+                            ),
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                    left: 10.0, right: 14.0, bottom: 12.0),
+                                // isCollapsed: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(70.0),
+                                  borderSide: BorderSide(
+                                    width: 0,
+                                    style: BorderStyle.none,
+                                  ),
+                                ),
+                                filled: true,
+                                hintStyle: TextStyle(color: Colors.grey[350]),
+                                hintText: 'رقم السجل',
+                                fillColor: Colors.white70),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : SizedBox()),
           Container(
             height: 42,
-            margin: EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
+            margin: const EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
             child: Row(
               children: [
                 Container(
@@ -532,13 +611,13 @@ class AdvertiserSettingsPage extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 0.2),
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topRight: Radius.circular(12.0),
                             bottomRight: Radius.circular(12.0)),
                         color: AppColors.bottomSheetTabColor),
-                    child: Text(
-                      "رقم السجل",
-                      style: TextStyle(
+                    child: const Text(
+                      "رقم الهوية",
+                      style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16.0,
                           color: AppColors.tabColor),
@@ -546,31 +625,33 @@ class AdvertiserSettingsPage extends StatelessWidget {
                 Expanded(
                   child: Container(
                     height: 42,
-                    decoration: BoxDecoration(
-                        border: Border(
+                    decoration: const BoxDecoration(
+                        border: const Border(
                           top: BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
-                          bottom: BorderSide(
+                          bottom: const BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
-                          left: BorderSide(
+                          left: const BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
                           right: BorderSide(
                               color: AppColors.editProfileContainerColor,
                               width: 0.4),
                         ),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12.0),
+                        borderRadius: const BorderRadius.only(
+                            topLeft: const Radius.circular(12.0),
                             bottomLeft: Radius.circular(12.0)),
                         color: Colors.white),
                     child: TextField(
                       textAlign: TextAlign.start,
                       textAlignVertical: TextAlignVertical.center,
-                      enabled: false,
-                      controller: controller.sglNumberController,
+                      controller: controller.personalIdController,
+                      //focusNode: controller.personalIdNode,
+                      keyboardType: TextInputType.number,
                       //textDirection: mt.TextDirection.ltr,
+                      enabled: false,
                       style: TextStyle(
                         color: (AppColors.editProfileTextColorOpa)
                             .withOpacity(0.51),
@@ -578,19 +659,19 @@ class AdvertiserSettingsPage extends StatelessWidget {
                         fontSize: 14.0,
                       ),
                       decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(
+                          contentPadding: const EdgeInsets.only(
                               left: 10.0, right: 14.0, bottom: 12.0),
                           // isCollapsed: true,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(70.0),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               width: 0,
                               style: BorderStyle.none,
                             ),
                           ),
                           filled: true,
                           hintStyle: TextStyle(color: Colors.grey[350]),
-                          hintText: 'رقم السجل',
+                          hintText: 'رقم الهوية',
                           fillColor: Colors.white70),
                     ),
                   ),
@@ -608,11 +689,11 @@ class AdvertiserSettingsPage extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: (){
-              controller.showActivitiesBottomSheet(context,1);
+            onTap: () {
+              controller.showActivitiesBottomSheet(context, 1);
             },
             child: Container(
-              margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
+              margin: EdgeInsets.only(right: 18.0, left: 18.0, top: 5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -621,14 +702,14 @@ class AdvertiserSettingsPage extends StatelessWidget {
                     child: Container(
                         //height: 42,
 
-                       // width: 110,
-                      padding: EdgeInsets.only(bottom: 12.0),
+                        // width: 110,
+                        padding: EdgeInsets.only(bottom: 12.0),
                         child: Text(
                           "اختر النشاطات التى ترغب للاعلان عنها",
                           style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16.0,
-                              color: AppColors.tabColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: AppColors.tabColor,
                           ),
                           textAlign: TextAlign.center,
                           maxLines: 2,
@@ -640,9 +721,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
                       Container(
                           padding: EdgeInsets.only(
                               //top: 4.0,
-                              right: 8.0
-                                  ,bottom: 8.0
-                          ),
+                              right: 8.0,
+                              bottom: 8.0),
                           child: SvgPicture.asset(
                             'images/notice_icon.svg',
                             width: 26.0,
@@ -661,8 +741,7 @@ class AdvertiserSettingsPage extends StatelessWidget {
                       Container(
                           padding: EdgeInsets.only(
                               //top: 4.0,
-                              right: 8.0
-                          ),
+                              right: 8.0),
                           child: SvgPicture.asset(
                             'images/list_item.svg',
                             width: 40.0,
@@ -685,20 +764,20 @@ class AdvertiserSettingsPage extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: (){
-              controller.showLocationBottomSheet(context,1);
+            onTap: () {
+              controller.showLocationBottomSheet(context, 1);
             },
             child: Container(
-              margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
+              margin: EdgeInsets.only(right: 18.0, left: 18.0, top: 5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Flexible(
                     child: Container(
-                      //height: 42,
+                        //height: 42,
 
-                      // width: 110,
+                        // width: 110,
                         padding: EdgeInsets.only(bottom: 12.0),
                         child: Text(
                           "نطاق التأثير الجغرافى",
@@ -716,10 +795,9 @@ class AdvertiserSettingsPage extends StatelessWidget {
                     children: [
                       Container(
                           padding: EdgeInsets.only(
-                            //top: 4.0,
-                              right: 8.0
-                              ,bottom: 8.0
-                          ),
+                              //top: 4.0,
+                              right: 8.0,
+                              bottom: 8.0),
                           child: SvgPicture.asset(
                             'images/notice_icon.svg',
                             width: 26.0,
@@ -737,9 +815,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
                           )),
                       Container(
                           padding: EdgeInsets.only(
-                            //top: 4.0,
-                              right: 8.0
-                          ),
+                              //top: 4.0,
+                              right: 8.0),
                           child: SvgPicture.asset(
                             'images/location_img.svg',
                             width: 40.0,
@@ -762,21 +839,21 @@ class AdvertiserSettingsPage extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: (){
-              controller.showChannelsSheet(context,2);
-             // Get.toNamed('/AdvertisingInfluenceChannelsPage');
+            onTap: () {
+              controller.showChannelsSheet(context, 2);
+              // Get.toNamed('/AdvertisingInfluenceChannelsPage');
             },
             child: Container(
-              margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
+              margin: EdgeInsets.only(right: 18.0, left: 18.0, top: 5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Flexible(
                     child: Container(
-                      //height: 42,
+                        //height: 42,
 
-                      // width: 110,
+                        // width: 110,
                         padding: EdgeInsets.only(bottom: 12.0),
                         child: Text(
                           "قنوات الإعلان والتأثير",
@@ -794,10 +871,9 @@ class AdvertiserSettingsPage extends StatelessWidget {
                     children: [
                       Container(
                           padding: EdgeInsets.only(
-                            //top: 4.0,
-                              right: 8.0
-                              ,bottom: 8.0
-                          ),
+                              //top: 4.0,
+                              right: 8.0,
+                              bottom: 8.0),
                           child: SvgPicture.asset(
                             'images/notice_icon.svg',
                             width: 26.0,
@@ -815,9 +891,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
                           )),
                       Container(
                           padding: EdgeInsets.only(
-                            //top: 4.0,
-                              right: 8.0
-                          ),
+                              //top: 4.0,
+                              right: 8.0),
                           child: SvgPicture.asset(
                             'images/channels_icon.svg',
                             width: 40.0,
@@ -840,21 +915,21 @@ class AdvertiserSettingsPage extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: (){
-              controller.showChannelsSheet(context,3);
-             // Get.toNamed('/TaxSettingsPage');
+            onTap: () {
+              controller.showChannelsSheet(context, 3);
+              // Get.toNamed('/TaxSettingsPage');
             },
             child: Container(
-              margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
+              margin: EdgeInsets.only(right: 18.0, left: 18.0, top: 5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Flexible(
                     child: Container(
-                      //height: 42,
+                        //height: 42,
 
-                      // width: 110,
+                        // width: 110,
                         padding: EdgeInsets.only(bottom: 12.0),
                         child: Text(
                           "اعدادات الضريبة",
@@ -872,10 +947,9 @@ class AdvertiserSettingsPage extends StatelessWidget {
                     children: [
                       Container(
                           padding: EdgeInsets.only(
-                            //top: 4.0,
-                              right: 8.0
-                              ,bottom: 8.0
-                          ),
+                              //top: 4.0,
+                              right: 8.0,
+                              bottom: 8.0),
                           child: SvgPicture.asset(
                             'images/notice_icon.svg',
                             width: 26.0,
@@ -893,9 +967,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
                           )),
                       Container(
                           padding: EdgeInsets.only(
-                            //top: 4.0,
-                              right: 8.0
-                          ),
+                              //top: 4.0,
+                              right: 8.0),
                           child: SvgPicture.asset(
                             'images/tax_icn.svg',
                             width: 40.0,
@@ -918,21 +991,21 @@ class AdvertiserSettingsPage extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: (){
-              controller.showChannelsSheet(context,4);
-             // Get.toNamed('/AdvertiserAccountStatusPage');
+            onTap: () {
+              controller.showChannelsSheet(context, 4);
+              // Get.toNamed('/AdvertiserAccountStatusPage');
             },
             child: Container(
-              margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
+              margin: EdgeInsets.only(right: 18.0, left: 18.0, top: 5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Flexible(
                     child: Container(
-                      //height: 42,
+                        //height: 42,
 
-                      // width: 110,
+                        // width: 110,
                         padding: EdgeInsets.only(bottom: 12.0),
                         child: Text(
                           "حالة الحساب",
@@ -950,10 +1023,9 @@ class AdvertiserSettingsPage extends StatelessWidget {
                     children: [
                       Container(
                           padding: EdgeInsets.only(
-                            //top: 4.0,
-                              right: 8.0
-                              ,bottom: 8.0
-                          ),
+                              //top: 4.0,
+                              right: 8.0,
+                              bottom: 8.0),
                           child: SvgPicture.asset(
                             'images/notice_icon.svg',
                             width: 26.0,
@@ -971,9 +1043,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
                           )),
                       Container(
                           padding: EdgeInsets.only(
-                            //top: 4.0,
-                              right: 8.0
-                          ),
+                              //top: 4.0,
+                              right: 8.0),
                           child: SvgPicture.asset(
                             'images/lock_icon.svg',
                             width: 40.0,
@@ -996,21 +1067,21 @@ class AdvertiserSettingsPage extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: (){
-              controller.showChannelsSheet(context,5);
-             // Get.toNamed('/AdvancedOptionsPage');
+            onTap: () {
+              controller.showChannelsSheet(context, 5);
+              // Get.toNamed('/AdvancedOptionsPage');
             },
             child: Container(
-              margin: EdgeInsets.only(right: 18.0,left:18.0,top: 5.0),
+              margin: EdgeInsets.only(right: 18.0, left: 18.0, top: 5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Flexible(
                     child: Container(
-                      //height: 42,
+                        //height: 42,
 
-                      // width: 110,
+                        // width: 110,
                         padding: EdgeInsets.only(bottom: 12.0),
                         child: Text(
                           "اعدادات متقدمة",
@@ -1026,9 +1097,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
                   ),
                   Container(
                       padding: EdgeInsets.only(
-                        //top: 4.0,
-                          right: 8.0
-                      ),
+                          //top: 4.0,
+                          right: 8.0),
                       child: SvgPicture.asset(
                         'images/advanced_settings.svg',
                         width: 40.0,
@@ -1049,7 +1119,6 @@ class AdvertiserSettingsPage extends StatelessWidget {
             ),
           ),
 
-
           /*Container(
             margin: EdgeInsets.only(bottom: 20.0),
             child: Row(
@@ -1065,8 +1134,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                     color: AppColors.saveButtonBottomSheet,
                     child: Container(
-                      *//*margin: EdgeInsets.only(
-                                left: 12.0, bottom: 4.0, right: 20),*//*
+                      */ /*margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),*/ /*
                       alignment: Alignment.center,
                       child: Text(
                         'save'.tr,
@@ -1090,8 +1159,8 @@ class AdvertiserSettingsPage extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                     color: AppColors.tabColor,
                     child: Container(
-                      *//*margin: EdgeInsets.only(
-                                left: 12.0, bottom: 4.0, right: 20),*//*
+                      */ /*margin: EdgeInsets.only(
+                                left: 12.0, bottom: 4.0, right: 20),*/ /*
                       alignment: Alignment.center,
                       child: Text(
                         'cancel'.tr,
@@ -1113,5 +1182,3 @@ class AdvertiserSettingsPage extends StatelessWidget {
     );
   }
 }
-
-

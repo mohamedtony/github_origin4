@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
+import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:advertisers/features/users_module/app_colors.dart';
 import 'package:advertisers/features/users_module/controller/login_controller.dart';
@@ -27,6 +28,7 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
       _registerNewAdvertiserUserController = Get.find();
   @override
   Widget build(BuildContext context) {
+    Get.reload(force: true,);
     return Center(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -141,11 +143,11 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                   textAlignment: TextAlign.end,
                   hintText: 'name'.tr,
                   onSaved: (value) {
-                    _registerNewAdvertiserUserController.accountName = value!;
+                    _registerNewAdvertiserUserController.name = value!;
                   },
                   validator: (value) {
                     return _registerNewAdvertiserUserController
-                        .validateAccountName(value!);
+                        .validateUserName(value!);
                   },
                 ),
                 SizedBox(
@@ -153,15 +155,16 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                 ),
                 AdvertisersDropDown(
                   hintText: 'type'.tr,
-                  width: 0,showSearchBox: false,
+                  width: 0,showSearchBox: false,empty:false,
+                  areas:[Area()],
                   itemType: 'String',
                   items: const ['ذكر', 'أنثى'],
                   onChanged: (val) {
                     if (val == 'ذكر') {
-                      _registerNewAdvertiserUserController.gender.value = 'user';
-                    } else if (val == 'معلن') {
+                      _registerNewAdvertiserUserController.gender.value = 'male';
+                    } else if (val == 'أنثى') {
                       _registerNewAdvertiserUserController.gender.value =
-                      'أنثى';
+                      'female';
                     }
                   },
                 ),
@@ -218,7 +221,7 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                   textAlignment: TextAlign.end,
                   hintText: 'email'.tr,
                   onSaved: (value) {
-                    _registerNewAdvertiserUserController.accountName = value!;
+                    _registerNewAdvertiserUserController.email = value!;
                   },
                   validator: (value) {
                     return _registerNewAdvertiserUserController
@@ -237,7 +240,7 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                   textAlignment: TextAlign.end,
                   hintText: 'nationalId'.tr,
                   onSaved: (value) {
-                    _registerNewAdvertiserUserController.accountName = value!;
+                    _registerNewAdvertiserUserController.nationalID = value!;
                   },
                   validator: (value) {
                     return _registerNewAdvertiserUserController
@@ -269,33 +272,54 @@ class RegisterNewAdvertiserUser extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
 
-                        Obx(() => AdvertisersDropDown(
-                              hintText: 'المدينة',
-                              width: 150.w,
-                              items: _registerNewAdvertiserUserController
-                                  .areas.value,
-                              onChanged: (area) {
-                                _registerNewAdvertiserUserController
-                                    .areaId.value = area.id.toString();
-                              },
-                            )),
+                        Obx(() =>InkWell(
+                          onTap: (){
+                            _registerNewAdvertiserUserController.empty.value=false;
+                          },
+                          child: AdvertisersDropDown(
+                            // key: ValueKey('clientCity'),
+                            hintText: 'المدينة',itemType: 'city',
+                            empty: _registerNewAdvertiserUserController.empty.value,
+                            areas: Get.find<RegisterNewAdvertiserUserController>().areas??[],
+                            width: 150.w,
+                            items:
+                            _registerNewAdvertiserUserController.areas.value,
+                            onChanged: (area) {
+                              _registerNewAdvertiserUserController.areaId.value =
+                                  area.id.toString();
+                              _registerNewAdvertiserUserController.empty.value=false;
+                            },
+                          ),
+                        )),
                         Obx(
                               () => AdvertisersDropDown(
                             hintText: 'الدولة',
+                            key: ValueKey('clientCountry'),
+                            empty:false,
                             width: 150.w,
+                            areas:[Area()],
                             items: _registerNewAdvertiserUserController
                                 .countries.value,
                             onChanged: (country) {
-                              _registerNewAdvertiserUserController
-                                  .countryId.value = country.id.toString();
+                              _registerNewAdvertiserUserController.empty.value=true;
+                              _registerNewAdvertiserUserController.countryId.value =
+                                  country.id.toString();
+                              Get.find<RegisterNewAdvertiserUserController>().country.value=country;
                               _registerNewAdvertiserUserController
                                   .changeAreas(country);
-                            },
+
+
+
+                            }, onBeforeChanged: (l,v){
+                                _registerNewAdvertiserUserController.empty.value=true;
+                            return Future.value(true);
+                          },
                           ),
                         ),
                       ],
                     )),
                 SizedBox(height: 44.6.h),
+
                 AdvertisersButton(
                   text: 'verifyAndFollow'.tr,
                   onPressed: () {

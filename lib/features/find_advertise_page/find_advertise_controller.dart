@@ -16,6 +16,7 @@ import 'package:advertisers/app_core/network/models/SelectedNotSelectedSortType.
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/requests/GetAdvertisersRequest.dart';
 import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetAdvertisersResponse.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
 import 'package:advertisers/main.dart';
@@ -27,6 +28,7 @@ import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:logger/logger.dart';
 import 'package:dio/dio.dart' as myDio;
 import 'package:video_compress/video_compress.dart';
@@ -107,13 +109,19 @@ class FindAdvertiseController extends GetxController {
   var selectedEffectSlidesModel = EffectSlidesModel(id: -1,).obs;
   late RequestAdvertiseController requestAdvertiseController;
 
+  final PagingController<int, GetAdvertisersModel> pagingController = PagingController(firstPageKey: 0);
+   String? type;
+
   @override
   Future<void> onInit() async {
     // TODO: implement onInit
     myToken = await storage.read("token");
+/*    pagingController.addPageRequestListener((pageKey) async {
+      print("hhhhhhhhhhhhhhhhhhhhhhhh");
+      await _fetchPage(pageKey);
+    });*/
     searchAdvertiserController = TextEditingController();
-    client!
-        .getAdvertisers("Bearer " + myToken!, GetAdvertisersRequest())
+    /*client!.getAdvertisers("Bearer " + myToken!, GetAdvertisersRequest())
         .then((value) {
       if (value.status == 200 && value.data != null && value.data!.isNotEmpty) {
         isLoading.value = false;
@@ -123,15 +131,136 @@ class FindAdvertiseController extends GetxController {
         isLoading.value = false;
         isEmpty.value = true;
       }
-    });
+    });*/
+
+
 
     super.onInit();
     requestAdvertiseController = Get.find();
+
   }
 
-  void getAdvertisersForm(BuildContext context) {
+  Future<List<GetAdvertisersModel>> getNotifications(
+      {GetAdvertisersRequest? getAdvertisersRequest, int? pageKey}) async {
+    //getAdvertisersRequest!.page=pageKey;
+    String myToken = await storage.read("token");
+
+    GetAdvertisersResponse response = await client!.getAdvertisers("Bearer " + myToken!, /*GetAdvertisersRequest(page: pageKey,)*/getAdvertisersRequest!);
+
+    final completer = Completer<List<GetAdvertisersModel>>();
+    List<GetAdvertisersModel> notifications = [];
+    if(response.data!=null && response.data!.isNotEmpty) {
+      notifications = response.data!;
+    }
+    completer.complete(notifications);
+    return completer.future;
+    // return topSellingList;
+  }
+  GetAdvertisersRequest? getAdvertisersRequest2;
+  Future<void> fetchPage(int pageKey,{GetAdvertisersRequest? getAdvertisersRequest,String? type}) async {
+    print("hhhhhhhhhhhhhhhhhhhhhhhh");
+    try {
+      //List<GetAdvertisersModel> newItems = await getNotifications(page: pageKey);
+      /*List<GetAdvertisersModel>? newItems = (await client!.getAdvertisers("Bearer " + myToken!, GetAdvertisersRequest(page: pageKey))).data;
+      if(newItems!=null && newItems.isNotEmpty){
+        isLoading.value = false;
+        isEmpty.value = false;
+        //advertisersModel.value = value.data!;
+      }else{
+        isLoading.value = false;
+        isEmpty.value = true;
+      }
+      bool isLastPage = newItems == null || newItems.isEmpty;
+      if (isLastPage) {
+        print("isLast = " + isLastPage.toString());
+        pagingController.appendLastPage(newItems!);
+      } else {
+        //final nextPageKey = pageKey + newItems.length;
+        int nextPageKey = ++pageKey;
+        print("nextPageKey=" + nextPageKey.toString());
+        pagingController.appendPage(newItems, nextPageKey);
+      }*/
+      List<GetAdvertisersModel>? newItems;
+      if(type!=null){
+        print("tyyyype");
+        if(pageKey==0){
+          pagingController.itemList = [];
+        }
+        getAdvertisersRequest2!.page = pageKey;
+         newItems = await getNotifications(pageKey: pageKey,getAdvertisersRequest: getAdvertisersRequest2);
+         bool isLastPage = newItems == null || newItems.isEmpty;
+         if (isLastPage) {
+           print("isLast = " + isLastPage.toString());
+           pagingController.appendLastPage(newItems!);
+           // pagingController. = "tony";
+         } else {
+           //final nextPageKey = pageKey + newItems.length;
+           int nextPageKey = ++pageKey;
+           print("nextPageKey=" + nextPageKey.toString());
+           pagingController.appendPage(newItems, nextPageKey);
+           //pagingController.itemList = newItems;
+         }
+      }else{
+        print("tyyyype2");
+        newItems = await getNotifications(pageKey: pageKey,getAdvertisersRequest: GetAdvertisersRequest(page: pageKey));
+        print("tyyyype3");
+        bool isLastPage = newItems == null || newItems.isEmpty;
+        if (isLastPage) {
+          print("isLast = " + isLastPage.toString());
+          pagingController.appendLastPage(newItems);
+          // pagingController. = "tony";
+        } else {
+          //final nextPageKey = pageKey + newItems.length;
+          int nextPageKey = ++pageKey;
+          print("nextPageKey=" + nextPageKey.toString());
+          pagingController.appendPage(newItems, nextPageKey);
+          //pagingController.itemList = newItems;
+        }
+      }
+
+/*      if((type!=null && type=="search") && pageKey==0) {
+        //pagingController.refresh();
+        pagingController.itemList = [];
+        //pagingController.appendPage(newItems);
+        bool isLastPage = newItems == null || newItems.isEmpty;
+        if (isLastPage) {
+          print("isLast = " + isLastPage.toString());
+          pagingController.appendLastPage(newItems!);
+          // pagingController. = "tony";
+        } else {
+          //final nextPageKey = pageKey + newItems.length;
+          int nextPageKey = ++pageKey;
+          print("nextPageKey=" + nextPageKey.toString());
+          pagingController.appendPage(newItems, nextPageKey);
+          //pagingController.itemList = newItems;
+        }
+      }else{
+        bool isLastPage = newItems == null || newItems.isEmpty;
+        if (isLastPage) {
+          print("isLast = " + isLastPage.toString());
+          pagingController.appendLastPage(newItems!);
+          // pagingController. = "tony";
+        } else {
+          //final nextPageKey = pageKey + newItems.length;
+          int nextPageKey = ++pageKey;
+          print("nextPageKey=" + nextPageKey.toString());
+          pagingController.appendPage(newItems, nextPageKey);
+          //pagingController.itemList = newItems;
+        }
+      }*/
+      // print("first=" + newItems.first.Code.toString());
+      //print("last=" + newItems.last.Code.toString());
+
+
+    } catch (error) {
+      pagingController.error = error;
+    }
+  }
+
+  Future<void> getAdvertisersForm(BuildContext context) async {
     print("here");
-    client!.getAdvertisersForm("Bearer " + myToken!).then((value) {
+    String myToken = await storage.read("token");
+    client!.getAdvertisersForm("Bearer " + myToken).then((value) {
       if (value.status == 200 && value.data != null) {
         print("hereHerre");
 
@@ -318,6 +447,19 @@ class FindAdvertiseController extends GetxController {
               selectedUserLocations.add(area);
             }
             isCountryEnabled.value = false;
+          }else if(area.id == -2){
+            isCountryEnabled.value = false;
+            //selectedUserLocations.value = [];
+            areasForLocationSheet.forEach((areaForLocationSheet) {
+              Area? areaModel = selectedUserLocations
+                  .firstWhereOrNull((element) => element.id == areaForLocationSheet.id);
+              if (areaModel == null &&
+                  areaForLocationSheet.id != -1 &&
+                  areaForLocationSheet.id != -2) {
+                selectedUserLocations.add(areaForLocationSheet);
+                //update();
+              }
+            });
           }
         }
       }
@@ -330,8 +472,22 @@ class FindAdvertiseController extends GetxController {
       areasForLocationSheet.value = [];
     }*/
   }
-  void onSelectedLocationClicked(int id) {
-    selectedUserLocations.removeWhere((element) => element.id==id);
+/*  void onSelectedLocationClicked(int id) {
+    dynamic country = selectedUserLocations.firstWhereOrNull((element) => element.id ==id);
+    if(selectedUserLocations.length>=2 && selectedUserLocations[1] is Area && (country!=null && country is Country)) {
+      // selectedUserLocations.removeWhere((element) => element.id == id);
+      Fluttertoast.showToast(
+        msg: " لا يمكن حذف الدولة لانها مرتبطة بالمناطق الرجاء حذف المناطق اولا",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black.withOpacity(0.6),
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+
+    }else{
+      selectedUserLocations.removeWhere((element) => element.id == id);
+    }
     if(selectedUserLocations.isEmpty){
       isAreaEnabled.value = true;
       isCountryEnabled.value = true;
@@ -341,8 +497,70 @@ class FindAdvertiseController extends GetxController {
       selectedArea.value = areasForLocationSheet.first;
       areasForLocationSheet.value = [];
       areasForLocationSheet.insert(0, Area(id: -1,name: 'إختر'));
+
     }
+  }*/
+
+  void onSelectedLocationClicked(int id) {
+
+    dynamic country = selectedUserLocations.firstWhereOrNull((element) => element.id ==id);
+    if(selectedUserLocations.length>=2 && selectedUserLocations[1] is Area && (country!=null && country is Country)) {
+      // selectedUserLocations.removeWhere((element) => element.id == id);
+      Fluttertoast.showToast(
+        msg: " لا يمكن حذف الدولة لانها مرتبطة بالمناطق الرجاء حذف المناطق اولا",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black.withOpacity(0.6),
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+      return;
+
+    }else{
+      selectedUserLocations.removeWhere((element) => element.id == id);
+    }
+    if(selectedUserLocations.isEmpty){
+      isAreaEnabled.value = true;
+      isCountryEnabled.value = true;
+      // areasForLocationSheet.value.clear();
+      // areasForLocationSheet.insert(0, Area(id: -1,name: 'إختر'));
+      selectedCountry.value = countriesForLocationSheet.first;
+      if(areasForLocationSheet!=null && areasForLocationSheet.isNotEmpty) {
+        selectedArea.value = areasForLocationSheet.first;
+      }
+      areasForLocationSheet.value = [];
+      areasForLocationSheet.insert(0, Area(id: -1,name: 'إختر'));
+    }else if(selectedUserLocations.value.length==1 && selectedUserLocations.value[0] is Country){
+      print("jjjjjjjjjjjjjjjj");
+      isAreaEnabled.value = true;
+      isCountryEnabled.value = true;
+      areasForLocationSheet.value = [];
+      if(selectedUserLocations[0].areas!=null) {
+
+        areasForLocationSheet.value = selectedUserLocations[0].areas;
+        Area? area1 = areasForLocationSheet.firstWhereOrNull((element) => element.id==-2);
+        if(area1==null) {
+          areasForLocationSheet.insert(0, Area(id: -2, name: 'كل المناطق'));
+        }
+        Area? area = areasForLocationSheet.firstWhereOrNull((element) => element.id==-1);
+        if(area==null) {
+          areasForLocationSheet.insert(0, Area(id: -1, name: 'إختر'));
+        }
+      }
+      selectedCountry.value = selectedUserLocations[0];
+
+
+    }
+    if(areasForLocationSheet!=null && areasForLocationSheet.isNotEmpty) {
+      selectedArea.value = areasForLocationSheet[0];
+    }
+    /*selectedUserLocations.removeWhere((element) =>element==countryOrArea);
+   if(selectedUserLocations.length==0){
+     isCountryEnabled.value = true;
+     isAreaEnabled.value = true;
+   }*/
   }
+
   onDateClickedSaved(BuildContext context) {
     isFilterSavedClicked.value = true;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -382,6 +600,7 @@ class FindAdvertiseController extends GetxController {
         countryCaregoriesIds.add(element.id!);
       }
     });
+    //pagingController.refresh();
     Logger().i(GetAdvertisersRequest(
             sort_by: sortByStrings!.isNotEmpty ? sortByStrings : null,
             categories: categoriesId.isNotEmpty ? categoriesId : null,
@@ -393,7 +612,33 @@ class FindAdvertiseController extends GetxController {
                 ? searchAdvertiserController.text
                 : null)
         .toJson());
-    client!
+    type = "search";
+    getAdvertisersRequest2 = GetAdvertisersRequest(
+        page: 0,
+        sort_by: sortByStrings!.isNotEmpty ? sortByStrings : null,
+        categories: categoriesId.isNotEmpty ? categoriesId : null,
+        country_category: countryCaregoriesIds.isNotEmpty
+            ? countryCaregoriesIds
+            : null,
+        countries: countriesId.isNotEmpty ? countriesId : null,
+        areas: areasIds.isNotEmpty ? areasIds : null,
+        keyword: searchAdvertiserController.text.isNotEmpty
+            ? searchAdvertiserController.text
+            : null);
+    pagingController.refresh();
+    fetchPage(0,getAdvertisersRequest: GetAdvertisersRequest(
+        page: 0,
+        sort_by: sortByStrings!.isNotEmpty ? sortByStrings : null,
+        categories: categoriesId.isNotEmpty ? categoriesId : null,
+        country_category: countryCaregoriesIds.isNotEmpty
+            ? countryCaregoriesIds
+            : null,
+        countries: countriesId.isNotEmpty ? countriesId : null,
+        areas: areasIds.isNotEmpty ? areasIds : null,
+        keyword: searchAdvertiserController.text.isNotEmpty
+            ? searchAdvertiserController.text
+            : null),type:"search");
+/*    client!
         .getAdvertisers(
             "Bearer " + myToken!,
             GetAdvertisersRequest(
@@ -416,7 +661,7 @@ class FindAdvertiseController extends GetxController {
         isLoading.value = false;
         isEmpty.value = true;
       }
-    });
+    });*/
   }
 
   void showToast(msg) {
@@ -446,6 +691,8 @@ class FindAdvertiseController extends GetxController {
     selectedChannel.value = Channel();
     selectedUserLocations.value = [];
     searchAdvertiserController.text = '';
+    type = null;
+    pagingController.refresh();
     selectedEffectSlidesModel.value = EffectSlidesModel();
   }
 
@@ -788,4 +1035,5 @@ class FindAdvertiseController extends GetxController {
    // return mediaInfo!.file!;
     Isolate.exit(p, File(""));
   }*/
+
 }

@@ -303,6 +303,12 @@ class Payments {
 
 List<Payments> payments = [
   Payments(
+    id: 0,
+    name: "Master Card",
+    img: "images/Mastercard.svg",
+    number: "**** **** **** 078"
+  ),
+  Payments(
     id: 1,
     name: "Master Card",
     img: "images/Mastercard.svg",
