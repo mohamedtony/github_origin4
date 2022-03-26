@@ -40,7 +40,6 @@ import 'package:advertisers/features/employees/view/AddEmployeePage.dart';
 import 'package:advertisers/features/employees/view/EmployeeArchivePage.dart';
 import 'package:advertisers/features/employees/view/ShowEmployeePage.dart';
 import 'package:advertisers/features/employees/view/employees_page.dart';
-import 'package:advertisers/features/employees/view/EmployeesPage.dart';
 import 'package:advertisers/features/gallery/gallery_page.dart';
 import 'package:advertisers/features/help_and_support/guides_videos/controller/guides_videos_controller.dart';
 import 'package:advertisers/features/help_and_support/guides_videos/guides_videos_page.dart';
