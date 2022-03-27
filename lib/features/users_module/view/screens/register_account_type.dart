@@ -96,16 +96,16 @@ class _RegisterAccountTypeState extends State<RegisterAccountType> {
                   SizedBox(
                     width: 375.0.w,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: 185.46,
+                          width: 175.46.w,
                           child: ListTile(
                             title: Text(
                               'client'.tr,
                               overflow: TextOverflow.clip,
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 19.sp,
                                 color: AppColors.whiteColor,
                               ),
                             ),
@@ -130,12 +130,12 @@ class _RegisterAccountTypeState extends State<RegisterAccountType> {
                           ),
                         ),
                         SizedBox(
-                          width: 125.46,
+                          width: 155.46.w,
                           child: ListTile(
                             title: Text(
                               'company'.tr,
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 19.sp,
                                 overflow: TextOverflow.clip,
                                 color: AppColors.whiteColor,
                               ),

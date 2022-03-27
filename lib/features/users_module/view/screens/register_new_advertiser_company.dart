@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/features/users_module/app_colors.dart';
 import 'package:advertisers/features/users_module/controller/login_controller.dart';
 import 'package:advertisers/features/users_module/controller/register_new_advertiser_company_controller.dart';
@@ -24,10 +25,12 @@ import 'package:dio/dio.dart' as dio;
 
 class RegisterNewAdvertiserCompany extends StatelessWidget {
   RegisterNewAdvertiserCompany({Key? key}) : super(key: key);
-  final RegisterNewAdvertiserCompanyController
-      _registerNewAdvertiserCompanyController = Get.find();
+  late final RegisterNewAdvertiserCompanyController
+  _registerNewAdvertiserCompanyController =Get.find();
   @override
   Widget build(BuildContext context) {
+
+    Get.reload(force: true,);
     return Center(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -269,28 +272,48 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
 
-                        Obx(() => AdvertisersDropDown(
-                              hintText: 'المدينة',
-                              width: 150.w,
-                              items: _registerNewAdvertiserCompanyController
-                                  .areas.value,
-                              onChanged: (area) {
-                                _registerNewAdvertiserCompanyController
-                                    .areaId.value = area.id.toString();
-                              },
-                            )),
+                        Obx(() =>InkWell(
+                          onTap: (){
+                          //  _registerNewAdvertiserCompanyController.empty.value=false;
+                          },
+                          child: AdvertisersDropDown(
+                            // key: ValueKey('clientCity'),
+                            hintText: 'المدينة',itemType: 'city',
+                            empty: _registerNewAdvertiserCompanyController.empty.value,
+                            areas: Get.find<RegisterNewAdvertiserCompanyController>().areas??[],
+                            width: 150.w,
+                            items:
+                            _registerNewAdvertiserCompanyController.areas.value,
+                            onChanged: (area) {
+                              _registerNewAdvertiserCompanyController.areaId.value =
+                                  area.id.toString();
+                              _registerNewAdvertiserCompanyController.empty.value=false;
+                            },
+                          ),
+                        )),
                         Obx(
                               () => AdvertisersDropDown(
                             hintText: 'الدولة',
+                            key: ValueKey('clientCountry'),
+                            empty:false,
                             width: 150.w,
+                            areas:[Area()],
                             items: _registerNewAdvertiserCompanyController
                                 .countries.value,
                             onChanged: (country) {
-                              _registerNewAdvertiserCompanyController
-                                  .countryId.value = country.id.toString();
+                              _registerNewAdvertiserCompanyController.empty.value=true;
+                              _registerNewAdvertiserCompanyController.countryId.value =
+                                  country.id.toString();
+                              Get.find<RegisterNewAdvertiserCompanyController>().country.value=country;
                               _registerNewAdvertiserCompanyController
                                   .changeAreas(country);
-                            },
+
+
+
+                            }, onBeforeChanged: (l,v){
+                                //_registerNewAdvertiserCompanyController.empty.value=true;
+                            return Future.value(true);
+                          },
                           ),
                         ),
                       ],
@@ -471,7 +494,7 @@ class RegisterNewAdvertiserCompany extends StatelessWidget {
     return showDialog(context: context,builder: (BuildContext context){
 
       return AlertDialog(
-        title: Text("اخترذ                                                                               ْ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ئ ",style: TextStyle(color: Colors.blue),),
+        title: Text("اختر",style: TextStyle(color: Colors.blue),),
         content: SingleChildScrollView(
           child: ListBody(
             children: [

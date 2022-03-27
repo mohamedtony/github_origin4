@@ -410,7 +410,7 @@ class AdvertiserListPage extends StatelessWidget {
             print('pressed2');
           },),
           AdvertiseListItem(icon: 'images/person_icon.svg',title: 'الموظفين',listTilePressed: (){
-            print('pressed2');
+            Get.toNamed('/EmployeesPage');
           },),
           AdvertiseListItem(icon: 'images/subscribe_icon.svg',title: 'الاشتراكات',listTilePressed: (){
             print('pressed2');
@@ -419,8 +419,9 @@ class AdvertiserListPage extends StatelessWidget {
             print('pressed2');
           },),
           AdvertiseListItem(icon: 'images/logout_icon.svg',title: 'خروج',listTilePressed: () async {
-            await storage.remove("data");
-            await storage.remove("token");
+            // await storage.remove("data");
+            // await storage.remove("token");
+            await storage.erase();
             Get.offAllNamed('/loginPage');
             print('pressed2');
           },),

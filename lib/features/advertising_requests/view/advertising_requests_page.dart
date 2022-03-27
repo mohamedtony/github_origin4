@@ -80,7 +80,8 @@ class AdvertisingRequestsPage extends GetWidget<AdvertisingRequestsController>  
 
 
 
-          body: controller.parentRequests.isNotEmpty ? Container(
+          body: controller.parentRequests.isNotEmpty ?
+          Container(
             color:const Color(0xffF5F5F5),
             child: Column(
               children: [

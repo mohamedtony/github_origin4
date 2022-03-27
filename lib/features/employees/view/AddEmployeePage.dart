@@ -1,3 +1,4 @@
+import 'package:advertisers/features/employees/controller/add_employee_controller.dart';
 import 'package:advertisers/features/employees/controller/employees_controller.dart';
 import 'package:advertisers/features/employees/view/EmployeeArchivePage.dart';
 import 'package:advertisers/features/employees/view/EmployeeAuthorizationPage.dart';
@@ -28,6 +29,8 @@ class AddEmployeePage extends StatefulWidget{
 
 class _AddEmployeePageState extends State<AddEmployeePage> {
 
+  //final AddEmployeeController  controller = Get.put(AddEmployeeController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +45,8 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
         ),
         preferredSize: Size(MediaQuery.of(context).size.width, 93.h),
       ),
-      body: GetBuilder<EmployeesController>(
-        init: EmployeesController(),
+      body: GetBuilder<AddEmployeeController>(
+        init: AddEmployeeController(),
         builder: (controller) =>  SingleChildScrollView(
 
           controller: controller.scrollController,
@@ -347,9 +350,9 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                       child: DropdownButton<String>(
                         underline: const SizedBox.shrink(),
                         icon: const Icon(Icons.keyboard_arrow_down),
-                        hint:  controller.selectedEmployeeJob!=""?Text( controller.selectedEmployeeJob,style: TextStyle(color: Color(0xff244094),fontSize: 14.sp,fontFamily: 'A Jannat LT, Regular'),):
+                        hint:  controller.selectedEmployeeJob!=""?Text( controller.selectedEmployeeJob.value,style: TextStyle(color: Color(0xff244094),fontSize: 14.sp,fontFamily: 'A Jannat LT, Regular'),):
                         Text('نوع التوظيف',style: TextStyle(color:Color(0xff9CA3AF),fontSize: 14.sp,fontFamily: 'A Jannat LT, Regular'),),
-                        items: <String>['موظف داخلي', 'موظف خارجي', 'مدير الحساب / الأدمن'].map((String value) {
+                        items: <String>['موظف داخلى', 'موظف خارجى'].map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value,style: TextStyle(color: Colors.grey.withOpacity(.8),fontSize: 14.sp,fontFamily: 'A Jannat LT, Regular'),),
@@ -357,10 +360,10 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                         }).toList(),
                         isExpanded: true,
                         onChanged: (newVal) {
-                          setState(() {
-                            controller.selectedEmployeeJob=newVal!;
+
+                            controller.selectedEmployeeJob.value=newVal!;
                             print("v ${controller.selectedEmployeeJob}");
-                          });
+
                         },
                       ),
                     ),
@@ -479,6 +482,9 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                                 hintText: "الجوال",
                               ),
                               onEditingComplete: ()  => node.nextFocus(),
+                              validator: (value){
+                                return controller.validatePhone(value!);
+                              },
                             ),
                           ),
                         ),
@@ -585,7 +591,10 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                     children: [
                       /// save btn
                       InkWell(
-                        onTap: (){},
+                        onTap: (){
+
+                          controller.checkAddEmployee();
+                        },
                         child: Container(
                           width: MediaQuery.of(context).size.width*.33,
                           decoration: BoxDecoration(

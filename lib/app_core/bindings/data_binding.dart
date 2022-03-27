@@ -3,6 +3,9 @@ import 'package:advertisers/features/advertising_influence_channels/controller/a
 import 'package:advertisers/features/advertising_influence_channels/controller/edit_channel_advertiser_controller.dart';
 import 'package:advertisers/features/client_payment_model/controller/client_payment_model_controller.dart';
 import 'package:advertisers/features/customer_order_invoice/controller/customer_order_invoice_controller.dart';
+import 'package:advertisers/features/help_and_support/guides_videos/controller/guides_videos_controller.dart';
+import 'package:advertisers/features/help_and_support/partener_success_page/controller/partener_success_controller.dart';
+import 'package:advertisers/features/help_and_support/redundancy_questions_page/controller/redundancy_questions_controller.dart';
 import 'package:advertisers/features/my_orders_archive/controller/my_orders_archive_controller.dart';
 import 'package:advertisers/features/request_advertise_module/controller/address_bottom_sheet_controller.dart';
 import 'package:advertisers/features/users_module/controller/baka_details_controller.dart';
@@ -39,5 +42,8 @@ class DataBinding extends Bindings {
     Get.lazyPut(()=>CustomerOrderInvoiceController());
     Get.lazyPut(()=>ClientPaymentModelController());
     Get.lazyPut(()=>MyOrdersArchiveController());
+    Get.lazyPut(()=>GuidesVideosController());
+    Get.lazyPut(()=>PartnerSuccessController());
+    Get.lazyPut(()=>RedundancyQuestionsController());
   }
 }

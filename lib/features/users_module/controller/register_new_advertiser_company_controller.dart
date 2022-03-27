@@ -29,7 +29,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
   late TextEditingController emailController;
   late TextEditingController recordIDController;
   late TextEditingController passwordController;
-
+  var country=Country().obs;
   var isValid=false.obs;
   var errorRegister=false.obs;
   RxList<Country> countries = <Country>[].obs;
@@ -38,6 +38,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
   static dio.MultipartFile? photo;
   var imageBase641 = ''.obs;
   var areaId = ''.obs;
+  var empty=false.obs;
   var file =File(' ').obs;
   var countryId = ''.obs;
   var logoPath = ''.obs;
@@ -67,13 +68,13 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
   void onInit() {
     //repo.postWithImageMultipart({})
 
-    client!.getCountries().then((value) {
-      if (value.data != null) {
-        countries.value = value.data!;
-        print(value.data![0].name);
-        Logger().i(value.data);
-      }
-    });
+    // client!.getCountries().then((value) {
+    //   if (value.data != null) {
+    //     countries.value = value.data!;
+    //     print(value.data![0].name);
+    //     Logger().i(value.data);
+    //   }
+    // });
     phoneController = TextEditingController();
     companyNameController = TextEditingController();
     accountNameController = TextEditingController();
@@ -83,6 +84,13 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
     recordIDController = TextEditingController();
 
     phoneController.text=Get.parameters['phone'].toString();
+    client!.getCountries().then((value) {
+      if (value.data != null) {
+        countries.value = value.data!;
+        print(value.data![0].name);
+        Logger().i(value.data);
+      }
+    });
     super.onInit();
   }
   String? validatePhone(String phone) {
@@ -132,7 +140,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
     return null;
   }
   String? validateNationalId(String val) {
-    if (val.length < 10) {
+    if (!GetUtils.isNumericOnly(val)||val.length < 10) {
       return 'رقم الهوية لا يقل عن 10 ارقام';
     }else if(nationalIDMess.isNotEmpty){
       return nationalIDMess.value;
@@ -141,8 +149,8 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
   }
 
   String? validateRecordID(String val) {
-    if (val.length < 3) {
-      return 'رقم السجل لا يقل عن 3 ارقام';
+    if (!GetUtils.isNumericOnly(val)||val.length < 3) {
+      return 'رقم السجل لا يقل عن 5 ارقام';
     }else if(recordIDMess.isNotEmpty){
       return recordIDMess.value;
     }
@@ -182,13 +190,17 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
         snackPosition: SnackPosition.BOTTOM,);
     }
   }
+  // void changeAreas(int countryId){
   void changeAreas(Country country2) {
+
     areas.value = [];
     Country? country = countries.firstWhereOrNull((element) =>
     element.id == country2.id);
     if (country != null) {
       areas.value = country.areas!;
+      areaId.value=areas[0].id.toString()??'0';
     }
+
     /*countries.forEach((element) {
       if(element.id==countryId){
         areas.add(element.)

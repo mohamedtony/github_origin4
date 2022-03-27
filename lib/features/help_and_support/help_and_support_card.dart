@@ -3,13 +3,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HelpAndSupportCard extends StatelessWidget {
-   HelpAndSupportCard({this.image,this.title,Key? key}) : super(key: key);
+   HelpAndSupportCard({this.isWidthBig,this.image,this.title,Key? key}) : super(key: key);
    final String? image,title;
+   final bool? isWidthBig;
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 140.h,
+      width: 153.w,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
+        border: Border.all(color:Color(0xff244094))
       ),
       child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -18,8 +22,8 @@ class HelpAndSupportCard extends StatelessWidget {
           children: [
             SvgPicture.asset(
               image??' ',
-              height: 32.43.h,
-              width: 27.43.w,
+              height: 42.43.h,
+              width: 37.43.w,
 
             ),
            const SizedBox(height: 20,),

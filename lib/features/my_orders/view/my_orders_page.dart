@@ -89,6 +89,7 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                 //itemCount: orders!.length,
                 itemCount: controller.myRequestsAsClient.length,
                 itemBuilder: (context, index) {
+                  //controller.myRequestsAsClient[index].bill_total??0;
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10, right: 5, left: 5),
                     child: GestureDetector(
@@ -387,9 +388,9 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                           children: [
                                             InkWell(
                                               onTap:(){
-                                                if(controller.myRequestsAsClient[index].status_txt=="تم التسعير"){
+                                                if(controller.myRequestsAsClient[index].status_txt=="تم التسعير"){//"تم التسعير"
                                                Get.toNamed("/CustomerOrderInvoicePage?billId=${controller.myRequestsAsClient[index].id}&phone=${controller.myRequestsAsClient[index].advertiser?.phone}&"
-                                                   "whatsapp=${controller.myRequestsAsClient[index].advertiser?.whatsapp}");
+                                                   "whatsapp=${controller.myRequestsAsClient[index].advertiser?.whatsapp}&advertiser=${controller.myRequestsAsClient[index].advertiser?.username??' '}");
                                   }},
                                               child: Card(
                                                 elevation: 5,
@@ -397,9 +398,9 @@ class _MyOrdersPageState extends State<MyOrdersPage>
                                                 child: Padding(
                                                   padding:
                                                       const EdgeInsets.all(12.0),
-                                                  child: SvgPicture.asset(
+                                                  child: controller.myRequestsAsClient[index].bill_total!=null?SvgPicture.asset(
                                                     "images/sheet.svg",
-                                                  ),
+                                                  ):SizedBox(),
                                                 ),
                                               ),
                                             ),

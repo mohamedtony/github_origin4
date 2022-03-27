@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_button.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_generic_field.dart';
 import 'package:dio/dio.dart' as dio;
@@ -196,7 +197,7 @@ border: Border.all(color:ClientModelColor.firstBorderColor),
                           children: [
                             Text("اسم قناة الدفع" ,textAlign:TextAlign.center,style:TextStyle(fontSize: 16.sp,fontFamily: "AbrilFatface-Regular",color:ClientModelColor.greyFont )),
                            const SizedBox(width: 25,),
-                            AdvertisersDropDown(items: [],hintText: "stc pya",width: 214.63.w,borderColor: ClientModelColor.borderDropdownColor,),
+                            AdvertisersDropDown(items: [],hintText: "stc pya",width: 214.63.w,borderColor: ClientModelColor.borderDropdownColor,areas: [Area()],),
                           ],
                         ),
                       ),
