@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:ui';
 import 'package:advertisers/features/users_module/controller/login_controller.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 
@@ -31,7 +32,7 @@ class AppbarWidget extends StatelessWidget {
 
               InkWell(
                 onTap: (){
-
+                  Get.toNamed("/ListPage");
                 },
                 child: Image.asset(
                   "images/Nav.png",

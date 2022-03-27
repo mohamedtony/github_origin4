@@ -15,7 +15,7 @@ class ApiService {
   final Dio dioClient = Dio(
     BaseOptions(
       baseUrl:
-          'https://newsapi.org/v2/top-headlines?country=us&apiKey=de1b8c9dbc154837ad9b6370431a6c93',
+          '',
       connectTimeout: 60000,
       receiveTimeout: 60000,
     ),

@@ -84,7 +84,15 @@ import 'package:advertisers/features/users_module/view/screens/register_new_clie
 import 'package:advertisers/features/users_module/view/screens/start_page.dart';
 import 'package:advertisers/features/users_module/view/screens/successful_paying_page.dart';
 import 'package:advertisers/features/users_module/view/screens/verification_code_page.dart';
+import 'package:advertisers/features/wallet_module/controllers/charge_controller.dart';
+import 'package:advertisers/features/wallet_module/controllers/points_controller.dart';
+import 'package:advertisers/features/wallet_module/controllers/process_controller.dart';
+import 'package:advertisers/features/wallet_module/controllers/withdraw_controller.dart';
 import 'package:advertisers/features/wallet_module/wallet_page.dart';
+import 'package:advertisers/features/wallet_module/widgets/point_widgets/point_widget.dart';
+import 'package:advertisers/features/wallet_module/widgets/processes_widgets/processes_widget.dart';
+import 'package:advertisers/features/wallet_module/widgets/pulls_widgets/pulls_widget.dart';
+import 'package:advertisers/features/wallet_module/widgets/shipping_widgets/shipping_widget.dart';
 import 'package:advertisers/features/wallet_module/widgets/wallet_intro/controller/wallet_intro_controller.dart';
 import 'package:advertisers/features/wallet_module/widgets/wallet_intro/wallet_intro_page.dart';
 import 'package:advertisers/reason_rejecting_advertisement_customer/view/page/reason_rejecting_advertisement_customer.dart';
@@ -94,18 +102,18 @@ class Routes {
   static final routes = [
 
     GetPage(
-      name: '/ClientPaymentModelPage',
-      page: () =>ClientPaymentModelPage(),
-  binding: BindingsBuilder(() {
-  Get.lazyPut<ClientPaymentModelController>(() => ClientPaymentModelController());
+        name: '/ClientPaymentModelPage',
+        page: () =>ClientPaymentModelPage(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut<ClientPaymentModelController>(() => ClientPaymentModelController());
 
-  })),
+        })),
     // GetPage(
     //   name: '/',
 
-  GetPage(
-  name: '/',
-  page: () =>StartPage(),),
+    GetPage(
+      name: '/',
+      page: () =>StartPage(),),
     GetPage(
       name: '/loginPage',
       page: () =>LoginPage(),
@@ -212,8 +220,8 @@ class Routes {
       name: '/forgetPasswordForPhone',
       page: () => ForgetPasswordForPhone(),
       binding: BindingsBuilder(() {
-  Get.lazyPut<ForgetPasswordForPhoneController>(() => ForgetPasswordForPhoneController());
-  }),
+        Get.lazyPut<ForgetPasswordForPhoneController>(() => ForgetPasswordForPhoneController());
+      }),
     ),
     GetPage(
       name: '/verificationCodePage',
@@ -223,11 +231,11 @@ class Routes {
       }),
     ),
     GetPage(
-      name: '/registerPhone',
-      page: () => RegisterPhone(),
-      binding: BindingsBuilder(() {
-  Get.lazyPut<RegisterPhoneController>(() => RegisterPhoneController());
-  })
+        name: '/registerPhone',
+        page: () => RegisterPhone(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut<RegisterPhoneController>(() => RegisterPhoneController());
+        })
     ),
     GetPage(
       name: '/registerAccountType',
@@ -235,23 +243,23 @@ class Routes {
 
     ),
     GetPage(
-      name: '/chooseBakaPage',
-      page: () => ChooseBakaPage(),
-  binding: BindingsBuilder(() {
-  Get.lazyPut<ChooseBakaController>(() => ChooseBakaController());
-  })),
+        name: '/chooseBakaPage',
+        page: () => ChooseBakaPage(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut<ChooseBakaController>(() => ChooseBakaController());
+        })),
     GetPage(
-      name: '/registerNewClientTapBar',
-      page: () => RegisterNewClientTapBar(),
-      bindings: [ BindingsBuilder(() {
-        Get.lazyPut<RegisterNewClientUserController>(() => RegisterNewClientUserController());
-      }), BindingsBuilder(() {
-        Get.lazyPut<RegisterNewClientCompanyController>(() => RegisterNewClientCompanyController());
-      })]
+        name: '/registerNewClientTapBar',
+        page: () => RegisterNewClientTapBar(),
+        bindings: [ BindingsBuilder(() {
+          Get.lazyPut<RegisterNewClientUserController>(() => RegisterNewClientUserController());
+        }), BindingsBuilder(() {
+          Get.lazyPut<RegisterNewClientCompanyController>(() => RegisterNewClientCompanyController());
+        })]
     ),
     GetPage(
-      name: '/registerNewAdvertiserTapBar',
-      page: () => RegisterNewAdvertiserTapBar(),
+        name: '/registerNewAdvertiserTapBar',
+        page: () => RegisterNewAdvertiserTapBar(),
         bindings: [ BindingsBuilder(() {
           Get.lazyPut<RegisterNewAdvertiserUserController>(() => RegisterNewAdvertiserUserController(),fenix:true);
         }), BindingsBuilder(() {
@@ -273,17 +281,17 @@ class Routes {
     //   page: () => AdvancedOptionsPage(),
     //
     // ),
-  //   GetPage(
-  //     name: '/AdvertisingInfluenceChannelsPage',
-  //     page:() => AdvertisingInfluenceChannelsPage(),
-  //     binding:BindingsBuilder(() {
-  // Get.lazyPut<AdvertisingInfluenceChannelsController>(() => AdvertisingInfluenceChannelsController());
-  // }),),
-  //   GetPage(
-  //     name: '/TaxSettingsPage',
-  //     page: () => TaxSettingsPage(),
-  //
-  //   ),
+    //   GetPage(
+    //     name: '/AdvertisingInfluenceChannelsPage',
+    //     page:() => AdvertisingInfluenceChannelsPage(),
+    //     binding:BindingsBuilder(() {
+    // Get.lazyPut<AdvertisingInfluenceChannelsController>(() => AdvertisingInfluenceChannelsController());
+    // }),),
+    //   GetPage(
+    //     name: '/TaxSettingsPage',
+    //     page: () => TaxSettingsPage(),
+    //
+    //   ),
     GetPage(
       name: '/chooseBakaDetails',
       page: () => BakaDetails(),
@@ -311,21 +319,21 @@ class Routes {
       name: '/AdvertiserQrPage',
       page: () => AdvertiserQrPage(),
     ),
-  //   GetPage(
-  //     name: '/AdvertiserAccountStatusPage',
-  //     page: () => AdvertiserAccountStatusPage(),
-  // binding: BindingsBuilder(() {
-  // Get.lazyPut<AdvertiserAccountStatusController>(() => AdvertiserAccountStatusController());
-  // })),
+    //   GetPage(
+    //     name: '/AdvertiserAccountStatusPage',
+    //     page: () => AdvertiserAccountStatusPage(),
+    // binding: BindingsBuilder(() {
+    // Get.lazyPut<AdvertiserAccountStatusController>(() => AdvertiserAccountStatusController());
+    // })),
     GetPage(
-      name: '/AddAdvertiserChannel',
-      page: () => AddAdvertiserChannel(),
-  binding: BindingsBuilder(() {
-  Get.lazyPut<AddAdvertiserChannelController>(() => AddAdvertiserChannelController());
-  })),
+        name: '/AddAdvertiserChannel',
+        page: () => AddAdvertiserChannel(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut<AddAdvertiserChannelController>(() => AddAdvertiserChannelController());
+        })),
     GetPage(
-      name: '/CustomerOrderInvoicePage',
-      page: () => CustomerOrderInvoicePage(),
+        name: '/CustomerOrderInvoicePage',
+        page: () => CustomerOrderInvoicePage(),
         binding: BindingsBuilder(() {
           Get.lazyPut<CustomerOrderInvoiceController>(() => CustomerOrderInvoiceController());
         })),
@@ -338,8 +346,8 @@ class Routes {
     //   page: () => MyOrdersPage(),
     // ),
     GetPage(
-      name: '/MyOrdersAndMyOrdersArchive',
-      page: () => MyOrdersAndMyOrdersArchive(),
+        name: '/MyOrdersAndMyOrdersArchive',
+        page: () => MyOrdersAndMyOrdersArchive(),
         bindings: [ BindingsBuilder(() {
           Get.lazyPut<MyOrdersController>(() => MyOrdersController());
         }), BindingsBuilder(() {
@@ -351,12 +359,12 @@ class Routes {
       page: () => AdvertiserDetailsPage(),
     ),
     GetPage(
-        name: '/clientSettingPage',
-        page: () => ClientSettingPage(),
-       // binding: ClientSettingBinding()
-        binding: BindingsBuilder(() {
+      name: '/clientSettingPage',
+      page: () => ClientSettingPage(),
+      // binding: ClientSettingBinding()
+      binding: BindingsBuilder(() {
         Get.lazyPut<ClientSettingPageController>(() => ClientSettingPageController());
-    }),
+      }),
     ),
     GetPage(
       name: '/AdvertisingRequestsPage',
@@ -403,7 +411,6 @@ class Routes {
     GetPage(
       name: '/AddEmployeePage',
       page: () => AddEmployeePage(),
-
     ),
     GetPage(
       name: '/EmployeesPage',
@@ -412,9 +419,37 @@ class Routes {
     GetPage(
       name: '/WalletIntroPage',
       page: () => WalletIntroPage(),
-  binding: BindingsBuilder(() {
-  Get.lazyPut<WalletIntroController>(() => WalletIntroController());
-  }),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<WalletIntroController>(() => WalletIntroController());
+      }),
+    ),
+    GetPage(
+      name: '/PointsWidget',
+      page: () => PointsWidget(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<PointsController>(() => PointsController());
+      }),
+    ),
+    GetPage(
+      name: '/ProcessesWidget',
+      page: () => ProcessesWidget(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<ProcessesController>(() => ProcessesController());
+      }),
+    ),
+    GetPage(
+      name: '/ShippingWidget',
+      page: () => ShippingWidget(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<ChargeController>(() => ChargeController());
+      }),
+    ),
+    GetPage(
+      name: '/PullsWidget',
+      page: () => PullsWidget(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<WithdrawController>(() => WithdrawController());
+      }),
     ),
     GetPage(
       name: '/ShowEmployeePage',
@@ -427,10 +462,9 @@ class Routes {
     GetPage(
       name: '/CientOrderDetails',
       page: () => CientOrderDetails(),
-  binding: BindingsBuilder(() {
-  Get.lazyPut<ClientOrderDetailsController>(() => ClientOrderDetailsController());
-  }),
-
+      binding: BindingsBuilder(() {
+        Get.lazyPut<ClientOrderDetailsController>(() => ClientOrderDetailsController());
+      }),
     ),
 
     GetPage(
