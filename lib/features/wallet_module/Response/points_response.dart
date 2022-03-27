@@ -17,9 +17,9 @@ class PointsResponse {
 }
 
 class Data {
-  int? points;
-  double? pointsBalance;
-  int? wallet;
+  dynamic points;
+  dynamic pointsBalance;
+  dynamic wallet;
 
   Data({this.points, this.pointsBalance, this.wallet});
 

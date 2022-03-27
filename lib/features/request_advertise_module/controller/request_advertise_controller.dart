@@ -284,7 +284,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   void deleteImage(int index){
     attatechedFilesImageAndVideo.removeAt(index);
     imageFideoFiles?.removeAt(index);
-    imageFideoRealFiles?.removeAt(index);
+    imageFideoRealFiles.removeAt(index);
   }
   Future<void> showChoiceImageOrVideoDialogForAttatchement(BuildContext context)
   {
@@ -674,7 +674,7 @@ Future<File> compressVideo(File file) async {
 //================================== dicount sheet ==========================================
   bool isNumericUsingRegularExpression(String string) {
     final numericRegex =
-    RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+    RegExp(r'^-?(([0-9]*)|(([0-9]*)))$');
 
     return numericRegex.hasMatch(string);
   }

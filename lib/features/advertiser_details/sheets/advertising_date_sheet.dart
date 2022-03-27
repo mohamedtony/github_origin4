@@ -58,12 +58,14 @@ class _AdvertisingDatePageState extends State<AdvertisingDatePage> {
         if (requestAdvertiseController.isDateSaveClicked.isFalse) {
           if (requestAdvertiseController.dateType == "fixed") {
             print("herehere");
+            requestAdvertiseController.selectedTimeCounter.value = '1';
             requestAdvertiseController.isFixed.value = true;
             requestAdvertiseController.isFlixble.value = false;
           } else {
             requestAdvertiseController.isFixed.value = false;
             requestAdvertiseController.isFlixble.value = true;
           }
+
         }
       }
 

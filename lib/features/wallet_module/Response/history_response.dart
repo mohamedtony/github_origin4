@@ -30,9 +30,9 @@ class HistoryResponse {
 }
 
 class Data {
-  int? points;
-  double? pointsBalance;
-  int? wallet;
+  dynamic points;
+  dynamic pointsBalance;
+  dynamic wallet;
   List<History>? history;
 
   Data({this.points, this.pointsBalance, this.wallet, this.history});
@@ -64,11 +64,11 @@ class Data {
 class History {
   int? id;
   String? type;
-  int? total;
+  dynamic total;
   Action? action;
-  int? actionId;
+  dynamic actionId;
   CreatedAt? createdAt;
-  var paymentId;
+  dynamic paymentId;
   User? user;
 
   History(
@@ -185,7 +185,7 @@ class Pagination {
   int? perPage;
   String? prevPageUrl;
   int? to;
-  int? total;
+  dynamic total;
 
   Pagination(
       {this.currentPage,

@@ -30,6 +30,7 @@ final processesController = Get.put(ProcessesController());
                     title: "رصيد المحفظة", name: "ريال", value: state?.data?.wallet),
               ];
           return ListView(
+            controller: controller.scrollController,
             children: [
               Container(
                 height: 125.h,
@@ -59,6 +60,11 @@ final processesController = Get.put(ProcessesController());
                   return ProcessesItemWidget(historyItem: controller.historyItems[index] ,);
                 },
               ),
+              // Container(
+              //   height: 100,
+              //   width: 100,
+              //   color: Colors.red,
+              // )
 
               // const TableWidget(),
             ],

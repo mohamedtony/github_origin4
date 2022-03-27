@@ -1094,10 +1094,25 @@ class ClientSettingPage extends StatelessWidget {
                           //popupItemDisabled: (String s) => s.startsWith('I'),
                           onChanged: (country){
                             controller.country.value = country!;
+                            if(country?.areas!=null && country.areas!.isNotEmpty) {
+                              controller.areas.value = [];
+                              controller.areas.value = country.areas!;
+                              if(controller.areas.value[0].id!=-1) {
+                                controller.areas.value.insert(
+                                    0, Area(id: -1, name: 'المدينة'));
+                              }
+                              controller.area.value =  controller.areas[0];
+                            }else{
+                              controller.areas.value = [];
+                              //if(controller.areas.value[0].id!=-1) {
+                                controller.areas.value.insert(
+                                    0, Area(id: -1, name: 'المدينة'));
+                              //}
+                            }
                           },
                           selectedItem: controller.country.value): Container(
     alignment: Alignment.centerRight,
-    child: const Text("لا يوجد مناطق")),
+    child: const Text("لا يوجد دول")),
                     )),
               ),
               Expanded(

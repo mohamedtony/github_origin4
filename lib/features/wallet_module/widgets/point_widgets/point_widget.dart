@@ -200,49 +200,49 @@ class PointsWidget extends GetWidget<PointsController> {
                             const SizedBox(
                               height: 60,
                             ),
-                            ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: items!.length,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(bottom: 15),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          padding:
-                                              const EdgeInsets.only(top: 8),
-                                          height: 12,
-                                          width: 12,
-                                          decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(
-                                                      100.0) //                 <--- border radius here
-                                                  ),
-                                              color: Color(0xff636363)),
-                                        ),
-                                        const SizedBox(
-                                          width: 12,
-                                        ),
-                                        Expanded(
-                                            child: Text(
-                                          "${items![index].desc}",
-                                          style: TextStyle(
-                                              fontSize: 14.sp,
-                                              color: const Color(0xff636363),
-                                              height: 1.6),
-                                        ))
-                                      ],
-                                    ),
-                                  );
-                                }),
-                            const SizedBox(
-                              height: 60,
-                            ),
+                            // ListView.builder(
+                            //     shrinkWrap: true,
+                            //     physics: const NeverScrollableScrollPhysics(),
+                            //     itemCount: items!.length,
+                            //     itemBuilder: (context, index) {
+                            //       return Padding(
+                            //         padding: const EdgeInsets.only(bottom: 15),
+                            //         child: Row(
+                            //           mainAxisAlignment:
+                            //               MainAxisAlignment.start,
+                            //           crossAxisAlignment:
+                            //               CrossAxisAlignment.start,
+                            //           children: [
+                            //             Container(
+                            //               padding:
+                            //                   const EdgeInsets.only(top: 8),
+                            //               height: 12,
+                            //               width: 12,
+                            //               decoration: const BoxDecoration(
+                            //                   borderRadius: BorderRadius.all(
+                            //                       Radius.circular(
+                            //                           100.0) //                 <--- border radius here
+                            //                       ),
+                            //                   color: Color(0xff636363)),
+                            //             ),
+                            //             const SizedBox(
+                            //               width: 12,
+                            //             ),
+                            //             Expanded(
+                            //                 child: Text(
+                            //               "${items![index].desc}",
+                            //               style: TextStyle(
+                            //                   fontSize: 14.sp,
+                            //                   color: const Color(0xff636363),
+                            //                   height: 1.6),
+                            //             ))
+                            //           ],
+                            //         ),
+                            //       );
+                            //     }),
+                            // const SizedBox(
+                            //   height: 60,
+                            // ),
                             Row(
                               children: [
                                 Expanded(
@@ -252,6 +252,12 @@ class PointsWidget extends GetWidget<PointsController> {
                                       controller.addPoints(
                                           request: PointsRequest(
                                               points: amountController.text));
+                                    } else {
+                                      Get.snackbar(
+                                        "مطلوب",
+                                        "ادخل عدد النقاط التي تريد تحويلها إلى رصيد نقدي",
+                                        snackPosition: SnackPosition.BOTTOM,
+                                      );
                                     }
                                   },
                                   child: Container(
@@ -276,7 +282,9 @@ class PointsWidget extends GetWidget<PointsController> {
                                 ),
                                 Expanded(
                                     child: InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    amountController.clear();
+                                  },
                                   child: Container(
                                     height: 40,
                                     child: const Center(

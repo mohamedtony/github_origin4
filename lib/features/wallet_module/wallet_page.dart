@@ -1,3 +1,5 @@
+import 'package:advertisers/app_core/network/models/User.dart';
+import 'package:advertisers/features/wallet_module/controllers/charge_controller.dart';
 import 'package:advertisers/features/wallet_module/wallet_controller.dart';
 import 'package:advertisers/features/wallet_module/widgets/appbar_widget.dart';
 import 'package:advertisers/features/wallet_module/widgets/point_widgets/point_widget.dart';
@@ -6,16 +8,40 @@ import 'package:advertisers/features/wallet_module/widgets/pulls_widgets/pulls_w
 import 'package:advertisers/features/wallet_module/widgets/select_tab.dart';
 import 'package:advertisers/features/wallet_module/widgets/shipping_widgets/shipping_widget.dart';
 import 'package:advertisers/features/wallet_module/widgets/wallet_and_title.dart';
+import 'package:advertisers/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+
+// var userData = storage.read("data");
+
+// var prefs = GetStorage();
+
+
+
+
 
 class WalletPage extends StatelessWidget {
   WalletPage({Key? key}) : super(key: key);
   final WalletController _walletController = Get.put(WalletController());
 
+
+
+
+
   @override
   Widget build(BuildContext context) {
+
+
+
+    List<UpperTabItem>? upperTabItems = [
+      UpperTabItem(id: 0, title: "العمليات"),
+      UpperTabItem(id: 1, title: "الشحن"),
+      if(_walletController.userData!.role == "advertiser") UpperTabItem(id: 2, title: "السحب"),
+      UpperTabItem(id: 3, title: "النقاط"),
+    ];
+    print("userData ${_walletController.userData!.role}");
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: GetBuilder<WalletController>(
@@ -64,7 +90,8 @@ class WalletPage extends StatelessWidget {
             : Container(),
       ),
       appBar: PreferredSize(
-        child: AppbarWidget(),
+        child: AppbarWidget(
+        ),
         preferredSize: Size(MediaQuery.of(context).size.width, 150.0),
       ),
       body: Container(
@@ -83,6 +110,9 @@ class WalletPage extends StatelessWidget {
                       shrinkWrap: true,
                       itemCount: upperTabItems!.length,
                       itemBuilder: (context, index) {
+
+
+
                         return InkWell(
                             onTap: () {
                               _walletController
@@ -90,7 +120,7 @@ class WalletPage extends StatelessWidget {
                               print("${_walletController.tabId}");
                             },
                             child: Container(
-                              width: MediaQuery.of(context).size.width * .24,
+                              width: _walletController.userData!.role == "advertiser" ? MediaQuery.of(context).size.width * .24 : MediaQuery.of(context).size.width * .33,
                               // padding: const EdgeInsets.symmetric(horizontal: 5),
                               child: SelectedTab(
                                 title: upperTabItems![index].title,
@@ -137,6 +167,9 @@ class WalletPage extends StatelessWidget {
 List<Widget> TabsWidgets = [
   ProcessesWidget(),
   ShippingWidget(),
+ // if(userData!.role != "advertiser") PullsWidget(),
   PullsWidget(),
   PointsWidget()
 ];
+
+

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:advertisers/features/wallet_module/Response/charge_response.dart';
 import 'package:advertisers/features/wallet_module/Response/points_response.dart';
 import 'package:advertisers/features/wallet_module/request/points_request.dart';
@@ -65,6 +64,11 @@ class PointsController extends GetxController with StateMixin<PointsResponse> {
       );
       Logger().i(response.data);
     } on dio.DioError catch (error) {
+      Get.snackbar(
+        "خطأ",
+        "حدث خطأ ما حاول في وقت لاحق",
+        snackPosition: SnackPosition.BOTTOM,
+      );
       if (error.response?.statusCode == 401 ||
           error.response?.statusCode == 422) {
         // Error occurred while fetching data

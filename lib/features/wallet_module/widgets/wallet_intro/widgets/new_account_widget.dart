@@ -35,6 +35,7 @@ class NewAccountWidget extends StatelessWidget {
                 children: accountType.map((e) => Expanded(child: InkWell(
                   onTap: (){
                     controller.passAccountId(e.id);
+                    controller.resetWalletIntro(withUpdate: true);
                   },
                   child: Row(
                     children: [
@@ -56,7 +57,7 @@ class NewAccountWidget extends StatelessWidget {
               //   ),
               // ),
 
-              controller.accountId == 0 ? FadeIn(child: BankWidget()) : FadeIn(child: AccountWidget())
+              controller.accountId == "0" ? FadeIn(child: BankWidget()) : FadeIn(child: AccountWidget())
 
             ],
           ),

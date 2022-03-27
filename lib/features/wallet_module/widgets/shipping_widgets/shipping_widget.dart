@@ -5,6 +5,8 @@ import 'package:advertisers/features/wallet_module/widgets/points_widget_chart.d
 import 'package:advertisers/shared/radio_buttons/radio_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 class ShippingWidget extends GetWidget<ChargeController> {
@@ -89,22 +91,48 @@ class ShippingWidget extends GetWidget<ChargeController> {
                                       const SizedBox(
                                         width: 20,
                                       ),
-                                      // SizedBox(
-                                      //   width: 70,
-                                      //   child: SvgPicture.asset(
-                                      //     "${payments[index].img}",
-                                      //     // height: 21,
-                                      //     // width: 40,
-                                      //   ),
-                                      // ),
+                                      SizedBox(
+                                        width: 70,
+                                        child: state?.data?.cards?[index].type != "mastercard" ? Image.asset(
+                                          state?.data?.cards?[index].type ==
+                                              'visa'
+                                              ? "images/visa.png"
+                                              : state?.data?.cards?[index].type ==
+                                              'mada'
+                                              ? "images/mada.png"
+                                              : state?.data?.cards?[index]
+                                              .type ==
+                                              'stc'
+                                              ? "images/stc.png"
+                                              : state?.data?.cards?[index]
+                                              .type ==
+                                              'apple_pay'
+                                              ? "images/apple.png"
+                                              : state
+                                              ?.data
+                                              ?.cards?[
+                                          index]
+                                              .type ==
+                                              'bian'
+                                              ? "images/bian.png"
+                                              : '',
+                                          // height: 21,
+                                          // width: 40,
+                                        ):SvgPicture.asset(
+                                          'images/Mastercard.svg',
+                                          // width: 45.0,
+                                          // height: 45.0,
+                                          // fit: BoxFit.fill,
+                                        ),
+                                      ),
                                       const SizedBox(
                                         width: 20,
                                       ),
-                                      Text(
-                                        "${state?.data?.cards?[index].info?.cardNumberFour}",
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 18),
-                                      ),
+                                      if(state?.data?.cards?[index].type == "apple_pay") Spacer(),
+                                      if(state?.data?.cards?[index].type != "apple_pay")    if(state?.data?.cards?[index].type == "bian" || state?.data?.cards?[index].type == "stc") Expanded(child: Text("${state?.data?.cards?[index].info!.mobile}",style: const TextStyle(color: Colors.grey,fontSize: 18),)),
+                                   if(state?.data?.cards?[index].type != "apple_pay")   if(state?.data?.cards?[index].type != "bian" && state?.data?.cards?[index].type != "stc")  Expanded(child: Text("${state?.data?.cards?[index].info!.cardNumberFour}",style: const TextStyle(color: Colors.grey,fontSize: 18),)),
+                                      state?.data?.cards?[index].status == true ?  FaIcon(FontAwesomeIcons.checkDouble,color: const Color(0xff129835),size: 17.sp,):const FaIcon(FontAwesomeIcons.stop,
+                                        color:  Color(0xffffad00),)
                                     ],
                                   ),
                                 ));
@@ -263,6 +291,18 @@ class ShippingWidget extends GetWidget<ChargeController> {
                                               cardId:
                                                   _chargeController.paymentId,
                                               total: amountController.text));
+                                    } else {
+                                      Get.snackbar(
+                                        "مطلوب",
+                                        amountController.text.isEmpty &&
+                                                _chargeController.paymentId ==
+                                                    -1
+                                            ? 'اختر طريقة الدفع\nادخل مبلغ الشحن'
+                                            : amountController.text.isEmpty
+                                                ? "ادخل مبلغ الشحن"
+                                                : 'اختر طريقة الدفع',
+                                        snackPosition: SnackPosition.BOTTOM,
+                                      );
                                     }
                                   },
                                   child: Container(
@@ -287,7 +327,10 @@ class ShippingWidget extends GetWidget<ChargeController> {
                                 ),
                                 Expanded(
                                     child: InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    _chargeController.passPaymentIndex(-1);
+                                    amountController.clear();
+                                  },
                                   child: Container(
                                     height: 40,
                                     child: const Center(

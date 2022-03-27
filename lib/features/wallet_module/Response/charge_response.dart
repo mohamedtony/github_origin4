@@ -27,9 +27,9 @@ class ChargeResponse {
 }
 
 class Data {
-  int? pending;
-  int? ready;
-  int? wallet;
+  dynamic pending;
+  dynamic ready;
+  dynamic wallet;
   List<Cards>? cards;
 
   Data({this.pending, this.ready, this.wallet, this.cards});
@@ -91,12 +91,14 @@ class Info {
   String? expirationYear;
   String? expirationMonth;
   String? cardNumberFour;
+  String? mobile;
 
   Info(
       {this.cvv,
       this.cardUsername,
       this.expirationYear,
       this.expirationMonth,
+      this.mobile,
       this.cardNumberFour});
 
   Info.fromJson(Map<String, dynamic> json) {
@@ -105,6 +107,7 @@ class Info {
     expirationYear = json['expiration_year'];
     expirationMonth = json['expiration_month'];
     cardNumberFour = json['card_number_four'];
+    mobile = json['mobile'];
   }
 
   Map<String, dynamic> toJson() {

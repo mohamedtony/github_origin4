@@ -51,7 +51,7 @@ android {
         applicationId "com.diwan.advertisers"
 //        minSdkVersion  20  //flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
-        minSdkVersion 21
+        minSdkVersion 22
        // targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

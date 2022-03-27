@@ -70,6 +70,11 @@ class ChargeController extends GetxController with StateMixin<ChargeResponse> {
       );
       Logger().i(response.data);
     } on dio.DioError catch (error) {
+      Get.snackbar(
+        "خطأ",
+        "حدث خطأ ما حاول في وقت لاحق",
+        snackPosition: SnackPosition.BOTTOM,
+      );
       if (error.response?.statusCode == 401 ||
           error.response?.statusCode == 422) {
         // Error occurred while fetching data
