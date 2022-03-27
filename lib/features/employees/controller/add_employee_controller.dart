@@ -152,7 +152,7 @@ class AddEmployeeController extends GetxController with StateMixin<AddEmployeeRe
         snackPosition: SnackPosition.TOP,);
 
         Get.toNamed('/EmployeesPage');
-      
+
         restAll();
 
       // Successfully fetched news data
