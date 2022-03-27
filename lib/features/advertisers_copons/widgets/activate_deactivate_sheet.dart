@@ -83,7 +83,78 @@ class ActivateDeactivateSheet extends StatelessWidget {
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
                     child: InkWell(
                       onTap: (){
-                        requestAdvertiseController.onActivateClicked(context,coponModelResponse!.id!);
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return Dialog(
+                              child: Container(
+                                height: 180.0,
+                                child: new Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.error,
+                                      color:Colors.red,
+                                      size: 60,
+                                    ),
+                                    Center(
+                                      child: Text("هل انت متأكد من تفعيل الكوبون !",style: TextStyle(color: AppColors.advertiseNameColor,fontSize: 20.0,fontFamily: 'Arabic-Regular',fontWeight: FontWeight.w400),textAlign: TextAlign.center,
+
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 20),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          MaterialButton(
+                                            color: Colors.red,
+                                            textColor: Colors.white,
+                                            // minWidth: 70,
+                                            child: Container(
+                                                width: 60,
+                                                alignment: Alignment.center,
+                                                child: Text('تأكيد')),
+                                            onPressed: () {
+                                              print('Confirmed');
+                                             // Navigator.of(context).pop();
+                                              requestAdvertiseController.onActivateClicked(context,coponModelResponse!.id!);
+                                            },
+                                            /*style:TextButton.styleFrom(
+                                                               primary: Colors.white,
+                                                               backgroundColor: Colors.red,
+                                                             fixedSize: Size.fromWidth(50)
+                                                               ),*/
+                                          ),
+                                          SizedBox(width: 30,),
+                                          MaterialButton(
+                                            color: Colors.grey[300],
+                                            textColor: Colors.white,
+                                            // minWidth: 70,
+                                            child: Container(
+                                                width: 60,
+                                                alignment: Alignment.center,
+                                                child: Text('إلغاء')),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            /*style:TextButton.styleFrom(
+                                                            primary: Colors.white,
+                                                            backgroundColor: Colors.grey,
+                                                          ),*/
+                                          ),
+                                        ],),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+
                       },
                       child: Material(
                         elevation: 6.0,
@@ -95,7 +166,7 @@ class ActivateDeactivateSheet extends StatelessWidget {
                                 left: 12.0, bottom: 4.0, right: 20),*/
                           alignment: Alignment.center,
                           child: Text(
-                            coponModelResponse!.status==1?'ايقاف':'تنشيط',
+                            'موافق',
                             style: TextStyle(
                                 fontSize: 16.0,
                                 color: AppColors.tabColor,
@@ -113,7 +184,78 @@ class ActivateDeactivateSheet extends StatelessWidget {
                     child: InkWell(
                       onTap: (){
                         //requestAdvertiseController.isDiscountSaveClicked.value = false;
-                        Get.back();
+                       // Get.back();
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return Dialog(
+                              child: Container(
+                                height: 180.0,
+                                child: new Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.error,
+                                      color:Colors.red,
+                                      size: 60,
+                                    ),
+                                    Center(
+                                      child: Text("هل انت متأكد من تعطيل الكوبون !",style: TextStyle(color: AppColors.advertiseNameColor,fontSize: 20.0,fontFamily: 'Arabic-Regular',fontWeight: FontWeight.w400),textAlign: TextAlign.center,
+
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 20),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          MaterialButton(
+                                            color: Colors.red,
+                                            textColor: Colors.white,
+                                            // minWidth: 70,
+                                            child: Container(
+                                                width: 60,
+                                                alignment: Alignment.center,
+                                                child: Text('تأكيد')),
+                                            onPressed: () {
+                                              print('Confirmed');
+
+                                              requestAdvertiseController.onDeActivateClicked(context,coponModelResponse!.id!);
+                                            },
+                                            /*style:TextButton.styleFrom(
+                                                               primary: Colors.white,
+                                                               backgroundColor: Colors.red,
+                                                             fixedSize: Size.fromWidth(50)
+                                                               ),*/
+                                          ),
+                                          SizedBox(width: 30,),
+                                          MaterialButton(
+                                            color: Colors.grey[300],
+                                            textColor: Colors.white,
+                                            // minWidth: 70,
+                                            child: Container(
+                                                width: 60,
+                                                alignment: Alignment.center,
+                                                child: Text('إلغاء')),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            /*style:TextButton.styleFrom(
+                                                            primary: Colors.white,
+                                                            backgroundColor: Colors.grey,
+                                                          ),*/
+                                          ),
+                                        ],),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
                       },
                       child: Material(
                         elevation: 6.0,

@@ -230,7 +230,7 @@ CoponModelResponse? coponModelResponse;
         ),
       ),
       onExpansionChanged: (h){
-        controller.changeStatus(h, pos!);
+        controller.changeStatus(h, pos!,coponModelResponse!.id!);
 
         print("onExpansionChanged "+h.toString());
       },
@@ -249,7 +249,10 @@ CoponModelResponse? coponModelResponse;
                   children: [
                     InkWell(
                       onTap: (){
-                        Share.share('check out my website https://example.com');
+                        Share.share('${coponModelResponse?.link ??''}').then((value){
+                          controller.shareLink(coponModelResponse!.id);
+                        });
+
                       },
                       child: Container(
                         //margin: EdgeInsets.all(4.0),
@@ -301,7 +304,7 @@ CoponModelResponse? coponModelResponse;
                     alignment: Alignment.centerLeft,
                     child: Container(
                         margin: EdgeInsets.only(left: 16.0),
-                        child: Text('الذهاب لمتجر نشمي',style: TextStyle(fontSize: 20.0.sp,color: AppColors.coponPercentColorText, decoration: TextDecoration.underline,
+                        child: Text('الذهاب لمتجر ${coponModelResponse?.store_name ??''}',style: TextStyle(fontSize: 20.0.sp,color: AppColors.coponPercentColorText, decoration: TextDecoration.underline,
                           decorationThickness: 2,),textAlign: TextAlign.center,)),
                   ),
                 ),

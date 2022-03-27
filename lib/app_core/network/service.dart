@@ -129,7 +129,6 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
 
   @GET('/advertiser_profile/{id}')
   Future<AdvertiserProfileDetailsResponse> getAdveriserProfileDetail(@Path("id") int? id,@Header("Authorization") String token);
-
   //@GET('/copons/app')
   @GET('copons/app?page={id}')
   Future<CoponsResponse> getAppCopons( @Path("id") int? id,@Header("Authorization") String token);
@@ -145,7 +144,7 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   Future<CoponsResponse> getClientsCopons( @Path("userid") int? userid,@Path("id") int? id,@Header("Authorization") String token);
 
   @GET('/mycopons?page={id}')
-  Future<CoponsResponse> getMyCopons( @Path("userid") int? userid,@Path("id") int? id,@Header("Authorization") String token);
+  Future<CoponsResponse> getMyCopons( /*@Path("userid") int? userid,*/@Path("id") int? id,@Header("Authorization") String token);
 
 
   @GET('/copons/{id}/like')
@@ -156,6 +155,21 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
 
   @POST('/select_copons')
   Future<CoponsResponse> select_copons(@Body()SelectCoponsRequest selectCoponsRequest,@Header("Authorization") String token);
+
+  @POST('/deselect_copons')
+  Future<CoponsResponse> deselect_copons(@Body()SelectCoponsRequest selectCoponsRequest,@Header("Authorization") String token);
+
+  @DELETE('/copons/{id}')
+  Future<AdvertiserProfileDetailsResponse> deleteCopon(@Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/copons/{id}/status')
+  Future<AdvertiserProfileDetailsResponse> changeStatus(@Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/copons/{id}/seen')
+  Future<AdvertiserProfileDetailsResponse> seenCopon(@Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/copons/{id}/share')
+  Future<AdvertiserProfileDetailsResponse> shareCopon(@Path("id") int? id,@Header("Authorization") String token);
 
 /*  Map<String, dynamic> mymap = {
 

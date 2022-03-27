@@ -21,7 +21,7 @@ class CoponModelResponse {
   String?discount_type;
   int? likes;
   int?dislikes;
-  int? views;
+  int? views,users;
   int?shares;
   bool?selected;
   String?store_name;
@@ -42,6 +42,7 @@ class CoponModelResponse {
     this.status_txt,
     this.used,
     this.can_edit,
+    this.users,
     this.store_name,
     this.started_at,this.ended_at,this.description,this.status,this.name,this.uses,this.discount,this.code,this.image,this.type,this.ads_request_id,this.discount_type,this.user_id
   });

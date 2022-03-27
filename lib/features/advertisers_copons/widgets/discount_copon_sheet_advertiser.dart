@@ -17,8 +17,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class DiscountCouponSheet extends StatefulWidget {
   ScrollController? scrollController;
 
-  DiscountCouponSheet({Key? key, this.scrollController,required this.coponId}) : super(key: key);
-  int coponId;
+  DiscountCouponSheet({Key? key, this.scrollController, this.coponId,this.from}) : super(key: key);
+  int? coponId;
+  String? from;
 
   @override
   State<DiscountCouponSheet> createState() => _DiscountCouponSheetState();
@@ -631,7 +632,7 @@ class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
                                 filled: true,
 
                                 hintStyle: TextStyle(color: Colors.grey[350]),
-                                hintText: 'رابط المتجر',
+                                hintText: 'اسم المتجر',
                                 fillColor: Colors.white70),
                             controller: requestAdvertiseController.coponStoreNameController,
                           ),
@@ -749,7 +750,12 @@ class _DiscountCouponSheetState extends State<DiscountCouponSheet> {
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
                     child: InkWell(
                       onTap: (){
-                        requestAdvertiseController.onEditRequestClicked(context,widget.coponId!);
+                        if(widget.from=="edit") {
+                          requestAdvertiseController.onEditRequestClicked(
+                              context, widget.coponId!);
+                        }else{
+                            requestAdvertiseController.onAddRequestClicked(context);
+                        }
                       },
                       child: Material(
                         elevation: 6.0,

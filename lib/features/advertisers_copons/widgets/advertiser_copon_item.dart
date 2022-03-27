@@ -47,9 +47,24 @@ class AdvertiserCoponItem extends StatelessWidget {
                         child: Container(
                           width: 80.0,
                           height:80.0,
-                          //padding: EdgeInsets.only(left: 10.0,right: 22.0),
                           child: Stack(
                               children:[
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(6.0),
+                                  child: CachedNetworkImage(
+                                    imageUrl: coponModelResponse?.image!=null?coponModelResponse!.image!:"",
+                                    placeholder: (context, url) =>
+                                    const SpinKitThreeBounce(
+                                      color: Colors.grey,
+                                      size: 25,
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                                    width: 80.0,
+                                    height:80.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                                 coponModelResponse?.can_edit!=null &&  coponModelResponse!.can_edit! ?Container(
                                   margin: EdgeInsets.only(top: 4.0),
                                   alignment:Alignment.topLeft,
@@ -59,41 +74,11 @@ class AdvertiserCoponItem extends StatelessWidget {
                                     height: 14,
                                     width: 14,
                                   ),
-                                ):SizedBox(),
-                                CachedNetworkImage(
-                                  imageUrl: coponModelResponse?.image!=null?coponModelResponse!.image!:"",
-                                  placeholder: (context, url) =>
-                                  const SpinKitThreeBounce(
-                                    color: Colors.grey,
-                                    size: 25,
-                                  ),
-                                  errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                                  width: 70.0,
-                                  height: 75.0,
-                                  fit: BoxFit.fitHeight,
-                                ),]
+                                ):SizedBox(),]
                           ),
                           decoration: new BoxDecoration(
                             shape: BoxShape.rectangle,
                             borderRadius: BorderRadius.all(Radius.circular(6)),
-                            /*image: new DecorationImage(
-                          fit: BoxFit.contain,
-                          image: CachedNetworkImage(
-                            imageUrl: advertiserProfileController.advertiserProfileModel?.image!=null?advertiserProfileController.advertiserProfileModel!.image!:"",
-                            placeholder: (context, url) =>
-                            const SpinKitThreeBounce(
-                              color: Colors.grey,
-                              size: 25,
-                            ),
-                            errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                            width: 70.0,
-                            height: 80.0,
-                            fit: BoxFit.fitHeight,
-                          ),
-                             //scale: 0.5
-                        )*/
                           ),
                         ),
                       ),
@@ -192,46 +177,24 @@ class AdvertiserCoponItem extends StatelessWidget {
                               builder: (controller)=>(controller.position==pos&&controller.isOpend)&&(coponModelResponse?.can_edit!=null &&  coponModelResponse!.can_edit!)?Container(
 
                                   height: 26.0,
-                                  width: 100,
+                                  width: 105,
                                 margin: EdgeInsets.only(top: 12,right: 12,bottom: 4),
-                                child:  /*DropdownButton(
-
-                                  // Initial Value
-                                  value: 'kkkk',
-
-                                  // Down Arrow Icon
-                                  icon: const Icon(Icons.keyboard_arrow_down),
-
-                                  // Array list of items
-                                  items: ['نشط','ايقاف','تنشيط','تعديل','حذف'].map((String items) {
-                                    return DropdownMenuItem(
-                                      value: items,
-                                      child: Text(items),
-                                    );
-                                  }).toList(),
-                                  // After selecting the desired option,it will
-                                  // change button value to selected value
-                                  onChanged: (c){
-
-                                  },
-                                ),*/
+                                child:
                                 DropdownSearch<String>(
                                     mode: Mode.MENU,
                                     //showSelectedItem: true,
-                                    dropDownButton: IconButton(
-                                      onPressed: null,
-                                      icon: Icon(
+                                    dropDownButton: Container(
+                                      margin: EdgeInsets.only(bottom: 10),
+                                      child: Icon(
                                         Icons.arrow_drop_down,
-                                        size: 20,
+                                        // size: 20,
                                       ),
-                                      padding: EdgeInsets.only(bottom: 70),
-                                      iconSize: 18.0,
-                                      alignment: Alignment.topCenter,
                                     ),
+                                    showAsSuffixIcons: false,
                                     dropdownSearchDecoration: InputDecoration(
                                       // filled: true,
                                       //fillColor: Color(0xFFF2F2F2),
-                                      contentPadding: EdgeInsets.only(right: 8.0, top: 0.0, bottom: 0.0,left: 0.0),
+                                      contentPadding: EdgeInsets.only(right: 4.0, top: 0.0, bottom: 0.0,left: 0.0),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(Radius.circular(6)),
                                         borderSide: BorderSide(
@@ -264,8 +227,7 @@ class AdvertiserCoponItem extends StatelessWidget {
                                       );
                                     },
                                     // label: "Menu mode",st
-                                    itemAsString: (String? u) =>
-                                    u ?? '',
+                                    itemAsString: (String? u) => u ?? '',
                                     onChanged: (adTypeModel){
                                       if(adTypeModel=='تعديل'){
                                         print("editedit");
@@ -293,15 +255,108 @@ class AdvertiserCoponItem extends StatelessWidget {
                                         if(coponModelResponse?.image!=null && coponModelResponse!.image!.isNotEmpty)
                                           controller.imagePathCopon.value = coponModelResponse!.image!;
 
-                                        controller.showBottomSheetForRequest(context, coponModelResponse!);
+                                        controller.showBottomSheetForRequest(context, coponModelResponse: coponModelResponse!,from: "edit");
 
+                                      }else if(adTypeModel=='حذف'){
+                                        showDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder: (BuildContext context) {
+                                            return Dialog(
+                                              child: Container(
+                                                height: 180.0,
+                                                child: new Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  children: [
+                                                    Icon(
+                                                        Icons.error,
+                                                      color:Colors.red,
+                                                      size: 60,
+                                                    ),
+                                                     Center(
+                                                       child: Text("هل انت متأكد من حذف الكوبون !",style: TextStyle(color: AppColors.advertiseNameColor,fontSize: 20.0,fontFamily: 'Arabic-Regular',fontWeight: FontWeight.w400),textAlign: TextAlign.center,
+
+                                                    ),
+                                                     ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(top: 20),
+                                                      child: Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                        MaterialButton(
+                                                          color: Colors.red,
+                                                          textColor: Colors.white,
+                                                         // minWidth: 70,
+                                                          child: Container(
+                                                              width: 60,
+                                                              alignment: Alignment.center,
+                                                              child: Text('تأكيد')),
+                                                          onPressed: () {
+                                                            print('Confirmed');
+                                                            Navigator.of(context).pop();
+                                                            controller.deleteCopon(context,coponModelResponse!.id);
+                                                          },
+                                                           /*style:TextButton.styleFrom(
+                                                               primary: Colors.white,
+                                                               backgroundColor: Colors.red,
+                                                             fixedSize: Size.fromWidth(50)
+                                                               ),*/
+                                                        ),
+                                                        SizedBox(width: 30,),
+                                                        MaterialButton(
+                                                            color: Colors.grey[300],
+                                                            textColor: Colors.white,
+                                                           // minWidth: 70,
+                                                            child: Container(
+                                                                width: 60,
+                                                                alignment: Alignment.center,
+                                                                child: Text('إلغاء')),
+                                                          onPressed: () {
+                                                            Navigator.of(context).pop();
+                                                          },
+                                                          /*style:TextButton.styleFrom(
+                                                            primary: Colors.white,
+                                                            backgroundColor: Colors.grey,
+                                                          ),*/
+                                                        ),
+                                                      ],),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      }else if(adTypeModel=="تنشيط"){
+                                        if(coponModelResponse?.status!=null && coponModelResponse!.status==1){
+                                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                            content: Text('هذا الكوبون نشط بالفعل !', style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                                fontFamily: 'Arabic-Regular'),),
+                                          ));
+                                          return;
+                                        }else{
+                                          controller.changeCoponsStatus(context , coponModelResponse!.id!);
+                                        }
+                                      }else if(adTypeModel=="ايقاف"){
+                                        if(coponModelResponse?.status!=null && coponModelResponse!.status==0){
+                                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                            content: Text('هذا الكوبون موقوف بالفعل !', style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                                fontFamily: 'Arabic-Regular'),),
+                                          ));
+                                          return;
+                                        }else{
+                                          controller.changeCoponsStatus(context , coponModelResponse!.id!);
+                                        }
                                       }
-                                      /*if(adTypeModel!=-1) {
-                                              requestAdvertiseController.adTypeId = adTypeModel.id!;
-                                            }*/
                                     },
                                     selectedItem: (coponModelResponse?.status!=null && coponModelResponse!.status==1 )?
-                                    controller.status[0] :controller.status[1]
+                                    "نشط" :"موقوف"
                                 )
                               ):InkWell(
                                 onTap: (){
@@ -421,7 +476,7 @@ class AdvertiserCoponItem extends StatelessWidget {
                                   'images/dislike2.png',
                                   fit: BoxFit.contain,
                                   height: 40.0,
-                                  width: 50.0,
+                                  width: 45.0,
                                 ),
                               ),
                             ),
@@ -443,7 +498,7 @@ class AdvertiserCoponItem extends StatelessWidget {
                                   'images/like2.png',
                                   fit: BoxFit.fill,
                                   height: 40.0,
-                                  width: 50.0,
+                                  width: 45.0,
                                 ),
                               ),
                             ),
@@ -465,13 +520,13 @@ class AdvertiserCoponItem extends StatelessWidget {
                                   'images/all_done.png',
                                   fit: BoxFit.contain,
                                   height: 40.0,
-                                  width: 50.0,
+                                  width: 45.0,
                                 ),
                               ),
                             ),
                             Container(
                                 margin: EdgeInsets.only(top: 2),
-                                child: Text('${coponModelResponse?.used??''}'))
+                                child: Text('${coponModelResponse?.users??''}'))
                           ],
                         ),
                       ],

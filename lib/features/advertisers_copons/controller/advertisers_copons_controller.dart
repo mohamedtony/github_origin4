@@ -7,6 +7,7 @@ import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/requests/SelectCoponsRequest.dart';
 import 'package:advertisers/app_core/network/responses/CoponsResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestResponse.dart';
+import 'package:advertisers/app_core/network/responses/EditCoponsResponse.dart';
 import 'package:advertisers/app_core/network/responses/MyRequestsResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/features/advertiser_details/sheets/advertising_date_sheet.dart';
@@ -40,12 +41,12 @@ class AdvertisersCoponsController extends GetxController{
   List<CoponModelResponse>? coponsResponse;
   late String myToken;
   var isLoadingStatus = false.obs;
-  List<String> status=['نشط','ايقاف','تنشيط','تعديل','حذف'];
+  List<String> status=['ايقاف','تنشيط','تعديل','حذف'];
   var registerClientUserResponse=RegisterClientUserResponse().obs;
   List<int>? checkList = [];
   late Repository repo;
   late String token;
-
+String? dropdownValue;
   //---------------------- for discount sheet --------------------------------------------
   late XFile xFile ;
   File? imageFile;
@@ -185,7 +186,7 @@ class AdvertisersCoponsController extends GetxController{
       {/*String brandId, String catgegoryId,*/ int? pageKey}) async {
     String myToken = await storage.read("token");
 
-    CoponsResponse response = await client!.getAppCopons(pageKey,"Bearer " + myToken);
+    CoponsResponse response = await client!.getMyCopons(pageKey,"Bearer " + myToken);
     final completer = Completer<List<CoponModelResponse>>();
     List<CoponModelResponse> notifications = [];
     if(response.data!=null && response.data!.isNotEmpty) {
@@ -201,7 +202,7 @@ class AdvertisersCoponsController extends GetxController{
     print("hhhhhhhhhhhhhhhhhhhhhhhhpageKey= "+pageKey.toString());
     print("hhhhhhhhhhhhhhhhhhhhhhhh="+myToken);
     try {
-      List<CoponModelResponse> newItems = await getCopons(pageKey: pageKey);
+      List<CoponModelResponse> newItems = await getAppCopons(pageKey: pageKey);
 
       bool isLastPage = newItems.isEmpty;
       if (isLastPage) {
@@ -338,6 +339,7 @@ class AdvertisersCoponsController extends GetxController{
       print("pickedMFile"+(imageFile!.lengthSync()).toString());
       compressFile(imageFile!).then((value) async {
         print("pickedMFile"+(value.lengthSync()).toString());
+        imageFile = File(value.path);
         imageCoponMultiPart= await myDio.MultipartFile.fromFile(value.path,
             filename: value.path
                 .split(Platform.pathSeparator)
@@ -409,6 +411,7 @@ class AdvertisersCoponsController extends GetxController{
       imagePathCopon.value = xFile.path;
       compressFile(imageFile!).then((value) async {
         print("pickedMFile"+(value.lengthSync()).toString());
+        imageFile = File(value.path);
         imageCoponMultiPart = await myDio.MultipartFile.fromFile(value.path,
             filename: value.path
                 .split(Platform.pathSeparator)
@@ -616,37 +619,38 @@ class AdvertisersCoponsController extends GetxController{
       }}
 
     LoadingDailog().showLoading(context);
-
     Map<String, dynamic> mymap = {
-    //  "_method":"put",
+    // "_method":"PUT",
       "token": "Bearer " + myToken,
-      "copon[image]": imageCoponMultiPart,
-      "copon[code]": coponNumberController?.text,
-      "copon[name]": coponNameController?.text,
-      "copon[discount]":
+      "image": imageCoponMultiPart,
+      "code": coponNumberController?.text,
+      "name": coponNameController?.text,
+      "discount":
       coponDiscountController?.text!=null&&coponDiscountController!.text.isNotEmpty?int.parse(coponDiscountController!.text):null,
-      "copon[uses]": coponUsesController?.text!=null&&coponUsesController!.text.isNotEmpty?int.parse(coponUsesController!.text):null,
-      "copon[link]": coponStoreUrlController?.text!=null&&coponStoreUrlController!.text.isNotEmpty?coponStoreUrlController!.text:null,
-      "copon[ended_at]": endAdvertisingDateCoupon.value,
-      "copon[store_name]": coponStoreNameController?.text!=null&&coponStoreNameController!.text.isNotEmpty?coponStoreNameController!.text:null,
+      "uses": coponUsesController?.text!=null&&coponUsesController!.text.isNotEmpty?int.parse(coponUsesController!.text):null,
+      "link": coponStoreUrlController?.text!=null&&coponStoreUrlController!.text.isNotEmpty?coponStoreUrlController!.text:null,
+      "ended_at": endAdvertisingDateCoupon.value,
+      "store_name": coponStoreNameController?.text!=null&&coponStoreNameController!.text.isNotEmpty?coponStoreNameController!.text:null,
 
     };
     Logger().i("mymap"+mymap.toString());
     Repository repo = Repository();
-    repo.putWithImageMultipart<CreateAdvertiseRequestResponse>(
-        path: 'copons/${coponId}',
-        fromJson: (json) => CreateAdvertiseRequestResponse.fromJson(json),
+    print("coponId=$coponId");
+    repo.postWithImageMultipart<EditCoponsResponse>(
+        path: 'copons/${coponId}/edit',
+        fromJson: (json) => EditCoponsResponse.fromJson(json),
         json: mymap,
         onSuccess: (res) async {
           //Navigator.of(context).pop();
           Get.back();
           if(res.data!=null){
-            Logger().i(res.data!.toJson());
+            Logger().i(res.toJson());
           }
-
+          imageCoponMultiPart = null;
+          advertiserCoponspagingController.refresh();
           if (res.message != null) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('تم تعديل طلبك بنجاح !', style: TextStyle(
+              content: Text('${res.message}', style: TextStyle(
                   color: Colors.white,
                   fontSize: 17,
                   fontFamily: 'Arabic-Regular'),),
@@ -721,11 +725,43 @@ class AdvertisersCoponsController extends GetxController{
 
   }
   onActivateClicked(BuildContext context,int id) async {
+   // Navigator.of(context).pop();
+    Get.back();
     LoadingDailog().showLoading(context);
     myToken = await storage.read("token");
     client!.select_copons(SelectCoponsRequest(copons: [id]), "Bearer "+myToken).then((value){
-     Logger().i(value.toJson());
-     Navigator.pop(context);
+      Get.back();
+      Fluttertoast.showToast(
+        msg: 'تم تفعيل الكوبون بنجاح !',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+    // Logger().i(value.toJson());
+     //Navigator.pop(context);
+    });
+  }
+
+  onDeActivateClicked(BuildContext context,int id) async {
+    //Navigator.of(context).pop();
+    Get.back();
+    LoadingDailog().showLoading(context);
+    myToken = await storage.read("token");
+    client!.deselect_copons(SelectCoponsRequest(copons: [id]), "Bearer "+myToken).then((value){
+      Get.back();
+      Fluttertoast.showToast(
+        msg: 'تم تعطيل الكوبون بنجاح !',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+
+     // Logger().i(value.toJson());
+      //Navigator.pop(context);
     });
   }
 
@@ -760,7 +796,7 @@ class AdvertisersCoponsController extends GetxController{
       },
     );
   }
-  void showBottomSheetForRequest(BuildContext context,CoponModelResponse coponModelResponse){
+  void showBottomSheetForRequest(BuildContext context,{CoponModelResponse? coponModelResponse,String? from}){
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -780,7 +816,8 @@ class AdvertisersCoponsController extends GetxController{
           builder: (context, scrollController) {
             return DiscountCouponSheet(
               scrollController: scrollController,
-              coponId: coponModelResponse.id!,
+              coponId: coponModelResponse?.id,
+              from:from
             );
           },
         );
@@ -793,6 +830,167 @@ class AdvertisersCoponsController extends GetxController{
     searchController.dispose();
 
     super.onClose();
+  }
+
+  void onAddRequestClicked(BuildContext context) {
+
+    if(imagePathCopon.value.isEmpty){
+      showToast("من فضلك قم بإدخال صورة كوبون الخصم !");
+      showChoiceImageDialog(context);
+      FocusManager.instance.primaryFocus?.unfocus();
+      return;
+    }
+    else if(coponNumberController?.text!=null && coponNumberController!.text.isEmpty){
+      showToast("من فضلك قم بإدخال رقم كوبون الخصم !");
+      coponNumberNode.requestFocus();
+      return;
+    }/*else if(!isNumericUsingRegularExpression(coponNumberController!.text)){
+      showToast("من فضلك قم بإدخال رقم كوبون صحيح !");
+      coponNumberNode.requestFocus();
+      return;
+    }*/else if(coponNameController?.text!=null && coponNameController!.text.isEmpty){
+      showToast("من فضلك قم بإدخال اسم كوبون الخصم !");
+      coponNameNode.requestFocus();
+      return;
+    }
+    else if(coponDiscountController?.text!=null && coponDiscountController!.text.isEmpty){
+      showToast("من فضلك قم بإدخال نسبة الخصم!");
+      coponDiscountNode.requestFocus();
+      return;
+    }else if(!isNumericUsingRegularExpression(coponDiscountController!.text)){
+      showToast("من فضلك قم بإدخال نسبة خصم صحيحة!");
+      coponDiscountNode.requestFocus();
+      return;
+    }else if(coponUsesController?.text!=null && coponUsesController!.text.isEmpty){
+      showToast("من فضلك قم بإدخال عدد إستخدامات الكوبون !");
+      coponUsesNode.requestFocus();
+      return;
+    }else if(!isNumericUsingRegularExpression(coponUsesController!.text)){
+      showToast("من فضلك قم بإدخال عدد إستخدامات الكوبون بشكل صحيح!");
+      coponUsesNode.requestFocus();
+      return;
+    }else if(coponStoreUrlController?.text!=null && coponStoreUrlController!.text.isEmpty){
+      showToast("من فضلك قم بإدخال رابط المتجر !");
+      coponStroreUrlNode.requestFocus();
+      return;
+    }else if(!isUrlUsingRegularExpression(coponStoreUrlController!.text)){
+      showToast("من فضلك قم بإدخال رابط المتجر المتجر بشكل صحيح!");
+      coponStroreUrlNode.requestFocus();
+      return;
+    }else if(coponStoreUrlController?.text!=null && coponStoreNameController!.text.isEmpty){
+      showToast("من فضلك قم بإدخال اسم المتجر !");
+      coponStoreNameNode.requestFocus();
+      return;
+    }else if(endAdvertisingDateCoupon!=null && endAdvertisingDateCoupon.isEmpty){
+      showToast("من فضلك قم بإدخال تاريخ إنتهاء الكوبون !");
+      onSelectCoponDate(context);
+      FocusManager.instance.primaryFocus?.unfocus();
+      return;
+    } else{
+      if(coponDiscountController?.text!=null && coponDiscountController!.text.isNotEmpty) {
+        //int.parse(coponDiscountController!.text);
+        if (int.parse(coponDiscountController!.text) > 100) {
+          showToast("من فضلك قم بإدخال نسبة خصم لا تتعدى 100 %!");
+          coponDiscountNode.requestFocus();
+          return;
+        } else if (int.parse(coponDiscountController!.text) < 0) {
+          showToast("من فضلك قم بإدخال نسبة خصم صحيحة!");
+          coponDiscountNode.requestFocus();
+          return;
+        }
+      }}
+
+    LoadingDailog().showLoading(context);
+
+    Map<String, dynamic> mymap = {
+      // "_method":"PUT",
+      "token": "Bearer " + myToken,
+      "image": imageCoponMultiPart,
+      "code": coponNumberController?.text,
+      "name": coponNameController?.text,
+      "discount":
+      coponDiscountController?.text!=null&&coponDiscountController!.text.isNotEmpty?int.parse(coponDiscountController!.text):null,
+      "uses": coponUsesController?.text!=null&&coponUsesController!.text.isNotEmpty?int.parse(coponUsesController!.text):null,
+      "link": coponStoreUrlController?.text!=null&&coponStoreUrlController!.text.isNotEmpty?coponStoreUrlController!.text:null,
+      "ended_at": endAdvertisingDateCoupon.value,
+      "store_name": coponStoreNameController?.text!=null&&coponStoreNameController!.text.isNotEmpty?coponStoreNameController!.text:null,
+
+    };
+    Logger().i("mymap"+mymap.toString());
+    Repository repo = Repository();
+    repo.postWithImageMultipart<EditCoponsResponse>(
+        path: 'copons',
+        fromJson: (json) => EditCoponsResponse.fromJson(json),
+        json: mymap,
+        onSuccess: (res) async {
+          //Navigator.of(context).pop();
+          Get.back();
+          if(res.data!=null){
+            Logger().i(res.toJson());
+          }
+          position = -1;
+          imageCoponMultiPart = null;
+          advertiserCoponspagingController.refresh();
+          if (res.message != null) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('${res.message}', style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                  fontFamily: 'Arabic-Regular'),),
+            ));
+          }
+          Navigator.of(context).pop();
+          /* Navigator.of(context).pop();
+            Get.delete<RequestAdvertiseController>();
+            Get.delete<FindAdvertiseController>();*/
+          //Get.offAllNamed('/Home');
+        },
+        onError: (err, res) {
+          //Navigator.of(context).pop();
+          Get.back();
+          Logger().i(err);
+        });
+
+  }
+
+  void deleteCopon(BuildContext context, int? id) {
+    LoadingDailog().showLoading(context);
+    client!.deleteCopon(id!,"Bearer "+myToken).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('تم حذف الكوبون بنجاح !', style: TextStyle(
+              color: Colors.white,
+              fontSize: 17,
+              fontFamily: 'Arabic-Regular'),),
+        ));
+        advertiserCoponspagingController.refresh();
+         Get.back();
+        print("token deleted");
+        Logger().i(value.data.toString());
+      }
+    });
+  }
+
+  void changeCoponsStatus(BuildContext context, int id) {
+    LoadingDailog().showLoading(context);
+    client!.changeStatus(id,"Bearer "+myToken).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('تم تغيير حالة الكوبون بنجاح !', style: TextStyle(
+              color: Colors.white,
+              fontSize: 17,
+              fontFamily: 'Arabic-Regular'),),
+        ));
+        advertiserCoponspagingController.refresh();
+        Get.back();
+        print("token deleted");
+        Logger().i(value.data.toString());
+      }
+    });
   }
 }
 

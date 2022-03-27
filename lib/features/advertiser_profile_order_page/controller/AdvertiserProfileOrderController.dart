@@ -7,12 +7,14 @@ import 'package:advertisers/app_core/network/models/AdvertiserProfileModel.dart'
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/app_core/network/models/Channel.dart';
 import 'package:advertisers/app_core/network/models/ClientProfileModel.dart';
+import 'package:advertisers/app_core/network/models/CoponModelResponse.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/app_core/network/models/FileModel.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersModel.dart';
 import 'package:advertisers/app_core/network/models/LinkModel.dart';
 import 'package:advertisers/app_core/network/models/LocationModel.dart';
 import 'package:advertisers/app_core/network/repository.dart';
+import 'package:advertisers/app_core/network/responses/CoponsResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestResponse.dart';
 import 'package:advertisers/features/advertiser_details/controller/advertiser_details_controller.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
@@ -39,6 +41,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:location/location.dart' as location;
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -61,9 +64,21 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
 
   }
 
-  void changeStatus(bool isOpend,int position) {
+  Future<void> changeStatus(bool isOpend,int position, int id) async {
     this.isOpend = isOpend;
     this.position = position;
+    String  myToken  = await storage.read("token");
+    if(isOpend){
+      client!.seenCopon(id,"Bearer "+myToken).then((value) {
+        print("token");
+        Logger().i(value.status.toString());
+        if(value.status==200){
+          // Get.back();
+          print("copon seen ${id}");
+          Logger().i(value.data.toString());
+        }
+      });
+    }
     update();
   }
 
@@ -1494,6 +1509,50 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
     });*/
 
   }
+
+  List<CoponModelResponse>? coponsResponse;
+
+  final PagingController<int, CoponModelResponse> pagingController = PagingController(firstPageKey: 1);
+
+  Future<List<CoponModelResponse>> getCopons(
+      {/*String brandId, String catgegoryId,*/ int? pageKey}) async {
+    String myToken = await storage.read("token");
+
+    CoponsResponse response = await client!.getMyCopons(pageKey,"Bearer " + myToken);
+    final completer = Completer<List<CoponModelResponse>>();
+    List<CoponModelResponse> notifications = [];
+    if(response.data!=null && response.data!.isNotEmpty) {
+      notifications = response.data!;
+    }
+    completer.complete(notifications);
+    return completer.future;
+    // return topSellingList;
+  }
+
+  Future<void> fetchPage(int pageKey) async {
+    myToken = await storage.read("token");
+    try {
+      List<CoponModelResponse> newItems = await getCopons(pageKey: pageKey);
+
+      bool isLastPage = newItems.isEmpty;
+      if (isLastPage) {
+        print("isLast = " + isLastPage.toString());
+        pagingController.appendLastPage(newItems);
+        // pagingController. = "tony";
+      } else {
+        //final nextPageKey = pageKey + newItems.length;
+        int nextPageKey = ++pageKey;
+        print("nextPageKey=" + nextPageKey.toString());
+        pagingController.appendPage(newItems, nextPageKey);
+      }
+      // print("first=" + newItems.first.Code.toString());
+      //print("last=" + newItems.last.Code.toString());
+
+
+    } catch (error) {
+      pagingController.error = error;
+    }
+  }
 /*  getMyLocation() async{
     Address address;
     Location location = new Location();
@@ -1624,6 +1683,42 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
     endAdvertisingDate = endDate;
     update();
   }*/
+
+  void likeCopon(int? id) {
+    client!.likeCopon(id!,"Bearer "+myToken!).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        // Get.back();
+        print("token liked");
+        Logger().i(value.data.toString());
+      }
+    });
+  }
+
+  void disLike(int? id) {
+    client!.dislikeCopon(id!,"Bearer "+myToken!).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        // Get.back();
+        print("token disliked");
+        Logger().i(value.data.toString());
+      }
+    });
+  }
+
+  void shareLink(int? id) {
+    client!.shareCopon(id!,"Bearer "+myToken!).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        // Get.back();
+        print("token shared");
+        Logger().i(value.data.toString());
+      }
+    });
+  }
   @override
   void onClose() {
     // TODO: implement onClose
