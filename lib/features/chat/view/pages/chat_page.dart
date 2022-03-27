@@ -65,8 +65,9 @@ class ChatPage extends StatelessWidget {
             ),
           ),
           Container(
+            height: 60,
             padding: const EdgeInsets.all(4),
-            color: Colors.grey[300],
+            color: Color(0xff4187cd),
             child: Row(
               children: [
                 InkWell(
@@ -74,6 +75,7 @@ class ChatPage extends StatelessWidget {
                   child: SvgPicture.asset(
                     "images/ios-mic.svg",
                     height: 60,
+                    color: Colors.white,
                   ),
                 ),
                 InkWell(
@@ -81,6 +83,7 @@ class ChatPage extends StatelessWidget {
                   child: SvgPicture.asset(
                     "images/camera.svg",
                     height: 60,
+                    color: Colors.white,
                   ),
                 ),
                 Expanded(
@@ -140,6 +143,7 @@ class ChatPage extends StatelessWidget {
                                     child: SvgPicture.asset(
                                       "images/send.svg",
                                       height: 30,
+
                                     ),
                                   ),
                                 ),
@@ -169,7 +173,7 @@ class ChatPage extends StatelessWidget {
                   onPressed: () {},
                   icon: const Icon(
                     Icons.add,
-                    color: Colors.blue,
+                    color: Colors.white,
                     size: 35,
                   ),
                 ),
