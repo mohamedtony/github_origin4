@@ -1,13 +1,20 @@
 import 'package:advertisers/features/users_module/app_colors.dart';
+import 'package:advertisers/features/users_module/controller/register_new_client_company_controller.dart';
+import 'package:advertisers/features/users_module/controller/register_new_client_user_controller.dart';
 import 'package:advertisers/features/users_module/view/screens/register_new_client_company.dart';
 import 'package:advertisers/features/users_module/view/screens/register_new_client_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 class RegisterNewClientTapBar extends StatelessWidget {
-  const RegisterNewClientTapBar({Key? key}) : super(key: key);
+  RegisterNewClientTapBar({Key? key}) : super(key: key);
+  final RegisterNewClientUserController _registerNewClientUserController =
+  Get.find();
+  final RegisterNewClientCompanyController _registerNewClientCompanyController =
+  Get.find();
 
   @override
   Widget build(BuildContext context) {

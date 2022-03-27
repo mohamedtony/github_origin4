@@ -37,7 +37,17 @@ import 'package:advertisers/features/customer_order_invoice/view/customer_order_
 import 'package:advertisers/features/customer_order_invoice_out_puts/view/customer_order_invoice_out_puts.dart';
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
 import 'package:advertisers/features/employees/view/AddEmployeePage.dart';
-import 'package:advertisers/features/employees/view/EmployeesPage.dart';
+import 'package:advertisers/features/employees/view/EmployeeArchivePage.dart';
+import 'package:advertisers/features/employees/view/ShowEmployeePage.dart';
+import 'package:advertisers/features/employees/view/employees_page.dart';
+import 'package:advertisers/features/gallery/gallery_page.dart';
+import 'package:advertisers/features/help_and_support/guides_videos/controller/guides_videos_controller.dart';
+import 'package:advertisers/features/help_and_support/guides_videos/guides_videos_page.dart';
+import 'package:advertisers/features/help_and_support/help_and_support_page.dart';
+import 'package:advertisers/features/help_and_support/partener_success_page/controller/partener_success_controller.dart';
+import 'package:advertisers/features/help_and_support/partener_success_page/partner_success_page.dart';
+import 'package:advertisers/features/help_and_support/redundancy_questions_page/controller/redundancy_questions_controller.dart';
+import 'package:advertisers/features/help_and_support/redundancy_questions_page/redudndancy_questions_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation.dart';
 import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
 import 'package:advertisers/features/my_orders/view/my_orders_page.dart';
@@ -143,10 +153,39 @@ class Routes {
     //   }),
     // ),
     GetPage(
+      name: '/GalleryPage',
+      page: () => GalleryPage(),
+    ),
+    GetPage(
       name: '/BlockedUsersPage',
       page: () => BlockedUsersPage(),
+    ),
+    GetPage(
+      name: '/RedudndancyQuestionsPage',
+      page: () => RedudndancyQuestionsPage(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut<RedundancyQuestionsController>(() => RedundancyQuestionsController());
+
+        })),
+    GetPage(
+      name: '/PartnerSuccessPage',
+      page: () => PartnerSuccessPage(),
+  binding: BindingsBuilder(() {
+  Get.lazyPut<PartnerSuccessController>(() => PartnerSuccessController());
+
+  })),
+    GetPage(
+      name: '/HelpAndSupportPage',
+      page: () => HelpAndSupportPage(),
 
     ),
+    GetPage(
+      name: '/GuidesVideosPage',
+      page: () => GuidesVideosPage(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut<GuidesVideosController>(() => GuidesVideosController());
+
+        })),
     GetPage(
       name: '/NotificationsPage',
       page: () => NotificationsPage(),
@@ -217,9 +256,9 @@ class Routes {
         name: '/registerNewAdvertiserTapBar',
         page: () => RegisterNewAdvertiserTapBar(),
         bindings: [ BindingsBuilder(() {
-          Get.lazyPut<RegisterNewAdvertiserUserController>(() => RegisterNewAdvertiserUserController());
+          Get.lazyPut<RegisterNewAdvertiserUserController>(() => RegisterNewAdvertiserUserController(),fenix:true);
         }), BindingsBuilder(() {
-          Get.lazyPut<RegisterNewAdvertiserCompanyController>(() => RegisterNewAdvertiserCompanyController());
+          Get.lazyPut<RegisterNewAdvertiserCompanyController>(() => RegisterNewAdvertiserCompanyController(),fenix: true);
         })]
     ),
     GetPage(
@@ -406,6 +445,14 @@ class Routes {
       binding: BindingsBuilder(() {
         Get.lazyPut<WithdrawController>(() => WithdrawController());
       }),
+    ),
+    GetPage(
+      name: '/ShowEmployeePage',
+      page: () => ShowEmployeePage(),
+    ),
+    GetPage(
+      name: '/EmployeeArchivePage',
+      page: () => EmployeeArchivePage(),
     ),
     GetPage(
       name: '/CientOrderDetails',

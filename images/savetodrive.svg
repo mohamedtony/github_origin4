@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="53.819" height="51.177" viewBox="0 0 53.819 51.177">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#48dbe1"/>
+      <stop offset="1" stop-color="#4166cd"/>
+      <stop offset="1" stop-color="#236b73"/>
+    </linearGradient>
+    <filter id="savetodrive" x="0" y="0" width="53.819" height="51.177" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-opacity="0.09"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#savetodrive)">
+    <path id="savetodrive-2" data-name="savetodrive" d="M20.842,21.177H2.977A3.06,3.06,0,0,1,.872,20.4,2.414,2.414,0,0,1,0,18.529V15.221a41.267,41.267,0,0,1,.663-4.343q.663-3.661,1.582-7.269T3.722,0h6.7V5.294H6.583a.565.565,0,0,0-.57.414.54.54,0,0,0,.1.641l5.21,4.012a.886.886,0,0,0,1.186,0L17.7,6.349a.539.539,0,0,0,.1-.641.565.565,0,0,0-.569-.414H13.422V0H20.1q.558,0,1.477,3.609t1.582,7.269a40.976,40.976,0,0,1,.663,4.343v3.309a2.418,2.418,0,0,1-.872,1.872A3.055,3.055,0,0,1,20.842,21.177Zm1.489-5.294a1.221,1.221,0,0,0-.43-.931,1.511,1.511,0,0,0-1.059-.393H2.977a1.513,1.513,0,0,0-1.059.393,1.218,1.218,0,0,0-.43.931v2.647a1.212,1.212,0,0,0,.43.941,1.532,1.532,0,0,0,1.059.382H20.842a1.537,1.537,0,0,0,1.059-.382,1.208,1.208,0,0,0,.43-.941ZM4.454,18.529a1.52,1.52,0,0,1-1.047-.382,1.2,1.2,0,0,1-.43-.931,1.231,1.231,0,0,1,.43-.941,1.5,1.5,0,0,1,1.047-.393,1.539,1.539,0,0,1,1.059.393,1.218,1.218,0,0,1,.442.941,1.187,1.187,0,0,1-.442.931A1.564,1.564,0,0,1,4.454,18.529Z" transform="translate(15 12)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>

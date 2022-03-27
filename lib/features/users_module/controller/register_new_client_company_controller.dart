@@ -28,9 +28,10 @@ class RegisterNewClientCompanyController extends GetxController {
   late TextEditingController emailController;
   late TextEditingController recordIDController;
   late TextEditingController passwordController;
-
+  var empty=false.obs;
   var isValid=false.obs;
   var errorRegister=false.obs;
+  var country=Country().obs;
   RxList<Country> countries = <Country>[].obs;
   RxList<Area> areas = <Area>[].obs;
   Rx registerClientUserResponse = RegisterClientUserResponse().obs;
@@ -66,13 +67,13 @@ class RegisterNewClientCompanyController extends GetxController {
   void onInit() {
     //repo.postWithImageMultipart({})
 
-    client!.getCountries().then((value) {
-      if (value.data != null) {
-        countries.value = value.data!;
-        print(value.data![0].name);
-        Logger().i(value.data);
-      }
-    });
+    // client!.getCountries().then((value) {
+    //   if (value.data != null) {
+    //     countries.value = value.data!;
+    //     print(value.data![0].name);
+    //     Logger().i(value.data);
+    //   }
+    // });
     phoneController = TextEditingController();
     companyNameController = TextEditingController();
     accountNameController = TextEditingController();
@@ -81,7 +82,13 @@ class RegisterNewClientCompanyController extends GetxController {
     passwordController = TextEditingController();
     recordIDController = TextEditingController();
     phoneController.text=Get.parameters['phone'].toString();
-
+    client!.getCountries().then((value) {
+      if (value.data != null) {
+        countries.value = value.data!;
+        print(value.data![0].name);
+        Logger().i(value.data);
+      }
+    });
     super.onInit();
   }
 
@@ -134,7 +141,7 @@ class RegisterNewClientCompanyController extends GetxController {
     return null;
   }
   String? validateNationalId(String val) {
-    if (val.length < 10) {
+    if (!GetUtils.isNumericOnly(val)||val.length < 10) {
       return 'رقم الهوية لا يقل عن 10 ارقام';
     }else if(nationalIDMess.isNotEmpty){
       return nationalIDMess.value;
@@ -143,7 +150,7 @@ class RegisterNewClientCompanyController extends GetxController {
   }
 
   String? validateRecordID(String val) {
-    if (val.length < 3) {
+    if (!GetUtils.isNumericOnly(val)||val.length < 3) {
       return 'رقم السجل لا يقل عن 3 ارقام';
     }else if(recordIDMess.isNotEmpty){
       return recordIDMess.value;
@@ -186,20 +193,36 @@ class RegisterNewClientCompanyController extends GetxController {
       }
   }
 
-
+  // void changeAreas(int countryId){
   void changeAreas(Country country2) {
+
     areas.value = [];
     Country? country = countries.firstWhereOrNull((element) =>
     element.id == country2.id);
     if (country != null) {
       areas.value = country.areas!;
+      areaId.value=areas[0].id.toString()??'0';
     }
+
     /*countries.forEach((element) {
       if(element.id==countryId){
         areas.add(element.)
       }
     });*/
   }
+  // void changeAreas(Country country2) {
+  //   areas.value = [];
+  //   Country? country = countries.firstWhereOrNull((element) =>
+  //   element.id == country2.id);
+  //   if (country != null) {
+  //     areas.value = country.areas!;
+  //   }
+  //   /*countries.forEach((element) {
+  //     if(element.id==countryId){
+  //       areas.add(element.)
+  //     }
+  //   });*/
+  // }
 
   void registerCompanyUser(BuildContext context) {
     Repository repo = Repository();

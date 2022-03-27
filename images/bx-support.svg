@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="47.926" height="47.926" viewBox="0 0 47.926 47.926">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#48dbe1"/>
+      <stop offset="1" stop-color="#4166cd"/>
+      <stop offset="1" stop-color="#236b73"/>
+    </linearGradient>
+    <filter id="bx-support" x="0" y="0" width="47.926" height="47.926" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-opacity="0.09"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#bx-support)">
+    <path id="bx-support-2" data-name="bx-support" d="M11.963,3A8.973,8.973,0,0,0,3,11.963v3.713a1.734,1.734,0,0,0,1.793,1.665h.9a.9.9,0,0,0,.9-.9V11.835a.9.9,0,0,0-.9-.9H4.875a7.16,7.16,0,0,1,14.176,0h-.814a.9.9,0,0,0-.9.9v5.506a1.794,1.794,0,0,1-1.793,1.793H13.755v-.9H10.17v2.689h5.378a3.589,3.589,0,0,0,3.585-3.585,1.733,1.733,0,0,0,1.793-1.664V11.963A8.973,8.973,0,0,0,11.963,3Z" transform="translate(12 9)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>

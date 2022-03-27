@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
+import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/features/users_module/app_colors.dart';
 import 'package:advertisers/features/users_module/controller/register_new_client_company_controller.dart';
 import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_button.dart';
@@ -16,14 +17,22 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart' as dio;
+class RegisterNewClientCompany extends StatefulWidget {
+  const RegisterNewClientCompany({Key? key}) : super(key: key);
 
-class RegisterNewClientCompany extends StatelessWidget {
-  RegisterNewClientCompany({Key? key}) : super(key: key);
-  final RegisterNewClientCompanyController _registerNewClientCompanyController =
-      Get.find();
+  @override
+  State<RegisterNewClientCompany> createState() => _RegisterNewClientCompanyState();
+}
+
+class _RegisterNewClientCompanyState extends State<RegisterNewClientCompany> {
+
+
+  late final RegisterNewClientCompanyController _registerNewClientCompanyController;
 
   @override
   Widget build(BuildContext context) {
+ _registerNewClientCompanyController =Get.find();
+    Get.reload(force: true,);
     return Center(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -238,22 +247,19 @@ class RegisterNewClientCompany extends StatelessWidget {
                         .validateRecordID(value!);
                   },
                 ),
-                SizedBox(
-                  height: 16.h,
-                ),
-
+                SizedBox(height: 16.h),
                 AdvertisersGenericField(
                   hintText: 'enterPassword'.tr,
+                  borderColor: AppColors.borderAdvertiserRegisterColor,
                   obscureText: true,
                   textAlignment: TextAlign.end,
-                  controller:
-                      _registerNewClientCompanyController.passwordController,
+                  controller: _registerNewClientCompanyController
+                      .passwordController,
                   onSaved: (value) {
                     _registerNewClientCompanyController.password = value!;
                   },
                   validator: (value) {
-                    return _registerNewClientCompanyController
-                        .validatePassword(value!);
+                    return _registerNewClientCompanyController.validatePassword(value!);
                   },
                 ),
                 SizedBox(height: 16.h),
@@ -263,33 +269,54 @@ class RegisterNewClientCompany extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
 
-                        Obx(() => AdvertisersDropDown(
-                              hintText: 'المدينة',
-                              width: 150.w,
-                              items: _registerNewClientCompanyController
-                                  .areas.value,
-                              onChanged: (area) {
-                                _registerNewClientCompanyController
-                                    .areaId.value = area.id.toString();
-                              },
-                            )),
+                        Obx(() =>InkWell(
+                          onTap: (){
+                            _registerNewClientCompanyController.empty.value=false;
+                          },
+                          child: AdvertisersDropDown(
+                            // key: ValueKey('clientCity'),
+                            hintText: 'المدينة',itemType: 'city',
+                            empty: _registerNewClientCompanyController.empty.value,
+                            areas: Get.find<RegisterNewClientCompanyController>().areas??[],
+                            width: 150.w,
+                            items:
+                            _registerNewClientCompanyController.areas.value,
+                            onChanged: (area) {
+                              _registerNewClientCompanyController.areaId.value =
+                                  area.id.toString();
+                              _registerNewClientCompanyController.empty.value=false;
+                            },
+                          ),
+                        )),
                         Obx(
                               () => AdvertisersDropDown(
                             hintText: 'الدولة',
+                            key: ValueKey('clientCountry'),
+                            empty:false,
                             width: 150.w,
+                            areas:[Area()],
                             items: _registerNewClientCompanyController
                                 .countries.value,
                             onChanged: (country) {
-                              _registerNewClientCompanyController
-                                  .countryId.value = country.id.toString();
+                              _registerNewClientCompanyController.empty.value=true;
+                              _registerNewClientCompanyController.countryId.value =
+                                  country.id.toString();
+                              Get.find<RegisterNewClientCompanyController>().country.value=country;
                               _registerNewClientCompanyController
                                   .changeAreas(country);
-                            },
+
+
+
+                            }, onBeforeChanged: (l,v){
+                                _registerNewClientCompanyController.empty.value=true;
+                            return Future.value(true);
+                          },
                           ),
                         ),
                       ],
                     )),
                 SizedBox(height: 44.6.h),
+
                 AdvertisersButton(
                   text: 'verifyAndFollow'.tr,
                   onPressed: () {

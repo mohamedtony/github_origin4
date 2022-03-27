@@ -1,5 +1,7 @@
+import 'package:advertisers/app_core/network/models/Employee.dart';
 import 'package:advertisers/app_core/network/models/ReasonDataModel.dart';
 import 'package:advertisers/app_core/network/repository.dart';
+import 'package:advertisers/app_core/network/responses/ListEmployeesModelResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/app_core/network/responses/advertising_requests_response.dart';
 import 'package:advertisers/features/advertiser_details/controller/advertiser_details_controller.dart';
@@ -94,6 +96,9 @@ class AdvertisingRequestsController extends GetxController with StateMixin<Adver
   var currentIndex=0.obs;
   List <ParentRequests> parentRequests = [];
   List<int> parentRequestsIds=[];
+
+
+
 
   List<int>? checkListClickProfile = [];
   void addAndRemoveOtherFromCheckProfile(id){
@@ -375,8 +380,6 @@ print("parentRequests ==> lenght == > ${parentRequests.length}");
       }
     }
   }
-
-
 
 
   void checkSearch(){

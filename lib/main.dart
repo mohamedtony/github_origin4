@@ -5,6 +5,8 @@ import 'package:advertisers/app_core/network/service.dart';
 import 'package:advertisers/app_core/routes/routes.dart';
 import 'package:advertisers/features/employees/view/EmployeeArchivePage.dart';
 import 'package:advertisers/features/employees/view/EmployeeAuthorizationPage.dart';
+import 'package:advertisers/features/employees/view/NotificationSettingsPage.dart';
+import 'package:advertisers/features/employees/view/employees_page.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 //import 'package:advertisers/shared/network/service.dart';
 import 'package:dio/dio.dart';
@@ -24,7 +26,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logger/logger.dart';
 
 import 'features/employees/view/AddEmployeePage.dart';
-import 'features/employees/view/EmployeesPage.dart';
 
 
 //final logger = Logger();
@@ -147,7 +148,7 @@ class _MyAppState extends State<MyApp> {
           fallbackLocale: LocalizationService.fallbackLocale,
          // fallbackLocale: LocalizationService.locale,
           builder: EasyLoading.init(),
-         // home: EmployeesPage(),
+          //  home: AdvertisingRequestsPage2(),
           translations: LocalizationService(),
           initialRoute: '/',
           getPages: Routes.routes,

@@ -2,6 +2,8 @@ import 'package:advertisers/features/customer_order_invoice/controller/customer_
 
 import 'package:advertisers/features/customer_order_invoice/view/widgets/customer_order_invoice_app_bar.dart';
 import 'package:advertisers/features/customer_order_invoice/view/widgets/staticts_widget.dart';
+import 'package:advertisers/features/users_module/app_colors.dart';
+import 'package:advertisers/features/users_module/view/usedWidgets/advertisers_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -14,7 +16,7 @@ class CustomerOrderInvoicePage extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         child: CustomerOrderInvoiceBarWidget(),
-        preferredSize: Size(MediaQuery.of(context).size.width, 110.h),
+        preferredSize: Size(MediaQuery.of(context).size.width, 95.h),
       ),
       body: Obx(()=>Container(
         width: double.infinity,
@@ -30,12 +32,32 @@ class CustomerOrderInvoicePage extends StatelessWidget {
                 // Colors.white
               ]),
         ),
-        padding: EdgeInsets.only(right: 15,left: 15,bottom: 15),
+        padding: EdgeInsets.only(right: 15,left: 15,bottom: 5),
         child: ListView(
           children: [
-            Text(customerOrderInvoiceOutputsController.showBillModel.value.ads_type?.name??' ',style: TextStyle(color: Colors.white,fontSize: 15.sp),),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 80.h,
+                  color:Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text(customerOrderInvoiceOutputsController.showBillModel.value.ads_type?.name??' ',style: TextStyle(fontSize: 15.sp),),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("من 11-3-2022 الى 21-3-2022 ",style: TextStyle(fontSize: 15.sp),),
+                          ],
+                        ),
+
+                      ],
+                    ),
+                  )),
+            ),
             const SizedBox(
-              height: 15,
+              height:5,
             ),
             Row(
               children: [
@@ -111,7 +133,7 @@ class CustomerOrderInvoicePage extends StatelessWidget {
                         SizedBox(
                           width:  15,
                         ),
-                        Expanded(child: Text("اجمالي الفاتورة",style: TextStyle(color: Color(0xffD37A47),fontSize: 16.sp,fontWeight: FontWeight.bold),)),
+                        Expanded(child: Text("اجمالي الفاتورة",style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp,fontWeight: FontWeight.bold),)),
 
                         Row(
                           children: [
@@ -264,7 +286,7 @@ class CustomerOrderInvoicePage extends StatelessWidget {
                         flex: 6,
                         child: Container(
                             padding: EdgeInsets.only(right: 10),
-                            child: Text("كود الخصم",style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),)),
+                            child: Text("أضف كود الخصم",style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),)),
                       ),
 
                       Expanded(
@@ -310,18 +332,18 @@ class CustomerOrderInvoicePage extends StatelessWidget {
             ),
 
             Container(
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.only(top:5,bottom:5,right: 15),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
+               // borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
               ),
               child: Row(
                 children: [
-                  Text("صافي الفاتورة",style: TextStyle(color: Color(0xff2B334D),fontSize: 17.sp,fontWeight: FontWeight.bold),),
+                  Text("صافي قيمة الفاتورة",style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp,fontWeight: FontWeight.bold),),
                  SizedBox(
                    width: 60,
                  ),
-                  Text(customerOrderInvoiceOutputsController.showBillModel.value.payment?.total?.toStringAsFixed(2)??'', style: TextStyle(color: Color(0xffD37A47),fontSize: 23.sp,fontWeight: FontWeight.bold),),
+                  Text(customerOrderInvoiceOutputsController.showBillModel.value.payment?.total?.toStringAsFixed(2)??'', style: TextStyle(color: Color(0xffD37A47),fontSize: 18.sp,fontWeight: FontWeight.bold),),
                   const SizedBox(
                     width: 15,
                   ),
@@ -334,36 +356,54 @@ class CustomerOrderInvoicePage extends StatelessWidget {
               height: 25,
             ),
             Container(
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
+                borderRadius: BorderRadius.circular(1),
+                color: Color(0xff60abd6),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("عند دفع الفاتورة ستكسب ${customerOrderInvoiceOutputsController.showBillModel.value.earned_points} نقطة",style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(customerOrderInvoiceOutputsController.showBillModel.value.earned_points?.toStringAsFixed(2)??'', style: TextStyle(color: Color(0xffD37A47),fontSize: 16.sp,fontWeight: FontWeight.bold),),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      // Spacer(),
-                      Text(customerOrderInvoiceOutputsController.showBillModel.value.payment?.currency??'',style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),),
-
-                    ],
-                  )
+                  Text("عند دفع الفاتورة ستكسب ${customerOrderInvoiceOutputsController.showBillModel.value.earned_points} نقطة = ${customerOrderInvoiceOutputsController.showBillModel.value.earned_points?.toStringAsFixed(2)??''} "
+                      "${customerOrderInvoiceOutputsController.showBillModel.value.payment?.currency??''}",style: TextStyle(color: Color(0xffffffff),fontSize: 13.sp),),
+                  // SizedBox(
+                  //   height: 15,
+                  // ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Text(customerOrderInvoiceOutputsController.showBillModel.value.earned_points?.toStringAsFixed(2)??'', style: TextStyle(color: Color(0xffD37A47),fontSize: 16.sp,fontWeight: FontWeight.bold),),
+                  //     const SizedBox(
+                  //       width: 5,
+                  //     ),
+                  //     // Spacer(),
+                  //     Text(customerOrderInvoiceOutputsController.showBillModel.value.payment?.currency??'',style: TextStyle(color: Color(0xff2B334D),fontSize: 15.sp),),
+                  //
+                  //   ],
+                  // )
                 ],
               ),
             ),
             SizedBox(
               height: 25,
+            ),
+            Row(
+            mainAxisAlignment:MainAxisAlignment.spaceAround ,
+              children: [
+                AdvertisersButton(text: 'دفع',width: 120.w, onPressed: (){
+                  Get.toNamed("/ClientPaymentModelPage?advertiser=${Get.parameters['advertiser']}"
+                      "&requestId=${customerOrderInvoiceOutputsController.showBillModel.value.id.toString()}"
+                      "&total=${customerOrderInvoiceOutputsController.showBillModel.value.payment?.total.toString()??''}");
+                },backgroundColor: AppColors.verifyButtonColor,textColor: AppColors.blueColor),
+                AdvertisersButton(text: 'رجوع',width: 120.w, onPressed: (){
+                 Get.back();
+                },textColor: AppColors.blueColor,backgroundColor: AppColors.verifyButtonColor,),
+              ],
+            ),
+
+            SizedBox(
+              height: 10,
             ),
           ],
         ),

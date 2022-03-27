@@ -31,7 +31,12 @@ MyOrdersController _myOrdersController=Get.find();
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: Row(
+              Container(
+
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+              color:Colors.white),
+                  child: Row(
                 children: [
                   InkWell(
                     onTap:()async{
@@ -40,25 +45,25 @@ MyOrdersController _myOrdersController=Get.find();
                       //bool? res = await FlutterPhoneDirectCaller.callNumber(registerClientUserResponse.data?.phone??'');
                     },
                     child: Container(
-                      padding: EdgeInsets.only(right: 10,left: 25),
-                      child: Image.asset("images/call.png",height: 45,),
+                      padding: EdgeInsets.only(right: 10,left: 5),
+                      child: Image.asset("images/call.png",height: 45,color: Colors.grey),
                     ),
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 5),
                     height: double.infinity,
                     width: 1,
-                    color: Colors.white,
+                    color: Colors.grey,
                   ),
                   Container(
-                    padding: EdgeInsets.only(right: 25,left: 25),
-                    child: Image.asset("images/chat-dots.png",height: 45,),
+                    padding: EdgeInsets.only(right: 5,left: 5),
+                    child: Image.asset("images/chat-dots.png",height: 45,color: Colors.grey,),
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 5),
                     height: double.infinity,
                     width: 1,
-                    color: Colors.white,
+                    color: Colors.grey,
                   ),
                   InkWell(
                     onTap: ()async{
@@ -71,7 +76,7 @@ MyOrdersController _myOrdersController=Get.find();
 
                     },
                     child: Container(
-                      padding: EdgeInsets.only(right: 25,left: 25),
+                      padding: EdgeInsets.only(right:5,left: 5),
                       child: Image.asset("images/whatsapp.png",height: 45,),
                     ),
                   ),
