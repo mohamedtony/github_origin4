@@ -32,7 +32,7 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
   var myRequestsAsClient=<RequestModel>[].obs;
   var currentIndex=0.obs;
   bool isChecked=true;
-  var isEdit=true.obs;
+  var isEdit=false.obs;
   bool isChecked_setting_accept=false;
   bool isChecked_setting_remove=false;
     var selectedEmployeeJob="".obs;

@@ -98,66 +98,6 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                   ),
                 ),
 
-                ///date & edit
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical:8.0,horizontal: 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width:MediaQuery.of(context).size.width*.4,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              child: Text("تاريخ الاضافة",style: TextStyle(color: Color(0xff244094),fontFamily: 'A Jannat LT, Regular',fontSize: 14.sp),
-                              ),
-                            ),
-                            Container(
-                              child: Text("20-10-2020",style: TextStyle(color: Color(0xff244094),fontFamily: 'A Jannat LT, Regular',fontSize: 14.sp),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          ///custom checkbox
-                          InkWell(
-                            onTap: (){
-                              setState(() {
-                                controller.isChecked=!controller.isChecked;
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(left:8.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(color: Colors.blue ),
-                                    shape: BoxShape.circle
-                                ),
-                                child:   Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Container(
-                                            width: 8,
-                                            height: 8 ,
-                                          decoration: BoxDecoration(shape: BoxShape.circle, color: controller.isChecked?Colors.blue:Colors.transparent),
-                                      ),
-                                ),
-
-                              ),
-                            ),
-                          ),
-                          Text("تعديل",style: TextStyle(color: const Color(0xff244094),fontFamily: 'A Jannat LT, Regular',fontSize: 16.sp),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-
-                ),
 
                 ///image and stars
                 Row(
@@ -384,13 +324,14 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                       padding: const EdgeInsets.only(left:11.0,right: 11),
                       child: Center(
                         child: TextFormField(
+
                           textAlignVertical: TextAlignVertical.top,
-                           controller: controller.nameController,
+                           controller: controller.nameController.value,
                           focusNode: controller.nameNode,
                           keyboardType:TextInputType.text,
                           style: const TextStyle(fontFamily: 'A Jannat LT, Regular',fontSize: 14,color:Color(0xff244094)),
                           decoration: const InputDecoration(
-                            hintStyle: TextStyle(
+                            hintStyle:  TextStyle(
                               fontFamily: 'A Jannat LT, Regular',
                               fontSize: 12,
                               color: Color(0xff9CA3AF),//
@@ -405,6 +346,14 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                         ),
                       ),
                     ),
+                  ),
+                ),
+
+                Visibility(
+                  visible: controller.errorNameText!=null&&controller.errorNameText!="",
+                  child: Padding(
+                    padding: const EdgeInsets.only(right:35.0),
+                    child: Align(alignment: Alignment.centerRight,child: Text( controller.errorNameText??"",style: TextStyle(color: Colors.red,fontSize: 10),)),
                   ),
                 ),
 
@@ -424,7 +373,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                       child: Center(
                         child: TextFormField(
                           textAlignVertical: TextAlignVertical.top,
-                          controller: controller.emailController,
+                          controller: controller.emailController.value,
                           focusNode: controller.emailNode,
                           keyboardType:TextInputType.emailAddress,
                           style: const TextStyle(fontFamily: 'A Jannat LT, Regular',fontSize: 14,color:Color(0xff244094)),
@@ -446,6 +395,15 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                     ),
                   ),
                 ),
+
+                Visibility(
+                  visible: controller.validateEmail!=null&&controller.validateEmail!="",
+                  child: Padding(
+                    padding: const EdgeInsets.only(right:35.0),
+                    child: Align(alignment: Alignment.centerRight,child: Text( controller.validateEmail??"",style: TextStyle(color: Colors.red,fontSize: 10),)),
+                  ),
+                ),
+
                 ///mobile
                 Padding(
                   padding:  const EdgeInsets.only(top:4.0,left: 25,right: 25,bottom: 4),
@@ -465,7 +423,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                           child: Center(
                             child: TextFormField(
                               textAlignVertical: TextAlignVertical.top,
-                              controller: controller.mobileController,
+                              controller: controller.mobileController.value,
                               focusNode: controller.mobileNode,
                               keyboardType:TextInputType.phone,
                               style: const TextStyle(fontFamily: 'A Jannat LT, Regular',fontSize: 14,color:Color(0xff244094)),
@@ -491,17 +449,27 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                         Positioned(
                           left: -1,
                           top: -2,
-                          child: Container(
-                            decoration: BoxDecoration(color: Color(0xffEEEEEE),borderRadius: BorderRadius.circular(15)),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical:12.0,horizontal: 24),
-                              child: Center(child: Text('تأكيد',style: TextStyle(fontFamily: 'A Jannat LT, Regular',fontSize: 14.sp,color: Color(0xff4184CE)),)),
+                          child: InkWell(
+                            onTap: ()=>controller.checkSearchEmployee(),
+                            child: Container(
+                              decoration: BoxDecoration(color: Color(0xffEEEEEE),borderRadius: BorderRadius.circular(15)),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical:12.0,horizontal: 24),
+                                child: Center(child: Text('تأكيد',style: TextStyle(fontFamily: 'A Jannat LT, Regular',fontSize: 14.sp,color: Color(0xff4184CE)),)),
+                              ),
                             ),
                           ),
 
                         )
                       ],
                     ),
+                  ),
+                ),
+                Visibility(
+                  visible: controller.errorMobileText!=null&&controller.errorMobileText!="",
+                  child: Padding(
+                    padding: const EdgeInsets.only(right:35.0),
+                    child: Align(alignment: Alignment.centerRight,child: Text( controller.errorMobileText??"",style: TextStyle(color: Colors.red,fontSize: 10),)),
                   ),
                 ),
                 ///position name
@@ -520,7 +488,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                       child: Center(
                         child: TextFormField(
                           textAlignVertical: TextAlignVertical.top,
-                          controller: controller.positionNameController,
+                          controller: controller.positionNameController.value,
                           focusNode: controller.positionNameNode,
                           keyboardType:TextInputType.text,
                           style: const TextStyle(fontFamily: 'A Jannat LT, Regular',fontSize: 14,color:Color(0xff244094)),
@@ -542,6 +510,13 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                     ),
                   ),
                 ),
+                Visibility(
+                  visible: controller.errorPositionNameText!=null&&controller.errorPositionNameText!="",
+                  child: Padding(
+                    padding: const EdgeInsets.only(right:35.0),
+                    child: Align(alignment: Alignment.centerRight,child: Text( controller.errorPositionNameText??"",style: TextStyle(color: Colors.red,fontSize: 10),)),
+                  ),
+                ),
 
                 ///appearance name
                 Padding(
@@ -559,7 +534,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                       child: Center(
                         child: TextFormField(
                           textAlignVertical: TextAlignVertical.top,
-                          controller: controller.appearanceNameController,
+                          controller: controller.appearanceNameController.value,
                           focusNode: controller.appearanceNameNode,
                           keyboardType:TextInputType.text,
                           style: const TextStyle(fontFamily: 'A Jannat LT, Regular',fontSize: 14,color:Color(0xff244094)),
@@ -582,6 +557,15 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                     ),
                   ),
                 ),
+
+                Visibility(
+                  visible: controller.errorAppearenceNameText!=null&&controller.errorAppearenceNameText!="",
+                  child: Padding(
+                    padding: const EdgeInsets.only(right:35.0),
+                    child: Align(alignment: Alignment.centerRight,child: Text( controller.errorAppearenceNameText??"",style: TextStyle(color: Colors.red,fontSize: 10),)),
+                  ),
+                ),
+
 
                 /// action btns save & cancel
                 Padding(

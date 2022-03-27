@@ -30,8 +30,7 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
   @override
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
-    return controller.obx(
-            (state) =>  Scaffold(
+    return   Scaffold(
       appBar: PreferredSize(
         child: AppBarWidget(
           isSearchBar: false,
@@ -120,9 +119,10 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           ///custom checkbox
-                          InkWell(
+                          Obx(()=>   InkWell(
                             onTap: (){
-                                controller.isEdit.value=!controller.isEdit.value;
+                                controller.isEdit.value= !controller.isEdit.value;
+                                print("controller.isEdit ${controller.isEdit.value}");
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(left:8.0),
@@ -133,19 +133,23 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
                                     shape: BoxShape.circle
                                 ),
                                 child:   Padding(
-                                  padding: const EdgeInsets.all(4.0),
+                                  padding:   EdgeInsets.all(4.0),
                                   child: Container(
                                             width: 8,
                                             height: 8 ,
-                                          decoration: BoxDecoration(shape: BoxShape.circle, color: controller.isChecked?Colors.blue:Colors.transparent),
+                                          decoration: controller.isEdit.value?
+                                          BoxDecoration(shape: BoxShape.circle, color: Colors.blue):
+                                          BoxDecoration(shape: BoxShape.circle, color: Colors.transparent),
+
                                       ),
+
                                 ),
 
                               ),
                             ),
-                          ),
-                          Text("تعديل",style: TextStyle(color: const Color(0xff244094),fontFamily: 'A Jannat LT, Regular',fontSize: 16.sp),
-                          )
+                          ),),
+                          Text("تعديل",style: TextStyle(color: const Color(0xff244094),fontFamily: 'A Jannat LT, Regular',fontSize: 16.sp),),
+
                         ],
                       ),
                     ],
@@ -389,26 +393,27 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
                     child: Padding(
                       padding: const EdgeInsets.only(left:11.0,right: 11),
                       child: Center(
-                        child: TextFormField(
+                        child: Obx(()=>TextFormField(
                           textAlignVertical: TextAlignVertical.top,
-                           controller: controller.nameController.value,
+                          controller: controller.nameController.value,
                           focusNode: controller.nameNode,
                           keyboardType:TextInputType.text,
                           style: const TextStyle(fontFamily: 'A Jannat LT, Regular',fontSize: 14,color:Color(0xff244094)),
-                          decoration: const InputDecoration(
-                            hintStyle: TextStyle(
+                          decoration:   InputDecoration(
+                            hintStyle: const TextStyle(
                               fontFamily: 'A Jannat LT, Regular',
                               fontSize: 12,
                               color: Color(0xff9CA3AF),//
-                             ),
+                            ),
                             filled: true,
                             fillColor: Color(0xffF5F5F5),
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
                             hintText: "الاسم",
+                            enabled: controller.isEdit.value,
                           ),
                           onEditingComplete: () => node.nextFocus(),
-                        ),
+                        ),),
                       ),
                     ),
                   ),
@@ -428,14 +433,14 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
                     child: Padding(
                       padding: const EdgeInsets.only(left:11.0,right: 11),
                       child: Center(
-                        child: TextFormField(
+                        child: Obx(()=>TextFormField(
                           textAlignVertical: TextAlignVertical.top,
                           controller: controller.emailController.value,
                           focusNode: controller.emailNode,
                           keyboardType:TextInputType.emailAddress,
                           style: const TextStyle(fontFamily: 'A Jannat LT, Regular',fontSize: 14,color:Color(0xff244094)),
-                          decoration: const InputDecoration(
-                            hintStyle: TextStyle(
+                          decoration:   InputDecoration(
+                            hintStyle: const TextStyle(
                               fontFamily: 'A Jannat LT, Regular',
                               fontSize: 12,
                               color: Color(0xff9CA3AF),//
@@ -445,9 +450,10 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
                             hintText: "الايميل",
+                            enabled: controller.isEdit.value
                           ),
                           onEditingComplete: ()  => node.nextFocus(),
-                        ),
+                        ),),
                       ),
                     ),
                   ),
@@ -469,14 +475,14 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
                         Padding(
                           padding: const EdgeInsets.only(left:11.0,right: 11, ),
                           child: Center(
-                            child: TextFormField(
+                            child: Obx(()=> TextFormField(
                               textAlignVertical: TextAlignVertical.top,
                               controller: controller.mobileController.value,
                               focusNode: controller.mobileNode,
                               keyboardType:TextInputType.phone,
                               style: const TextStyle(fontFamily: 'A Jannat LT, Regular',fontSize: 14,color:Color(0xff244094)),
-                              decoration: const InputDecoration(
-                                hintStyle: TextStyle(
+                              decoration:  InputDecoration(
+                                hintStyle: const TextStyle(
                                   fontFamily: 'A Jannat LT, Regular',
                                   fontSize: 12,
                                   color: Color(0xff9CA3AF),//
@@ -486,10 +492,11 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: InputBorder.none,
                                 hintText: "الجوال",
+                                enabled: controller.isEdit.value
                               ),
                               onEditingComplete: ()  => node.nextFocus(),
 
-                            ),
+                            ),),
                           ),
                         ),
                         Positioned(
@@ -522,14 +529,14 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
                     child: Padding(
                       padding: const EdgeInsets.only(left:11.0,right: 11),
                       child: Center(
-                        child: TextFormField(
+                        child: Obx(()=>TextFormField(
                           textAlignVertical: TextAlignVertical.top,
                           controller: controller.positionNameController.value,
                           focusNode: controller.positionNameNode,
                           keyboardType:TextInputType.text,
                           style: const TextStyle(fontFamily: 'A Jannat LT, Regular',fontSize: 14,color:Color(0xff244094)),
-                          decoration: const InputDecoration(
-                            hintStyle: TextStyle(
+                          decoration:  InputDecoration(
+                            hintStyle: const TextStyle(
                               fontFamily: 'A Jannat LT, Regular',
                               fontSize: 12,
                               color: Color(0xff9CA3AF),//
@@ -539,9 +546,10 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
                             hintText: "المسمى الوظيفي",
+                            enabled: controller.isEdit.value,
                           ),
                           onEditingComplete: ()  => node.nextFocus(),
-                        ),
+                        ),),
                       ),
                     ),
                   ),
@@ -561,14 +569,14 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
                     child: Padding(
                       padding: const EdgeInsets.only(left:11.0,right: 11),
                       child: Center(
-                        child: TextFormField(
+                        child: Obx(()=>TextFormField(
                           textAlignVertical: TextAlignVertical.top,
                           controller: controller.appearanceNameController.value,
                           focusNode: controller.appearanceNameNode,
                           keyboardType:TextInputType.text,
                           style: const TextStyle(fontFamily: 'A Jannat LT, Regular',fontSize: 14,color:Color(0xff244094)),
-                          decoration: const InputDecoration(
-                            hintStyle: TextStyle(
+                          decoration:  InputDecoration(
+                            hintStyle: const TextStyle(
                               fontFamily: 'A Jannat LT, Regular',
                               fontSize: 12,
                               color: Color(0xff9CA3AF),//
@@ -578,10 +586,11 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
                             hintText: "اسم الظهور",
+                            enabled: controller.isEdit.value,
                           ),
                           onSaved: (_){},
                           onEditingComplete: ()  => node.unfocus(),
-                        ),
+                        ),),
                       ),
                     ),
                   ),
@@ -642,8 +651,8 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
 
 
 
-    ),
     );
+
   }
 
 }
