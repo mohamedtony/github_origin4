@@ -420,7 +420,7 @@ class AdvertiserListPage extends StatelessWidget {
           AdvertiseListItem(icon: 'images/logout_icon.svg',title: 'خروج',listTilePressed: () async {
             // await storage.remove("data");
             // await storage.remove("token");
-            await storage.erase("GetStorage");
+            await storage.erase();
             Get.offAllNamed('/loginPage');
             print('pressed2');
           },),
