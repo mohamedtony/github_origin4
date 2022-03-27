@@ -1,4 +1,5 @@
 import 'package:advertisers/features/employees/controller/employees_controller.dart';
+import 'package:advertisers/features/employees/controller/show_employee_operations_controller.dart';
 import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
 import 'package:advertisers/features/my_orders/widgets/slide_right_item.dart';
 import 'package:advertisers/features/my_orders/widgets/slide_right_item_separation.dart';
@@ -16,36 +17,25 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class EmployeeArchivePage extends StatefulWidget{
-
-  const EmployeeArchivePage({Key? key}) : super(key: key);
-
-  @override
-  _EmployeeArchivePageState createState() => _EmployeeArchivePageState();
-}
-
-class _EmployeeArchivePageState extends State<EmployeeArchivePage> {
-
+class EmployeeArchivePage extends GetWidget<EmployeesController>{
+  final EmployeesController  controller = Get.put(EmployeesController());
 
   @override
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
-    return Scaffold(
-      appBar: PreferredSize(
-        child: AppBarWidget(
-          isSearchBar: false,
-          isNotification: false,
-          isBack: true,
-          isSideMenu: false,
-        ),
-        preferredSize: Size(MediaQuery.of(context).size.width, 93.h),
-      ),
-      body: GetBuilder<EmployeesController>(
-        init: EmployeesController(),
-        builder: (controller) =>  SingleChildScrollView(
-
-          controller: controller.scrollController,
-          child: Padding(
+    return controller.obx(
+            (state) =>  Scaffold(
+              appBar: PreferredSize(
+                child: AppBarWidget(
+                  isSearchBar: false,
+                  isNotification: false,
+                  isBack: true,
+                  isSideMenu: false,
+                ),
+                preferredSize: Size(MediaQuery.of(context).size.width, 93.h),
+              ),
+              body:   SingleChildScrollView(
+           child: Padding(
             padding:   EdgeInsets.only(bottom:MediaQuery.of(context).viewInsets.bottom),
             child: Column(
               children: [
@@ -96,16 +86,18 @@ class _EmployeeArchivePageState extends State<EmployeeArchivePage> {
                               child: Container(
                                 width: 30,
                                 height: 30,
-                                decoration: const BoxDecoration(
+                                decoration:   BoxDecoration(
                                    shape: BoxShape.circle,
-                                  image: DecorationImage(image: AssetImage('images/man img.png'),fit: BoxFit.fill),
+                                  image: DecorationImage(image: controller.profileImage.value.isNotEmpty?
+                                  NetworkImage(controller.profileImage.value):NetworkImage(controller.noImage)
+                                      ,fit: BoxFit.fill),
+                                  /*AssetImage('images/man img.png')*/
                                 ),
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal:8.0),
-                              child: Text(
-                                "محمد احمد حسين",
+                              child: Text(controller.showEmployeeDetails.data!.user!.username??"",
                                 style: TextStyle(
                                     fontSize: 14.sp,
                                     color: const Color(
@@ -203,17 +195,17 @@ class _EmployeeArchivePageState extends State<EmployeeArchivePage> {
                 /// my privileged list
                 Container(
                   height: MediaQuery.of(context).size.height*.67,
-                  child: ListView.builder(
+                  child:  controller.actions.isNotEmpty ?ListView.builder(
                        shrinkWrap: true,
-                       itemCount:  controller.operationDetails.length ,
+                       itemCount:  controller.actions.length ,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.only(right: 5, left: 5),
                           child: Container(
-                            child: StreamBuilder<Object>(
+                            child: /*StreamBuilder<Object>(
                                 stream: null,
                                 builder: (context, snapshot) {
-                                  return
+                                  return*/
                                     Column(
                                       mainAxisAlignment:
                                       MainAxisAlignment.center,
@@ -232,7 +224,7 @@ class _EmployeeArchivePageState extends State<EmployeeArchivePage> {
                                                     width: MediaQuery.of(context).size.width*.16,
                                                     child: Center(child: Padding(
                                                       padding: const EdgeInsets.only(right: 8.0,top: 8,bottom: 8),
-                                                      child: Text('532014',
+                                                      child: Text(controller.actions[index].actionableId!.toString(),
                                                           style: TextStyle(
                                                               fontSize: 12.sp,
                                                               color: const Color(
@@ -250,7 +242,7 @@ class _EmployeeArchivePageState extends State<EmployeeArchivePage> {
                                                     padding: const EdgeInsets.symmetric(vertical:8.0),
                                                     child: Container(
                                                       width: MediaQuery.of(context).size.width*.185,
-                                                      child: Center(child: Text('02-11-2021',
+                                                      child: Center(child: Text(controller.actionsDate[index]??"",
                                                           style: TextStyle(
                                                               fontSize: 12.sp,
                                                               color: const Color(
@@ -268,7 +260,7 @@ class _EmployeeArchivePageState extends State<EmployeeArchivePage> {
                                                     padding: const EdgeInsets.symmetric(vertical:8.0),
                                                     child: Container(
                                                       width: MediaQuery.of(context).size.width*.176,
-                                                      child: Center(child: Text('04:22pm',
+                                                      child: Center(child: Text(controller.actionsTime[index]??"",
                                                           style: TextStyle(
                                                               fontSize: 12.sp,
                                                               color: const Color(
@@ -288,7 +280,7 @@ class _EmployeeArchivePageState extends State<EmployeeArchivePage> {
                                                       width: MediaQuery.of(context).size.width*.386,
                                                       child: Align(
                                                         alignment: AlignmentDirectional.centerStart,
-                                                        child: Text(controller.operationDetails[index],
+                                                        child: Text(controller.actions[index].action!,
                                                             style: TextStyle(
                                                                 fontSize: 12.sp,
                                                                 color: const Color(
@@ -311,25 +303,26 @@ class _EmployeeArchivePageState extends State<EmployeeArchivePage> {
                                           ),
                                         ),
                                       ],
-                                    );
-                                }
-                            ),
+                                    ),
+                            //     }
+                            // ),
                           ),
                         );
-                      }),
+                      }):const Center(child: Text("لا يوجد عمليات"),
                 ),
 
-
+                ),
               ],
             ),
           ),
-        ),
-      ),
+        )
+
+    ),
+
 
 
 
     );
-
-  }
+   }
 
 }

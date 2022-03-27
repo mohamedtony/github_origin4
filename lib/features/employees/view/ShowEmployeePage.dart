@@ -1,3 +1,4 @@
+import 'package:advertisers/app_core/network/models/Operation.dart';
 import 'package:advertisers/features/employees/controller/add_employee_controller.dart';
 import 'package:advertisers/features/employees/controller/employees_controller.dart';
 import 'package:advertisers/features/employees/view/EmployeeArchivePage.dart';
@@ -18,24 +19,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class AddEmployeePage extends StatefulWidget{
+class ShowEmployeePage extends GetWidget<EmployeesController> {
 
-  const AddEmployeePage({Key? key}) : super(key: key);
+  final EmployeesController  controller = Get.put(EmployeesController());
 
-  @override
-  _AddEmployeePageState createState() => _AddEmployeePageState();
-}
-
-class _AddEmployeePageState extends State<AddEmployeePage> {
-
-  //final AddEmployeeController  controller = Get.put(AddEmployeeController());
 
 
   @override
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
-    return Scaffold(
+    return controller.obx(
+            (state) =>  Scaffold(
       appBar: PreferredSize(
         child: AppBarWidget(
           isSearchBar: false,
@@ -45,8 +41,8 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
         ),
         preferredSize: Size(MediaQuery.of(context).size.width, 93.h),
       ),
-      body: GetBuilder<AddEmployeeController>(
-        init: AddEmployeeController(),
+      body: GetBuilder<EmployeesController>(
+        init: EmployeesController(),
         builder: (controller) =>  SingleChildScrollView(
 
           controller: controller.scrollController,
@@ -114,7 +110,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                               ),
                             ),
                             Container(
-                              child: Text("20-10-2020",style: TextStyle(color: Color(0xff244094),fontFamily: 'A Jannat LT, Regular',fontSize: 14.sp),
+                              child: Text(controller.createdAtDate.value,style: TextStyle(color: Color(0xff244094),fontFamily: 'A Jannat LT, Regular',fontSize: 14.sp),
                               ),
                             )
                           ],
@@ -126,9 +122,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                           ///custom checkbox
                           InkWell(
                             onTap: (){
-                              setState(() {
-                                controller.isChecked=!controller.isChecked;
-                              });
+                                controller.isEdit.value=!controller.isEdit.value;
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(left:8.0),
@@ -174,7 +168,9 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                           height: 92.sp,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(image: AssetImage('images/man img.png'),fit: BoxFit.fill),
+                            image: DecorationImage(image: controller.profileImage.value.isNotEmpty?
+                            NetworkImage(controller.profileImage.value):NetworkImage(controller.noImage)
+                                /*AssetImage('images/man img.png')*/,fit: BoxFit.fill),
                           ),
                         ),
 
@@ -201,7 +197,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left:2.0,right: 8),
-                      child: Text("95",style: TextStyle(color: Colors.grey.withOpacity(.5),fontSize: 12),),
+                      child: Text(controller.rate.value,style: TextStyle(color: Colors.grey.withOpacity(.5),fontSize: 12),),
                     ),
                     Icon(Icons.star,color: Color(0xffFFB300),size: 18,)
                   ],
@@ -229,18 +225,25 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
 
                           ),
 
-                          Container(
-                            width:42,
-                            height: 42,
-                            decoration: BoxDecoration(
-                              color:Color(0xffF5F5F5),
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Color(0XFF4184CE),width: .5),
-                                image: const DecorationImage(image: AssetImage('images/icon-whatsapp1.png',),scale: 2)
+                          InkWell(
+                            onTap:() {
+                              if(controller.showEmployeeDetails.data!.user!.whatsapp!=null){
+                                controller.SendMsgToWhatsapp(whatsapp: controller.showEmployeeDetails.data!.user!.whatsapp!);
+                              }
+                            } ,
+                            child: Container(
+                              width:42,
+                              height: 42,
+                              decoration: BoxDecoration(
+                                color:Color(0xffF5F5F5),
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(color: Color(0XFF4184CE),width: .5),
+                                  image: const DecorationImage(image: AssetImage('images/icon-whatsapp1.png',),scale: 2)
+
+                              ),
+
 
                             ),
-
-
                           ),
                           Container(
                             width:42,
@@ -255,17 +258,24 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
 
 
                           ),
-                          Container(
-                            width:42,
-                            height: 42,
-                            decoration: BoxDecoration(
-                              color:Color(0xffF5F5F5),
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Color(0XFF4184CE),width: .5),
-                              image: const DecorationImage(image: AssetImage('images/icon-phone2.png',),scale: 2)
+                          InkWell(
+                            onTap:() {
+                              if(controller.showEmployeeDetails.data!.user!.phone!=null){
+                                launch("tel://${controller.showEmployeeDetails.data!.user!.phone}");
+                              }
+                            } ,
+                            child: Container(
+                              width:42,
+                              height: 42,
+                              decoration: BoxDecoration(
+                                color:Color(0xffF5F5F5),
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(color: Color(0XFF4184CE),width: .5),
+                                image: const DecorationImage(image: AssetImage('images/icon-phone2.png',),scale: 2)
+                              ),
+
+
                             ),
-
-
                           ),
 
 
@@ -309,12 +319,8 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                       ///archive btn
                       InkWell(
                         onTap: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EmployeeArchivePage(),
-                            ),
-                          );
+                          controller.fetchAnEmployeeOperations(id: controller.showEmployeeDetails.data!.id!);
+
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width*.37,
@@ -385,7 +391,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                       child: Center(
                         child: TextFormField(
                           textAlignVertical: TextAlignVertical.top,
-                           controller: controller.nameController,
+                           controller: controller.nameController.value,
                           focusNode: controller.nameNode,
                           keyboardType:TextInputType.text,
                           style: const TextStyle(fontFamily: 'A Jannat LT, Regular',fontSize: 14,color:Color(0xff244094)),
@@ -424,7 +430,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                       child: Center(
                         child: TextFormField(
                           textAlignVertical: TextAlignVertical.top,
-                          controller: controller.emailController,
+                          controller: controller.emailController.value,
                           focusNode: controller.emailNode,
                           keyboardType:TextInputType.emailAddress,
                           style: const TextStyle(fontFamily: 'A Jannat LT, Regular',fontSize: 14,color:Color(0xff244094)),
@@ -465,7 +471,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                           child: Center(
                             child: TextFormField(
                               textAlignVertical: TextAlignVertical.top,
-                              controller: controller.mobileController,
+                              controller: controller.mobileController.value,
                               focusNode: controller.mobileNode,
                               keyboardType:TextInputType.phone,
                               style: const TextStyle(fontFamily: 'A Jannat LT, Regular',fontSize: 14,color:Color(0xff244094)),
@@ -482,9 +488,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                                 hintText: "الجوال",
                               ),
                               onEditingComplete: ()  => node.nextFocus(),
-                              validator: (value){
-                                return controller.validatePhone(value!);
-                              },
+
                             ),
                           ),
                         ),
@@ -520,7 +524,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                       child: Center(
                         child: TextFormField(
                           textAlignVertical: TextAlignVertical.top,
-                          controller: controller.positionNameController,
+                          controller: controller.positionNameController.value,
                           focusNode: controller.positionNameNode,
                           keyboardType:TextInputType.text,
                           style: const TextStyle(fontFamily: 'A Jannat LT, Regular',fontSize: 14,color:Color(0xff244094)),
@@ -559,7 +563,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                       child: Center(
                         child: TextFormField(
                           textAlignVertical: TextAlignVertical.top,
-                          controller: controller.appearanceNameController,
+                          controller: controller.appearanceNameController.value,
                           focusNode: controller.appearanceNameNode,
                           keyboardType:TextInputType.text,
                           style: const TextStyle(fontFamily: 'A Jannat LT, Regular',fontSize: 14,color:Color(0xff244094)),
@@ -592,8 +596,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                       /// save btn
                       InkWell(
                         onTap: (){
-
-                          controller.checkAddEmployee();
+                          controller.checkEditEmployee(controller.showEmployeeDetails.data!.id!);
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width*.33,
@@ -639,8 +642,8 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
 
 
 
+    ),
     );
-
   }
 
 }
