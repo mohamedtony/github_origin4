@@ -71,6 +71,7 @@ import 'package:advertisers/features/users_module/controller/register_new_client
 import 'package:advertisers/features/users_module/controller/register_new_client_user_controller.dart';
 import 'package:advertisers/features/users_module/controller/register_phone_controller.dart';
 import 'package:advertisers/features/users_module/view/screens/baka_details.dart';
+import 'package:advertisers/features/users_module/view/screens/baka_payments_table.dart';
 import 'package:advertisers/features/users_module/view/screens/choose_baka_page.dart';
 import 'package:advertisers/features/users_module/view/screens/forget_password_for_phone.dart';
 import 'package:advertisers/features/users_module/view/screens/login_page.dart';
@@ -152,6 +153,10 @@ class Routes {
     //     Get.lazyPut<AdvancedOptionsController>(() => AdvancedOptionsController());
     //   }),
     // ),
+    GetPage(
+      name: '/BakaPaymentsTable',
+      page: () => BakaPaymentsTable(),
+    ),
     GetPage(
       name: '/GalleryPage',
       page: () => GalleryPage(),
