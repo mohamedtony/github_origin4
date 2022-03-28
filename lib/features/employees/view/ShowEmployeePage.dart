@@ -357,10 +357,11 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(right: 24.0,left: 16),
-                      child: DropdownButton<String>(
+                      child:Obx(()=>DropdownButton<String>(
                         underline: const SizedBox.shrink(),
                         icon: const Icon(Icons.keyboard_arrow_down),
-                        hint:  controller.selectedEmployeeJob!=""?Text( controller.selectedEmployeeJob.value,style: TextStyle(color: Color(0xff244094),fontSize: 14.sp,fontFamily: 'A Jannat LT, Regular'),):
+                        hint:  controller.selectedEmployeeJob.isNotEmpty?
+                        Obx(()=>Text( controller.selectedEmployeeJob.value,style: TextStyle(color: Color(0xff244094),fontSize: 14.sp,fontFamily: 'A Jannat LT, Regular'),)):
                         Text('نوع التوظيف',style: TextStyle(color:Color(0xff9CA3AF),fontSize: 14.sp,fontFamily: 'A Jannat LT, Regular'),),
                         items: <String>['موظف داخلى', 'موظف خارجى'].map((String value) {
                           return DropdownMenuItem<String>(
@@ -369,13 +370,13 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
                           );
                         }).toList(),
                         isExpanded: true,
-                        onChanged: (newVal) {
+                        onChanged: controller.isEdit.value?(newVal) {
 
-                            controller.selectedEmployeeJob.value=newVal!;
-                            print("v ${controller.selectedEmployeeJob}");
+                          controller.selectedEmployeeJob.value=newVal!;
+                          print("v ${controller.selectedEmployeeJob}");
 
-                        },
-                      ),
+                        }:null,
+                      ),),
                     ),
                   ),
                 ),
@@ -624,7 +625,9 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
 
                       /// cancel btn
                       InkWell(
-                        onTap: (){},
+                        onTap: (){
+                          Get.toNamed('/EmployeesPage');
+                        },
                         child: Container(
                           width: MediaQuery.of(context).size.width*.33,
                           decoration: BoxDecoration(
@@ -647,6 +650,7 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
             ),
           ),
         ),
+
       ),
 
 

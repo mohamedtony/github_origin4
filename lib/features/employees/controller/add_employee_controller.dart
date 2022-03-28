@@ -12,6 +12,7 @@ import 'package:advertisers/app_core/network/responses/MyRequestsResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/app_core/network/responses/RejectRequestResponse.dart';
 import 'package:advertisers/app_core/network/responses/ShowEmployeeDetailsResponse%20.dart';
+import 'package:advertisers/features/employees/controller/employees_controller.dart';
 import 'package:advertisers/shared/networking/api_provider.dart';
 import 'package:advertisers/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,6 +41,8 @@ class AddEmployeeController extends GetxController with StateMixin<AddEmployeeRe
   var positionNameController = TextEditingController().obs;
   var appearanceNameController = TextEditingController().obs;
 
+
+  var validation=false.obs;
 
   FocusNode nameNode = FocusNode();
   FocusNode positionNameNode = FocusNode();
@@ -100,6 +103,7 @@ class AddEmployeeController extends GetxController with StateMixin<AddEmployeeRe
   SearchEmployeeRequest searchEmployee=SearchEmployeeRequest();
   void checkAddEmployee(){
 
+     validation=false.obs;
      newEmployee.type= selectedEmployeeJob=="موظف داخلى"?"in":"out";
      newEmployee.jobTitle=positionNameController.value.text;
      newEmployee.apperanceName=appearanceNameController.value.text;
@@ -133,6 +137,7 @@ class AddEmployeeController extends GetxController with StateMixin<AddEmployeeRe
 
 
   void AddEmployeefun({AddEmployeeRequest? request}) async {
+    EasyLoading.show();
     dio.FormData formData = dio.FormData.fromMap(request!.toJson());
      String url ='https://advertiser.cefour.com/api/v1/employees';
     print("URL+++> $url");
@@ -142,23 +147,37 @@ class AddEmployeeController extends GetxController with StateMixin<AddEmployeeRe
         data: formData,
       );
       final data = AddEmployeeResponse.fromJson(response.data);
-      Logger().i(response!.data);
+      Logger().i(response.data);
 
-      Get.snackbar(
-        "مبروك",
-        "تم اضافه الموظف بنجاح",
-        icon: const Icon(Icons.check, color: Colors.green),
-        backgroundColor: Colors.yellow,
-        snackPosition: SnackPosition.TOP,);
-
-        Get.toNamed('/EmployeesPage');
-
-        restAll();
-
-      // Successfully fetched news data
+      if(data.status==200){
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
+        Get.snackbar(
+          "مبروك",
+          "تم اضافه الموظف بنجاح",
+          icon: const Icon(Icons.check, color: Colors.green),
+          backgroundColor: Colors.yellow,
+          snackPosition: SnackPosition.TOP,);
+        Get.find<EmployeesController>().fetchEmployeesList();
+         Get.toNamed('/EmployeesPage');
+         restAll();
+         // Successfully fetched news data
         change(data, status: RxStatus.success());
-     // Logger().i(response!.data);
-    } on dio.DioError catch (error) {
+       }
+      else{
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
+        Get.snackbar(
+          "خطأ",
+          data.message.toString(),
+          icon: const Icon(Icons.person, color: Colors.red),
+          backgroundColor: Colors.yellow,
+          snackPosition: SnackPosition.BOTTOM,);
+      }
+
+     } on dio.DioError catch (error) {
       if (error.response?.statusCode == 401 ||
           error.response?.statusCode == 422) {
         // Error occurred while fetching data
@@ -273,6 +292,18 @@ class AddEmployeeController extends GetxController with StateMixin<AddEmployeeRe
     return null;
   }
 
+  String? get  errorSelectedJobType {
+    // at any time, we can get the text from _controller.value.text
+    final text = selectedEmployeeJob.value;
+    // Note: you can do your own custom validation here
+    // Move this logic this outside the widget for more testable code
+    if (text.isEmpty) {
+      return 'يجب اختيار نوع التوظيف';
+    }
+    // return null if the text is valid
+    return null;
+  }
+
   String? get  errorMobileText {
     // at any time, we can get the text from _controller.value.text
     final text = mobileController.value.text;
@@ -295,12 +326,13 @@ class AddEmployeeController extends GetxController with StateMixin<AddEmployeeRe
         r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
         r"{0,253}[a-zA-Z0-9])?)*$";
     RegExp regex = RegExp(pattern);
-    if (value == null || value.isEmpty)
+    if (value.isEmpty) {
       return 'يجب ادخال الايميل';
-    else if( !regex.hasMatch(value))
+    }
+    if( !regex.hasMatch(value)) {
       return 'يجب ادخال ايميل صحيح';
-    else
-      return "";
+    }
+      return null;
   }
 
   String? get  errorPositionNameText {

@@ -164,8 +164,7 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
   late int totalPages=0;
 
 
-  final RefreshController refreshController =
-  RefreshController(initialRefresh: true);
+  final RefreshController refreshController = RefreshController(initialRefresh: true);
 
   Future<bool> getRequestsData({bool isRefresh = false}) async {
     if (isRefresh) {

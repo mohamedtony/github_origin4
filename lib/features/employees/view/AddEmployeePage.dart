@@ -17,6 +17,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class AddEmployeePage extends StatefulWidget{
@@ -71,7 +72,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                             ),
                             child: Padding(
                               padding:   EdgeInsets.symmetric(vertical:4.0,horizontal: MediaQuery.of(context).size.width*.09),
-                              child: Text("موظف",
+                              child: Text("اضافة موظف",
                                 style: TextStyle(
                                     fontSize: 14.sp,
                                     color:   Colors.white,
@@ -99,180 +100,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                 ),
 
 
-                ///image and stars
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                      SizedBox(width: 30,),
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-
-                        Container(
-                          width: 98.sp,
-                          height: 92.sp,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(image: AssetImage('images/man img.png'),fit: BoxFit.fill),
-                          ),
-                        ),
-
-
-                        Positioned(
-                            left: -8,
-                            top:-8,
-                            child: Container(
-                              padding: const EdgeInsets.all(1),
-                              decoration: BoxDecoration(
-                                color:  Colors.blue,
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Icon(
-                                  Icons.camera_alt_outlined,
-                                  color: Colors.white,
-                                  size: 15.sp,
-                                ),
-                              ),
-                            ))
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left:2.0,right: 8),
-                      child: Text("95",style: TextStyle(color: Colors.grey.withOpacity(.5),fontSize: 12),),
-                    ),
-                    Icon(Icons.star,color: Color(0xffFFB300),size: 18,)
-                  ],
-                ),
-
-                /// social buttons
-                Center(
-                  child: Padding(
-                    padding:   EdgeInsets.only(top:16.sp,bottom: 12.sp),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width*.6,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width:42,
-                            height: 42,
-                            decoration: BoxDecoration(
-                              color:Color(0xffF5F5F5),
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Color(0XFF4184CE),width: .5),
-                                image:   const DecorationImage(image: AssetImage('images/icon-msg1.png',),scale: 2)
-
-                            ),
-
-                          ),
-
-                          Container(
-                            width:42,
-                            height: 42,
-                            decoration: BoxDecoration(
-                              color:Color(0xffF5F5F5),
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Color(0XFF4184CE),width: .5),
-                                image: const DecorationImage(image: AssetImage('images/icon-whatsapp1.png',),scale: 2)
-
-                            ),
-
-
-                          ),
-                          Container(
-                            width:42,
-                            height: 42,
-                            decoration: BoxDecoration(
-                              color:Color(0xffF5F5F5),
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Color(0XFF4184CE),width: .5),//
-                                image: const DecorationImage(image: AssetImage('images/icon-email1.png',),scale: 2)
-
-                            ),
-
-
-                          ),
-                          Container(
-                            width:42,
-                            height: 42,
-                            decoration: BoxDecoration(
-                              color:Color(0xffF5F5F5),
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Color(0XFF4184CE),width: .5),
-                              image: const DecorationImage(image: AssetImage('images/icon-phone2.png',),scale: 2)
-                            ),
-
-
-                          ),
-
-
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-
-                /// authorization & archive
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical:4.0,horizontal: 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      /// authorization btn
-                      InkWell(
-                        onTap: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EmployeeAuthorizationPage(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width*.37,
-                          decoration: BoxDecoration(
-                              color:const Color(0xffF5F5F5),
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: const Color(0XFF4184CE),width: .5),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical:6.0,),
-                            child: Center(child: Text("الصلاحيات",style: TextStyle(color: Color(0xff244094),fontFamily: 'A Jannat LT, Regular',fontSize: 14.sp),)),
-                          ),
-
-                        ),
-                      ),
-
-                      ///archive btn
-                      InkWell(
-                        onTap: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EmployeeArchivePage(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width*.37,
-                          decoration: BoxDecoration(
-                            color:const Color(0xffF5F5F5),
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: const Color(0XFF4184CE),width: .5),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical:6.0,),
-                            child: Center(child: Text("سجل العمليات",style: TextStyle(color: Color(0xff244094),fontFamily: 'A Jannat LT, Regular',fontSize: 14.sp),)),
-                          ),
-
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+               const SizedBox(height: 60,),
 
                 ///jop type dropdown
                 Padding(
@@ -290,7 +118,8 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                       child: DropdownButton<String>(
                         underline: const SizedBox.shrink(),
                         icon: const Icon(Icons.keyboard_arrow_down),
-                        hint:  controller.selectedEmployeeJob!=""?Text( controller.selectedEmployeeJob.value,style: TextStyle(color: Color(0xff244094),fontSize: 14.sp,fontFamily: 'A Jannat LT, Regular'),):
+                        hint:  controller.selectedEmployeeJob.isNotEmpty?
+                       Obx(()=>Text( controller.selectedEmployeeJob.value,style: TextStyle(color: Color(0xff244094),fontSize: 14.sp,fontFamily: 'A Jannat LT, Regular'),)):
                         Text('نوع التوظيف',style: TextStyle(color:Color(0xff9CA3AF),fontSize: 14.sp,fontFamily: 'A Jannat LT, Regular'),),
                         items: <String>['موظف داخلى', 'موظف خارجى'].map((String value) {
                           return DropdownMenuItem<String>(
@@ -309,6 +138,16 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                     ),
                   ),
                 ),
+
+
+                Obx(()=>  Visibility(
+                  visible: controller.errorSelectedJobType!=null&&controller.errorSelectedJobType!=""&&controller.validation.value,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right:35.0),
+                    child: Align(alignment: Alignment.centerRight,child: Text( controller.errorSelectedJobType??"",style: TextStyle(color: Colors.red,fontSize: 10),)),
+                  ),
+                ), ),
+
                 ///name
                 Padding(
                   padding:   EdgeInsets.only(top:4.0,left: 25,right: 25,bottom: 4),
@@ -349,13 +188,13 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                   ),
                 ),
 
-                Visibility(
-                  visible: controller.errorNameText!=null&&controller.errorNameText!="",
+                Obx(()=>  Visibility(
+                  visible: controller.errorNameText!=null&&controller.errorNameText!=""&&controller.validation.value,
                   child: Padding(
                     padding: const EdgeInsets.only(right:35.0),
                     child: Align(alignment: Alignment.centerRight,child: Text( controller.errorNameText??"",style: TextStyle(color: Colors.red,fontSize: 10),)),
                   ),
-                ),
+                ),),
 
                 ///email
                 Padding(
@@ -396,13 +235,15 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                   ),
                 ),
 
-                Visibility(
-                  visible: controller.validateEmail!=null&&controller.validateEmail!="",
+                Obx(()=>  Visibility(
+                  visible: controller.validateEmail!=null&&controller.validateEmail!=""&&controller.validation.value,
                   child: Padding(
                     padding: const EdgeInsets.only(right:35.0),
                     child: Align(alignment: Alignment.centerRight,child: Text( controller.validateEmail??"",style: TextStyle(color: Colors.red,fontSize: 10),)),
                   ),
-                ),
+                ),),
+
+
 
                 ///mobile
                 Padding(
@@ -465,13 +306,16 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                     ),
                   ),
                 ),
-                Visibility(
-                  visible: controller.errorMobileText!=null&&controller.errorMobileText!="",
+
+
+                Obx(()=> Visibility(
+                  visible: controller.errorMobileText!=null&&controller.errorMobileText!=""&&controller.validation.value,
                   child: Padding(
                     padding: const EdgeInsets.only(right:35.0),
                     child: Align(alignment: Alignment.centerRight,child: Text( controller.errorMobileText??"",style: TextStyle(color: Colors.red,fontSize: 10),)),
                   ),
-                ),
+                ), ),
+
                 ///position name
                 Padding(
                   padding: const  EdgeInsets.only(top:4.0,left: 25,right: 25,bottom: 4),
@@ -510,13 +354,15 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                     ),
                   ),
                 ),
-                Visibility(
-                  visible: controller.errorPositionNameText!=null&&controller.errorPositionNameText!="",
+
+
+                Obx(()=> Visibility(
+                  visible: controller.errorPositionNameText!=null&&controller.errorPositionNameText!=""&&controller.validation.value,
                   child: Padding(
                     padding: const EdgeInsets.only(right:35.0),
                     child: Align(alignment: Alignment.centerRight,child: Text( controller.errorPositionNameText??"",style: TextStyle(color: Colors.red,fontSize: 10),)),
                   ),
-                ),
+                ),),
 
                 ///appearance name
                 Padding(
@@ -558,13 +404,13 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                   ),
                 ),
 
-                Visibility(
-                  visible: controller.errorAppearenceNameText!=null&&controller.errorAppearenceNameText!="",
+                Obx(()=> Visibility(
+                  visible: controller.errorAppearenceNameText!=null&&controller.errorAppearenceNameText!=""&&controller.validation.value,
                   child: Padding(
                     padding: const EdgeInsets.only(right:35.0),
                     child: Align(alignment: Alignment.centerRight,child: Text( controller.errorAppearenceNameText??"",style: TextStyle(color: Colors.red,fontSize: 10),)),
                   ),
-                ),
+                ),),
 
 
                 /// action btns save & cancel
@@ -574,29 +420,41 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       /// save btn
-                      InkWell(
-                        onTap: (){
+                        InkWell(
+                           onTap: (){
+                             controller.validation.value=true;
+                             Logger().i(controller.errorNameText);
+                             Logger().i(controller.errorMobileText);
+                             Logger().i(controller.errorPositionNameText);
+                             Logger().i(controller.errorAppearenceNameText);
+                             Logger().i(controller.validateEmail);
+                             if(controller.errorNameText==null&&controller.errorMobileText==null&&controller.errorPositionNameText==null&&controller.errorAppearenceNameText==null&&controller.validateEmail==null){
 
-                          controller.checkAddEmployee();
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width*.33,
-                          decoration: BoxDecoration(
-                            color:const Color(0xffF5F5F5),
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: const Color(0XFF4184CE),width: .5),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical:4.0,),
-                            child: Center(child: Text("حفظ",style: TextStyle(color: Color(0xff244094),fontFamily: 'A Jannat LT, Bold',fontSize: 15.sp),)),
-                          ),
+                               controller.checkAddEmployee();
+                             }
 
-                        ),
-                      ),
+                           },
+                           child: Container(
+                             width: MediaQuery.of(context).size.width*.33,
+                             decoration: BoxDecoration(
+                               color:const Color(0xffF5F5F5),
+                               borderRadius: BorderRadius.circular(10),
+                               border: Border.all(color: const Color(0XFF4184CE),width: .5),
+                             ),
+                             child: Padding(
+                               padding: const EdgeInsets.symmetric(vertical:4.0,),
+                               child: Center(child: Text("حفظ",style: TextStyle(color: Color(0xff244094),fontFamily: 'A Jannat LT, Bold',fontSize: 15.sp),)),
+                             ),
+
+                           ),
+                         ),
 
                       /// cancel btn
                       InkWell(
-                        onTap: (){},
+                        onTap: (){
+                          controller.restAll();
+                          Get.toNamed('/EmployeesPage');
+                        },
                         child: Container(
                           width: MediaQuery.of(context).size.width*.33,
                           decoration: BoxDecoration(
