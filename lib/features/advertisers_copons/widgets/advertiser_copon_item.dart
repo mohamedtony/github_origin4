@@ -261,7 +261,7 @@ class AdvertiserCoponItem extends StatelessWidget {
                                         showDialog(
                                           context: context,
                                           barrierDismissible: false,
-                                          builder: (BuildContext context) {
+                                          builder: (BuildContext context1) {
                                             return Dialog(
                                               child: Container(
                                                 height: 180.0,
@@ -295,7 +295,7 @@ class AdvertiserCoponItem extends StatelessWidget {
                                                               child: Text('تأكيد')),
                                                           onPressed: () {
                                                             print('Confirmed');
-                                                            Navigator.of(context).pop();
+                                                            //Navigator.of(context).pop();
                                                             controller.deleteCopon(context,coponModelResponse!.id);
                                                           },
                                                            /*style:TextButton.styleFrom(
@@ -450,7 +450,7 @@ class AdvertiserCoponItem extends StatelessWidget {
                                     padding: EdgeInsets.all(2),
                                     child: Image.asset(
                                       'images/share2.png',
-                                      fit: BoxFit.contain,
+                                      fit: BoxFit.fill,
                                       height: 45.0,
                                       width: 50.0,
                                     ),
@@ -459,7 +459,7 @@ class AdvertiserCoponItem extends StatelessWidget {
                               ),
                             ),
                             Container(
-                             // margin: EdgeInsets.only(top: 4),
+                              margin: EdgeInsets.only(top: 1.5),
                                 child: Text('${coponModelResponse?.shares??''}'))
                           ],
                         ),
@@ -474,14 +474,14 @@ class AdvertiserCoponItem extends StatelessWidget {
                                 //margin: EdgeInsets.all(4.0),
                                 child: Image.asset(
                                   'images/dislike2.png',
-                                  fit: BoxFit.contain,
-                                  height: 40.0,
+                                  fit: BoxFit.fill,
+                                  height: 45.0,
                                   width: 45.0,
                                 ),
                               ),
                             ),
                             Container(
-                                margin: EdgeInsets.only(top: 1),
+                                margin: EdgeInsets.only(top: 2),
                                 child: Text('${coponModelResponse?.dislikes??''}'))
                           ],
                         ),
@@ -497,7 +497,7 @@ class AdvertiserCoponItem extends StatelessWidget {
                                 child: Image.asset(
                                   'images/like2.png',
                                   fit: BoxFit.fill,
-                                  height: 40.0,
+                                  height: 45.0,
                                   width: 45.0,
                                 ),
                               ),
@@ -518,15 +518,15 @@ class AdvertiserCoponItem extends StatelessWidget {
                                 //margin: EdgeInsets.all(4.0),
                                 child: Image.asset(
                                   'images/all_done.png',
-                                  fit: BoxFit.contain,
-                                  height: 40.0,
+                                  fit: BoxFit.fill,
+                                  height: 45.0,
                                   width: 45.0,
                                 ),
                               ),
                             ),
                             Container(
                                 margin: EdgeInsets.only(top: 2),
-                                child: Text('${coponModelResponse?.users??''}'))
+                                child: Text('${coponModelResponse?.used??''}'))
                           ],
                         ),
                       ],
@@ -534,7 +534,7 @@ class AdvertiserCoponItem extends StatelessWidget {
                     InkWell(
                       onTap: (){
                         if(coponModelResponse?.link!=null) {
-                          launchURL(coponModelResponse!.link);
+                          launchURL(coponModelResponse!.link,coponModelResponse!.id!);
                         }
                       },
                       child: Align(
@@ -561,11 +561,12 @@ class AdvertiserCoponItem extends StatelessWidget {
           ],
         ));
   }
-  launchURL(urlLink) async {
+  launchURL(urlLink,id) async {
     var url = urlLink;
     if(url != null){
       if (await canLaunch(url)) {
         await launch(url);
+        controller.seenCopon(id);
       } else {
         throw 'Could not launch $url';
       }

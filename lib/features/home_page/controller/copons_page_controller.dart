@@ -85,7 +85,7 @@ class CoponsPageController extends GetxController {
   void changeStatus(bool isOpend,int position, int id) {
     this.isOpend = isOpend;
     this.position = position;
-    if(isOpend){
+   /* if(isOpend){
       client!.seenCopon(id,"Bearer "+myToken).then((value) {
         print("token");
         Logger().i(value.status.toString());
@@ -95,7 +95,7 @@ class CoponsPageController extends GetxController {
           Logger().i(value.data.toString());
         }
       });
-    }
+    }*/
     update();
   }
 
@@ -130,6 +130,18 @@ class CoponsPageController extends GetxController {
       if(value.status==200){
         // Get.back();
         print("token shared");
+        Logger().i(value.data.toString());
+      }
+    });
+  }
+
+  void useCopon(int? id) {
+    client!.useCopon(id!,"Bearer "+myToken!).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        // Get.back();
+        print("token used");
         Logger().i(value.data.toString());
       }
     });

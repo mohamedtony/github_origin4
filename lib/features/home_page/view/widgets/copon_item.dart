@@ -181,6 +181,7 @@ CoponModelResponse? coponModelResponse;
                               onTap: (){
                                 Clipboard.setData(ClipboardData(text: '${coponModelResponse?.code ??''}')).then((_){
                                  // Get.snackbar('', 'تم نسخ الكود MS502',snackPosition: SnackPosition.BOTTOM,);
+                                  controller.useCopon(coponModelResponse?.id);
                                   Fluttertoast.showToast(
                                       msg: "تم نسخ الكود ${coponModelResponse?.code ??''}",
                                       toastLength: Toast.LENGTH_LONG,

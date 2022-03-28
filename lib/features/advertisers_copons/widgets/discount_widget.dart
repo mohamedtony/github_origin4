@@ -1,5 +1,6 @@
 import 'package:advertisers/app_core/network/models/CoponModelResponse.dart';
 import 'package:advertisers/features/advertisers_copons/controller/advertisers_copons_controller.dart';
+import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,24 +22,34 @@ class DiscountWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Obx(()=>Container(
-      margin: EdgeInsets.all(10),
+      margin: EdgeInsets.all(4),
       child: GestureDetector(
+        onTap: (){
+         // if(advertisersCoponsController.indexClicked.value==index){
+            advertisersCoponsController.indexClicked.value=-1;
+         // }
+        },
         onLongPress: (){
           advertisersCoponsController.showBottomSheetForRequest2(context,copon!);
           advertisersCoponsController.indexClicked.value=index;
+          /*if(advertisersCoponsController.indexClicked.value==index){
+            advertisersCoponsController.indexClicked.value=-1;
+          }*/
         },
         child: Card(
           child: Container(
-            padding: EdgeInsets.all(12),
+            padding: EdgeInsets.all(6),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(6),
+              //border: Border.all(color: Color(0xffFF8D0A),width: 1.5),
+              border: Border.all(color: advertisersCoponsController.indexClicked.value==index?Color(0xFFD47951): copon?.selected!=null && copon!.selected! ? Colors.greenAccent :Colors.grey[300]!  , width: 1.5),
               boxShadow: [
                 BoxShadow(
-                    color: advertisersCoponsController.indexClicked.value==index?Color(0xFFFFCC99):Colors.grey[300]!,
-                    blurRadius: 4,
-                    offset: Offset(0, 3), // S
-                    spreadRadius:advertisersCoponsController.indexClicked.value==index?4:2// hadow position
+                    color: advertisersCoponsController.indexClicked.value==index?Color(0xFFFFCC99): copon?.selected!=null && copon!.selected! ? Colors.greenAccent :Colors.grey[300]!  ,
+                    blurRadius:4,
+                    offset: Offset(0, 2), // S
+                    spreadRadius:advertisersCoponsController.indexClicked.value==index?1:0// hadow position
                 ),
               ],
             ),
@@ -50,14 +61,15 @@ class DiscountWidget extends StatelessWidget {
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(" رقم الكود ${copon?.code??''}",style: TextStyle(color: Colors.brown,fontSize: 16.sp),),
+                              Text(" رقم الكود ${copon?.code??''}",style: TextStyle(color: Color(0xffAD5F3C),fontSize: 16,fontWeight: FontWeight.bold),),
                               Expanded(child: Container(
                                   margin: EdgeInsets.only(right: 2,left: 2),
-                                  child: Text(" تاريخ الانتهاء ${copon?.ended_at??''} ",style: TextStyle(color: Colors.black54,fontSize: 14.sp),))),
+                                  child: Text(" تاريخ الانتهاء ${copon?.ended_at??''} ",style: TextStyle(color: Colors.black54,fontSize: 14),))),
 
 
                             ],
@@ -123,13 +135,13 @@ class DiscountWidget extends StatelessWidget {
                         ),
                         Container(
                             padding: EdgeInsets.symmetric(horizontal: 15),
-                            child: Text("${(copon?.discount??'')} % ",style: TextStyle(color: iconColor??null,fontSize: 16.sp,fontWeight: FontWeight.bold),)),
+                            child: Text("${(copon?.discount??'')} % ",style: TextStyle(color: Color(0xffD47951),fontSize: 16.sp,fontWeight: FontWeight.bold),)),
                       ],
                     )
                   ],
                 ),
                 SizedBox(
-                  height: 8,
+                  height: 2,
                 ),
               ],
             ),

@@ -31,9 +31,10 @@ class ActivateDeactivateSheet extends StatelessWidget {
         controller: this.scrollController,
         children: [
           Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
+              SizedBox(height: 14.0,),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,17 +42,70 @@ class ActivateDeactivateSheet extends StatelessWidget {
                   Container(
                     height: 12,
                       width: 12,
-                    margin: EdgeInsets.only(top: 24,right: 18),
+                    alignment:Alignment.topRight,
+                    margin: EdgeInsets.only(top: 8,right: 18),
                       decoration: BoxDecoration (
                         shape: BoxShape.circle,
-                        color: Colors.deepPurple
+                        color: Color(0xff203B8D),
                       ),
                   ),
+
                   Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(right: 12.0,left: 2),
+                      child: Column(
+                        //mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('يمكنك تفعيل اكواد الخصم التى يمكن لعملائك استخدامها ',style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                            color: Color(0xff203B8D),
+                      ),),
+                          Text.rich(
+                            TextSpan(
+                              text: ' ملحوظة : مبلغ خصم كود الخصم يتحمله المعلن بنسبة ',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xff203B8D),
+                              ), // default text style
+                              children: <TextSpan>[
+                                /*TextSpan(
+                              text: ' ملحوظة : مبلغ خصم كود الخصم يتحمله المعلن بنسبة ',
+                              style: TextStyle(
+                                fontSize: 14,
+
+                                /// if we don't declare color explicitly,
+                                /// it will take default color blue accent
+                                color: Colors.black38,
+
+                                /// if we use the same fontFamily, that will also
+                                /// make it italic, bold and blue
+                                //fontFamily: 'Allison',
+                              ),
+                            ),*/
+                                TextSpan(
+                                  text: '100%',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color:Color(0xffFF8D0A),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  /*Expanded(
                     child: Container(
                       margin: EdgeInsets.all(12),
                         child: Text("يمكنك تفعيل اكواد الخصم التى يمكن لعملائك استخدامها \n ملحوظة : مبلغ خصم كود الخصم يتحمله المعلن بنسبة 100%",maxLines: 4,overflow: TextOverflow.ellipsis,)),
-                  )
+                  )*/
                 ],
               ),
               Row(
@@ -61,23 +115,36 @@ class ActivateDeactivateSheet extends StatelessWidget {
                   Container(
                     height: 12,
                     width: 12,
-                    margin: EdgeInsets.only(top: 24,right: 18),
+                    margin: EdgeInsets.only(top: 18,right: 18),
                     decoration: BoxDecoration (
                         shape: BoxShape.circle,
-                        color: Colors.deepPurple
+                      color: Color(0xff203B8D),
                     ),
                   ),
+                  coponModelResponse?.selected==null || !coponModelResponse!.selected! ?Expanded(
+                    child: Container(
+                        margin: EdgeInsets.all(12),
+                        child: Text("لتفعيل كود او اكثر إضغط مطولا ثم تفعيل",maxLines: 4,overflow: TextOverflow.ellipsis,style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff203B8D),
+                        ),)),
+                  ):
                   Expanded(
                     child: Container(
                         margin: EdgeInsets.all(12),
-                        child: Text("لتفعيل كود او اكثر إضغط مطولا ثم موافق",maxLines: 4,overflow: TextOverflow.ellipsis,)),
+                        child: Text("لتعطيل كود إضغط مطولا ثم تعطيل",maxLines: 4,overflow: TextOverflow.ellipsis,style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff203B8D),
+                        ),)),
                   )
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  coponModelResponse?.selected==null || !coponModelResponse!.selected! ? Container(
                     width: 135,
                     height: 35,
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
@@ -86,7 +153,7 @@ class ActivateDeactivateSheet extends StatelessWidget {
                         showDialog(
                           context: context,
                           barrierDismissible: false,
-                          builder: (BuildContext context) {
+                          builder: (BuildContext context1) {
                             return Dialog(
                               child: Container(
                                 height: 180.0,
@@ -121,6 +188,8 @@ class ActivateDeactivateSheet extends StatelessWidget {
                                             onPressed: () {
                                               print('Confirmed');
                                              // Navigator.of(context).pop();
+                                              Get.back();
+                                              requestAdvertiseController.indexClicked.value=-1;
                                               requestAdvertiseController.onActivateClicked(context,coponModelResponse!.id!);
                                             },
                                             /*style:TextButton.styleFrom(
@@ -166,7 +235,7 @@ class ActivateDeactivateSheet extends StatelessWidget {
                                 left: 12.0, bottom: 4.0, right: 20),*/
                           alignment: Alignment.center,
                           child: Text(
-                            'موافق',
+                            'تفعيل',
                             style: TextStyle(
                                 fontSize: 16.0,
                                 color: AppColors.tabColor,
@@ -176,7 +245,7 @@ class ActivateDeactivateSheet extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
+                  ):
                   Container(
                     width: 135,
                     height: 35,
@@ -222,7 +291,8 @@ class ActivateDeactivateSheet extends StatelessWidget {
                                                 child: Text('تأكيد')),
                                             onPressed: () {
                                               print('Confirmed');
-
+                                               Get.back();
+                                              requestAdvertiseController.indexClicked.value=-1;
                                               requestAdvertiseController.onDeActivateClicked(context,coponModelResponse!.id!);
                                             },
                                             /*style:TextButton.styleFrom(
@@ -267,7 +337,7 @@ class ActivateDeactivateSheet extends StatelessWidget {
                                 left: 12.0, bottom: 4.0, right: 20),*/
                           alignment: Alignment.center,
                           child: Text(
-                            'إلغاء',
+                            'تعطيل',
                             style: TextStyle(
                                 fontSize: 16.0,
                                 color: Colors.white,

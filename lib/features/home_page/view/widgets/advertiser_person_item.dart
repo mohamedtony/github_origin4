@@ -23,17 +23,17 @@ class AdvertiserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(()=>Container(
+    return Container(
       height: 85.0.h,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-              color: findAdvertiseController.indexClicked.value==index?Color(0xFFFFCC99):Colors.grey[300]!,
+              color: /*findAdvertiseController.indexClicked.value==index?Color(0xFFFFCC99):*/Colors.grey[300]!,
               blurRadius: 4,
               offset: Offset(0, 3), // S
-              spreadRadius:findAdvertiseController.indexClicked.value==index?4:2// hadow position
+              spreadRadius:/*findAdvertiseController.indexClicked.value==index?4:*/2// hadow position
           ),
         ],
       ),
@@ -169,7 +169,7 @@ class AdvertiserItem extends StatelessWidget {
           )
         ],
       ),
-    ));
+    );
   }
 }
 /*class AdvertiserItem extends StatelessWidget {

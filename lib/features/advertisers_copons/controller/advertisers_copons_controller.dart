@@ -731,6 +731,7 @@ String? dropdownValue;
     myToken = await storage.read("token");
     client!.select_copons(SelectCoponsRequest(copons: [id]), "Bearer "+myToken).then((value){
       Get.back();
+      appCoponspagingController.refresh();
       Fluttertoast.showToast(
         msg: 'تم تفعيل الكوبون بنجاح !',
         toastLength: Toast.LENGTH_SHORT,
@@ -751,6 +752,7 @@ String? dropdownValue;
     myToken = await storage.read("token");
     client!.deselect_copons(SelectCoponsRequest(copons: [id]), "Bearer "+myToken).then((value){
       Get.back();
+      appCoponspagingController.refresh();
       Fluttertoast.showToast(
         msg: 'تم تعطيل الكوبون بنجاح !',
         toastLength: Toast.LENGTH_SHORT,
@@ -954,10 +956,11 @@ String? dropdownValue;
   }
 
   void deleteCopon(BuildContext context, int? id) {
+    Get.back();
     LoadingDailog().showLoading(context);
     client!.deleteCopon(id!,"Bearer "+myToken).then((value) {
       print("token");
-      Logger().i(value.status.toString());
+      //Logger().i(value.status.toString());
       if(value.status==200){
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('تم حذف الكوبون بنجاح !', style: TextStyle(
@@ -966,9 +969,10 @@ String? dropdownValue;
               fontFamily: 'Arabic-Regular'),),
         ));
         advertiserCoponspagingController.refresh();
-         Get.back();
+
         print("token deleted");
-        Logger().i(value.data.toString());
+        //Logger().i(value.data.toString());
+        Get.back();
       }
     });
   }
@@ -988,6 +992,30 @@ String? dropdownValue;
         advertiserCoponspagingController.refresh();
         Get.back();
         print("token deleted");
+        Logger().i(value.data.toString());
+      }
+    });
+  }
+
+  void shareLink(int? id) {
+    client!.shareCopon(id!,"Bearer "+myToken!).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        // Get.back();
+        print("token shared");
+        Logger().i(value.data.toString());
+      }
+    });
+  }
+
+  void seenCopon(int? id){
+    client!.seenCopon(id,"Bearer "+myToken!).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        // Get.back();
+        print("copon seen ${id}");
         Logger().i(value.data.toString());
       }
     });

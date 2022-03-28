@@ -68,7 +68,7 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
     this.isOpend = isOpend;
     this.position = position;
     String  myToken  = await storage.read("token");
-    if(isOpend){
+/*    if(isOpend){
       client!.seenCopon(id,"Bearer "+myToken).then((value) {
         print("token");
         Logger().i(value.status.toString());
@@ -78,7 +78,7 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
           Logger().i(value.data.toString());
         }
       });
-    }
+    }*/
     update();
   }
 
@@ -1708,6 +1708,19 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
     });
   }
 
+
+void seenCopon(int? id){
+  client!.seenCopon(id,"Bearer "+myToken!).then((value) {
+    print("token");
+    Logger().i(value.status.toString());
+    if(value.status==200){
+      // Get.back();
+      print("copon seen ${id}");
+      Logger().i(value.data.toString());
+    }
+  });
+}
+
   void shareLink(int? id) {
     client!.shareCopon(id!,"Bearer "+myToken!).then((value) {
       print("token");
@@ -1719,6 +1732,19 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
       }
     });
   }
+
+  void useCopon(int? id) {
+    client!.useCopon(id!,"Bearer "+myToken!).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        // Get.back();
+        print("token used");
+        Logger().i(value.data.toString());
+      }
+    });
+  }
+
   @override
   void onClose() {
     // TODO: implement onClose

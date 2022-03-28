@@ -111,4 +111,16 @@ class DiscountPageController extends GetxController {
       }
     });
   }
+
+  void useCopon(int? id) {
+    client!.useCopon(id!,"Bearer "+myToken).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        // Get.back();
+        print("token used");
+        Logger().i(value.data.toString());
+      }
+    });
+  }
 }

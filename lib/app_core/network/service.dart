@@ -171,6 +171,10 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   @GET('/copons/{id}/share')
   Future<AdvertiserProfileDetailsResponse> shareCopon(@Path("id") int? id,@Header("Authorization") String token);
 
+  @GET('/copons/{id}/use')
+  Future<AdvertiserProfileDetailsResponse> useCopon(@Path("id") int? id,@Header("Authorization") String token);
+
+
 /*  Map<String, dynamic> mymap = {
 
     "location[name]": requestAdvertiseController.locationModel.name,
