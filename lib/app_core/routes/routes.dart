@@ -37,6 +37,7 @@ import 'package:advertisers/features/customer_order_invoice/controller/customer_
 import 'package:advertisers/features/customer_order_invoice/view/customer_order_invoice_page.dart';
 import 'package:advertisers/features/customer_order_invoice_out_puts/view/customer_order_invoice_out_puts.dart';
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
+import 'package:advertisers/features/employees/controller/employees_controller.dart';
 import 'package:advertisers/features/employees/view/AddEmployeePage.dart';
 import 'package:advertisers/features/employees/view/EmployeeArchivePage.dart';
 import 'package:advertisers/features/employees/view/ShowEmployeePage.dart';
