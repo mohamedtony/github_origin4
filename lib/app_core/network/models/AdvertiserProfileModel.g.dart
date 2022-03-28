@@ -11,6 +11,9 @@ AdvertiserProfileModel _$AdvertiserProfileModelFromJson(
     AdvertiserProfileModel(
       id: json['id'] as int?,
       username: json['username'] as String?,
+      country: json['country'] == null
+          ? null
+          : Country.fromJson(json['country'] as Map<String, dynamic>),
       role: json['role'] as String?,
       image: json['image'] as String?,
       type: json['type'] as String?,
@@ -52,4 +55,5 @@ Map<String, dynamic> _$AdvertiserProfileModelToJson(
       'ads_count': instance.ads_count,
       'channels': instance.channels,
       'is_followed': instance.is_followed,
+      'country': instance.country,
     };

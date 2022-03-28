@@ -1,3 +1,4 @@
+import 'package:advertisers/features/wallet_module/widgets/wallet_intro/add_account_request/add_account_request.dart';
 import 'package:advertisers/features/wallet_module/widgets/wallet_intro/controller/wallet_intro_controller.dart';
 import 'package:advertisers/shared/radio_buttons/radio_buttons.dart';
 import 'package:animate_do/animate_do.dart';
@@ -8,7 +9,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class BankWidget extends StatelessWidget {
-  const BankWidget({Key? key}) : super(key: key);
+   BankWidget({Key? key}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +46,7 @@ class BankWidget extends StatelessWidget {
                         child: Text(controller
                             .paymentChannelName!.title!),
                       ),
-                      items: percentages.map((AccountType value) {
+                      items: banks.map((AccountType value) {
                         return DropdownMenuItem<AccountType>(
                           value: value,
                           child: Text(value.title!),alignment: Alignment.center,
@@ -78,6 +81,8 @@ class BankWidget extends StatelessWidget {
                     ),
                     elevation: 3,
                     child:  TextField(
+                      controller: controller.cardNumberController,
+                      keyboardType: TextInputType.number,
                       textAlign: TextAlign.start,
                       textAlignVertical:
                       TextAlignVertical.center,
@@ -121,6 +126,8 @@ class BankWidget extends StatelessWidget {
                     ),
                     elevation: 3,
                     child:  TextField(
+                      controller:controller.nameController,
+                      keyboardType: TextInputType.text,
                       textAlign: TextAlign.start,
                       textAlignVertical:
                       TextAlignVertical.center,
@@ -195,7 +202,7 @@ class BankWidget extends StatelessWidget {
                       child:   Center(
                         child: Padding(
                           padding:const EdgeInsets.symmetric(vertical: 12),
-                          child:  Text(controller.month == -1 ?"شهر" : "${controller.month}" ,style: TextStyle(color: Colors.black26),),
+                          child:  Text(controller.month == -1 ?"شهر" : "${controller.month}" ,style: TextStyle(color: controller.month == -1 ? Colors.black26:Colors.black),),
                         ),
                       ),
                     ),
@@ -241,7 +248,7 @@ class BankWidget extends StatelessWidget {
                       child:   Center(
                         child:Padding(
                           padding:const  EdgeInsets.symmetric(vertical: 12),
-                          child: Text(controller.year == -1 ?"سنة" : "${controller.year}",style: TextStyle(color: Colors.black26),),
+                         child: Text(controller.year == -1 ?"سنة" : "${controller.year}",style: TextStyle(color: controller.year == -1 ? Colors.black26:Colors.black),),
                         ),
                       ),
                     ),
@@ -258,6 +265,7 @@ class BankWidget extends StatelessWidget {
                       child:Padding(
                         padding:const  EdgeInsets.symmetric(vertical: 9),
                         child: TextField(
+                          controller: controller.cvvController,
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.start,
                           textAlignVertical:
@@ -285,6 +293,100 @@ class BankWidget extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+            const  SizedBox(
+              height: 60,
+            ),
+
+            Row(
+              children: [
+                Expanded(
+                    child: InkWell(
+                      onTap: (){
+                        if( controller.paymentChannelName!.id == "-1"){
+                          Get.snackbar(
+                            "برجاء تحديد قناه الدفع",
+                            "",
+                            snackPosition: SnackPosition.BOTTOM,);
+                          return;
+                        }
+                        if(controller.cardNumberController.text.isEmpty){
+                          Get.snackbar(
+                            "برجاء كتابة رقم البطاقة",
+                            "",
+                            snackPosition: SnackPosition.BOTTOM,);
+                          return;
+                        }
+                        if(controller.nameController.text.isEmpty){
+                          Get.snackbar(
+                            "برجاء كتابة الاسم",
+                            "",
+                            snackPosition: SnackPosition.BOTTOM,);
+                          return;
+                        }
+                        if(controller.year == -1 || controller.month == -1){
+                          Get.snackbar(
+                            "برجاء تحديد تاريخ الصلاحية",
+                            "",
+                            snackPosition: SnackPosition.BOTTOM,);
+                          return;
+                        }
+                        if(controller.cvvController.text.isEmpty){
+                          Get.snackbar(
+                            "برجاء كتابة الكود",
+                            "",
+                            snackPosition: SnackPosition.BOTTOM,);
+                          return;
+                        }
+                        Info info = Info(
+                          expirationYear: "${controller.year}",
+                          expirationMonth: "${controller.month}",
+                          cvv: controller.cvvController.text,
+                          cardUsername: controller.nameController.text,
+                          cardNumber: controller.cardNumberController.text,
+                        );
+                        controller.addAccountService(
+                            request: AddAccountRequest(
+                              type: controller.paymentChannelName!.id,
+                              info: info,
+                            )
+                        );
+                },
+                  child: Container(
+                    height: 40,
+                    child: const Center(
+                      child: Text("حفظ",style: TextStyle(color: Color(0xff4391D4),fontSize: 18,fontWeight: FontWeight.bold),),
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: const Color(0xffE8E8E8),
+                    ),
+                  ),)),
+
+                const  SizedBox(
+                  width: 20,
+                ),
+                Expanded(
+                    child: InkWell(
+                      onTap: (){
+                        controller.addNewAccount = false;
+                        controller.resetWalletIntro(withUpdate: true);
+                },
+                  child: Container(
+                    height: 40,
+                    child: const Center(
+                      child:  Text("رجوع",style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold),),
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: const Color(0xff4391D4),
+
+                    ),
+                  ),)) ,
+              ],
+            ),
+            const  SizedBox(
+              height: 15,
             ),
           ],
         )

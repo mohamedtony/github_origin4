@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 
 import 'package:advertisers/features/chat/view/widgets/chat_and_title.dart';
 import 'package:advertisers/features/chat/view/widgets/chat_content_widget.dart';
@@ -6,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'dart:math' as math;
 
 class ChatPage extends StatelessWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -14,12 +14,12 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  PreferredSize(
+      appBar: PreferredSize(
         preferredSize: Size.fromHeight(75),
         child: AppBarWidget(
-          // isSearchBar: ,
-          // showSearch: false,
-        ),
+            // isSearchBar: ,
+            // showSearch: false,
+            ),
       ),
       body: Column(
         children: [
@@ -35,10 +35,10 @@ class ChatPage extends StatelessWidget {
                   chatUser: ChatUser.sender,
                   message: 'السلام عليكم',
                 ),
-                ChatContentWidget(
-                  chatUser: ChatUser.sender,
-                  message: 'أستاذ أحمد',
-                ),
+                // ChatContentWidget(
+                //   chatUser: ChatUser.sender,
+                //   message: 'أستاذ أحمد',
+                // ),
                 ChatContentWidget(
                   chatUser: ChatUser.receiver,
                   message: 'عليكم السلام ورحمة الله وبركاته',
@@ -65,8 +65,9 @@ class ChatPage extends StatelessWidget {
             ),
           ),
           Container(
+            height: 60,
             padding: const EdgeInsets.all(4),
-            color: Colors.grey[300],
+            color: Color(0xff4187cd),
             child: Row(
               children: [
                 InkWell(
@@ -74,6 +75,7 @@ class ChatPage extends StatelessWidget {
                   child: SvgPicture.asset(
                     "images/ios-mic.svg",
                     height: 60,
+                    color: Colors.white,
                   ),
                 ),
                 InkWell(
@@ -81,6 +83,7 @@ class ChatPage extends StatelessWidget {
                   child: SvgPicture.asset(
                     "images/camera.svg",
                     height: 60,
+                    color: Colors.white,
                   ),
                 ),
                 Expanded(
@@ -98,63 +101,69 @@ class ChatPage extends StatelessWidget {
                             Radius.circular(25.0),
                           ),
                         ),
-                        child: TextFormField(
-                          style: TextStyle(fontSize: 15.sp),
-                          textAlign: Get.locale?.languageCode ==
-                                  const Locale('en').languageCode
-                              ? TextAlign.left
-                              : TextAlign.right,
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            hintText: '..............',
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            // suffixIcon: Padding(
-                            //   padding: const EdgeInsets.all(12.0),
-                            //   child: InkWell(
-                            //     onTap: () {},
-                            //     child: SvgPicture.asset(
-                            //       "images/bx-search-alt.svg",
-                            //       height: 10,
-                            //     ),
-                            //   ),
-                            // ),
-                            suffixIcon: Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: InkWell(
-                                onTap: () {},
-                                child: Transform(
-                                  alignment: Alignment.center,
-                                  transform: Matrix4.rotationY(
-                                      Get.locale?.languageCode ==
-                                              const Locale('en').languageCode
-                                          ? math.pi
-                                          : 0),
-                                  child: SvgPicture.asset(
-                                    "images/send.svg",
-                                    height: 30,
+                        child: Container(
+                          height: 40,
+                          child: TextFormField(
+                            style: TextStyle(fontSize: 15.sp),
+                            textAlign: Get.locale?.languageCode ==
+                                    const Locale('en').languageCode
+                                ? TextAlign.left
+                                : TextAlign.right,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              hintText: '..............',
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              // isDense: true,
+                              // contentPadding: EdgeInsets.all(0),
+                              // suffixIcon: Padding(
+                              //   padding: const EdgeInsets.all(12.0),
+                              //   child: InkWell(
+                              //     onTap: () {},
+                              //     child: SvgPicture.asset(
+                              //       "images/bx-search-alt.svg",
+                              //       height: 10,
+                              //     ),
+                              //   ),
+                              // ),
+                              suffixIcon: Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: InkWell(
+                                  onTap: () {},
+                                  child: Transform(
+                                    alignment: Alignment.center,
+                                    transform: Matrix4.rotationY(
+                                        Get.locale?.languageCode ==
+                                                const Locale('en').languageCode
+                                            ? math.pi
+                                            : 0),
+                                    child: SvgPicture.asset(
+                                      "images/send.svg",
+                                      height: 30,
+
+                                    ),
                                   ),
                                 ),
                               ),
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintStyle: TextStyle(
+                                  color: const Color(
+                                    0xffA5A5A5,
+                                  ),
+                                  fontSize: 15.sp),
                             ),
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintStyle: TextStyle(
-                                color: const Color(
-                                  0xffA5A5A5,
-                                ),
-                                fontSize: 15.sp),
+                            // controller: _walletController.searchController,
+                            // onSaved: (value){
+                            //   _walletController.search=value!;
+                            // },
+                            // validator: (value){
+                            //   return _walletController.validatePhone(value!);
+                            // },
                           ),
-                          // controller: _walletController.searchController,
-                          // onSaved: (value){
-                          //   _walletController.search=value!;
-                          // },
-                          // validator: (value){
-                          //   return _walletController.validatePhone(value!);
-                          // },
                         ),
                       ),
                     ),
@@ -164,7 +173,7 @@ class ChatPage extends StatelessWidget {
                   onPressed: () {},
                   icon: const Icon(
                     Icons.add,
-                    color: Colors.blue,
+                    color: Colors.white,
                     size: 35,
                   ),
                 ),

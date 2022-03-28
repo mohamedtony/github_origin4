@@ -5,6 +5,7 @@ part 'CoponModelResponse.g.dart';
 class CoponModelResponse {
   int? id;
   int? status;
+  String? status_txt;
   String? code,type;
   int?discount;
   String? started_at;
@@ -20,9 +21,12 @@ class CoponModelResponse {
   String?discount_type;
   int? likes;
   int?dislikes;
-  int? views;
+  int? views,users;
   int?shares;
   bool?selected;
+  String?store_name;
+  bool?can_edit;
+  bool?belongs_me;
 
 
   CoponModelResponse({
@@ -31,10 +35,15 @@ class CoponModelResponse {
     this.views,
     this.dislikes,
     this.likes,
+    this.belongs_me,
     this.is_liked,
     this.link,
     this.id,
+    this.status_txt,
     this.used,
+    this.can_edit,
+    this.users,
+    this.store_name,
     this.started_at,this.ended_at,this.description,this.status,this.name,this.uses,this.discount,this.code,this.image,this.type,this.ads_request_id,this.discount_type,this.user_id
   });
 

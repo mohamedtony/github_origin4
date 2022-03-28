@@ -400,6 +400,7 @@ class AdvertiserListPage extends StatelessWidget {
           },),
           AdvertiseListItem(icon: 'images/discount_copon_img.svg',title: 'الخوصومات والكوبوناتي',listTilePressed: (){
             print('pressed2');
+            Get.toNamed('/AdvertisersCopons');
            // Get.toNamed('/DiscountPage');
           },),
           AdvertiseListItem(icon: 'images/gallery_icon.svg',title: 'المعرض',listTilePressed: (){
@@ -418,8 +419,9 @@ class AdvertiserListPage extends StatelessWidget {
             print('pressed2');
           },),
           AdvertiseListItem(icon: 'images/logout_icon.svg',title: 'خروج',listTilePressed: () async {
-            await storage.remove("data");
-            await storage.remove("token");
+            // await storage.remove("data");
+            // await storage.remove("token");
+            await storage.erase();
             Get.offAllNamed('/loginPage');
             print('pressed2');
           },),

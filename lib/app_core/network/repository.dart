@@ -45,7 +45,7 @@ class Repository {
       dioDio.options.contentType = dio.Headers.formUrlEncodedContentType;
       dioDio.post(base + path, data: formData, options: dio.Options(
           followRedirects: false,
-         // method: 'Post',
+          //method: 'POST',
           validateStatus: (status) {
             return status! < 500;
           },

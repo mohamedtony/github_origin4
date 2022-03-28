@@ -158,7 +158,7 @@ class FindAdvertiseController extends GetxController {
   }
   GetAdvertisersRequest? getAdvertisersRequest2;
   Future<void> fetchPage(int pageKey,{GetAdvertisersRequest? getAdvertisersRequest,String? type}) async {
-    print("hhhhhhhhhhhhhhhhhhhhhhhh");
+    print("hhhhhhhhhhhhhhhhhhhhhhhhpageKey= "+pageKey.toString());
     try {
       //List<GetAdvertisersModel> newItems = await getNotifications(page: pageKey);
       /*List<GetAdvertisersModel>? newItems = (await client!.getAdvertisers("Bearer " + myToken!, GetAdvertisersRequest(page: pageKey))).data;

@@ -165,8 +165,9 @@ CoponModelResponse? coponModelResponse;
                     ),
                   ),
                   Container(
+                    alignment: Alignment.centerRight,
                     margin: EdgeInsets.all(3.0),
-                    child: Text('قسيمة تخفيض نون 15 % على كل منتجات نون السعودية',
+                    child: Text( '${coponModelResponse?.description ?? coponModelResponse?.name}',
                       style: TextStyle(fontSize: 16.0.sp,color: AppColors.coponPercentColorText,fontWeight: FontWeight.bold),textAlign: TextAlign.right,overflow: TextOverflow.ellipsis,maxLines: 2,),),
                   Container(
                     margin: EdgeInsets.only(bottom: 14.0,left: 4.0),
@@ -229,7 +230,7 @@ CoponModelResponse? coponModelResponse;
         ),
       ),
       onExpansionChanged: (h){
-        controller.changeStatus(h, pos!);
+        controller.changeStatus(h, pos!,coponModelResponse!.id!);
 
         print("onExpansionChanged "+h.toString());
       },
@@ -248,7 +249,10 @@ CoponModelResponse? coponModelResponse;
                   children: [
                     InkWell(
                       onTap: (){
-                        Share.share('check out my website https://example.com');
+                        Share.share('${coponModelResponse?.link ??''}').then((value){
+                          controller.shareLink(coponModelResponse!.id);
+                        });
+
                       },
                       child: Container(
                         //margin: EdgeInsets.all(4.0),
@@ -300,7 +304,7 @@ CoponModelResponse? coponModelResponse;
                     alignment: Alignment.centerLeft,
                     child: Container(
                         margin: EdgeInsets.only(left: 16.0),
-                        child: Text('الذهاب لمتجر نشمي',style: TextStyle(fontSize: 20.0.sp,color: AppColors.coponPercentColorText, decoration: TextDecoration.underline,
+                        child: Text('الذهاب لمتجر ${coponModelResponse?.store_name ??''}',style: TextStyle(fontSize: 20.0.sp,color: AppColors.coponPercentColorText, decoration: TextDecoration.underline,
                           decorationThickness: 2,),textAlign: TextAlign.center,)),
                   ),
                 ),

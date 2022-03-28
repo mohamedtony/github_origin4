@@ -54,6 +54,7 @@ void main() async{
       //Logger().i(e.response);
       if(r!=null)
       print("MyCode" + r.statusCode.toString());
+      print("MyCode" + r!.statusMessage!.toString());
       if (r != null && r.statusCode == 401) {
         print("in_status_401");
     }}
