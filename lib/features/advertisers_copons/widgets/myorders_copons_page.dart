@@ -1,6 +1,7 @@
 import 'package:advertisers/app_core/network/models/CoponModelResponse.dart';
+import 'package:advertisers/features/advertisers_copons/controller/advertisers_copons_controller.dart';
+import 'package:advertisers/features/advertisers_copons/widgets/discount_widget.dart';
 import 'package:advertisers/features/discounts/controller/discount_controller.dart';
-import 'package:advertisers/features/discounts/view/widgets/discount_widget.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:advertisers/shared/toast_template/toast_template.dart';
 import 'package:advertisers/shared/widget_and_title/widget_and_title.dart';
@@ -13,28 +14,28 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 
-class DiscountPage extends StatefulWidget {
-   DiscountPage({Key? key}) : super(key: key);
+class MyOrdersCoponsPage extends StatefulWidget {
+  MyOrdersCoponsPage({Key? key}) : super(key: key);
 
   @override
-  State<DiscountPage> createState() => _DiscountPageState();
+  State<MyOrdersCoponsPage> createState() => _MyOrdersCoponsPageState();
 }
 
-class _DiscountPageState extends State<DiscountPage> {
-   DiscountPageController discountPageController = Get.put(DiscountPageController());
+class _MyOrdersCoponsPageState extends State<MyOrdersCoponsPage> {
+   AdvertisersCoponsController discountPageController = Get.put(AdvertisersCoponsController());
    @override
    void initState() {
      // TODO: implement initState
-     discountPageController.pagingController.addPageRequestListener((pageKey) async {
+     discountPageController.appCoponspagingController.addPageRequestListener((pageKey) async {
        print("hhhhhhhhhhhhhhhhhhhhhhhh");
-       await discountPageController.fetchPage(pageKey);
+       await discountPageController.fetchAppCoponsPage(pageKey);
      });
      super.initState();
    }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
+      /*appBar: PreferredSize(
         child: AppBarWidget(
           isBack: true,
           isNotification: false,
@@ -42,19 +43,19 @@ class _DiscountPageState extends State<DiscountPage> {
           isSideMenu: false,
         ),
         preferredSize: Size(MediaQuery.of(context).size.width, 80.0),
-      ),
+      ),*/
       body: Column(
         children: [
-          WidgetAndTitle(
+          /*WidgetAndTitle(
             title: "كوبونات خصم المنصة",
             iconWidget: SvgPicture.asset(
               "images/rate.svg",
               height: 26,
             ),
-          ),
+          ),*/
           Expanded(
             child: PagedListView<int, CoponModelResponse>(
-              pagingController: discountPageController.pagingController,
+              pagingController: discountPageController.appCoponspagingController,
               //shrinkWrap: true,
               builderDelegate: PagedChildBuilderDelegate<CoponModelResponse>(
                 animateTransitions: true,
@@ -68,6 +69,7 @@ class _DiscountPageState extends State<DiscountPage> {
                 itemBuilder: (context, item, position) {
                   return DiscountWidget(
                    copon: item,
+                   index: position,
                    // iconColor: discounts[position].iconColor,
                   );
                 },

@@ -1,4 +1,5 @@
 import 'package:advertisers/app_core/network/models/CoponModelResponse.dart';
+import 'package:advertisers/features/advertisers_copons/controller/advertisers_copons_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,33 +7,41 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class DiscountWidget extends StatelessWidget {
   int? id;
   Color? iconColor;
   String? title,expiredDate,codeNumber,desc,discount;
-   DiscountWidget({Key? key,this.copon}) : super(key: key);
+   DiscountWidget({Key? key,this.copon,required this.index} ) : super(key: key);
+   int index;
    CoponModelResponse? copon;
+   AdvertisersCoponsController advertisersCoponsController=Get.find();
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return  Obx(()=>Container(
       margin: EdgeInsets.all(10),
-      child: InkWell(
-        onTap: (){
-          Clipboard.setData(ClipboardData(text: "${copon?.code??''}"));
-          Fluttertoast.showToast(
-            msg: " تم النسخ ${copon?.code??''}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.black.withOpacity(0.6),
-            textColor: Colors.white,
-            fontSize: 14.0,
-          );
+      child: GestureDetector(
+        onLongPress: (){
+          advertisersCoponsController.showBottomSheetForRequest2(context,copon!);
+          advertisersCoponsController.indexClicked.value=index;
         },
         child: Card(
           child: Container(
             padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                    color: advertisersCoponsController.indexClicked.value==index?Color(0xFFFFCC99):Colors.grey[300]!,
+                    blurRadius: 4,
+                    offset: Offset(0, 3), // S
+                    spreadRadius:advertisersCoponsController.indexClicked.value==index?4:2// hadow position
+                ),
+              ],
+            ),
             child: Column(
               children: [
                 Row(
@@ -50,7 +59,7 @@ class DiscountWidget extends StatelessWidget {
                                   margin: EdgeInsets.only(right: 2,left: 2),
                                   child: Text(" تاريخ الانتهاء ${copon?.ended_at??''} ",style: TextStyle(color: Colors.black54,fontSize: 14.sp),))),
 
-                               
+
                             ],
                           ),
                           SizedBox(
@@ -60,7 +69,7 @@ class DiscountWidget extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(child: Text("${copon?.name??''}",style: TextStyle(color: Colors.black,fontSize: 18.sp,fontWeight: FontWeight.bold),)),
-                              Container(
+                              /*Container(
                                 // height: 30,
                                 // width: 20,
                                 margin: EdgeInsets.all(3),
@@ -75,7 +84,7 @@ class DiscountWidget extends StatelessWidget {
                                     Radius.circular(7.0),
                                   ),
                                 ),
-                              ),
+                              ),*/
                               // Text("تاريخ الانتهاء 22/1/44 ",style: TextStyle(color: Colors.black54,fontSize: 12.sp),),
                             ],
                           ),
@@ -91,19 +100,19 @@ class DiscountWidget extends StatelessWidget {
                         SizedBox(
                           height: 5,
                         ),
-          CachedNetworkImage(
-            imageUrl: copon?.image!=null?copon!.image!:"",
-            placeholder: (context, url) =>
-            const SpinKitThreeBounce(
-              color: Colors.grey,
-              size: 25,
-            ),
-            errorWidget: (context, url, error) =>
-            const Icon(Icons.error),
-            width: 70.0,
-            height: 75.0.h,
-            fit: BoxFit.fill,
-          )
+                        CachedNetworkImage(
+                          imageUrl: copon?.image!=null?copon!.image!:"",
+                          placeholder: (context, url) =>
+                          const SpinKitThreeBounce(
+                            color: Colors.grey,
+                            size: 25,
+                          ),
+                          errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                          width: 70.0,
+                          height: 75.0.h,
+                          fit: BoxFit.fill,
+                        )
                         /*SvgPicture.asset(
                           "images/barCode.svg",
                           height: 75.h,
@@ -127,7 +136,7 @@ class DiscountWidget extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ));
   }
 }
 

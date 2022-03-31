@@ -7,6 +7,7 @@ import 'package:advertisers/features/advertiser_invoice_input/view/advertiser_in
 import 'package:advertisers/features/advertiser_order_details/advertiser_order_details.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/advertiser_profile_order_page.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/controller/AdvertiserProfileOrderController.dart';
+import 'package:advertisers/features/advertisers_copons/widgets/advertisers_copons.dart';
 import 'package:advertisers/features/advertising_influence_channels/controller/edit_channel_advertiser_controller.dart';
 import 'package:advertisers/features/advertising_influence_channels/view/page/edit_advertiser_channel.dart';
 import 'package:advertisers/features/advanced_options/controller/advanced_options_controller.dart';
@@ -36,6 +37,7 @@ import 'package:advertisers/features/customer_order_invoice/controller/customer_
 import 'package:advertisers/features/customer_order_invoice/view/customer_order_invoice_page.dart';
 import 'package:advertisers/features/customer_order_invoice_out_puts/view/customer_order_invoice_out_puts.dart';
 import 'package:advertisers/features/discounts/view/pages/discount_page.dart';
+import 'package:advertisers/features/employees/controller/employees_controller.dart';
 import 'package:advertisers/features/employees/view/AddEmployeePage.dart';
 import 'package:advertisers/features/employees/view/EmployeeArchivePage.dart';
 import 'package:advertisers/features/employees/view/ShowEmployeePage.dart';
@@ -467,12 +469,21 @@ class Routes {
       }),
     ),
 
+
     GetPage(
       name: '/AdvertiserProfileOrderPage',
       page: () => AdvertiserProfileOrderPage(),
       binding: BindingsBuilder(() {
         Get.lazyPut<AdvertiserProfileOrderController>(() => AdvertiserProfileOrderController());
       }),
+
+    ),
+    GetPage(
+      name: '/AdvertisersCopons',
+      page: () => AdvertisersCopons(),
+      /*binding: BindingsBuilder(() {
+        Get.lazyPut<AdvertiserProfileOrderController>(() => AdvertiserProfileOrderController());
+      }),*/
 
     ),
 

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:advertisers/features/advertiser_profile_order_page/controller/AdvertiserProfileOrderController.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/widgets/advertiser_copons_tab.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/widgets/request_order_tab.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/features/find_advertise_page/find_advertise_controller.dart';
@@ -668,7 +669,7 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
                   // RequestAdvertisePage(),
 
                   /*CoponsPage(),*/
-                  CoponsPage(),
+                  AdvertiserCoponsTab(),
                   RequestOrderTab(),
                 ]),
               ),

@@ -37,7 +37,7 @@ import 'package:video_compress/video_compress.dart';
 //                         By Mohamed T. Hammad
 
 //=========================================================================================
-class FindAdvertiseController extends GetxController {
+class AdvertisersPageController extends GetxController {
   var isLoading = true.obs;
   var isEmpty = false.obs;
   RxList<GetAdvertisersModel> advertisersModel = <GetAdvertisersModel>[].obs;
@@ -110,7 +110,7 @@ class FindAdvertiseController extends GetxController {
   late RequestAdvertiseController requestAdvertiseController;
 
   final PagingController<int, GetAdvertisersModel> pagingController = PagingController(firstPageKey: 0);
-   String? type;
+  String? type;
 
   @override
   Future<void> onInit() async {
@@ -133,7 +133,10 @@ class FindAdvertiseController extends GetxController {
       }
     });*/
 
-
+    pagingController.addPageRequestListener((pageKey) async {
+      print("hhhhhhhhhhhhhhhhhhhhhhhh");
+      await fetchPage(pageKey);
+    });
 
     super.onInit();
     requestAdvertiseController = Get.find();
@@ -187,19 +190,19 @@ class FindAdvertiseController extends GetxController {
           pagingController.itemList = [];
         }
         getAdvertisersRequest2!.page = pageKey;
-         newItems = await getNotifications(pageKey: pageKey,getAdvertisersRequest: getAdvertisersRequest2);
-         bool isLastPage = newItems == null || newItems.isEmpty;
-         if (isLastPage) {
-           print("isLast = " + isLastPage.toString());
-           pagingController.appendLastPage(newItems!);
-           // pagingController. = "tony";
-         } else {
-           //final nextPageKey = pageKey + newItems.length;
-           int nextPageKey = ++pageKey;
-           print("nextPageKey=" + nextPageKey.toString());
-           pagingController.appendPage(newItems, nextPageKey);
-           //pagingController.itemList = newItems;
-         }
+        newItems = await getNotifications(pageKey: pageKey,getAdvertisersRequest: getAdvertisersRequest2);
+        bool isLastPage = newItems == null || newItems.isEmpty;
+        if (isLastPage) {
+          print("isLast = " + isLastPage.toString());
+          pagingController.appendLastPage(newItems!);
+          // pagingController. = "tony";
+        } else {
+          //final nextPageKey = pageKey + newItems.length;
+          int nextPageKey = ++pageKey;
+          print("nextPageKey=" + nextPageKey.toString());
+          pagingController.appendPage(newItems, nextPageKey);
+          //pagingController.itemList = newItems;
+        }
       }else{
         print("tyyyype2");
         newItems = await getNotifications(pageKey: pageKey,getAdvertisersRequest: GetAdvertisersRequest(page: pageKey));
@@ -375,7 +378,7 @@ class FindAdvertiseController extends GetxController {
               }
               isAreaEnabled.value = false;
             }
-           /* if(selectedUserLocations.length==1){
+            /* if(selectedUserLocations.length==1){
 
             }*/
           }
@@ -432,7 +435,7 @@ class FindAdvertiseController extends GetxController {
             });
           } else {
             Area? areaIn = selectedUserLocations.firstWhereOrNull(
-                (element) => element.id == area.id && (element is Area));
+                    (element) => element.id == area.id && (element is Area));
             if (areaIn == null) {
               selectedUserLocations.add(area);
             }
@@ -565,10 +568,10 @@ class FindAdvertiseController extends GetxController {
     isFilterSavedClicked.value = true;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-      "تم حفظ البيانات بنجاح !",
-      style: TextStyle(
-          color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
-    )));
+          "تم حفظ البيانات بنجاح !",
+          style: TextStyle(
+              color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
+        )));
     Get.back();
     isLoading.value = true;
     String? sortByStrings = '';
@@ -602,15 +605,15 @@ class FindAdvertiseController extends GetxController {
     });
     //pagingController.refresh();
     Logger().i(GetAdvertisersRequest(
-            sort_by: sortByStrings!.isNotEmpty ? sortByStrings : null,
-            categories: categoriesId.isNotEmpty ? categoriesId : null,
-            country_category:
-                countryCaregoriesIds.isNotEmpty ? countryCaregoriesIds : null,
-            countries: countriesId.isNotEmpty ? countriesId : null,
-            areas: areasIds.isNotEmpty ? areasIds : null,
-            keyword: searchAdvertiserController.text.isNotEmpty
-                ? searchAdvertiserController.text
-                : null)
+        sort_by: sortByStrings!.isNotEmpty ? sortByStrings : null,
+        categories: categoriesId.isNotEmpty ? categoriesId : null,
+        country_category:
+        countryCaregoriesIds.isNotEmpty ? countryCaregoriesIds : null,
+        countries: countriesId.isNotEmpty ? countriesId : null,
+        areas: areasIds.isNotEmpty ? areasIds : null,
+        keyword: searchAdvertiserController.text.isNotEmpty
+            ? searchAdvertiserController.text
+            : null)
         .toJson());
     type = "search";
     getAdvertisersRequest2 = GetAdvertisersRequest(
@@ -714,43 +717,43 @@ class FindAdvertiseController extends GetxController {
     if (requestAdvertiseController.categoryId == -1) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
-        "يجب اختيار نوع المنتج !",
-        style: TextStyle(
-            color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
-      )));
+            "يجب اختيار نوع المنتج !",
+            style: TextStyle(
+                color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
+          )));
       return;
     } else if (requestAdvertiseController.adTypeId == -1) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
-        "يجب اختيار نوع الاعلان !",
-        style: TextStyle(
-            color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
-      )));
+            "يجب اختيار نوع الاعلان !",
+            style: TextStyle(
+                color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
+          )));
       return;
     } else if (requestAdvertiseController.descriptionController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
-        "يجب إضافة وصف للاعلان !",
-        style: TextStyle(
-            color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
-      )));
+            "يجب إضافة وصف للاعلان !",
+            style: TextStyle(
+                color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
+          )));
       return;
     } else if (requestAdvertiseController.fromDate.value.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
-        "يجب إضافة تاريخ بداية الاعلان !",
-        style: TextStyle(
-            color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
-      )));
+            "يجب إضافة تاريخ بداية الاعلان !",
+            style: TextStyle(
+                color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
+          )));
       return;
     } else if (requestAdvertiseController.isFlixble.isTrue &&
         requestAdvertiseController.toDate.value.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
-        "يجب إضافة تاريخ نهاية الاعلان !",
-        style: TextStyle(
-            color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
-      )));
+            "يجب إضافة تاريخ نهاية الاعلان !",
+            style: TextStyle(
+                color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
+          )));
       return;
     } else if(requestAdvertiseController.showInPlatform.isTrue && requestAdvertiseController.endAdvertisingDate.isEmpty){
       showToast("من فضلك يرجى إختيار تاريخ انتهاء مدة العرض فى المنصة!");
@@ -759,18 +762,18 @@ class FindAdvertiseController extends GetxController {
     }else if (requestAdvertiseController.channelsIds.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
-        "يجب إختيار قنوات الاعلان !",
-        style: TextStyle(
-            color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
-      )));
+            "يجب إختيار قنوات الاعلان !",
+            style: TextStyle(
+                color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
+          )));
       return;
     } else if (selectedAdvertiseId == -1) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
-        "يجب إختيار المعلن !",
-        style: TextStyle(
-            color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
-      )));
+            "يجب إختيار المعلن !",
+            style: TextStyle(
+                color: AppColors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
+          )));
       return;
     }
     //var file = await MultipartFile(requestAdvertiseController.attatechedFilesImageAndVideo[0].file, filename: "mmm");
@@ -831,20 +834,20 @@ class FindAdvertiseController extends GetxController {
       "description": requestAdvertiseController.descriptionController.text,
       "ads_type_id": requestAdvertiseController.adTypeId,
       "date_type":
-          requestAdvertiseController.isFlixble.isTrue ? "flexible" : "fixed",
+      requestAdvertiseController.isFlixble.isTrue ? "flexible" : "fixed",
       "started_at": requestAdvertiseController.fromDate.value,
       "ended_at": requestAdvertiseController.isFlixble.isTrue
           ? requestAdvertiseController.toDate.value
           : null,
       "offer_ended_at":
-          requestAdvertiseController.endAdvertisingDate.value.isNotEmpty
-              ? requestAdvertiseController.endAdvertisingDate.value
-              : null,
+      requestAdvertiseController.endAdvertisingDate.value.isNotEmpty
+          ? requestAdvertiseController.endAdvertisingDate.value
+          : null,
       "repeat_count":requestAdvertiseController.isFlixble.isTrue?
-          int.parse(requestAdvertiseController.selectedCounterController.text):1,
+      int.parse(requestAdvertiseController.selectedCounterController.text):1,
       "channels[]": requestAdvertiseController.channelsIds,
       "attachments[]": requestAdvertiseController.imageFideoFiles!.isNotEmpty ? requestAdvertiseController.imageFideoFiles : null,
- /*     "links[][title]": requestAdvertiseController.links.value.isNotEmpty
+      /*     "links[][title]": requestAdvertiseController.links.value.isNotEmpty
           ? requestAdvertiseController.links.value.map((e) => e.title).toList()
           : null,
       "links[][link]": requestAdvertiseController.links.value.isNotEmpty
@@ -870,7 +873,7 @@ class FindAdvertiseController extends GetxController {
     if(requestAdvertiseController.links.value.isNotEmpty){
       for (var value1 in requestAdvertiseController.links.value) {
         mymap2={
-         "links[${requestAdvertiseController.links.value.indexOf(value1)}][title]":"${value1.name}",
+          "links[${requestAdvertiseController.links.value.indexOf(value1)}][title]":"${value1.name}",
           "links[${requestAdvertiseController.links.value.indexOf(value1)}][link]":"${value1.link}"
         };
         if(mymap2.isNotEmpty) {
@@ -898,8 +901,8 @@ class FindAdvertiseController extends GetxController {
           }
           Navigator.of(context).pop();
           Navigator.of(context).pop();
-          Get.delete<RequestAdvertiseController>();
-          Get.delete<FindAdvertiseController>();
+          //Get.delete<RequestAdvertiseController>();
+         // Get.delete<FindAdvertiseController>();
           //Get.offAllNamed('/Home');
         },
         onError: (err, res) {
@@ -966,7 +969,7 @@ class FindAdvertiseController extends GetxController {
   }
 
 
-  // Spawns an isolate and waits for the first message
+// Spawns an isolate and waits for the first message
 /*  Future<File> _parseInBackground() async {
     final p = ReceivePort();
     await Isolate.spawn(_compressVideo, p.sendPort);
@@ -1012,7 +1015,7 @@ class FindAdvertiseController extends GetxController {
     }
   }*/
 
- // static List<FileModel>  attatechedFilesImageAndVideo = requestAdvertiseController.attatechedFilesImageAndVideo;
+// static List<FileModel>  attatechedFilesImageAndVideo = requestAdvertiseController.attatechedFilesImageAndVideo;
 /*  static Future _compressVideo(SendPort p) async {
     attatechedFilesImageAndVideo.forEach((element) async {
       MediaInfo? mediaInfo = await VideoCompress.compressVideo(
