@@ -4,6 +4,7 @@ import 'package:advertisers/shared/radio_buttons/radio_buttons.dart';
 import 'package:advertisers/shared/widget_and_title/widget_and_title.dart';
 import 'package:advertisers/features/tax_settings/controller/tax_settings_controller.dart';
 import 'package:advertisers/features/tax_settings/view/widgets/tax_settings_app_bar_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -139,6 +140,7 @@ class TaxSettingsPage extends StatelessWidget {
                     Expanded(child: TextFormField(
                       enabled: controller.isChecked,
                       //initialValue: "1236532897120",
+                     keyboardType:TextInputType.number,
                       controller: controller.taxNumberController,
                       style: TextStyle(color:Color(0xff041D67) ,fontSize: 14.sp),
                       // cursorColor: Colors.black,
@@ -194,13 +196,21 @@ class TaxSettingsPage extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(child: InkWell(onTap: (){
-                Get.find<TaxSettingsController>().postTaxSettings();
-               // Get.find<TaxSettingsController>().isChecked=false;
-                //Get.find<TaxSettingsController>().changeChecked();
+                  if( int.parse( Get.find<TaxSettingsController>().taxNumberController.text??'0')>100){
+                    Get.snackbar(
+                      "خطأ",
+                      "النسبة لا تتعدى رقم المائة",
+                      icon: const Icon(Icons.person, color: Colors.red),
+                      backgroundColor: Colors.yellow,
+                      snackPosition: SnackPosition.BOTTOM,);
+                  }else {
+                    Get.find<TaxSettingsController>().postTaxSettings();
+                    // Get.find<TaxSettingsController>().isChecked=false;
+                    //Get.find<TaxSettingsController>().changeChecked();
 
-                Get.back();
-                Get.delete<TaxSettingsController>();
-                },
+                    Get.back();
+                    Get.delete<TaxSettingsController>();
+                  }},
                   child: Container(
                     height: 40,
                     child: Center(

@@ -215,7 +215,7 @@ class _EditAdvertiserChannelState extends State<EditAdvertiserChannel> {
                       style: TextStyle(
                           color: const Color(0xff041D67), fontSize: 14.sp),
                       // cursorColor: Colors.black,
-                      // keyboardType: inputType,
+                      keyboardType: TextInputType.url,
                       // textDirection: TextDirection.rtl,
                       controller: _editChannelAdvertiserController.linkController,
                       decoration: const InputDecoration(

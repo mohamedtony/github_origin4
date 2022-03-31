@@ -12,6 +12,7 @@ import 'package:advertisers/features/advertising_influence_channels/controller/a
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -197,7 +198,7 @@ class _AddAdvertiserChannelState extends State<AddAdvertiserChannel> {
                   style: TextStyle(
                       color: const Color(0xff041D67), fontSize: 14.sp),
                   // cursorColor: Colors.black,
-                  // keyboardType: inputType,
+                   keyboardType: TextInputType.url,
                   // textDirection: TextDirection.rtl,
                   controller: _addAdvertiserChannelController.linkController,
                   decoration: const InputDecoration(
