@@ -12,11 +12,14 @@ class AdvertiserAccountStatusController extends GetxController {
   late TextEditingController messageController;
   late Repository repo;
   List<int>? checkList = [];
+  var fromDate=DateTime.now().obs;
   var id=''.obs;
+  var reasonId=0.obs;
   var textMessage=' '.obs;
   var status='0'.obs;
   var from=''.obs;
   var to=''.obs;
+  var flagDate=false.obs;
   var getStopProfileResponse=GetStopProfileResponse().obs;
   var ranges=[].obs;
   void addRemoveCheckList(id) {
@@ -91,6 +94,7 @@ class AdvertiserAccountStatusController extends GetxController {
         getStopProfileResponse.value.data = res.data!;
         status.value=res.data!.settings?.stop_account??'0';
         ranges.value=res.data!.reasons??[];
+        reasonId.value=int.parse(res.data!.settings?.stop_reason_id??'0');
         textMessage.value=res.data!.settings?.stop_text??'';
         from.value=res.data!.settings?.stop_from.toString()??'';
         to.value=res.data!.settings?.stop_to.toString()??'';
@@ -113,7 +117,13 @@ class AdvertiserAccountStatusController extends GetxController {
 
   postStopProfile() {
     EasyLoading.show();
-
+    if(flagDate.value){
+      Get.snackbar(
+        "خطأ",
+        "التاريخ الى يجب ان يكون اكبر من التاريخ من",
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);}else{
 
     repo.postWithImageMultipart<GetStopProfileResponse>(
         path: 'profile/stop',
@@ -147,7 +157,7 @@ class AdvertiserAccountStatusController extends GetxController {
             backgroundColor: Colors.yellow,
             snackPosition: SnackPosition.BOTTOM,);
         });
-  }
+  }}
      @override
   void onClose() {
     searchController.dispose();

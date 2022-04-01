@@ -240,7 +240,7 @@ class _AdvertisingInfluenceChannelsPageListWidgetState extends State<Advertising
 
                           ],
                         )),
-                Obx(()=>Container(
+                Container(
                           color: Color(0xfff1f1f1),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 12,horizontal: 12),
@@ -372,7 +372,7 @@ class _AdvertisingInfluenceChannelsPageListWidgetState extends State<Advertising
                               ],
                             ),
                           ),
-                        )),
+                        ),
                       ],
                     ),
                   ),

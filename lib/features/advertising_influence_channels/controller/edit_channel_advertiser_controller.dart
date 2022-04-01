@@ -400,70 +400,80 @@ class EditChannelAdvertiserController extends GetxController {
   // }
 
   editChannel({required int id,required String type}){
-    if(isCountryEnabled.value) {
-      print("isCountryEnabledHere");
-      List<int> countriesId = [];
-      List<int> areasIds = [];
-      List<int> countryCaregoriesIds = [];
-      selectedUserLocations.forEach((element) {
-        if (element != null && element is Country &&
-            element.type == 'country') {
-          countriesId.add(element.id!);
-        }
-        if (element != null && element is Area) {
-          areasIds.add(element.id!);
-        }
-        if (element != null && element is Country &&
-            element.type == 'country_category') {
-          print("isAreaEnabledHere country_category");
-          countryCaregoriesIds.add(element.id!);
-        }
-      });
-      EasyLoading.show();
-      Repository repo = Repository();
+    if (int.parse(selectedMenPercentage.value)+int.parse(selectedWomenPercentage.value)+
+        int.parse(selectedBoysPercentage.value)+int.parse(selectedGirlsPercentage.value)>100){
+      Get.snackbar(
+        "خطأ",
+        "مجموع النسب يجب ان لا يتعدى المائة",
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
+    }else {
+      if (isCountryEnabled.value) {
+        print("isCountryEnabledHere");
+        List<int> countriesId = [];
+        List<int> areasIds = [];
+        List<int> countryCaregoriesIds = [];
+        selectedUserLocations.forEach((element) {
+          if (element != null && element is Country &&
+              element.type == 'country') {
+            countriesId.add(element.id!);
+          }
+          if (element != null && element is Area) {
+            areasIds.add(element.id!);
+          }
+          if (element != null && element is Country &&
+              element.type == 'country_category') {
+            print("isAreaEnabledHere country_category");
+            countryCaregoriesIds.add(element.id!);
+          }
+        });
+        EasyLoading.show();
+        Repository repo = Repository();
 
-      repo.postWithImageMultipart<ChannelsResponse>(
-          path: 'profile/channels/add',
-          fromJson: (json) => ChannelsResponse.fromJson(json),
-          json: {"token": "Bearer  $token",
-            "channel_id": id,
-            "type": type,
-            "name": accountNameController.text,
-            "link": linkController.text,
-            "followers_from": int.parse(selectedRange.value.substring(
-                0, selectedRange.value.lastIndexOf('-') - 1)),
-            "followers_to": int.parse(selectedRange.value.substring(
-                selectedRange.value.lastIndexOf('-') + 2)),
-            "men": int.parse(selectedMenPercentage.value),
-            "women": int.parse(selectedWomenPercentage.value),
-            "boys": int.parse(selectedBoysPercentage.value),
-            "girls": int.parse(selectedGirlsPercentage.value),
-            "areas": areasIds,
-            "countries": countriesId,
-          },
-          onSuccess: (res) {
-            if (EasyLoading.isShow) {
-              EasyLoading.dismiss();
-            }
-            Get.offAndToNamed('/AdvertiserSettingsPage');
-            Get.snackbar(
-              "نجاح",
-              res.message.toString(),
-              icon: const Icon(Icons.person, color: Colors.red),
-              backgroundColor: Colors.yellow,
-              snackPosition: SnackPosition.BOTTOM,);
-          },
-          onError: (err, res) {
-            if (EasyLoading.isShow) {
-              EasyLoading.dismiss();
-            }
-            Get.snackbar(
-              "خطأ",
-              res.message.toString(),
-              icon: const Icon(Icons.person, color: Colors.red),
-              backgroundColor: Colors.yellow,
-              snackPosition: SnackPosition.BOTTOM,);
-          });
+        repo.postWithImageMultipart<ChannelsResponse>(
+            path: 'profile/channels/add',
+            fromJson: (json) => ChannelsResponse.fromJson(json),
+            json: {"token": "Bearer  $token",
+              "channel_id": id,
+              "type": type,
+              "name": accountNameController.text,
+              "link": linkController.text,
+              "followers_from": int.parse(selectedRange.value.substring(
+                  0, selectedRange.value.lastIndexOf('-') - 1)),
+              "followers_to": int.parse(selectedRange.value.substring(
+                  selectedRange.value.lastIndexOf('-') + 2)),
+              "men": int.parse(selectedMenPercentage.value),
+              "women": int.parse(selectedWomenPercentage.value),
+              "boys": int.parse(selectedBoysPercentage.value),
+              "girls": int.parse(selectedGirlsPercentage.value),
+              "areas": areasIds,
+              "countries": countriesId,
+            },
+            onSuccess: (res) {
+              if (EasyLoading.isShow) {
+                EasyLoading.dismiss();
+              }
+              Get.offAndToNamed('/AdvertiserSettingsPage');
+              Get.snackbar(
+                "نجاح",
+                res.message.toString(),
+                icon: const Icon(Icons.person, color: Colors.red),
+                backgroundColor: Colors.yellow,
+                snackPosition: SnackPosition.BOTTOM,);
+            },
+            onError: (err, res) {
+              if (EasyLoading.isShow) {
+                EasyLoading.dismiss();
+              }
+              Get.snackbar(
+                "خطأ",
+                res.message.toString(),
+                icon: const Icon(Icons.person, color: Colors.red),
+                backgroundColor: Colors.yellow,
+                snackPosition: SnackPosition.BOTTOM,);
+            });
+      }
     }
   }
 
