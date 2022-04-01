@@ -114,6 +114,7 @@ update();
   void onInit() {
     super.onInit();
     resetWalletIntro();
+    checkMonth();
     getCardsData();
   }
 
@@ -250,7 +251,6 @@ update();
       var data =  WalletIntroResponse.fromJson(response.data);
 
 
-
       Get.snackbar(
         "${data.message}",
         "",
@@ -329,9 +329,10 @@ List <AccountType> accounts = [
 ];
 
 
+DateTime now = new DateTime.now();
 
 
-List<int> months = [
+List<int> month = [
   1,
   2,
   3,
@@ -344,15 +345,32 @@ List<int> months = [
   10,
   11,
   12
+
 ];
+
+void checkMonth(){
+
+  month.forEach((month) {
+    if(month >= now.month){
+      if(!months.contains(month)){
+        months.add(month);
+      }
+    }
+  });
+
+}
+
+
+List<int> months = [];
 List<int> years = [
-  2021,
-  2022,
-  2023,
-  2024,
-  2025,
-  2026,
-  2027,
+  now.year,
+  now.year + 1,
+  now.year + 2,
+  now.year + 3,
+  now.year + 4,
+  now.year + 5,
+  now.year + 6,
+  now.year + 7,
 
 ];
 

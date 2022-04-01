@@ -63,7 +63,7 @@ class ProcessesItemWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("${historyItem!.total}",style: TextStyle(fontSize: 15.sp,color: priceColor(historyItem!.type)),maxLines: 1,),
+              Text("${historyItem!.total} ريال ",style: TextStyle(fontSize: 15.sp,color: priceColor(historyItem!.type)),maxLines: 1,),
               Text("${historyItem!.createdAt!.date}",style: TextStyle(fontSize: 15.sp,),maxLines: 1,),
               Text("${historyItem!.createdAt!.time}",style: TextStyle(fontSize: 15.sp,),maxLines: 1,),
             ],

@@ -3,13 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PointsChartWidget extends StatelessWidget {
   String? title,value,name;
-  PointsChartWidget({Key? key,this.name,this.value,this.title}) : super(key: key);
+  bool? isExtended;
+  PointsChartWidget({Key? key,this.name,this.value,this.title,this.isExtended = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5),
-      width: MediaQuery.of(context).size.width * .3,
+      width: isExtended == false ? MediaQuery.of(context).size.width * .3 : MediaQuery.of(context).size.width * .95,
       // height: 40.h,
       decoration:  BoxDecoration(
           borderRadius: BorderRadius.circular(12),

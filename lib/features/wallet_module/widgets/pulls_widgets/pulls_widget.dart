@@ -12,8 +12,11 @@ import 'package:get/get.dart';
 class PullsWidget extends GetWidget<WithdrawController> {
   PullsWidget({Key? key}) : super(key: key);
 
+  // TextEditingController amountController = TextEditingController();
+
+
   final _withdrawController = Get.put(WithdrawController());
-  final amountController = TextEditingController();
+  // final amountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +69,7 @@ class PullsWidget extends GetWidget<WithdrawController> {
                         shrinkWrap: true,
                         itemCount: state?.data?.cards?.length ?? 0,
                         itemBuilder: (context, index) {
-                          return InkWell(
+                          return state?.data?.cards?[index].status == true ? InkWell(
                               onTap: () {
                                 if (withdrawController.paymentId !=
                                     state?.data?.cards?[index].id) {
@@ -130,11 +133,11 @@ class PullsWidget extends GetWidget<WithdrawController> {
 
                                     if(state?.data?.cards?[index].type != "apple_pay")     if(state?.data?.cards?[index].type == "bian" || state?.data?.cards?[index].type == "stc") Expanded(child: Text("${state?.data?.cards?[index].info!.mobile}",style: const TextStyle(color: Colors.grey,fontSize: 18),)),
                                     if(state?.data?.cards?[index].type != "apple_pay")    if(state?.data?.cards?[index].type != "bian" && state?.data?.cards?[index].type != "stc")  Expanded(child: Text("${state?.data?.cards?[index].info!.cardNumberFour}",style: const TextStyle(color: Colors.grey,fontSize: 18),)),
-                                    state?.data?.cards?[index].status == true ?  FaIcon(FontAwesomeIcons.checkDouble,color: const Color(0xff129835),size: 17.sp,):const FaIcon(FontAwesomeIcons.stop,
-                                      color:  Color(0xffffad00),)
+                                    // state?.data?.cards?[index].status == true ?  FaIcon(FontAwesomeIcons.checkDouble,color: const Color(0xff129835),size: 17.sp,):const FaIcon(FontAwesomeIcons.stop,
+                                    //   color:  Color(0xffffad00),)
                                   ],
                                 ),
-                              ));
+                              )):Container();
                         }),
                   ),
                   const SizedBox(
@@ -188,7 +191,7 @@ class PullsWidget extends GetWidget<WithdrawController> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 40, vertical: 3),
                                         child: TextFormField(
-                                          controller: amountController,
+                                          controller: controller.amountController,
                                           cursorColor: Colors.black,
                                           textAlign: TextAlign.center,
                                           keyboardType: TextInputType.number,
@@ -328,21 +331,21 @@ class PullsWidget extends GetWidget<WithdrawController> {
                               Expanded(
                                   child: InkWell(
                                 onTap: () {
-                                  if (amountController.text.isNotEmpty &&
+                                  if (controller.amountController.text.isNotEmpty &&
                                       _withdrawController.paymentId != -1) {
                                     controller.withdraw(
                                         request: ChargeRequest(
                                             cardId:
                                                 _withdrawController.paymentId,
-                                            total: amountController.text));
+                                            total: controller.amountController.text));
                                   } else {
                                     Get.snackbar(
                                       "مطلوب",
-                                      amountController.text.isEmpty &&
+                                      controller.amountController.text.isEmpty &&
                                               _withdrawController.paymentId ==
                                                   -1
                                           ? 'اختر طريقة الدفع\nادخل المبلغ الذي تطلب سحبه'
-                                          : amountController.text.isEmpty
+                                          : controller.amountController.text.isEmpty
                                               ? "ادخل المبلغ الذي تطلب سحبه"
                                               : 'اختر طريقة الدفع',
                                       snackPosition: SnackPosition.BOTTOM,
@@ -373,7 +376,7 @@ class PullsWidget extends GetWidget<WithdrawController> {
                                   child: InkWell(
                                 onTap: () {
                                   _withdrawController.passPaymentIndex(-1);
-                                  amountController.clear();
+                                  controller.amountController.clear();
                                 },
                                 child: Container(
                                   height: 40,

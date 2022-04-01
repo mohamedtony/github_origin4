@@ -68,7 +68,7 @@ class BankWidget extends StatelessWidget {
                 const Expanded(
                     flex: 3,
 
-                    child: Text("رقم البطتقة",style: TextStyle(color: Color(0xff3a3b73)),)),
+                    child: Text("رقم البطاقة",style: TextStyle(color: Color(0xff3a3b73)),)),
                 const SizedBox(
                   width: 15,
                 ),
@@ -317,6 +317,7 @@ class BankWidget extends StatelessWidget {
                             snackPosition: SnackPosition.BOTTOM,);
                           return;
                         }
+
                         if(controller.nameController.text.isEmpty){
                           Get.snackbar(
                             "برجاء كتابة الاسم",
@@ -338,6 +339,28 @@ class BankWidget extends StatelessWidget {
                             snackPosition: SnackPosition.BOTTOM,);
                           return;
                         }
+                        if(!controller.cardNumberController.text!.isNumericOnly){
+                          Get.snackbar(
+                            "رقم البطاقة يجب ان يكون ارقام فقط",
+                            "",
+                            snackPosition: SnackPosition.BOTTOM,);
+                          return;
+                        }
+                        if(!controller.cvvController.text!.isNumericOnly){
+                          Get.snackbar(
+                            "الكود يجب ان يكون ارقام فقط",
+                            "",
+                            snackPosition: SnackPosition.BOTTOM,);
+                          return;
+                        }
+                        if(!controller.nameController.text!.isAlphabetOnly){
+                          Get.snackbar(
+                            "الاسم يجب ان يكون حروف فقط",
+                            "",
+                            snackPosition: SnackPosition.BOTTOM,);
+                          return;
+                        }
+
                         Info info = Info(
                           expirationYear: "${controller.year}",
                           expirationMonth: "${controller.month}",
