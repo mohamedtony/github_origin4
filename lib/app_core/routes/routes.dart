@@ -24,6 +24,7 @@ import 'package:advertisers/features/advertiser_settings_page/controller/Adverti
 import 'package:advertisers/features/advertising_influence_channels/controller/advertising_influence_channels_controller.dart';
 import 'package:advertisers/features/advertising_influence_channels/view/page/advertising_influence_channels_page.dart';
 import 'package:advertisers/features/advertising_requests/view/advertising_requests_page.dart';
+import 'package:advertisers/features/advertising_story_details/advretising_story_details_page.dart';
 import 'package:advertisers/features/blocked_users_page/blocked_users_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
@@ -31,6 +32,8 @@ import 'package:advertisers/features/client_order_details/client_order_details.d
 import 'package:advertisers/features/client_order_details/controller/client_order_details_controller.dart';
 import 'package:advertisers/features/client_payment_model/client_payment_model_page.dart';
 import 'package:advertisers/features/client_payment_model/controller/client_payment_model_controller.dart';
+import 'package:advertisers/features/client_setting_page/VerificationCodeProfilePage.dart';
+import 'package:advertisers/features/client_setting_page/VerificationEmailPage.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page_controller.dart';
 import 'package:advertisers/features/customer_order_invoice/controller/customer_order_invoice_controller.dart';
@@ -225,6 +228,22 @@ class Routes {
         Get.lazyPut<ForgetPasswordForPhoneController>(() => ForgetPasswordForPhoneController());
       }),
     ),
+
+    GetPage(
+      name: '/VerificationEmailPage',
+      page: () => VerificationEmailPage(),
+      /*binding: BindingsBuilder(() {
+        Get.lazyPut<RegisterPhoneController>(() => RegisterPhoneController());
+      }),*/
+    ),
+    GetPage(
+      name: '/VerificationCodeProfilePage',
+      page: () => VerificationCodeProfilePage(),
+      /*binding: BindingsBuilder(() {
+        Get.lazyPut<RegisterPhoneController>(() => RegisterPhoneController());
+      }),*/
+    ),
+
     GetPage(
       name: '/verificationCodePage',
       page: () => VerificationCodePage(),
@@ -486,6 +505,15 @@ class Routes {
       }),*/
 
     ),
+    GetPage(
+      name: '/AdvertisingStoryDetailsPage',
+      page: () => AdvertisingStoryDetailsPage(),
+      /*binding: BindingsBuilder(() {
+        Get.lazyPut<AdvertiserProfileOrderController>(() => AdvertiserProfileOrderController());
+      }),*/
+
+    ),
+
 
   ];
 }

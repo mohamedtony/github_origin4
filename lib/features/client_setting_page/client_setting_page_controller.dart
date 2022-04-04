@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -30,7 +31,7 @@ class ClientSettingPageController extends GetxController  {
   var isOpend = false;
   var position = -1;
   var tabIndex = 1.obs;
-  TextEditingController? kayanNameController,accountNameEdit,accountOwner,phoneController,emailController,personalIdController,userNameController,sglNumberController;
+  TextEditingController? kayanNameController,accountNameEdit,accountOwner,phoneController,emailController,personalIdController,userNameController,sglNumberController,pinCodeController;
   var flag = false.obs;
   var isEnabled=false.obs;
 
@@ -40,9 +41,11 @@ class ClientSettingPageController extends GetxController  {
   var country = Country().obs;
   var area = Area().obs;
   var smsOTP = ''.obs;
+  var publicSmsOtp = ''.obs;
   var verificationId = ''.obs;
   var countryCode ='SA'.obs;
   var phone = '';
+  var email = '';
 // switches the value between true/false
  // flag.toggle();
   var isChat = false.obs;
@@ -53,6 +56,7 @@ class ClientSettingPageController extends GetxController  {
   var accountType = ''.obs;
   var isLoadingLocation = true.obs;
   var isValidPhone = false.obs;
+  var isPhoneVerified = false.obs;
   var   e164 =''.obs;
   String? myToken;
   @override
@@ -66,6 +70,7 @@ class ClientSettingPageController extends GetxController  {
     phoneController = TextEditingController();
     emailController = TextEditingController();
     sglNumberController= TextEditingController();
+    pinCodeController = TextEditingController();
     personalIdController  = TextEditingController();
     if((Get.parameters['from'].toString())=="advertiserPage") {
       isEnabled.value=true;
@@ -162,10 +167,12 @@ class ClientSettingPageController extends GetxController  {
         }
         if(clientProfileModel.value.phone!=null) {
           phoneController?.text = clientProfileModel.value.phone!;
+          phone = clientProfileModel.value.phone!;
           firstCheckCode();
         }
         if(clientProfileModel.value.email!=null) {
           emailController?.text = clientProfileModel.value.email!;
+          email = clientProfileModel.value.email!;
         }
         if(clientProfileModel.value.personal_id!=null) {
           personalIdController?.text = clientProfileModel.value.personal_id!;
@@ -249,27 +256,93 @@ class ClientSettingPageController extends GetxController  {
     }
     print("EditEdit"+isEnabled.value.toString());
   }
+  Timer? timer;
+var isEmailVerified = false.obs;
+  verifyEmail(BuildContext context) async {
+    if(email==emailController!.text){
+      showMyToast(" تم تأكيد الايميل من قبل !", false, context);
+      return;
+    }
 
-  Future<void> verifyPhone() async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController!.text.trim(),
+          password: "SuperSecretPassword!"
+      );
+      //if(FirebaseAuth.instance.currentUser!=null) {
+        print("kkkkkkkkkkkkkkk");
+        isEmailVerified.value = FirebaseAuth.instance.currentUser!.emailVerified;
+        if(isEmailVerified.isFalse){
+          sendEmailVerification();
+          Get.toNamed(
+              '/VerificationEmailPage?route=profile&email=${/*countryCode.value.toString() + */emailController!.text}')?.then((value) {
+                timer?.cancel();
+          });
+          timer = Timer.periodic(Duration(seconds: 3), (timer) async {
+            await FirebaseAuth.instance.currentUser?.reload();
+            isEmailVerified.value = FirebaseAuth.instance.currentUser!.emailVerified;
+            if(isEmailVerified.isTrue){
+             timer.cancel();
+             showMyToast("تم تأكيد الايميل بنجاح !", false, context);
+             Get.back();
+            }
+          });
+        }
+    //  }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }else if(e.code=="email-already-in-use"){
+        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: emailController!.text.trim(),
+            password: "SuperSecretPassword!"
+        );
+        isEmailVerified.value = FirebaseAuth.instance.currentUser!.emailVerified;
+        if(isEmailVerified.isTrue){
+          showMyToast("تم تأكيد الايميل من قبل !", false, context);
+        }
+      }
+      print("mError"+e.code);
+    }
+  }
+  Future<void> sendEmailVerification() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      await user?.sendEmailVerification();
+    }catch(e){
+      print(e);
+    }
+  }
+
+  Future<void> verifyPhone(BuildContext context) async {
+    await initPlatformState();
+    if("+"+phone==e164.value){
+      showMyToast(" تم تأكيد رقم الجوال من قبل !", false, context);
+      return;
+    }
+    print("hhhhhhhhhhhhhhhhhhhhhhhhhhh");
     EasyLoading.show(status:'انتظر');
+
     final PhoneCodeSent smsOTPSent = (String verId, [int? forceCodeResend]) {
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
       }
       verificationId.value = verId;
       Get.toNamed(
-          '/verificationCodePage?verificationId=${verificationId.value}&&route=registerPhone&phone=${countryCode.value.toString() + int.parse(phone).toString()}');
+          '/VerificationCodeProfilePage?verificationId=${verificationId.value}&&route=profile&phone=${/*countryCode.value.toString() + */e164.value}');
       // smsOTPDialog(context).then((value) {
       //   print('sign in');
       // });
     };
     try {
-      print(
-          '>>>>>>>>>>>>>>>>>>>>${countryCode.value.toString() + int.parse(phone).toString()}');
+      print("myPhone= "+ e164.value);
+      /*print(
+          '>>>>>>>>>>>>>>>>>>>>${countryCode.value.toString() + int.parse(phone).toString()}');*/
       await auth.verifyPhoneNumber(
-          phoneNumber: countryCode.value.toString() +
-              int.parse(phoneController!.text)
-                  .toString(), // PHONE NUMBER TO SEND OTP
+          phoneNumber: e164.value, // PHONE NUMBER TO SEND OTP
+          //autoRetrievedSmsCodeForTesting:"123456",
           codeAutoRetrievalTimeout: (String verId) {
             //Starts the phone number verification process for the given phone number.
             //Either sends an SMS with a 6 digit code to the phone number specified, or sign's the user in and [verificationCompleted] is called.
@@ -277,9 +350,11 @@ class ClientSettingPageController extends GetxController  {
           },
           codeSent:
           smsOTPSent, // WHEN CODE SENT THEN WE OPEN DIALOG TO ENTER OTP.
-          timeout: const Duration(seconds: 60),
-          verificationCompleted: (AuthCredential phoneAuthCredential) {
-            print(phoneAuthCredential);
+          timeout: const Duration(seconds: 120),
+          verificationCompleted: (PhoneAuthCredential authCredential) {
+          showMyToast("تم التحقق من رقم الجوال ! ", false, context);
+            isPhoneVerified.value = true;
+            pinCodeController!.text = authCredential.smsCode!;
           },
           verificationFailed: (exception) {
             Get.snackbar(
@@ -296,6 +371,41 @@ class ClientSettingPageController extends GetxController  {
       });
 
     } on Exception catch (_, e) {
+      if(EasyLoading.isShow){
+        EasyLoading.dismiss();
+      }
+      Get.snackbar(
+        "حدث خطأ",
+        e.toString(),
+        icon: const Icon(Icons.person, color: AppColors.white),
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  signIn() async {
+    EasyLoading.show(status:'انتظر');
+    try {
+      final PhoneAuthCredential  credential = PhoneAuthProvider.credential(
+        verificationId: verificationId.value,
+        smsCode: smsOTP.value,
+      );
+      final UserCredential user = await auth.signInWithCredential(credential);
+      final User currentUser =  auth.currentUser!;
+      if (currentUser != null) {
+        await currentUser.reload();
+      }
+      print('>>>>>>>>>>>>>>$currentUser');
+      if(EasyLoading.isShow){
+        EasyLoading.dismiss();
+      }
+      assert(user.user?.uid == currentUser.uid);
+     /* Get.toNamed(
+          '/registerAccountType?phone=${countryCode.value.toString() + int.parse(phone).toString()}');*/
+      // Navigator.of(context).pop();
+      // Navigator.of(context).pushReplacementNamed('/homepage');
+    } catch (e) {
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
       }
@@ -405,6 +515,12 @@ class ClientSettingPageController extends GetxController  {
       //if()
     });*/
     await initPlatformState();
+    print("phone=$phone+m");
+    print("phone=${e164.value}+m");
+    if(phone.startsWith("+")){
+      print("yesssss");
+      phone.replaceFirst("+", "");
+    }
     if (accountType.value=="client" && userNameController!.text.isEmpty) {
       showMyToast("من فضلك ادخل الاسم !",true,context);
       userNameNode.requestFocus();
@@ -438,6 +554,10 @@ class ClientSettingPageController extends GetxController  {
       showMyToast("رقم الجوال وكود الدولة غير متطابقين !",true,context);
       phoneControllerNode.requestFocus();
       return;
+    }else if (identical(("+"+phone).trim(),(e164.value.trim())) && isPhoneVerified.isFalse) {
+      showMyToast("يرجى التحقق من رقم الجوال اولا !",true,context);
+      //phoneControllerNode.requestFocus();
+      return;
     }else if (emailController!.text.isEmpty) {
       showMyToast("من فضلك ادخل الايميل الالكترونى !",true,context);
       emailControllerNode.requestFocus();
@@ -445,6 +565,10 @@ class ClientSettingPageController extends GetxController  {
     }else if (!isValidEmailUsingRegularExpression(emailController!.text)) {
       showMyToast("من فضلك ادخل الايميل الالكترونى بشكل صحيح !",true,context);
       emailControllerNode.requestFocus();
+      return;
+    }else if (email!=emailController!.text && isEmailVerified.isFalse) {
+      showMyToast("يرجى التحقق من الايميل اولا !",true,context);
+      //emailControllerNode.requestFocus();
       return;
     } else if (accountType.value=="company" && sglNumberController!.text.isEmpty) {
       showMyToast("من فضلك ادخل رقم السجل !",true,context);
@@ -477,6 +601,8 @@ class ClientSettingPageController extends GetxController  {
         await client!.updateMyProfile("application/json","Bearer "+myToken!,username: userNameController!.text,account_name: accountNameEdit!.text,phone: e164.value.replaceFirst("+", ""),email: emailController!.text,type: accountType.value,role: clientProfileModel.value.role,personal_id: personalIdController!.text.isEmpty?null: personalIdController!.text,area_id: area.value.id,country_id: country.value.id,isChat: isChat.value?1:0,isNotification:isNotification.value?1:0,file: imageFile).then((value){
           print("myHere"+value.status.toString());
           print("myHere"+value.message.toString());
+          phone = e164.value;
+          email = emailController!.text;
           Logger().i(value.data!.toJson());
           Navigator.of(context).pop();
           if(value.message!=null) {
@@ -486,9 +612,11 @@ class ClientSettingPageController extends GetxController  {
       }else{
         print("accountType.value"+accountType.value);
 
-        await client!.updateMyProfile("application/json","Bearer "+myToken!,company_name: kayanNameController!.text,account_name: accountNameEdit!.text,manager_name: accountOwner!.text,phone: e164.value.replaceFirst("+", ""),email: emailController!.text,type: accountType.value,role: clientProfileModel.value.role,sgl: sglNumberController!.text.isEmpty?null:sglNumberController!.text,area_id: area.value.id,country_id: country.value.id,isChat:  isChat.value?1:0,isNotification:isNotification.value?1:0,file: imageFile).then((value){
+        await client!.updateMyProfile("application/json","Bearer "+myToken!,company_name: kayanNameController!.text,account_name: accountNameEdit!.text,manager_name: accountOwner!.text,phone: e164.value.replaceFirst("+", ""),email: emailController!.text.trim(),type: accountType.value,role: clientProfileModel.value.role,sgl: sglNumberController!.text.isEmpty?null:sglNumberController!.text,area_id: area.value.id,country_id: country.value.id,isChat:  isChat.value?1:0,isNotification:isNotification.value?1:0,file: imageFile).then((value){
           print("myHere"+value.status.toString());
           print("myHere"+value.message.toString());
+          phone = e164.value;
+          email = emailController!.text.trim();
           Logger().i(value.data!.toJson());
           Navigator.of(context).pop();
           if(value.message!=null) {
@@ -520,6 +648,7 @@ class ClientSettingPageController extends GetxController  {
   @override
   void onClose() {
     // TODO: implement onClose
+    timer?.cancel();
      nameFocusNode.dispose();
      kayanNameNode.dispose();
      accountNameNode.dispose();
@@ -536,5 +665,7 @@ class ClientSettingPageController extends GetxController  {
   @override
   // TODO: implement onDelete
   InternalFinalCallback<void> get onDelete => super.onDelete;
+
+
 
 }

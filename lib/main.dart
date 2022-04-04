@@ -151,7 +151,7 @@ class _MyAppState extends State<MyApp> {
           builder: EasyLoading.init(),
           //  home: AdvertisingRequestsPage2(),
           translations: LocalizationService(),
-          initialRoute: '/',
+          initialRoute: '/AdvertisingStoryDetailsPage',
           getPages: Routes.routes,
           theme: ThemeData(
             fontFamily: 'Arabic-Regular',

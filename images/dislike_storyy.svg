@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="44.504" height="44.738" viewBox="0 0 44.504 44.738">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#48dbe1"/>
+      <stop offset="1" stop-color="#4166cd"/>
+      <stop offset="1" stop-color="#236b73"/>
+    </linearGradient>
+    <filter id="Icon_feather-thumbs-down" x="0" y="0" width="44.504" height="44.738" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-opacity="0.09"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Icon_feather-thumbs-down)">
+    <path id="Icon_feather-thumbs-down-2" data-name="Icon feather-thumbs-down" d="M9.137,12.579v2.948a2.211,2.211,0,0,0,2.211,2.211L14.3,11.106V3H5.983A1.474,1.474,0,0,0,4.51,4.252L3.493,10.885a1.474,1.474,0,0,0,1.474,1.695ZM14.3,3h1.967A1.7,1.7,0,0,1,17.98,4.474V9.632a1.7,1.7,0,0,1-1.717,1.474H14.3" transform="translate(11.52 9)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>
