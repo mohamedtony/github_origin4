@@ -7,7 +7,8 @@ import 'package:advertisers/features/employees/view/EmployeeArchivePage.dart';
 import 'package:advertisers/features/employees/view/EmployeeAuthorizationPage.dart';
 import 'package:advertisers/features/employees/view/NotificationSettingsPage.dart';
 import 'package:advertisers/features/employees/view/employees_page.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:advertisers/features/tajer_order_details/advertiser_order_details.dart';
+ import 'package:connectivity_plus/connectivity_plus.dart';
 //import 'package:advertisers/shared/network/service.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -149,7 +150,7 @@ class _MyAppState extends State<MyApp> {
           fallbackLocale: LocalizationService.fallbackLocale,
          // fallbackLocale: LocalizationService.locale,
           builder: EasyLoading.init(),
-          //  home: AdvertisingRequestsPage2(),
+            // home: TajerOrderDetails(),
           translations: LocalizationService(),
           initialRoute: '/',
           getPages: Routes.routes,

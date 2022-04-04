@@ -186,7 +186,7 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                 border: Border.all(color: const Color(0xff4494D5))
                                               ),
                                               child: Padding(
-                                                padding: const EdgeInsets.only(right: 18),
+                                                padding: const EdgeInsets.only(right: 16),
                                                 child:  Column(
                                                   mainAxisAlignment:
                                                   MainAxisAlignment.start,
@@ -216,7 +216,9 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                                 decoration: BoxDecoration(
                                                                     borderRadius:
                                                                     BorderRadius.circular(10),
-                                                                    image: DecorationImage(image: /*AssetImage('images/man img.png')*/ NetworkImage("${uiEmployeeRequests.user!.image}") ,scale: 1,fit: BoxFit.fill)
+                                                                    image: DecorationImage(image: /*AssetImage('images/man img.png')*/ /*NetworkImage("${uiEmployeeRequests.user!.image}")*/
+                                                                    uiEmployeeRequests.user!.image!=null&&uiEmployeeRequests.user!.image!=""?
+                                                                    NetworkImage('${uiEmployeeRequests.user!.image}'):NetworkImage(controller.noImage),scale: 1,fit: BoxFit.fill)
                                                                 ),
                                                               ),
                                                             ),
@@ -269,7 +271,7 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                                 ],
                                                               ),
                                                               /// spacer
-                                                              Container(width: MediaQuery.of(context).size.width*.14,),
+                                                              Container(width: MediaQuery.of(context).size.width*.12,),
                                                               /// employee type
                                                               Column(
                                                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -320,9 +322,6 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                                     ),
                                                                   ),
 
-                                                                  //  uiEmployeeRequests.jobTitle=="مسؤول / أدمن"?Container(
-                                                                  //   child:   Center(child: Text('صلاحية كاملة',style: TextStyle(color:const Color(0xff00C3FF),fontSize:11.sp),)),
-                                                                  // ):Container(),
 
                                                                 ],
                                                               )
@@ -512,7 +511,7 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                                   children: [
                                                                   InkWell(
                                                                     onTap: (){
-                                                                   
+
                                                                       controller.deleteAnEmployee(id: uiEmployeeRequests.id);
                                                                       Get.back();
                                                                     },

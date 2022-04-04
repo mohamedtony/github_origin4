@@ -61,6 +61,7 @@ import 'package:advertisers/features/notifications_settings/view/pages/notificat
 import 'package:advertisers/features/reason_rejecting_advertisement/controller/reason_rejecting_advertisement_controller.dart';
 import 'package:advertisers/features/reason_rejecting_advertisement/view/page/reason_rejecting_advertisement.dart';
 import 'package:advertisers/features/request_advertise_module/view/pages/request_advertise_page.dart';
+import 'package:advertisers/features/tajer_order_details/advertiser_order_details.dart';
 import 'package:advertisers/features/tax_settings/view/pages/tax_settings_page.dart';
 import 'package:advertisers/features/users_module/controller/baka_details_controller.dart';
 import 'package:advertisers/features/users_module/controller/choose_baka_controller.dart';
@@ -410,6 +411,11 @@ class Routes {
       page: () => AdvertiserOrderDetails(),
 
     ),
+    GetPage(
+      name: '/TajerOrderDetails',
+      page: () => TajerOrderDetails(),
+    ),
+
     GetPage(
       name: '/AddEmployeePage',
       page: () => AddEmployeePage(),

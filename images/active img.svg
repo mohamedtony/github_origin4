@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="59" viewBox="0 0 59 59">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#fbf9f9"/>
+    </linearGradient>
+    <filter id="Ellipse_940" x="0" y="0" width="59" height="59" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-color="#bbb" flood-opacity="0.4"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Component_33_2" data-name="Component 33 – 2" transform="translate(15 12)">
+    <g transform="matrix(1, 0, 0, 1, -15, -12)" filter="url(#Ellipse_940)">
+      <circle id="Ellipse_940-2" data-name="Ellipse 940" cx="14.5" cy="14.5" r="14.5" transform="translate(15 12)" fill="url(#linear-gradient)"/>
+    </g>
+    <path id="android-checkmark-circle" d="M8.1,9.855l-1.12,1.12,3.6,3.6,8-8-1.12-1.12-6.88,6.84-2.48-2.44Zm9.68,1.52a6.373,6.373,0,1,1-4.64-6.16l1.24-1.24a7.441,7.441,0,0,0-3-.6,8,8,0,1,0,8,8Z" transform="translate(3.125 3.101)" fill="#097534"/>
+  </g>
+</svg>

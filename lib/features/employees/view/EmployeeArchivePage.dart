@@ -77,7 +77,7 @@ class EmployeeArchivePage extends GetWidget<EmployeesController>{
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        width:MediaQuery.of(context).size.width*.4,
+                       // width:MediaQuery.of(context).size.width*.44,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -90,7 +90,7 @@ class EmployeeArchivePage extends GetWidget<EmployeesController>{
                                    shape: BoxShape.circle,
                                   image: DecorationImage(image: controller.profileImage.value.isNotEmpty?
                                   NetworkImage(controller.profileImage.value):NetworkImage(controller.noImage)
-                                      ,fit: BoxFit.fill),
+                                      ,fit: BoxFit.cover),
                                   /*AssetImage('images/man img.png')*/
                                 ),
                               ),

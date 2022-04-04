@@ -428,7 +428,7 @@ class AdvertisingRequestsPage extends GetWidget<AdvertisingRequestsController>  
                                                           onTap: (){
                                                             Get.put(AdvertiserOrderDetailsController()).requestId=int.parse(uiParentRequests!.id.toString() );
                                                             Get.put(AdvertiserOrderDetailsController()).fetchOderDetails(requestId: uiParentRequests!.id);
-                                                            Get.toNamed('/AdvertiserOrderDetails');//CustomerOrderInvoiceOutPutsPage
+                                                            Get.toNamed('/TajerOrderDetails');//AdvertiserOrderDetails
                                                           },
                                                           child: Padding(
                                                             padding: const EdgeInsets.symmetric(horizontal: 15),
