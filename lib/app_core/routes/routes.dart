@@ -25,6 +25,7 @@ import 'package:advertisers/features/advertising_influence_channels/controller/a
 import 'package:advertisers/features/advertising_influence_channels/view/page/advertising_influence_channels_page.dart';
 import 'package:advertisers/features/advertising_requests/view/advertising_requests_page.dart';
 import 'package:advertisers/features/advertising_story_details/advretising_story_details_page.dart';
+import 'package:advertisers/features/advertising_story_details/sound_widget.dart';
 import 'package:advertisers/features/blocked_users_page/blocked_users_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_page.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
@@ -508,6 +509,15 @@ class Routes {
     GetPage(
       name: '/AdvertisingStoryDetailsPage',
       page: () => AdvertisingStoryDetailsPage(),
+      /*binding: BindingsBuilder(() {
+        Get.lazyPut<AdvertiserProfileOrderController>(() => AdvertiserProfileOrderController());
+      }),*/
+
+    ),
+
+    GetPage(
+      name: '/MusicApp',
+      page: () => MusicApp(),
       /*binding: BindingsBuilder(() {
         Get.lazyPut<AdvertiserProfileOrderController>(() => AdvertiserProfileOrderController());
       }),*/

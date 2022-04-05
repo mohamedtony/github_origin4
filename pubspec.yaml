@@ -90,6 +90,7 @@ dependencies:
   rflutter_alert: ^2.0.4
   share_plus: ^4.0.2
   readmore: ^2.1.0
+  audioplayers: ^0.20.1
 
 
   #focused_menu: ^1.0.5

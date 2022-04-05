@@ -28,4 +28,8 @@ class VideoController extends GetxController {
       });
     }*/
   }
+  var clickedIndex=0.obs;
+  changeIndex(int index){
+    clickedIndex.value = index;
+  }
 }

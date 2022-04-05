@@ -1,3 +1,4 @@
+import 'package:advertisers/features/advertising_story_details/VideoController.dart';
 import 'package:advertisers/features/advertising_story_details/story_model.dart';
 import 'package:advertisers/features/advertising_story_details/user_model.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
 class StoryScreen extends StatefulWidget {
@@ -24,6 +26,7 @@ class _StoryScreenState extends State<StoryScreen>
   VideoPlayerController? _videoController;
   int _currentIndex = 0;
 
+  final VideoController videoGetxController = Get.find();
   @override
   void initState() {
     super.initState();
@@ -70,7 +73,7 @@ class _StoryScreenState extends State<StoryScreen>
         child: Stack(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(bottom: 100),
+              margin: EdgeInsets.only(bottom: 100,top: 60),
               child: PageView.builder(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
@@ -100,11 +103,14 @@ class _StoryScreenState extends State<StoryScreen>
               ),
             ),
             Positioned(
-              top: 40.0,
-              left: 2.0,
-              right: 2.0,
+              top: 0.0,
+              left: 0.0,
+              right: 0.0,
               child: Column(
                 children: <Widget>[
+                  Container(
+                      margin: EdgeInsets.only(bottom: 10),
+                      child: UserInfo(user: story.user)),
                   Row(
                     textDirection: TextDirection.ltr,
                     children: widget.stories
@@ -122,218 +128,301 @@ class _StoryScreenState extends State<StoryScreen>
                         .values
                         .toList(),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 1.5,
-                      vertical: 4.0,
-                    ),
-                    child: UserInfo(user: story.user),
-                  ),
+
                 ],
               ),
             ),
-            Align(
+
+            Obx(()=>Align(
               alignment: Alignment.bottomCenter,
-              child: Container(
-                height: 130,
-                padding: EdgeInsets.only(top: 6),
-                color: Colors.white,
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Column(
-                          children: [
-                            Container(
-                              width: 40.0,
-                              height: 40.0,
-                              decoration: new BoxDecoration(
-                                color: Colors.grey[300],
-                                shape: BoxShape.circle,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                 /* Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image.asset(
+                        'images/small_screen.png',
+                        height: 25,
+                        width: 30,
+                        fit: BoxFit.fill,
+                        color:  videoGetxController.clickedIndex==0?Colors.white:Colors.blue,
+                      ),
+                      Image.asset(
+                        'images/small_screen.png',
+                        height: 25,
+                        width: 30,
+                        fit: BoxFit.fill,
+                        color:  videoGetxController.clickedIndex==0?Colors.white:Colors.blue,
+                      ),
+                    ],
+                  ),*/
+                  Container(
+                    height: 130,
+                    padding: EdgeInsets.only(top: 6),
+                    color: Colors.white,
+                    child: Column(
+                      children: <Widget>[
+                        /*Container(
+                          width: 62,
+                          height: 62,
+                          margin: EdgeInsets.all(4),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: SvgPicture.asset(
+                                'images/filter_edit.svg',
+                                fit: BoxFit.fill,
+                                //color: Colors.white,
+                                height: 24.0,
+                                width: 30.0,
                               ),
-                              child: Align(
-                                  alignment: Alignment.center,
-                                  child:Image.asset(
-                                    'images/comments3.png',
+                            ),)
+                          ,decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [AppColors.beginColor, AppColors.endColor],
+                          ),
+                        ),),*/
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Column(
+                              children: [
+                                InkWell(
+                                  onTap: (){
+                                    videoGetxController.clickedIndex.value = 0;
+                                  },
+                                  child: Container(
+                                    width: 40.0,
+                                    height: 40.0,
+                                    /*decoration: new BoxDecoration(
+                                      color: Colors.grey[300],
+                                      shape: BoxShape.circle,
+                                    ),*/
+                                    decoration: videoGetxController.clickedIndex==0?BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [AppColors.beginColor, AppColors.endColor],
+                                      ),
+                                    ): new BoxDecoration(
+                                      color: Colors.grey[300],
+                                        shape: BoxShape.circle,
+                                      ),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child:Image.asset(
+                                        'images/comments3.png',
+                                        height: 25,
+                                        width: 30,
+                                        fit: BoxFit.fill,
+                                        color:  videoGetxController.clickedIndex==0?Colors.white:Colors.blue,
+                                      ),),
+                                  ),
+                                ),
+                                Text("تعليق",style: TextStyle(color: Color(0xff4286D2)),)
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                InkWell(
+                                  onTap:(){
+                                    videoGetxController.clickedIndex.value = 1;
+                                 },
+                                  child: Container(
+                                    width: 40.0,
+                                    height: 40.0,
+                                    padding: EdgeInsets.all(13),
+                              decoration: videoGetxController.clickedIndex==1?BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [AppColors.beginColor, AppColors.endColor],
+                                  ),
+                              ): new BoxDecoration(
+                                  color: Colors.grey[300],
+                                  shape: BoxShape.circle,
+                              ),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child:Image.asset(
+                                        'images/icon_share2.png',
+                                        height: 25,
+                                        width: 30,
+                                        fit: BoxFit.fill,
+                                        color: videoGetxController.clickedIndex==1?Colors.white:null,
+                                      ),),
+                                  ),
+                                ),
+                                Text("مشاركة",style: TextStyle(color: Color(0xff4286D2)),)
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                InkWell(
+                                  onTap: (){
+                                    videoGetxController.clickedIndex.value=2;
+                                  },
+                                  child: Container(
+                                    width: 40.0,
+                                    height: 40.0,
+                                    padding: EdgeInsets.all(13),
+                              decoration: videoGetxController.clickedIndex==2?BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [AppColors.beginColor, AppColors.endColor],
+                                  ),
+                              ): new BoxDecoration(
+                                  color: Colors.grey[300],
+                                  shape: BoxShape.circle,
+                              ),
+                                    child: Image.asset(
+                                      'images/heartsolid3x.png',
+                                      height: 25,
+                                      width: 30,
+                                      fit: BoxFit.fill,
+                                      color: videoGetxController.clickedIndex==2?Colors.white:null,
+                                    ),
+                                  ),
+                                ),
+                                Text("مفضلة",style: TextStyle(color: Color(0xff4286D2)),)
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 40.0,
+                                  height: 40.0,
+                                  padding: EdgeInsets.only(bottom: 14,top: 8,left: 12,right: 12),
+                                  decoration: new BoxDecoration(
+                                    color: Colors.grey[300],
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Image.asset(
+                                    'images/like_story.png',
                                     height: 25,
                                     width: 30,
                                     fit: BoxFit.fill,
                                     //color: Colors.white,
-                                  ),),
-                            ),
-                            Text("تعليق",style: TextStyle(color: Color(0xff4286D2)),)
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              width: 40.0,
-                              height: 40.0,
-                              padding: EdgeInsets.all(13),
-                              decoration: new BoxDecoration(
-                                color: Colors.grey[300],
-                                shape: BoxShape.circle,
-                              ),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child:Image.asset(
-                                  'images/icon_share2.png',
-                                  height: 25,
-                                  width: 30,
-                                  fit: BoxFit.fill,
-                                  //color: Colors.white,
-                                ),),
-                            ),
-                            Text("مشاركة",style: TextStyle(color: Color(0xff4286D2)),)
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              width: 40.0,
-                              height: 40.0,
-                              padding: EdgeInsets.all(13),
-                              decoration: new BoxDecoration(
-                                color: Colors.grey[300],
-                                shape: BoxShape.circle,
-                              ),
-                              child: Image.asset(
-                                'images/heartsolid3x.png',
-                                height: 25,
-                                width: 30,
-                                fit: BoxFit.fill,
-                                //color: Colors.white,
-                              ),
-                            ),
-                            Text("مفضلة",style: TextStyle(color: Color(0xff4286D2)),)
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              width: 40.0,
-                              height: 40.0,
-                              padding: EdgeInsets.only(bottom: 14,top: 8,left: 12,right: 12),
-                              decoration: new BoxDecoration(
-                                color: Colors.grey[300],
-                                shape: BoxShape.circle,
-                              ),
-                              child: Image.asset(
-                                'images/like_story.png',
-                                height: 25,
-                                width: 30,
-                                fit: BoxFit.fill,
-                                //color: Colors.white,
-                              ),
-                            ),
-                            Text("96",style: TextStyle(color: Color(0xff4286D2)),)
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              width: 40.0,
-                              height: 40.0,
-                              padding: EdgeInsets.all(13),
-                              decoration: new BoxDecoration(
-                                color: Colors.grey[300],
-                                shape: BoxShape.circle,
-                              ),
-                              child: Image.asset(
-                                'images/icon_dislike3.png',
-                                height: 25,
-                                width: 30,
-                                fit: BoxFit.fill,
-                                //color: Colors.white,
-                              ),
-                            ),
-                            Text("96",style: TextStyle(color: Color(0xff4286D2)),)
-                          ],
-                        ),
-                      ],
-                    ),
-                    Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            // width: 50.0,
-                            height: 44.0,
-                            margin: EdgeInsets.all(6.0),
-                            decoration: new BoxDecoration(
-                                color: Colors.grey[200],
-                                shape: BoxShape.rectangle,
-                                borderRadius: new BorderRadius.all(
-                                  Radius.circular(40.0),
-                                )
-                            ),
-                            child:  Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  width: 50.0,
-                                  height: 50.0,
-                                 /* decoration: new BoxDecoration(
-                                    color: Colors.grey[300],
-                                    shape: BoxShape.circle,
-                                  ),*/
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child:Image.asset(
-                                      'images/minutemailer2x.png',
-                                      height: 25,
-                                      width: 30,
-                                      fit: BoxFit.fill,
-                                      //color: Colors.white,
-                                    ),),
-                                ),
-                                VerticalDivider(
-                                  thickness: 1.4,
-                                  width: 1,
-                                  color: Colors.grey,
-                                  indent: 10,
-                                  endIndent: 10,
-                                ),
-                                Expanded(
-                                  child: TextField(
-                                    textAlign: TextAlign.start,
-                                    //focusNode: requestAdvertiseController.coponNumberNode,
-                                    textAlignVertical: TextAlignVertical.center,
-                                    //keyboardType:TextInputType.number,
-                                    decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.only(
-                                          left: 10.0,
-                                          right: 10.0,
-                                        ),
-                                        // isCollapsed: true,
-                                        border: OutlineInputBorder(
-                                         borderRadius: BorderRadius.only(topLeft: Radius.circular(40),bottomLeft: Radius.circular(40)),
-                                          borderSide: BorderSide(
-                                            width: 0,
-                                            style: BorderStyle.none,
-                                          ),
-                                        ),
-                                       // filled: true,
-                                        hintStyle: TextStyle(color: Colors.grey[500]),
-                                        hintText: 'أضف تعليقك الخاص بالمحتوى',
-                                        //fillColor: Colors.white70
-                                    ),
-                                    //controller: requestAdvertiseController.coponNumberController,
                                   ),
                                 ),
+                                Text("96",style: TextStyle(color: Color(0xff4286D2)),)
                               ],
                             ),
-                          ),
+                            Column(
+                              children: [
+                                Container(
+                                  width: 40.0,
+                                  height: 40.0,
+                                  padding: EdgeInsets.all(13),
+                                  decoration: new BoxDecoration(
+                                    color: Colors.grey[300],
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Image.asset(
+                                    'images/icon_dislike3.png',
+                                    height: 25,
+                                    width: 30,
+                                    fit: BoxFit.fill,
+                                    //color: Colors.white,
+                                  ),
+                                ),
+                                Text("96",style: TextStyle(color: Color(0xff4286D2)),)
+                              ],
+                            ),
+                          ],
                         ),
+                        Row(
+                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                // width: 50.0,
+                                height: 44.0,
+                                margin: EdgeInsets.all(6.0),
+                                decoration: new BoxDecoration(
+                                    color: Colors.grey[200],
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: new BorderRadius.all(
+                                      Radius.circular(40.0),
+                                    )
+                                ),
+                                child:  Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      width: 50.0,
+                                      height: 50.0,
+                                      /* decoration: new BoxDecoration(
+                                        color: Colors.grey[300],
+                                        shape: BoxShape.circle,
+                                      ),*/
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child:Image.asset(
+                                          'images/minutemailer2x.png',
+                                          height: 25,
+                                          width: 30,
+                                          fit: BoxFit.fill,
+                                          //color: Colors.white,
+                                        ),),
+                                    ),
+                                    VerticalDivider(
+                                      thickness: 1.4,
+                                      width: 1,
+                                      color: Colors.grey,
+                                      indent: 10,
+                                      endIndent: 10,
+                                    ),
+                                    Expanded(
+                                      child: TextField(
+                                        textAlign: TextAlign.start,
+                                        //focusNode: requestAdvertiseController.coponNumberNode,
+                                        textAlignVertical: TextAlignVertical.center,
+                                        //keyboardType:TextInputType.number,
+                                        decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.only(
+                                            left: 10.0,
+                                            right: 10.0,
+                                          ),
+                                          // isCollapsed: true,
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(40),bottomLeft: Radius.circular(40)),
+                                            borderSide: BorderSide(
+                                              width: 0,
+                                              style: BorderStyle.none,
+                                            ),
+                                          ),
+                                          // filled: true,
+                                          hintStyle: TextStyle(color: Colors.grey[500]),
+                                          hintText: 'أضف تعليقك الخاص بالمحتوى',
+                                          //fillColor: Colors.white70
+                                        ),
+                                        //controller: requestAdvertiseController.coponNumberController,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
 
+                          ],
+                        )
                       ],
-                    )
-                  ],
-                ),
+                    ),
+                  ),
+                ],
               ),
-            ),
+            ),)
           ],
         ),
       ),
@@ -488,101 +577,129 @@ class UserInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10.0),
-      color: AppColors.saveButtonBottomSheet.withOpacity(.6),
-      child: Row(
-        children: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.close,
-              size: 30.0,
-              color: Colors.white,
-            ),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          const SizedBox(width: 4.0),
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      margin: EdgeInsets.only(top: 0.0),
+      color: Colors.grey,
+      child: Column(
+        children: [
+          Row(
+            children: <Widget>[
+              IconButton(
+                icon: const Icon(
+                  Icons.close,
+                  size: 30.0,
+                  color: Colors.white,
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              const SizedBox(width: 4.0),
+              Expanded(
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Stack(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Container(
-                          // width: 50.0,
-                          height: 30.0,
-                          padding: EdgeInsets.only(left: 10,right: 10),
-                          margin: EdgeInsets.only(right: 15.0,left: 4,top: 6),
-                          decoration: new BoxDecoration(
-                              color: Color(0xffCFCFCF),
-                              shape: BoxShape.rectangle,
-                              borderRadius: new BorderRadius.all(
-                                Radius.circular(40.0),
-                              )
-                          ),
-                          child:  Text("تفاصيل الاعلان"),
+                        Stack(
+                          children: [
+                            Container(
+                              // width: 50.0,
+                              height: 35.0,
+                              padding: EdgeInsets.only(left: 20,right: 20),
+                              margin: EdgeInsets.only(right: 15.0,left: 4,top: 6),
+                              decoration: new BoxDecoration(
+                                  color: Color(0xffCFCFCF),
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: new BorderRadius.all(
+                                    Radius.circular(40.0),
+                                  )
+                              ),
+                              child:  Text("تفاصيل الاعلان",style: TextStyle(color: Colors.white),),
+                            ),
+                            Positioned(
+                              right: -2,
+                              bottom: 8,
+                              child: Image.asset(
+                              'images/story_share.png',
+                              height: 25,
+                              width: 30,
+                              fit: BoxFit.fill,
+                              //color: Colors.white,
+                            ),)
+                          ],
                         ),
-                        Positioned(
-                          right: -2,
-                          child: Image.asset(
-                          'images/story_share.png',
-                          height: 25,
-                          width: 30,
-                          fit: BoxFit.fill,
-                          //color: Colors.white,
-                        ),)
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                margin: EdgeInsets.only(left: 4.0,right: 4.0),
+                                child: Text(
+                                  "محمد التونى حماد",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w600,
+                                    overflow: TextOverflow.ellipsis
+                                  ),
+                                  maxLines: 1,
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "منذ 10 دقائق",
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
+                                      //fontWeight: FontWeight.w600,
+                                      overflow: TextOverflow.ellipsis
+                                  ),
+                                  maxLines: 2,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
                       ],
                     ),
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.only(left: 4.0,right: 4.0),
-                        child: Text(
-                          "محمدالتونى حماد",
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w600,
-                            overflow: TextOverflow.ellipsis
-                          ),
-                          maxLines: 1,
-                        ),
-                      ),
-                    ),
+
                   ],
                 ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "فاعليات مهرجان التمور من الفترة 2020 الى  2021",
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w600,
-                        overflow: TextOverflow.ellipsis
-                    ),
-                    maxLines: 2,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          Stack(
-            children: [
-              CircleAvatar(
-                radius: 25.0,
-                backgroundColor: Colors.grey[300],
-                backgroundImage: CachedNetworkImageProvider(
-                  user.profileImageUrl,
-                ),
               ),
+
+              Stack(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 10.0,left: 5),
+                    child: CircleAvatar(
+                      radius: 25.0,
+                      backgroundColor: Colors.grey[300],
+                      backgroundImage: CachedNetworkImageProvider(
+                        user.profileImageUrl,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
             ],
           ),
-
+          Container(
+            alignment: Alignment.centerRight,
+            margin: EdgeInsets.all(10.0),
+            child: Text(
+              "فاعليات مهرجان التمور من الفترة 2020 الى  2021",
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w600,
+                  overflow: TextOverflow.ellipsis
+              ),
+              maxLines: 2,
+            ),
+          ),
         ],
       ),
     );

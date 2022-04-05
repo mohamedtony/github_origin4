@@ -72,20 +72,23 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-        body:  PageView.builder(
-          itemCount: 6,
-          controller: PageController(initialPage: 0, viewportFraction: 1),
-          scrollDirection: Axis.vertical,
-          itemBuilder: (context, index) {
-            //final data = videoController.videoList[index];
-            return Stack(
-              children: [
-                StoryScreen(
-                  stories: stories,
-                ),
-              ],
-            );
-          },
+        body:  Container(
+          margin: EdgeInsets.only(top: 33),
+          child: PageView.builder(
+            itemCount: 6,
+            controller: PageController(initialPage: 0, viewportFraction: 1),
+            scrollDirection: Axis.vertical,
+            itemBuilder: (context, index) {
+              //final data = videoController.videoList[index];
+              return Stack(
+                children: [
+                  StoryScreen(
+                    stories: stories,
+                  ),
+                ],
+              );
+            },
+          ),
         )
     );
   }
