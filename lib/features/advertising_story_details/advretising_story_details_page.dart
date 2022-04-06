@@ -8,7 +8,7 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
   AdvertisingStoryDetailsPage({Key? key}) : super(key: key);
 
   final VideoController videoController = Get.put(VideoController());
-
+   PageController pageController=PageController(initialPage: 0, viewportFraction: 1,);
   buildProfile(String profilePhoto) {
     return SizedBox(
       width: 60,
@@ -72,23 +72,21 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-        body:  Container(
-          margin: EdgeInsets.only(top: 33),
-          child: PageView.builder(
-            itemCount: 6,
-            controller: PageController(initialPage: 0, viewportFraction: 1),
-            scrollDirection: Axis.vertical,
-            itemBuilder: (context, index) {
-              //final data = videoController.videoList[index];
-              return Stack(
-                children: [
-                  StoryScreen(
-                    stories: stories,
-                  ),
-                ],
-              );
-            },
-          ),
+        body:  PageView.builder(
+          itemCount: 6,
+          controller: pageController,
+          scrollDirection: Axis.vertical,
+          itemBuilder: (context, index) {
+            //final data = videoController.videoList[index];
+            return Stack(
+              children: [
+                StoryScreen(
+                  stories: stories,
+                  pageController1: pageController,
+                ),
+              ],
+            );
+          },
         )
     );
   }

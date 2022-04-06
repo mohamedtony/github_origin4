@@ -1,7 +1,10 @@
 import 'package:advertisers/features/advertising_story_details/VideoController.dart';
+import 'package:advertisers/features/advertising_story_details/audio_player.dart';
+import 'package:advertisers/features/advertising_story_details/sound_widget.dart';
 import 'package:advertisers/features/advertising_story_details/story_model.dart';
 import 'package:advertisers/features/advertising_story_details/user_model.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +16,8 @@ import 'package:video_player/video_player.dart';
 class StoryScreen extends StatefulWidget {
   final List<Story> stories;
 
-  const StoryScreen({required this.stories});
+   StoryScreen({required this.stories,this.pageController1});
+  PageController? pageController1;
 
   @override
   _StoryScreenState createState() => _StoryScreenState();
@@ -24,9 +28,10 @@ class _StoryScreenState extends State<StoryScreen>
   PageController? _pageController;
   AnimationController? _animController;
   VideoPlayerController? _videoController;
+  AudioPlayer? audioPlayer;
   int _currentIndex = 0;
-
   final VideoController videoGetxController = Get.find();
+
   @override
   void initState() {
     super.initState();
@@ -38,6 +43,8 @@ class _StoryScreenState extends State<StoryScreen>
 
     _animController?.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
+        _videoController?.dispose();
+        _videoController = null;
         _animController?.stop();
         _animController?.reset();
         setState(() {
@@ -45,12 +52,16 @@ class _StoryScreenState extends State<StoryScreen>
             _currentIndex += 1;
             _loadStory(story: widget.stories[_currentIndex]);
           } else {
+            print("pageController1");
             // Out of bounds - loop story
             // You can also Navigator.of(context).pop() here
             //_currentIndex = 0;
             // _loadStory(story: widget.stories[_currentIndex]);
+            widget.pageController1?.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.ease);
           }
         });
+
+
       }
     });
   }
@@ -70,10 +81,18 @@ class _StoryScreenState extends State<StoryScreen>
       backgroundColor: Colors.black,
       body: GestureDetector(
         onTapDown: (details) => _onTapDown(details, story),
+          /*onTap: (){
+          print("onTap");
+          if(videoGetxController.isVisible.isTrue) {
+            videoGetxController.isVisible.value = false;
+          }else{
+            videoGetxController.isVisible.value = true;
+          }
+       },*/
         child: Stack(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(bottom: 100,top: 60),
+              margin: EdgeInsets.only(bottom: 100),
               child: PageView.builder(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
@@ -88,14 +107,44 @@ class _StoryScreenState extends State<StoryScreen>
                   }else if(story.media == MediaType.video){
                     if (_videoController?.value != null &&
                         _videoController!.value.isInitialized) {
-                      return FittedBox(
+                      return !_videoController!.value.isBuffering?FittedBox(
                         fit: BoxFit.cover,
                         child: SizedBox(
                           width: _videoController!.value.size.width,
                           height: _videoController!.value.size.height,
                           child: VideoPlayer(_videoController!),
                         ),
+                      ): Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: CircularProgressIndicator(
+                                color: Colors.white.withOpacity(0.5)
+                            ),
+                          ),
+                        ],
                       );
+                    }else{
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: CircularProgressIndicator(
+                                color: Colors.white.withOpacity(0.5)
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                  }else if(story.media == MediaType.audio){
+                    if(audioPlayer!=null && _animController!=null) {
+                      return AudioPlayerUrl(audioPlayer!,_animController!,story.url);
                     }
                   }
                   return const SizedBox.shrink();
@@ -103,14 +152,11 @@ class _StoryScreenState extends State<StoryScreen>
               ),
             ),
             Positioned(
-              top: 0.0,
-              left: 0.0,
-              right: 0.0,
+              top: 40.0,
+              left: 2.0,
+              right: 2.0,
               child: Column(
                 children: <Widget>[
-                  Container(
-                      margin: EdgeInsets.only(bottom: 10),
-                      child: UserInfo(user: story.user)),
                   Row(
                     textDirection: TextDirection.ltr,
                     children: widget.stories
@@ -128,17 +174,22 @@ class _StoryScreenState extends State<StoryScreen>
                         .values
                         .toList(),
                   ),
-
+                  Obx(()=>videoGetxController.isVisible.isTrue?Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 1.5,
+                      vertical: 4.0,
+                    ),
+                    child: UserInfo(user: story.user),
+                  ):SizedBox(),)
                 ],
               ),
             ),
-
             Obx(()=>Align(
               alignment: Alignment.bottomCenter,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                 /* Row(
+                  /* Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Image.asset(
@@ -212,8 +263,8 @@ class _StoryScreenState extends State<StoryScreen>
                                       ),
                                     ): new BoxDecoration(
                                       color: Colors.grey[300],
-                                        shape: BoxShape.circle,
-                                      ),
+                                      shape: BoxShape.circle,
+                                    ),
                                     child: Align(
                                       alignment: Alignment.center,
                                       child:Image.asset(
@@ -233,22 +284,22 @@ class _StoryScreenState extends State<StoryScreen>
                                 InkWell(
                                   onTap:(){
                                     videoGetxController.clickedIndex.value = 1;
-                                 },
+                                  },
                                   child: Container(
                                     width: 40.0,
                                     height: 40.0,
                                     padding: EdgeInsets.all(13),
-                              decoration: videoGetxController.clickedIndex==1?BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [AppColors.beginColor, AppColors.endColor],
-                                  ),
-                              ): new BoxDecoration(
-                                  color: Colors.grey[300],
-                                  shape: BoxShape.circle,
-                              ),
+                                    decoration: videoGetxController.clickedIndex==1?BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [AppColors.beginColor, AppColors.endColor],
+                                      ),
+                                    ): new BoxDecoration(
+                                      color: Colors.grey[300],
+                                      shape: BoxShape.circle,
+                                    ),
                                     child: Align(
                                       alignment: Alignment.center,
                                       child:Image.asset(
@@ -273,17 +324,17 @@ class _StoryScreenState extends State<StoryScreen>
                                     width: 40.0,
                                     height: 40.0,
                                     padding: EdgeInsets.all(13),
-                              decoration: videoGetxController.clickedIndex==2?BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [AppColors.beginColor, AppColors.endColor],
-                                  ),
-                              ): new BoxDecoration(
-                                  color: Colors.grey[300],
-                                  shape: BoxShape.circle,
-                              ),
+                                    decoration: videoGetxController.clickedIndex==2?BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [AppColors.beginColor, AppColors.endColor],
+                                      ),
+                                    ): new BoxDecoration(
+                                      color: Colors.grey[300],
+                                      shape: BoxShape.circle,
+                                    ),
                                     child: Image.asset(
                                       'images/heartsolid3x.png',
                                       height: 25,
@@ -434,55 +485,147 @@ class _StoryScreenState extends State<StoryScreen>
     final double screenHieght = MediaQuery.of(context).size.height;
 
     final double dx = details.globalPosition.dx;
+    print("screenHieght=${details.globalPosition.dy}");
+    print("screenHieght=${4*screenHieght/5}");
     if(details.globalPosition.dy<screenHieght/2){
       print("screenHieght");
 
     }
-    if (dx < screenWidth / 3) {
-      print("screenWidth");
-      setState(() {
-        if (_currentIndex - 1 >= 0) {
-          _currentIndex -= 1;
-          _loadStory(story: widget.stories[_currentIndex]);
+    if(details.globalPosition.dy>4*screenHieght/5){
+      print("screenHieght is greater");
+    }else{
+      if (dx < screenWidth / 5) {
+        print("screenWidth");
+        setState(() {
+          if (_currentIndex - 1 >= 0) {
+            _currentIndex -= 1;
+            _loadStory(story: widget.stories[_currentIndex]);
+          }
+        });
+      } else if (dx > 4 * screenWidth / 5) {
+        setState(() {
+          if (_currentIndex + 1 < widget.stories.length) {
+            _currentIndex += 1;
+            _loadStory(story: widget.stories[_currentIndex]);
+          } else {
+            // Out of bounds - loop story
+            // You can also Navigator.of(context).pop() here
+            _currentIndex = 0;
+            _loadStory(story: widget.stories[_currentIndex]);
+          }
+        });
+      } else {
+        /*if (story.media == MediaType.video) {
+          if (_videoController!.value.isPlaying) {
+            _videoController?.pause();
+            _animController?.stop();
+          } else {
+            _videoController?.play();
+            _animController?.forward();
+          }
+        }*/
+
+        if(story.media == MediaType.video || story.media == MediaType.image){
+          if(videoGetxController.isVisible.isTrue) {
+            videoGetxController.isVisible.value = false;
+          }else{
+            videoGetxController.isVisible.value = true;
+          }
+
+          /*_videoController?.position.then((position){
+            Duration dur = _videoController!.value.duration;
+            print("kkkkkkkkkkkdur=${dur.inMinutes}");
+            final double t = (((position!.inSeconds)+10) / (dur.inSeconds)).clamp(0.0, 1.0);
+            _videoController?.seekTo(position);
+            _animController?.forward(from: t);
+          });*/
+
+        }else{
+          videoGetxController.isVisible.value = true;
+
+
+          audioPlayer?.getCurrentPosition().then((position){
+            print("kkkkkkkkkkk=${position}");
+
+            audioPlayer?.getDuration().then((value){
+              if((position+(10*1000))<value){
+                audioPlayer?.seek(Duration(milliseconds: position+(10*1000)));
+                print("duration=${value}");
+                final double t = (((position/1000)+10) / (value/1000)).clamp(0.0, 1.0);
+                print("tttttttt+ ${t}");
+                _animController?.forward(from: t);
+              }else{
+                _animController?.forward();
+              }
+            });
+          /*  final double t = (position.inSeconds / audioDuration).clamp(0.0, 1.0);
+            print("tttttttt+ ${t}");
+            widget.animationController.forward(from: t);*/
+          });
+          //audioPlayer?.seek(position);
         }
-      });
-    } else if (dx > 2 * screenWidth / 3) {
-      setState(() {
-        if (_currentIndex + 1 < widget.stories.length) {
-          _currentIndex += 1;
-          _loadStory(story: widget.stories[_currentIndex]);
-        } else {
-          // Out of bounds - loop story
-          // You can also Navigator.of(context).pop() here
-          _currentIndex = 0;
-          _loadStory(story: widget.stories[_currentIndex]);
-        }
-      });
-    } else {
-      if (story.media == MediaType.video) {
-        if (_videoController!.value.isPlaying) {
-          _videoController?.pause();
-          _animController?.stop();
-        } else {
-          _videoController?.play();
-          _animController?.forward();
-        }
+        print("kkkkkkkkkkk");
       }
     }
+
   }
 
-  void _loadStory({Story? story, bool animateToPage = true}) {
+  Future<void> _loadStory({Story? story, bool animateToPage = true}) async {
+    print("nextPage");
     _animController?.stop();
     _animController?.reset();
+    _videoController?.dispose();
+    _videoController = null;
     switch (story!.media) {
       case MediaType.image:
         _animController!.duration = story.duration;
         _animController?.forward();
         break;
       case MediaType.video:
-        _videoController = null;
         _videoController?.dispose();
+        _videoController = null;
         _videoController = VideoPlayerController.network(story.url)
+          ..initialize().then((_) {
+            setState(() {});
+            if (_videoController!.value.isInitialized) {
+              _animController!.duration = _videoController!.value.duration;
+              _videoController?.setVolume(50);
+              _videoController!.play();
+              _animController!.forward();
+            }
+          });
+        break;
+      case MediaType.audio:
+        //videoGetxController.playButtonNotifier.value = ButtonState.paused;
+        //Duration? dur = await videoGetxController.play(story.url);
+       /// print("mDuration= ${dur?.inMinutes}");
+           /*audioPlayer?.release();
+           audioPlayer?.dispose();*/
+           audioPlayer = null;
+           audioPlayer = AudioPlayer();
+      /*audioPlayer = null;
+       audioPlayer?.release();
+       audioPlayer?.dispose();
+      audioPlayer = AudioPlayer();*/
+ /*     audioPlayer ??= AudioPlayer();
+      audioPlayer?.setUrl(story.url);
+      audioPlayer?.onDurationChanged.listen((Duration duration) {
+        _animController!.duration =duration;
+        audioPlayer?.play(story.url);
+        _animController!.forward();
+        //_animController?.forward(from: 10);
+      });*/
+      /*audioPlayer?.onAudioPositionChanged.listen((Duration position) async {
+        setState(() {
+          _animController?.duration = position;
+          _animController!.forward(from: position.);
+        });
+      });*/
+      //print("mDuration= ${duration}");
+
+        /*_animController!.duration = Duration(minutes: 3);
+        _animController!.forward();*/
+        /*_videoController = VideoPlayerController.network(story.url)
           ..initialize().then((_) {
             setState(() {});
             if (_videoController!.value.isInitialized) {
@@ -490,7 +633,7 @@ class _StoryScreenState extends State<StoryScreen>
               _videoController!.play();
               _animController!.forward();
             }
-          });
+          });*/
         break;
     }
     if (animateToPage) {
@@ -568,8 +711,8 @@ class AnimatedBar extends StatelessWidget {
 
 class UserInfo extends StatelessWidget {
   final User user;
-
-  const UserInfo({
+  final VideoController videoGetxController = Get.find();
+   UserInfo({
     Key? key,
     required this.user,
   }) : super(key: key);
@@ -577,129 +720,101 @@ class UserInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 0.0),
-      color: Colors.grey,
-      child: Column(
-        children: [
-          Row(
-            children: <Widget>[
-              IconButton(
-                icon: const Icon(
-                  Icons.close,
-                  size: 30.0,
-                  color: Colors.white,
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              const SizedBox(width: 4.0),
-              Expanded(
-                child: Column(
+      margin: EdgeInsets.only(top: 10.0),
+      color: AppColors.saveButtonBottomSheet.withOpacity(.6),
+      child: Row(
+        children: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.close,
+              size: 30.0,
+              color: Colors.white,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          const SizedBox(width: 4.0),
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.min,
+                    Stack(
                       children: [
-                        Stack(
-                          children: [
-                            Container(
-                              // width: 50.0,
-                              height: 35.0,
-                              padding: EdgeInsets.only(left: 20,right: 20),
-                              margin: EdgeInsets.only(right: 15.0,left: 4,top: 6),
-                              decoration: new BoxDecoration(
-                                  color: Color(0xffCFCFCF),
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: new BorderRadius.all(
-                                    Radius.circular(40.0),
-                                  )
-                              ),
-                              child:  Text("تفاصيل الاعلان",style: TextStyle(color: Colors.white),),
-                            ),
-                            Positioned(
-                              right: -2,
-                              bottom: 8,
-                              child: Image.asset(
-                              'images/story_share.png',
-                              height: 25,
-                              width: 30,
-                              fit: BoxFit.fill,
-                              //color: Colors.white,
-                            ),)
-                          ],
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                margin: EdgeInsets.only(left: 4.0,right: 4.0),
-                                child: Text(
-                                  "محمد التونى حماد",
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w600,
-                                    overflow: TextOverflow.ellipsis
-                                  ),
-                                  maxLines: 1,
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "منذ 10 دقائق",
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12.0,
-                                      //fontWeight: FontWeight.w600,
-                                      overflow: TextOverflow.ellipsis
-                                  ),
-                                  maxLines: 2,
-                                ),
-                              ),
-                            ],
+                        Container(
+                          // width: 50.0,
+                          height: 30.0,
+                          padding: EdgeInsets.only(left: 10,right: 10),
+                          margin: EdgeInsets.only(right: 15.0,left: 4,top: 6),
+                          decoration: new BoxDecoration(
+                              color: Color(0xffCFCFCF),
+                              shape: BoxShape.rectangle,
+                              borderRadius: new BorderRadius.all(
+                                Radius.circular(40.0),
+                              )
                           ),
+                          child:  Text("تفاصيل الاعلان"),
                         ),
-
+                        Positioned(
+                          right: -2,
+                          child: Image.asset(
+                            'images/story_share.png',
+                            height: 25,
+                            width: 30,
+                            fit: BoxFit.fill,
+                            //color: Colors.white,
+                          ),)
                       ],
                     ),
-
-                  ],
-                ),
-              ),
-
-              Stack(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 10.0,left: 5),
-                    child: CircleAvatar(
-                      radius: 25.0,
-                      backgroundColor: Colors.grey[300],
-                      backgroundImage: CachedNetworkImageProvider(
-                        user.profileImageUrl,
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.only(left: 4.0,right: 4.0),
+                        child: Text(
+                          "محمدالتونى حماد",
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w600,
+                              overflow: TextOverflow.ellipsis
+                          ),
+                          maxLines: 1,
+                        ),
                       ),
                     ),
+                  ],
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "فاعليات مهرجان التمور من الفترة 2020 الى  2021",
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w600,
+                        overflow: TextOverflow.ellipsis
+                    ),
+                    maxLines: 2,
                   ),
-                ],
-              ),
-
-            ],
-          ),
-          Container(
-            alignment: Alignment.centerRight,
-            margin: EdgeInsets.all(10.0),
-            child: Text(
-              "فاعليات مهرجان التمور من الفترة 2020 الى  2021",
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w600,
-                  overflow: TextOverflow.ellipsis
-              ),
-              maxLines: 2,
+                ),
+              ],
             ),
           ),
+
+          Stack(
+            children: [
+              CircleAvatar(
+                radius: 25.0,
+                backgroundColor: Colors.grey[300],
+                backgroundImage: CachedNetworkImageProvider(
+                  user.profileImageUrl,
+                ),
+              ),
+            ],
+          ),
+
         ],
       ),
     );

@@ -92,7 +92,6 @@ dependencies:
   readmore: ^2.1.0
   audioplayers: ^0.20.1
 
-
   #focused_menu: ^1.0.5
 dev_dependencies:
   flutter_test:

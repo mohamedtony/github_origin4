@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 enum MediaType {
   image,
   video,
+  audio
 }
 
 class Story {

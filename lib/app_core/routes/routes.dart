@@ -514,16 +514,5 @@ class Routes {
       }),*/
 
     ),
-
-    GetPage(
-      name: '/MusicApp',
-      page: () => MusicApp(),
-      /*binding: BindingsBuilder(() {
-        Get.lazyPut<AdvertiserProfileOrderController>(() => AdvertiserProfileOrderController());
-      }),*/
-
-    ),
-
-
   ];
 }
