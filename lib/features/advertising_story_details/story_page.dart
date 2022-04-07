@@ -1,8 +1,8 @@
 import 'package:advertisers/features/advertising_story_details/VideoController.dart';
 import 'package:advertisers/features/advertising_story_details/audio_player.dart';
 import 'package:advertisers/features/advertising_story_details/sound_widget.dart';
-import 'package:advertisers/features/advertising_story_details/story_model.dart';
-import 'package:advertisers/features/advertising_story_details/user_model.dart';
+import 'package:advertisers/features/advertising_story_details/Story.dart';
+import 'package:advertisers/features/advertising_story_details/User.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -16,7 +16,8 @@ import 'package:video_player/video_player.dart';
 class StoryScreen extends StatefulWidget {
   final List<Story> stories;
 
-   StoryScreen({required this.stories,this.pageController1});
+  StoryScreen({required this.stories, this.pageController1});
+
   PageController? pageController1;
 
   @override
@@ -57,11 +58,10 @@ class _StoryScreenState extends State<StoryScreen>
             // You can also Navigator.of(context).pop() here
             //_currentIndex = 0;
             // _loadStory(story: widget.stories[_currentIndex]);
-            widget.pageController1?.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.ease);
+            widget.pageController1?.nextPage(
+                duration: Duration(milliseconds: 1000), curve: Curves.ease);
           }
         });
-
-
       }
     });
   }
@@ -81,7 +81,7 @@ class _StoryScreenState extends State<StoryScreen>
       backgroundColor: Colors.black,
       body: GestureDetector(
         onTapDown: (details) => _onTapDown(details, story),
-          /*onTap: (){
+        /*onTap: (){
           print("onTap");
           if(videoGetxController.isVisible.isTrue) {
             videoGetxController.isVisible.value = false;
@@ -99,35 +99,36 @@ class _StoryScreenState extends State<StoryScreen>
                 itemCount: widget.stories.length,
                 itemBuilder: (context, i) {
                   final Story story = widget.stories[i];
-                  if(story.media == MediaType.image){
+                  if (story.media == MediaType.image) {
                     return CachedNetworkImage(
-                      imageUrl: story.url,
+                      imageUrl: story.url!,
                       fit: BoxFit.cover,
                     );
-                  }else if(story.media == MediaType.video){
+                  } else if (story.media == MediaType.video) {
                     if (_videoController?.value != null &&
                         _videoController!.value.isInitialized) {
-                      return !_videoController!.value.isBuffering?FittedBox(
-                        fit: BoxFit.cover,
-                        child: SizedBox(
-                          width: _videoController!.value.size.width,
-                          height: _videoController!.value.size.height,
-                          child: VideoPlayer(_videoController!),
-                        ),
-                      ): Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                                color: Colors.white.withOpacity(0.5)
-                            ),
-                          ),
-                        ],
-                      );
-                    }else{
+                      return !_videoController!.value.isBuffering
+                          ? FittedBox(
+                              fit: BoxFit.cover,
+                              child: SizedBox(
+                                width: _videoController!.value.size.width,
+                                height: _videoController!.value.size.height,
+                                child: VideoPlayer(_videoController!),
+                              ),
+                            )
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: CircularProgressIndicator(
+                                      color: Colors.white.withOpacity(0.5)),
+                                ),
+                              ],
+                            );
+                    } else {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
@@ -136,15 +137,15 @@ class _StoryScreenState extends State<StoryScreen>
                             width: 50,
                             height: 50,
                             child: CircularProgressIndicator(
-                                color: Colors.white.withOpacity(0.5)
-                            ),
+                                color: Colors.white.withOpacity(0.5)),
                           ),
                         ],
                       );
                     }
-                  }else if(story.media == MediaType.audio){
-                    if(audioPlayer!=null && _animController!=null) {
-                      return AudioPlayerUrl(audioPlayer!,_animController!,story.url);
+                  } else if (story.media == MediaType.audio) {
+                    if (audioPlayer != null && _animController != null) {
+                      return AudioPlayerUrl(
+                          audioPlayer!, _animController!, story.url!);
                     }
                   }
                   return const SizedBox.shrink();
@@ -162,34 +163,285 @@ class _StoryScreenState extends State<StoryScreen>
                     children: widget.stories
                         .asMap()
                         .map((i, e) {
-                      return MapEntry(
-                        i,
-                        AnimatedBar(
-                          animController: _animController!,
-                          position: i,
-                          currentIndex: _currentIndex,
-                        ),
-                      );
-                    })
+                          return MapEntry(
+                            i,
+                            AnimatedBar(
+                              animController: _animController!,
+                              position: i,
+                              currentIndex: _currentIndex,
+                            ),
+                          );
+                        })
                         .values
                         .toList(),
                   ),
-                  Obx(()=>videoGetxController.isVisible.isTrue?Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 1.5,
-                      vertical: 4.0,
-                    ),
-                    child: UserInfo(user: story.user),
-                  ):SizedBox(),)
+                  Obx(
+                    () => videoGetxController.isVisible.isTrue
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 1.5,
+                              vertical: 4.0,
+                            ),
+                            child: UserInfo(user: story.user!),
+                          )
+                        : SizedBox(),
+                  )
                 ],
               ),
             ),
-            Obx(()=>Align(
-              alignment: Alignment.bottomCenter,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  /* Row(
+            (story.media == MediaType.audio || story.media == MediaType.video)
+                ? Obx(() => videoGetxController.isVisible.isTrue
+                    ? Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          margin: EdgeInsets.only(left: 40, top: 100),
+                          child: InkWell(
+                            onTap: () {
+                              if (story.media == MediaType.audio) {
+                                audioPlayer
+                                    ?.getCurrentPosition()
+                                    .then((position) {
+                                  print("kkkkkkkkkkk=${position}");
+
+                                  audioPlayer?.getDuration().then((value) {
+                                    if ((position - (10 * 1000)) > 0) {
+                                      audioPlayer?.seek(Duration(
+                                          milliseconds:
+                                              position - (10 * 1000)));
+                                      print("duration=${value}");
+                                      final double t =
+                                          (((position / 1000) - 10) /
+                                                  (value / 1000))
+                                              .clamp(0.0, 1.0);
+                                      print("tttttttt+ ${t}");
+                                      _animController?.reverse(from: t);
+                                    } else {
+                                      //_pageController?.previousPage(duration: Duration(milliseconds: 1000), curve: Curves.ease);
+                                      setState(() {
+                                        if (_currentIndex - 1 >= 0) {
+                                          _currentIndex -= 1;
+                                          _loadStory(
+                                              story: widget
+                                                  .stories[_currentIndex]);
+                                        } else {
+                                          widget.pageController1?.previousPage(
+                                              duration:
+                                                  Duration(milliseconds: 1000),
+                                              curve: Curves.ease);
+                                        }
+                                      });
+                                    }
+                                  });
+                                  /*  final double t = (position.inSeconds / audioDuration).clamp(0.0, 1.0);
+            print("tttttttt+ ${t}");
+            widget.animationController.forward(from: t);*/
+                                });
+                              }else if (story.media == MediaType.video) {
+                                _videoController?.position.then((position) {
+                                  Duration dur =
+                                      _videoController!.value.duration;
+                                  if (position != null &&
+                                      (position.inMilliseconds - (10 * 1000)) >0) {
+                                    print("kkkkkkkkkkkdur=${dur.inMinutes}");
+                                    final double t =
+                                    (((position.inSeconds) - 10) /
+                                        (dur.inSeconds))
+                                        .clamp(0.0, 1.0);
+                                    _videoController?.seekTo(Duration(
+                                        milliseconds: position.inMilliseconds -
+                                            (10 * 1000)));
+                                    _animController?.reverse(from: t);
+                                  }
+                                  else {
+                                    setState(() {
+                                      if (_currentIndex - 1 >= 0) {
+                                        _currentIndex -= 1;
+                                        _loadStory(
+                                            story: widget
+                                                .stories[_currentIndex]);
+                                      } else {
+                                        widget.pageController1?.previousPage(
+                                            duration:
+                                            Duration(milliseconds: 1000),
+                                            curve: Curves.ease);
+                                      }
+                                    });
+                                    //_pageController?.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.ease);
+                                  }
+                                });
+                              }
+                            },
+                            child: Image.asset(
+                              'images/pausedown10.png',
+                              height: 100,
+                              width: 100,
+                              fit: BoxFit.fill,
+                              color: videoGetxController.clickedIndex == 0
+                                  ? Colors.white
+                                  : Colors.blue,
+                            ),
+                          ),
+                        ),
+                      )
+                    : SizedBox())
+                : SizedBox(),
+            (story.media == MediaType.audio || story.media == MediaType.video)
+                ? Obx(() => videoGetxController.isVisible.isTrue
+                    ? Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          margin: EdgeInsets.only(top: 320),
+                          child: InkWell(
+                            onTap: () {
+                              if (story.media == MediaType.video) {
+                                if (story.media == MediaType.video) {
+                                  if (_videoController!.value.isPlaying) {
+                                    _videoController?.pause();
+                                    _animController?.stop();
+                                  } else {
+                                    _videoController?.play();
+                                    _animController?.forward();
+                                  }
+                                }
+                              } else if (story.media == MediaType.audio) {
+                                if (audioPlayer != null &&
+                                    audioPlayer!.state == PlayerState.PLAYING) {
+                                  audioPlayer?.pause();
+                                  _animController?.stop();
+                                } else if (audioPlayer != null &&
+                                    audioPlayer!.state == PlayerState.PAUSED) {
+                                  audioPlayer?.play(story.url!);
+                                  _animController?.forward();
+                                }
+                              }
+                            },
+                            child: Image.asset(
+                              'images/playpauseicon.png',
+                              height: 100,
+                              width: 100,
+                              fit: BoxFit.fill,
+                              color: videoGetxController.clickedIndex == 0
+                                  ? Colors.white
+                                  : Colors.blue,
+                            ),
+                          ),
+                        ),
+                      )
+                    : SizedBox())
+                : SizedBox(),
+            (story.media == MediaType.audio || story.media == MediaType.video)
+                ? Obx(() => videoGetxController.isVisible.isTrue
+                    ? Align(
+                        alignment: Alignment.centerRight,
+                        child: InkWell(
+                          onTap: () {
+                            if (story.media == MediaType.audio) {
+                              audioPlayer
+                                  ?.getCurrentPosition()
+                                  .then((position) {
+                                print("kkkkkkkkkkk=${position}");
+
+                                audioPlayer?.getDuration().then((value) {
+                                  if ((position + (10 * 1000)) < value) {
+                                    audioPlayer?.seek(Duration(
+                                        milliseconds:
+                                        position + (10 * 1000)));
+                                    print("duration=${value}");
+                                    final double t =
+                                    (((position / 1000) + 10) /
+                                        (value / 1000))
+                                        .clamp(0.0, 1.0);
+                                    print("tttttttt+ ${t}");
+                                    _animController?.forward(from: t);
+                                  } else {
+                                    setState(() {
+                                      if (_currentIndex + 1 <
+                                          widget.stories.length) {
+                                        _currentIndex += 1;
+                                        _loadStory(
+                                            story: widget
+                                                .stories[_currentIndex]);
+                                      } else {
+                                        // Out of bounds - loop story
+                                        // You can also Navigator.of(context).pop() here
+                                        // _currentIndex = 0;
+                                        //_loadStory(story: widget.stories[_currentIndex]);
+                                        widget.pageController1?.nextPage(
+                                            duration:
+                                            Duration(milliseconds: 1000),
+                                            curve: Curves.ease);
+                                      }
+                                    });
+                                    //_pageController?.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.ease);
+                                  }
+                                });
+                                /*  final double t = (position.inSeconds / audioDuration).clamp(0.0, 1.0);
+            print("tttttttt+ ${t}");
+            widget.animationController.forward(from: t);*/
+                              });
+                            } else if (story.media == MediaType.video) {
+                              _videoController?.position.then((position) {
+                                Duration dur =
+                                    _videoController!.value.duration;
+                                if (position != null &&
+                                    (position.inMilliseconds + (10 * 1000)) < dur.inMilliseconds) {
+                                  print("kkkkkkkkkkkdur=${dur.inMinutes}");
+                                  final double t =
+                                  (((position.inSeconds) + 10) /
+                                      (dur.inSeconds))
+                                      .clamp(0.0, 1.0);
+                                  _videoController?.seekTo(Duration(
+                                      milliseconds: position.inMilliseconds +
+                                          (10 * 1000)));
+                                  _animController?.forward(from: t);
+                                }
+                                else {
+                                  setState(() {
+                                    if (_currentIndex + 1 <
+                                        widget.stories.length) {
+                                      _currentIndex += 1;
+                                      _loadStory(
+                                          story: widget
+                                              .stories[_currentIndex]);
+                                    } else {
+                                      // Out of bounds - loop story
+                                      // You can also Navigator.of(context).pop() here
+                                      // _currentIndex = 0;
+                                      //_loadStory(story: widget.stories[_currentIndex]);
+                                      widget.pageController1?.nextPage(
+                                          duration:
+                                          Duration(milliseconds: 1000),
+                                          curve: Curves.ease);
+                                    }
+                                  });
+                                  //_pageController?.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.ease);
+                                }
+                              });
+                            }
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(right: 40, top: 100),
+                            child: Image.asset(
+                              'images/pauseto10.png',
+                              height: 100,
+                              width: 100,
+                              fit: BoxFit.fill,
+                              color: videoGetxController.clickedIndex == 0
+                                  ? Colors.white
+                                  : Colors.blue,
+                            ),
+                          ),
+                        ),
+                      )
+                    : SizedBox())
+                : SizedBox(),
+            Obx(
+              () => Align(
+                alignment: Alignment.bottomCenter,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    /* Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Image.asset(
@@ -208,13 +460,13 @@ class _StoryScreenState extends State<StoryScreen>
                       ),
                     ],
                   ),*/
-                  Container(
-                    height: 130,
-                    padding: EdgeInsets.only(top: 6),
-                    color: Colors.white,
-                    child: Column(
-                      children: <Widget>[
-                        /*Container(
+                    Container(
+                      height: 130,
+                      padding: EdgeInsets.only(top: 6),
+                      color: Colors.white,
+                      child: Column(
+                        children: <Widget>[
+                          /*Container(
                           width: 62,
                           height: 62,
                           margin: EdgeInsets.all(4),
@@ -238,242 +490,303 @@ class _StoryScreenState extends State<StoryScreen>
                             colors: [AppColors.beginColor, AppColors.endColor],
                           ),
                         ),),*/
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Column(
-                              children: [
-                                InkWell(
-                                  onTap: (){
-                                    videoGetxController.clickedIndex.value = 0;
-                                  },
-                                  child: Container(
-                                    width: 40.0,
-                                    height: 40.0,
-                                    /*decoration: new BoxDecoration(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Column(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      videoGetxController.clickedIndex.value =
+                                          0;
+                                      Navigator.pop(context,[_pageController,_animController,_videoController,widget.stories]);
+                                    },
+                                    child: Container(
+                                      width: 40.0,
+                                      height: 40.0,
+                                      /*decoration: new BoxDecoration(
                                       color: Colors.grey[300],
                                       shape: BoxShape.circle,
                                     ),*/
-                                    decoration: videoGetxController.clickedIndex==0?BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [AppColors.beginColor, AppColors.endColor],
+                                      decoration:
+                                          videoGetxController.clickedIndex == 0
+                                              ? BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  gradient: LinearGradient(
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                    colors: [
+                                                      AppColors.beginColor,
+                                                      AppColors.endColor
+                                                    ],
+                                                  ),
+                                                )
+                                              : new BoxDecoration(
+                                                  color: Colors.grey[300],
+                                                  shape: BoxShape.circle,
+                                                ),
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Image.asset(
+                                          'images/comments3.png',
+                                          height: 25,
+                                          width: 30,
+                                          fit: BoxFit.fill,
+                                          color: videoGetxController
+                                                      .clickedIndex ==
+                                                  0
+                                              ? Colors.white
+                                              : Colors.blue,
+                                        ),
                                       ),
-                                    ): new BoxDecoration(
-                                      color: Colors.grey[300],
-                                      shape: BoxShape.circle,
                                     ),
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child:Image.asset(
-                                        'images/comments3.png',
+                                  ),
+                                  Text(
+                                    "تعليق",
+                                    style: TextStyle(color: Color(0xff4286D2)),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      videoGetxController.clickedIndex.value =
+                                          1;
+                                    },
+                                    child: Container(
+                                      width: 40.0,
+                                      height: 40.0,
+                                      padding: EdgeInsets.all(13),
+                                      decoration:
+                                          videoGetxController.clickedIndex == 1
+                                              ? BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  gradient: LinearGradient(
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                    colors: [
+                                                      AppColors.beginColor,
+                                                      AppColors.endColor
+                                                    ],
+                                                  ),
+                                                )
+                                              : new BoxDecoration(
+                                                  color: Colors.grey[300],
+                                                  shape: BoxShape.circle,
+                                                ),
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Image.asset(
+                                          'images/icon_share2.png',
+                                          height: 25,
+                                          width: 30,
+                                          fit: BoxFit.fill,
+                                          color: videoGetxController
+                                                      .clickedIndex ==
+                                                  1
+                                              ? Colors.white
+                                              : null,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    "مشاركة",
+                                    style: TextStyle(color: Color(0xff4286D2)),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      videoGetxController.clickedIndex.value =
+                                          2;
+                                    },
+                                    child: Container(
+                                      width: 40.0,
+                                      height: 40.0,
+                                      padding: EdgeInsets.all(13),
+                                      decoration:
+                                          videoGetxController.clickedIndex == 2
+                                              ? BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  gradient: LinearGradient(
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                    colors: [
+                                                      AppColors.beginColor,
+                                                      AppColors.endColor
+                                                    ],
+                                                  ),
+                                                )
+                                              : new BoxDecoration(
+                                                  color: Colors.grey[300],
+                                                  shape: BoxShape.circle,
+                                                ),
+                                      child: Image.asset(
+                                        'images/heartsolid3x.png',
                                         height: 25,
                                         width: 30,
                                         fit: BoxFit.fill,
-                                        color:  videoGetxController.clickedIndex==0?Colors.white:Colors.blue,
-                                      ),),
-                                  ),
-                                ),
-                                Text("تعليق",style: TextStyle(color: Color(0xff4286D2)),)
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                InkWell(
-                                  onTap:(){
-                                    videoGetxController.clickedIndex.value = 1;
-                                  },
-                                  child: Container(
-                                    width: 40.0,
-                                    height: 40.0,
-                                    padding: EdgeInsets.all(13),
-                                    decoration: videoGetxController.clickedIndex==1?BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [AppColors.beginColor, AppColors.endColor],
+                                        color:
+                                            videoGetxController.clickedIndex ==
+                                                    2
+                                                ? Colors.white
+                                                : null,
                                       ),
-                                    ): new BoxDecoration(
-                                      color: Colors.grey[300],
-                                      shape: BoxShape.circle,
                                     ),
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child:Image.asset(
-                                        'images/icon_share2.png',
-                                        height: 25,
-                                        width: 30,
-                                        fit: BoxFit.fill,
-                                        color: videoGetxController.clickedIndex==1?Colors.white:null,
-                                      ),),
                                   ),
-                                ),
-                                Text("مشاركة",style: TextStyle(color: Color(0xff4286D2)),)
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                InkWell(
-                                  onTap: (){
-                                    videoGetxController.clickedIndex.value=2;
-                                  },
-                                  child: Container(
+                                  Text(
+                                    "مفضلة",
+                                    style: TextStyle(color: Color(0xff4286D2)),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Container(
                                     width: 40.0,
                                     height: 40.0,
-                                    padding: EdgeInsets.all(13),
-                                    decoration: videoGetxController.clickedIndex==2?BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [AppColors.beginColor, AppColors.endColor],
-                                      ),
-                                    ): new BoxDecoration(
+                                    padding: EdgeInsets.only(
+                                        bottom: 14,
+                                        top: 8,
+                                        left: 12,
+                                        right: 12),
+                                    decoration: new BoxDecoration(
                                       color: Colors.grey[300],
                                       shape: BoxShape.circle,
                                     ),
                                     child: Image.asset(
-                                      'images/heartsolid3x.png',
+                                      'images/like_story.png',
                                       height: 25,
                                       width: 30,
                                       fit: BoxFit.fill,
-                                      color: videoGetxController.clickedIndex==2?Colors.white:null,
+                                      //color: Colors.white,
                                     ),
                                   ),
-                                ),
-                                Text("مفضلة",style: TextStyle(color: Color(0xff4286D2)),)
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  width: 40.0,
-                                  height: 40.0,
-                                  padding: EdgeInsets.only(bottom: 14,top: 8,left: 12,right: 12),
+                                  Text(
+                                    "96",
+                                    style: TextStyle(color: Color(0xff4286D2)),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Container(
+                                    width: 40.0,
+                                    height: 40.0,
+                                    padding: EdgeInsets.all(13),
+                                    decoration: new BoxDecoration(
+                                      color: Colors.grey[300],
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Image.asset(
+                                      'images/icon_dislike3.png',
+                                      height: 25,
+                                      width: 30,
+                                      fit: BoxFit.fill,
+                                      //color: Colors.white,
+                                    ),
+                                  ),
+                                  Text(
+                                    "96",
+                                    style: TextStyle(color: Color(0xff4286D2)),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                          Row(
+                            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  // width: 50.0,
+                                  height: 44.0,
+                                  margin: EdgeInsets.all(6.0),
                                   decoration: new BoxDecoration(
-                                    color: Colors.grey[300],
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Image.asset(
-                                    'images/like_story.png',
-                                    height: 25,
-                                    width: 30,
-                                    fit: BoxFit.fill,
-                                    //color: Colors.white,
-                                  ),
-                                ),
-                                Text("96",style: TextStyle(color: Color(0xff4286D2)),)
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  width: 40.0,
-                                  height: 40.0,
-                                  padding: EdgeInsets.all(13),
-                                  decoration: new BoxDecoration(
-                                    color: Colors.grey[300],
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Image.asset(
-                                    'images/icon_dislike3.png',
-                                    height: 25,
-                                    width: 30,
-                                    fit: BoxFit.fill,
-                                    //color: Colors.white,
-                                  ),
-                                ),
-                                Text("96",style: TextStyle(color: Color(0xff4286D2)),)
-                              ],
-                            ),
-                          ],
-                        ),
-                        Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Expanded(
-                              child: Container(
-                                // width: 50.0,
-                                height: 44.0,
-                                margin: EdgeInsets.all(6.0),
-                                decoration: new BoxDecoration(
-                                    color: Colors.grey[200],
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: new BorderRadius.all(
-                                      Radius.circular(40.0),
-                                    )
-                                ),
-                                child:  Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                      width: 50.0,
-                                      height: 50.0,
-                                      /* decoration: new BoxDecoration(
+                                      color: Colors.grey[200],
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: new BorderRadius.all(
+                                        Radius.circular(40.0),
+                                      )),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        /* decoration: new BoxDecoration(
                                         color: Colors.grey[300],
                                         shape: BoxShape.circle,
                                       ),*/
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child:Image.asset(
-                                          'images/minutemailer2x.png',
-                                          height: 25,
-                                          width: 30,
-                                          fit: BoxFit.fill,
-                                          //color: Colors.white,
-                                        ),),
-                                    ),
-                                    VerticalDivider(
-                                      thickness: 1.4,
-                                      width: 1,
-                                      color: Colors.grey,
-                                      indent: 10,
-                                      endIndent: 10,
-                                    ),
-                                    Expanded(
-                                      child: TextField(
-                                        textAlign: TextAlign.start,
-                                        //focusNode: requestAdvertiseController.coponNumberNode,
-                                        textAlignVertical: TextAlignVertical.center,
-                                        //keyboardType:TextInputType.number,
-                                        decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.only(
-                                            left: 10.0,
-                                            right: 10.0,
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Image.asset(
+                                            'images/minutemailer2x.png',
+                                            height: 25,
+                                            width: 30,
+                                            fit: BoxFit.fill,
+                                            //color: Colors.white,
                                           ),
-                                          // isCollapsed: true,
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(40),bottomLeft: Radius.circular(40)),
-                                            borderSide: BorderSide(
-                                              width: 0,
-                                              style: BorderStyle.none,
-                                            ),
-                                          ),
-                                          // filled: true,
-                                          hintStyle: TextStyle(color: Colors.grey[500]),
-                                          hintText: 'أضف تعليقك الخاص بالمحتوى',
-                                          //fillColor: Colors.white70
                                         ),
-                                        //controller: requestAdvertiseController.coponNumberController,
                                       ),
-                                    ),
-                                  ],
+                                      VerticalDivider(
+                                        thickness: 1.4,
+                                        width: 1,
+                                        color: Colors.grey,
+                                        indent: 10,
+                                        endIndent: 10,
+                                      ),
+                                      Expanded(
+                                        child: TextField(
+                                          textAlign: TextAlign.start,
+                                          //focusNode: requestAdvertiseController.coponNumberNode,
+                                          textAlignVertical:
+                                              TextAlignVertical.center,
+                                          //keyboardType:TextInputType.number,
+                                          decoration: InputDecoration(
+                                            contentPadding: EdgeInsets.only(
+                                              left: 10.0,
+                                              right: 10.0,
+                                            ),
+                                            // isCollapsed: true,
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(40),
+                                                  bottomLeft:
+                                                      Radius.circular(40)),
+                                              borderSide: BorderSide(
+                                                width: 0,
+                                                style: BorderStyle.none,
+                                              ),
+                                            ),
+                                            // filled: true,
+                                            hintStyle: TextStyle(
+                                                color: Colors.grey[500]),
+                                            hintText:
+                                                'أضف تعليقك الخاص بالمحتوى',
+                                            //fillColor: Colors.white70
+                                          ),
+                                          //controller: requestAdvertiseController.coponNumberController,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-
-                          ],
-                        )
-                      ],
+                            ],
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),)
+            )
           ],
         ),
       ),
@@ -486,20 +799,22 @@ class _StoryScreenState extends State<StoryScreen>
 
     final double dx = details.globalPosition.dx;
     print("screenHieght=${details.globalPosition.dy}");
-    print("screenHieght=${4*screenHieght/5}");
-    if(details.globalPosition.dy<screenHieght/2){
+    print("screenHieght=${4 * screenHieght / 5}");
+    if (details.globalPosition.dy < screenHieght / 2) {
       print("screenHieght");
-
     }
-    if(details.globalPosition.dy>4*screenHieght/5){
+    if (details.globalPosition.dy > 4 * screenHieght / 5) {
       print("screenHieght is greater");
-    }else{
+    } else {
       if (dx < screenWidth / 5) {
         print("screenWidth");
         setState(() {
           if (_currentIndex - 1 >= 0) {
             _currentIndex -= 1;
             _loadStory(story: widget.stories[_currentIndex]);
+          } else {
+            widget.pageController1?.previousPage(
+                duration: Duration(milliseconds: 1000), curve: Curves.ease);
           }
         });
       } else if (dx > 4 * screenWidth / 5) {
@@ -510,8 +825,10 @@ class _StoryScreenState extends State<StoryScreen>
           } else {
             // Out of bounds - loop story
             // You can also Navigator.of(context).pop() here
-            _currentIndex = 0;
-            _loadStory(story: widget.stories[_currentIndex]);
+            // _currentIndex = 0;
+            //_loadStory(story: widget.stories[_currentIndex]);
+            widget.pageController1?.nextPage(
+                duration: Duration(milliseconds: 1000), curve: Curves.ease);
           }
         });
       } else {
@@ -525,10 +842,10 @@ class _StoryScreenState extends State<StoryScreen>
           }
         }*/
 
-        if(story.media == MediaType.video || story.media == MediaType.image){
-          if(videoGetxController.isVisible.isTrue) {
+        if (story.media == MediaType.video || story.media == MediaType.image) {
+          if (videoGetxController.isVisible.isTrue) {
             videoGetxController.isVisible.value = false;
-          }else{
+          } else {
             videoGetxController.isVisible.value = true;
           }
 
@@ -540,34 +857,13 @@ class _StoryScreenState extends State<StoryScreen>
             _animController?.forward(from: t);
           });*/
 
-        }else{
+        } else {
           videoGetxController.isVisible.value = true;
-
-
-          audioPlayer?.getCurrentPosition().then((position){
-            print("kkkkkkkkkkk=${position}");
-
-            audioPlayer?.getDuration().then((value){
-              if((position+(10*1000))<value){
-                audioPlayer?.seek(Duration(milliseconds: position+(10*1000)));
-                print("duration=${value}");
-                final double t = (((position/1000)+10) / (value/1000)).clamp(0.0, 1.0);
-                print("tttttttt+ ${t}");
-                _animController?.forward(from: t);
-              }else{
-                _animController?.forward();
-              }
-            });
-          /*  final double t = (position.inSeconds / audioDuration).clamp(0.0, 1.0);
-            print("tttttttt+ ${t}");
-            widget.animationController.forward(from: t);*/
-          });
           //audioPlayer?.seek(position);
         }
         print("kkkkkkkkkkk");
       }
     }
-
   }
 
   Future<void> _loadStory({Story? story, bool animateToPage = true}) async {
@@ -584,7 +880,7 @@ class _StoryScreenState extends State<StoryScreen>
       case MediaType.video:
         _videoController?.dispose();
         _videoController = null;
-        _videoController = VideoPlayerController.network(story.url)
+        _videoController = VideoPlayerController.network(story.url!)
           ..initialize().then((_) {
             setState(() {});
             if (_videoController!.value.isInitialized) {
@@ -598,16 +894,16 @@ class _StoryScreenState extends State<StoryScreen>
       case MediaType.audio:
         //videoGetxController.playButtonNotifier.value = ButtonState.paused;
         //Duration? dur = await videoGetxController.play(story.url);
-       /// print("mDuration= ${dur?.inMinutes}");
-           /*audioPlayer?.release();
+        /// print("mDuration= ${dur?.inMinutes}");
+        /*audioPlayer?.release();
            audioPlayer?.dispose();*/
-           audioPlayer = null;
-           audioPlayer = AudioPlayer();
-      /*audioPlayer = null;
+        audioPlayer = null;
+        audioPlayer = AudioPlayer();
+        /*audioPlayer = null;
        audioPlayer?.release();
        audioPlayer?.dispose();
       audioPlayer = AudioPlayer();*/
- /*     audioPlayer ??= AudioPlayer();
+        /*     audioPlayer ??= AudioPlayer();
       audioPlayer?.setUrl(story.url);
       audioPlayer?.onDurationChanged.listen((Duration duration) {
         _animController!.duration =duration;
@@ -615,13 +911,13 @@ class _StoryScreenState extends State<StoryScreen>
         _animController!.forward();
         //_animController?.forward(from: 10);
       });*/
-      /*audioPlayer?.onAudioPositionChanged.listen((Duration position) async {
+        /*audioPlayer?.onAudioPositionChanged.listen((Duration position) async {
         setState(() {
           _animController?.duration = position;
           _animController!.forward(from: position.);
         });
       });*/
-      //print("mDuration= ${duration}");
+        //print("mDuration= ${duration}");
 
         /*_animController!.duration = Duration(minutes: 3);
         _animController!.forward();*/
@@ -676,14 +972,14 @@ class AnimatedBar extends StatelessWidget {
                 ),
                 position == currentIndex
                     ? AnimatedBuilder(
-                  animation: animController,
-                  builder: (context, child) {
-                    return _buildContainer(
-                      constraints.maxWidth * animController.value,
-                      Colors.white,
-                    );
-                  },
-                )
+                        animation: animController,
+                        builder: (context, child) {
+                          return _buildContainer(
+                            constraints.maxWidth * animController.value,
+                            Colors.white,
+                          );
+                        },
+                      )
                     : const SizedBox.shrink(),
               ],
             );
@@ -712,7 +1008,8 @@ class AnimatedBar extends StatelessWidget {
 class UserInfo extends StatelessWidget {
   final User user;
   final VideoController videoGetxController = Get.find();
-   UserInfo({
+
+  UserInfo({
     Key? key,
     required this.user,
   }) : super(key: key);
@@ -746,16 +1043,15 @@ class UserInfo extends StatelessWidget {
                         Container(
                           // width: 50.0,
                           height: 30.0,
-                          padding: EdgeInsets.only(left: 10,right: 10),
-                          margin: EdgeInsets.only(right: 15.0,left: 4,top: 6),
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          margin: EdgeInsets.only(right: 15.0, left: 4, top: 6),
                           decoration: new BoxDecoration(
                               color: Color(0xffCFCFCF),
                               shape: BoxShape.rectangle,
                               borderRadius: new BorderRadius.all(
                                 Radius.circular(40.0),
-                              )
-                          ),
-                          child:  Text("تفاصيل الاعلان"),
+                              )),
+                          child: Text("تفاصيل الاعلان"),
                         ),
                         Positioned(
                           right: -2,
@@ -765,21 +1061,21 @@ class UserInfo extends StatelessWidget {
                             width: 30,
                             fit: BoxFit.fill,
                             //color: Colors.white,
-                          ),)
+                          ),
+                        )
                       ],
                     ),
                     Expanded(
                       child: Container(
                         alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.only(left: 4.0,right: 4.0),
+                        margin: EdgeInsets.only(left: 4.0, right: 4.0),
                         child: Text(
                           "محمدالتونى حماد",
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16.0,
                               fontWeight: FontWeight.w600,
-                              overflow: TextOverflow.ellipsis
-                          ),
+                              overflow: TextOverflow.ellipsis),
                           maxLines: 1,
                         ),
                       ),
@@ -794,15 +1090,13 @@ class UserInfo extends StatelessWidget {
                         color: Colors.white,
                         fontSize: 14.0,
                         fontWeight: FontWeight.w600,
-                        overflow: TextOverflow.ellipsis
-                    ),
+                        overflow: TextOverflow.ellipsis),
                     maxLines: 2,
                   ),
                 ),
               ],
             ),
           ),
-
           Stack(
             children: [
               CircleAvatar(
@@ -814,7 +1108,6 @@ class UserInfo extends StatelessWidget {
               ),
             ],
           ),
-
         ],
       ),
     );

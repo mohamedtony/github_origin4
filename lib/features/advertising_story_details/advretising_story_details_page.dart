@@ -1,5 +1,6 @@
 import 'package:advertisers/features/advertising_story_details/VideoController.dart';
 import 'package:advertisers/features/advertising_story_details/data.dart';
+import 'package:advertisers/features/advertising_story_details/small_ads_page.dart';
 import 'package:advertisers/features/advertising_story_details/story_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -84,6 +85,10 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
                   stories: stories,
                   pageController1: pageController,
                 ),
+                /*SmallAdsPage(
+                  stories: stories,
+                  pageController1: pageController,
+                )*/
               ],
             );
           },

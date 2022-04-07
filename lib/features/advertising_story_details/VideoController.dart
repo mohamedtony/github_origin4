@@ -1,4 +1,4 @@
-import 'package:advertisers/features/advertising_story_details/story_model.dart';
+import 'package:advertisers/features/advertising_story_details/Story.dart';
 import 'package:get/get.dart';
 
 enum ButtonState { paused, playing, loading, }

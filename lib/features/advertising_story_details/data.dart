@@ -1,13 +1,20 @@
 
 
-import 'package:advertisers/features/advertising_story_details/story_model.dart';
-import 'package:advertisers/features/advertising_story_details/user_model.dart';
+import 'package:advertisers/features/advertising_story_details/Story.dart';
+import 'package:advertisers/features/advertising_story_details/User.dart';
 
 final User user = User(
   name: 'John Doe',
   profileImageUrl: 'https://wallpapercave.com/wp/AYWg3iu.jpg',
 );
 final List<Story> stories = [
+  Story(
+    url:
+    'https://static.videezy.com/system/resources/previews/000/007/536/original/rockybeach.mp4',
+    media: MediaType.video,
+    duration: const Duration(seconds: 0),
+    user: user,
+  ),
   Story(
     url:
         'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
@@ -38,7 +45,13 @@ final List<Story> stories = [
     duration: const Duration(seconds: 0),
     user: user,
   ),
-
+  Story(
+    url:
+    'https://static.videezy.com/system/resources/previews/000/007/536/original/rockybeach.mp4',
+    media: MediaType.video,
+    duration: const Duration(seconds: 0),
+    user: user,
+  ),
   Story(
     url:
         'https://images.unsplash.com/photo-1531694611353-d4758f86fa6d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=564&q=80',
