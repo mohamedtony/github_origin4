@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:advertisers/app_core/network/models/ReasonModel.dart';
+import 'package:advertisers/features/my_ads/controller/my_adds_controller.dart';
 //import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
 import 'package:advertisers/features/my_orders/widgets/slide_right_item.dart';
@@ -33,19 +34,16 @@ class MyAdsPage extends StatefulWidget {
 
 class _MyAdsPageState extends State<MyAdsPage>
     with SingleTickerProviderStateMixin {
-  // final MyOrdersController _MyOrdersController = Get.put(MyOrdersController());
-  //int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Theme(
         data: ThemeData(
             unselectedWidgetColor: Colors.red
         ),
-        child: GetBuilder<MyOrdersController>(
-          init: MyOrdersController(),
+        child: GetBuilder<MyAddsController>(
+          init: MyAddsController(),
           builder: (controller) => SmartRefresher(
             controller: controller.refreshController,
             enablePullUp: true,
@@ -66,12 +64,10 @@ class _MyAdsPageState extends State<MyAdsPage>
               }
             },
             child: ListView.builder(
-                //physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                //itemCount: orders!.length,
-                itemCount: controller.myRequestsAsClient.length,
+                 shrinkWrap: true,
+                 itemCount: controller.addsList.length,
                 itemBuilder: (context, index) {
-                  //controller.myRequestsAsClient[index].bill_total??0;
+                  //controller.addsList[index].bill_total??0;
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10, right: 5, left: 5),
                     child: GestureDetector(
@@ -80,7 +76,7 @@ class _MyAdsPageState extends State<MyAdsPage>
                         //controller.closeSingleItemFromCheckListFunctions(controller.orders![index].id);
                         if (controller.currentIndex.value  == index) {
                           controller.closeSingleItemFromCheckListFunctions(
-                              controller.myRequestsAsClient[index].id);
+                              controller.addsList[index].id);
                         }
                       },
                       onPanUpdate: (details) {
@@ -90,7 +86,7 @@ class _MyAdsPageState extends State<MyAdsPage>
                           // controller.closeSingleItemFromCheckListFunctions(orders![index].id);
                           if (controller.currentIndex.value  == index) {
                             controller.closeSingleItemFromCheckListFunctions(
-                                controller.myRequestsAsClient[index].id);
+                                controller.addsList[index].id);
                             print("Dragging in +X direction");
                           }
                         }
@@ -101,7 +97,7 @@ class _MyAdsPageState extends State<MyAdsPage>
                             print("Dragging in -X direction");
                             //controller.openSingleItemFromCheckListFunctions(orders![index].id);
                             controller.openSingleItemFromCheckListFunctions(
-                                controller.myRequestsAsClient[index].id);
+                                controller.addsList[index].id);
                           }
                         }
                       },
@@ -125,7 +121,7 @@ class _MyAdsPageState extends State<MyAdsPage>
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              "${controller.myRequestsAsClient[index].id}",
+                                              "${controller.addsList[index].id}",
                                               style: TextStyle(
                                                   decoration:
                                                       TextDecoration.underline,
@@ -133,7 +129,7 @@ class _MyAdsPageState extends State<MyAdsPage>
                                                   color: Color(0xff4B4B95)),
                                             ),
                                             Text(
-                                              "${controller.myRequestsAsClient[index].created_at}",
+                                              "${controller.addsList[index].startedAt}",
                                               style: TextStyle(
                                                   fontSize: 15.sp,
                                                   color: Color(0xff888888)),
@@ -145,11 +141,11 @@ class _MyAdsPageState extends State<MyAdsPage>
                                                   controller
                                                       .addAndRemoveOtherFromCheckListShare(
                                                           controller
-                                                              .myRequestsAsClient![
+                                                              .addsList![
                                                                   index]
                                                               .id);
                                                   print(
-                                                      "controller.checkList == > ${controller.checkListShare} ${controller.checkListShare!.contains(controller.myRequestsAsClient![index].id)}");
+                                                      "controller.checkList == > ${controller.checkListShare} ${controller.checkListShare!.contains(controller.addsList![index].id)}");
                                                 }
                                               },
                                               child: Padding(
@@ -198,8 +194,7 @@ class _MyAdsPageState extends State<MyAdsPage>
                                                 ),
                                               ),
                                             )
-                                            // Text("تفاصيل الطلب",style: TextStyle( decoration: TextDecoration.underline,fontSize: 15.sp,color: Color(0xff244094)),),
-                                          ],
+                                           ],
                                         ),
                                         const SizedBox(
                                           height: 12,
@@ -223,18 +218,18 @@ class _MyAdsPageState extends State<MyAdsPage>
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               10),
-                                                      child: /*Image.network(
-                                                        "${controller.myRequestsAsClient[index].advertiser?.image ?? ''}",
+                                                      child: Image.network(
+                                                        controller.addsList[index].user?.image ?? '',
                                                         height: 68,width: 68,fit: BoxFit.fill,errorBuilder: (context,object,err){
-                                                          return*/ Image.asset('images/man img2.png',height: 68,width: 68,fit: BoxFit.fill),//;
-                                                      /*},
-                                                      )*/),
+                                                          return Image.asset('images/man img2.png',height: 68,width: 68,fit: BoxFit.fill);
+                                                      },
+                                                      )),
                                                 ),
                                                 SizedBox(
                                                   height: controller
                                                           .checkListFunctions!
                                                           .contains(controller
-                                                              .myRequestsAsClient[
+                                                              .addsList[
                                                                   index]
                                                               .id)
                                                       ? 25.h
@@ -247,7 +242,7 @@ class _MyAdsPageState extends State<MyAdsPage>
                                             ),
                                             controller.checkListFunctions!
                                                     .contains(controller
-                                                        .myRequestsAsClient[index]
+                                                        .addsList[index]
                                                         .id)
                                                 ? Container()
                                                 : Expanded(
@@ -268,11 +263,11 @@ class _MyAdsPageState extends State<MyAdsPage>
                                                           children: [
                                                             Expanded(
                                                                 child: Text(
-                                                              "شركة مجلي أحمد بامجلي",//${controller.myRequestsAsClient[index].advertiser?.username ?? ''}
+                                                              /*"شركة مجلي أحمد بامجلي",*/ controller.addsList[index].user?.username ?? '',
                                                               style: TextStyle(
                                                                 fontFamily: 'A Jannat LT, Regular',
                                                                   fontSize: 13.sp,
-                                                                  color: Color(
+                                                                  color:const Color(
                                                                       0xffD37A47),
                                                                   height: 1.4),
                                                             )),
@@ -287,18 +282,17 @@ class _MyAdsPageState extends State<MyAdsPage>
                                                             ),
                                                           ],
                                                         ),
-                                                        Text(
-                                                       //   "نوع المنتج /  ${controller.myRequestsAsClient[index].product_type?.name ?? ''}",
-                                                          'منتجات غذائية',
+                                                        Text(controller.addsList[index].type ?? '',
+                                                         // 'منتجات غذائية',
                                                           style: TextStyle(
                                                               fontFamily: 'A Jannat LT, Regular',
                                                               fontSize: 12.sp,
-                                                              color: Color(
+                                                              color:const Color(
                                                                   0xff244094)),
                                                         ),
 
                                                         Text(
-                                                          //   "نوع المنتج /  ${controller.myRequestsAsClient[index].product_type?.name ?? ''}",
+                                                          //   "نوع المنتج /  ${controller.addsList[index].product_type?.name ?? ''}",
                                                           'الرياض - حي الياسمين',
                                                           style: TextStyle(
                                                               fontFamily: 'A Jannat LT, Regular',
@@ -309,11 +303,11 @@ class _MyAdsPageState extends State<MyAdsPage>
                                                         Padding(
                                                           padding: const EdgeInsets.only(top:14.0),
                                                           child: Text(
-                                                           // "${controller.myRequestsAsClient[index].status_txt}",
-                                                            'تغطية كاملة مع الحضور لافتتاح الفرع لجديد',
+                                                             controller.addsList[index].description??"",
+                                                           // 'تغطية كاملة مع الحضور لافتتاح الفرع لجديد',
                                                             style: TextStyle(
                                                                 fontSize: 11.sp,
-                                                                color: Color(
+                                                                color:const Color(
                                                                     0xff888888)),
                                                             maxLines: 1,
                                                             overflow: TextOverflow
@@ -348,7 +342,8 @@ class _MyAdsPageState extends State<MyAdsPage>
                                       mainAxisAlignment:MainAxisAlignment.spaceBetween,
                                       children: [
 
-                                        index==1?
+                                        controller.addsList[index].statusTxt=="العرض موقوف"||
+                                        controller.addsList[index].statusTxt=="موقوف"?
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               right: 15),
@@ -357,7 +352,9 @@ class _MyAdsPageState extends State<MyAdsPage>
                                             children: [
                                               Padding(
                                                 padding: const EdgeInsets.only(top:8.0),
-                                                child: Text( "العرض موقوف",
+                                                child: Text(
+                                                    "${controller.addsList[index].statusTxt?? ''}",
+                                                  /*"العرض موقوف",*/
                                                   style: TextStyle(
                                                       fontSize: 14.sp,
                                                       color:   const Color(0xffFFB300),
@@ -379,7 +376,8 @@ class _MyAdsPageState extends State<MyAdsPage>
                                             ],
                                           ),
                                         )
-                                            :index==3?
+                                            :controller.addsList[index].statusTxt=="العرض منتهي"||
+                                            controller.addsList[index].statusTxt=="منتهي"?
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               right: 15),
@@ -389,7 +387,7 @@ class _MyAdsPageState extends State<MyAdsPage>
 
 
 
-                                              Text( "العرض منتهي",
+                                              Text( controller.addsList[index].statusTxt??"",
                                                 style: TextStyle(
                                                     fontSize: 14.sp,
                                                     color:   const Color(0xffD80000),
@@ -418,7 +416,7 @@ class _MyAdsPageState extends State<MyAdsPage>
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               Text(
-                                                "العرض نشط",
+                                                controller.addsList[index].statusTxt??"",
                                                 style: TextStyle(
                                                    fontFamily: 'A Jannat LT, Regular',
                                                     fontSize: 14.sp,
@@ -452,8 +450,8 @@ class _MyAdsPageState extends State<MyAdsPage>
                                             Image.asset('images/comments2.png',height: 13,width: 17,fit: BoxFit.fill,),
                                             Container(width: 10,),
                                             Container(
-                                              child: Text('69580',
-                                                style: TextStyle(decoration: TextDecoration.underline,color: Color(0xff041D67),fontFamily: 'A Jannat LT, Regular',fontSize: 12),),
+                                              child: Text('${controller.addsList[index].comments??""}',
+                                                style:const TextStyle(decoration: TextDecoration.underline,color: Color(0xff041D67),fontFamily: 'A Jannat LT, Regular',fontSize: 12),),
                                             ),
                                           ],
                                         ),
@@ -466,8 +464,8 @@ class _MyAdsPageState extends State<MyAdsPage>
                                             Image.asset('images/eye-open2.png',height: 13,width: 17,fit: BoxFit.fill,),
                                             Container(width: 10,),
                                             Container(
-                                              child: Text('69580',
-                                                style: TextStyle(decoration: TextDecoration.underline,color: Color(0xff041D67),fontFamily: 'A Jannat LT, Regular',fontSize: 12),),
+                                              child: Text('${controller.addsList[index].views??""}',
+                                                style:const TextStyle(decoration: TextDecoration.underline,color: Color(0xff041D67),fontFamily: 'A Jannat LT, Regular',fontSize: 12),),
                                             ),
                                           ],
                                         ),
@@ -485,11 +483,11 @@ class _MyAdsPageState extends State<MyAdsPage>
                             right: MediaQuery.of(context).size.width * .73,
                             left: 10,
                             bottom: controller.checkListShare!.contains(
-                                    controller.myRequestsAsClient[index].id)
+                                    controller.addsList[index].id)
                                 ? 15
                                 : double.infinity,
                             child: controller.checkListShare!.contains(
-                                    controller.myRequestsAsClient[index].id)
+                                    controller.addsList[index].id)
                                 ?
                                 // AnimatedContainer(
                                 //   duration: const Duration(milliseconds: 500),
@@ -503,13 +501,14 @@ class _MyAdsPageState extends State<MyAdsPage>
                                         children: [
                                           InkWell(
                                             onTap: ()async {
-                                              controller.currentIndex.value=index;
-                                              if(controller.currentIndex.value==index) {
-                                                await openwhatsapp(context,
-                                                    controller
-                                                        .myRequestsAsClient[index]
-                                                        .advertiser?.whatsapp);
-                                              }},
+                                              // controller.currentIndex.value=index;
+                                              // if(controller.currentIndex.value==index) {
+                                              //   await openwhatsapp(context,
+                                              //       controller
+                                              //           .addsList[index]
+                                              //           .advertiser?.whatsapp);
+                                              // }
+                                              },
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
@@ -592,7 +591,7 @@ class _MyAdsPageState extends State<MyAdsPage>
                             child: AnimatedContainer(
                               duration: Duration(milliseconds: 400),
                               width: controller.checkListFunctions!.contains(
-                                      controller.myRequestsAsClient[index].id)
+                                      controller.addsList[index].id)
                                   ? MediaQuery.of(context).size.width * .7
                                   : 0,
                               curve: Curves.fastOutSlowIn,
@@ -612,7 +611,7 @@ class _MyAdsPageState extends State<MyAdsPage>
                               child: Container(
                                 padding: EdgeInsets.all(15),
                                 child: controller.checkListFunctions!.contains(
-                                        controller.myRequestsAsClient[index].id)
+                                        controller.addsList[index].id)
                                     ? Row(
                                         children: [
                                           Expanded(
@@ -620,35 +619,35 @@ class _MyAdsPageState extends State<MyAdsPage>
                                               firstWidget: SlideRightItemWidget(
                                                 isSvg: true,
                                                 title: "قبول التسعير",
-                                                onPress: controller
-                                                            .myRequestsAsClient[
-                                                                index]
-                                                            .statuses
-                                                            ?.confirm_pricing ==
-                                                        false
-                                                    ? null
-                                                    : () {
-                                                  controller.currentIndex.value=index;
-                                                  if (controller.currentIndex.value  ==
-                                                            index) {
-                                                    controller.getClientConfirmBill(
-                                                        requestId: controller
-                                                            .myRequestsAsClient[
-                                                        index]
-                                                            .id ??
-                                                            0);
-                                                        }
-                                                      },
+                                                // onPress: controller
+                                                //             .addsList[
+                                                //                 index]
+                                                //             .statuses
+                                                //             ?.confirm_pricing ==
+                                                //         false
+                                                //     ? null
+                                                //     : () {
+                                                //   controller.currentIndex.value=index;
+                                                //   if (controller.currentIndex.value  ==
+                                                //             index) {
+                                                //     controller.getClientConfirmBill(
+                                                //         requestId: controller
+                                                //             .addsList[
+                                                //         index]
+                                                //             .id ??
+                                                //             0);
+                                                //         }
+                                                //       },
                                                 icon:
                                                     "images/accept_price.svg",
-                                                widgetOpacity: controller
-                                                            .myRequestsAsClient[
+                                                widgetOpacity:/* controller
+                                                            .addsList[
                                                                 index]
                                                             .statuses
                                                             ?.confirm_pricing ==
                                                         false
                                                     ? 0.4
-                                                    : 1,
+                                                    : */1,
                                                 checkOpacity: 0,
                                               ),
                                               secondWidget: Center(
@@ -658,124 +657,124 @@ class _MyAdsPageState extends State<MyAdsPage>
                                                     child: SlideRightItemWidget(
                                                       isSvg: false,
                                                       title:"رفض",textColor: Color(0xffD44545),
-                                                      onPress: controller
-                                                                  .myRequestsAsClient[
-                                                                      index]
-                                                                  .statuses
-                                                                  ?.reject ==
-                                                              false
-                                                          ? null
-                                                          : () {
-                                                        controller.currentIndex.value=index;
-                                                        if (controller.currentIndex.value  ==
-                                                                  index) {
-                                                                CoolAlert.show(
-                                                                    context: context,
-                                                                    title:
-                                                                        "رفض",
-                                                                    type: CoolAlertType
-                                                                        .info,
-                                                                    //text: "Your transaction was successful!",
-                                                                    widget: SizedBox(
-                                                                      width: 323.w,
-                                                                      height: 250.h,
-                                                                      child:
-                                                                          TextFormField(
-                                                                        maxLines: 20,
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                14.sp,
-                                                                            fontFamily:
-                                                                                'Arabic-Regular'),
-                                                                        textAlign:
-                                                                            TextAlign
-                                                                                .center,
-                                                                        // onChanged: (val){
-                                                                        //
-                                                                        // },
-                                                                        decoration:
-                                                                            InputDecoration(
-                                                                          contentPadding: EdgeInsets.symmetric(
-                                                                              vertical:
-                                                                                  5.0.h,
-                                                                              horizontal:
-                                                                                  10.w),
-                                                                          // suffixIcon:prefix??const SizedBox(width: 0,),
-                                                                          border: OutlineInputBorder(
-                                                                              borderRadius:
-                                                                                  BorderRadius.circular(12
-                                                                                      .h),
-                                                                              borderSide:
-                                                                                  BorderSide(
-                                                                                      color: AppColors.borderfayrozy)),
-                                                                          filled: true,
-
-                                                                          disabledBorder: OutlineInputBorder(
-                                                                              borderRadius:
-                                                                                  BorderRadius.circular(12
-                                                                                      .h),
-                                                                              borderSide:
-                                                                                  BorderSide(
-                                                                                      color: AppColors.borderfayrozy)),
-                                                                          enabledBorder: OutlineInputBorder(
-                                                                              borderRadius:
-                                                                                  BorderRadius.circular(12
-                                                                                      .h),
-                                                                              borderSide:
-                                                                                  BorderSide(
-                                                                                      color: AppColors.borderfayrozy)),
-                                                                          focusColor:
-                                                                              AppColors
-                                                                                  .borderfayrozy,
-                                                                          fillColor:
-                                                                              AppColors
-                                                                                  .whiteColor,
-                                                                          hintStyle: TextStyle(
-                                                                              color: AppColors
-                                                                                  .greyColor,
-                                                                              fontSize:
-                                                                                  15.sp),
-                                                                          hintText:
-                                                                              'سبب الرفض',
-                                                                        ),
-                                                                        controller:
-                                                                            controller
-                                                                                .reasonController,
-                                                                        // onSaved: (val){
-                                                                        //
-                                                                        // },
-                                                                        // validator: validator,
-                                                                      ),
-                                                                    ),
-                                                                    confirmBtnText:
-                                                                        "حفظ",
-                                                                    onConfirmBtnTap:
-                                                                        () {
-                                                                      controller.refuseRequest(
-                                                                          requestId: controller
-                                                                                  .myRequestsAsClient[
-                                                                                      index]
-                                                                                  .id ??
-                                                                              0);
-                                                                      Get.back();
-                                                                    },//cancelBtnTextStyle:TextStyle(color: Colors.blue) ,
-                                                                    cancelBtnText:
-                                                                        "الغاء",showCancelBtn: true,
-                                                                    onCancelBtnTap: () {
-                                                                      Get.back();
-                                                                    });
-                                                                print("refuse");
-                                                              }
-                                                            },
+                                                      // onPress: controller
+                                                      //             .addsList[
+                                                      //                 index]
+                                                      //             .statuses
+                                                      //             ?.reject ==
+                                                      //         false
+                                                      //     ? null
+                                                      //     : () {
+                                                      //   controller.currentIndex.value=index;
+                                                      //   if (controller.currentIndex.value  ==
+                                                      //             index) {
+                                                      //           CoolAlert.show(
+                                                      //               context: context,
+                                                      //               title:
+                                                      //                   "رفض",
+                                                      //               type: CoolAlertType
+                                                      //                   .info,
+                                                      //               //text: "Your transaction was successful!",
+                                                      //               widget: SizedBox(
+                                                      //                 width: 323.w,
+                                                      //                 height: 250.h,
+                                                      //                 child:
+                                                      //                     TextFormField(
+                                                      //                   maxLines: 20,
+                                                      //                   style: TextStyle(
+                                                      //                       fontSize:
+                                                      //                           14.sp,
+                                                      //                       fontFamily:
+                                                      //                           'Arabic-Regular'),
+                                                      //                   textAlign:
+                                                      //                       TextAlign
+                                                      //                           .center,
+                                                      //                   // onChanged: (val){
+                                                      //                   //
+                                                      //                   // },
+                                                      //                   decoration:
+                                                      //                       InputDecoration(
+                                                      //                     contentPadding: EdgeInsets.symmetric(
+                                                      //                         vertical:
+                                                      //                             5.0.h,
+                                                      //                         horizontal:
+                                                      //                             10.w),
+                                                      //                     // suffixIcon:prefix??const SizedBox(width: 0,),
+                                                      //                     border: OutlineInputBorder(
+                                                      //                         borderRadius:
+                                                      //                             BorderRadius.circular(12
+                                                      //                                 .h),
+                                                      //                         borderSide:
+                                                      //                             BorderSide(
+                                                      //                                 color: AppColors.borderfayrozy)),
+                                                      //                     filled: true,
+                                                      //
+                                                      //                     disabledBorder: OutlineInputBorder(
+                                                      //                         borderRadius:
+                                                      //                             BorderRadius.circular(12
+                                                      //                                 .h),
+                                                      //                         borderSide:
+                                                      //                             BorderSide(
+                                                      //                                 color: AppColors.borderfayrozy)),
+                                                      //                     enabledBorder: OutlineInputBorder(
+                                                      //                         borderRadius:
+                                                      //                             BorderRadius.circular(12
+                                                      //                                 .h),
+                                                      //                         borderSide:
+                                                      //                             BorderSide(
+                                                      //                                 color: AppColors.borderfayrozy)),
+                                                      //                     focusColor:
+                                                      //                         AppColors
+                                                      //                             .borderfayrozy,
+                                                      //                     fillColor:
+                                                      //                         AppColors
+                                                      //                             .whiteColor,
+                                                      //                     hintStyle: TextStyle(
+                                                      //                         color: AppColors
+                                                      //                             .greyColor,
+                                                      //                         fontSize:
+                                                      //                             15.sp),
+                                                      //                     hintText:
+                                                      //                         'سبب الرفض',
+                                                      //                   ),
+                                                      //                   controller:
+                                                      //                       controller
+                                                      //                           .reasonController,
+                                                      //                   // onSaved: (val){
+                                                      //                   //
+                                                      //                   // },
+                                                      //                   // validator: validator,
+                                                      //                 ),
+                                                      //               ),
+                                                      //               confirmBtnText:
+                                                      //                   "حفظ",
+                                                      //               onConfirmBtnTap:
+                                                      //                   () {
+                                                      //                 controller.refuseRequest(
+                                                      //                     requestId: controller
+                                                      //                             .addsList[
+                                                      //                                 index]
+                                                      //                             .id ??
+                                                      //                         0);
+                                                      //                 Get.back();
+                                                      //               },//cancelBtnTextStyle:TextStyle(color: Colors.blue) ,
+                                                      //               cancelBtnText:
+                                                      //                   "الغاء",showCancelBtn: true,
+                                                      //               onCancelBtnTap: () {
+                                                      //                 Get.back();
+                                                      //               });
+                                                      //           print("refuse");
+                                                      //         }
+                                                      //       },
                                                       icon: "images/remove-line.png",
-                                                      widgetOpacity: controller
-                                                                  .myRequestsAsClient[
+                                                      widgetOpacity: /*controller
+                                                                  .addsList[
                                                                       index]
                                                                   .statuses
                                                                   ?.reject ==
                                                               false
                                                           ? 0.4
-                                                          : 1,
+                                                          :*/ 1,
                                                       checkOpacity: 0,
                                                     ),
                                                   ),
@@ -790,56 +789,56 @@ class _MyAdsPageState extends State<MyAdsPage>
                                               isSvg: true,
                                               title: "دفع",
                                               //اعكس /
-                                              onPress: controller
-                                                          .myRequestsAsClient[
-                                                              index]
-                                                          .statuses
-                                                          ?.payment ==
-                                                      false
-                                                  ? null: () {
-                                                controller.currentIndex.value=index;
-                                                if (controller.currentIndex.value  == index) {
-                                                       Get.toNamed("/ClientPaymentModelPage?advertiser=${controller.myRequestsAsClient[index].advertiser?.username??' '}"
-                                                           "&requestId=${controller.myRequestsAsClient[index].id}&total=${controller.myRequestsAsClient[index].bill_total}");
-                                                      }
-                                                    }
-                                                  ,
+                                              // onPress: controller
+                                              //             .addsList[
+                                              //                 index]
+                                              //             .statuses
+                                              //             ?.payment ==
+                                              //         false
+                                              //     ? null: () {
+                                              //   controller.currentIndex.value=index;
+                                              //   if (controller.currentIndex.value  == index) {
+                                              //          Get.toNamed("/ClientPaymentModelPage?advertiser=${controller.addsList[index].advertiser?.username??' '}"
+                                              //              "&requestId=${controller.addsList[index].id}&total=${controller.addsList[index].bill_total}");
+                                              //         }
+                                              //       }
+                                              //     ,
                                               icon: "images/dollar-bill-line.svg",
-                                              widgetOpacity: controller
-                                                          .myRequestsAsClient[
+                                              widgetOpacity:/* controller
+                                                          .addsList[
                                                               index]
                                                           .statuses
                                                           ?.payment ==
                                                       false
                                                   ? 0.4
-                                                  : 1,
+                                                  : */1,
                                               checkOpacity: .4,
                                             ),
                                             secondWidget: SlideRightItemWidget(
                                               isSvg: true,
                                               title: "تعديل     الطلب",
-                                              onPress: controller
-                                                          .myRequestsAsClient[
-                                                              index]
-                                                          .statuses
-                                                          ?.edit ==
-                                                      false
-                                                  ? null
-                                                  : () {
-                                                controller.currentIndex.value=index;
-                                                if (controller.currentIndex.value  == index) {
-                                                  Get.toNamed('/AdvertiserDetailsPage?requestId=${controller.myRequestsAsClient[index].id}');
-                                                      }
-                                                    },
+                                              // onPress: controller
+                                              //             .addsList[
+                                              //                 index]
+                                              //             .statuses
+                                              //             ?.edit ==
+                                              //         false
+                                              //     ? null
+                                              //     : () {
+                                              //   controller.currentIndex.value=index;
+                                              //   if (controller.currentIndex.value  == index) {
+                                              //     Get.toNamed('/AdvertiserDetailsPage?requestId=${controller.addsList[index].id}');
+                                              //         }
+                                              //       },
                                               icon: "images/edit_pen.svg",
-                                              widgetOpacity: controller
-                                                          .myRequestsAsClient[
+                                              widgetOpacity: /*controller
+                                                          .addsList[
                                                               index]
                                                           .statuses
                                                           ?.edit ==
                                                       false
                                                   ? 0.4
-                                                  : 1,
+                                                  : */1,
                                               checkOpacity: 0,
                                             ),
                                           )),
@@ -849,68 +848,68 @@ class _MyAdsPageState extends State<MyAdsPage>
                                             firstWidget: SlideRightItemWidget(
                                               isSvg: true,
                                               title: "تأكيدالتنفيذ",
-                                              onPress: controller
-                                                          .myRequestsAsClient[
-                                                              index]
-                                                          .statuses
-                                                          ?.confirm ==
-                                                      false
-                                                  ? null
-                                                  : () {
-                                                controller.currentIndex.value=index;
-                                                if (controller.currentIndex.value  == index) {
-                                                     controller.getClientConfirm(requestId: controller.myRequestsAsClient[index].id??0);
-
-
-                                                  //List<String> _status = ["Pending", "Released", "Blocked"];
-
-                                                      }
-                                                    },
+                                              // onPress: controller
+                                              //             .addsList[
+                                              //                 index]
+                                              //             .statuses
+                                              //             ?.confirm ==
+                                              //         false
+                                              //     ? null
+                                              //     : () {
+                                              //   controller.currentIndex.value=index;
+                                              //   if (controller.currentIndex.value  == index) {
+                                              //        controller.getClientConfirm(requestId: controller.addsList[index].id??0);
+                                              //
+                                              //
+                                              //     //List<String> _status = ["Pending", "Released", "Blocked"];
+                                              //
+                                              //         }
+                                              //       },
                                               icon: "images/confirm_execute.svg",
-                                              widgetOpacity: controller
-                                                          .myRequestsAsClient[
+                                              widgetOpacity: /*controller
+                                                          .addsList[
                                                               index]
                                                           .statuses
                                                           ?.confirm ==
                                                       false
                                                   ? 0.4
-                                                  : 1,
+                                                  :*/ 1,
                                               checkOpacity: 1,
                                             ),
                                             secondWidget: SlideRightItemWidget(
                                               isSvg: true,
                                               title:"الغاء      الطلب",
-                                              onPress: controller
-                                                          .myRequestsAsClient[
-                                                              index]
-                                                          .statuses
-                                                          ?.cancel ==
-                                                      false
-                                                  ? null
-                                                  : () async{
-                                                controller.currentIndex.value=index;
-                                                if (controller.currentIndex.value  == index) {
-                                                  controller.getClientCancelReasons(
-                                                      requestId: controller
-                                                          .myRequestsAsClient[
-                                                      index]
-                                                          .id ??
-                                                          0,context:context);
-
-
-                                                        print("refuse");
-                                                      }
-                                                    },
+                                              // onPress: controller
+                                              //             .addsList[
+                                              //                 index]
+                                              //             .statuses
+                                              //             ?.cancel ==
+                                              //         false
+                                              //     ? null
+                                              //     : () async{
+                                              //   controller.currentIndex.value=index;
+                                              //   if (controller.currentIndex.value  == index) {
+                                              //     controller.getClientCancelReasons(
+                                              //         requestId: controller
+                                              //             .addsList[
+                                              //         index]
+                                              //             .id ??
+                                              //             0,context:context);
+                                              //
+                                              //
+                                              //           print("refuse");
+                                              //         }
+                                              //       },
                                               icon:
                                                   "images/annotation-visibility.svg",
-                                              widgetOpacity: controller
-                                                          .myRequestsAsClient[
+                                              widgetOpacity: /*controller
+                                                          .addsList[
                                                               index]
                                                           .statuses
                                                           ?.cancel ==
                                                       false
                                                   ? 0.4
-                                                  : 1,
+                                                  :*/ 1,
                                               checkOpacity: 0,
                                             ),
                                           )),

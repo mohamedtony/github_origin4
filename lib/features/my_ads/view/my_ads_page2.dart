@@ -1,7 +1,5 @@
 import 'package:advertisers/features/my_ads/view/my_ads_page.dart';
-import 'package:advertisers/features/my_orders_archive/view/my_orders_archive_page.dart';
 import 'package:flutter/material.dart';
-import 'package:advertisers/features/my_orders/view/my_orders_page.dart';
 import 'package:advertisers/features/my_orders_archive/controller/my_orders_archive_controller.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:get/get.dart';
@@ -54,8 +52,7 @@ class MyAdsPage2 extends StatelessWidget {
                                       print("myOrdersArchiveController.tabId ${controller.tabId}");
                                     },
                                     child:  Container(
-                                        // padding: const EdgeInsets.symmetric(horizontal: 25),
-                                        child: Container(
+                                         child: Container(
                                           padding: EdgeInsets.symmetric(horizontal: 25,vertical: 3),
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(7),
@@ -67,8 +64,7 @@ class MyAdsPage2 extends StatelessWidget {
                                               style: TextStyle(color:upperTabItems![index].id! != controller.tabId? Color(0xff4184CE) : Colors.white,fontSize: 16.sp),),
                                           ),
                                         )
-                                      // SelectedTab(title: upperTabItems![index].title, id: upperTabItems![index].id,),
-                                    )
+                                     )
                                 ),
                               ),
                             ) ;
