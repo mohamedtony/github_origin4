@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
+import 'package:advertisers/features/advertising_story_details/advertiser_details_sheet.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/features/find_advertise_page/filter_order_advertisers_sheet.dart';
 import 'package:advertisers/features/home_page/controller/home_navigation_controller.dart';
@@ -283,9 +284,13 @@ class Home extends StatelessWidget {
                 return NoticeSheet(
                     scrollController: scrollController);
               }else{
-                return FilterOrderAdvertisersSheet(
+                /*return FilterOrderAdvertisersSheet(
                    scrollController: scrollController
+                );*/
+                return AdvertiserDetailsSheet(
+                    scrollController: scrollController
                 );
+
               }
             },
           );

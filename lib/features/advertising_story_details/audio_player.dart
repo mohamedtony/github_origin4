@@ -39,20 +39,23 @@ class _AudioPlayerUrlState extends State<AudioPlayerUrl> {
     print("audioDuration=${audioDuration}");
     return Container(
       width: 300.0,
-      child: Slider.adaptive(
-          value: timeProgress.toDouble(),
-          max: audioDuration.toDouble(),
+      child:  Directionality(
+        textDirection: TextDirection.ltr,
+        child:Slider.adaptive(
+            value: timeProgress.toDouble(),
+            max: audioDuration.toDouble(),
 
-          onChanged: (value) {
-            print("mvalue=${value}");
-            seekToSec(value.toInt());
-           // widget.animationController.value= 197;
-            final double t = (value / audioDuration).clamp(0.0, 1.0);
-            print("tttttttt+ ${t}");
-            widget.animationController.forward(from: t);
-            //widget.animationController.animateTo(value);
-            //widget.animationController.animateTo(duration: Duration(seconds: value.toInt()));
-          }),
+            onChanged: (value) {
+              print("mvalue=${value}");
+              seekToSec(value.toInt());
+              // widget.animationController.value= 197;
+              final double t = (value / audioDuration).clamp(0.0, 1.0);
+              print("tttttttt+ ${t}");
+              widget.animationController.forward(from: t);
+              //widget.animationController.animateTo(value);
+              //widget.animationController.animateTo(duration: Duration(seconds: value.toInt()));
+            }),
+      ),
     );
   }
 
@@ -150,11 +153,14 @@ class _AudioPlayerUrlState extends State<AudioPlayerUrl> {
               /// Optional
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                textDirection: TextDirection.ltr,
                 children: [
                   Text(getTimeString(timeProgress),style: TextStyle(color: Colors.blue),),
                   SizedBox(width: 20),
                   Container(
-                      width: 200, child: slider()),
+                      width: 200, child: slider(
+
+                  )),
                   SizedBox(width: 20),
                   Text(getTimeString(audioDuration),style:TextStyle(color: Colors.blue))
                 ],

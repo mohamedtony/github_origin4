@@ -24,14 +24,15 @@ class AdvertisingPage extends StatelessWidget {
       children: [
         ListView(
           children: [
-            SmallAdsPage(),
+            Obx(()=>homeNavController.isSmall.isTrue?SmallAdsPage():SizedBox()),
             InkWell(
                 onTap: () async {
-                  List result = await Get.toNamed("/AdvertisingStoryDetailsPage");
-                  homeNavController.pageController.value= result[0];
+                  var result = await Get.toNamed("/AdvertisingStoryDetailsPage");
+
+                  /*homeNavController.pageController.value= result[0];
                   homeNavController.animateController.value= result[1];
                   homeNavController.videoController.value= result[2];
-                  homeNavController.stories.value= result[3];
+                  homeNavController.stories.value= result[3];*/
                 //  print("MPAGE${_pageController.page}");
                 },
                 child: AdvertiseItem()),

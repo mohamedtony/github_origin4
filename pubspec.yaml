@@ -78,7 +78,7 @@ dependencies:
   url_launcher: ^6.0.17
   flutter_phone_direct_caller: ^2.1.0
   quds_popup_menu: ^0.0.1+1
-  video_player:
+  video_player: ^2.3.0
   file_picker: ^4.3.3
   location: ^4.3.0
   cool_alert: ^1.1.0
@@ -91,6 +91,8 @@ dependencies:
   share_plus: ^4.0.2
   readmore: ^2.1.0
   audioplayers: ^0.20.1
+  flutter_rating_bar: ^4.0.0
+  provider: ^4.0.4
 
   #focused_menu: ^1.0.5
 dev_dependencies:

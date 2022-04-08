@@ -7,7 +7,7 @@ final User user = User(
   name: 'John Doe',
   profileImageUrl: 'https://wallpapercave.com/wp/AYWg3iu.jpg',
 );
-final List<Story> stories = [
+final List<Story> mStories = [
   Story(
     url:
     'https://static.videezy.com/system/resources/previews/000/007/536/original/rockybeach.mp4',

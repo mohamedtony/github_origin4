@@ -8,7 +8,7 @@ import 'data.dart';
 
 enum ButtonState { paused, playing, loading, }
 
-class AudioGetxController extends GetxController with GetSingleTickerProviderStateMixin{
+class StorySmallGetxController extends GetxController with GetSingleTickerProviderStateMixin{
   final Rx<List<Story>> stories = Rx<List<Story>>([]);
 
   //List<Story> get videoList => _videoList.value;
@@ -18,12 +18,63 @@ class AudioGetxController extends GetxController with GetSingleTickerProviderSta
   AnimationController? animController;
   VideoPlayerController? videoController;
   AudioPlayer? audioPlayer;
+  var videoIsInitailized = false.obs;
 
   var currentIndex =0.obs;
+  var story = Story().obs;
+
+  void update2(){
+    print("inMUpdate");
+    stories.value= mStories;
+    pageController = PageController();
+    //animController = AnimationController(vsync: this);
+    animController?.stop();
+    animController?.reset();
+    final Story firstStory = stories.value.first;
+    loadStory(story: firstStory, animateToPage: false);
+
+    animController?.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        videoIsInitailized.value=false;
+        videoController?.dispose();
+        videoController = null;
+        animController?.stop();
+        animController?.reset();
+        // setState(() {
+        if (currentIndex.value + 1 < stories.value.length) {
+          currentIndex.value += 1;
+          loadStory(story: stories.value[currentIndex.value]);
+        } else {
+          print("pageController1");
+          // Out of bounds - loop story
+          // You can also Navigator.of(context).pop() here
+          //_currentIndex = 0;
+          // _loadStory(story: widget.stories[_currentIndex]);
+          /*widget.pageController1?.nextPage(
+                duration: Duration(milliseconds: 1000), curve: Curves.ease);*/
+        }
+        // });
+      }
+    });
+  }
+  @override
+  void onReady() {
+    // TODO: implement onReady
+
+    super.onReady();
+    print("inMUpdate3");
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    print("inMUpdate4");
+    super.dispose();
+  }
 
   @override
   void onInit() {
     super.onInit();
+    print("inMUpdate2");
     //   audioPlayer = AudioPlayer();
 
     /*_videoList.bindStream(
@@ -37,24 +88,25 @@ class AudioGetxController extends GetxController with GetSingleTickerProviderSta
 
     animController?.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
+        videoIsInitailized.value=false;
         videoController?.dispose();
         videoController = null;
         animController?.stop();
         animController?.reset();
-       // setState(() {
-          if (currentIndex.value + 1 < stories.value.length) {
-            currentIndex.value += 1;
-            loadStory(story: stories.value[currentIndex.value]);
-          } else {
-            print("pageController1");
-            // Out of bounds - loop story
-            // You can also Navigator.of(context).pop() here
-            //_currentIndex = 0;
-            // _loadStory(story: widget.stories[_currentIndex]);
-            /*widget.pageController1?.nextPage(
+        // setState(() {
+        if (currentIndex.value + 1 < stories.value.length) {
+          currentIndex.value += 1;
+          loadStory(story: stories.value[currentIndex.value]);
+        } else {
+          print("pageController1");
+          // Out of bounds - loop story
+          // You can also Navigator.of(context).pop() here
+          //_currentIndex = 0;
+          // _loadStory(story: widget.stories[_currentIndex]);
+          /*widget.pageController1?.nextPage(
                 duration: Duration(milliseconds: 1000), curve: Curves.ease);*/
-          }
-       // });
+        }
+        // });
       }
     });
 
@@ -98,11 +150,12 @@ class AudioGetxController extends GetxController with GetSingleTickerProviderSta
         break;
       case MediaType.video:
         videoController?.dispose();
-       videoController = null;
-      videoController = VideoPlayerController.network(story.url!)
-          ..initialize().then((_) {
-           // setState(() {});
-            if ( videoController!.value.isInitialized) {
+        videoController = null;
+        videoController = VideoPlayerController.network(story.url!);
+
+        videoController?.initialize().then((_) {
+            // setState(() {});
+            if ( videoController!=null && videoController!.value.isInitialized) {
               animController!.duration =  videoController!.value.duration;
               videoController?.setVolume(50);
               videoController!.play();
@@ -152,7 +205,7 @@ class AudioGetxController extends GetxController with GetSingleTickerProviderSta
         break;
     }
     if (animateToPage) {
-    pageController?.animateToPage(
+      pageController?.animateToPage(
         currentIndex.value,
         duration: const Duration(milliseconds: 1),
         curve: Curves.easeInOut,

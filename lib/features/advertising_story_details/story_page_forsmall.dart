@@ -1,9 +1,10 @@
-import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/features/advertising_story_details/VideoController.dart';
 import 'package:advertisers/features/advertising_story_details/audio_player.dart';
 import 'package:advertisers/features/advertising_story_details/sound_widget.dart';
 import 'package:advertisers/features/advertising_story_details/Story.dart';
 import 'package:advertisers/features/advertising_story_details/User.dart';
+import 'package:advertisers/features/advertising_story_details/story_page_controller_forsmall.dart';
+import 'package:advertisers/features/advertising_story_details/video_player.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -14,76 +15,45 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
-class StoryScreen extends StatefulWidget {
+class StoryForSmallScreen extends StatelessWidget {
   final List<Story> stories;
   Function onClicked;
-  StoryScreen({required this.stories, this.pageController1,required this.onClicked});
+  StoryForSmallScreen({required this.stories, this.pageController1,required this.onClicked});
 
   PageController? pageController1;
 
-  @override
-  _StoryScreenState createState() => _StoryScreenState();
-}
 
-class _StoryScreenState extends State<StoryScreen>
-    with SingleTickerProviderStateMixin {
-  PageController? _pageController;
-  AnimationController? _animController;
-  VideoPlayerController? _videoController;
-  AudioPlayer? audioPlayer;
-  int _currentIndex = 0;
   final VideoController videoGetxController = Get.find();
+  late StorySmallGetxController  storySmallGetxController;
 
-  OverlayHandlerProvider overlayHandlerProvider = Get.find();
-
-  @override
+/*  @override
   void initState() {
     super.initState();
-    _pageController = PageController();
-    _animController = AnimationController(vsync: this);
+    storySmallGetxController.currentIndex.value =0;
+    storySmallGetxController.currentIndex.refresh();
+    _loadStory(story: stories[0]);
+  }*/
+/*  @override
+  void initState() {
+    super.initState();
 
-    final Story firstStory = widget.stories.first;
-    _loadStory(story: firstStory, animateToPage: false);
-
-    _animController?.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _videoController?.dispose();
-        _videoController = null;
-        _animController?.stop();
-        _animController?.reset();
-        setState(() {
-          if (_currentIndex + 1 < widget.stories.length) {
-            _currentIndex += 1;
-            _loadStory(story: widget.stories[_currentIndex]);
-          } else {
-            print("pageController1");
-            // Out of bounds - loop story
-            // You can also Navigator.of(context).pop() here
-            //_currentIndex = 0;
-            // _loadStory(story: widget.stories[_currentIndex]);
-            widget.pageController1?.nextPage(
-                duration: Duration(milliseconds: 1000), curve: Curves.ease);
-          }
-        });
-      }
-    });
   }
 
   @override
   void dispose() {
-    _pageController?.dispose();
-    _animController?.dispose();
-    _videoController?.dispose();
+    storySmallGetxController.pageController?.dispose();
+    storySmallGetxController.animController?.dispose();
+    storySmallGetxController.videoController?.dispose();
     super.dispose();
-  }
-
+  }*/
   @override
   Widget build(BuildContext context) {
-    final Story story = widget.stories[_currentIndex];
+    //final Story story = stories[_currentIndex];
+      storySmallGetxController = Get.put(StorySmallGetxController())..update2();
     return Scaffold(
       backgroundColor: Colors.black,
       body: GestureDetector(
-        onTapDown: (details) => _onTapDown(details, story),
+        onTapDown: (details) => _onTapDown(details, stories[storySmallGetxController.currentIndex.value],context),
         /*onTap: (){
           print("onTap");
           if(videoGetxController.isVisible.isTrue) {
@@ -97,76 +67,55 @@ class _StoryScreenState extends State<StoryScreen>
             Container(
               margin: EdgeInsets.only(bottom: 100),
               child: PageView.builder(
-                controller: _pageController,
+                controller: storySmallGetxController.pageController,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: widget.stories.length,
+                itemCount: stories.length,
                 itemBuilder: (context, i) {
-                  final Story story = widget.stories[i];
+                  final Story story = stories[i];
                   if (story.media == MediaType.image) {
                     return CachedNetworkImage(
                       imageUrl: story.url!,
                       fit: BoxFit.cover,
                     );
                   } else if (story.media == MediaType.video) {
-                    if (_videoController?.value != null &&
-                        _videoController!.value.isInitialized) {
-                      return !_videoController!.value.isBuffering
-                          ? FittedBox(
-                        fit: BoxFit.cover,
-                        child: SizedBox(
-                          width: _videoController!.value.size.width,
-                          height: _videoController!.value.size.height,
-                          child: VideoPlayer(_videoController!),
-                        ),
-                      )
-                          : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                                color: Colors.white.withOpacity(0.5)),
-                          ),
-                        ],
-                      );
-                    } else {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                                color: Colors.white.withOpacity(0.5)),
-                          ),
-                        ],
-                      );
+                    if (storySmallGetxController.videoController != null && storySmallGetxController.animController != null) {
+                      return VideoPlayerUrl(
+                          storySmallGetxController.videoController!, storySmallGetxController.animController!, story.url!);
                     }
+                   /* Obx((){
+                      if (storySmallGetxController.videoIsInitailized.isTrue) {
+                        return  FittedBox(
+                          fit: BoxFit.cover,
+                          child: SizedBox(
+                            width: storySmallGetxController.videoController!.value.size.width,
+                            height: storySmallGetxController.videoController!.value.size.height,
+                            child: VideoPlayer(storySmallGetxController.videoController!),
+                          ),
+                        );
+                      } else {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: CircularProgressIndicator(
+                                  color: Colors.white.withOpacity(0.5)),
+                            ),
+                          ],
+                        );
+                      }
+                    });*/
+
                   } else if (story.media == MediaType.audio) {
-                    if (audioPlayer != null && _animController != null) {
+                    if (storySmallGetxController.audioPlayer != null && storySmallGetxController.animController != null) {
                       return AudioPlayerUrl(
-                          audioPlayer!, _animController!, story.url!);
+                          storySmallGetxController. audioPlayer!, storySmallGetxController.animController!, story.url!);
                     }
                   }
                   return const SizedBox.shrink();
                 },
-              ),
-            ),
-            InkWell(
-              onTap: (){
-                overlayHandlerProvider.enablePip(1.77);
-              },
-              child: Image.asset(
-                'images/pausedown10.png',
-                height: 100,
-                width: 100,
-                fit: BoxFit.fill,
-                color: videoGetxController.clickedIndex == 0
-                    ? Colors.white
-                    : Colors.blue,
               ),
             ),
             Positioned(
@@ -175,23 +124,23 @@ class _StoryScreenState extends State<StoryScreen>
               right: 2.0,
               child: Column(
                 children: <Widget>[
-                  Row(
-                    textDirection: TextDirection.ltr,
-                    children: widget.stories
-                        .asMap()
-                        .map((i, e) {
-                      return MapEntry(
-                        i,
-                        AnimatedBar(
-                          animController: _animController!,
-                          position: i,
-                          currentIndex: _currentIndex,
-                        ),
-                      );
-                    })
-                        .values
-                        .toList(),
-                  ),
+                 Obx(()=> Row(
+                   textDirection: TextDirection.ltr,
+                   children: stories
+                       .asMap()
+                       .map((i, e) {
+                     return MapEntry(
+                       i,
+                       AnimatedBar(
+                         animController:  storySmallGetxController.animController!,
+                         position: i,
+                         currentIndex:  storySmallGetxController.currentIndex.value,
+                       ),
+                     );
+                   })
+                       .values
+                       .toList(),
+                 )),
                   Obx(
                         () => videoGetxController.isVisible.isTrue
                         ? Padding(
@@ -199,30 +148,30 @@ class _StoryScreenState extends State<StoryScreen>
                         horizontal: 1.5,
                         vertical: 4.0,
                       ),
-                      child: UserInfo(user: story.user!),
+                      child: UserInfo(user: stories[storySmallGetxController.currentIndex.value].user!),
                     )
                         : SizedBox(),
                   )
                 ],
               ),
             ),
-            (story.media == MediaType.audio || story.media == MediaType.video)
-                ? Obx(() => videoGetxController.isVisible.isTrue
+
+                Obx(() => (stories[storySmallGetxController.currentIndex.value].media == MediaType.audio || stories[storySmallGetxController.currentIndex.value].media == MediaType.video)&&videoGetxController.isVisible.isTrue
                 ? Align(
               alignment: Alignment.centerLeft,
               child: Container(
                 margin: EdgeInsets.only(left: 40, top: 100),
                 child: InkWell(
                   onTap: () {
-                    if (story.media == MediaType.audio) {
-                      audioPlayer
+                    if (stories[storySmallGetxController.currentIndex.value].media == MediaType.audio) {
+                      storySmallGetxController.audioPlayer
                           ?.getCurrentPosition()
                           .then((position) {
                         print("kkkkkkkkkkk=${position}");
 
-                        audioPlayer?.getDuration().then((value) {
+                        storySmallGetxController.audioPlayer?.getDuration().then((value) {
                           if ((position - (10 * 1000)) > 0) {
-                            audioPlayer?.seek(Duration(
+                            storySmallGetxController.audioPlayer?.seek(Duration(
                                 milliseconds:
                                 position - (10 * 1000)));
                             print("duration=${value}");
@@ -231,32 +180,31 @@ class _StoryScreenState extends State<StoryScreen>
                                 (value / 1000))
                                 .clamp(0.0, 1.0);
                             print("tttttttt+ ${t}");
-                            _animController?.reverse(from: t);
+                            storySmallGetxController.animController?.reverse(from: t);
                           } else {
                             //_pageController?.previousPage(duration: Duration(milliseconds: 1000), curve: Curves.ease);
-                            setState(() {
-                              if (_currentIndex - 1 >= 0) {
-                                _currentIndex -= 1;
+                            //setState(() {
+                              if (storySmallGetxController.currentIndex - 1 >= 0) {
+                                storySmallGetxController.currentIndex.value -= 1;
                                 _loadStory(
-                                    story: widget
-                                        .stories[_currentIndex]);
+                                    story: stories[storySmallGetxController.currentIndex.value]);
                               } else {
-                                widget.pageController1?.previousPage(
+                                pageController1?.previousPage(
                                     duration:
                                     Duration(milliseconds: 1000),
                                     curve: Curves.ease);
                               }
-                            });
+                            //});
                           }
                         });
                         /*  final double t = (position.inSeconds / audioDuration).clamp(0.0, 1.0);
             print("tttttttt+ ${t}");
-            widget.animationController.forward(from: t);*/
+            animationController.forward(from: t);*/
                       });
-                    }else if (story.media == MediaType.video) {
-                      _videoController?.position.then((position) {
+                    }else if (stories[storySmallGetxController.currentIndex.value].media == MediaType.video) {
+                      storySmallGetxController.videoController?.position.then((position) {
                         Duration dur =
-                            _videoController!.value.duration;
+                            storySmallGetxController.videoController!.value.duration;
                         if (position != null &&
                             (position.inMilliseconds - (10 * 1000)) >0) {
                           print("kkkkkkkkkkkdur=${dur.inMinutes}");
@@ -264,25 +212,24 @@ class _StoryScreenState extends State<StoryScreen>
                           (((position.inSeconds) - 10) /
                               (dur.inSeconds))
                               .clamp(0.0, 1.0);
-                          _videoController?.seekTo(Duration(
+                          storySmallGetxController.videoController?.seekTo(Duration(
                               milliseconds: position.inMilliseconds -
                                   (10 * 1000)));
-                          _animController?.reverse(from: t);
+                          storySmallGetxController.animController?.reverse(from: t);
                         }
                         else {
-                          setState(() {
-                            if (_currentIndex - 1 >= 0) {
-                              _currentIndex -= 1;
+                          //setState(() {
+                            if (storySmallGetxController.currentIndex.value - 1 >= 0) {
+                              storySmallGetxController.currentIndex.value -= 1;
                               _loadStory(
-                                  story: widget
-                                      .stories[_currentIndex]);
+                                  story: stories[storySmallGetxController.currentIndex.value]);
                             } else {
-                              widget.pageController1?.previousPage(
+                              pageController1?.previousPage(
                                   duration:
                                   Duration(milliseconds: 1000),
                                   curve: Curves.ease);
                             }
-                          });
+                         // });
                           //_pageController?.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.ease);
                         }
                       });
@@ -300,35 +247,35 @@ class _StoryScreenState extends State<StoryScreen>
                 ),
               ),
             )
-                : SizedBox())
-                : SizedBox(),
-            (story.media == MediaType.audio || story.media == MediaType.video)
-                ? Obx(() => videoGetxController.isVisible.isTrue
+                : SizedBox()),
+
+
+                 Obx(() => (stories[storySmallGetxController.currentIndex.value].media == MediaType.audio || stories[storySmallGetxController.currentIndex.value].media == MediaType.video)&&videoGetxController.isVisible.isTrue
                 ? Align(
               alignment: Alignment.center,
               child: Container(
                 margin: EdgeInsets.only(top: 320),
                 child: InkWell(
                   onTap: () {
-                    if (story.media == MediaType.video) {
-                      if (story.media == MediaType.video) {
-                        if (_videoController!.value.isPlaying) {
-                          _videoController?.pause();
-                          _animController?.stop();
+                    if (stories[storySmallGetxController.currentIndex.value].media == MediaType.video) {
+                      if (stories[storySmallGetxController.currentIndex.value].media == MediaType.video) {
+                        if (storySmallGetxController.videoController!.value.isPlaying) {
+                          storySmallGetxController. videoController?.pause();
+                          storySmallGetxController.animController?.stop();
                         } else {
-                          _videoController?.play();
-                          _animController?.forward();
+                          storySmallGetxController.videoController?.play();
+                          storySmallGetxController.animController?.forward();
                         }
                       }
-                    } else if (story.media == MediaType.audio) {
-                      if (audioPlayer != null &&
-                          audioPlayer!.state == PlayerState.PLAYING) {
-                        audioPlayer?.pause();
-                        _animController?.stop();
-                      } else if (audioPlayer != null &&
-                          audioPlayer!.state == PlayerState.PAUSED) {
-                        audioPlayer?.play(story.url!);
-                        _animController?.forward();
+                    } else if (stories[storySmallGetxController.currentIndex.value].media == MediaType.audio) {
+                      if (storySmallGetxController.audioPlayer != null &&
+                          storySmallGetxController.audioPlayer!.state == PlayerState.PLAYING) {
+                        storySmallGetxController.audioPlayer?.pause();
+                        storySmallGetxController.animController?.stop();
+                      } else if (storySmallGetxController.audioPlayer != null &&
+                          storySmallGetxController.audioPlayer!.state == PlayerState.PAUSED) {
+                        storySmallGetxController.audioPlayer?.play(stories[storySmallGetxController.currentIndex.value].url!);
+                        storySmallGetxController.animController?.forward();
                       }
                     }
                   },
@@ -344,23 +291,22 @@ class _StoryScreenState extends State<StoryScreen>
                 ),
               ),
             )
-                : SizedBox())
-                : SizedBox(),
-            (story.media == MediaType.audio || story.media == MediaType.video)
-                ? Obx(() => videoGetxController.isVisible.isTrue
+                : SizedBox()),
+
+                Obx(() => (stories[storySmallGetxController.currentIndex.value].media == MediaType.audio || stories[storySmallGetxController.currentIndex.value].media == MediaType.video)&&videoGetxController.isVisible.isTrue
                 ? Align(
               alignment: Alignment.centerRight,
               child: InkWell(
                 onTap: () {
-                  if (story.media == MediaType.audio) {
-                    audioPlayer
+                  if (stories[storySmallGetxController.currentIndex.value].media == MediaType.audio) {
+                    storySmallGetxController.audioPlayer
                         ?.getCurrentPosition()
                         .then((position) {
                       print("kkkkkkkkkkk=${position}");
 
-                      audioPlayer?.getDuration().then((value) {
+                      storySmallGetxController.audioPlayer?.getDuration().then((value) {
                         if ((position + (10 * 1000)) < value) {
-                          audioPlayer?.seek(Duration(
+                          storySmallGetxController.audioPlayer?.seek(Duration(
                               milliseconds:
                               position + (10 * 1000)));
                           print("duration=${value}");
@@ -369,37 +315,36 @@ class _StoryScreenState extends State<StoryScreen>
                               (value / 1000))
                               .clamp(0.0, 1.0);
                           print("tttttttt+ ${t}");
-                          _animController?.forward(from: t);
+                          storySmallGetxController.animController?.forward(from: t);
                         } else {
-                          setState(() {
-                            if (_currentIndex + 1 <
-                                widget.stories.length) {
-                              _currentIndex += 1;
+                          //setState(() {
+                            if (storySmallGetxController.currentIndex.value + 1 <
+                                stories.length) {
+                              storySmallGetxController.currentIndex.value += 1;
                               _loadStory(
-                                  story: widget
-                                      .stories[_currentIndex]);
+                                  story: stories[storySmallGetxController.currentIndex.value]);
                             } else {
                               // Out of bounds - loop story
                               // You can also Navigator.of(context).pop() here
                               // _currentIndex = 0;
-                              //_loadStory(story: widget.stories[_currentIndex]);
-                              widget.pageController1?.nextPage(
+                              //_loadStory(story: stories[_currentIndex]);
+                              pageController1?.nextPage(
                                   duration:
                                   Duration(milliseconds: 1000),
                                   curve: Curves.ease);
                             }
-                          });
+                          //});
                           //_pageController?.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.ease);
                         }
                       });
                       /*  final double t = (position.inSeconds / audioDuration).clamp(0.0, 1.0);
             print("tttttttt+ ${t}");
-            widget.animationController.forward(from: t);*/
+            animationController.forward(from: t);*/
                     });
-                  } else if (story.media == MediaType.video) {
-                    _videoController?.position.then((position) {
+                  } else if (stories[storySmallGetxController.currentIndex.value].media == MediaType.video) {
+                    storySmallGetxController.videoController?.position.then((position) {
                       Duration dur =
-                          _videoController!.value.duration;
+                          storySmallGetxController.videoController!.value.duration;
                       if (position != null &&
                           (position.inMilliseconds + (10 * 1000)) < dur.inMilliseconds) {
                         print("kkkkkkkkkkkdur=${dur.inMinutes}");
@@ -407,30 +352,29 @@ class _StoryScreenState extends State<StoryScreen>
                         (((position.inSeconds) + 10) /
                             (dur.inSeconds))
                             .clamp(0.0, 1.0);
-                        _videoController?.seekTo(Duration(
+                        storySmallGetxController.videoController?.seekTo(Duration(
                             milliseconds: position.inMilliseconds +
                                 (10 * 1000)));
-                        _animController?.forward(from: t);
+                        storySmallGetxController.animController?.forward(from: t);
                       }
                       else {
-                        setState(() {
-                          if (_currentIndex + 1 <
-                              widget.stories.length) {
-                            _currentIndex += 1;
+                      //  setState(() {
+                          if (storySmallGetxController.currentIndex.value + 1 <
+                              stories.length) {
+                            storySmallGetxController.currentIndex.value += 1;
                             _loadStory(
-                                story: widget
-                                    .stories[_currentIndex]);
+                                story: stories[storySmallGetxController.currentIndex.value]);
                           } else {
                             // Out of bounds - loop story
                             // You can also Navigator.of(context).pop() here
                             // _currentIndex = 0;
-                            //_loadStory(story: widget.stories[_currentIndex]);
-                            widget.pageController1?.nextPage(
+                            //_loadStory(story: stories[_currentIndex]);
+                            pageController1?.nextPage(
                                 duration:
                                 Duration(milliseconds: 1000),
                                 curve: Curves.ease);
                           }
-                        });
+                        //});
                         //_pageController?.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.ease);
                       }
                     });
@@ -450,8 +394,7 @@ class _StoryScreenState extends State<StoryScreen>
                 ),
               ),
             )
-                : SizedBox())
-                : SizedBox(),
+                : SizedBox()),
             Obx(
                   () => Align(
                 alignment: Alignment.bottomCenter,
@@ -514,10 +457,10 @@ class _StoryScreenState extends State<StoryScreen>
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      widget.onClicked();
+                                     // onClicked();
 /*
                                       videoGetxController.clickedIndex.value = 0;
-                                      Navigator.pop(context,[_pageController,_animController,_videoController,widget.stories]);
+                                      Navigator.pop(context,[_pageController,_animController,_videoController,stories]);
 */
                                     },
                                     child: Container(
@@ -812,7 +755,7 @@ class _StoryScreenState extends State<StoryScreen>
     );
   }
 
-  void _onTapDown(TapDownDetails details, Story story) {
+  void _onTapDown(TapDownDetails details, Story story,BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHieght = MediaQuery.of(context).size.height;
 
@@ -827,29 +770,29 @@ class _StoryScreenState extends State<StoryScreen>
     } else {
       if (dx < screenWidth / 5) {
         print("screenWidth");
-        setState(() {
-          if (_currentIndex - 1 >= 0) {
-            _currentIndex -= 1;
-            _loadStory(story: widget.stories[_currentIndex]);
+       // setState(() {
+          if (storySmallGetxController.currentIndex.value - 1 >= 0) {
+            storySmallGetxController.currentIndex.value -= 1;
+            _loadStory(story: stories[storySmallGetxController.currentIndex.value]);
           } else {
-            widget.pageController1?.previousPage(
+            pageController1?.previousPage(
                 duration: Duration(milliseconds: 1000), curve: Curves.ease);
           }
-        });
+        //});
       } else if (dx > 4 * screenWidth / 5) {
-        setState(() {
-          if (_currentIndex + 1 < widget.stories.length) {
-            _currentIndex += 1;
-            _loadStory(story: widget.stories[_currentIndex]);
+        //setState(() {
+          if (storySmallGetxController.currentIndex.value + 1 < stories.length) {
+            storySmallGetxController.currentIndex.value += 1;
+            _loadStory(story: stories[storySmallGetxController.currentIndex.value]);
           } else {
             // Out of bounds - loop story
             // You can also Navigator.of(context).pop() here
             // _currentIndex = 0;
-            //_loadStory(story: widget.stories[_currentIndex]);
-            widget.pageController1?.nextPage(
+            //_loadStory(story: stories[_currentIndex]);
+            pageController1?.nextPage(
                 duration: Duration(milliseconds: 1000), curve: Curves.ease);
           }
-        });
+        //});
       } else {
         /*if (story.media == MediaType.video) {
           if (_videoController!.value.isPlaying) {
@@ -887,28 +830,34 @@ class _StoryScreenState extends State<StoryScreen>
 
   Future<void> _loadStory({Story? story, bool animateToPage = true}) async {
     print("nextPage");
-    _animController?.stop();
-    _animController?.reset();
-    _videoController?.dispose();
-    _videoController = null;
+    storySmallGetxController.animController?.stop();
+    storySmallGetxController.animController?.reset();
+    storySmallGetxController.videoController?.dispose();
+    storySmallGetxController.videoController = null;
+    storySmallGetxController.videoIsInitailized.value = false;
     switch (story!.media) {
       case MediaType.image:
-        _animController!.duration = story.duration;
-        _animController?.forward();
+        storySmallGetxController.animController!.duration = story.duration;
+        storySmallGetxController.animController?.forward();
         break;
       case MediaType.video:
-        _videoController?.dispose();
-        _videoController = null;
-        _videoController = VideoPlayerController.network(story.url!)
+        storySmallGetxController.videoController?.dispose();
+        storySmallGetxController.videoController = null;
+        storySmallGetxController.videoController = VideoPlayerController.network(story.url!);
+
+        /*storySmallGetxController.videoController = VideoPlayerController.network(story.url!)
           ..initialize().then((_) {
             setState(() {});
-            if (_videoController!.value.isInitialized) {
-              _animController!.duration = _videoController!.value.duration;
-              _videoController?.setVolume(50);
-              _videoController!.play();
-              _animController!.forward();
+            //storySmallGetxController.update();
+
+            if (storySmallGetxController.videoController!.value.isInitialized) {
+              storySmallGetxController.videoIsInitailized.value = true;
+              storySmallGetxController.animController!.duration = storySmallGetxController.videoController!.value.duration;
+              storySmallGetxController.videoController?.setVolume(50);
+              storySmallGetxController.videoController!.play();
+              storySmallGetxController.animController!.forward();
             }
-          });
+          });*/
         break;
       case MediaType.audio:
       //videoGetxController.playButtonNotifier.value = ButtonState.paused;
@@ -916,8 +865,8 @@ class _StoryScreenState extends State<StoryScreen>
       /// print("mDuration= ${dur?.inMinutes}");
       /*audioPlayer?.release();
            audioPlayer?.dispose();*/
-        audioPlayer = null;
-        audioPlayer = AudioPlayer();
+        storySmallGetxController.audioPlayer = null;
+        storySmallGetxController.audioPlayer = AudioPlayer();
         /*audioPlayer = null;
        audioPlayer?.release();
        audioPlayer?.dispose();
@@ -952,8 +901,8 @@ class _StoryScreenState extends State<StoryScreen>
         break;
     }
     if (animateToPage) {
-      _pageController?.animateToPage(
-        _currentIndex,
+      storySmallGetxController.pageController?.animateToPage(
+        storySmallGetxController.currentIndex.value,
         duration: const Duration(milliseconds: 1),
         curve: Curves.easeInOut,
       );
@@ -1027,7 +976,6 @@ class AnimatedBar extends StatelessWidget {
 class UserInfo extends StatelessWidget {
   final User user;
   final VideoController videoGetxController = Get.find();
-  OverlayHandlerProvider overlayHandlerProvider = Get.find();
 
   UserInfo({
     Key? key,
@@ -1047,7 +995,7 @@ class UserInfo extends StatelessWidget {
               size: 30.0,
               color: Colors.white,
             ),
-            onPressed: () => overlayHandlerProvider.disablePip(),
+            onPressed: () => Navigator.of(context).pop(),
           ),
           const SizedBox(width: 4.0),
           Expanded(

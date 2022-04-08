@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 //=========================================================================================
 class HomeNavController extends GetxController with GetSingleTickerProviderStateMixin {
   var tabIndex = 0;
+  var isSmall = false.obs;
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   void changeTabIndex(int index) {

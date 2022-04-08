@@ -1,3 +1,5 @@
+import 'package:advertisers/features/advertising_story_details/Dragabble/constants.dart';
+import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/features/advertising_story_details/VideoController.dart';
 import 'package:advertisers/features/advertising_story_details/data.dart';
 import 'package:advertisers/features/advertising_story_details/small_ads_page.dart';
@@ -11,9 +13,11 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
   AdvertisingStoryDetailsPage({Key? key}) : super(key: key);
 
   final VideoController videoController = Get.put(VideoController(),permanent: true);
+  OverlayHandlerProvider overlayHandlerProvider = Get.find();
+
    PageController pageController=PageController(initialPage: 0, viewportFraction: 1,);
  // StorySmallGetxController  storySmallGetxController = Get.put(StorySmallGetxController());
-
+  double aspectRatio = 16/9;
   buildProfile(String profilePhoto) {
     return SizedBox(
       width: 60,
@@ -75,21 +79,31 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    return GetBuilder<OverlayHandlerProvider>(
+        init: overlayHandlerProvider,
+        builder: (controller)
+    {
+     return AnimatedContainer(
+        duration: Duration(milliseconds: 250),
+        width: controller.inPipMode ? (Constants.VIDEO_TITLE_HEIGHT_PIP*aspectRatio) : MediaQuery.of(context).size.width,
+        color: Colors.black,
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width,
+        ),
+        child: Container(
+            child: PageView.builder(
+              itemCount: 6,
+              controller: pageController,
+              onPageChanged: (x) {
+                //storySmallGetxController.currentIndex.value=0;
+              },
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, index) {
+                //final data = videoController.videoList[index];
+                return Stack(
+                  children: [
 
-    return Scaffold(
-        body:  PageView.builder(
-          itemCount: 6,
-          controller: pageController,
-          onPageChanged: (x){
-            //storySmallGetxController.currentIndex.value=0;
-          },
-          scrollDirection: Axis.vertical,
-          itemBuilder: (context, index) {
-            //final data = videoController.videoList[index];
-            return Stack(
-              children: [
-
-                /*StoryForSmallScreen(
+                    /*StoryForSmallScreen(
                   stories: mStories,
                   pageController1: pageController,
                   onClicked: (){
@@ -97,22 +111,62 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
                     //pageController.viewportFraction = 0.5;
                   },
                 ),*/
-                StoryScreen(
+                    StoryScreen(
+                      stories: mStories,
+                      pageController1: pageController,
+                      onClicked: () {
+                        videoController.isSmall.value = true;
+                        //pageController.viewportFraction = 0.5;
+                      },
+                    ),
+                    /*SmallAdsPage(
+                  stories: stories,
+                  pageController1: pageController,
+                )*/
+                  ],
+                );
+              },
+            )
+        ),
+      );
+     /* return Container(
+          child: PageView.builder(
+            itemCount: 6,
+            controller: pageController,
+            onPageChanged: (x) {
+              //storySmallGetxController.currentIndex.value=0;
+            },
+            scrollDirection: Axis.vertical,
+            itemBuilder: (context, index) {
+              //final data = videoController.videoList[index];
+              return Stack(
+                children: [
+
+                  *//*StoryForSmallScreen(
                   stories: mStories,
                   pageController1: pageController,
                   onClicked: (){
                     videoController.isSmall.value=true;
                     //pageController.viewportFraction = 0.5;
                   },
-                ),
-                /*SmallAdsPage(
+                ),*//*
+                  StoryScreen(
+                    stories: mStories,
+                    pageController1: pageController,
+                    onClicked: () {
+                      videoController.isSmall.value = true;
+                      //pageController.viewportFraction = 0.5;
+                    },
+                  ),
+                  *//*SmallAdsPage(
                   stories: stories,
                   pageController1: pageController,
-                )*/
-              ],
-            );
-          },
-        )
-    );
+                )*//*
+                ],
+              );
+            },
+          )
+      );*/
+    });
   }
 }

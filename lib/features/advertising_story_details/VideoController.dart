@@ -8,7 +8,7 @@ class VideoController extends GetxController {
 
   List<Story> get videoList => _videoList.value;
   //late AudioPlayer audioPlayer;
-
+   var isSmall = false.obs;
   @override
   void onInit() {
     super.onInit();
