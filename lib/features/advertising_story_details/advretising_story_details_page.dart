@@ -104,6 +104,9 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
                     videoController.isSmall.value=true;
                     //pageController.viewportFraction = 0.5;
                   },
+                  onSheetCliked: (im){
+
+                  },
                 ),
                 /*SmallAdsPage(
                   stories: stories,

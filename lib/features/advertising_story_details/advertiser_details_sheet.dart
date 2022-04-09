@@ -30,15 +30,15 @@ class AdvertiserDetailsSheet extends StatefulWidget {
 
 class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
 
-  FindAdvertiseController findOrderAdvertisersController =Get.put(FindAdvertiseController());
+ // FindAdvertiseController findOrderAdvertisersController =Get.put(FindAdvertiseController());
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(findOrderAdvertisersController.isFilterSavedClicked.isFalse) {
+   /* if(findOrderAdvertisersController.isFilterSavedClicked.isFalse) {
       findOrderAdvertisersController.getAdvertisersForm(context);
-    }
+    }*/
   }
   @override
   Widget build(BuildContext context) {
@@ -68,13 +68,15 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
           ),
         ],
       ),*/
+      color:Colors.white,
+      height: 50,
       child: ListView(
         controller: widget.scrollController,
         //physics:const AlwaysScrollableScrollPhysics(),
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisSize: MainAxisSize.max,
+            mainAxisSize: MainAxisSize.min,
             children: [
 
               Container(
@@ -547,7 +549,7 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
       ),
     );
   }
-  @override
+/*  @override
   void dispose() {
     // TODO: implement dispose
     if(findOrderAdvertisersController.isFilterSavedClicked.isFalse) {
@@ -566,14 +568,14 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
       findOrderAdvertisersController.selectedArea.value = Area();
       findOrderAdvertisersController.areasForLocationSheet.value = [];
     }
-/*    RxList<Country> countriesForLocationSheet = <Country>[].obs;
+*//*    RxList<Country> countriesForLocationSheet = <Country>[].obs;
     RxList<Area> areasForLocationSheet = <Area>[].obs;
     var countryForLocationSheet  = Country().obs;
     var areaForLocationSheet  = Area().obs;
     RxList<dynamic> selectedUserLocations = <dynamic>[].obs;
     var isFilterSavedClicked  = false.obs;
     var isAreaEnabled = true.obs;
-    var isCountryEnabled = true.obs;*/
+    var isCountryEnabled = true.obs;*//*
     super.dispose();
-  }
+  }*/
 }

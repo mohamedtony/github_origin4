@@ -1,5 +1,6 @@
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AudioPlayerUrl extends StatefulWidget {
@@ -130,15 +131,13 @@ class _AudioPlayerUrlState extends State<AudioPlayerUrl> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xffCFCFCF) ,
-      body: Container(
-          alignment: Alignment.center,
-          child: audioDuration!=0?Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              /// Compulsory
-              IconButton(
+    return Container(
+        alignment: Alignment.center,
+        child: audioDuration!=0?Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            /// Compulsory
+            /* IconButton(
                   iconSize: 50,
                   onPressed: () {
                     audioPlayerState == PlayerState.PLAYING
@@ -149,9 +148,11 @@ class _AudioPlayerUrlState extends State<AudioPlayerUrl> {
                       ? Icons.pause_rounded
                       : Icons.play_arrow_rounded
                       ,color: Colors.blue,
-                  )),
-              /// Optional
-              Row(
+                  )),*/
+            /// Optional
+            Container(
+              margin: EdgeInsets.only(bottom: 26.0),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 textDirection: TextDirection.ltr,
                 children: [
@@ -164,22 +165,22 @@ class _AudioPlayerUrlState extends State<AudioPlayerUrl> {
                   SizedBox(width: 20),
                   Text(getTimeString(audioDuration),style:TextStyle(color: Colors.blue))
                 ],
-              )
-            ],
-          ):Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              SizedBox(
-                width: 50,
-                height: 50,
-                child: CircularProgressIndicator(
-                    color: Colors.blue
-                ),
               ),
-            ],
-          )),
-    );
+            )
+          ],
+        ):Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SizedBox(
+              width: 50,
+              height: 50,
+              child: CircularProgressIndicator(
+                  color: Colors.blue
+              ),
+            ),
+          ],
+        ));
   }
 
   Future<void> setUp() async {

@@ -43,7 +43,7 @@ class _VideoOverlayWidgetState extends State<VideoOverlayWidget> {
     });
   }
 
-  _onPipMode() {
+/*  _onPipMode() {
     double aspectRatio = overlayHandlerProvider.aspectRatio;
 
     print("true   $aspectRatio");
@@ -56,6 +56,25 @@ class _VideoOverlayWidgetState extends State<VideoOverlayWidget> {
         width = Constants.VIDEO_HEIGHT_PIP;
         height = (Constants.VIDEO_HEIGHT_PIP/aspectRatio) + 33;
         offset = Offset(oldWidth! - width!, oldHeight! - height! - Constants.BOTTOM_PADDING_PIP);
+      });
+    });
+  }*/
+
+  _onPipMode() {
+    double aspectRatio = overlayHandlerProvider.aspectRatio;
+
+    print("true   $aspectRatio");
+//    Provider.of<OverlayHandlerProvider>(context, listen: false).enablePip();
+    Future.delayed(Duration(milliseconds: 100), () {
+      print("true   Future.microtask");
+
+      setState(() {
+        isInPipMode = true;
+        width = oldWidth! - 32.0;
+        height = Constants.VIDEO_TITLE_HEIGHT_PIP;
+        print(oldHeight! - height! - Constants.BOTTOM_PADDING_PIP);
+        offset = Offset(16, oldHeight! - height! - Constants.BOTTOM_PADDING_PIP);
+//        height = (Constants.VIDEO_HEIGHT_PIP/aspectRatio) + 33;
       });
     });
   }
@@ -81,7 +100,7 @@ class _VideoOverlayWidgetState extends State<VideoOverlayWidget> {
         return AnimatedPositioned(
           duration: Duration(milliseconds: 150),
           left: offset.dx,
-          top: offset.dy,
+          bottom: offset.dy,
           child: Draggable(
             feedback: Container(),
             onDragStarted: () {

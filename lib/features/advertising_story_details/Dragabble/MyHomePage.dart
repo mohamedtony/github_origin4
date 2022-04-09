@@ -1,3 +1,4 @@
+/*
 import 'package:advertisers/features/advertising_story_details/Dragabble/advretising_story_details_page.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_service.dart';
@@ -19,7 +20,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   OverlayHandlerProvider overlayHandlerProvider = Get.put(OverlayHandlerProvider());
   _addVideoOverlay() {
-    OverlayService().addVideosOverlay(context, VideoPlayerPage());
+    OverlayService().addVideosOverlay(context, AdvertisingStoryDetailsPage());
   }
   _addVideoWithTitleOverlay() {
     OverlayService().addVideoTitleOverlay(context, AdvertisingStoryDetailsPage());
@@ -30,10 +31,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return WillPopScope(
       onWillPop: () async {
         print("MainPOP");
-       /* if(overlayHandlerProvider.overlayActive) {
+       */
+/* if(overlayHandlerProvider.overlayActive) {
           overlayHandlerProvider.enablePip(1.77);
           return false;
-        }*/
+        }*//*
+
         if(overlayHandlerProvider.overlayActive) {
           overlayHandlerProvider.disablePip();
           overlayHandlerProvider.removeOverlay(context);
@@ -67,4 +70,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-}
+}*/

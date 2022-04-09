@@ -29,9 +29,20 @@ class OverlayHandlerProvider  extends GetxController{
     }
     overlayEntry = null;
     inPipMode = false;
-    Overlay.of(context)?.insert(overlay);
+    Overlay.of(context,rootOverlay: true)?.insert(overlay);
     overlayEntry = overlay;
   }
+   insertOverlay2(BuildContext context, OverlayEntry overlay) {
+     /*if(overlayEntry != null) {
+       overlayEntry?.remove();
+     }
+     overlayEntry = null;
+     inPipMode = false;*/
+
+     Overlay.of(context)?.insert(/*overlayEntry!,above:*/ overlay,above: overlayEntry);
+
+     //overlayEntry = overlay;
+   }
 
   removeOverlay(BuildContext context) {
     if(overlayEntry != null) {

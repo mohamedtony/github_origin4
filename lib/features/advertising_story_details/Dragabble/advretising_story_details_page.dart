@@ -10,8 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AdvertisingStoryDetailsPage extends StatelessWidget {
-  AdvertisingStoryDetailsPage({Key? key}) : super(key: key);
-
+  AdvertisingStoryDetailsPage({Key? key,required this.onSheetCliked}) : super(key: key);
+   Function(int x) onSheetCliked;
   final VideoController videoController = Get.put(VideoController(),permanent: true);
   OverlayHandlerProvider overlayHandlerProvider = Get.find();
 
@@ -90,8 +90,9 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width,
         ),
-        child: Container(
-            child: PageView.builder(
+        child: Scaffold(
+             resizeToAvoidBottomInset: false,
+            body: PageView.builder(
               itemCount: 6,
               controller: pageController,
               onPageChanged: (x) {
@@ -117,6 +118,9 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
                       onClicked: () {
                         videoController.isSmall.value = true;
                         //pageController.viewportFraction = 0.5;
+                      },
+                      onSheetCliked: (ind){
+
                       },
                     ),
                     /*SmallAdsPage(

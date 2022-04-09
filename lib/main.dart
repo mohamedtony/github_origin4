@@ -150,7 +150,7 @@ class _MyAppState extends State<MyApp> {
           fallbackLocale: LocalizationService.fallbackLocale,
          // fallbackLocale: LocalizationService.locale,
           builder: EasyLoading.init(),
-            home: MyHomePage(title: "mmmm",),
+            //home: MyHomePage(title: "mmmm",),
           translations: LocalizationService(),
           initialRoute: '/',
           getPages: Routes.routes,

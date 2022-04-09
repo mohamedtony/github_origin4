@@ -1,5 +1,8 @@
 import 'dart:ui';
 import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
+import 'package:advertisers/features/advertising_story_details/Dragabble/advretising_story_details_page.dart';
+import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
+import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_service.dart';
 import 'package:advertisers/features/advertising_story_details/advertiser_details_sheet.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/features/find_advertise_page/filter_order_advertisers_sheet.dart';
@@ -27,6 +30,21 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 class Home extends StatelessWidget {
     Home({Key? key}) : super(key: key);
  // final HomeNavController _loginController=Get.put(HomeNavController());
+    OverlayHandlerProvider overlayHandlerProvider = Get.put(OverlayHandlerProvider());
+   /* _addVideoOverlay(BuildContext context) {
+      OverlayService().addVideosOverlay(context, AdvertisingStoryDetailsPage(
+
+      ));
+    }*/
+    _addVideoWithTitleOverlay(BuildContext context) {
+      OverlayService().addVideoTitleOverlay(context, AdvertisingStoryDetailsPage(
+        onSheetCliked: (x){
+          //  print('tony:sheetClicked');
+          showBottomSheetForRequest(context, x);
+        },
+      ));
+    }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeNavController>(
@@ -35,10 +53,16 @@ class Home extends StatelessWidget {
         length: 5,
         child: Scaffold(
           key: controller.scaffoldKey,
-          bottomNavigationBar: Material(
+            resizeToAvoidBottomInset:false,
+            bottomNavigationBar: Material(
             child: TabBar(
                 unselectedLabelColor: AppColors.unseletabColor,
                 indicatorSize: TabBarIndicatorSize.tab,
+                onTap: (index){
+                  if(index!=0){
+                    overlayHandlerProvider.removeOverlay(context);
+                  }
+                },
                 padding: EdgeInsets.only(left: 6.0,right: 6.0,top: 6.0,bottom: 4.0),
                 /*indicatorColor: AppColors.indicatorColor,
                         indicatorWeight: 4.0,*/
@@ -228,6 +252,9 @@ class Home extends StatelessWidget {
                     print('tonyClicked:$x');
                     showBottomSheetForRequest(context,x);
                   },
+                  onAdveriseItemClicked: (x){
+                    _addVideoWithTitleOverlay(context);
+                  },
                 ),
                 FavoritePage(),
                 AddAdsPage(),
@@ -283,13 +310,17 @@ class Home extends StatelessWidget {
               }else if(bottomNumber==7){
                 return NoticeSheet(
                     scrollController: scrollController);
-              }else{
-                /*return FilterOrderAdvertisersSheet(
+              }else if(bottomNumber==8){
+                return FilterOrderAdvertisersSheet(
                    scrollController: scrollController
-                );*/
+                );
+
+
+              }else{
                 return AdvertiserDetailsSheet(
                     scrollController: scrollController
                 );
+
 
               }
             },

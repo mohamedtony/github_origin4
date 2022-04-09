@@ -31,4 +31,17 @@ class OverlayService {
     overlayHandlerProvider.insertOverlay(context, overlayEntry);
   }
 
+  addVideoTitleOverlay2(BuildContext context, Widget widget) {
+    OverlayEntry overlayEntry = OverlayEntry(
+      builder: (context) => VideoTitleOverlayWidget(
+        onClear: () {
+          overlayHandlerProvider.removeOverlay(context);
+        },
+        widget: widget,
+      ),
+    );
+
+    overlayHandlerProvider.insertOverlay2(context, overlayEntry);
+  }
+
 }

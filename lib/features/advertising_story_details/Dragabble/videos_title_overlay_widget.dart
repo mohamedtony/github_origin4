@@ -52,10 +52,10 @@ class _VideoTitleOverlayWidgetState extends State<VideoTitleOverlayWidget> {
 
       setState(() {
         isInPipMode = true;
-        width = oldWidth! - 32.0;
+        width = oldWidth! - 4.0;
         height = Constants.VIDEO_TITLE_HEIGHT_PIP;
         print(oldHeight! - height! - Constants.BOTTOM_PADDING_PIP);
-        offset = Offset(16, oldHeight! - height! - Constants.BOTTOM_PADDING_PIP);
+        offset = Offset(2, oldHeight! - height! - Constants.BOTTOM_PADDING_PIP);
 //        height = (Constants.VIDEO_HEIGHT_PIP/aspectRatio) + 33;
       });
     });
@@ -89,6 +89,7 @@ class _VideoTitleOverlayWidgetState extends State<VideoTitleOverlayWidget> {
             height: height,
             width: width,
             child: widget.widget,
+            //margin: EdgeInsets.only(top: 100),
             duration: Duration(milliseconds: 250),
           ),
         ),
