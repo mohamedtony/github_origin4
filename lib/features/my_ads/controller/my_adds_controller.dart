@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:advertisers/app_core/network/models/ReasonDataModel.dart';
 import 'package:advertisers/app_core/network/models/ReasonModel.dart';
 import 'package:advertisers/app_core/network/models/RequestModel.dart';
@@ -7,15 +9,19 @@ import 'package:advertisers/app_core/network/responses/MyRequestsResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/app_core/network/responses/RejectRequestResponse.dart';
 import 'package:advertisers/app_core/network/responses/ShowAddsListResponse.dart';
+import 'package:advertisers/app_core/network/responses/ShowEmployeeDetailsResponse%20.dart';
+import 'package:advertisers/app_core/network/responses/ShowOnAppResponse.dart';
 import 'package:advertisers/main.dart';
+import 'package:advertisers/shared/networking/api_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:group_radio_button/group_radio_button.dart';
+import 'package:logger/logger.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
+import 'package:dio/dio.dart' as dio;
 class MyAddsController extends GetxController{
 
   var addsList=<AddModel>[].obs;
@@ -82,7 +88,7 @@ class MyAddsController extends GetxController{
 
 
 
-
+  final ApiService _apiService = Get.put(ApiService());
 
   GlobalKey<FormState> searchFormKey=GlobalKey<FormState>();
   late TextEditingController searchController;
@@ -170,231 +176,182 @@ class MyAddsController extends GetxController{
     return false;
   }
 
-  void refuseRequest({required int requestId}) {
+
+  /// delete employee
+  void deleteAnAdd({int? id}) async {
     EasyLoading.show();
-    Repository repo = Repository();
+    String url ='https://advertiser.cefour.com/api/v1/ads/$id';
+    print("URL+++> $url");
+    try {
+      final dio.Response response = await _apiService.dioClient.delete(
+        url,
+      );
+      final data = ShowEmployeeDetailsResponse.fromJson(response.data);
 
-    repo.postWithImageMultipart<RegisterClientUserResponse>(
-        path: 'requests/$requestId/reject',
-        fromJson: (json) => RegisterClientUserResponse.fromJson(json),
-        json: {
-          "token": "Bearer $token",
-          "reason": reasonController.text,
-        },
-        onSuccess: (res) {
-          if (EasyLoading.isShow) {
-            EasyLoading.dismiss();
-          }
-          registerClientUserResponse.value = res;
+      Logger().i(response.data);
 
-          //Get.toNamed('/chooseBakaPage');
-        },
-        onError: (err, res) {
+      if(data.status==200){
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
 
-          if (EasyLoading.isShow) {
-            EasyLoading.dismiss();
-          }
-          Get.snackbar(
-            "خطأ",
-            err.toString(),
-            icon: const Icon(Icons.person, color: Colors.red),
-            backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.BOTTOM,);
-        });
-  }
-  void cancelRequest({required int requestId}) {
-    EasyLoading.show();
-    Repository repo = Repository();
+        Get.snackbar("حسنا",
+          "تم حذف الاعلان بنجاح",
+          icon: const Icon(Icons.check, color: Colors.green),
+          backgroundColor: Colors.yellow,
+          snackPosition: SnackPosition.TOP,);
 
-    repo.postWithImageMultipart<RegisterClientUserResponse>(
-        path: 'requests/$requestId/cancel',
-        fromJson: (json) => RegisterClientUserResponse.fromJson(json),
-        json: {
-          "token": "Bearer $token",
-          "reason": _verticalGroupValue.value,
-        },
-        onSuccess: (res) {
-          if (EasyLoading.isShow) {
-            EasyLoading.dismiss();
-          }
-          // registerClientUserResponse.value = res;
-          Get.snackbar(
-            "نجاح",
-            "تم الالغاء بنجاح",
-            icon: const Icon(Icons.person, color: Colors.red),
-            backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.BOTTOM,);
-          //Get.toNamed('/chooseBakaPage');
-        },
-        onError: (err, res) {
+        await getRequestsData();
 
-          if (EasyLoading.isShow) {
-            EasyLoading.dismiss();
-          }
-          Get.snackbar(
-            "خطأ",
-            err.toString(),
-            icon: const Icon(Icons.person, color: Colors.red),
-            backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.BOTTOM,);
-        });
+      }else{
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
+        Get.snackbar(
+          "خطأ",
+          data.message.toString(),
+          icon: const Icon(Icons.person, color: Colors.red),
+          backgroundColor: Colors.yellow,
+          snackPosition: SnackPosition.BOTTOM,);
+      }
+
+    } on dio.DioError catch (error) {
+      if (error.response?.statusCode == 401 ||
+          error.response?.statusCode == 422) {
+        // Error occurred while fetching data
+
+      } else if (error.error is SocketException) {
+
+      } else {
+        String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
+
+      }
+    }
   }
 
-  void getClientConfirm({required int requestId}) {
+  /// show adds On App
+  void showOnApp({int? id}) async {
     EasyLoading.show();
-    Repository repo = Repository();
+    String url ='https://advertiser.cefour.com/api/v1/ads/$id/show_app';
+    print("URL+++> $url");
+    try {
+      final dio.Response response = await _apiService.dioClient.get(
+        url,
+      );
+      final data = ShowOnAppResponse.fromJson(response.data);
 
-    repo.get<RejectRequestResponse>(
-        path: 'requests/$requestId/confirm',
-        fromJson: (json) => RejectRequestResponse.fromJson(json),
-        json: {
-          "token": "Bearer $token",
-        },
-        onSuccess: (res) {
-          if (EasyLoading.isShow) {
-            EasyLoading.dismiss();
-          }
-          reasonDataModel.value = res.data!;
+      Logger().i(response.data);
 
-          //Get.toNamed('/chooseBakaPage');
-        },
-        onError: (err, res) {
+      if(data.status==200){
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
 
-          if (EasyLoading.isShow) {
-            EasyLoading.dismiss();
-          }
-          Get.snackbar(
-            "خطأ",
-            err.toString(),
-            icon: const Icon(Icons.person, color: Colors.red),
+        if(data.data!.show==0){
+          Get.snackbar("حسنا",
+            "تم تنشيط عرض المنصة",
+            icon: const Icon(Icons.check, color: Colors.green),
             backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.BOTTOM,);
-        });
+            snackPosition: SnackPosition.TOP,);
+        }else if(data.data!.show==1){
+          Get.snackbar("حسنا",
+            "تم ايقاف عرض المنصة",
+            icon: const Icon(Icons.check, color: Colors.green),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.TOP,);
+        }
+
+
+        await getRequestsData();
+
+      }else{
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
+        Get.snackbar(
+          "خطأ",
+          data.message.toString(),
+          icon: const Icon(Icons.person, color: Colors.red),
+          backgroundColor: Colors.yellow,
+          snackPosition: SnackPosition.BOTTOM,);
+      }
+
+    } on dio.DioError catch (error) {
+      if (error.response?.statusCode == 401 ||
+          error.response?.statusCode == 422) {
+        // Error occurred while fetching data
+
+      } else if (error.error is SocketException) {
+
+      } else {
+        String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
+
+      }
+    }
   }
-  void getClientConfirmBill({required int requestId}) {
+
+  /// show adds On profile
+  void showOnProfile({int? id}) async {
     EasyLoading.show();
-    Repository repo = Repository();
+    String url ='https://advertiser.cefour.com/api/v1/ads/$id/show_profile';
+    print("URL+++> $url");
+    try {
+      final dio.Response response = await _apiService.dioClient.get(
+        url,
+      );
+      final data = ShowOnAppResponse.fromJson(response.data);
 
-    repo.get<RejectRequestResponse>(
-        path: 'requests/$requestId/bill_confirm',
-        fromJson: (json) => RejectRequestResponse.fromJson(json),
-        json: {
-          "token": "Bearer $token",
-        },
-        onSuccess: (res) {
-          if (EasyLoading.isShow) {
-            EasyLoading.dismiss();
-          }
-          Get.snackbar(
-            "نجاح",
-            "تم بنجاح",
-            icon: const Icon(Icons.person, color: Colors.red),
+      Logger().i(response.data);
+
+      if(data.status==200){
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
+
+        if(data.data!.show==0){
+          Get.snackbar("حسنا",
+            "تم تنشيط عرض المنصة",
+            icon: const Icon(Icons.check, color: Colors.green),
             backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.BOTTOM,);
-
-          //Get.toNamed('/chooseBakaPage');
-        },
-        onError: (err, res) {
-
-          if (EasyLoading.isShow) {
-            EasyLoading.dismiss();
-          }
-          Get.snackbar(
-            "خطأ",
-            err.toString(),
-            icon: const Icon(Icons.person, color: Colors.red),
+            snackPosition: SnackPosition.TOP,);
+        }else if(data.data!.show==1){
+          Get.snackbar("حسنا",
+            "تم ايقاف عرض المنصة",
+            icon: const Icon(Icons.check, color: Colors.green),
             backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.BOTTOM,);
-        });
+            snackPosition: SnackPosition.TOP,);
+        }
+
+
+        await getRequestsData();
+
+      }else{
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
+        Get.snackbar(
+          "خطأ",
+          data.message.toString(),
+          icon: const Icon(Icons.person, color: Colors.red),
+          backgroundColor: Colors.yellow,
+          snackPosition: SnackPosition.BOTTOM,);
+      }
+
+    } on dio.DioError catch (error) {
+      if (error.response?.statusCode == 401 ||
+          error.response?.statusCode == 422) {
+        // Error occurred while fetching data
+
+      } else if (error.error is SocketException) {
+
+      } else {
+        String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
+
+      }
+    }
   }
-  void getClientCancelReasons({required int requestId,context}) {
-    EasyLoading.show();
-    Repository repo = Repository();
 
-    repo.get<GetCancelReasonsResponse>(
-        path: 'requests/$requestId/cancel_reasons',
-        fromJson: (json) => GetCancelReasonsResponse.fromJson(json),
-        json: {
-          "token": "Bearer $token",
-        },
-        onSuccess: (res) {
-          if (EasyLoading.isShow) {
-            EasyLoading.dismiss();
-          }
 
-         reasons.value=res.data??[];
-         List<String> reasonStr=[];
-         for(ReasonModel res in reasons){
-           reasonStr.add(res.reason!);
-         }
-          //Get.toNamed('/chooseBakaPage');
-          update();
-           Alert(
-              context: context,
-              //type: AlertType.warning,
-              title: "الغاء الطلب",
-              content:SizedBox(
-              height: 300,
-              child: ListView(
-              children: [
-
-               Obx(()=> RadioGroup<String>.builder(
-                groupValue: _verticalGroupValue.value,
-                onChanged: (values) {
-                  _verticalGroupValue.value= values! ;
-                  // update();
-                },textStyle: TextStyle(color: Colors.deepOrange,decorationColor: Colors.red),
-         // activeColor: Colors.red,
-                  spacebetween: 50,
-          items: reasonStr,
-          itemBuilder: (item) => RadioButtonBuilder(
-          item.toString(),
-          ),
-          direction: Axis.vertical,
-         // ),
-              )),
-          ],
-          ),
-          ),
-          // desc: "Flutter is more awesome with RFlutter Alert.",
-          buttons: [
-          DialogButton(
-          child: Text(
-          "حفظ",
-          style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          onPressed: () {
-           cancelRequest(requestId: requestId);
-          },
-          color: Color.fromRGBO(0, 179, 134, 1.0),
-          ),
-          DialogButton(
-          child: Text(
-          "رجوع",
-          style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          onPressed: () => Navigator.pop(context),
-          gradient: LinearGradient(colors: [
-          Color.fromRGBO(116, 116, 191, 1.0),
-          Color.fromRGBO(52, 138, 199, 1.0)
-          ]),
-          )
-          ],
-          ).show();
-        },
-        onError: (err, res) {
-
-          if (EasyLoading.isShow) {
-            EasyLoading.dismiss();
-          }
-          Get.snackbar(
-            "خطأ",
-            err.toString(),
-            icon: const Icon(Icons.person, color: Colors.red),
-            backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.BOTTOM,);
-        });
-  }
   @override
   void onClose() {
     searchController.dispose();

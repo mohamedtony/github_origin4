@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class SlideRightItemsWraper extends StatelessWidget {
@@ -8,31 +9,41 @@ class SlideRightItemsWraper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 4,left: 4),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
 
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: const Color(0xffeff7fa),
-      ),
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-
-            firstWidget!,
-
-            Container(
-              margin: EdgeInsets.only(bottom: 20,top: 10),
-              height: 1,
-              width: 45,
-              color: Color(0xff8fb7d9),
+          Padding(
+            padding: const EdgeInsets.only(left:2.0,right: 2,bottom: 4),
+            child: Container(
+              width: 70.sp,
+                height: 88.sp,
+                margin:const EdgeInsets.only(right: 4,left: 4),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: const Color(0xffeff7fa),
+                ),
+                child: firstWidget!
             ),
+          ),
 
-            secondWidget!,
 
-          ],
-        ),
+          Padding(
+            padding: const EdgeInsets.only(left:2.0,right: 2,top: 4),
+            child: Container(
+                width: 70.sp,
+                height: 88.sp,
+                margin:const EdgeInsets.only(right: 4,left: 4),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: const Color(0xffeff7fa),
+                ),
+                child: secondWidget!
+            ),
+          ),
+
+        ],
       ),
     );
   }

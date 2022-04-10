@@ -1,13 +1,12 @@
 import 'dart:io';
 
-import 'package:advertisers/app_core/network/models/ReasonModel.dart';
 import 'package:advertisers/features/my_ads/controller/my_adds_controller.dart';
-//import 'package:advertisers/features/home_page/app_colors.dart';
-import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
-import 'package:advertisers/features/my_orders/widgets/slide_right_item.dart';
-import 'package:advertisers/features/my_orders/widgets/slide_right_item_separation.dart';
-import 'package:advertisers/features/my_orders/widgets/slide_right_items_wraper.dart';
-import 'package:advertisers/features/users_module/app_colors.dart';
+import 'package:advertisers/features/my_ads/widgets/slide_right_item.dart';
+import 'package:advertisers/features/my_ads/widgets/slide_right_item_new.dart';
+import 'package:advertisers/features/my_ads/widgets/slide_right_item_separation.dart';
+import 'package:advertisers/features/my_ads/widgets/slide_right_items_wraper.dart';
+import 'package:advertisers/features/my_ads/widgets/slide_right_items_wraper_one_item.dart';
+
 import 'package:advertisers/features/wallet_module/widgets/processes_widgets/processes_widget.dart';
 import 'package:advertisers/features/wallet_module/widgets/shipping_widgets/shipping_widget.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
@@ -341,7 +340,6 @@ class _MyAdsPageState extends State<MyAdsPage>
                                     child: Row(
                                       mainAxisAlignment:MainAxisAlignment.spaceBetween,
                                       children: [
-
                                         controller.addsList[index].statusTxt=="العرض موقوف"||
                                         controller.addsList[index].statusTxt=="موقوف"?
                                         Padding(
@@ -618,28 +616,10 @@ class _MyAdsPageState extends State<MyAdsPage>
                                             child: SlideRightItemsWraper(
                                               firstWidget: SlideRightItemWidget(
                                                 isSvg: true,
-                                                title: "قبول التسعير",
-                                                // onPress: controller
-                                                //             .addsList[
-                                                //                 index]
-                                                //             .statuses
-                                                //             ?.confirm_pricing ==
-                                                //         false
-                                                //     ? null
-                                                //     : () {
-                                                //   controller.currentIndex.value=index;
-                                                //   if (controller.currentIndex.value  ==
-                                                //             index) {
-                                                //     controller.getClientConfirmBill(
-                                                //         requestId: controller
-                                                //             .addsList[
-                                                //         index]
-                                                //             .id ??
-                                                //             0);
-                                                //         }
-                                                //       },
-                                                icon:
-                                                    "images/accept_price.svg",
+                                                title: "عرض بروفايل",
+                                                icon: controller.addsList[index].showProfile!=null&& controller.addsList[index].showProfile==0?"images/eye.svg":"images/icon_eye_off.svg",
+                                                iconWidth: 20.sp,
+                                                iconHeight: 11.7.sp,
                                                 widgetOpacity:/* controller
                                                             .addsList[
                                                                 index]
@@ -649,189 +629,30 @@ class _MyAdsPageState extends State<MyAdsPage>
                                                     ? 0.4
                                                     : */1,
                                                 checkOpacity: 0,
+                                                onPress: (){
+                                                  controller.showOnProfile(id: controller.addsList[index].id);
+                                                },
                                               ),
-                                              secondWidget: Center(
-                                                child: Center(
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.all(8.0),
-                                                    child: SlideRightItemWidget(
-                                                      isSvg: false,
-                                                      title:"رفض",textColor: Color(0xffD44545),
-                                                      // onPress: controller
-                                                      //             .addsList[
-                                                      //                 index]
-                                                      //             .statuses
-                                                      //             ?.reject ==
-                                                      //         false
-                                                      //     ? null
-                                                      //     : () {
-                                                      //   controller.currentIndex.value=index;
-                                                      //   if (controller.currentIndex.value  ==
-                                                      //             index) {
-                                                      //           CoolAlert.show(
-                                                      //               context: context,
-                                                      //               title:
-                                                      //                   "رفض",
-                                                      //               type: CoolAlertType
-                                                      //                   .info,
-                                                      //               //text: "Your transaction was successful!",
-                                                      //               widget: SizedBox(
-                                                      //                 width: 323.w,
-                                                      //                 height: 250.h,
-                                                      //                 child:
-                                                      //                     TextFormField(
-                                                      //                   maxLines: 20,
-                                                      //                   style: TextStyle(
-                                                      //                       fontSize:
-                                                      //                           14.sp,
-                                                      //                       fontFamily:
-                                                      //                           'Arabic-Regular'),
-                                                      //                   textAlign:
-                                                      //                       TextAlign
-                                                      //                           .center,
-                                                      //                   // onChanged: (val){
-                                                      //                   //
-                                                      //                   // },
-                                                      //                   decoration:
-                                                      //                       InputDecoration(
-                                                      //                     contentPadding: EdgeInsets.symmetric(
-                                                      //                         vertical:
-                                                      //                             5.0.h,
-                                                      //                         horizontal:
-                                                      //                             10.w),
-                                                      //                     // suffixIcon:prefix??const SizedBox(width: 0,),
-                                                      //                     border: OutlineInputBorder(
-                                                      //                         borderRadius:
-                                                      //                             BorderRadius.circular(12
-                                                      //                                 .h),
-                                                      //                         borderSide:
-                                                      //                             BorderSide(
-                                                      //                                 color: AppColors.borderfayrozy)),
-                                                      //                     filled: true,
-                                                      //
-                                                      //                     disabledBorder: OutlineInputBorder(
-                                                      //                         borderRadius:
-                                                      //                             BorderRadius.circular(12
-                                                      //                                 .h),
-                                                      //                         borderSide:
-                                                      //                             BorderSide(
-                                                      //                                 color: AppColors.borderfayrozy)),
-                                                      //                     enabledBorder: OutlineInputBorder(
-                                                      //                         borderRadius:
-                                                      //                             BorderRadius.circular(12
-                                                      //                                 .h),
-                                                      //                         borderSide:
-                                                      //                             BorderSide(
-                                                      //                                 color: AppColors.borderfayrozy)),
-                                                      //                     focusColor:
-                                                      //                         AppColors
-                                                      //                             .borderfayrozy,
-                                                      //                     fillColor:
-                                                      //                         AppColors
-                                                      //                             .whiteColor,
-                                                      //                     hintStyle: TextStyle(
-                                                      //                         color: AppColors
-                                                      //                             .greyColor,
-                                                      //                         fontSize:
-                                                      //                             15.sp),
-                                                      //                     hintText:
-                                                      //                         'سبب الرفض',
-                                                      //                   ),
-                                                      //                   controller:
-                                                      //                       controller
-                                                      //                           .reasonController,
-                                                      //                   // onSaved: (val){
-                                                      //                   //
-                                                      //                   // },
-                                                      //                   // validator: validator,
-                                                      //                 ),
-                                                      //               ),
-                                                      //               confirmBtnText:
-                                                      //                   "حفظ",
-                                                      //               onConfirmBtnTap:
-                                                      //                   () {
-                                                      //                 controller.refuseRequest(
-                                                      //                     requestId: controller
-                                                      //                             .addsList[
-                                                      //                                 index]
-                                                      //                             .id ??
-                                                      //                         0);
-                                                      //                 Get.back();
-                                                      //               },//cancelBtnTextStyle:TextStyle(color: Colors.blue) ,
-                                                      //               cancelBtnText:
-                                                      //                   "الغاء",showCancelBtn: true,
-                                                      //               onCancelBtnTap: () {
-                                                      //                 Get.back();
-                                                      //               });
-                                                      //           print("refuse");
-                                                      //         }
-                                                      //       },
-                                                      icon: "images/remove-line.png",
-                                                      widgetOpacity: /*controller
-                                                                  .addsList[
-                                                                      index]
-                                                                  .statuses
-                                                                  ?.reject ==
-                                                              false
-                                                          ? 0.4
-                                                          :*/ 1,
-                                                      checkOpacity: 0,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SlideRightItemsSeparation(),
-                                          Expanded(
-                                              child: SlideRightItemsWraper(
-                                            firstWidget: SlideRightItemWidget(
-                                              isSvg: true,
-                                              title: "دفع",
-                                              //اعكس /
-                                              // onPress: controller
-                                              //             .addsList[
-                                              //                 index]
-                                              //             .statuses
-                                              //             ?.payment ==
-                                              //         false
-                                              //     ? null: () {
-                                              //   controller.currentIndex.value=index;
-                                              //   if (controller.currentIndex.value  == index) {
-                                              //          Get.toNamed("/ClientPaymentModelPage?advertiser=${controller.addsList[index].advertiser?.username??' '}"
-                                              //              "&requestId=${controller.addsList[index].id}&total=${controller.addsList[index].bill_total}");
-                                              //         }
-                                              //       }
-                                              //     ,
-                                              icon: "images/dollar-bill-line.svg",
-                                              widgetOpacity:/* controller
-                                                          .addsList[
-                                                              index]
-                                                          .statuses
-                                                          ?.payment ==
-                                                      false
-                                                  ? 0.4
-                                                  : */1,
-                                              checkOpacity: .4,
-                                            ),
-                                            secondWidget: SlideRightItemWidget(
-                                              isSvg: true,
-                                              title: "تعديل     الطلب",
-                                              // onPress: controller
-                                              //             .addsList[
-                                              //                 index]
-                                              //             .statuses
-                                              //             ?.edit ==
-                                              //         false
-                                              //     ? null
-                                              //     : () {
-                                              //   controller.currentIndex.value=index;
-                                              //   if (controller.currentIndex.value  == index) {
-                                              //     Get.toNamed('/AdvertiserDetailsPage?requestId=${controller.addsList[index].id}');
-                                              //         }
-                                              //       },
-                                              icon: "images/edit_pen.svg",
-                                              widgetOpacity: /*controller
+                                              secondWidget: SlideRightItemWidget(
+                                                isSvg: true,
+                                                title: "تعديل الاعلان",
+                                                // onPress: controller
+                                                //             .addsList[
+                                                //                 index]
+                                                //             .statuses
+                                                //             ?.edit ==
+                                                //         false
+                                                //     ? null
+                                                //     : () {
+                                                //   controller.currentIndex.value=index;
+                                                //   if (controller.currentIndex.value  == index) {
+                                                //     Get.toNamed('/AdvertiserDetailsPage?requestId=${controller.addsList[index].id}');
+                                                //         }
+                                                //       },
+                                                icon: "images/edit_pen.svg",
+                                                iconWidth: 27.sp,
+                                                iconHeight: 21.sp,
+                                                widgetOpacity: /*controller
                                                           .addsList[
                                                               index]
                                                           .statuses
@@ -839,15 +660,103 @@ class _MyAdsPageState extends State<MyAdsPage>
                                                       false
                                                   ? 0.4
                                                   : */1,
-                                              checkOpacity: 0,
+                                                checkOpacity: 0,
+                                              ),
                                             ),
-                                          )),
-                                          SlideRightItemsSeparation(),
+                                          ),
+                                        //  SlideRightItemsSeparation(),
                                           Expanded(
                                               child: SlideRightItemsWraper(
-                                            firstWidget: SlideRightItemWidget(
+                                                firstWidget: SlideRightItemWidget(
+                                                  isSvg: true,
+                                                  title: "عرض      منصة",
+                                                  icon: controller.addsList[index].showApp!=null && controller.addsList[index].showApp==0?"images/eye.svg":"images/icon_eye_off.svg",
+                                                  iconWidth: 20.sp,
+                                                  iconHeight: 11.7.sp,
+                                                  widgetOpacity:/* controller
+                                                            .addsList[
+                                                                index]
+                                                            .statuses
+                                                            ?.confirm_pricing ==
+                                                        false
+                                                    ? 0.4
+                                                    : */1,
+                                                  checkOpacity: 0,
+                                                  onPress: (){
+                                                    controller.showOnApp(id: controller.addsList[index].id);
+                                                  },
+                                                ),
+                                                secondWidget: SlideRightItemWidget(
+                                                  isSvg: true,
+                                                  title: "حذف   الإعلان",
+                                                  onPress:(){
+                                                    Get.defaultDialog(
+                                                        title: "هل تريد حذف هذا الاعلان !",
+                                                        content: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                          children: [
+                                                            InkWell(
+                                                              onTap: (){
+                                                                controller.deleteAnAdd(id: controller.addsList[index].id);
+                                                                Get.back();
+                                                              },
+                                                              child: Container(
+                                                                width: 80,
+                                                                decoration: BoxDecoration(
+                                                                  color: Colors.red,
+                                                                  borderRadius: BorderRadius.circular(8),
+                                                                ),
+                                                                child: const Padding(
+                                                                  padding:  EdgeInsets.symmetric(horizontal:8.0,vertical: 4),
+                                                                  child: Center(child: Text("نعم",style: TextStyle(color: Colors.white,fontSize: 12),)),
+                                                                ),
+                                                              ),
+                                                            ),
+
+                                                            InkWell(
+                                                              onTap: (){
+                                                                Get.back();
+                                                              },
+                                                              child: Container(
+                                                                width: 80,
+                                                                decoration: BoxDecoration(
+                                                                  color: Colors.green,
+                                                                  borderRadius: BorderRadius.circular(8),
+                                                                ),
+                                                                child: const Padding(
+                                                                  padding:  EdgeInsets.symmetric(horizontal:8.0,vertical: 4),
+                                                                  child: Center(child: Text("لا",style: TextStyle(color: Colors.white,fontSize: 12),)),
+                                                                ),
+                                                              ),
+                                                            ),
+
+                                                          ],),
+                                                        backgroundColor: Colors.white,
+                                                        titleStyle: const TextStyle(color: Colors.red,fontSize: 16),
+                                                        barrierDismissible: false
+                                                    );
+                                                  },
+                                                  icon: "images/delete_employee.svg",
+                                                  iconWidth: 30.sp,
+                                                  iconHeight: 30.sp,
+                                                  widgetOpacity: /*controller
+                                                          .addsList[
+                                                              index]
+                                                          .statuses
+                                                          ?.edit ==
+                                                      false
+                                                  ? 0.4
+                                                  : */1,
+                                                  checkOpacity: 0,
+                                                ),
+                                          )),
+                                         // SlideRightItemsSeparation(),
+                                          Expanded(
+                                              child: SlideRightItemsWraperOneItem(
+                                            firstWidget: SlideRightItemNewWidget(
                                               isSvg: true,
-                                              title: "تأكيدالتنفيذ",
+                                              title: "تحديث العرض",
+                                              viewNumber: "1",
                                               // onPress: controller
                                               //             .addsList[
                                               //                 index]
@@ -865,7 +774,9 @@ class _MyAdsPageState extends State<MyAdsPage>
                                               //
                                               //         }
                                               //       },
-                                              icon: "images/confirm_execute.svg",
+                                              icon: "images/edit_pen.svg",
+                                              iconHeight: 30,
+                                              iconWidth: 30,
                                               widgetOpacity: /*controller
                                                           .addsList[
                                                               index]
@@ -875,42 +786,6 @@ class _MyAdsPageState extends State<MyAdsPage>
                                                   ? 0.4
                                                   :*/ 1,
                                               checkOpacity: 1,
-                                            ),
-                                            secondWidget: SlideRightItemWidget(
-                                              isSvg: true,
-                                              title:"الغاء      الطلب",
-                                              // onPress: controller
-                                              //             .addsList[
-                                              //                 index]
-                                              //             .statuses
-                                              //             ?.cancel ==
-                                              //         false
-                                              //     ? null
-                                              //     : () async{
-                                              //   controller.currentIndex.value=index;
-                                              //   if (controller.currentIndex.value  == index) {
-                                              //     controller.getClientCancelReasons(
-                                              //         requestId: controller
-                                              //             .addsList[
-                                              //         index]
-                                              //             .id ??
-                                              //             0,context:context);
-                                              //
-                                              //
-                                              //           print("refuse");
-                                              //         }
-                                              //       },
-                                              icon:
-                                                  "images/annotation-visibility.svg",
-                                              widgetOpacity: /*controller
-                                                          .addsList[
-                                                              index]
-                                                          .statuses
-                                                          ?.cancel ==
-                                                      false
-                                                  ? 0.4
-                                                  :*/ 1,
-                                              checkOpacity: 0,
                                             ),
                                           )),
                                         ],

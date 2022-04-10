@@ -3,14 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 
-class SlideRightItemWidget extends StatelessWidget {
+class SlideRightItemNewWidget extends StatelessWidget {
   VoidCallback?  onPress;
   bool? isSvg;
   Color? textColor;
-  String? icon,title;
+  String? icon,title,viewNumber;
   double widgetOpacity,checkOpacity,iconWidth,iconHeight;
 
-   SlideRightItemWidget({Key? key,this.textColor,this.isSvg,this.onPress,this.icon,this.checkOpacity = 0,this.widgetOpacity = 1,this.title,this.iconHeight=1,this.iconWidth=1}) : super(key: key);
+  SlideRightItemNewWidget({Key? key,this.viewNumber,this.textColor,this.isSvg,this.onPress,this.icon,this.checkOpacity = 0,this.widgetOpacity = 1,this.title,this.iconHeight=1,this.iconWidth=1}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +36,20 @@ class SlideRightItemWidget extends StatelessWidget {
                 ):Image.asset("$icon",height: iconHeight,width: iconWidth,fit: BoxFit.fill,),
 
                 Padding(
-                  padding: const EdgeInsets.only(bottom:4.0),
+                  padding: const EdgeInsets.only(bottom:15.0,top: 4),
                   child: Text("$title",textAlign:TextAlign.center,style: TextStyle(color: textColor?? Color(0xff459FD4),fontSize: 13.sp),),
+                ),
+
+                Container(
+                  width: 33,
+                  height: 33,
+                  decoration: BoxDecoration(
+                    color: Color(0xff459FD4),
+                    shape: BoxShape.circle
+                  ),
+                  child: Center(child: Text("$viewNumber",textAlign:TextAlign.center,style: TextStyle(color: textColor?? Colors.white,fontSize: 20.sp),)),
                 )
+
               ],
             ),
           ),
