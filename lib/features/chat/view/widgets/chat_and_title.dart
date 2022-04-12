@@ -12,59 +12,62 @@ enum Show {
 
 class ChatAndTitle extends StatelessWidget {
   final Show show;
-  ChatAndTitle({Key? key, required this.show}) : super(key: key);
+  ChatAndTitle({Key? key, required this.show,required this.name,required this.image}) : super(key: key);
   final LocalizationService _localizationService = LocalizationService();
-
+ late String name,image;
   @override
   Widget build(BuildContext context) {
     return show == Show.content
-        ? Card(
-            color: Colors.grey[200],
-            elevation: 3,
-            child: Row(
-              children: [
-                Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.rotationY(Get.locale?.languageCode ==
-                          const Locale('en').languageCode
-                      ? math.pi
-                      : 0),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                    child: InkWell(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: SvgPicture.asset(
-                        'images/back-light.svg',
-                        color: Colors.blue,
-                        height: 30.h,
+        ? SizedBox(
+           height: 60,
+          child: Card(
+              color: Colors.grey[200],
+              elevation: 3,
+              child: Row(
+                children: [
+                  Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.rotationY(Get.locale?.languageCode ==
+                            const Locale('en').languageCode
+                        ? math.pi
+                        : 0),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      child: InkWell(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: SvgPicture.asset(
+                          'images/back-light.svg',
+                          color: Colors.blue,
+                          height: 30.h,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const CircleAvatar(
-                  radius: 25,
-                  foregroundImage: NetworkImage(
-                    'https://www.neshanstyle.com/blog/wp-content/uploads/2019/11/122-1-710x434.jpg',
+                   CircleAvatar(
+                    radius: 25,
+                    foregroundImage: NetworkImage(
+                     image??' ',
+    ),
                   ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Expanded(
-                  child: Text(
-                    'احمد السيد اسماعيل',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18.sp,
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                    child: Text(
+                      name??' ',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18.sp,
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-          )
+        )
         : Column(
             children: [
               Container(

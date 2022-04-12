@@ -1,3 +1,5 @@
+import 'package:advertisers/app_core/network/models/ListChatModel.dart';
+import 'package:advertisers/features/chat/view/widgets/PlayChatAudio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -9,11 +11,13 @@ enum ChatUser {
 
 class ChatContentWidget extends StatelessWidget {
   final ChatUser chatUser;
-  final String message;
+  final ListChatModel message;
+  final String type;
   const ChatContentWidget({
     Key? key,
     required this.chatUser,
     required this.message,
+    required this.type,
   }) : super(key: key);
 
   @override
@@ -37,11 +41,16 @@ class ChatContentWidget extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100.0),
                   child: Image.network(
-                    'https://www.neshanstyle.com/blog/wp-content/uploads/2019/11/122-1-710x434.jpg',
+                    message.from_user?.image??' ',
                     height: 20.0,
                     width: 20.0,
                     fit: BoxFit.cover,
-                  ),
+    errorBuilder: (context,o,e) {
+      return Image.asset('images/no_image_available.png',
+        height: 20.0,
+        width: 20.0,
+        fit: BoxFit.cover,);
+    }),
                 ),
               ),
             if (chatUser == ChatUser.sender)
@@ -53,7 +62,8 @@ class ChatContentWidget extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.bottomLeft,
                   child: Text(
-                    'أحمد السيد اسماعيل',
+                    message.from_user?.username??' ',
+
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -63,7 +73,7 @@ class ChatContentWidget extends StatelessWidget {
                 ),
               ),
             if (chatUser == ChatUser.sender) const Spacer(),
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 18.0,
                 // vertical: 8,
@@ -71,7 +81,7 @@ class ChatContentWidget extends StatelessWidget {
               child: Align(
                 alignment: Alignment.bottomLeft,
                 child: Text(
-                  '14 نوفمبر 2020 السعة 7:25 م',
+                  message.sent_at??' ',
                   style: TextStyle(
                     color: Colors.black54,
                     // fontWeight: FontWeight.bold,
@@ -90,7 +100,7 @@ class ChatContentWidget extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.bottomLeft,
                   child: Text(
-                    'محمد السيد اسماعيل',
+                  message.to_user?.username??' ',
                     style: TextStyle(
                       color: Colors.blueAccent,
                       fontWeight: FontWeight.bold,
@@ -101,7 +111,7 @@ class ChatContentWidget extends StatelessWidget {
               ),
             if (chatUser == ChatUser.receiver)
               Padding(
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   left: 12.0,
                   right: 12,
                   top: 8,
@@ -109,10 +119,15 @@ class ChatContentWidget extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100.0),
                   child: Image.network(
-                    'https://www.neshanstyle.com/blog/wp-content/uploads/2019/11/122-1-710x434.jpg',
+                   message.to_user?.image??' ',
                     height: 20.0,
                     width: 20.0,
                     fit: BoxFit.cover,
+                    errorBuilder: (context,o,e){
+                     return Image.asset('images/no_image_available.png',
+                       height: 20.0,
+                       width: 20.0,fit: BoxFit.cover,);
+                    },
                   ),
                 ),
               ),
@@ -157,15 +172,17 @@ class ChatContentWidget extends StatelessWidget {
                 horizontal: 18.0,
                 vertical: 8,
               ),
-              child: Text(
-                message,
+              child://type=='sound'?PlayChatAudio(url:message.message??' '):SizedBox()
+              type=='text'? Text(
+                message.message??' ',
                 style: TextStyle(
                   color:
                       chatUser == ChatUser.sender ? Colors.black : Colors.white,
                   fontWeight: FontWeight.w500,
                   fontSize: 16.sp,
                 ),
-              ),
+              ):type=='sound'||type=='audio'?PlayChatAudio(url:message.message??' '):
+    type=='location'?Image.asset('images/gps-og-image.jpg'):Image.network(message.message??' '),
             ),
           ),
         ),

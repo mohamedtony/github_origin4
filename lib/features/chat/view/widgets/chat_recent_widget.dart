@@ -3,10 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/utils.dart';
 
 class ChatRecentWidget extends StatelessWidget {
-  const ChatRecentWidget({
-    Key? key,
+   ChatRecentWidget({this.name,this.lastMessage,this.url,
+    Key? key, this.timeAgo,this.room,this.not_seen,
   }) : super(key: key);
 
+ final String? name,url,lastMessage,timeAgo,room;
+ final int? not_seen;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,24 +42,25 @@ class ChatRecentWidget extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Padding(
+             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
               child: CircleAvatar(
                 radius: 43,
                 foregroundImage: NetworkImage(
-                  'https://www.neshanstyle.com/blog/wp-content/uploads/2019/11/122-1-710x434.jpg',
+                  url??' ',
+
                 ),
               ),
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 18.0),
+                padding:  EdgeInsets.symmetric(vertical: 18.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'احمد السيد اسماعيل',
+                      name??' ',
                       style: TextStyle(
                         color: Colors.blue[900],
                         fontWeight: FontWeight.bold,
@@ -65,7 +68,7 @@ class ChatRecentWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'وعليكم السلام ورحمة الله',
+                      lastMessage??' ',
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontWeight: FontWeight.bold,
@@ -88,7 +91,7 @@ class ChatRecentWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    'منذ 3.5 ساعة',
+                    timeAgo??' ',
                     style: TextStyle(
                       color: Colors.grey[600],
                       // fontWeight: FontWeight.bold,
@@ -111,7 +114,7 @@ class ChatRecentWidget extends StatelessWidget {
                           ]),
                     ),
                     child: Text(
-                      '3',
+                      not_seen.toString(),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14.sp,

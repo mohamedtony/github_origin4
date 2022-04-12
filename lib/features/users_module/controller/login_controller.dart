@@ -101,6 +101,7 @@ class LoginController extends GetxController{
       print('mToken'+res.data!.token!);
       storage.write("token", res.data!.token);
       storage.write("data",res.data!.toJson());
+      storage.write("id", res.data!.id);
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
       }

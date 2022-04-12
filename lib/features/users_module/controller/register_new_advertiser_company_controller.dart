@@ -238,6 +238,7 @@ class RegisterNewAdvertiserCompanyController extends GetxController {
           registerCompanyResponse.value = res!;
           storage.write(
               "data", registerCompanyResponse.value.toJson());
+          storage.write("id", res.data!.id);
           print("registerAdvertiseToken ${res.data!.token}");
           await storage.write("token", res.data!.token);
           Get.toNamed('/chooseBakaPage');
