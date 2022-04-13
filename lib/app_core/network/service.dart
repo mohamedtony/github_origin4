@@ -17,6 +17,7 @@ import 'package:advertisers/app_core/network/responses/CoponsResponse.dart';
 import 'package:advertisers/app_core/network/responses/CountriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateSubscriptionResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetAdsListResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetAdvertisersFormResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetAdvertisersResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetBlockedUsersResponse.dart';
@@ -174,7 +175,8 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   @GET('/copons/{id}/use')
   Future<AdvertiserProfileDetailsResponse> useCopon(@Path("id") int? id,@Header("Authorization") String token);
 
-
+  @GET('/ads?page={id}')
+  Future<GetAdsListResponse> getAdsList( @Path("id") int? id,@Header("Authorization") String token);
 /*  Map<String, dynamic> mymap = {
 
     "location[name]": requestAdvertiseController.locationModel.name,

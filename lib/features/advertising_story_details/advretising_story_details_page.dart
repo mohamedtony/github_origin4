@@ -76,7 +76,7 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return Scaffold(
+    return WillPopScope(child: Scaffold(
         body:  PageView.builder(
           itemCount: 6,
           controller: pageController,
@@ -104,7 +104,7 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
                     videoController.isSmall.value=true;
                     //pageController.viewportFraction = 0.5;
                   },
-                  onSheetCliked: (im){
+                  onSheetCliked: (cont,im){
 
                   },
                 ),
@@ -116,6 +116,9 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
             );
           },
         )
-    );
+    ),  onWillPop:() async{
+      print("nmmbnkgkkjgkg");
+      return true;
+      },);
   }
 }

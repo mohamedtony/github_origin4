@@ -170,11 +170,14 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
   @override
   Future<void> onInit() async {
     // TODO: implement onInit
-    GetAdvertisersModel vv = Get.arguments as GetAdvertisersModel;
-    if(vv!=null){
-      print("vvvv not null "+ vv.id.toString());
-      selectedAdvertiseId = vv.id!;
+    if(Get.arguments!=null) {
+      GetAdvertisersModel vv = Get.arguments as GetAdvertisersModel;
+      if(vv!=null){
+        print("vvvv not null "+ vv.id.toString());
+        selectedAdvertiseId = vv.id!;
+      }
     }
+
     descriptionController =  TextEditingController();
     placeNameController = TextEditingController();
     placeAddressController = TextEditingController();

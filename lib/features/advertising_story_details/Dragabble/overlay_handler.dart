@@ -6,6 +6,7 @@ class OverlayHandlerProvider  extends GetxController{
    OverlayEntry? overlayEntry;
   double _aspectRatio = 1.77;
   bool inPipMode = false;
+  bool isHidden =true;
 
   enablePip(double aspect) {
     inPipMode = true;
@@ -29,7 +30,7 @@ class OverlayHandlerProvider  extends GetxController{
     }
     overlayEntry = null;
     inPipMode = false;
-    Overlay.of(context,rootOverlay: true)?.insert(overlay);
+    Overlay.of(context,/*rootOverlay: true,*/)?.insert(overlay);
     overlayEntry = overlay;
   }
    insertOverlay2(BuildContext context, OverlayEntry overlay) {
@@ -49,6 +50,11 @@ class OverlayHandlerProvider  extends GetxController{
       overlayEntry?.remove();
     }
     overlayEntry = null;
+  }
+
+  void updateHidden(bool bool) {
+    isHidden = bool;
+    update();
   }
 
 }

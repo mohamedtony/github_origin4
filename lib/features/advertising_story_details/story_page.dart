@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_service.dart';
 import 'package:advertisers/features/advertising_story_details/VideoController.dart';
@@ -21,7 +23,7 @@ import 'package:video_player/video_player.dart';
 class StoryScreen extends StatefulWidget {
   final List<Story> stories;
   Function onClicked;
-  Function(int ind) onSheetCliked;
+  Function(BuildContext context,int ind) onSheetCliked;
   StoryScreen({required this.stories, this.pageController1,required this.onClicked,required this.onSheetCliked});
 
   PageController? pageController1;
@@ -135,10 +137,35 @@ class _StoryScreenState extends State<StoryScreen>
     });
   }
 
+  OverlayEntry getEntry(context) {
+    OverlayEntry? entry;
+
+    entry = OverlayEntry(
+      opaque: false,
+      maintainState: true,
+      builder: (_) => DraggableScrollableSheet(
+        //maxChildSize: 0.8,
+        //minChildSize: 100.0,
+        //maxChildSize: 0.9,
+        initialChildSize: 0.4,
+        maxChildSize: 0.444,
+        builder: (context, scrollController) {
+          return AdvertiserDetailsSheet(
+              scrollController: scrollController
+          );
+        },
+      ),
+    );
+    return entry;
+  }
+
   @override
   Widget build(BuildContext context) {
     final Story story = widget.stories[_currentIndex];
-    return Scaffold(
+    return WillPopScope( onWillPop: () async{
+      print("WillPopScope");
+      return false;
+    },child: Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.black,
       resizeToAvoidBottomInset: overlayHandlerProvider.inPipMode?false:true,
@@ -357,7 +384,7 @@ class _StoryScreenState extends State<StoryScreen>
                     height: overlayHandlerProvider.inPipMode?65:100,
                     width: overlayHandlerProvider.inPipMode?65:100,
                     fit: BoxFit.fill,
-                   /* color: videoGetxController.clickedIndex == 0
+                    /* color: videoGetxController.clickedIndex == 0
                         ? Colors.white
                         : Colors.blue,*/
                   ),
@@ -415,29 +442,71 @@ class _StoryScreenState extends State<StoryScreen>
                 ? Align(
               alignment: Alignment.centerRight,
               child: Container(
-                margin: EdgeInsets.only(right: 40, top: overlayHandlerProvider.inPipMode?10:100),
+                  margin: EdgeInsets.only(right: 40, top: overlayHandlerProvider.inPipMode?10:100),
 
-                child: InkWell(
-                    onTap: () {
-                      if (story.media == MediaType.audio) {
-                        audioPlayer
-                            ?.getCurrentPosition()
-                            .then((position) {
-                          print("kkkkkkkkkkk=${position}");
+                  child: InkWell(
+                      onTap: () {
+                        if (story.media == MediaType.audio) {
+                          audioPlayer
+                              ?.getCurrentPosition()
+                              .then((position) {
+                            print("kkkkkkkkkkk=${position}");
 
-                          audioPlayer?.getDuration().then((value) {
-                            if ((position + (10 * 1000)) < value) {
-                              audioPlayer?.seek(Duration(
-                                  milliseconds:
-                                  position + (10 * 1000)));
-                              print("duration=${value}");
+                            audioPlayer?.getDuration().then((value) {
+                              if ((position + (10 * 1000)) < value) {
+                                audioPlayer?.seek(Duration(
+                                    milliseconds:
+                                    position + (10 * 1000)));
+                                print("duration=${value}");
+                                final double t =
+                                (((position / 1000) + 10) /
+                                    (value / 1000))
+                                    .clamp(0.0, 1.0);
+                                print("tttttttt+ ${t}");
+                                _animController?.forward(from: t);
+                              } else {
+                                setState(() {
+                                  if (_currentIndex + 1 <
+                                      widget.stories.length) {
+                                    _currentIndex += 1;
+                                    _loadStory(
+                                        story: widget
+                                            .stories[_currentIndex]);
+                                  } else {
+                                    // Out of bounds - loop story
+                                    // You can also Navigator.of(context).pop() here
+                                    // _currentIndex = 0;
+                                    //_loadStory(story: widget.stories[_currentIndex]);
+                                    widget.pageController1?.nextPage(
+                                        duration:
+                                        Duration(milliseconds: 1000),
+                                        curve: Curves.ease);
+                                  }
+                                });
+                                //_pageController?.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.ease);
+                              }
+                            });
+                            /*  final double t = (position.inSeconds / audioDuration).clamp(0.0, 1.0);
+            print("tttttttt+ ${t}");
+            widget.animationController.forward(from: t);*/
+                          });
+                        } else if (story.media == MediaType.video) {
+                          _videoController?.position.then((position) {
+                            Duration dur =
+                                _videoController!.value.duration;
+                            if (position != null &&
+                                (position.inMilliseconds + (10 * 1000)) < dur.inMilliseconds) {
+                              print("kkkkkkkkkkkdur=${dur.inMinutes}");
                               final double t =
-                              (((position / 1000) + 10) /
-                                  (value / 1000))
+                              (((position.inSeconds) + 10) /
+                                  (dur.inSeconds))
                                   .clamp(0.0, 1.0);
-                              print("tttttttt+ ${t}");
+                              _videoController?.seekTo(Duration(
+                                  milliseconds: position.inMilliseconds +
+                                      (10 * 1000)));
                               _animController?.forward(from: t);
-                            } else {
+                            }
+                            else {
                               setState(() {
                                 if (_currentIndex + 1 <
                                     widget.stories.length) {
@@ -459,59 +528,17 @@ class _StoryScreenState extends State<StoryScreen>
                               //_pageController?.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.ease);
                             }
                           });
-                          /*  final double t = (position.inSeconds / audioDuration).clamp(0.0, 1.0);
-            print("tttttttt+ ${t}");
-            widget.animationController.forward(from: t);*/
-                        });
-                      } else if (story.media == MediaType.video) {
-                        _videoController?.position.then((position) {
-                          Duration dur =
-                              _videoController!.value.duration;
-                          if (position != null &&
-                              (position.inMilliseconds + (10 * 1000)) < dur.inMilliseconds) {
-                            print("kkkkkkkkkkkdur=${dur.inMinutes}");
-                            final double t =
-                            (((position.inSeconds) + 10) /
-                                (dur.inSeconds))
-                                .clamp(0.0, 1.0);
-                            _videoController?.seekTo(Duration(
-                                milliseconds: position.inMilliseconds +
-                                    (10 * 1000)));
-                            _animController?.forward(from: t);
-                          }
-                          else {
-                            setState(() {
-                              if (_currentIndex + 1 <
-                                  widget.stories.length) {
-                                _currentIndex += 1;
-                                _loadStory(
-                                    story: widget
-                                        .stories[_currentIndex]);
-                              } else {
-                                // Out of bounds - loop story
-                                // You can also Navigator.of(context).pop() here
-                                // _currentIndex = 0;
-                                //_loadStory(story: widget.stories[_currentIndex]);
-                                widget.pageController1?.nextPage(
-                                    duration:
-                                    Duration(milliseconds: 1000),
-                                    curve: Curves.ease);
-                              }
-                            });
-                            //_pageController?.nextPage(duration: Duration(milliseconds: 1000), curve: Curves.ease);
-                          }
-                        });
-                      }
-                    },
-                    child:Image.asset(
-                  'images/pauseto10.png',
-                  height: overlayHandlerProvider.inPipMode?65:100,
-                  width: overlayHandlerProvider.inPipMode?65:100,
-                  fit: BoxFit.fill,
-                 /* color: videoGetxController.clickedIndex == 0
+                        }
+                      },
+                      child:Image.asset(
+                        'images/pauseto10.png',
+                        height: overlayHandlerProvider.inPipMode?65:100,
+                        width: overlayHandlerProvider.inPipMode?65:100,
+                        fit: BoxFit.fill,
+                        /* color: videoGetxController.clickedIndex == 0
                       ? Colors.white
                       : Colors.blue,*/
-                ))
+                      ))
               ),
             )
                 : SizedBox())
@@ -546,7 +573,7 @@ class _StoryScreenState extends State<StoryScreen>
                     Container(
                       //height: 130,
                       //padding: EdgeInsets.only(top: 6),
-                     // color: Colors.white,
+                      // color: Colors.white,
                       child: Column(
                         children: <Widget>[
                           /*Container(
@@ -602,9 +629,12 @@ class _StoryScreenState extends State<StoryScreen>
                                 alignment: Alignment.bottomRight,
                                 child: InkWell(
                                   onTap: (){
-                                    //showBottomSheetForRequest2(context);
+
+                                     //overlayHandlerProvider.disablePip();
+                                    // Overlay.of(context)?.insert(getEntry(context));
+                                    //showBottomSheetForRequest2(Get.overlayContext!);
                                     //_addVideoWithTitleOverlay(context);
-                                      widget.onSheetCliked(9);
+                                    //  widget.onSheetCliked(context,9);
                                     /*_addVideoWithTitleOverlay(context);
                                     showMaterialModalBottomSheet(
                                       context: context,
@@ -612,7 +642,7 @@ class _StoryScreenState extends State<StoryScreen>
                                     );*/
                                     //_showModalSheet();
                                     //_addVideoWithTitleOverlay(context);
-                                   /* Navigator.of(context)
+                                    /* Navigator.of(context)
                                         .push(MaterialPageRoute(builder: (context) => AdvertiserDetailsSheet()));*/
                                   },
                                   child: Container(
@@ -849,94 +879,94 @@ class _StoryScreenState extends State<StoryScreen>
                               ],
                             ),
                           ),
-                         Visibility(
-                             visible:videoGetxController.clickedIndex.value==0?true:false,
-                             //replacement: SizedBox(),
-                             child:  Container(
-                               color: Colors.white,
-                               child: Row(
-                           // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                           mainAxisSize: MainAxisSize.min,
-                           children: [
-                               Expanded(
-                                 child: Container(
-                                   // width: 50.0,
-                                   height: 44.0,
-                                   margin: EdgeInsets.all(6.0),
-                                   decoration: new BoxDecoration(
-                                       color: Colors.grey[200],
-                                       shape: BoxShape.rectangle,
-                                       borderRadius: new BorderRadius.all(
-                                         Radius.circular(40.0),
-                                       )),
-                                   child: Row(
-                                     mainAxisSize: MainAxisSize.min,
-                                     children: [
-                                       Container(
-                                         width: 50.0,
-                                         height: 50.0,
-                                         /* decoration: new BoxDecoration(
+                          Visibility(
+                              visible:videoGetxController.clickedIndex.value==0?true:false,
+                              //replacement: SizedBox(),
+                              child:  Container(
+                                color: Colors.white,
+                                child: Row(
+                                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        // width: 50.0,
+                                        height: 44.0,
+                                        margin: EdgeInsets.all(6.0),
+                                        decoration: new BoxDecoration(
+                                            color: Colors.grey[200],
+                                            shape: BoxShape.rectangle,
+                                            borderRadius: new BorderRadius.all(
+                                              Radius.circular(40.0),
+                                            )),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Container(
+                                              width: 50.0,
+                                              height: 50.0,
+                                              /* decoration: new BoxDecoration(
                                           color: Colors.grey[300],
                                           shape: BoxShape.circle,
                                         ),*/
-                                         child: Align(
-                                           alignment: Alignment.center,
-                                           child: Image.asset(
-                                             'images/minutemailer2x.png',
-                                             height: 25,
-                                             width: 30,
-                                             fit: BoxFit.fill,
-                                             //color: Colors.white,
-                                           ),
-                                         ),
-                                       ),
-                                       VerticalDivider(
-                                         thickness: 1.4,
-                                         width: 1,
-                                         color: Colors.grey,
-                                         indent: 10,
-                                         endIndent: 10,
-                                       ),
-                                       Expanded(
-                                         child: TextField(
-                                           textAlign: TextAlign.start,
-                                           //focusNode: requestAdvertiseController.coponNumberNode,
-                                           textAlignVertical:
-                                           TextAlignVertical.center,
-                                           //keyboardType:TextInputType.number,
-                                           decoration: InputDecoration(
-                                             contentPadding: EdgeInsets.only(
-                                               left: 10.0,
-                                               right: 10.0,
-                                             ),
-                                             // isCollapsed: true,
-                                             border: OutlineInputBorder(
-                                               borderRadius: BorderRadius.only(
-                                                   topLeft: Radius.circular(40),
-                                                   bottomLeft:
-                                                   Radius.circular(40)),
-                                               borderSide: BorderSide(
-                                                 width: 0,
-                                                 style: BorderStyle.none,
-                                               ),
-                                             ),
-                                             // filled: true,
-                                             hintStyle: TextStyle(
-                                                 color: Colors.grey[500]),
-                                             hintText:
-                                             'أضف تعليقك الخاص بالمحتوى',
-                                             //fillColor: Colors.white70
-                                           ),
-                                           //controller: requestAdvertiseController.coponNumberController,
-                                         ),
-                                       ),
-                                     ],
-                                   ),
-                                 ),
-                               ),
-                           ],
-                         ),
-                             ))
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Image.asset(
+                                                  'images/minutemailer2x.png',
+                                                  height: 25,
+                                                  width: 30,
+                                                  fit: BoxFit.fill,
+                                                  //color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                            VerticalDivider(
+                                              thickness: 1.4,
+                                              width: 1,
+                                              color: Colors.grey,
+                                              indent: 10,
+                                              endIndent: 10,
+                                            ),
+                                            Expanded(
+                                              child: TextField(
+                                                textAlign: TextAlign.start,
+                                                //focusNode: requestAdvertiseController.coponNumberNode,
+                                                textAlignVertical:
+                                                TextAlignVertical.center,
+                                                //keyboardType:TextInputType.number,
+                                                decoration: InputDecoration(
+                                                  contentPadding: EdgeInsets.only(
+                                                    left: 10.0,
+                                                    right: 10.0,
+                                                  ),
+                                                  // isCollapsed: true,
+                                                  border: OutlineInputBorder(
+                                                    borderRadius: BorderRadius.only(
+                                                        topLeft: Radius.circular(40),
+                                                        bottomLeft:
+                                                        Radius.circular(40)),
+                                                    borderSide: BorderSide(
+                                                      width: 0,
+                                                      style: BorderStyle.none,
+                                                    ),
+                                                  ),
+                                                  // filled: true,
+                                                  hintStyle: TextStyle(
+                                                      color: Colors.grey[500]),
+                                                  hintText:
+                                                  'أضف تعليقك الخاص بالمحتوى',
+                                                  //fillColor: Colors.white70
+                                                ),
+                                                //controller: requestAdvertiseController.coponNumberController,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ))
                         ],
                       ),
                     ),
@@ -947,9 +977,13 @@ class _StoryScreenState extends State<StoryScreen>
           ],
         ),
       ),
-    );
+    ),);
   }
   void showBottomSheetForRequest2(BuildContext context,){
+   // Get.
+    /*Get.bottomSheet(AdvertiserDetailsSheet(
+        //scrollController: scrollController
+    ),);*/
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -957,12 +991,12 @@ class _StoryScreenState extends State<StoryScreen>
       barrierColor: Colors.transparent,
       clipBehavior: Clip.hardEdge,
       //barrierColor: Colors.white,
-      /*shape: RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(10.0),
             topRight: const Radius.circular(10.0)),
       ),
-      clipBehavior: Clip.antiAliasWithSaveLayer,*/
+      //clipBehavior: Clip.antiAliasWithSaveLayer,
       builder: (BuildContext context) {
         return Overlay(
           initialEntries: [
@@ -1164,6 +1198,7 @@ class StickyPageWrapper extends StatelessWidget {
       ],
     );
   }
+
 }
 
 class AnimatedBar extends StatelessWidget {
@@ -1211,7 +1246,9 @@ class AnimatedBar extends StatelessWidget {
         ),
       ),
     );
+
   }
+
 
   Container _buildContainer(double width, Color color) {
     return Container(
@@ -1347,11 +1384,17 @@ class UserInfo extends StatelessWidget {
           ),
           Stack(
             children: [
-              CircleAvatar(
-                radius: 25.0,
-                backgroundColor: Colors.grey[300],
-                backgroundImage: CachedNetworkImageProvider(
-                  user.profileImageUrl,
+              InkWell(
+                onTap: (){
+                  overlayHandlerProvider.enablePip(1.77);
+                  Get.toNamed('/AdvertiserProfileOrderPage',/*arguments:advertisersModel*/);
+                },
+                child: CircleAvatar(
+                  radius: 25.0,
+                  backgroundColor: Colors.grey[300],
+                  backgroundImage: CachedNetworkImageProvider(
+                    user.profileImageUrl,
+                  ),
                 ),
               ),
             ],

@@ -61,14 +61,14 @@ final List<Story> mStories = [
   ),
   Story(
     url:
-        'https://static.videezy.com/system/resources/previews/000/007/536/original/rockybeach.mp4',
+        'https://vimeo.com/698613456',
     media: MediaType.video,
     duration: const Duration(seconds: 0),
     user: user,
   ),
 
   Story(
-    url: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
+    url: 'https://vimeo.com/698613456',
     media: MediaType.video,
     duration: const Duration(seconds: 8),
     user: user,

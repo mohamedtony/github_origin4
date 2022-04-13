@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 
 class AdvertisingStoryDetailsPage extends StatelessWidget {
   AdvertisingStoryDetailsPage({Key? key,required this.onSheetCliked}) : super(key: key);
-   Function(int x) onSheetCliked;
+   Function(BuildContext context,int x) onSheetCliked;
   final VideoController videoController = Get.put(VideoController(),permanent: true);
   OverlayHandlerProvider overlayHandlerProvider = Get.find();
 
@@ -83,56 +83,67 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
         init: overlayHandlerProvider,
         builder: (controller)
     {
-     return AnimatedContainer(
-        duration: Duration(milliseconds: 250),
-        width: controller.inPipMode ? (Constants.VIDEO_TITLE_HEIGHT_PIP*aspectRatio) : MediaQuery.of(context).size.width,
-        color: Colors.black,
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width,
-        ),
-        child: Scaffold(
-             resizeToAvoidBottomInset: false,
-            body: PageView.builder(
-              itemCount: 6,
-              controller: pageController,
-              onPageChanged: (x) {
-                //storySmallGetxController.currentIndex.value=0;
-              },
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) {
-                //final data = videoController.videoList[index];
-                return Stack(
-                  children: [
-
-                    /*StoryForSmallScreen(
-                  stories: mStories,
-                  pageController1: pageController,
-                  onClicked: (){
-                    videoController.isSmall.value=true;
-                    //pageController.viewportFraction = 0.5;
+     return WillPopScope(
+       onWillPop: ()async{
+         print("story_details_in");
+         return false;
+       },
+       child: Visibility(
+         visible:true ,
+         child: AnimatedContainer(
+            duration: Duration(milliseconds: 250),
+            width: controller.inPipMode ? (Constants.VIDEO_TITLE_HEIGHT_PIP*aspectRatio) : MediaQuery.of(context).size.width,
+            color: Colors.black,
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width,
+            ),
+            child: Scaffold(
+                 resizeToAvoidBottomInset: false,
+                body: PageView.builder(
+                  itemCount: 6,
+                  controller: pageController,
+                  onPageChanged: (x) {
+                    //storySmallGetxController.currentIndex.value=0;
                   },
-                ),*/
-                    StoryScreen(
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, index) {
+                    //final data = videoController.videoList[index];
+                    return Stack(
+                      children: [
+
+                        /*StoryForSmallScreen(
                       stories: mStories,
                       pageController1: pageController,
-                      onClicked: () {
-                        videoController.isSmall.value = true;
+                      onClicked: (){
+                        videoController.isSmall.value=true;
                         //pageController.viewportFraction = 0.5;
                       },
-                      onSheetCliked: (ind){
-
-                      },
-                    ),
-                    /*SmallAdsPage(
-                  stories: stories,
-                  pageController1: pageController,
-                )*/
-                  ],
-                );
-              },
-            )
-        ),
-      );
+                    ),*/
+                        StoryScreen(
+                          stories: mStories,
+                          pageController1: pageController,
+                          onClicked: () {
+                            videoController.isSmall.value = true;
+                            //Get.showOverlay(loadingWidget: Con);
+                            //GetUtils
+                            //pageController.viewportFraction = 0.5;
+                          },
+                          onSheetCliked: (context,ind){
+                            this.onSheetCliked(context,ind);
+                          },
+                        ),
+                        /*SmallAdsPage(
+                      stories: stories,
+                      pageController1: pageController,
+                    )*/
+                      ],
+                    );
+                  },
+                )
+            ),
+          ),
+       ),
+     );
      /* return Container(
           child: PageView.builder(
             itemCount: 6,

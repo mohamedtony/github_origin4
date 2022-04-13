@@ -28,15 +28,16 @@ class AdvertisingPage extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         print("MainPOP");
+        Get.back();
         /* if(overlayHandlerProvider.overlayActive) {
           overlayHandlerProvider.enablePip(1.77);
           return false;
         }*/
-        if(overlayHandlerProvider.overlayActive) {
+        /*if(overlayHandlerProvider.overlayActive) {
           overlayHandlerProvider.disablePip();
           overlayHandlerProvider.removeOverlay(context);
           return false;
-        }
+        }*/
         return true;
       },
       child: Stack(

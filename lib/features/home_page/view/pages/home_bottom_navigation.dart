@@ -38,7 +38,7 @@ class Home extends StatelessWidget {
     }*/
     _addVideoWithTitleOverlay(BuildContext context) {
       OverlayService().addVideoTitleOverlay(context, AdvertisingStoryDetailsPage(
-        onSheetCliked: (x){
+        onSheetCliked: (context,x){
           //  print('tony:sheetClicked');
           showBottomSheetForRequest(context, x);
         },
