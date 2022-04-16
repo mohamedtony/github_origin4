@@ -555,26 +555,41 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                                                     child: Row(
                                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                       children: [
-                                                                        Row(
-                                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                                          children: [
-                                                                            Transform(
-                                                                              alignment: Alignment.center,
-                                                                              transform: Matrix4.rotationY(math.pi),
-                                                                              child: const Padding(
-                                                                                padding:  EdgeInsets.symmetric(horizontal:8.0),
-                                                                                child: Icon(Icons.send,color: Color(0XFFFFFF00),size: 14,),
+                                                                        InkWell(
+                                                                          onTap: (){
+                                                                            if(controller.commentController.value.text!=null&&controller.commentController.value.text!=""){
+                                                                              controller.checkForAddingComment(uiCommentRequest.id);
+                                                                            }else{
+                                                                              Get.snackbar(
+                                                                                "خطأ",
+                                                                                "يجب ادخال التعليق",
+                                                                                icon: const Icon(Icons.person, color: Colors.red),
+                                                                                backgroundColor: Colors.yellow,
+                                                                                snackPosition: SnackPosition.BOTTOM,);
+                                                                            }
+                                                                          },
+                                                                          child: Row(
+                                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                                            children: [
+                                                                             Align(
+                                                                                alignment: Alignment.center,
+                                                                                //transform: Matrix4.rotationY(math.pi),
+                                                                                child:  Padding(
+                                                                                  padding:  EdgeInsets.symmetric(horizontal:8.0),
+                                                                                  child: SvgPicture.asset('images/send arrow.svg',width: 24,height: 16,fit: BoxFit.contain,color:Color(0XFFFFFF00)),
+                                                                                  //Icon(Icons.send,color: Color(0XFFFFFF00),size: 14,),
+                                                                                ),
                                                                               ),
-                                                                            ),
 
 
-                                                                            Text("إرسال الرد عبر",
-                                                                              style: TextStyle(
-                                                                                  fontSize: 13.sp,
-                                                                                  color:   Color(0XFFFFFF00),
-                                                                                  fontFamily: 'A Jannat LT, Regular'
-                                                                              ),),
-                                                                          ],
+                                                                              Text("إرسال الرد عبر",
+                                                                                style: TextStyle(
+                                                                                    fontSize: 13.sp,
+                                                                                    color:   Color(0XFFFFFF00),
+                                                                                    fontFamily: 'A Jannat LT, Regular'
+                                                                                ),),
+                                                                            ],
+                                                                          ),
                                                                         ),
 
                                                                         Padding(
@@ -586,33 +601,58 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                                                               children: [
                                                                                 Padding(
                                                                                   padding: const EdgeInsets.symmetric(horizontal:8.0),
-                                                                                  child: Container(
-                                                                                    width: 25.sp,
-                                                                                    height: 25.sp,
-                                                                                    decoration:const BoxDecoration(
-                                                                                        color: Colors.white,
-                                                                                        shape: BoxShape.circle
-                                                                                    ),
-                                                                                    child: const Padding(
-                                                                                      padding:  EdgeInsets.symmetric(horizontal:4.0),
-                                                                                      child: Icon(Icons.notifications,color: Color(0XFF979797),size: 14,),
+                                                                                  child: InkWell(
+                                                                                    onTap: (){
+                                                                                      controller.sendByNotification.value=!controller.sendByNotification.value;
+                                                                                    },
+                                                                                    child: Obx(
+                                                                                          () =>
+                                                                                        Container(
+                                                                                        width: 25.sp,
+                                                                                        height: 25.sp,
+                                                                                        decoration: controller.sendByNotification.value?  BoxDecoration(
+                                                                                            color:   Colors.transparent,
+                                                                                            border: Border.all(color: Color(0XFFFFFF00)),
+                                                                                            shape: BoxShape.circle
+
+                                                                                        ):const BoxDecoration(
+                                                                                            color: Colors.white,
+                                                                                            shape: BoxShape.circle
+                                                                                        ),
+                                                                                        child:   Padding(
+                                                                                          padding: const EdgeInsets.symmetric(horizontal:4.0),
+                                                                                          child: Icon(Icons.notifications,color:controller.sendByNotification.value? Color(0XFFFFFF00): Color(0XFF979797),size: 14,),
+                                                                                        ),
+                                                                                      ),
                                                                                     ),
                                                                                   ),
                                                                                 ),
 
                                                                                 Padding(
                                                                                   padding: const EdgeInsets.symmetric(horizontal:8.0),
-                                                                                  child: Container(
-                                                                                    width: 25.sp,
-                                                                                    height: 25.sp,
-                                                                                    decoration:  BoxDecoration(
-                                                                                        color: Colors.transparent,
-                                                                                        shape: BoxShape.circle,
-                                                                                        border: Border.all(color:const Color(0XFFFFFF00),width: .5)
-                                                                                    ),
-                                                                                    child: const Padding(
-                                                                                      padding:  EdgeInsets.symmetric(horizontal:4.0),
-                                                                                      child: Icon(Icons.messenger_outline_outlined,color: Color(0XFFFFFF00),size: 14,),
+                                                                                  child:InkWell(
+                                                                                    onTap: (){
+                                                                                      controller.sendByChat.value=!controller.sendByChat.value;
+                                                                                    },
+                                                                                    child: Obx(
+                                                                                          () => Container(
+                                                                                        width: 25.sp,
+                                                                                        height: 25.sp,
+                                                                                            decoration: controller.sendByChat.value?  BoxDecoration(
+                                                                                                color:   Colors.transparent,
+                                                                                                border: Border.all(color: Color(0XFFFFFF00)),
+                                                                                                shape: BoxShape.circle
+
+                                                                                            ):const BoxDecoration(
+                                                                                                color: Colors.white,
+                                                                                                shape: BoxShape.circle
+                                                                                            ),
+                                                                                        child:  Padding(
+                                                                                          padding: const  EdgeInsets.symmetric(horizontal:4.0,vertical: 4),
+                                                                                          child: SvgPicture.asset('images/message icon.svg',width: 2,height: 2,fit: BoxFit.contain,color:controller.sendByChat.value? Color(0XFFFFFF00): Color(0XFF979797),),
+                                                                                          //Icon(Icons.chat_sharp,color: Color(0XFFFFFF00),size: 14,),
+                                                                                        ),
+                                                                                      ),
                                                                                     ),
                                                                                   ),
                                                                                 ),

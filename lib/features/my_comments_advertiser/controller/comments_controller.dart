@@ -6,6 +6,7 @@ import 'package:advertisers/app_core/network/models/ReasonDataModel.dart';
 import 'package:advertisers/app_core/network/models/RequestModel.dart';
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/requests/AddEmployeeRequest.dart';
+import 'package:advertisers/app_core/network/requests/AddReplyOnCommentRequest.dart';
 import 'package:advertisers/app_core/network/responses/AddEmployeeResponse.dart';
 import 'package:advertisers/app_core/network/responses/ListEmployeesModelResponse.dart';
 import 'package:advertisers/app_core/network/responses/ListOperationsResponse.dart';
@@ -137,6 +138,8 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
 
   bool isMuted=false;
 
+  var sendByNotification=false.obs;
+  var sendByChat=false.obs;
 
   GlobalKey<FormState> searchFormKey=GlobalKey<FormState>();
   late TextEditingController searchController;
@@ -147,7 +150,7 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
   @override
   void onInit() {
     // passIndex;
-    commentController.value.text='يشرفنا استخدامكم منتجاتنا .. وسيكون هناك عرض قادم أفضل بعد أسبوعين .. وتم اضافتك في اشعارات التبليغ عند بداية العرض';
+   // commentController.value.text='يشرفنا استخدامكم منتجاتنا .. وسيكون هناك عرض قادم أفضل بعد أسبوعين .. وتم اضافتك في اشعارات التبليغ عند بداية العرض';
     repo=Repository();
     token =storage.read("token");
     searchController=TextEditingController();
@@ -279,21 +282,7 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
   }
 
 
-  /// open whatsapp
-  void SendMsgToWhatsapp({String? whatsapp}) async {
-    if (await canLaunch("https://wa.me/$whatsapp?text=مرحبا")) {
-      try{
-        await launch("https://wa.me/$whatsapp?text=مرحبا");
-      }
-      catch(e,s){
-        print(e);
-        print(s);
-      }
 
-    } else {
-      print('entered deeblink fun and else of canlaunch ');
-    }
-  }
 
 
 
@@ -429,6 +418,71 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
         change(null, status: RxStatus.error(errorDescription));
       }
     }
+  }
+
+
+  /// add reply
+  void addReplyOnComment({AddReplyOnCommentRequest? request,int? id}) async {
+    EasyLoading.show();
+    dio.FormData formData = dio.FormData.fromMap(request!.toJson());
+    String url ='https://advertiser.cefour.com/api/v1/ads/$id/comment';
+    Logger().i(request);
+    print("URL+++> $url");
+    try {
+      final dio.Response response = await _apiService.dioClient.post(
+        url,
+        data: formData,
+      );
+      final data = AddEmployeeResponse.fromJson(response.data);
+      Logger().i(response.data);
+
+      if(data.status==200){
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
+
+
+
+
+      }else{
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
+        Get.snackbar(
+          "خطأ",
+          data.message.toString(),
+          icon: const Icon(Icons.person, color: Colors.red),
+          backgroundColor: Colors.yellow,
+          snackPosition: SnackPosition.BOTTOM,);
+      }
+
+
+
+    } on dio.DioError catch (error) {
+      if (error.response?.statusCode == 401 ||
+          error.response?.statusCode == 422) {
+        change(null,
+            status: RxStatus.error(
+                'حدث خطأ ما ${error.response?.statusCode}'));
+
+      } else if (error.error is SocketException) {
+        change(null,
+            status: RxStatus.error(
+                'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
+      } else {
+        String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
+        change(null, status: RxStatus.error(errorDescription));
+      }
+    }
+  }
+
+  void checkForAddingComment(int? id){
+
+    AddReplyOnCommentRequest request=AddReplyOnCommentRequest();
+    request.comment=commentController.value.text;
+    request.commentId=id;
+    addReplyOnComment(request: request,id: id);
+
   }
 
   @override
