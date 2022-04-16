@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="31.003" height="31" viewBox="0 0 31.003 31">
+  <defs>
+    <filter id="Icon_feather-thumbs-down" x="0" y="0" width="31.003" height="31" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_14628" data-name="Group 14628" transform="translate(9.503 6.5)">
+    <g transform="matrix(1, 0, 0, 1, -9.5, -6.5)" filter="url(#Icon_feather-thumbs-down)">
+      <path id="Icon_feather-thumbs-down-2" data-name="Icon feather-thumbs-down" d="M8.16,10.8v2.4A1.815,1.815,0,0,0,9.989,15l2.439-5.4V3H5.551A1.214,1.214,0,0,0,4.331,4.02L3.49,9.42a1.187,1.187,0,0,0,.285.967,1.228,1.228,0,0,0,.934.413ZM12.428,3h1.628a1.4,1.4,0,0,1,1.421,1.2V8.4a1.4,1.4,0,0,1-1.421,1.2H12.428" transform="translate(6.03 3.5)" fill="none" stroke="#427bd0" stroke-width="1"/>
+    </g>
+  </g>
+</svg>

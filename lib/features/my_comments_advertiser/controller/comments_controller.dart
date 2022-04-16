@@ -9,6 +9,7 @@ import 'package:advertisers/app_core/network/requests/AddEmployeeRequest.dart';
 import 'package:advertisers/app_core/network/responses/AddEmployeeResponse.dart';
 import 'package:advertisers/app_core/network/responses/ListEmployeesModelResponse.dart';
 import 'package:advertisers/app_core/network/responses/ListOperationsResponse.dart';
+import 'package:advertisers/app_core/network/responses/MyCommentsResponse.dart';
 import 'package:advertisers/app_core/network/responses/MyRequestsResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/app_core/network/responses/RejectRequestResponse.dart';
@@ -27,7 +28,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:dio/dio.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class CommentsController extends GetxController with StateMixin<ListEmployeesModelResponse>{
+class CommentsController extends GetxController  with StateMixin<MyCommentsResponse>{
 
   var myRequestsAsClient=<RequestModel>[].obs;
   var currentIndex=0.obs;
@@ -150,7 +151,9 @@ class CommentsController extends GetxController with StateMixin<ListEmployeesMod
     repo=Repository();
     token =storage.read("token");
     searchController=TextEditingController();
-    fetchEmployeesList(pageZero: false);
+   // fetchEmployeesList(pageZero: false);
+    getCommentsData();
+    //fetchComments();
     // getRequestsData();
     // restAll();
     // loadMore();
@@ -270,7 +273,7 @@ class CommentsController extends GetxController with StateMixin<ListEmployeesMod
     scrollController?.addListener(() async {
       if (scrollController?.position.maxScrollExtent ==
           scrollController?.position.pixels) {
-         fetchEmployeesList(pageZero: false);
+         //fetchEmployeesList(pageZero: false);
       }
     });
   }
@@ -293,316 +296,7 @@ class CommentsController extends GetxController with StateMixin<ListEmployeesMod
   }
 
 
-  /// fetchAdvertisingRequests
-  void fetchEmployeesList({bool? pageZero}) async {
-    pageZero == true? page=1: page++;
-    String url ='https://advertiser.cefour.com/api/v1/employees';
-    print("URL+++> $url");
-    try {
-      final dio.Response response = await _apiService.dioClient.get(
-        url,
-      );
-      final data = ListEmployeesModelResponse.fromJson(response.data);
-      Logger().i(response!.data);
-      data!.employee!.forEach((request) {
-        if(!myEmployeesIds.contains(request.id)){
-          myEmployees.add(request);
-          myEmployeesIds.add(request.id!);
-        }
-      });
 
-      print("employeesRequests ==> length == > ${myEmployees.length}");
-      //..
-      // Successfully fetched news data
-        change(data, status: RxStatus.success());
-     // Logger().i(response!.data);
-    } on dio.DioError catch (error) {
-      if (error.response?.statusCode == 401 ||
-          error.response?.statusCode == 422) {
-        // Error occurred while fetching data
-        change(null,
-            status: RxStatus.error(
-                'حدث خطأ ما ${error.response?.statusCode}'));
-      } else if (error.error is SocketException) {
-        change(null,
-            status: RxStatus.error(
-                'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
-      } else {
-        String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-        change(null, status: RxStatus.error(errorDescription));
-      }
-    }
-  }
-
-
-  /// fetch employee
-  void fetchAnEmployee({int? id}) async {
-    EasyLoading.show();
-     String url ='https://advertiser.cefour.com/api/v1/employees/$id';
-    print("URL+++> $url");
-    try {
-      final dio.Response response = await _apiService.dioClient.get(
-        url,
-      );
-      final data = ShowEmployeeDetailsResponse.fromJson(response.data);
-
-      Logger().i(response!.data);
-
-      if(data.status==200){
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
-        showEmployeeDetails.data=data.data;
-        appearanceNameController.value.text=data.data!.apperanceName!;
-        positionNameController.value.text=data.data!.jobTitle!;
-        mobileController.value.text=data.data!.user!.phone!;
-        emailController.value.text=data.data!.user!.email!;
-        nameController.value.text=data.data!.user!.username!;
-        selectedEmployeeJob.value=data.data!.type!=null&&data.data!.type=="in"?"موظف داخلى":data.data!.type!=null&&data.data!.type=="out"?"موظف خارجى":"";
-        createdAtDate.value=data.data!.createAt!;
-        rate.value=data.data!.user!.rate!;
-        profileImage.value=data.data!.user!.image!;
-
-        Get.toNamed('/ShowEmployeePage');
-
-        DateTime tempDate = DateTime.parse("2022-02-07T15:54:07.000000Z");
-        String date = DateFormat("yyyy-MM-dd").format(tempDate);
-
-        print("my date # $date");
-        final dateTime = DateTime.parse("2022-02-07T15:54:07.000000Z");
-
-        final format = DateFormat('HH:mm a');
-        final clockString = format.format(dateTime);
-
-        print("my time # $clockString");
-
-      }
-      else{
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
-        Get.snackbar(
-          "خطأ",
-          data.message.toString(),
-          icon: const Icon(Icons.person, color: Colors.red),
-          backgroundColor: Colors.yellow,
-          snackPosition: SnackPosition.BOTTOM,);
-      }
-
-
-
-    } on dio.DioError catch (error) {
-      if (error.response?.statusCode == 401 ||
-          error.response?.statusCode == 422) {
-        // Error occurred while fetching data
-        change(null,
-            status: RxStatus.error(
-                'حدث خطأ ما ${error.response?.statusCode}'));
-      } else if (error.error is SocketException) {
-        change(null,
-            status: RxStatus.error(
-                'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
-      } else {
-        String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-        change(null, status: RxStatus.error(errorDescription));
-      }
-    }
-  }
-
-  /// edit employee
-  void editEmployeeFun({AddEmployeeRequest? request,int? id}) async {
-    EasyLoading.show();
-    dio.FormData formData = dio.FormData.fromMap(request!.toJson());
-    String url ='https://advertiser.cefour.com/api/v1/employees/$id';
-    Logger().i(request);
-    print("URL+++> $url");
-    try {
-      final dio.Response response = await _apiService.dioClient.post(
-        url,
-        data: formData,
-      );
-      final data = AddEmployeeResponse.fromJson(response.data);
-      Logger().i(response.data);
-
-      if(data.status==200){
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
-
-        Get.snackbar("مبرووك",
-          "تم تعديل بيانات الموظف بنجاح",
-          icon: const Icon(Icons.check, color: Colors.green),
-          backgroundColor: Colors.yellow,
-          snackPosition: SnackPosition.TOP,);
-
-        restAll();
-        fetchEmployeesList();
-        Get.toNamed('/EmployeesPage');
-      }else{
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
-        Get.snackbar(
-          "خطأ",
-          data.message.toString(),
-          icon: const Icon(Icons.person, color: Colors.red),
-          backgroundColor: Colors.yellow,
-          snackPosition: SnackPosition.BOTTOM,);
-      }
-
-
-
-     } on dio.DioError catch (error) {
-      if (error.response?.statusCode == 401 ||
-          error.response?.statusCode == 422) {
-        change(null,
-            status: RxStatus.error(
-                'حدث خطأ ما ${error.response?.statusCode}'));
-
-      } else if (error.error is SocketException) {
-        change(null,
-            status: RxStatus.error(
-                'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
-      } else {
-        String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-        change(null, status: RxStatus.error(errorDescription));
-      }
-    }
-  }
-
-  /// delete employee
-  void deleteAnEmployee({int? id}) async {
-    EasyLoading.show();
-    String url ='https://advertiser.cefour.com/api/v1/employees/$id';
-    print("URL+++> $url");
-    try {
-      final dio.Response response = await _apiService.dioClient.delete(
-        url,
-      );
-      final data = ShowEmployeeDetailsResponse.fromJson(response.data);
-
-      Logger().i(response.data);
-
-      if(data.status==200){
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
-
-        Get.snackbar("حسنا",
-          "تم حذف الموظف بنجاح",
-          icon: const Icon(Icons.check, color: Colors.green),
-          backgroundColor: Colors.yellow,
-          snackPosition: SnackPosition.TOP,);
-          restAll();
-          fetchEmployeesList();
-
-      }else{
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
-        Get.snackbar(
-          "خطأ",
-          data.message.toString(),
-          icon: const Icon(Icons.person, color: Colors.red),
-          backgroundColor: Colors.yellow,
-          snackPosition: SnackPosition.BOTTOM,);
-      }
-
-    } on dio.DioError catch (error) {
-      if (error.response?.statusCode == 401 ||
-          error.response?.statusCode == 422) {
-        // Error occurred while fetching data
-        change(null,
-            status: RxStatus.error(
-                'حدث خطأ ما ${error.response?.statusCode}'));
-      } else if (error.error is SocketException) {
-        change(null,
-            status: RxStatus.error(
-                'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
-      } else {
-        String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-        change(null, status: RxStatus.error(errorDescription));
-      }
-    }
-  }
-
-  /// stop or activate employee
-  void stopOrActivateEmployee({int? id}) async {
-    EasyLoading.show();
-    String url ='https://advertiser.cefour.com/api/v1/employees/$id/status';
-    print("URL+++> $url");
-    try {
-      final dio.Response response = await _apiService.dioClient.get(
-        url,
-      );
-      final data = StopOrActivateResponse.fromJson(response.data);
-
-      Logger().i(response.data);
-
-      if(data.status==200){
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
-
-        if(data.data!.status==0){
-          Get.snackbar("حسنا",
-            "تم تنشيط الموظف بنجاح",
-            icon: const Icon(Icons.check, color: Colors.green),
-            backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.TOP,);
-        }else if(data.data!.status==1){
-          Get.snackbar("حسنا",
-            "تم ايقاف الموظف بنجاح",
-            icon: const Icon(Icons.check, color: Colors.green),
-            backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.TOP,);
-        }
-
-        restAll();
-        fetchEmployeesList();
-
-      }else{
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
-        Get.snackbar(
-          "خطأ",
-          data.message.toString(),
-          icon: const Icon(Icons.person, color: Colors.red),
-          backgroundColor: Colors.yellow,
-          snackPosition: SnackPosition.BOTTOM,);
-      }
-
-    } on dio.DioError catch (error) {
-      if (error.response?.statusCode == 401 ||
-          error.response?.statusCode == 422) {
-        // Error occurred while fetching data
-        change(null,
-            status: RxStatus.error(
-                'حدث خطأ ما ${error.response?.statusCode}'));
-      } else if (error.error is SocketException) {
-        change(null,
-            status: RxStatus.error(
-                'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
-      } else {
-        String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-        change(null, status: RxStatus.error(errorDescription));
-      }
-    }
-  }
-
-
-  void checkEditEmployee(int? id){
-
-    newEmployee.type= selectedEmployeeJob=="موظف داخلى"?"in":"out";
-    newEmployee.jobTitle=positionNameController.value.text;
-    newEmployee.apperanceName=appearanceNameController.value.text;
-    newEmployee.phone=mobileController.value.text;
-    newEmployee.username=nameController.value.text;
-    newEmployee.email=emailController.value.text;
-    editEmployeeFun(request: newEmployee,id: id);
-
-  }
 
   void checkSearch(){
     final isValid=searchFormKey.currentState!.validate();
@@ -613,59 +307,77 @@ class CommentsController extends GetxController with StateMixin<ListEmployeesMod
     // loginClient();
   }
 
-  /// fetchAnEmployeeOperations
-  void fetchAnEmployeeOperations2({int? id}) async {
-    //pageZero == true? page=1: page++;
-    String url ='https://advertiser.cefour.com/api/v1/employees/$id/actions';
-    print("URL+++> $url");
-    try {
-      final dio.Response response = await _apiService.dioClient.get(
-        url,
-      );
-      final data = ListOperationsResponse.fromJson(response.data);
-      Logger().i(response.data);
-      data.data!.forEach((request) {
-        if(!actionsIds.contains(request.id)){
-          actions.add(request);
-          actionsIds.add(request.id!);
-          final dateTime = DateTime.parse(request.actionable!.createdAt!);
-          final format = DateFormat('HH:mm a');
-          actionsTime.add(format.format(dateTime));
-        }
-      });
+  List<Comments> commentsList=[];
+  var myCommentsResponse=MyCommentsResponse().obs;
 
-
-      // Logger().i(response!.data);
-    } on dio.DioError catch (error) {
-      if (error.response?.statusCode == 401 ||
-          error.response?.statusCode == 422) {
-        // Error occurred while fetching data
-        change(null,
-            status: RxStatus.error(
-                'حدث خطأ ما ${error.response?.statusCode}'));
-      } else if (error.error is SocketException) {
-        change(null,
-            status: RxStatus.error(
-                'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
-      } else {
-        String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-        change(null, status: RxStatus.error(errorDescription));
+  void getCommentsData({bool isRefresh = false}) async {
+    if (isRefresh) {
+      currentPage = 1;
+    } else {
+      if (currentPage >= totalPages) {
+        refreshController.loadNoData();
       }
     }
+    EasyLoading.show();
+    repo.get<MyCommentsResponse>(
+        path: 'mycomments',
+        fromJson: (json) => MyCommentsResponse.fromJson(json),
+        json: {"token": "Bearer $token"},
+        onSuccess: (res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+
+        // Logger().i(res.data.);
+
+          if (isRefresh) {
+            commentsList = res.data!.comments??[];
+          }else{
+            commentsList.addAll(res.data!.comments??[]);
+          }
+          myCommentsResponse.value.data=res.data;
+          print("my commentsList len "+commentsList.length.toString());
+          currentPage++;
+          totalPages = res.pagination?.total??0;
+
+          DateTime tempDate = DateTime.parse("2022-02-07T15:54:07.000000Z");
+          String date = DateFormat.yMMMd('ar_SA').format(tempDate);//("yyyy MMMM dd")
+
+          print("my date # $date");
+          final dateTime = DateTime.parse("2022-02-07T15:54:07.000000Z");
+
+          final format = DateFormat('h:mm a','ar');
+          final clockString = format.format(dateTime);
+          print("clockString # $clockString");
+
+           update();
+        },
+        onError: (err, res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
+
+
   }
 
 
-
   /// fetch employee Operations
-  void fetchAnEmployeeOperations({int? id}) async {
+  void fetchComments({bool isRefresh = false}) async {
     EasyLoading.show();
-    String url ='https://advertiser.cefour.com/api/v1/employees/$id/actions';
+    String url ='https://advertiser.cefour.com/api/v1/mycomments';
     print("URL+++> $url");
     try {
       final dio.Response response = await _apiService.dioClient.get(
         url,
       );
-      final data = ListOperationsResponse.fromJson(response.data);
+      final data = MyCommentsResponse.fromJson(response.data);
 
       Logger().i(response!.data);
 
@@ -674,23 +386,18 @@ class CommentsController extends GetxController with StateMixin<ListEmployeesMod
           EasyLoading.dismiss();
         }
 
-        data.data!.forEach((request) {
-          if(!actionsIds.contains(request.id)){
-            actions.add(request);
-            actionsIds.add(request.id!);
-            if(request.actionable!=null&&request.actionable!.createdAt!=null){
-              final dateTime = DateTime.parse(request.actionable!.createdAt!);
-              final format = DateFormat('HH:mm a');
-              actionsTime.add(format.format(dateTime));
-              actionsDate.add(request.actionable!.addedAt??"");
-            }else{
-              actionsTime.add("-");
-              actionsDate.add("-");
-            }
+        if (isRefresh) {
+          commentsList.clear();
+            commentsList.addAll(data.data!.comments??[]);
+        }else{
+            commentsList.addAll(data.data!.comments??[]);
+        }
 
-          }
-        });
-        Get.toNamed('/EmployeeArchivePage');
+
+
+        currentPage++;
+        totalPages = data.pagination?.total??0;
+
       }
       else{
         if (EasyLoading.isShow) {
@@ -704,7 +411,7 @@ class CommentsController extends GetxController with StateMixin<ListEmployeesMod
           snackPosition: SnackPosition.BOTTOM,);
       }
 
-
+      change(data, status: RxStatus.success());
 
     } on dio.DioError catch (error) {
       if (error.response?.statusCode == 401 ||

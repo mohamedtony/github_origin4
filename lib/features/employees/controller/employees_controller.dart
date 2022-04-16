@@ -467,6 +467,9 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
     }
   }
 
+
+
+
   /// delete employee
   void deleteAnEmployee({int? id}) async {
     EasyLoading.show();

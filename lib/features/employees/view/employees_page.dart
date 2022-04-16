@@ -66,416 +66,224 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
           ),
 
               body: controller.myEmployees.isNotEmpty ? Container(
-            color:const Color(0xffF5F5F5),
-            child: Column(
-              children: [
-                Container(
-                  color: Color(0xffF5F5F5),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal:20.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Color(0xff4184CE),
-                                borderRadius: BorderRadius.circular(5)
+                color:const Color(0xffF5F5F5),
+                child: Column(
+                  children: [
+                    Container(
+                      color: Color(0xffF5F5F5),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal:20.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Color(0xff4184CE),
+                                    borderRadius: BorderRadius.circular(5)
+                                ),
+                                child: Padding(
+                                  padding:   EdgeInsets.symmetric(vertical:4.0,horizontal: MediaQuery.of(context).size.width*.09),
+                                  child: Text("الموظفون",
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        color:   Colors.white,
+                                        fontFamily: 'A Jannat LT, Regular'
+                                    ),),
+                                ),
+                              ),
                             ),
-                            child: Padding(
-                              padding:   EdgeInsets.symmetric(vertical:4.0,horizontal: MediaQuery.of(context).size.width*.09),
-                              child: Text("الموظفون",
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color:   Colors.white,
-                                    fontFamily: 'A Jannat LT, Regular'
-                                ),),
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical:8.0,horizontal: 12),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage('images/employees.png'),fit:  BoxFit.fill,
+
+                                    )
+                                ),
+
+                                width: 36,
+                                height: 27,
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical:8.0,horizontal: 12),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage('images/employees.png'),fit:  BoxFit.fill,
-
-                                )
-                            ),
-
-                            width: 36,
-                            height: 27,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  // height: 400,
-                  child: Container(
-                    padding:const EdgeInsets.all(10),
-                    child: SmartRefresher(
-                      controller: controller.refreshController,
-                      enablePullUp: true,
-                      onRefresh: () async {
-                        /*final result = await */controller.fetchEmployeesList();
-                        if (controller.myEmployees.isNotEmpty) {
-                          controller.refreshController.refreshCompleted();
-                        } /*else {
-                          controller.refreshController.refreshFailed();
-                        }*/
-                      },
-                      onLoading: () async {
-                        /*final result = await*/ controller.fetchEmployeesList();
-                        if (controller.myEmployees.isNotEmpty) {
-                          controller.refreshController.loadComplete();
-                        } /*else {
-                          controller.refreshController.loadFailed();
-                        }*/
-                      },
-                      child: ListView(
-                        controller: controller.scrollController,
-                        // primary: true,
-                        children: [
+                    Expanded(
+                      // height: 400,
+                      child: Container(
+                        padding:const EdgeInsets.all(10),
+                        child: SmartRefresher(
+                          controller: controller.refreshController,
+                          enablePullUp: true,
+                          onRefresh: () async {
+                            /*final result = await */controller.fetchEmployeesList();
+                            if (controller.myEmployees.isNotEmpty) {
+                              controller.refreshController.refreshCompleted();
+                            } /*else {
+                              controller.refreshController.refreshFailed();
+                            }*/
+                          },
+                          onLoading: () async {
+                            /*final result = await*/ controller.fetchEmployeesList();
+                            if (controller.myEmployees.isNotEmpty) {
+                              controller.refreshController.loadComplete();
+                            } /*else {
+                              controller.refreshController.loadFailed();
+                            }*/
+                          },
+                          child: ListView(
+                            controller: controller.scrollController,
+                            // primary: true,
+                            children: [
 
-                          GetBuilder<EmployeesController>(
-                            init: EmployeesController(),
-                            builder: (controller) => ListView.builder(
+                              GetBuilder<EmployeesController>(
+                                init: EmployeesController(),
+                                builder: (controller) => ListView.builder(
 
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: controller.myEmployees.length,
-                                // itemCount: state?.data?.parentRequests?.length,
-                                itemBuilder: (context, index) {
-                                  final uiEmployeeRequests = controller.myEmployees[index];
-                                  // final uiParentRequests = state?.data?.parentRequests![index]!;
-                                  return  Padding(
-                                    padding: const EdgeInsets.only(bottom: 10),
-                                    child: GestureDetector(
-                                      // onTap: (){
-                                      //   controller.closeSingleItemFromCheckListFunctions(uiParentRequests!.id);
-                                      // },
-                                      onPanUpdate: (details) {
-                                        // Swiping in right direction.
-                                        if (details.delta.dx > 0) {
-                                          controller.closeSingleItemFromCheckListFunctions(uiEmployeeRequests!.id);
-                                          print("Dragging in +X direction");
-                                        }
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: controller.myEmployees.length,
+                                    // itemCount: state?.data?.parentRequests?.length,
+                                    itemBuilder: (context, index) {
+                                      final uiEmployeeRequests = controller.myEmployees[index];
+                                      // final uiParentRequests = state?.data?.parentRequests![index]!;
+                                      return  Padding(
+                                        padding: const EdgeInsets.only(bottom: 10),
+                                        child: GestureDetector(
+                                          // onTap: (){
+                                          //   controller.closeSingleItemFromCheckListFunctions(uiParentRequests!.id);
+                                          // },
+                                          onPanUpdate: (details) {
+                                            // Swiping in right direction.
+                                            if (details.delta.dx > 0) {
+                                              controller.closeSingleItemFromCheckListFunctions(uiEmployeeRequests!.id);
+                                              print("Dragging in +X direction");
+                                            }
 
-                                        // Swiping in left direction.
-                                        if (details.delta.dx < 0) {
-                                          print("Dragging in -X direction");
-                                          controller.openSingleItemFromCheckListFunctions(uiEmployeeRequests!.id);
-                                        }
+                                            // Swiping in left direction.
+                                            if (details.delta.dx < 0) {
+                                              print("Dragging in -X direction");
+                                              controller.openSingleItemFromCheckListFunctions(uiEmployeeRequests!.id);
+                                            }
 
-                                      },
+                                          },
 
-                                      child: Stack(
-                                        children: [
-                                          /// card
-                                          InkWell(
-                                            onTap:(){
-                                              controller.fetchAnEmployee(id: uiEmployeeRequests!.id);
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(6),
-                                                border: Border.all(color: const Color(0xff4494D5))
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(right: 16),
-                                                child:  Column(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                                  children: [
-                                                    /// img and remaining data
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(top:4.0),
-                                                      child: Row(
+                                          child: Stack(
+                                            children: [
+                                              /// card
+                                              InkWell(
+                                                onTap:(){
+                                                  controller.fetchAnEmployee(id: uiEmployeeRequests!.id);
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(6),
+                                                    border: Border.all(color: const Color(0xff4494D5))
+                                                  ),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.only(right: 16),
+                                                    child:  Column(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                      crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                      children: [
+                                                        /// img and remaining data
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(top:4.0),
+                                                          child: Row(
 
-                                                        crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
-                                                        children: [
+                                                            crossAxisAlignment:
+                                                            CrossAxisAlignment.start,
+                                                            children: [
 
 
-                                                          /// image
-                                                          InkWell(
-                                                            onTap: () {
-                                                              print("person");
-                                                            },
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(top:10.0,bottom: 8,left: 8,right: 6),
-                                                              child: Container(
-                                                                width: 65,
-                                                                height: 65,
-                                                                decoration: BoxDecoration(
-                                                                    borderRadius:
-                                                                    BorderRadius.circular(10),
-                                                                    image: DecorationImage(image: /*AssetImage('images/man img.png')*/ /*NetworkImage("${uiEmployeeRequests.user!.image}")*/
-                                                                    uiEmployeeRequests.user!.image!=null&&uiEmployeeRequests.user!.image!=""?
-                                                                    NetworkImage('${uiEmployeeRequests.user!.image}'):NetworkImage(controller.noImage),scale: 1,fit: BoxFit.fill)
+                                                              /// image
+                                                              InkWell(
+                                                                onTap: () {
+                                                                  print("person");
+                                                                },
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets.only(top:10.0,bottom: 8,left: 8,right: 6),
+                                                                  child: Container(
+                                                                    width: 65,
+                                                                    height: 65,
+                                                                    decoration: BoxDecoration(
+                                                                        borderRadius:
+                                                                        BorderRadius.circular(10),
+                                                                        image: DecorationImage(image: /*AssetImage('images/man img.png')*/ /*NetworkImage("${uiEmployeeRequests.user!.image}")*/
+                                                                        uiEmployeeRequests.user!.image!=null&&uiEmployeeRequests.user!.image!=""?
+                                                                        NetworkImage('${uiEmployeeRequests.user!.image}'):NetworkImage(controller.noImage),scale: 1,fit: BoxFit.fill)
+                                                                    ),
+                                                                  ),
                                                                 ),
                                                               ),
-                                                            ),
-                                                          ),
 
-                                                          Row(
-                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                            children: [
-                                                              /// name & id & phone
-                                                              Column(
-                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                              Row(
+                                                                mainAxisAlignment: MainAxisAlignment.start,
                                                                 children: [
-
-                                                                  Padding(
-                                                                    padding: const EdgeInsets.only(top:8.0),
-                                                                    child: Text(  "${uiEmployeeRequests.user!.username ?? ''}",
-                                                                      style: TextStyle(
-                                                                          fontSize: 14.sp,
-                                                                          color: const Color(
-                                                                              0xff244094),
-                                                                          fontFamily: 'A Jannat LT, Bold'
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets.only(top:6.0),
-                                                                    child: Text("#${uiEmployeeRequests.apperanceName ?? ''}",
-                                                                      //textDirection: TextDirection.ltr,
-                                                                      style: TextStyle(
-
-                                                                          fontSize: 11.sp,
-                                                                          color: const Color(0xffA7ADB4),
-                                                                          fontFamily: 'A Jannat LT, Regular'
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets.only(top:8.0),
-                                                                    child: Text(  uiEmployeeRequests.user!.phone ?? '',
-                                                                      style: TextStyle(
-                                                                          fontSize: 12.sp,
-                                                                          color: const Color(
-                                                                              0xff244094),
-                                                                          fontFamily: 'A Jannat LT, Bold'
-                                                                      ),
-                                                                    ),
-                                                                  ),
-
-                                                                ],
-                                                              ),
-                                                              /// spacer
-                                                              Container(width: MediaQuery.of(context).size.width*.12,),
-                                                              /// employee type
-                                                              Column(
-                                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                children: [
-                                                                  Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                                  /// name & id & phone
+                                                                  Column(
+                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: [
-                                                                      //
-                                                                      Padding(
-                                                                        padding: const EdgeInsets.only(top:8.0,left: 12),
-                                                                        child: SvgPicture.asset( uiEmployeeRequests.status==1?'images/hand.svg': 'images/android-done-all-green.svg',
-                                                                          width: 50,
-                                                                          height: 30,
-                                                                          fit: BoxFit.fill,
-                                                                        ),
-                                                                      ),
 
                                                                       Padding(
                                                                         padding: const EdgeInsets.only(top:8.0),
-                                                                        child: Text(uiEmployeeRequests.status==0?"نشط":"موقوف",
+                                                                        child: Text(  "${uiEmployeeRequests.user!.username ?? ''}",
                                                                           style: TextStyle(
-                                                                              fontSize: 15.sp,
-                                                                              color:  uiEmployeeRequests.status==0?const Color(0xff0B9C2D): const Color(0xffFFB300),
+                                                                              fontSize: 14.sp,
+                                                                              color: const Color(
+                                                                                  0xff244094),
+                                                                              fontFamily: 'A Jannat LT, Bold'
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      Padding(
+                                                                        padding: const EdgeInsets.only(top:6.0),
+                                                                        child: Text("#${uiEmployeeRequests.apperanceName ?? ''}",
+                                                                          //textDirection: TextDirection.ltr,
+                                                                          style: TextStyle(
+
+                                                                              fontSize: 11.sp,
+                                                                              color: const Color(0xffA7ADB4),
                                                                               fontFamily: 'A Jannat LT, Regular'
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      Padding(
+                                                                        padding: const EdgeInsets.only(top:8.0),
+                                                                        child: Text(  uiEmployeeRequests.user!.phone ?? '',
+                                                                          style: TextStyle(
+                                                                              fontSize: 12.sp,
+                                                                              color: const Color(
+                                                                                  0xff244094),
+                                                                              fontFamily: 'A Jannat LT, Bold'
                                                                           ),
                                                                         ),
                                                                       ),
 
                                                                     ],
                                                                   ),
-
-                                                                  Container(
-                                                                    decoration: BoxDecoration(
-                                                                      color: uiEmployeeRequests.type=="out"?
-                                                                      const Color(0xffD37A47)/*:uiEmployeeRequests.jobTitle=="مسؤول / أدمن"?Colors.white*/:const Color(0xff4184CE),
-                                                                      borderRadius: BorderRadius.circular(5),
-                                                                    // border: uiEmployeeRequests.jobTitle=="مسؤول / أدمن"? Border.all(color: const Color(0xff4494D5)):Border(),
-                                                                    ),
-                                                                    child: Padding(
-                                                                      padding: const EdgeInsets.symmetric(vertical:8.0,horizontal: 12),
-                                                                      child: Text(uiEmployeeRequests.type=="in"?"موظف داخلى":uiEmployeeRequests.type=="out"?"موظف خارجى":"",
-                                                                        style: TextStyle(
-                                                                            fontSize: 14.sp,
-                                                                            color:  /*uiEmployeeRequests.jobTitle=="مسؤول / أدمن"?const Color(0xff4494D5):*/ Colors.white,
-                                                                            fontFamily: 'A Jannat LT, Regular'
-                                                                        ),),
-                                                                    ),
-                                                                  ),
-
-
-                                                                ],
-                                                              )
-                                                            ],
-                                                          ),
-
-
-
-                                                        ],
-                                                      ),
-                                                    ),
-
-                                                    /// job description
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(bottom:12.0,left: 8,right: 8,top: 2),
-                                                      child: Text(uiEmployeeRequests.jobTitle!,
-                                                        style: TextStyle(
-                                                            fontSize: 14.sp,
-                                                            color: const Color(
-                                                                0xff244094),
-                                                            fontFamily: 'A Jannat LT, Regular'
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-
-                                              ),
-                                            ),
-                                          ),
-
-                                          /// right slider
-                                          Positioned(
-                                            top: 0,
-                                            right: 0,
-                                            bottom: 0,
-                                            // left: controller.checkListFunctions!.contains(uiParentRequests!.id) ? MediaQuery.of(context).size.width * .3 :double.infinity ,
-                                            child: AnimatedContainer(
-                                              duration:const Duration(milliseconds: 400),
-                                              width:  controller.checkListFunctions!.contains(uiEmployeeRequests!.id) ? MediaQuery.of(context).size.width * .39 : 0,
-                                              curve: Curves.fastOutSlowIn,
-                                              decoration: const BoxDecoration(
-                                                borderRadius:  BorderRadius.only(
-                                                  bottomRight:  Radius.circular(6.0),
-                                                  topRight:  Radius.circular(6.0),
-                                                ),
-                                                gradient:   LinearGradient(
-                                                    begin: Alignment.topRight,
-                                                    end: Alignment.bottomRight,
-                                                    colors: [
-                                                      Color(0xff6fd3de),
-                                                      Color(0xff486ac7),
-                                                    ]
-                                                ),
-                                              ),
-                                              child: Container(
-
-                                                padding: EdgeInsets.symmetric(vertical:3,horizontal: 15),
-                                                child: controller.checkListFunctions!.contains(uiEmployeeRequests!.id) ? Row(
-                                                  children: [
-
-                                                      Expanded(
-                                                        child: EmployeeSlideRightItemsAction(
-                                                          firstWidget:   InkWell(
-                                                            onTap: (){
-                                                              if(uiEmployeeRequests.status==1){
-                                                                controller.stopOrActivateEmployee(id: uiEmployeeRequests.id);
-                                                              }else{
-                                                                Get.snackbar("حسنا",
-                                                                  "هذا الموظف نشط بالفعل",
-                                                                  icon: const Icon(Icons.check, color: Colors.green),
-                                                                  backgroundColor: Colors.yellow,
-                                                                  snackPosition: SnackPosition.TOP,);
-                                                              }
-
-                                                            },
-                                                            child: Container(
-                                                              width: 99.sp,
-                                                              decoration: BoxDecoration(
-                                                                color:   const Color(0xffeff7fa),
-                                                                borderRadius: BorderRadius.circular(5),
-                                                               ),
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only( left:14,right: 8),
-                                                                child:  Flex(
-                                                                  direction: Axis.horizontal,
-                                                                  children: [
-                                                                    Expanded(
-                                                                      child:  Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                                  children: [
-                                                                    //
-                                                                    Padding(
-                                                                      padding: const EdgeInsets.only(top:2.0,),
-                                                                      child: SvgPicture.asset('images/android-done-all-green.svg',//controller.employeesJobs[index]=="موظف خارجي"?'images/hand.svg'
-                                                                        width: 50,
-                                                                        height: 30,
-                                                                        fit: BoxFit.contain,
-                                                                      ),
-                                                                    ),
-
-                                                                    Padding(
-                                                                      padding: const EdgeInsets.only(top:2.0),
-                                                                      child: Text(
-                                                                         "تنشيط",
-                                                                        style: TextStyle(
-                                                                            fontSize: 15.sp,
-                                                                            color:const Color(
-                                                                                0xff0B9C2D),
-                                                                            fontFamily: 'A Jannat LT, Regular'
-                                                                        ),
-                                                                      ),
-                                                                    ),
-
-                                                                  ],
-                                                                ),
-                                                                    )
-                                                                  ],
-                                                                ),
-
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          secondWidget: InkWell(
-                                                            onTap: (){
-                                                              if(uiEmployeeRequests.status==0){
-                                                                controller.stopOrActivateEmployee(id: uiEmployeeRequests.id);
-                                                              }else{
-                                                                Get.snackbar("حسنا",
-                                                                  "هذا الموظف موقوف بالفعل",
-                                                                  icon: const Icon(Icons.check, color: Colors.green),
-                                                                  backgroundColor: Colors.yellow,
-                                                                  snackPosition: SnackPosition.TOP,);
-                                                              }
-                                                            },
-                                                            child: Container(
-                                                              width: 99.sp,
-                                                              decoration: BoxDecoration(
-                                                                color:   const Color(0xffeff7fa),
-                                                                borderRadius: BorderRadius.circular(5),
-                                                              ),
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only( left:14,right: 8),
-                                                                child:  Flex(
-                                                                  direction: Axis.horizontal,
-                                                                  children: [
-                                                                    Expanded(
-                                                                      child: Row(
-                                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                                  /// spacer
+                                                                  Container(width: MediaQuery.of(context).size.width*.12,),
+                                                                  /// employee type
+                                                                  Column(
+                                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                                    children: [
+                                                                      Row(
+                                                                        mainAxisAlignment: MainAxisAlignment.end,
                                                                         children: [
                                                                           //
                                                                           Padding(
-                                                                            padding: const EdgeInsets.only(top:2.0,),
-                                                                            child: SvgPicture.asset('images/hand.svg',
+                                                                            padding: const EdgeInsets.only(top:8.0,left: 12),
+                                                                            child: SvgPicture.asset( uiEmployeeRequests.status==1?'images/hand.svg': 'images/android-done-all-green.svg',
                                                                               width: 50,
                                                                               height: 30,
                                                                               fit: BoxFit.fill,
@@ -483,12 +291,11 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                                           ),
 
                                                                           Padding(
-                                                                            padding: const EdgeInsets.only(top:2.0),
-                                                                            child: Text(
-                                                                              "إيقاف",
+                                                                            padding: const EdgeInsets.only(top:8.0),
+                                                                            child: Text(uiEmployeeRequests.status==0?"نشط":"موقوف",
                                                                               style: TextStyle(
                                                                                   fontSize: 15.sp,
-                                                                                  color: const Color(0xffFFB300) ,
+                                                                                  color:  uiEmployeeRequests.status==0?const Color(0xff0B9C2D): const Color(0xffFFB300),
                                                                                   fontFamily: 'A Jannat LT, Regular'
                                                                               ),
                                                                             ),
@@ -496,177 +303,370 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
 
                                                                         ],
                                                                       ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          thirdWidget: InkWell(
-                                                            onTap: (){
-                                                              Get.defaultDialog(
-                                                                title: "هل تريد حذف هذا الموظف !",
-                                                                content: Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                  children: [
-                                                                  InkWell(
-                                                                    onTap: (){
 
-                                                                      controller.deleteAnEmployee(id: uiEmployeeRequests.id);
-                                                                      Get.back();
-                                                                    },
-                                                                    child: Container(
-                                                                      width: 80,
-                                                                      decoration: BoxDecoration(
-                                                                        color: Colors.red,
-                                                                        borderRadius: BorderRadius.circular(8),
-                                                                      ),
-                                                                      child: const Padding(
-                                                                        padding:  EdgeInsets.symmetric(horizontal:8.0,vertical: 4),
-                                                                        child: Center(child: Text("نعم",style: TextStyle(color: Colors.white,fontSize: 12),)),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-
-                                                                  InkWell(
-                                                                    onTap: (){
-                                                                      Get.back();
-                                                                    },
-                                                                    child: Container(
-                                                                      width: 80,
-                                                                      decoration: BoxDecoration(
-                                                                        color: Colors.green,
-                                                                        borderRadius: BorderRadius.circular(8),
-                                                                      ),
-                                                                      child: const Padding(
-                                                                        padding:  EdgeInsets.symmetric(horizontal:8.0,vertical: 4),
-                                                                        child: Center(child: Text("لا",style: TextStyle(color: Colors.white,fontSize: 12),)),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-
-                                                                ],),
-                                                                backgroundColor: Colors.white,
-                                                                titleStyle: const TextStyle(color: Colors.red,fontSize: 16),
-                                                                 barrierDismissible: false
-                                                              );
-
-                                                            },
-                                                            child: Container(
-                                                              width: 99.sp,
-                                                              decoration: BoxDecoration(
-                                                                color:   const Color(0xffeff7fa),
-                                                                borderRadius: BorderRadius.circular(5),
-                                                              ),
-                                                              child: Padding(
-                                                                padding:   const EdgeInsets.only( left:14,right: 8),
-                                                                child:  Flex(
-                                                                  direction: Axis.horizontal,
-                                                                  children: [
-                                                                    Expanded(
-                                                                      child:  Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                                  children: [
-                                                                    //
-                                                                    Padding(
-                                                                      padding: const EdgeInsets.only(top:2.0),
-                                                                      child: SvgPicture.asset('images/delete_employee.svg',
-                                                                        width: 50,
-                                                                        height: 30,
-                                                                        fit: BoxFit.fill,
-                                                                      ),
-                                                                    ),
-
-                                                                    Padding(
-                                                                      padding: const EdgeInsets.only(top:2.0),
-                                                                      child: Text(
-                                                                        "حذف",
-                                                                        style: TextStyle(
-                                                                            fontSize: 15.sp,
-                                                                            color:  Colors.red,
-                                                                            fontFamily: 'A Jannat LT, Regular'
+                                                                      Container(
+                                                                        decoration: BoxDecoration(
+                                                                          color: uiEmployeeRequests.type=="out"?
+                                                                          const Color(0xffD37A47)/*:uiEmployeeRequests.jobTitle=="مسؤول / أدمن"?Colors.white*/:const Color(0xff4184CE),
+                                                                          borderRadius: BorderRadius.circular(5),
+                                                                        // border: uiEmployeeRequests.jobTitle=="مسؤول / أدمن"? Border.all(color: const Color(0xff4494D5)):Border(),
+                                                                        ),
+                                                                        child: Padding(
+                                                                          padding: const EdgeInsets.symmetric(vertical:8.0,horizontal: 12),
+                                                                          child: Text(uiEmployeeRequests.type=="in"?"موظف داخلى":uiEmployeeRequests.type=="out"?"موظف خارجى":"",
+                                                                            style: TextStyle(
+                                                                                fontSize: 14.sp,
+                                                                                color:  /*uiEmployeeRequests.jobTitle=="مسؤول / أدمن"?const Color(0xff4494D5):*/ Colors.white,
+                                                                                fontFamily: 'A Jannat LT, Regular'
+                                                                            ),),
                                                                         ),
                                                                       ),
-                                                                    ),
 
-                                                                  ],
-                                                                ),
-                                                                    )
-                                                                  ],
-                                                                ),
 
+                                                                    ],
+                                                                  )
+                                                                ],
                                                               ),
+
+
+
+                                                            ],
+                                                          ),
+                                                        ),
+
+                                                        /// job description
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(bottom:12.0,left: 8,right: 8,top: 2),
+                                                          child: Text(uiEmployeeRequests.jobTitle!,
+                                                            style: TextStyle(
+                                                                fontSize: 14.sp,
+                                                                color: const Color(
+                                                                    0xff244094),
+                                                                fontFamily: 'A Jannat LT, Regular'
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
+                                                      ],
+                                                    ),
 
-                                                   ],
-                                                ):Container(),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
 
-                                          /// background of slider
-                                          Positioned(
-                                            top:0,
-                                            right: 0,
-                                            bottom: 0,
-                                            child: Container(
-                                              width: 8,
-                                              decoration: const BoxDecoration(
-                                                  gradient:   LinearGradient(
-                                                    begin: Alignment.topRight,
-                                                    end: Alignment.bottomRight,
-                                                    colors: [
-                                                      Color(0xff6fd3de),
-                                                      Color(0xff486ac7),
+                                              /// right slider
+                                              Positioned(
+                                                top: 0,
+                                                right: 0,
+                                                bottom: 0,
+                                                // left: controller.checkListFunctions!.contains(uiParentRequests!.id) ? MediaQuery.of(context).size.width * .3 :double.infinity ,
+                                                child: AnimatedContainer(
+                                                  duration:const Duration(milliseconds: 400),
+                                                  width:  controller.checkListFunctions!.contains(uiEmployeeRequests!.id) ? MediaQuery.of(context).size.width * .39 : 0,
+                                                  curve: Curves.fastOutSlowIn,
+                                                  decoration: const BoxDecoration(
+                                                    borderRadius:  BorderRadius.only(
+                                                      bottomRight:  Radius.circular(6.0),
+                                                      topRight:  Radius.circular(6.0),
+                                                    ),
+                                                    gradient:   LinearGradient(
+                                                        begin: Alignment.topRight,
+                                                        end: Alignment.bottomRight,
+                                                        colors: [
+                                                          Color(0xff6fd3de),
+                                                          Color(0xff486ac7),
+                                                        ]
+                                                    ),
+                                                  ),
+                                                  child: Container(
+
+                                                    padding: EdgeInsets.symmetric(vertical:3,horizontal: 15),
+                                                    child: controller.checkListFunctions!.contains(uiEmployeeRequests!.id) ? Row(
+                                                      children: [
+
+                                                          Expanded(
+                                                            child: EmployeeSlideRightItemsAction(
+                                                              firstWidget:   InkWell(
+                                                                onTap: (){
+                                                                  if(uiEmployeeRequests.status==1){
+                                                                    controller.stopOrActivateEmployee(id: uiEmployeeRequests.id);
+                                                                  }else{
+                                                                    Get.snackbar("حسنا",
+                                                                      "هذا الموظف نشط بالفعل",
+                                                                      icon: const Icon(Icons.check, color: Colors.green),
+                                                                      backgroundColor: Colors.yellow,
+                                                                      snackPosition: SnackPosition.TOP,);
+                                                                  }
+
+                                                                },
+                                                                child: Container(
+                                                                  width: 99.sp,
+                                                                  decoration: BoxDecoration(
+                                                                    color:   const Color(0xffeff7fa),
+                                                                    borderRadius: BorderRadius.circular(5),
+                                                                   ),
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.only( left:14,right: 8),
+                                                                    child:  Flex(
+                                                                      direction: Axis.horizontal,
+                                                                      children: [
+                                                                        Expanded(
+                                                                          child:  Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                                      children: [
+                                                                        //
+                                                                        Padding(
+                                                                          padding: const EdgeInsets.only(top:2.0,),
+                                                                          child: SvgPicture.asset('images/android-done-all-green.svg',//controller.employeesJobs[index]=="موظف خارجي"?'images/hand.svg'
+                                                                            width: 50,
+                                                                            height: 30,
+                                                                            fit: BoxFit.contain,
+                                                                          ),
+                                                                        ),
+
+                                                                        Padding(
+                                                                          padding: const EdgeInsets.only(top:2.0),
+                                                                          child: Text(
+                                                                             "تنشيط",
+                                                                            style: TextStyle(
+                                                                                fontSize: 15.sp,
+                                                                                color:const Color(
+                                                                                    0xff0B9C2D),
+                                                                                fontFamily: 'A Jannat LT, Regular'
+                                                                            ),
+                                                                          ),
+                                                                        ),
+
+                                                                      ],
+                                                                    ),
+                                                                        )
+                                                                      ],
+                                                                    ),
+
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              secondWidget: InkWell(
+                                                                onTap: (){
+                                                                  if(uiEmployeeRequests.status==0){
+                                                                    controller.stopOrActivateEmployee(id: uiEmployeeRequests.id);
+                                                                  }else{
+                                                                    Get.snackbar("حسنا",
+                                                                      "هذا الموظف موقوف بالفعل",
+                                                                      icon: const Icon(Icons.check, color: Colors.green),
+                                                                      backgroundColor: Colors.yellow,
+                                                                      snackPosition: SnackPosition.TOP,);
+                                                                  }
+                                                                },
+                                                                child: Container(
+                                                                  width: 99.sp,
+                                                                  decoration: BoxDecoration(
+                                                                    color:   const Color(0xffeff7fa),
+                                                                    borderRadius: BorderRadius.circular(5),
+                                                                  ),
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.only( left:14,right: 8),
+                                                                    child:  Flex(
+                                                                      direction: Axis.horizontal,
+                                                                      children: [
+                                                                        Expanded(
+                                                                          child: Row(
+                                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                                            children: [
+                                                                              //
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.only(top:2.0,),
+                                                                                child: SvgPicture.asset('images/hand.svg',
+                                                                                  width: 50,
+                                                                                  height: 30,
+                                                                                  fit: BoxFit.fill,
+                                                                                ),
+                                                                              ),
+
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.only(top:2.0),
+                                                                                child: Text(
+                                                                                  "إيقاف",
+                                                                                  style: TextStyle(
+                                                                                      fontSize: 15.sp,
+                                                                                      color: const Color(0xffFFB300) ,
+                                                                                      fontFamily: 'A Jannat LT, Regular'
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+
+                                                                            ],
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              thirdWidget: InkWell(
+                                                                onTap: (){
+                                                                  Get.defaultDialog(
+                                                                    title: "هل تريد حذف هذا الموظف !",
+                                                                    content: Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                      children: [
+                                                                      InkWell(
+                                                                        onTap: (){
+
+                                                                          controller.deleteAnEmployee(id: uiEmployeeRequests.id);
+                                                                          Get.back();
+                                                                        },
+                                                                        child: Container(
+                                                                          width: 80,
+                                                                          decoration: BoxDecoration(
+                                                                            color: Colors.red,
+                                                                            borderRadius: BorderRadius.circular(8),
+                                                                          ),
+                                                                          child: const Padding(
+                                                                            padding:  EdgeInsets.symmetric(horizontal:8.0,vertical: 4),
+                                                                            child: Center(child: Text("نعم",style: TextStyle(color: Colors.white,fontSize: 12),)),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+
+                                                                      InkWell(
+                                                                        onTap: (){
+                                                                          Get.back();
+                                                                        },
+                                                                        child: Container(
+                                                                          width: 80,
+                                                                          decoration: BoxDecoration(
+                                                                            color: Colors.green,
+                                                                            borderRadius: BorderRadius.circular(8),
+                                                                          ),
+                                                                          child: const Padding(
+                                                                            padding:  EdgeInsets.symmetric(horizontal:8.0,vertical: 4),
+                                                                            child: Center(child: Text("لا",style: TextStyle(color: Colors.white,fontSize: 12),)),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+
+                                                                    ],),
+                                                                    backgroundColor: Colors.white,
+                                                                    titleStyle: const TextStyle(color: Colors.red,fontSize: 16),
+                                                                     barrierDismissible: false
+                                                                  );
+
+                                                                },
+                                                                child: Container(
+                                                                  width: 99.sp,
+                                                                  decoration: BoxDecoration(
+                                                                    color:   const Color(0xffeff7fa),
+                                                                    borderRadius: BorderRadius.circular(5),
+                                                                  ),
+                                                                  child: Padding(
+                                                                    padding:   const EdgeInsets.only( left:14,right: 8),
+                                                                    child:  Flex(
+                                                                      direction: Axis.horizontal,
+                                                                      children: [
+                                                                        Expanded(
+                                                                          child:  Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                                      children: [
+                                                                        //
+                                                                        Padding(
+                                                                          padding: const EdgeInsets.only(top:2.0),
+                                                                          child: SvgPicture.asset('images/delete_employee.svg',
+                                                                            width: 50,
+                                                                            height: 30,
+                                                                            fit: BoxFit.fill,
+                                                                          ),
+                                                                        ),
+
+                                                                        Padding(
+                                                                          padding: const EdgeInsets.only(top:2.0),
+                                                                          child: Text(
+                                                                            "حذف",
+                                                                            style: TextStyle(
+                                                                                fontSize: 15.sp,
+                                                                                color:  Colors.red,
+                                                                                fontFamily: 'A Jannat LT, Regular'
+                                                                            ),
+                                                                          ),
+                                                                        ),
+
+                                                                      ],
+                                                                    ),
+                                                                        )
+                                                                      ],
+                                                                    ),
+
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+
+                                                       ],
+                                                    ):Container(),
+                                                  ),
+                                                ),
+                                              ),
+
+                                              /// background of slider
+                                              Positioned(
+                                                top:0,
+                                                right: 0,
+                                                bottom: 0,
+                                                child: Container(
+                                                  width: 8,
+                                                  decoration: const BoxDecoration(
+                                                      gradient:   LinearGradient(
+                                                        begin: Alignment.topRight,
+                                                        end: Alignment.bottomRight,
+                                                        colors: [
+                                                          Color(0xff6fd3de),
+                                                          Color(0xff486ac7),
+                                                        ],
+                                                      ),
+                                                      borderRadius:  BorderRadius.only(
+                                                        bottomRight: const Radius.circular(6.0),
+                                                        topRight: const Radius.circular(6.0),
+                                                      )
+                                                  ),
+                                                  child: Row(
+                                                    children: [
+                                                      const SizedBox(
+                                                        width: 2,
+                                                      ),
+                                                      Container(
+                                                        height: 45,
+                                                        width: 1,
+                                                        color: Colors.white,
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 2,
+                                                      ),
+                                                      Container(
+                                                        height: 30,
+                                                        width: 1,
+                                                        color: Colors.white,
+                                                      ),
                                                     ],
                                                   ),
-                                                  borderRadius:  BorderRadius.only(
-                                                    bottomRight: const Radius.circular(6.0),
-                                                    topRight: const Radius.circular(6.0),
-                                                  )
+                                                ),
                                               ),
-                                              child: Row(
-                                                children: [
-                                                  const SizedBox(
-                                                    width: 2,
-                                                  ),
-                                                  Container(
-                                                    height: 45,
-                                                    width: 1,
-                                                    color: Colors.white,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 2,
-                                                  ),
-                                                  Container(
-                                                    height: 30,
-                                                    width: 1,
-                                                    color: Colors.white,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                }),
-                          ),
+                                        ),
+                                      );
+                                    }),
+                              ),
 
-                        ],
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ):const Center(
-            child: Text("لا يوجد موظفين"),
-          ),
+                  ):const Center(
+                  child: Text("لا يوجد موظفين"),
+                ),
                 /// add employee button
                 floatingActionButton: Padding(
                   padding: const EdgeInsets.only(bottom:64.0),

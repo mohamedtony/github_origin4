@@ -27,6 +27,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart'as myIntl;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -51,8 +52,9 @@ class CommentsPage extends GetWidget<CommentsController>  {
 
   @override
   Widget build(BuildContext context) {
-    return controller.obx(
-            (state) =>  Scaffold(
+    return    GetBuilder<CommentsController>(
+        init: CommentsController(),
+        builder: (controller) => Scaffold(
               appBar:  PreferredSize(
                 child:  AppBarWidget(
               controller: controller.searchController,
@@ -67,12 +69,11 @@ class CommentsPage extends GetWidget<CommentsController>  {
                   90.0
               ),
           ),
-
-              body: controller.myEmployees.isNotEmpty ? Container(
-            color:const Color(0xffF5F5F5),
-            child: Column(
-              children: [
-                Container(
+              body: Container(
+                color:const Color(0xffF5F5F5),
+                child: Column(
+                 children: [
+                  Container(
                   color: Color(0xffF5F5F5),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -125,11 +126,10 @@ class CommentsPage extends GetWidget<CommentsController>  {
                             children: [
                               /// comments num
                               Row(
-
                                 children: [
                                   Padding(
                                     padding:   EdgeInsets.symmetric(vertical:4.0,horizontal: 8),
-                                    child: Text("529",
+                                    child: Text("${controller.myCommentsResponse.value.data!=null?controller.myCommentsResponse.value.data!.commentsCount??"":""}",
                                       style: TextStyle(
                                           fontSize: 14.sp,
                                           color:   Color(0XFF427BD0),
@@ -153,21 +153,21 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Padding(
-                                    padding:   EdgeInsets.symmetric(vertical:4.0,),
+                                    padding:   EdgeInsets.only(top:4.0,),
                                     child:  Container(
                                       decoration: const BoxDecoration(
                                           image: DecorationImage(
-                                            image: AssetImage('images/dislike.png'),fit:  BoxFit.fill,
+                                            image: AssetImage('images/dislike comment2.png'),fit:  BoxFit.fill,
                                           )
                                       ),
-                                      width: 36,
-                                      height: 35,
+                                      width: 24,
+                                      height: 24,
                                     ),
                                   ),
 
                                   Padding(
                                     padding:   EdgeInsets.symmetric(vertical:4.0,),
-                                    child: Text("64",
+                                    child: Text("${controller.myCommentsResponse.value.data!=null?controller.myCommentsResponse.value!.data!.dislikes??"":""}",
                                       style: TextStyle(
                                           fontSize: 14.sp,
                                           color:   Color(0XFF427BD0),
@@ -181,21 +181,21 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Padding(
-                                    padding:   EdgeInsets.symmetric(vertical:4.0,),
+                                    padding:   EdgeInsets.only(top:4.0,),
                                     child:  Container(
                                       decoration: const BoxDecoration(
                                           image: DecorationImage(
-                                            image: AssetImage('images/like.png'),fit:  BoxFit.fill,
+                                            image: AssetImage('images/like comemnt.png'),fit:  BoxFit.fill,
                                           )
                                       ),
-                                      width: 36,
-                                      height: 35,
+                                      width: 26,
+                                      height: 26,
                                     ),
                                   ),
 
                                   Padding(
                                     padding:   EdgeInsets.symmetric(vertical:4.0,),
-                                    child: Text("129",
+                                    child: Text("${controller.myCommentsResponse.value.data!=null?controller.myCommentsResponse.value!.data!.likes??"":""}",
                                       style: TextStyle(
                                           fontSize: 14.sp,
                                           color:   Color(0XFF427BD0),
@@ -217,7 +217,7 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal:2.0),
-                                      child: Text("25",
+                                      child: Text("${controller.myCommentsResponse.value.data!=null?controller.myCommentsResponse.value!.data!.replies??"":""}",
                                         style: TextStyle(
                                             fontSize: 13.sp,
                                             color:   Color(0XFFFFFF00),
@@ -247,46 +247,41 @@ class CommentsPage extends GetWidget<CommentsController>  {
                   ),
                 ),
                 Expanded(
-                  // height: 400,
                   child: Container(
 
                     child: SmartRefresher(
                       controller: controller.refreshController,
                       enablePullUp: true,
                       onRefresh: () async {
-                        /*final result = await */controller.fetchEmployeesList();
-                        if (controller.myEmployees.isNotEmpty) {
+                         controller.getCommentsData(isRefresh: true);
+                        if (controller.commentsList.isNotEmpty) {
                           controller.refreshController.refreshCompleted();
-                        } /*else {
+                        } else {
                           controller.refreshController.refreshFailed();
-                        }*/
-                      },
+                        }
+                     },
                       onLoading: () async {
-                        /*final result = await*/ controller.fetchEmployeesList();
-                        if (controller.myEmployees.isNotEmpty) {
+                        /*final result = await*/  controller.getCommentsData();
+                        if (controller.commentsList.isNotEmpty) {
                           controller.refreshController.loadComplete();
-                        } /*else {
+                        } else {
                           controller.refreshController.loadFailed();
-                        }*/
+                        }
                       },
                       child: ListView(
                         controller: controller.scrollController,
-                        // primary: true,
                         children: [
 
-                          GetBuilder<CommentsController>(
-                            init: CommentsController(),
-                            builder: (controller) => ListView.builder(
+                          controller.commentsList.isNotEmpty ?ListView.builder(
 
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                itemCount: /*controller.myEmployees.length*/10,
-                                // itemCount: state?.data?.parentRequests?.length,
-                                itemBuilder: (context, index) {
-                                //  final uiEmployeeRequests = controller.myEmployees[index];
-                                  // final uiParentRequests = state?.data?.parentRequests![index]!;
+                                itemCount: controller.commentsList.length,
+                                 itemBuilder: (context, index) {
+                                 final uiCommentRequest = controller.commentsList[index];
+
                                   return  Container(
-                                    color: index==2?Colors.grey[300]:Colors.transparent,
+                                    color: uiCommentRequest.replies!=null&&uiCommentRequest.replies!.isNotEmpty?Colors.grey[300]:Colors.transparent,
                                     child: GestureDetector(
                                       onPanUpdate: (details) {
                                         // Swiping in right direction.
@@ -300,13 +295,11 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                         //   print("Dragging in -X direction");
                                         //   controller.openSingleItemFromCheckListFunctions(uiEmployeeRequests!.id);
                                         // }
-
                                       },
 
                                       child: InkWell(
                                         onTap:(){
-                                         // controller.fetchAnEmployee(id: uiEmployeeRequests!.id);
-                                        },
+                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.only(right: 16),
                                           child:  Column(
@@ -324,20 +317,23 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                                     mainAxisAlignment: MainAxisAlignment.start,
                                                     children: [
                                                       Padding(
-                                                        padding: const EdgeInsets.symmetric(horizontal:4.0),
+                                                        padding: const EdgeInsets.only(left:4.0,right: 4,top: 17),
                                                         child: Container(
                                                           width: 23.sp,
                                                           height: 23.sp,
-                                                          decoration: const BoxDecoration(
+                                                          decoration:   BoxDecoration(
                                                             shape: BoxShape.circle,
-                                                            image: DecorationImage(image: AssetImage('images/man img.png'),fit: BoxFit.fill),
+                                                            image: DecorationImage(image:
+                                                                uiCommentRequest.user!.image!=null&&uiCommentRequest.user!.image!=""?
+                                                                NetworkImage('${uiCommentRequest.user!.image}'):NetworkImage(controller.noImage)
+                                                                /*AssetImage('images/man img.png')*/,fit: BoxFit.fill),
                                                           ),
                                                         ),
                                                       ),
                                                       Padding(
-                                                        padding: const EdgeInsets.symmetric(horizontal:8.0),
+                                                        padding: const EdgeInsets.only(left:8.0,right: 8,top: 17),
                                                         child: Text(
-                                                          "احمد عبدالله خليفة",
+                                                          uiCommentRequest.user!.username??"",
                                                           style: TextStyle(
                                                               fontSize: 15.sp,
                                                               color: const Color(0xff212121),
@@ -349,12 +345,13 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                                   ),
                                                   ///date
                                                   Padding(
-                                                    padding: const EdgeInsets.only(left:25.0),
+                                                    padding: const EdgeInsets.only(left:25.0,top: 17),
                                                     child: Row(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: [
                                                         Text(
-                                                          "14 نوفمبر 2022",
+                                                          myIntl.DateFormat.yMMMd('ar_SA').format( DateTime.parse('${uiCommentRequest.createdAt}')),
+                                                         // "14 نوفمبر 2022",
                                                           style: TextStyle(
                                                               fontSize: 10.sp,
                                                               color: const Color(0xff212121),
@@ -364,7 +361,7 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                                         Padding(
                                                           padding: const EdgeInsets.symmetric(horizontal:4.0),
                                                           child: Text(
-                                                            "الساعة 7.25 م",
+                                                            "الساعة ${myIntl.DateFormat('h:mm a','ar').format(DateTime.parse('${uiCommentRequest.createdAt}'))}",
                                                             style: TextStyle(
                                                                 fontSize: 10.sp,
                                                                 color: const Color(0xff212121),
@@ -383,8 +380,8 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                                 child: Container(
                                                   width: 303.sp,
                                                   height: 46.sp,
-                                                  child: Text(
-                                                    "المنتجات جميلة جداً ا حبذا إعادة العرض مرة أخرى انا معجب جداً بمنتجاتكم وأستخدمها أنا وعائلتي",
+                                                  child: Text(uiCommentRequest.comment??"",
+                                                    //"المنتجات جميلة جداً ا حبذا إعادة العرض مرة أخرى انا معجب جداً بمنتجاتكم وأستخدمها أنا وعائلتي",
                                                     style: TextStyle(
                                                         fontSize: 15.sp,
                                                         color: const Color(0xff4074CA),
@@ -408,8 +405,8 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                                         unratedColor: Colors.grey[300],
                                                         textDirection: TextDirection.ltr,
                                                         itemSize: 15,
-                                                        initialRating: 5,
-                                                        minRating: 1,
+                                                        initialRating: double.parse(uiCommentRequest.user!.rate??"0"),
+                                                        minRating: 0,
                                                         direction: Axis.horizontal,
                                                         allowHalfRating: true,
                                                         itemCount: 5,
@@ -504,13 +501,18 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        const Padding(
-                                                          padding:  EdgeInsets.only(right:12.0,left: 12),
-                                                          child: Icon(Icons.subdirectory_arrow_left_rounded,color: Color(0xff4184CE),size: 15,),
+                                                          Padding(
+                                                          padding:  EdgeInsets.only(right:14.0,left: 12),
+                                                          child: SvgPicture.asset(  'images/reply icon.svg' ,
+                                                            width: 16,
+                                                            height: 16,
+                                                            fit: BoxFit.fill,
+                                                          ),
+                                                          //Icon(Icons.subdirectory_arrow_left_rounded,color: Color(0xff4184CE),size: 15,),
                                                         ),
 
                                                         Padding(
-                                                          padding: const EdgeInsets.only(top:10.0,left: 10,bottom: 10),
+                                                          padding: const EdgeInsets.only(top:6.0,left: 10,bottom: 10),
                                                           child: Container(
                                                             height: 130,
                                                             width: 275,
@@ -641,7 +643,7 @@ class CommentsPage extends GetWidget<CommentsController>  {
 
 
                                               Visibility(
-                                                visible: index==2,
+                                                visible: uiCommentRequest.replies!=null&&uiCommentRequest.replies!.isNotEmpty,
                                                 child: ///name & img
                                                 Column(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -654,16 +656,18 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                                           child: Container(
                                                             width: 23.sp,
                                                             height: 23.sp,
-                                                            decoration: const BoxDecoration(
+                                                            decoration:   BoxDecoration(
                                                               shape: BoxShape.circle,
-                                                              image: DecorationImage(image: AssetImage('images/man img2.png'),fit: BoxFit.fill),
+                                                              image: DecorationImage(image:
+                                                              uiCommentRequest.replies!=null&&uiCommentRequest.replies!.isNotEmpty&& uiCommentRequest.replies![0].user!.image!=null&&uiCommentRequest.replies![0].user!.image!=""?
+                                                              NetworkImage(uiCommentRequest.replies![0].user!.image??""):NetworkImage(controller.noImage)/*AssetImage('images/man img2.png')*/,fit: BoxFit.fill),
                                                             ),
                                                           ),
                                                         ),
                                                         Padding(
                                                           padding: const EdgeInsets.symmetric(horizontal:8.0),
-                                                          child: Text(
-                                                            "المشرف / محمد عبدالله",
+                                                          child: Text(uiCommentRequest.user!=null?uiCommentRequest.user!.username??"":"",
+                                                            //"المشرف / محمد عبدالله",
                                                             style: TextStyle(
                                                                 fontSize: 15.sp,
                                                                 color: const Color(0xff979797),
@@ -677,16 +681,22 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        const Padding(
+                                                          Padding(
                                                           padding:  EdgeInsets.only(right:12.0,left: 12),
-                                                          child: Icon(Icons.subdirectory_arrow_left_rounded,color: Color(0xff4184CE),size: 15,),
+                                                          child: SvgPicture.asset('images/reply icon.svg' ,
+                                                            width: 16,
+                                                            height: 16,
+                                                            fit: BoxFit.fill,
+                                                          ),
                                                         ),
 
                                                         Padding(
-                                                          padding: const EdgeInsets.only(top:10.0,left: 10,bottom: 10),
+                                                          padding: const EdgeInsets.only(top:4.0,left: 10,bottom: 10),
                                                           child: Container(
                                                             width: 275,
-                                                            child:   const Text('يشرفنا استخدامكم منتجاتنا .. وسيكون هناك عرض قادم أفضل بعد أسبوعين .. وتم اضافتك في اشعارات التبليغ عند بداية العرض',
+                                                            child:     Text(uiCommentRequest.replies!=null&&uiCommentRequest.replies!.isNotEmpty?
+                                                            uiCommentRequest.replies![0].comment??"":"",
+                                                              //'يشرفنا استخدامكم منتجاتنا .. وسيكون هناك عرض قادم أفضل بعد أسبوعين .. وتم اضافتك في اشعارات التبليغ عند بداية العرض',
                                                               style: TextStyle(color: Color(0xff979797),fontSize: 15,fontFamily: 'A Jannat LT, Regular'),),
                                                           ),
                                                         )
@@ -704,7 +714,7 @@ class CommentsPage extends GetWidget<CommentsController>  {
 
                                               /// line
                                               const Padding(
-                                                padding:  EdgeInsets.only(left:2.0,right: 2,bottom: 2,top: 12),
+                                                padding:  EdgeInsets.only(left:2.0,right: 2,top: 12),
                                                 child:  Divider(height: 1,),
                                               )
 
@@ -715,9 +725,11 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                       ),
                                     ),
                                   );
-                                }),
-                          ),
-
+                                })
+                                :const Center(
+                                  child: Text("لا يوجد تعليقات"),
+                            ),
+                         // ),
                         ],
                       ),
                     ),
@@ -725,12 +737,11 @@ class CommentsPage extends GetWidget<CommentsController>  {
                 ),
               ],
             ),
-          ):const Center(
-            child: Text("لا يوجد موظفين"),
-          ),
-
+          )
         )
     );
+
+
   }
 }
 

@@ -8,9 +8,11 @@ import 'package:advertisers/app_core/network/responses/GetCancelReasonsResponse.
 import 'package:advertisers/app_core/network/responses/MyRequestsResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/app_core/network/responses/RejectRequestResponse.dart';
+import 'package:advertisers/app_core/network/responses/RepostAdsResponse.dart';
 import 'package:advertisers/app_core/network/responses/ShowAddsListResponse.dart';
 import 'package:advertisers/app_core/network/responses/ShowEmployeeDetailsResponse%20.dart';
 import 'package:advertisers/app_core/network/responses/ShowOnAppResponse.dart';
+import 'package:advertisers/features/wallet_module/Response/wallet_card_toggle_response.dart';
 import 'package:advertisers/main.dart';
 import 'package:advertisers/shared/networking/api_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,9 +24,10 @@ import 'package:logger/logger.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:dio/dio.dart' as dio;
-class MyAddsController extends GetxController{
+class MyAddsController extends GetxController with StateMixin<ShowAddsListResponse>{
 
   var addsList=<AddModel>[].obs;
+  var addsListIds=<int>[].obs;
   var currentIndex=0.obs;
   var reasons=<ReasonModel>[].obs;
   var reasonDataModel=ReasonDataModel().obs;
@@ -101,7 +104,8 @@ class MyAddsController extends GetxController{
     repo=Repository();
     token =storage.read("token");
     searchController=TextEditingController();
-    getRequestsData();
+    //getRequestsData();
+    fetchAdsList(pageZero: false);
     super.onInit();
   }
   String? validatePhone(String phone){
@@ -110,8 +114,16 @@ class MyAddsController extends GetxController{
     }
     return null;
   }
+  ScrollController scrollController = ScrollController();
 
-
+  void loadMore()async{
+    scrollController?.addListener(() async {
+      if (scrollController?.position.maxScrollExtent ==
+          scrollController?.position.pixels) {
+        fetchAdsList(pageZero: false);
+      }
+    });
+  }
 
   void checkSearch(){
     final isValid=searchFormKey.currentState!.validate();
@@ -125,7 +137,7 @@ class MyAddsController extends GetxController{
   int currentPage = 1;
 
   late int totalPages=0;
-
+  int page = 0;
   final RefreshController refreshController =
   RefreshController(initialRefresh: true);
 
@@ -148,6 +160,7 @@ class MyAddsController extends GetxController{
             EasyLoading.dismiss();
           }
 
+          Logger().i(res.data);
           if (isRefresh) {
             addsList.value = res.data??[];
               }else{
@@ -176,9 +189,48 @@ class MyAddsController extends GetxController{
     return false;
   }
 
+  void fetchAdsList({bool? pageZero}) async {
+    pageZero == true? page=1: page++;
+    String url ='https://advertiser.cefour.com/api/v1/ads';
+    print("URL+++> $url");
+    try {
+      final dio.Response response = await _apiService.dioClient.get(
+        url,
+      );
+      final data = ShowAddsListResponse.fromJson(response.data);
+      Logger().i(response!.data);
+      data!.data!.forEach((request) {
+        if(!addsList.contains(request.id)){
+          addsList.add(request);
+          addsListIds.add(request.id!);
+        }
+      });
+
+      print("employeesRequests ==> length == > ${addsList.length}");
+      //..
+      // Successfully fetched news data
+      change(data, status: RxStatus.success());
+      // Logger().i(response!.data);
+    } on dio.DioError catch (error) {
+      if (error.response?.statusCode == 401 ||
+          error.response?.statusCode == 422) {
+        // Error occurred while fetching data
+        change(null,
+            status: RxStatus.error(
+                'حدث خطأ ما ${error.response?.statusCode}'));
+      } else if (error.error is SocketException) {
+        change(null,
+            status: RxStatus.error(
+                'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
+      } else {
+        String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
+        change(null, status: RxStatus.error(errorDescription));
+      }
+    }
+  }
 
   /// delete employee
-  void deleteAnAdd({int? id}) async {
+  void deleteAnAds({int? id}) async {
     EasyLoading.show();
     String url ='https://advertiser.cefour.com/api/v1/ads/$id';
     print("URL+++> $url");
@@ -201,14 +253,14 @@ class MyAddsController extends GetxController{
           backgroundColor: Colors.yellow,
           snackPosition: SnackPosition.TOP,);
 
-        await getRequestsData();
+        fetchAdsList();
 
       }else{
         if (EasyLoading.isShow) {
           EasyLoading.dismiss();
         }
         Get.snackbar(
-          "خطأ",
+          "${data.status}  خطأ ",
           data.message.toString(),
           icon: const Icon(Icons.person, color: Colors.red),
           backgroundColor: Colors.yellow,
@@ -229,126 +281,150 @@ class MyAddsController extends GetxController{
     }
   }
 
-  /// show adds On App
+  /// show ads On App
   void showOnApp({int? id}) async {
     EasyLoading.show();
-    String url ='https://advertiser.cefour.com/api/v1/ads/$id/show_app';
-    print("URL+++> $url");
-    try {
-      final dio.Response response = await _apiService.dioClient.get(
-        url,
-      );
-      final data = ShowOnAppResponse.fromJson(response.data);
+    repo.get<ShowOnAppResponse>(
+        path: 'ads/$id/show_app',
+        fromJson: (json) => ShowOnAppResponse.fromJson(json),
+        json: {"token": "Bearer $token"},
+        onSuccess: (res) async{
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
 
-      Logger().i(response.data);
+          Logger().i(res.data);
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
 
-      if(data.status==200){
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
+          if(res.data!.show==0){
+            Get.snackbar("حسنا",
+              "تم تنشيط عرض المنصة",
+              icon: const Icon(Icons.check, color: Colors.green),
+              backgroundColor: Colors.yellow,
+              snackPosition: SnackPosition.TOP,);
+          }else if(res.data!.show==1){
+            Get.snackbar("حسنا",
+              "تم ايقاف عرض المنصة",
+              icon: const Icon(Icons.check, color: Colors.green),
+              backgroundColor: Colors.yellow,
+              snackPosition: SnackPosition.TOP,);
+          }
+          fetchAdsList(pageZero: false);
 
-        if(data.data!.show==0){
-          Get.snackbar("حسنا",
-            "تم تنشيط عرض المنصة",
-            icon: const Icon(Icons.check, color: Colors.green),
+        },
+        onError: (err, res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
             backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.TOP,);
-        }else if(data.data!.show==1){
-          Get.snackbar("حسنا",
-            "تم ايقاف عرض المنصة",
-            icon: const Icon(Icons.check, color: Colors.green),
-            backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.TOP,);
-        }
+            snackPosition: SnackPosition.BOTTOM,);
 
+        });
 
-        await getRequestsData();
-
-      }else{
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
-        Get.snackbar(
-          "خطأ",
-          data.message.toString(),
-          icon: const Icon(Icons.person, color: Colors.red),
-          backgroundColor: Colors.yellow,
-          snackPosition: SnackPosition.BOTTOM,);
-      }
-
-    } on dio.DioError catch (error) {
-      if (error.response?.statusCode == 401 ||
-          error.response?.statusCode == 422) {
-        // Error occurred while fetching data
-
-      } else if (error.error is SocketException) {
-
-      } else {
-        String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-
-      }
-    }
   }
 
-  /// show adds On profile
+
+  /// show ads On profile
   void showOnProfile({int? id}) async {
     EasyLoading.show();
-    String url ='https://advertiser.cefour.com/api/v1/ads/$id/show_profile';
-    print("URL+++> $url");
-    try {
-      final dio.Response response = await _apiService.dioClient.get(
-        url,
-      );
-      final data = ShowOnAppResponse.fromJson(response.data);
+    repo.get<ShowOnAppResponse>(
+        path: 'ads/$id/show_profile',
+        fromJson: (json) => ShowOnAppResponse.fromJson(json),
+        json: {"token": "Bearer $token"},
+        onSuccess: (res) async{
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
 
-      Logger().i(response.data);
+          Logger().i(res.data);
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
 
-      if(data.status==200){
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
+          if(res.data!.show==0){
+            Get.snackbar("حسنا",
+              "تم تنشيط عرض البروفايل",
+              icon: const Icon(Icons.check, color: Colors.green),
+              backgroundColor: Colors.yellow,
+              snackPosition: SnackPosition.TOP,);
+          }else if(res.data!.show==1){
+            Get.snackbar("حسنا",
+              "تم ايقاف عرض البروفايل",
+              icon: const Icon(Icons.check, color: Colors.green),
+              backgroundColor: Colors.yellow,
+              snackPosition: SnackPosition.TOP,);
+          }
+          fetchAdsList(pageZero: false);
 
-        if(data.data!.show==0){
-          Get.snackbar("حسنا",
-            "تم تنشيط عرض المنصة",
-            icon: const Icon(Icons.check, color: Colors.green),
+        },
+        onError: (err, res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
             backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.TOP,);
-        }else if(data.data!.show==1){
-          Get.snackbar("حسنا",
-            "تم ايقاف عرض المنصة",
-            icon: const Icon(Icons.check, color: Colors.green),
+            snackPosition: SnackPosition.BOTTOM,);
+
+        });
+
+  }
+
+
+  /// repost ads
+  void repostAds({int? id}) async {
+    EasyLoading.show();
+
+    repo.get<RepostAdsResponse>(
+        path: 'ads/$id/repost',
+        fromJson: (json) => RepostAdsResponse.fromJson(json),
+        json: {"token": "Bearer $token"},
+        onSuccess: (res) async{
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+
+          Logger().i(res.data);
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+
+          if(res.status ==200){
+            Get.snackbar("حسنا",
+              "${res.message}",
+              icon: const Icon(Icons.check, color: Colors.green),
+              backgroundColor: Colors.yellow,
+              snackPosition: SnackPosition.TOP,);
+          }else  {
+            Get.snackbar("حسنا",
+              "${res.message}",
+              icon: const Icon(Icons.check, color: Colors.green),
+              backgroundColor: Colors.yellow,
+              snackPosition: SnackPosition.TOP,);
+          }
+          fetchAdsList(pageZero: false);
+
+        },
+        onError: (err, res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
             backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.TOP,);
-        }
+            snackPosition: SnackPosition.BOTTOM,);
 
-
-        await getRequestsData();
-
-      }else{
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
-        Get.snackbar(
-          "خطأ",
-          data.message.toString(),
-          icon: const Icon(Icons.person, color: Colors.red),
-          backgroundColor: Colors.yellow,
-          snackPosition: SnackPosition.BOTTOM,);
-      }
-
-    } on dio.DioError catch (error) {
-      if (error.response?.statusCode == 401 ||
-          error.response?.statusCode == 422) {
-        // Error occurred while fetching data
-
-      } else if (error.error is SocketException) {
-
-      } else {
-        String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-
-      }
-    }
+        });
   }
 
 
