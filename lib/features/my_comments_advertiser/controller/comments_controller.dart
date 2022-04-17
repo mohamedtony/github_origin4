@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:advertisers/app_core/network/models/ClientProfileModel.dart';
 import 'package:advertisers/app_core/network/models/Employee.dart';
 import 'package:advertisers/app_core/network/models/Operation.dart';
 import 'package:advertisers/app_core/network/models/ReasonDataModel.dart';
@@ -42,6 +43,9 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
   ScrollController scrollController = ScrollController();
 
   var commentController = TextEditingController().obs;
+  List<TextEditingController> commentControllers = <TextEditingController>[].obs;
+  List<bool> showComments = <bool>[].obs;
+
   var nameController = TextEditingController().obs;
   var emailController = TextEditingController().obs;
   var mobileController = TextEditingController().obs;
@@ -111,8 +115,6 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
   }
 
 
-
-
   void addAndRemoveOtherFromCheckListFunctions(id){
     if(checkListFunctions!.contains(id)){
       checkListFunctions!.clear();
@@ -123,8 +125,6 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
     }
     update();
   }
-
-
 
 
   int tabId = 1;
@@ -150,7 +150,7 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
   @override
   void onInit() {
     // passIndex;
-   // commentController.value.text='يشرفنا استخدامكم منتجاتنا .. وسيكون هناك عرض قادم أفضل بعد أسبوعين .. وتم اضافتك في اشعارات التبليغ عند بداية العرض';
+
     repo=Repository();
     token =storage.read("token");
     searchController=TextEditingController();
@@ -422,7 +422,7 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
 
 
   /// add reply
-  void addReplyOnComment({AddReplyOnCommentRequest? request,int? id}) async {
+  void addReplyOnComment({AddReplyOnCommentRequest? request,int? id,int? index}) async {
     EasyLoading.show();
     dio.FormData formData = dio.FormData.fromMap(request!.toJson());
     String url ='https://advertiser.cefour.com/api/v1/ads/$id/comment';
@@ -437,12 +437,13 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
       Logger().i(response.data);
 
       if(data.status==200){
+        showComments[index!]=false;
         if (EasyLoading.isShow) {
           EasyLoading.dismiss();
         }
 
-
-
+        getCommentsData(isRefresh: true);
+        update();
 
       }else{
         if (EasyLoading.isShow) {
@@ -476,12 +477,12 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
     }
   }
 
-  void checkForAddingComment(int? id){
+  void checkForAddingComment(int? id,String text,int index){
 
     AddReplyOnCommentRequest request=AddReplyOnCommentRequest();
-    request.comment=commentController.value.text;
+    request.comment= text;
     request.commentId=id;
-    addReplyOnComment(request: request,id: id);
+    addReplyOnComment(request: request,id: id,index: index);
 
   }
 
@@ -489,6 +490,24 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
   void onClose() {
     searchController.dispose();
     super.onClose();
+  }
+
+  var clientProfileModel = ClientProfileModel().obs;
+
+  @override
+  Future<void> onReady() async {
+    EasyLoading.show();
+    client!.getMyProfile("Bearer $token").then((value) {
+      Logger().i(value.data?.toJson());
+      if(value.data!=null&&value.status==200){
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
+        clientProfileModel.value = value.data!;
+      }
+    });
+
+    super.onReady();
   }
 
 }

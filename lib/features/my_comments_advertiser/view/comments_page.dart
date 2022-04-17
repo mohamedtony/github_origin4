@@ -278,10 +278,12 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                 shrinkWrap: true,
                                 itemCount: controller.commentsList.length,
                                  itemBuilder: (context, index) {
+                                  controller.commentControllers.add(TextEditingController());
+                                  controller.showComments.add(false);
                                  final uiCommentRequest = controller.commentsList[index];
 
                                   return  Container(
-                                    color: uiCommentRequest.replies!=null&&uiCommentRequest.replies!.isNotEmpty?Colors.grey[300]:Colors.transparent,
+                                    color: uiCommentRequest.replies!=null&&uiCommentRequest.replies!.isNotEmpty?Colors.grey[200]:Colors.transparent,
                                     child: GestureDetector(
                                       onPanUpdate: (details) {
                                         // Swiping in right direction.
@@ -422,12 +424,12 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                                     ),
                                                   ),
                                                   ///add reply
-                                                  index==2?
+                                                  uiCommentRequest.replies!=null&&uiCommentRequest.replies!.isNotEmpty?
                                                   Container():
                                                   InkWell(
                                                     onTap: (){
-                                                      controller.showComment.value=!controller.showComment.value;
-                                                      print('controller.showComment ${controller.showComment.value}');
+                                                      controller.showComments[index]=!controller.showComments[index];
+                                                      print('controller.showComment ${controller.showComments[index]}');
                                                     },
                                                     child: Padding(
                                                       padding: const EdgeInsets.only(left:15.0),
@@ -465,7 +467,7 @@ class CommentsPage extends GetWidget<CommentsController>  {
 
 
                                               Obx(()=>Visibility(
-                                                visible: controller.showComment.value||index==1,
+                                                visible: controller.showComments[index],
                                                 child: ///name & img
                                                 Column(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -478,16 +480,17 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                                           child: Container(
                                                             width: 23.sp,
                                                             height: 23.sp,
-                                                            decoration: const BoxDecoration(
+                                                            decoration: BoxDecoration(
                                                               shape: BoxShape.circle,
-                                                              image: DecorationImage(image: AssetImage('images/man img2.png'),fit: BoxFit.fill),
+                                                              image: DecorationImage(image:
+                                                              controller.clientProfileModel.value!=null&&controller.clientProfileModel.value.image!=null&&controller.clientProfileModel.value.image!=""?
+                                                              NetworkImage('${controller.clientProfileModel.value.image}'):NetworkImage(controller.noImage)/*AssetImage('images/man img2.png')*/,fit: BoxFit.fill),
                                                             ),
                                                           ),
                                                         ),
                                                         Padding(
                                                           padding: const EdgeInsets.symmetric(horizontal:8.0),
-                                                          child: Text(
-                                                            "المشرف / محمد عبدالله",
+                                                          child: Text(controller.clientProfileModel.value.username??"",
                                                             style: TextStyle(
                                                                 fontSize: 15.sp,
                                                                 color: const Color(0xff979797),
@@ -529,7 +532,7 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                                                   child: TextField(
                                                                     keyboardType: TextInputType.multiline,
                                                                     maxLines: null,
-                                                                    controller: controller.commentController.value,
+                                                                    controller: controller.commentControllers[index],
                                                                     style: TextStyle(color: Color(0xff979797),fontSize: 15,fontFamily: 'A Jannat LT, Regular'),
                                                                     decoration: InputDecoration(
                                                                         hintStyle: TextStyle(color: Color(0XFF9B9B9B),fontSize: 12,fontFamily: 'Open Sans,Regular'),
@@ -546,7 +549,7 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                                                 ),
                                                                 Container(
                                                                   height: 32,
-                                                                  decoration: BoxDecoration(
+                                                                  decoration:const  BoxDecoration(
                                                                       color: Color(0xff979797),
                                                                       borderRadius: BorderRadius.only(bottomLeft: Radius.circular(6),bottomRight: Radius.circular(6))
                                                                   ),
@@ -557,8 +560,8 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                                                       children: [
                                                                         InkWell(
                                                                           onTap: (){
-                                                                            if(controller.commentController.value.text!=null&&controller.commentController.value.text!=""){
-                                                                              controller.checkForAddingComment(uiCommentRequest.id);
+                                                                            if(controller.commentControllers[index].text!=null && controller.commentControllers[index].text!=""){
+                                                                              controller.checkForAddingComment(uiCommentRequest.id,controller.commentControllers[index].text,index);
                                                                             }else{
                                                                               Get.snackbar(
                                                                                 "خطأ",
@@ -707,7 +710,6 @@ class CommentsPage extends GetWidget<CommentsController>  {
                                                         Padding(
                                                           padding: const EdgeInsets.symmetric(horizontal:8.0),
                                                           child: Text(uiCommentRequest.user!=null?uiCommentRequest.user!.username??"":"",
-                                                            //"المشرف / محمد عبدالله",
                                                             style: TextStyle(
                                                                 fontSize: 15.sp,
                                                                 color: const Color(0xff979797),

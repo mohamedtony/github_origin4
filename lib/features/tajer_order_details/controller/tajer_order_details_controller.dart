@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/responses/AdvertiserOrderDetailsResponse.dart';
+import 'package:advertisers/app_core/network/responses/ShowAdsDetailsResponse.dart';
 import 'package:advertisers/shared/networking/api_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -13,7 +14,7 @@ import 'package:logger/logger.dart';
 
 import '../../../main.dart';
 
-class AdvertiserOrderDetailsController extends GetxController {
+class TajerOrderDetailsController extends GetxController {
   int? firstSeeMore = 2;
   int? secondSeeMore = 2;
 
@@ -56,8 +57,39 @@ class AdvertiserOrderDetailsController extends GetxController {
     update([builderId]);
   }
 
+  var showAdsDetailsResponse=ShowAdsDetailsResponse().obs;
+
+  void getTajerData({int? id}) async {
+
+    EasyLoading.show();
+    repo.get<ShowAdsDetailsResponse>(
+        path: 'ads/$id',
+        fromJson: (json) => ShowAdsDetailsResponse.fromJson(json),
+        json: {"token": "Bearer $token"},
+        onSuccess: (res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+
+          //Logger().i(res.data);
+          showAdsDetailsResponse.value.data=res.data;
+
+          update();
+        },
+        onError: (err, res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
 
 
+  }
 
 
   Future<bool> getOderDetails({int? requestId}) async {

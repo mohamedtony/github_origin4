@@ -210,6 +210,7 @@ class MyAddsController extends GetxController with StateMixin<ShowAddsListRespon
       //..
       // Successfully fetched news data
       change(data, status: RxStatus.success());
+      update();
       // Logger().i(response!.data);
     } on dio.DioError catch (error) {
       if (error.response?.statusCode == 401 ||
@@ -227,6 +228,51 @@ class MyAddsController extends GetxController with StateMixin<ShowAddsListRespon
         change(null, status: RxStatus.error(errorDescription));
       }
     }
+  }
+
+  void getCommentsData({bool isRefresh = false}) async {
+    if (isRefresh) {
+      currentPage = 1;
+    } else {
+      if (currentPage >= totalPages) {
+        refreshController.loadNoData();
+      }
+    }
+    EasyLoading.show();
+    repo.get<ShowAddsListResponse>(
+        path: 'ads',
+        fromJson: (json) => ShowAddsListResponse.fromJson(json),
+        json: {"token": "Bearer $token"},
+        onSuccess: (res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+
+          res.data!.forEach((request) {
+            if(!addsList.contains(request.id)){
+              addsList.add(request);
+              addsListIds.add(request.id!);
+            }
+          });
+
+          currentPage++;
+          totalPages = res.pagination?.total??0;
+
+          update();
+        },
+        onError: (err, res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
+
+
   }
 
   /// delete employee
@@ -311,8 +357,10 @@ class MyAddsController extends GetxController with StateMixin<ShowAddsListRespon
               backgroundColor: Colors.yellow,
               snackPosition: SnackPosition.TOP,);
           }
+          update();
           fetchAdsList(pageZero: false);
 
+          update();
         },
         onError: (err, res) {
           if (EasyLoading.isShow) {

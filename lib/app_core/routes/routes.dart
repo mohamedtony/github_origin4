@@ -52,7 +52,6 @@ import 'package:advertisers/features/help_and_support/redundancy_questions_page/
 import 'package:advertisers/features/help_and_support/redundancy_questions_page/redudndancy_questions_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation.dart';
 import 'package:advertisers/features/my_ads/view/my_ads_page.dart';
-import 'package:advertisers/features/my_ads/view/my_ads_page2.dart';
 import 'package:advertisers/features/my_comments_advertiser/view/comments_page.dart';
 import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
 import 'package:advertisers/features/my_orders/view/my_orders_page.dart';
@@ -64,8 +63,8 @@ import 'package:advertisers/features/notifications_settings/view/pages/notificat
 import 'package:advertisers/features/reason_rejecting_advertisement/controller/reason_rejecting_advertisement_controller.dart';
 import 'package:advertisers/features/reason_rejecting_advertisement/view/page/reason_rejecting_advertisement.dart';
 import 'package:advertisers/features/request_advertise_module/view/pages/request_advertise_page.dart';
-import 'package:advertisers/features/tajer_order_details/advertiser_order_details.dart';
-import 'package:advertisers/features/tax_settings/view/pages/tax_settings_page.dart';
+import 'package:advertisers/features/tajer_order_details/tajer_order_details.dart';
+ import 'package:advertisers/features/tax_settings/view/pages/tax_settings_page.dart';
 import 'package:advertisers/features/users_module/controller/baka_details_controller.dart';
 import 'package:advertisers/features/users_module/controller/choose_baka_controller.dart';
 import 'package:advertisers/features/users_module/controller/forget_password_for_phone_controller.dart';
@@ -352,8 +351,8 @@ class Routes {
       page: () => CommentsPage(),
     ),
     GetPage(
-      name: '/MyAdsPage2',
-      page: () => MyAdsPage2(),
+      name: '/MyAdsPage',
+      page: () => MyAdsPage(),
     ),
 
     GetPage(
