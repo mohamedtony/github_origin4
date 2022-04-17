@@ -35,8 +35,9 @@ class MyAdsPage extends GetWidget<MyAddsController>  {
 
   @override
   Widget build(BuildContext context) {
-    return controller.obx(
-            (state) => Scaffold(
+    return GetBuilder<MyAddsController>(
+        init: MyAddsController(),
+        builder: (controller) => Scaffold(
               appBar:  PreferredSize(
                 child:  AppBarWidget(
                   isSideMenu: false,
@@ -50,7 +51,7 @@ class MyAdsPage extends GetWidget<MyAddsController>  {
                     90.0
                 ),
               ),
-      body: Container(
+              body: Container(
         child: Column(
           children: [
             /// header
@@ -83,28 +84,27 @@ class MyAdsPage extends GetWidget<MyAddsController>  {
               ),
             ),
             Expanded(
-              child: SmartRefresher(
+              child: Container(
+                child: SmartRefresher(
                   controller: controller.refreshController,
                   enablePullUp: true,
                   onRefresh: () async {
-                    /*final result = await*/ controller.fetchAdsList();
-                    if (controller.addsList.isNotEmpty) {
-                      controller.refreshController.refreshCompleted();
-                    } else {
-                      controller.refreshController.refreshFailed();
-                    }
-                  },
+                      /*final result = await*/ controller.getAdsData(isRefresh: true);
+                      if (controller.addsList.isNotEmpty) {
+                        controller.refreshController.refreshCompleted();
+                      } else {
+                        controller.refreshController.refreshFailed();
+                      }
+                    },
                   onLoading: () async {
-                    /*final result = await*/ controller.fetchAdsList();
-                    if (controller.addsList.isNotEmpty) {
-                      controller.refreshController.loadComplete();
-                    } else {
-                      controller.refreshController.loadFailed();
-                    }
-                  },
-                  child:   Container(
-
-                    child: ListView(
+                      /*final result = await*/ controller.getAdsData();
+                      if (controller.addsList.isNotEmpty) {
+                        controller.refreshController.loadComplete();
+                      } else {
+                        controller.refreshController.loadFailed();
+                      }
+                    },
+                  child: ListView(
                       controller: controller.scrollController,
                       children: [
                         GetBuilder<MyAddsController>(
@@ -323,7 +323,7 @@ class MyAdsPage extends GetWidget<MyAddsController>  {
                                                                           onTap: (){
                                                                             Get.put(TajerOrderDetailsController()).requestId=int.parse(controller.addsList[index].id.toString() );
                                                                             Get.put(TajerOrderDetailsController()).fetchOderDetails(requestId: controller.addsList[index].id);
-                                                                           // Get.put(TajerOrderDetailsController()).getTajerData(id: controller.addsList[index].id);
+                                                                            Get.put(TajerOrderDetailsController()).getTajerData(id: controller.addsList[index].id);
                                                                             Get.toNamed('/TajerOrderDetails');
                                                                           },
                                                                           child: Text( 'تفاصيل الطلب',
@@ -689,6 +689,7 @@ class MyAdsPage extends GetWidget<MyAddsController>  {
                                                             checkOpacity: 0,
                                                             onPress: (){
                                                               controller.showOnProfile(id: controller.addsList[index].id);
+                                                              controller.update();
                                                             },
                                                           ),
                                                           ),
@@ -884,8 +885,8 @@ class MyAdsPage extends GetWidget<MyAddsController>  {
                         ),
                       ],
                     ),
-                  ),
                 ),
+              ),
             ),
           ],
         ),
@@ -893,33 +894,6 @@ class MyAdsPage extends GetWidget<MyAddsController>  {
     )
     );
   }
-  openwhatsapp(context,whatsapp) async{
-    //var whatsapp ="+919144040888";
-    var whatsappURl_android = "whatsapp://send?phone="+whatsapp+"&text=hello";
-    var whatappURL_ios ="https://wa.me/$whatsapp?text=${Uri.parse("hello")}";
-    if(Platform.isIOS){
-      // for iOS phone only
-      if( await canLaunch(whatappURL_ios)){
-        await launch(whatappURL_ios, forceSafariVC: false);
-      }else{
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: new Text("whatsapp no installed")));
-      }
-    }else{
-      // android , web
-      if( await canLaunch(whatsappURl_android)){
-        await launch(whatsappURl_android);
-      }else{
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: new Text("whatsapp no installed")));
-      }
-    }
-  }
 }
 
-List<Widget> TabsWidgets = [
-  ProcessesWidget(),
-  ShippingWidget(),
-  // PullsWidget(),
-  // PointsWidget()
-];
+

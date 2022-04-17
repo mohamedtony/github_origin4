@@ -19,6 +19,7 @@ class TajerOrderDetailsController extends GetxController {
   int? secondSeeMore = 2;
 
   late AdvertiserOrderDetailsResponse myOderDetails;
+  var noImage='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScPr_e8yD_adDE0sUA6xJykV7Vuwyc0xQoun4XfAANTKGYdq2m99kHFf-Hc_XpY0YVnug&usqp=CAU';
 
   late Repository repo;
   late String token;

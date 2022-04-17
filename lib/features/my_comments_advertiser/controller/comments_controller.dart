@@ -149,18 +149,10 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
  List<int> mylist=<int> [];
   @override
   void onInit() {
-    // passIndex;
-
     repo=Repository();
     token =storage.read("token");
     searchController=TextEditingController();
-   // fetchEmployeesList(pageZero: false);
     getCommentsData();
-    //fetchComments();
-    // getRequestsData();
-    // restAll();
-    // loadMore();
-
     super.onInit();
   }
 
