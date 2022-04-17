@@ -6,6 +6,7 @@ import 'package:advertisers/features/advertiser_order_details/widgets/content_wi
 import 'package:advertisers/features/advertiser_order_details/widgets/content_widgets/links_widget.dart';
 import 'package:advertisers/features/advertiser_order_details/widgets/content_widgets/note_widget.dart';
 import 'package:advertisers/features/advertiser_order_details/widgets/order_details_title.dart';
+import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/tajer_order_details/controller/tajer_order_details_controller.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:advertisers/shared/gradient_check_box/gradient_check_box.dart';
@@ -197,15 +198,23 @@ class TajerOrderDetails extends GetWidget<TajerOrderDetailsController> {
                         children: [
 
 
-                          Row(
-                            children: [
-                              SvgPicture.asset('images/comment img.svg',height: 35,width: 35,fit: BoxFit.fill,),
+                          ///comment for the ads owner
+                           InkWell(
+                              onTap: (){
+                                controller.showCommentField.value=!controller.showCommentField.value;
+                                controller.update();
+                              },
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset('images/comment img.svg',height: 35,width: 35,fit: BoxFit.fill,),
 
-                              Container(
-                                child: Text('تعليقك الخاص لصاحب الإعلان',style: TextStyle(color: Color(0xff041D67),fontFamily: 'A Jannat LT, Regular',fontSize: 12),),
+                                  Container(
+                                    child: Text('تعليقك الخاص لصاحب الإعلان',style: TextStyle(color: Color(0xff041D67),fontFamily: 'A Jannat LT, Regular',fontSize: 12),),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+
 
                           Container(
                             width: 141,
@@ -232,7 +241,69 @@ class TajerOrderDetails extends GetWidget<TajerOrderDetailsController> {
 
                         ],
                       ),
-                    )
+                    ),
+
+                    Obx(
+                          () => Visibility(
+                        visible: controller.showCommentField.value,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal:10.0,vertical: 8),
+                          child: Container(
+                            height: 42,
+                            decoration:const BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(12.0),
+                                    bottomLeft: Radius.circular(12.0)),
+                             ),
+                            child: TextField(
+                              textAlign: TextAlign.start,
+                              textAlignVertical: TextAlignVertical.center,
+                              enabled: true,
+                              controller: controller.addCommentController.value,
+                               style: TextStyle(
+                                color: (AppColors.editProfileTextColorOpa)
+                                    .withOpacity(0.51),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.0,
+                              ),
+                              decoration: InputDecoration(
+                                suffixIcon: InkWell(
+                                  onTap: (){
+                                    if(controller.addCommentController.value!=null && controller.addCommentController.value.text!=null&&
+                                        controller.addCommentController.value.text!=""&&controller.showAdsDetailsResponse.value!=null
+                                        &&controller.showAdsDetailsResponse.value.data!=null&&controller.showAdsDetailsResponse.value.data!.user!=null
+                                        &&controller.showAdsDetailsResponse.value.data!.user!.id!=null){
+                                      controller.checkForAddingComment(controller.showAdsDetailsResponse.value.data!.user!.id,controller.showAdsDetailsResponse.value.data!.id,controller.addCommentController.value.text);
+                                    }else{
+                                      Get.snackbar(
+                                        "خطأ",
+                                        "يجب ادخال التعليق",
+                                        icon: const Icon(Icons.person, color: Colors.red),
+                                        backgroundColor: Colors.yellow,
+                                        snackPosition: SnackPosition.BOTTOM,);
+                                    }
+                                  },
+                                    child: Icon(Icons.send,color: Color(0xff4166CD),)
+                                ),
+                                  contentPadding: EdgeInsets.only(
+                                      left: 10.0, right: 14.0, bottom: 12.0),
+                                  // isCollapsed: true,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(70.0),
+                                    borderSide: BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
+                                  filled: true,
+                                  hintStyle: TextStyle(color: Colors.grey[350]),
+                                  hintText: 'اضف تعليقك الخاص لصاحب الاعلان',
+                                  fillColor: Colors.white70),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
 
                   ],
                 ),

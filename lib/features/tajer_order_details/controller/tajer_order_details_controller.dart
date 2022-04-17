@@ -1,8 +1,11 @@
 import 'dart:math';
 
 import 'package:advertisers/app_core/network/repository.dart';
+import 'package:advertisers/app_core/network/requests/AddReplyOnCommentRequest.dart';
+import 'package:advertisers/app_core/network/responses/AddEmployeeResponse.dart';
 import 'package:advertisers/app_core/network/responses/AdvertiserOrderDetailsResponse.dart';
 import 'package:advertisers/app_core/network/responses/ShowAdsDetailsResponse.dart';
+import 'package:advertisers/app_core/network/requests/AddCommentRequest.dart';
 import 'package:advertisers/shared/networking/api_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -18,6 +21,7 @@ class TajerOrderDetailsController extends GetxController {
   int? firstSeeMore = 2;
   int? secondSeeMore = 2;
 
+  var showCommentField=false.obs;
   late AdvertiserOrderDetailsResponse myOderDetails;
   var noImage='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScPr_e8yD_adDE0sUA6xJykV7Vuwyc0xQoun4XfAANTKGYdq2m99kHFf-Hc_XpY0YVnug&usqp=CAU';
 
@@ -31,6 +35,8 @@ class TajerOrderDetailsController extends GetxController {
     myOderDetails=AdvertiserOrderDetailsResponse();
     super.onInit();
   }
+
+  var addCommentController=TextEditingController().obs;
 
   late int requestId;
   final ApiService _apiService = Get.put(ApiService());
@@ -92,7 +98,6 @@ class TajerOrderDetailsController extends GetxController {
 
   }
 
-
   Future<bool> getOderDetails({int? requestId}) async {
     EasyLoading.show();
     repo.get<AdvertiserOrderDetailsResponse>(
@@ -126,7 +131,6 @@ class TajerOrderDetailsController extends GetxController {
     return false;
   }
 
-
   void fetchOderDetails({int? requestId}) async {
     EasyLoading.show();
      String url ='https://advertiser.cefour.com/api/v1/requests/$requestId';
@@ -156,5 +160,63 @@ class TajerOrderDetailsController extends GetxController {
     }
   }
 
+  /// add comment
+  void addCommentOnAds({AddCommentRequest? request,int? id }) async {
+    EasyLoading.show();
+    dio.FormData formData = dio.FormData.fromMap(request!.toJson());
+    String url ='https://advertiser.cefour.com/api/v1/ads/$id/comment';
+    Logger().i(request);
+    print("URL+++> $url");
+    try {
+      final dio.Response response = await _apiService.dioClient.post(
+        url,
+        data: formData,
+      );
+      final data = AddEmployeeResponse.fromJson(response.data);
+      Logger().i(response.data);
+
+      if(data.status==200){
+        showCommentField.value=false;
+        addCommentController.value.clear();
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
+        Get.snackbar("حسنا",
+          "تم اضافة التعليق بنجاح",
+          icon: const Icon(Icons.check, color: Colors.green),
+          backgroundColor: Colors.yellow,
+          snackPosition: SnackPosition.TOP,);
+        update();
+
+      }else{
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
+        Get.snackbar(
+          "خطأ",
+          data.message.toString(),
+          icon: const Icon(Icons.person, color: Colors.red),
+          backgroundColor: Colors.yellow,
+          snackPosition: SnackPosition.BOTTOM,);
+      }
+
+    } on dio.DioError catch (error) {
+      Get.snackbar(
+        "خطأ",
+        error.message.toString(),
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
+    }
+  }
+
+  void checkForAddingComment(int? clientId,int? commentId,String text){
+
+    AddCommentRequest request=AddCommentRequest();
+    request.comment= text;
+    request.clientId=clientId;
+    addCommentOnAds(request: request,id: commentId,);
+
+  }
 
 }
