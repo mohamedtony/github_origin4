@@ -7,6 +7,7 @@ import 'package:advertisers/features/my_ads/widgets/slide_right_item_new.dart';
 import 'package:advertisers/features/my_ads/widgets/slide_right_item_separation.dart';
 import 'package:advertisers/features/my_ads/widgets/slide_right_items_wraper.dart';
 import 'package:advertisers/features/my_ads/widgets/slide_right_items_wraper_one_item.dart';
+import 'package:advertisers/features/my_comments_advertiser/controller/comments_controller.dart';
 import 'package:advertisers/features/tajer_order_details/controller/tajer_order_details_controller.dart';
 
 import 'package:advertisers/features/wallet_module/widgets/processes_widgets/processes_widget.dart';
@@ -499,16 +500,24 @@ class MyAdsPage extends GetWidget<MyAddsController>  {
                                                       ),
                                                     ),
 
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      children: [
-                                                        Image.asset('images/comments2.png',height: 13,width: 17,fit: BoxFit.fill,),
-                                                        Container(width: 10,),
-                                                        Container(
-                                                          child: Text('${controller.addsList[index].comments??""}',
-                                                            style:const TextStyle(decoration: TextDecoration.underline,color: Color(0xff041D67),fontFamily: 'A Jannat LT, Regular',fontSize: 12),),
-                                                        ),
-                                                      ],
+                                                    InkWell(
+                                                      onTap: (){
+                                                        Get.put(CommentsController()).commentsList.clear();
+                                                        Get.put(CommentsController()).adsId.value=controller.addsList[index].id??0;
+                                                        Get.put(CommentsController()).getCommentsData(id: controller.addsList[index].id);
+                                                         Get.toNamed('/CommentsPage');
+                                                      },
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        children: [
+                                                          Image.asset('images/comments2.png',height: 13,width: 17,fit: BoxFit.fill,),
+                                                          Container(width: 10,),
+                                                          Container(
+                                                            child: Text('${controller.addsList[index].comments??""}',
+                                                              style:const TextStyle(decoration: TextDecoration.underline,color: Color(0xff041D67),fontFamily: 'A Jannat LT, Regular',fontSize: 12),),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
 
 

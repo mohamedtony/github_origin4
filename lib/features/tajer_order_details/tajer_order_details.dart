@@ -381,6 +381,7 @@ class TajerOrderDetails extends GetWidget<TajerOrderDetailsController> {
 
 
             GetBuilder<TajerOrderDetailsController>(
+                init: TajerOrderDetailsController(),
                 id: 'SelectedIndex',
                 builder: (_) {
                   return Column(

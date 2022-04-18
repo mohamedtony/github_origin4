@@ -34,6 +34,7 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
 
   var myRequestsAsClient=<RequestModel>[].obs;
   var currentIndex=0.obs;
+  var adsId=0.obs;
   bool isChecked=true;
   var isEdit=false.obs;
   bool isChecked_setting_accept=false;
@@ -152,7 +153,7 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
     repo=Repository();
     token =storage.read("token");
     searchController=TextEditingController();
-    getCommentsData();
+    getCommentsData(id: adsId.value);
     super.onInit();
   }
 
@@ -291,7 +292,7 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
   List<Comments> commentsList=[];
   var myCommentsResponse=MyCommentsResponse().obs;
 
-  void getCommentsData({bool isRefresh = false}) async {
+  void getCommentsData({bool isRefresh = false,int? id}) async {
     if (isRefresh) {
       currentPage = 1;
     } else {
@@ -301,9 +302,9 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
     }
     EasyLoading.show();
     repo.get<MyCommentsResponse>(
-        path: 'mycomments',
+        path: 'mycomments?ads_id=$id',//mycomments
         fromJson: (json) => MyCommentsResponse.fromJson(json),
-        json: {"token": "Bearer $token"},
+        json: {"token": "Bearer $token"},//  2858|NkRDH6frkrYXClh6GqITVXUMuHfUuQxVmAXbkYGJ
         onSuccess: (res) {
           if (EasyLoading.isShow) {
             EasyLoading.dismiss();
@@ -434,7 +435,7 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
           EasyLoading.dismiss();
         }
 
-        getCommentsData(isRefresh: true);
+        getCommentsData(isRefresh: true,id: adsId.value);
         update();
 
       }else{

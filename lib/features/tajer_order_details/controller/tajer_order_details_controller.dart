@@ -161,7 +161,7 @@ class TajerOrderDetailsController extends GetxController {
   }
 
   /// add comment
-  void addCommentOnAds({AddCommentRequest? request,int? id }) async {
+  void addCommentOnAds({AddReplyOnCommentRequest? request,int? id }) async {
     EasyLoading.show();
     dio.FormData formData = dio.FormData.fromMap(request!.toJson());
     String url ='https://advertiser.cefour.com/api/v1/ads/$id/comment';
@@ -212,9 +212,12 @@ class TajerOrderDetailsController extends GetxController {
 
   void checkForAddingComment(int? clientId,int? commentId,String text){
 
-    AddCommentRequest request=AddCommentRequest();
+    // AddCommentRequest request=AddCommentRequest();
+    // request.comment= text;
+    // request.clientId=clientId;
+    AddReplyOnCommentRequest request=AddReplyOnCommentRequest();
     request.comment= text;
-    request.clientId=clientId;
+  //  request.commentId=commentId;
     addCommentOnAds(request: request,id: commentId,);
 
   }

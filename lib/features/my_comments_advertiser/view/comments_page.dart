@@ -253,7 +253,7 @@ class CommentsPage extends GetWidget<CommentsController>  {
                       controller: controller.refreshController,
                       enablePullUp: true,
                       onRefresh: () async {
-                         controller.getCommentsData(isRefresh: true);
+                         controller.getCommentsData(isRefresh: true,id: controller.adsId.value);
                         if (controller.commentsList.isNotEmpty) {
                           controller.refreshController.refreshCompleted();
                         } else {
@@ -261,7 +261,7 @@ class CommentsPage extends GetWidget<CommentsController>  {
                         }
                      },
                       onLoading: () async {
-                        /*final result = await*/  controller.getCommentsData();
+                        /*final result = await*/  controller.getCommentsData(id: controller.adsId.value);
                         if (controller.commentsList.isNotEmpty) {
                           controller.refreshController.loadComplete();
                         } else {

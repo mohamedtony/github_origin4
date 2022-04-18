@@ -191,46 +191,6 @@ class MyAddsController extends GetxController /*with StateMixin<ShowAddsListResp
     return false;
   }
 
-  /*void fetchAdsList({bool? pageZero}) async {
-    pageZero == true? page=1: page++;
-    String url ='https://advertiser.cefour.com/api/v1/ads';
-    print("URL+++> $url");
-    try {
-      final dio.Response response = await _apiService.dioClient.get(
-        url,
-      );
-      final data = ShowAddsListResponse.fromJson(response.data);
-      Logger().i(response!.data);
-      data!.data!.forEach((request) {
-        if(!addsList.contains(request.id)){
-          addsList.add(request);
-          addsListIds.add(request.id!);
-        }
-      });
-
-      print("employeesRequests ==> length == > ${addsList.length}");
-      //..
-      // Successfully fetched news data
-      change(data, status: RxStatus.success());
-      update();
-      // Logger().i(response!.data);
-    } on dio.DioError catch (error) {
-      if (error.response?.statusCode == 401 ||
-          error.response?.statusCode == 422) {
-        // Error occurred while fetching data
-        change(null,
-            status: RxStatus.error(
-                'حدث خطأ ما ${error.response?.statusCode}'));
-      } else if (error.error is SocketException) {
-        change(null,
-            status: RxStatus.error(
-                'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
-      } else {
-        String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-        change(null, status: RxStatus.error(errorDescription));
-      }
-    }
-  }*/
 
   void getAdsData({bool isRefresh = false}) async {
     if (isRefresh) {
@@ -286,60 +246,6 @@ class MyAddsController extends GetxController /*with StateMixin<ShowAddsListResp
 
   }
 
-
-  /// delete employee
-  void deleteAnAds2({int? id}) async {
-    EasyLoading.show();
-    String url ='https://advertiser.cefour.com/api/v1/ads/$id';
-    print("URL+++> $url");
-    try {
-      final dio.Response response = await _apiService.dioClient.delete(
-        url,
-      );
-      final data = ShowEmployeeDetailsResponse.fromJson(response.data);
-
-      Logger().i(response.data);
-
-      if(data.status==200){
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
-
-        Get.snackbar("حسنا",
-          "تم حذف الاعلان بنجاح",
-          icon: const Icon(Icons.check, color: Colors.green),
-          backgroundColor: Colors.yellow,
-          snackPosition: SnackPosition.TOP,);
-
-        //fetchAdsList();
-        getAdsData(isRefresh: true);
-        update();
-
-      }else{
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
-        Get.snackbar(
-          "${data.status}  خطأ ",
-          data.message.toString(),
-          icon: const Icon(Icons.person, color: Colors.red),
-          backgroundColor: Colors.yellow,
-          snackPosition: SnackPosition.BOTTOM,);
-      }
-
-    } on dio.DioError catch (error) {
-      if (error.response?.statusCode == 401 ||
-          error.response?.statusCode == 422) {
-        // Error occurred while fetching data
-
-      } else if (error.error is SocketException) {
-
-      } else {
-        String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-
-      }
-    }
-  }
 
   void deleteAnAds({int? id}) async {
     EasyLoading.show();
