@@ -133,6 +133,7 @@ class _AdvancedOptionsPageState extends State<AdvancedOptionsPage> {
               children: [
                 Expanded(child: InkWell(onTap: (){
                  Get.find<AdvancedOptionsController>().setSettings();
+                 Get.delete<AdvancedOptionsController>();
                 },
                   child: Container(
                     height: 40,

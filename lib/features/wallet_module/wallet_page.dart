@@ -1,5 +1,8 @@
 import 'package:advertisers/app_core/network/models/User.dart';
 import 'package:advertisers/features/wallet_module/controllers/charge_controller.dart';
+import 'package:advertisers/features/wallet_module/controllers/points_controller.dart';
+import 'package:advertisers/features/wallet_module/controllers/process_controller.dart';
+import 'package:advertisers/features/wallet_module/controllers/withdraw_controller.dart';
 import 'package:advertisers/features/wallet_module/wallet_controller.dart';
 import 'package:advertisers/features/wallet_module/widgets/appbar_widget.dart';
 import 'package:advertisers/features/wallet_module/widgets/point_widgets/point_widget.dart';
@@ -25,6 +28,10 @@ import 'package:get_storage/get_storage.dart';
 class WalletPage extends StatelessWidget {
   WalletPage({Key? key}) : super(key: key);
   final WalletController _walletController = Get.put(WalletController());
+  final ProcessesController _processesController = Get.put(ProcessesController());
+  final ChargeController _chargeController = Get.put(ChargeController());
+  final PointsController _pointsController = Get.put(PointsController());
+  final WithdrawController _withdrawController = Get.put(WithdrawController());
 
 
 
@@ -115,8 +122,20 @@ class WalletPage extends StatelessWidget {
 
                         return InkWell(
                             onTap: () {
+
+
                               _walletController
                                   .passIndex(upperTabItems![index].id);
+
+                              if(upperTabItems![index].id == 0){
+                                _processesController.getProcessesData();
+                              } if(upperTabItems![index].id == 1){
+                              _chargeController.getChargeData();
+                              } if(upperTabItems![index].id == 2){
+                              _withdrawController.getWithdrawData();
+                              } if(upperTabItems![index].id == 3){
+                              _pointsController.getPointsData();
+                              }
                               print("${_walletController.tabId}");
                             },
                             child: Container(

@@ -385,6 +385,15 @@ class AddAdvertiserChannelController extends GetxController {
 
   }
   addChannel(){
+    if (int.parse(selectedMenPercentage.value)+int.parse(selectedWomenPercentage.value)+
+        int.parse(selectedBoysPercentage.value)+int.parse(selectedGirlsPercentage.value)>100){
+      Get.snackbar(
+        "خطأ",
+        "مجموع النسب يجب ان لا يتعدى المائة",
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
+    }else {
 if(channelId.value==0){
   Get.snackbar(
     "تنبيه",
@@ -517,7 +526,7 @@ if(isCountryEnabled.value) {
           backgroundColor: Colors.yellow,
           snackPosition: SnackPosition.BOTTOM,);
       });
-}
+}}
   }
 
   editChannel(){

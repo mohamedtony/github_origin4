@@ -1,14 +1,17 @@
 import 'dart:io';
-
 import 'package:advertisers/features/wallet_module/Response/withdraw_response.dart';
 import 'package:advertisers/features/wallet_module/request/charge_request.dart';
 import 'package:advertisers/shared/networking/api_provider.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
 class WithdrawController extends GetxController
     with StateMixin<WithdrawResponse> {
+
+  TextEditingController amountController = TextEditingController();
+
   int paymentId = -1;
   void passPaymentIndex(newIndex) {
     paymentId = newIndex;
@@ -36,6 +39,7 @@ class WithdrawController extends GetxController
       //   snackPosition: SnackPosition.BOTTOM,
       // );
       change(data, status: RxStatus.success());
+      amountController.clear();
       Logger().i(response.data);
     } on dio.DioError catch (error) {
       if (error.response?.statusCode == 401 ||
