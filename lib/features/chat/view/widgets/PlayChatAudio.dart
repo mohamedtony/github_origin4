@@ -1,8 +1,12 @@
 import 'package:advertisers/features/chat/view/widgets/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:just_audio/just_audio.dart';
-
+import 'dart:math';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -81,32 +85,41 @@ class PlayChatAudioState extends State<PlayChatAudio> with WidgetsBindingObserve
   @override
   Widget build(BuildContext context) {
     return
-      Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Display play/pause button and volume/speed sliders.
-            //  ControlButtons(_player),
-              // Display seek bar. Using StreamBuilder, this widget rebuilds
-              // each time the position, buffered position or duration changes.
-              StreamBuilder<PositionData>(
-                stream: _positionDataStream,
-                builder: (context, snapshot) {
-                  final positionData = snapshot.data;
-                  return SeekBar(
-                    duration: positionData?.duration ?? Duration.zero,
-                    position: positionData?.position ?? Duration.zero,
-                    bufferedPosition:
-                    positionData?.bufferedPosition ?? Duration.zero,
-                    onChangeEnd: _player.seek,
-                  );
-                },
-              ),
-              ControlButtons(_player),
-            ],
+      Padding(
+        padding: EdgeInsets.only(left:55.0.w,right:0.0),
+        child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Display play/pause button and volume/speed sliders.
+                ControlButtons(_player),
+                // Display seek bar. Using StreamBuilder, this widget rebuilds
+                // each time the position, buffered position or duration changes.
+                StreamBuilder<PositionData>(
+                  stream: _positionDataStream,
+                  builder: (context, snapshot) {
+                    final positionData = snapshot.data;
+                    return Container(
+                    width:179.w,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(image:AssetImage('images/zigzag.png',))
+                      ),
+                      child: SeekBar(
+                        duration: positionData?.duration ?? Duration.zero,
+                        position: positionData?.position ?? Duration.zero,
+                        bufferedPosition:
+                        positionData?.bufferedPosition ?? Duration.zero,
+                        onChangeEnd: _player.seek,
+                      ),
+                    );
+                  },
+                ),
+               // ControlButtons(_player),
+              ],
 
 
-    );
+    ),
+      );
   }
 }
 
@@ -151,28 +164,66 @@ class ControlButtons extends StatelessWidget {
             if (processingState == ProcessingState.loading ||
                 processingState == ProcessingState.buffering) {
               return Container(
-                margin: EdgeInsets.all(8.0),
-                width: 44.0,
-                height: 44.0,
-                child: CircularProgressIndicator(),
+                //margin: EdgeInsets.all(8.0),
+                width: 30,
+                height: 54.0,
+
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: CircularProgressIndicator(strokeWidth:2 ),
+                ),
               );
             } else if (playing != true) {
-              return IconButton(
-                icon: Icon(Icons.play_arrow,),
-                iconSize: 44.0,
-                onPressed: player.play,
+              return Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: Container(
+                  height: 44,
+                  width: 46.w,
+                  decoration: BoxDecoration(
+                    color:Colors.black12,
+                    borderRadius:  BorderRadius.only(bottomRight: Radius.circular(7),topRight: Radius.circular(7)),
+                  ),
+
+                  //padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: IconButton(
+                    icon: Transform.rotate(
+                        angle: pi / 180 * 180,
+                        alignment: Alignment.center,
+                        child: Image.asset('images/player.png',)),
+                    iconSize: 17.0,
+                    onPressed: player.play,
+                  ),
+                ),
               );
             } else if (processingState != ProcessingState.completed) {
-              return IconButton(
-                icon: Icon(Icons.pause),
-                iconSize: 64.0,
-                onPressed: player.pause,
+              return Container(
+                height: 44,
+                width: 46.w,
+                decoration: BoxDecoration(
+                  color:Colors.black12,
+                  borderRadius:  BorderRadius.only(bottomRight: Radius.circular(7),topRight: Radius.circular(7)),
+                ),
+
+                child: IconButton(
+                  icon: Icon(Icons.pause),
+                  iconSize: 20.0,
+                  onPressed: player.pause,
+                ),
               );
             } else {
-              return IconButton(
-                icon: Icon(Icons.replay),
-                iconSize: 64.0,
-                onPressed: () => player.seek(Duration.zero),
+              return Container(
+                height: 44,
+                width: 46.w,
+                decoration: BoxDecoration(
+                  color:Colors.black12,
+                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(7),topRight: Radius.circular(7)),
+                ),
+
+                child: IconButton(
+                  icon: Icon(Icons.replay),
+                  iconSize:20.0,
+                  onPressed: () => player.seek(Duration.zero),
+                ),
               );
             }
           },

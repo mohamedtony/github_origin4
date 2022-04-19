@@ -22,18 +22,24 @@ ListChatModel _$ListChatModelFromJson(Map<String, dynamic> json) =>
       not_seen: json['not_seen'] as int?,
       sent_at: json['sent_at'] as String?,
       sent_from: json['sent_from'] as String?,
-    );
+    )
+      ..forward = json['forward'] as int?
+      ..replied_message = json['replied_message'] as int?
+      ..starred = json['starred'] as bool?;
 
 Map<String, dynamic> _$ListChatModelToJson(ListChatModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'not_seen': instance.not_seen,
+      'forward': instance.forward,
+      'replied_message': instance.replied_message,
       'room': instance.room,
       'sent_at': instance.sent_at,
       'sent_from': instance.sent_from,
       'message_type': instance.message_type,
       'message': instance.message,
       'from_me': instance.from_me,
+      'starred': instance.starred,
       'from_user': instance.from_user,
       'to_user': instance.to_user,
     };

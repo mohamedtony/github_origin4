@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
+import 'package:advertisers/features/chat/view/widgets/AudioChatMessage.dart';
 import 'package:location/location.dart'as location;
 import 'package:advertisers/features/chat/view/pages/LocationShare.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
@@ -91,6 +92,7 @@ setState(() {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(75),
         child: AppBarWidget(
+
             // isSearchBar: ,
             // showSearch: false,
             ),
@@ -132,80 +134,85 @@ height: 812.h-270,
 
         if(_chatMessagesController.messagesChat[index].from_me==false&&_chatMessagesController.messagesChat[index].message_type=='text'){
                  return ChatContentWidget(
-                    chatUser: ChatUser.receiver,
+                    chatUser: ChatUser.receiver,index: index,
                     message: _chatMessagesController.messagesChat[index],
                     type: 'text',
+                   chatMessagesController:_chatMessagesController ,
                     //message: 'السلام عليكم',
                   );}else if(_chatMessagesController.messagesChat[index].from_me==true&&_chatMessagesController.messagesChat[index].message_type=='text') {
           return ChatContentWidget(
             chatUser: ChatUser.sender,
             message: _chatMessagesController.messagesChat[index],
-            type: 'text',
+            type: 'text',index: index,
+            chatMessagesController:_chatMessagesController ,
             // message: 'عليكم السلام ورحمة الله وبركاته',
           );
         }else if(_chatMessagesController.messagesChat[index].from_me==false&&(_chatMessagesController.messagesChat[index].message_type=='sound'||_chatMessagesController.messagesChat[index].message_type=='audio')){
           return ChatContentWidget(
-            chatUser: ChatUser.receiver,
+            chatUser: ChatUser.receiver,index: index,
             message: _chatMessagesController.messagesChat[index],
-            type: 'sound',
+            type: 'sound',chatMessagesController:_chatMessagesController ,
             // message: 'عليكم السلام ورحمة الله وبركاته',
           );
         }else if(_chatMessagesController.messagesChat[index].from_me==true&&(_chatMessagesController.messagesChat[index].message_type=='sound'||_chatMessagesController.messagesChat[index].message_type=='audio')){
           return ChatContentWidget(
-            chatUser: ChatUser.sender,
+            chatUser: ChatUser.sender,index: index,
             message: _chatMessagesController.messagesChat[index],
-            type: 'sound',
+            type: 'sound',chatMessagesController:_chatMessagesController ,
             // message: 'عليكم السلام ورحمة الله وبركاته',
           );
         }else if(_chatMessagesController.messagesChat[index].from_me==false&&(_chatMessagesController.messagesChat[index].message_type=='photo'||_chatMessagesController.messagesChat[index].message_type=='image')){
           return ChatContentWidget(
-            chatUser: ChatUser.receiver,
+            chatUser: ChatUser.receiver,index: index,
             message: _chatMessagesController.messagesChat[index],
             type: 'image',
+            chatMessagesController:_chatMessagesController ,
             // message: 'عليكم السلام ورحمة الله وبركاته',
           );
         }else if(_chatMessagesController.messagesChat[index].from_me==true&&(_chatMessagesController.messagesChat[index].message_type=='photo'||_chatMessagesController.messagesChat[index].message_type=='image')){
           return ChatContentWidget(
-            chatUser: ChatUser.sender,
+            chatUser: ChatUser.sender,index: index,
             message: _chatMessagesController.messagesChat[index],
             type: 'image',
+            chatMessagesController:_chatMessagesController ,
             // message: 'عليكم السلام ورحمة الله وبركاته',
           );
         }else if(_chatMessagesController.messagesChat[index].from_me==false&&_chatMessagesController.messagesChat[index].message_type=='location'){
           return ChatContentWidget(
-            chatUser: ChatUser.receiver,
+            chatUser: ChatUser.receiver,index: index,
             message: _chatMessagesController.messagesChat[index],
             type: 'location',
+            chatMessagesController:_chatMessagesController ,
             // message: 'عليكم السلام ورحمة الله وبركاته',
           );
         }else if(_chatMessagesController.messagesChat[index].from_me==true&&_chatMessagesController.messagesChat[index].message_type=='location'){
           return ChatContentWidget(
-            chatUser: ChatUser.sender,
+            chatUser: ChatUser.sender,index: index,
             message: _chatMessagesController.messagesChat[index],
             type: 'location',
+            chatMessagesController:_chatMessagesController ,
+            // message: 'عليكم السلام ورحمة الله وبركاته',
+          );
+        }else if(_chatMessagesController.messagesChat[index].from_me==false&&_chatMessagesController.messagesChat[index].message_type=='video'){
+          return ChatContentWidget(
+            chatUser: ChatUser.receiver,index: index,
+            message: _chatMessagesController.messagesChat[index],
+            type: 'video',
+            chatMessagesController:_chatMessagesController ,
+            // message: 'عليكم السلام ورحمة الله وبركاته',
+          );
+        }else if(_chatMessagesController.messagesChat[index].from_me==true&&_chatMessagesController.messagesChat[index].message_type=='video'){
+          return ChatContentWidget(
+            chatUser: ChatUser.sender,index: index,
+            message: _chatMessagesController.messagesChat[index],
+            type: 'video',
+            chatMessagesController:_chatMessagesController ,
             // message: 'عليكم السلام ورحمة الله وبركاته',
           );
         }
         return SizedBox();
         },
-                  // ChatContentWidget(
-                  //   chatUser: ChatUser.sender,
-                  //   message:
-                  //       'هل من الممكن تخفيض مبلغ الإعلان عن الإعلان السابق ، و يا ليت هذه المرة تكون التغطية بطريقة',
-                  // ),
-                  // ChatContentWidget(
-                  //   chatUser: ChatUser.receiver,
-                  //   message:
-                  //       'بإمكانك الحصول على تخفيض من خلال كوبونات المنصة جرب لحر ما يضبط معاك أحدها',
-                  // ),
-                  // ChatContentWidget(
-                  //   chatUser: ChatUser.sender,
-                  //   message: 'أشكرك أستاذ أحمد .... ما قصرت',
-                  // ),
-                  // ChatContentWidget(
-                  //   chatUser: ChatUser.receiver,
-                  //   message: 'العفو',
-                  // ),
+
     )),
             ),
             Positioned(
@@ -232,6 +239,7 @@ height: 812.h-270,
                   padding: const EdgeInsets.all(3),
                   color: Color(0xff4187cd),
                   child: Row(
+                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       // InkWell(
                       //   onTap: () {
@@ -251,13 +259,13 @@ height: 812.h-270,
                             // dio.MultipartFile file=  await dio.MultipartFile.fromFile(soundFile.path,
                             //     filename: soundFile.path
                             //         .substring(soundFile.path.lastIndexOf("/") + 1));
-                            _chatMessagesController.uploadFile(room: room,type: "audio",file:await dio.MultipartFile.fromFile(soundFile.path,
+                            _chatMessagesController.uploadFile(room: room,type: "sound",file:await dio.MultipartFile.fromFile(soundFile.path,
                                 filename: soundFile.path
                                     .substring(soundFile.path.lastIndexOf("/") + 1)));
                           },
-                          backGroundColor: Color(0xff4187cd),
-                         recordIcon: Icon(Icons.mic,color: Colors.white,),
-                          encode: AudioEncoderType.AAC,
+                          backGroundColor:const Color(0xff4187cd),
+                         recordIcon:const Icon(Icons.mic,color: Colors.white,),
+                          //encode: AudioEncoderType.AAC
                         ),
                       ),
                       InkWell(
@@ -280,12 +288,16 @@ height: 812.h-270,
                             // await dio.MultipartFile.fromFile(file.path,
                             //     filename: file.path
                             //         .substring(file.path.lastIndexOf("/") + 1));
-                            ChatMessagesController.photo =
-                            await dio.MultipartFile.fromFile(file!.path,
-                                filename: file.path
-                                    .substring(file.path.lastIndexOf("/") + 1));
+
+
+                            // ChatMessagesController.photo =
+                            // await dio.MultipartFile.fromFile(file!.path,
+                            //     filename: file.path
+                            //         .substring(file.path.lastIndexOf("/") + 1));
 
                             //         provider = FileImage(savedFile);
+
+
                             //         setState(()
                             //         {
 
@@ -297,39 +309,55 @@ height: 812.h-270,
                             //           file1=multi1;
                             //         });
                             //
-                            FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
-                            ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
+                          _chatMessagesController.uploadFile(room: room,type: "image",file: await dio.MultipartFile.fromFile(file!.path,
+                              filename: file.path
+                                  .substring(file.path.lastIndexOf("/") + 1)));
+                            // FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
+                            // ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
                             //ToUserModel toUserModel=json.decode(Get.parameters["to_user"]??"");
-                            _chatMessagesController.sendMessage(MessageChatModel(room: room,message:chatMessageController.text,type: "image",
-                                from_user_id: fromUserModel.id,
-                                to_user_id: toUserModel.id.toString()));
+                            // _chatMessagesController.sendMessage(MessageChatModel(room: room,message:,type: "image",
+                            //     from_user_id: fromUserModel.id,
+                            //     to_user_id: toUserModel.id.toString()));
                          // });
                         },
-                        child: SvgPicture.asset(
-                          "images/camera.svg",
-                          height: 60,
-                          color: Colors.white,
-                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left:2.0,bottom: 10),
+                          child: Icon(Icons.camera_alt_outlined,color: Colors.white,),
+                        )
+                        // SvgPicture.asset(
+                        //   "images/camera.svg",
+                        //   height: 50,
+                        //   color: Colors.white,
+                        // ),
                       ),
-                      Visibility(
-                        // visible: showChatBar,
-                        child: SizedBox(
-                           width: 200.w,
-                          // height: 45.h,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Card(
-                              color: Colors.grey[200],
-                              clipBehavior: Clip.antiAlias,
-                              elevation: 3,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(25.0),
-                                ),
+                      SizedBox(
+                         width: 244.w,
+                        // height: 45.h,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Card(
+                            color: Colors.grey[200],
+                            clipBehavior: Clip.antiAlias,
+                            elevation: 3,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(25.0),
                               ),
-                              child: Container(
-                                // height: 45,
-                                child:RawKeyboardListener(
+                            ),
+                            child:
+                            // Column(
+                            //   children: [
+                            //     _chatMessagesController.replied.value==true?
+                            //         Container(
+                            //           decoration:BoxDecoration(
+                            //             border: Border.all(color: Colors.blueAccent),
+                            //             borderRadius: BorderRadius.circular(15),
+                            //           ),
+                            //           child: _chatMessagesController.messagesChat[_chatMessagesController.repliedIndex.value].message_type=='text'?Text(_chatMessagesController.messagesChat[_chatMessagesController.repliedIndex.value].message??' '):
+                            //           _chatMessagesController.messagesChat[_chatMessagesController.repliedIndex.value].message_type=='sound'?const Text('Voice Message'):_chatMessagesController.messagesChat[_chatMessagesController.repliedIndex.value].message_type=='video'?
+                            //           const Text('Video Message'):_chatMessagesController.messagesChat[_chatMessagesController.repliedIndex.value].message_type=='location'? const Text('Video Message'):const SizedBox()
+                            //         ):const SizedBox(),
+                                RawKeyboardListener(
                                   focusNode: FocusNode(),
                                   onKey: (event) {
                                    // if(event.isKeyPressed(LogicalKeyboardKey.enter)) {
@@ -432,20 +460,26 @@ height: 812.h-270,
                                     // },
                                   ),
                                 ),
-                              ),
-                            ),
+                            //   ],
+                            // ),
                           ),
                         ),
                       ),
-                      QudsPopupButton(
-                        // backgroundColor: Colors.red,
-                          tooltip: 'T',
-                          items: getMenuItems(),
-                          child: const Icon(
-                                Icons.add,
-                                color: Colors.white,
-                                size: 35,
-                              ),),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left:8.0),
+                          child: QudsPopupButton(
+                            // backgroundColor: Colors.red,
+                              tooltip: 'T',
+                              items: getMenuItems(),
+                              child: const Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                    size: 35,
+                                  ),),
+                        ),
+                      ),
                       // IconButton(
                       //   onPressed: () {},
                       //   icon: const Icon(
@@ -483,17 +517,13 @@ height: 812.h-270,
             FilePickerResult? result = await FilePicker.platform.pickFiles(allowedExtensions: ['pdf', 'doc'],type: FileType.custom,);
 
             if (result != null) {
-              File file = File(result.files.single.path??' ');
-              ChatMessagesController.photo =
-              await dio.MultipartFile.fromFile(file!.path,
-                  filename: file.path
-                      .substring(file.path.lastIndexOf("/") + 1));
-              FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
-              ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
-              //ToUserModel toUserModel=json.decode(Get.parameters["to_user"]??"");
-              _chatMessagesController.sendMessage(MessageChatModel(room: room,message:chatMessageController.text,type: "document",
-                  from_user_id: fromUserModel.id,
-                  to_user_id: toUserModel.id.toString()));
+
+               _chatMessagesController.uploadFile(room: room,type: "file",file: await dio.MultipartFile.fromFile(result.files.first.path??' ',
+                  filename: result.files.first.path
+                      ?.substring(result.files.first.path?.lastIndexOf("/")??0 + 1)));
+              // _chatMessagesController.sendMessage(MessageChatModel(room: room,message:chatMessageController.text,type: "document",
+              //     from_user_id: fromUserModel.id,
+              //     to_user_id: toUserModel.id.toString()));
             } else {
               // User canceled the picker
             }
@@ -564,18 +594,15 @@ height: 812.h-270,
               ListTile(
                 onTap: () async {
                   final XFile? file = await _imagePicker.pickImage(source: ImageSource.gallery);
-                  ChatMessagesController.photo =
-                  await dio.MultipartFile.fromFile(file!.path,
-                      filename: file.path
-                          .substring(file.path.lastIndexOf("/") + 1));
-                  FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
-                  ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
-                  //ToUserModel toUserModel=json.decode(Get.parameters["to_user"]??"");
-                  _chatMessagesController.sendMessage(MessageChatModel(room: room,message:chatMessageController.text,type: "image",
-                      from_user_id: fromUserModel.id,
-                      to_user_id: toUserModel.id.toString()));
-                  Navigator.pop(context);
-                },
+      if (file != null) {
+        _chatMessagesController.uploadFile(room: room,
+            type: "image",
+            file: await dio.MultipartFile.fromFile(file.path ??
+                ' ',
+                filename: file.path
+                    ?.substring(file.path.lastIndexOf("/") ?? 0 + 1)));
+        Navigator.pop(context);
+      }},
                 title: Text("صورة"),
                 leading: Icon(Icons.account_box,color: Colors.blue,),
               ),
@@ -584,18 +611,15 @@ height: 812.h-270,
               ListTile(
                 onTap: ()async {
                   final XFile? file = await _imagePicker.pickVideo(source: ImageSource.gallery);
-                  ChatMessagesController.photo =
-                  await dio.MultipartFile.fromFile(file!.path,
-                      filename: file.path
-                          .substring(file.path.lastIndexOf("/") + 1));
-                  FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
-                  ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
-                  //ToUserModel toUserModel=json.decode(Get.parameters["to_user"]??"");
-                  _chatMessagesController.sendMessage(MessageChatModel(room: room,message:chatMessageController.text,type: "video",
-                      from_user_id: fromUserModel.id,
-                      to_user_id: toUserModel.id.toString()));
-
-                  Navigator.pop(context);
+                  if (file != null) {
+                    _chatMessagesController.uploadFile(room: room,
+                        type: "video",
+                        file: await dio.MultipartFile.fromFile(file.path ??
+                            ' ',
+                            filename: file.path
+                                ?.substring(file.path.lastIndexOf("/") ?? 0 + 1)));
+                    Navigator.pop(context);
+                  }
                 },
                 title: Text("فيديو"),
                 leading: Icon(Icons.camera,color: Colors.blue,),

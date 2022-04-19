@@ -41,8 +41,8 @@ class _SeekBarState extends State<SeekBar> {
         SliderTheme(
           data: _sliderThemeData.copyWith(
             thumbShape: HiddenThumbComponentShape(),
-            activeTrackColor: Colors.blue.shade100,
-            inactiveTrackColor: Colors.grey.shade300,
+            activeTrackColor: Colors.transparent,//Colors.blue.shade100,
+            inactiveTrackColor: Colors.transparent//Colors.grey.shade300,
           ),
           child: ExcludeSemantics(
             child: Slider(
@@ -70,6 +70,7 @@ class _SeekBarState extends State<SeekBar> {
         SliderTheme(
           data: _sliderThemeData.copyWith(
             inactiveTrackColor: Colors.transparent,
+            activeTrackColor: Colors.transparent
           ),
           child: Slider(
             min: 0.0,
@@ -165,13 +166,16 @@ void showSliderDialog({
                       fontFamily: 'Fixed',
                       fontWeight: FontWeight.bold,
                       fontSize: 24.0)),
-              Slider(
-                divisions: divisions,
-                min: min,
-                max: max,
-                value: snapshot.data ?? value,
-                onChanged: onChanged,
-              ),
+
+
+                Slider(
+                  divisions: divisions,
+                  min: min,
+                  max: max,
+                  value: snapshot.data ?? value,
+                  onChanged: onChanged,
+                ),
+
             ],
           ),
         ),

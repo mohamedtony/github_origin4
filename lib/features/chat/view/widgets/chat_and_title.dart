@@ -63,7 +63,14 @@ class ChatAndTitle extends StatelessWidget {
                         fontSize: 18.sp,
                       ),
                     ),
-                  )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: SvgPicture.asset(
+                      "images/chat.svg",
+                      height: 21,
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -5,11 +5,11 @@ part 'ListChatModel.g.dart';
 
 @JsonSerializable()
 class ListChatModel {
-  int? id,not_seen;
+  int? id,not_seen,forward,replied_message;
   String? room,sent_at,sent_from;
   String? message_type;
   String? message;
-  bool? from_me;
+  bool? from_me,starred;
   FromUserModel? from_user;
   ToUserModel? to_user;
 
