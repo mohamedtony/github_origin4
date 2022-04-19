@@ -506,13 +506,13 @@ class Routes {
       }),*/
 
     ),
-    GetPage(
+    /*GetPage(
       name: '/AdvertisingStoryDetailsPage',
       page: () => AdvertisingStoryDetailsPage(),
-      /*binding: BindingsBuilder(() {
+      *//*binding: BindingsBuilder(() {
         Get.lazyPut<AdvertiserProfileOrderController>(() => AdvertiserProfileOrderController());
-      }),*/
+      }),*//*
 
-    ),
+    ),*/
   ];
 }

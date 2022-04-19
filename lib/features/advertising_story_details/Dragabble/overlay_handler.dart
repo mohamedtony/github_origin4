@@ -7,6 +7,9 @@ class OverlayHandlerProvider  extends GetxController{
   double _aspectRatio = 1.77;
   bool inPipMode = false;
   bool isHidden =true;
+  int currentPage = 0;
+   bool isBottomAdsShown = false;
+   int sheetId = -1;
 
   enablePip(double aspect) {
     inPipMode = true;

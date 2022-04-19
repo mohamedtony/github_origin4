@@ -70,10 +70,15 @@ class HomePage extends StatelessWidget {
                                 'images/search_icon.svg',
                               ),
                             ),
-                            suffixIcon: Container(
-                              padding: EdgeInsets.all(10.0),
-                              child: SvgPicture.asset(
-                                'images/filter_icon.svg',
+                            suffixIcon: InkWell(
+                              onTap: (){
+                                onSheetClicke!(10);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(10.0),
+                                child: SvgPicture.asset(
+                                  'images/filter_icon.svg',
+                                ),
                               ),
                             ),
                             border: OutlineInputBorder(

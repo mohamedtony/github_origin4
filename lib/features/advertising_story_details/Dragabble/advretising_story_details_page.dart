@@ -6,16 +6,17 @@ import 'package:advertisers/features/advertising_story_details/small_ads_page.da
 import 'package:advertisers/features/advertising_story_details/story_page.dart';
 import 'package:advertisers/features/advertising_story_details/story_page_controller_forsmall.dart';
 import 'package:advertisers/features/advertising_story_details/story_page_forsmall.dart';
+import 'package:advertisers/features/home_page/controller/ads_page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AdvertisingStoryDetailsPage extends StatelessWidget {
   AdvertisingStoryDetailsPage({Key? key,required this.onSheetCliked}) : super(key: key);
    Function(BuildContext context,int x) onSheetCliked;
-  final VideoController videoController = Get.put(VideoController(),permanent: true);
+  final VideoController videoController = Get.put(VideoController());
   OverlayHandlerProvider overlayHandlerProvider = Get.find();
+   AdsPageController adsPageController = Get.put(AdsPageController());
 
-   PageController pageController=PageController(initialPage: 0, viewportFraction: 1,);
  // StorySmallGetxController  storySmallGetxController = Get.put(StorySmallGetxController());
   double aspectRatio = 16/9;
   buildProfile(String profilePhoto) {
@@ -88,61 +89,62 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
          print("story_details_in");
          return false;
        },
-       child: Visibility(
-         visible:true ,
-         child: AnimatedContainer(
-            duration: Duration(milliseconds: 250),
-            width: controller.inPipMode ? (Constants.VIDEO_TITLE_HEIGHT_PIP*aspectRatio) : MediaQuery.of(context).size.width,
-            color: Colors.black,
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width,
-            ),
-            child: Scaffold(
-                 resizeToAvoidBottomInset: false,
-                body: PageView.builder(
-                  itemCount: 6,
-                  controller: pageController,
-                  onPageChanged: (x) {
-                    //storySmallGetxController.currentIndex.value=0;
-                  },
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (context, index) {
-                    //final data = videoController.videoList[index];
-                    return Stack(
-                      children: [
-
-                        /*StoryForSmallScreen(
-                      stories: mStories,
-                      pageController1: pageController,
-                      onClicked: (){
-                        videoController.isSmall.value=true;
-                        //pageController.viewportFraction = 0.5;
-                      },
-                    ),*/
-                        StoryScreen(
-                          stories: mStories,
-                          pageController1: pageController,
-                          onClicked: () {
-                            videoController.isSmall.value = true;
-                            //Get.showOverlay(loadingWidget: Con);
-                            //GetUtils
-                            //pageController.viewportFraction = 0.5;
-                          },
-                          onSheetCliked: (context,ind){
-                            this.onSheetCliked(context,ind);
-                          },
-                        ),
-                        /*SmallAdsPage(
-                      stories: stories,
-                      pageController1: pageController,
-                    )*/
-                      ],
-                    );
-                  },
-                )
-            ),
+       child: AnimatedContainer(
+          duration: Duration(milliseconds: 250),
+          width: controller.inPipMode ? (Constants.VIDEO_TITLE_HEIGHT_PIP*aspectRatio) : MediaQuery.of(context).size.width,
+          color: Colors.black,
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
           ),
-       ),
+          child: Scaffold(
+               resizeToAvoidBottomInset: false,
+              body: Obx(()=>videoController.adslistList.value.isNotEmpty?PageView.builder(
+                itemCount: videoController.adslistList.value.length??0,
+                controller: videoController.pageController,
+                onPageChanged: (x) {
+                  //storySmallGetxController.currentIndex.value=0;
+                },
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) {
+                  //final data = videoController.videoList[index];
+
+                  return Stack(
+                    children: [
+
+                      /*StoryForSmallScreen(
+                    stories: mStories,
+                    pageController1: pageController,
+                    onClicked: (){
+                      videoController.isSmall.value=true;
+                      //pageController.viewportFraction = 0.5;
+                    },
+                  ),*/
+                      StoryScreen(
+                        stories: videoController.adslistList.value[index].attachments,
+                        index:index,
+                        adsListModel: videoController.adslistList.value[index],
+                        user:videoController.adslistList.value[index].user,
+                        pageController1: videoController.pageController,
+                        onClicked: () {
+                          videoController.isSmall.value = true;
+                          //Get.showOverlay(loadingWidget: Con);
+                          //GetUtils
+                          //pageController.viewportFraction = 0.5;
+                        },
+                        onSheetCliked: (context,ind){
+                          this.onSheetCliked(context,ind);
+                        },
+                      ),
+                      /*SmallAdsPage(
+                    stories: stories,
+                    pageController1: pageController,
+                  )*/
+                    ],
+                  );
+                },
+              ):const Center(child: CircularProgressIndicator()))
+          ),
+        ),
      );
      /* return Container(
           child: PageView.builder(

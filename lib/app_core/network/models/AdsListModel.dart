@@ -26,8 +26,9 @@ class AdsListModel {
   String?video;
   int?attachment_preview_duration;
   List<Attachment>? attachments;
+  String? time_ago;
 
-  AdsListModel({this.id,this.status,this.video,this.image,this.user,this.likes,this.dislikes,this.shares,this.status_txt,this.description,this.type,this.views,this.attachments,this.started_at,this.attachment_preview_duration,this.comments,this.favourites,this.has_comment,this.is_favourite,this.show_app,this.show_profile,});
+  AdsListModel({this.time_ago,this.id,this.status,this.video,this.image,this.user,this.likes,this.dislikes,this.shares,this.status_txt,this.description,this.type,this.views,this.attachments,this.started_at,this.attachment_preview_duration,this.comments,this.favourites,this.has_comment,this.is_favourite,this.show_app,this.show_profile,});
 
   factory AdsListModel.fromJson(Map<String, dynamic> json) => _$AdsListModelFromJson(json);
 

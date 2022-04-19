@@ -14,19 +14,18 @@ class AdvertisersPage extends StatelessWidget {
   AdvertisersPageController advertisersPageController = Get.put(AdvertisersPageController());
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: PagedListView<int, GetAdvertisersModel>(
-          pagingController: advertisersPageController.pagingController,
+    return PagedListView<int, GetAdvertisersModel>(
+      pagingController: advertisersPageController.pagingController,
 
-          builderDelegate: PagedChildBuilderDelegate<GetAdvertisersModel>(
-            animateTransitions: true,
-            noItemsFoundIndicatorBuilder: (context){
-              return Container(
-                  alignment: Alignment.topCenter,
-                  margin: EdgeInsets.only(top:20.0),
-                  child: Text('لا يوجد معلنين !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
-            },
-            /*firstPageProgressIndicatorBuilder: (context)=>ListView(
+      builderDelegate: PagedChildBuilderDelegate<GetAdvertisersModel>(
+        animateTransitions: true,
+        noItemsFoundIndicatorBuilder: (context){
+          return Container(
+              alignment: Alignment.topCenter,
+              margin: EdgeInsets.only(top:20.0),
+              child: Text('لا يوجد معلنين !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
+        },
+        /*firstPageProgressIndicatorBuilder: (context)=>ListView(
                   shrinkWrap: true,
                   children: [
                     Container(
@@ -68,13 +67,13 @@ class AdvertisersPage extends StatelessWidget {
                   ],
                 ),*/
 
-            itemBuilder: (context, item, position) {
-              return  InkWell(
-                  onTap: (){
-                    advertisersPageController.changeIndex(position, item.id!);
-                  },
-                  child: AdvertiserItem(advertisersModel:item,findAdvertiseController: advertisersPageController,index: position,));
-              /*if(findAdvertiseController.isLoading.value){
+        itemBuilder: (context, item, position) {
+          return  InkWell(
+             /* onTap: (){
+                advertisersPageController.changeIndex(position, item.id!);
+              },*/
+              child: AdvertiserItem(advertisersModel:item,findAdvertiseController: advertisersPageController,index: position,));
+          /*if(findAdvertiseController.isLoading.value){
                     return   Container(
                       margin: EdgeInsets.only(top: 10.0,),
                       child: ListTile(
@@ -94,10 +93,8 @@ class AdvertisersPage extends StatelessWidget {
                         },
                         child: FindAdvertiseItem(advertisersModel:item,findAdvertiseController: controller,index: position,));
                   }*/
-            },
-          ),
-        )
-    )
-    ;
+        },
+      ),
+    );
   }
 }

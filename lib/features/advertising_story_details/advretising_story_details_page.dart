@@ -1,3 +1,4 @@
+/*
 import 'package:advertisers/features/advertising_story_details/VideoController.dart';
 import 'package:advertisers/features/advertising_story_details/data.dart';
 import 'package:advertisers/features/advertising_story_details/small_ads_page.dart';
@@ -89,14 +90,16 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
             return Stack(
               children: [
 
-                /*StoryForSmallScreen(
+                */
+/*StoryForSmallScreen(
                   stories: mStories,
                   pageController1: pageController,
                   onClicked: (){
                     videoController.isSmall.value=true;
                     //pageController.viewportFraction = 0.5;
                   },
-                ),*/
+                ),*//*
+
                 StoryScreen(
                   stories: mStories,
                   pageController1: pageController,
@@ -108,10 +111,12 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
 
                   },
                 ),
-                /*SmallAdsPage(
+                */
+/*SmallAdsPage(
                   stories: stories,
                   pageController1: pageController,
-                )*/
+                )*//*
+
               ],
             );
           },
@@ -121,4 +126,4 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
       return true;
       },);
   }
-}
+}*/

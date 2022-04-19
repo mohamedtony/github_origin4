@@ -1,5 +1,11 @@
+import 'package:advertisers/app_core/network/models/AdsListModel.dart';
+import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/features/advertising_story_details/Story.dart';
+import 'package:advertisers/main.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 enum ButtonState { paused, playing, loading, }
 
@@ -7,16 +13,68 @@ class VideoController extends GetxController {
   final Rx<List<Story>> _videoList = Rx<List<Story>>([]);
 
   List<Story> get videoList => _videoList.value;
+  late TextEditingController commentController;
+
+  //RxList<GetAdvertisersModel> advertisersModel = <GetAdvertisersModel>[].obs;
+  //final Rx<List<AdsListModel>> adslistList = Rx<List<AdsListModel>>([]);
+  RxList<AdsListModel> adslistList = <AdsListModel>[].obs;
+  OverlayHandlerProvider overlayHandlerProvider = Get.find();
+  //List<Story> get adslistList => _videoList.value;
   //late AudioPlayer audioPlayer;
    var isSmall = false.obs;
+   var isFavoriate = false.obs;
+
+  late PageController pageController;
+  String? myToken ;
   @override
-  void onInit() {
+  Future<void> onInit() async {
+    myToken = await storage.read("token");
+    getAdsList();
     super.onInit();
+    commentController=TextEditingController();
+    pageController = PageController(initialPage: overlayHandlerProvider.currentPage, viewportFraction: 1,);
  //   audioPlayer = AudioPlayer();
 
     /*_videoList.bindStream(
         StoryScreen(stories: stories)
     );*/
+  }
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    print("onReady");
+    super.onReady();
+  }
+  Future<void> commentAds(int? id) async {
+    if(commentController.text==null || commentController.text.isEmpty){
+      showMyToast("يرجى إضافة تعليق !");
+      return;
+    }
+    if(myToken==null ) {
+      showMyToast("مشكلة غير معروفة !");
+      return;
+    }
+
+    client!.commentAd(id!,commentController.text,"Bearer "+myToken!).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        commentController.text="";
+        Fluttertoast.showToast(
+            msg: "تم إضافة تعليقك بنجاح !",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            //fontFamily: 'Arabic-Regular',
+            fontSize: 16.0);
+
+        // Get.back();
+        print("token used");
+        Logger().i(value.data.toString());
+      }
+    });
   }
   var playButtonNotifier = (ButtonState.paused).obs;
 
@@ -109,6 +167,103 @@ class VideoController extends GetxController {
   var isVisible = false.obs;
   changeIndex(int index){
     clickedIndex.value = index;
+  }
+
+  Future<void> getAdsList() async {
+   String myToken = await storage.read("token");
+
+    client!.getAdsList(1,"Bearer " + myToken,)
+        .then((value) {
+      if (value.status == 200 && value.data != null && value.data!.isNotEmpty) {
+        Logger().d(value.data.toString());
+        /*isLoading.value = false;
+        isEmpty.value = false;
+        advertisersModel.value = value.data!;*/
+        adslistList.value = value.data!;
+      } else {
+        /*isLoading.value = false;
+        isEmpty.value = true;*/
+      }
+    });
+  }
+
+  void favoriteAds(int id) {
+    if(myToken==null ) {
+      showMyToast("مشكلة غير معروفة !");
+      return;
+    }
+    client!.favouriteAd(id,"Bearer "+myToken!).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        if(value.data?.liked!=null && value.data!.liked==1){
+          Fluttertoast.showToast(
+              msg: "تم إضافة هذاالاعلان إلى المفضلة بنجاح !",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.grey,
+              textColor: Colors.white,
+              //fontFamily: 'Arabic-Regular',
+              fontSize: 16.0);
+        }else{
+          Fluttertoast.showToast(
+              msg: "تم حذف هذاالاعلان من المفضلة بنجاح !",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.grey,
+              textColor: Colors.white,
+              //fontFamily: 'Arabic-Regular',
+              fontSize: 16.0);
+        }
+
+
+        // Get.back();
+        print("token used");
+        Logger().i(value.data.toString());
+      }
+    });
+  }
+
+  void likeAds(int id) {
+    if(myToken==null ) {
+      showMyToast("مشكلة غير معروفة !");
+      return;
+    }
+    client!.likeAd(id,"Bearer "+myToken!).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        showMyToast("تم الإعجاب بهذا الاعلان بنجاح !");
+      }
+    });
+  }
+
+  void dislikeAd(int id) {
+    if(myToken==null ) {
+      showMyToast("مشكلة غير معروفة !");
+      return;
+    }
+    client!.dislikeAd(id,"Bearer "+myToken!).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        showMyToast("تم إلغاء الإعجاب بهذا الاعلان بنجاح !");
+      }
+    });
+  }
+
+  void showMyToast(String msg) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        //fontFamily: 'Arabic-Regular',
+        fontSize: 16.0);
   }
 }
 

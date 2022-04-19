@@ -1,8 +1,10 @@
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
 
+import 'package:advertisers/app_core/network/models/AdsListModel.dart';
 import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/app_core/network/models/Channel.dart';
@@ -16,7 +18,9 @@ import 'package:advertisers/app_core/network/models/SelectedNotSelectedSortType.
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/requests/GetAdvertisersRequest.dart';
 import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetAdsListResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetAdvertisersResponse.dart';
+import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
 import 'package:advertisers/main.dart';
@@ -37,7 +41,7 @@ import 'package:video_compress/video_compress.dart';
 //                         By Mohamed T. Hammad
 
 //=========================================================================================
-class AdvertisersPageController extends GetxController {
+class AdsPageController extends GetxController {
   var isLoading = true.obs;
   var isEmpty = false.obs;
   RxList<GetAdvertisersModel> advertisersModel = <GetAdvertisersModel>[].obs;
@@ -48,6 +52,13 @@ class AdvertisersPageController extends GetxController {
   RxList<CategoryModel> categories = <CategoryModel>[].obs;
   var isLoadingGetAdvertisersFromModel = true.obs;
   String? myToken;
+   RxList<AdsListModel> adslistList = <AdsListModel>[].obs;
+
+
+ // List<AdsListModel> get adslistList => _adslistList.value;
+
+
+
 
   //location range
   RxList<Country> countriesForLocationSheet = <Country>[].obs;
@@ -64,29 +75,12 @@ class AdvertisersPageController extends GetxController {
   var selectedEffectSlidesModel = EffectSlidesModel(id: -1,).obs;
   late RequestAdvertiseController requestAdvertiseController;
 
-  final PagingController<int, GetAdvertisersModel> pagingController = PagingController(firstPageKey: 0);
+  final PagingController<int, AdsListModel> pagingController = PagingController(firstPageKey: 1);
   String? type;
 
   @override
   Future<void> onInit() async {
-    // TODO: implement onInit
-    myToken = await storage.read("token");
-/*    pagingController.addPageRequestListener((pageKey) async {
-      print("hhhhhhhhhhhhhhhhhhhhhhhh");
-      await _fetchPage(pageKey);
-    });*/
-    searchAdvertiserController = TextEditingController();
-    /*client!.getAdvertisers("Bearer " + myToken!, GetAdvertisersRequest())
-        .then((value) {
-      if (value.status == 200 && value.data != null && value.data!.isNotEmpty) {
-        isLoading.value = false;
-        isEmpty.value = false;
-        advertisersModel.value = value.data!;
-      } else {
-        isLoading.value = false;
-        isEmpty.value = true;
-      }
-    });*/
+
 
     pagingController.addPageRequestListener((pageKey) async {
       print("hhhhhhhhhhhhhhhhhhhhhhhh");
@@ -94,19 +88,42 @@ class AdvertisersPageController extends GetxController {
     });
 
     super.onInit();
-    requestAdvertiseController = Get.find();
+
 
   }
 
-  Future<List<GetAdvertisersModel>> getNotifications(
+  // Call this when the user pull down the screen
+  Future<void> loadData() async {
+    pagingController.refresh();
+  }
+
+  Future<void> getAdsList() async {
+    String myToken = await storage.read("token");
+
+    client!.getAdsList(1,"Bearer " + myToken,)
+        .then((value) {
+      if (value.status == 200 && value.data != null && value.data!.isNotEmpty) {
+        Logger().d(value.data.toString());
+        /*isLoading.value = false;
+        isEmpty.value = false;
+        advertisersModel.value = value.data!;*/
+        adslistList.value = value.data!;
+      } else {
+        /*isLoading.value = false;
+        isEmpty.value = true;*/
+      }
+    });
+  }
+
+  Future<List<AdsListModel>> getNotifications(
       {GetAdvertisersRequest? getAdvertisersRequest, int? pageKey}) async {
     //getAdvertisersRequest!.page=pageKey;
     String myToken = await storage.read("token");
 
-    GetAdvertisersResponse response = await client!.getAdvertisers("Bearer " + myToken!, /*GetAdvertisersRequest(page: pageKey,)*/getAdvertisersRequest!);
+    GetAdsListResponse response = await client!.getAdsList(pageKey,"Bearer " + myToken);
 
-    final completer = Completer<List<GetAdvertisersModel>>();
-    List<GetAdvertisersModel> notifications = [];
+    final completer = Completer<List<AdsListModel>>();
+    List<AdsListModel> notifications = [];
     if(response.data!=null && response.data!.isNotEmpty) {
       notifications = response.data!;
     }
@@ -138,7 +155,7 @@ class AdvertisersPageController extends GetxController {
         print("nextPageKey=" + nextPageKey.toString());
         pagingController.appendPage(newItems, nextPageKey);
       }*/
-      List<GetAdvertisersModel>? newItems;
+      List<AdsListModel>? newItems;
       if(type!=null){
         print("tyyyype");
         if(pageKey==0){
@@ -857,7 +874,7 @@ class AdvertisersPageController extends GetxController {
           Navigator.of(context).pop();
           Navigator.of(context).pop();
           //Get.delete<RequestAdvertiseController>();
-         // Get.delete<FindAdvertiseController>();
+          // Get.delete<FindAdvertiseController>();
           //Get.offAllNamed('/Home');
         },
         onError: (err, res) {
@@ -922,7 +939,6 @@ class AdvertisersPageController extends GetxController {
     });*/
 
   }
-
 
 
 // Spawns an isolate and waits for the first message

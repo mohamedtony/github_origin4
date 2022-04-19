@@ -9,6 +9,7 @@ import 'package:advertisers/features/find_advertise_page/filter_order_advertiser
 import 'package:advertisers/features/home_page/controller/home_navigation_controller.dart';
 import 'package:advertisers/features/home_page/view/pages/add_ad_page.dart';
 import 'package:advertisers/features/home_page/view/pages/favorite_page.dart';
+import 'package:advertisers/features/home_page/view/pages/filter_sort_ads_sheet.dart';
 import 'package:advertisers/features/home_page/view/pages/home_tabs_page.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/address_bottom_sheet.dart';
@@ -38,9 +39,9 @@ class Home extends StatelessWidget {
     }*/
     _addVideoWithTitleOverlay(BuildContext context) {
       OverlayService().addVideoTitleOverlay(context, AdvertisingStoryDetailsPage(
-        onSheetCliked: (context,x){
+        onSheetCliked: (context1,x){
           //  print('tony:sheetClicked');
-          showBottomSheetForRequest(context, x);
+          showBottomSheetForRequest(context1, x);
         },
       ));
     }
@@ -253,7 +254,8 @@ class Home extends StatelessWidget {
                     showBottomSheetForRequest(context,x);
                   },
                   onAdveriseItemClicked: (x){
-                    _addVideoWithTitleOverlay(context);
+                    overlayHandlerProvider.currentPage = x;
+                    _addVideoWithTitleOverlay(context,);
                   },
                 ),
                 FavoritePage(),
@@ -265,8 +267,8 @@ class Home extends StatelessWidget {
       ),
     );
   }
-    void showBottomSheetForRequest(BuildContext context,int bottomNumber){
-      showModalBottomSheet(
+    Future<Widget> showBottomSheetForRequest(BuildContext context,int bottomNumber)  async {
+      return await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         shape: RoundedRectangleBorder(
@@ -316,12 +318,14 @@ class Home extends StatelessWidget {
                 );
 
 
-              }else{
+              }else if(bottomNumber==9){
                 return AdvertiserDetailsSheet(
                     scrollController: scrollController
                 );
-
-
+              }else /*if(bottomNumber==10)*/{
+                return FilterSortAdsSheet(
+                    scrollController: scrollController
+                );
               }
             },
           );
