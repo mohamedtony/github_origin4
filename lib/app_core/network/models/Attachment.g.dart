@@ -13,6 +13,7 @@ Attachment _$AttachmentFromJson(Map<String, dynamic> json) => Attachment(
       created_at: json['created_at'] as String?,
       updated_at: json['updated_at'] as String?,
       type: json['type'] as String?,
+      video_id: json['video_id'] as String?,
     );
 
 Map<String, dynamic> _$AttachmentToJson(Attachment instance) =>
@@ -23,4 +24,5 @@ Map<String, dynamic> _$AttachmentToJson(Attachment instance) =>
       'created_at': instance.created_at,
       'updated_at': instance.updated_at,
       'type': instance.type,
+      'video_id': instance.video_id,
     };

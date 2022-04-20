@@ -926,12 +926,12 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                             fit: BoxFit.fill,
                                             height: 30.w,
                                             width: 30.w,
-                                          ):Image.file(
+                                          ):controller.coponModel.value.image!=null && controller.coponModel.value.image!.isNotEmpty ?Image.file(
                                             File(controller.coponModel.value.image!),
                                             fit: BoxFit.fill,
                                             height: 30.w,
                                             width: 30.w,
-                                          ),
+                                          ): const Icon(Icons.error),
                                         ),
                                       ),
                                     ],

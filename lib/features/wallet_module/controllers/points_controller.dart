@@ -4,11 +4,13 @@ import 'package:advertisers/features/wallet_module/Response/points_response.dart
 import 'package:advertisers/features/wallet_module/request/points_request.dart';
 import 'package:advertisers/shared/networking/api_provider.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
 class PointsController extends GetxController with StateMixin<PointsResponse> {
   final ApiService _apiService = Get.put(ApiService());
+  final amountController = TextEditingController();
 
   @override
   void onInit() {
@@ -29,6 +31,7 @@ class PointsController extends GetxController with StateMixin<PointsResponse> {
       //   snackPosition: SnackPosition.BOTTOM,
       // );
       change(data, status: RxStatus.success());
+      amountController.clear();
       Logger().i(response.data);
     } on dio.DioError catch (error) {
       if (error.response?.statusCode == 401 ||

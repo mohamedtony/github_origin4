@@ -182,6 +182,7 @@ class CoponItemTap extends StatelessWidget {
                                   onTap: (){
                                     Clipboard.setData(ClipboardData(text: '${coponModelResponse?.code ??''}')).then((_){
                                       // Get.snackbar('', 'تم نسخ الكود MS502',snackPosition: SnackPosition.BOTTOM,);
+                                      controller.useCopon(coponModelResponse?.id);
                                       Fluttertoast.showToast(
                                           msg: "تم نسخ الكود ${coponModelResponse?.code ??''}",
                                           toastLength: Toast.LENGTH_LONG,
@@ -298,7 +299,7 @@ class CoponItemTap extends StatelessWidget {
                     InkWell(
                       onTap: (){
                         if(coponModelResponse?.link!=null) {
-                          launchURL(coponModelResponse!.link);
+                          launchURL(coponModelResponse!.link,coponModelResponse!.id!);
                         }
                       },
                       child: Align(
@@ -316,11 +317,12 @@ class CoponItemTap extends StatelessWidget {
           ],
         ));
   }
-  launchURL(urlLink) async {
+  launchURL(urlLink, int id) async {
     var url = urlLink;
     if(url != null){
       if (await canLaunch(url)) {
         await launch(url);
+        controller.seenCopon(id);
       } else {
         throw 'Could not launch $url';
       }

@@ -11,9 +11,10 @@ class Attachment {
   String? created_at;
   String? updated_at;
   String? type;
+  String?video_id;
 
 
-  Attachment({this.id, this.ads_id, this.path,this.created_at,this.updated_at,this.type});
+  Attachment({this.id, this.ads_id, this.path,this.created_at,this.updated_at,this.type,this.video_id});
 
   factory Attachment.fromJson(Map<String, dynamic> json) => _$AttachmentFromJson(json);
 

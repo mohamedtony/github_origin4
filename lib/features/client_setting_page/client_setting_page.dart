@@ -673,7 +673,7 @@ class ClientSettingPage extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () async {
-                    //await controller.verifyPhone();
+                     controller.verifyPhone(context);
                   },
                   child: Container(
                       height: 42,
@@ -781,23 +781,28 @@ class ClientSettingPage extends StatelessWidget {
             margin: const EdgeInsets.only(top: 10.0, left: 22.0, right: 22.0),
             child: Row(
               children: [
-                Container(
-                    height: 42,
-                    width: 110,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 0.2),
-                        borderRadius: const BorderRadius.only(
-                            topRight: Radius.circular(12.0),
-                            bottomRight: Radius.circular(12.0)),
-                        color: AppColors.editProfileContainerColor),
-                    child: const Text(
-                      "تحقق",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.0,
-                          color: Colors.white),
-                    )),
+                InkWell(
+                  onTap: (){
+                    controller.verifyEmail(context);
+                  },
+                  child: Container(
+                      height: 42,
+                      width: 110,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey, width: 0.2),
+                          borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(12.0),
+                              bottomRight: Radius.circular(12.0)),
+                          color: AppColors.editProfileContainerColor),
+                      child: const Text(
+                        "تحقق",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: Colors.white),
+                      )),
+                ),
                 Expanded(
                   child: Container(
                     height: 42,

@@ -1,4 +1,7 @@
 import 'package:advertisers/features/advertiser_list_page/list_page.dart';
+import 'package:advertisers/features/advertising_story_details/Dragabble/advretising_story_details_page.dart';
+import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
+import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_service.dart';
 import 'package:advertisers/features/client_setting_page/client_setting_page.dart';
 import 'package:advertisers/features/home_page/controller/home_navigation_controller.dart';
 import 'package:advertisers/features/home_page/view/pages/advertisers_person_page.dart';
@@ -16,11 +19,10 @@ import 'package:get/get.dart';
 
 //=========================================================================================
 class HomePage extends StatelessWidget {
-  HomePage({Key? key,this.onSheetClicke}) : super(key: key);
+  HomePage({Key? key,this.onSheetClicke,this.onAdveriseItemClicked}) : super(key: key);
   Function(int x)? onSheetClicke;
-
+  Function(int x)? onAdveriseItemClicked;
   final HomeNavController _loginController = Get.put(HomeNavController());
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -30,6 +32,7 @@ class HomePage extends StatelessWidget {
           builder: (controller) => DefaultTabController(
               length: 3,
               child: Scaffold(
+                resizeToAvoidBottomInset: false,
                 appBar: PreferredSize(
                   preferredSize: Size.fromHeight(75.0),
                   child: AppBar(
@@ -67,10 +70,15 @@ class HomePage extends StatelessWidget {
                                 'images/search_icon.svg',
                               ),
                             ),
-                            suffixIcon: Container(
-                              padding: EdgeInsets.all(10.0),
-                              child: SvgPicture.asset(
-                                'images/filter_icon.svg',
+                            suffixIcon: InkWell(
+                              onTap: (){
+                                onSheetClicke!(10);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(10.0),
+                                child: SvgPicture.asset(
+                                  'images/filter_icon.svg',
+                                ),
                               ),
                             ),
                             border: OutlineInputBorder(
@@ -187,6 +195,11 @@ class HomePage extends StatelessWidget {
                               builder: (context) => AdvertisingPage(
                                 onSheetClicked: (x){
                                   this.onSheetClicke!(x);
+                                },
+                                onAdveriseItemClicked: (x){
+                                  print("ItemClicked=$x");
+                                 // _addVideoWithTitleOverlay(context);
+                                  this.onAdveriseItemClicked!(x);
                                 },
                               ),
                             );

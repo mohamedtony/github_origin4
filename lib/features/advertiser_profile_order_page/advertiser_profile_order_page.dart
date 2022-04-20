@@ -563,7 +563,7 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
                         ],
                       ),
                       alignment: Alignment.center,
-                      child: advertiserProfileController.advertiserProfileModel!.channels!.isNotEmpty?ListView.builder(
+                      child: advertiserProfileController.advertiserProfileModel?.channels!=null && advertiserProfileController.advertiserProfileModel!.channels!.isNotEmpty?ListView.builder(
                           itemCount:  advertiserProfileController.advertiserProfileModel!.channels!.length ?? 0,
                           shrinkWrap: true,
                           scrollDirection : Axis.horizontal,

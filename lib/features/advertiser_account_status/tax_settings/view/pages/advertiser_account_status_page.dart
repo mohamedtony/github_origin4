@@ -163,9 +163,14 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
 
                           hint: _selectedRange.isNotEmpty
                               ? Center(child: Text(_selectedRange,style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),))
-                              : const Center(child: Text('اختر',style: TextStyle(color:Color(0xff041D67) ,fontSize: 16),)),
+                              :  Center(child: Text(controller.reasonId.value>0?controller.ranges[controller.reasonId.value-1].reason.toString():'اختر',style: TextStyle(color:Color(0xff041D67) ,fontSize: 16),)),
                           items: controller.ranges.map((value) {
-                            controller.id.value=value.id.toString();
+                            if(value!=null) {
+                              controller.id.value = value.id.toString();
+                            }else if(controller.reasonId.value>0){
+                              value=controller.ranges[controller.reasonId.value-1];
+                            }
+                            print(value);
                             return DropdownMenuItem(
                               value: value.reason,
                               child: Text(value.reason),enabled: controller.isChecked.value == true ?true:false,
@@ -242,9 +247,10 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                             lastDate: DateTime(2101),
                             initialDate:DateTime.now());
                         if (result != null) {
+                          Get.find<AdvertiserAccountStatusController>().fromDate.value=result;
                           setState(() {
-                            _selectedFromDate = result.toString();
 
+                            _selectedFromDate = result.toString();
                           });
                           Get.find<AdvertiserAccountStatusController>().from.value=result.toString();
                         }
@@ -278,8 +284,18 @@ Text("${Get.find<AdvertiserAccountStatusController>().to.value.isNotEmpty?Get.fi
                               lastDate: DateTime(2101),
                               initialDate:DateTime.now());
                           if (result != null) {
+                            if(Get.find<AdvertiserAccountStatusController>().fromDate.value.isAfter(result)){
+    Get.snackbar(
+    "خطأ",
+    "التاريخ الى يجب ان يكون اكبر من التاريخ من",
+    icon: const Icon(Icons.person, color: Colors.red),
+    backgroundColor: Colors.yellow,
+    snackPosition: SnackPosition.BOTTOM,);
+    Get.find<AdvertiserAccountStatusController>().flagDate.value=true;
+                            }
                             setState(() {
                               _selectedToDate = result.toString();
+
                             });
                             Get.find<AdvertiserAccountStatusController>().to.value=result.toString();
                           }

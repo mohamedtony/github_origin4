@@ -217,6 +217,20 @@ class AccountWidget extends StatelessWidget {
                             snackPosition: SnackPosition.BOTTOM,);
                           return;
                         }
+                        if(!controller.mobileController.text.isNumericOnly){
+                          Get.snackbar(
+                            "رقم الجوال يجب ان يكون ارقام فقط",
+                            "",
+                            snackPosition: SnackPosition.BOTTOM,);
+                          return;
+                        }
+                        if(controller.mobileController.text.length < 7){
+                          Get.snackbar(
+                            "برجاء ادخال رقم جوال صحيح",
+                            "",
+                            snackPosition: SnackPosition.BOTTOM,);
+                          return;
+                        }
 
                         Info info = Info(
                           mobile: controller.mobileController.text

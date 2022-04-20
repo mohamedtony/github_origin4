@@ -12,11 +12,13 @@ import 'package:advertisers/app_core/network/requests/UpdateProfileRequest.dart'
 import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
 import 'package:advertisers/app_core/network/requests/login_client_request.dart';
 import 'package:advertisers/app_core/network/responses/AddRemoveBlackListResponse.dart';
+import 'package:advertisers/app_core/network/responses/AddToFavoriteListResponse.dart';
 import 'package:advertisers/app_core/network/responses/AdvertiserProfileDetailsResponse.dart';
 import 'package:advertisers/app_core/network/responses/CoponsResponse.dart';
 import 'package:advertisers/app_core/network/responses/CountriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateSubscriptionResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetAdsListResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetAdvertisersFormResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetAdvertisersResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetBlockedUsersResponse.dart';
@@ -171,23 +173,32 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   @GET('/copons/{id}/share')
   Future<AdvertiserProfileDetailsResponse> shareCopon(@Path("id") int? id,@Header("Authorization") String token);
 
-/*  Map<String, dynamic> mymap = {
+  @GET('/copons/{id}/use')
+  Future<AdvertiserProfileDetailsResponse> useCopon(@Path("id") int? id,@Header("Authorization") String token);
 
-    "location[name]": requestAdvertiseController.locationModel.name,
-    "location[address]": requestAdvertiseController.locationModel.address,
-    "location[lat]": requestAdvertiseController.locationModel.lat,
-    "location[lng]": requestAdvertiseController.locationModel.lng,
-    "copon[image]": requestAdvertiseController.imageCoponMultiPart,
-    "copon[code]": requestAdvertiseController.coponNumberController?.text,
-    "copon[name]": requestAdvertiseController.coponNameController?.text,
-    "copon[discount]":
-    requestAdvertiseController.coponDiscountController?.text,
-    "copon[uses]": requestAdvertiseController.coponUsesController?.text,
-    "copon[link]": requestAdvertiseController.coponLinkController?.text,
-    "copon[ended_at]": requestAdvertiseController.endAdvertisingDateCoupon,
-    "notes": requestAdvertiseController.noticeController?.text,
-    "plan_file": requestAdvertiseController.planFile
-  };*/
+  @GET('/ads?page={id}')
+  Future<GetAdsListResponse> getAdsList( @Path("id") int? id,@Header("Authorization") String token);
 
+  @POST('/ads/{id}/comment')
+  @FormUrlEncoded()
+  Future<AdvertiserProfileDetailsResponse> commentAd(@Path("id") int? id,@Field()String? comment,@Header("Authorization") String token);
+
+  @GET('/ads/{id}/favourite')
+  Future<AddToFavoriteListResponse> favouriteAd(@Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/ads/{id}/like')
+  Future<AddToFavoriteListResponse> likeAd(@Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/ads/{id}/dislike')
+  Future<AddToFavoriteListResponse> dislikeAd(@Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/profile/blacklist/{id}')
+  Future<AddToFavoriteListResponse> blacklistAdvertiser(@Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/profile/like/{id}')
+  Future<AddToFavoriteListResponse> likeAdvertiser(@Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/profile/mute/{id}')
+  Future<AddToFavoriteListResponse> muteAdvertiser(@Path("id") int? id,@Header("Authorization") String token);
 
 }

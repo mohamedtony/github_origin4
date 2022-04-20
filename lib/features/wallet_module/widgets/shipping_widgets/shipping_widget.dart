@@ -13,16 +13,16 @@ class ShippingWidget extends GetWidget<ChargeController> {
   ShippingWidget({Key? key}) : super(key: key);
 
   final _chargeController = Get.put(ChargeController());
-  final amountController = TextEditingController();
+  final WalletController _walletController = Get.put(WalletController());
 
   @override
   Widget build(BuildContext context) {
     return controller.obx(
       (state) {
         List<PointsItem>? pointsItems = [
-          PointsItem(
+          if(_walletController.userData!.role == "advertiser")  PointsItem(
               title: "رصيد معلق", name: "ريال", value: state?.data?.pending),
-          PointsItem(
+          if(_walletController.userData!.role == "advertiser")   PointsItem(
               title: "ر.قابل للسحب", name: "ريال", value: state?.data?.ready),
           PointsItem(
               title: "رصيد المحفظة", name: "ريال", value: state?.data?.wallet),
@@ -42,7 +42,9 @@ class ShippingWidget extends GetWidget<ChargeController> {
                         return PointsChartWidget(
                             value: "${pointsItems[index].value}",
                             name: "${pointsItems[index].name}",
-                            title: "${pointsItems[index].title}");
+                            title: "${pointsItems[index].title}",
+                          isExtended: _walletController.userData!.role == "advertiser" ? false:true,
+                        );
                       }),
                 ),
               ),
@@ -67,7 +69,7 @@ class ShippingWidget extends GetWidget<ChargeController> {
                           shrinkWrap: true,
                           itemCount: state?.data?.cards?.length ?? 0,
                           itemBuilder: (context, index) {
-                            return InkWell(
+                            return state?.data?.cards?[index].status == true ? InkWell(
                                 onTap: () {
                                   if (chargeController.paymentId !=
                                       state?.data?.cards?[index].id) {
@@ -131,11 +133,11 @@ class ShippingWidget extends GetWidget<ChargeController> {
                                       if(state?.data?.cards?[index].type == "apple_pay") Spacer(),
                                       if(state?.data?.cards?[index].type != "apple_pay")    if(state?.data?.cards?[index].type == "bian" || state?.data?.cards?[index].type == "stc") Expanded(child: Text("${state?.data?.cards?[index].info!.mobile}",style: const TextStyle(color: Colors.grey,fontSize: 18),)),
                                    if(state?.data?.cards?[index].type != "apple_pay")   if(state?.data?.cards?[index].type != "bian" && state?.data?.cards?[index].type != "stc")  Expanded(child: Text("${state?.data?.cards?[index].info!.cardNumberFour}",style: const TextStyle(color: Colors.grey,fontSize: 18),)),
-                                      state?.data?.cards?[index].status == true ?  FaIcon(FontAwesomeIcons.checkDouble,color: const Color(0xff129835),size: 17.sp,):const FaIcon(FontAwesomeIcons.stop,
-                                        color:  Color(0xffffad00),)
+                                      // state?.data?.cards?[index].status == true ?  FaIcon(FontAwesomeIcons.checkDouble,color: const Color(0xff129835),size: 17.sp,):const FaIcon(FontAwesomeIcons.stop,
+                                      //   color:  Color(0xffffad00),)
                                     ],
                                   ),
-                                ));
+                                )):Container();
                           }),
                     ),
                     const SizedBox(
@@ -190,7 +192,7 @@ class ShippingWidget extends GetWidget<ChargeController> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 40, vertical: 3),
                                           child: TextFormField(
-                                            controller: amountController,
+                                            controller: controller.amountController,
                                             cursorColor: Colors.black,
                                             textAlign: TextAlign.center,
                                             keyboardType: TextInputType.number,
@@ -284,21 +286,21 @@ class ShippingWidget extends GetWidget<ChargeController> {
                                 Expanded(
                                     child: InkWell(
                                   onTap: () {
-                                    if (amountController.text.isNotEmpty &&
+                                    if (controller.amountController.text.isNotEmpty &&
                                         _chargeController.paymentId != -1) {
                                       controller.chargeWallet(
                                           request: ChargeRequest(
                                               cardId:
                                                   _chargeController.paymentId,
-                                              total: amountController.text));
+                                              total: controller.amountController.text));
                                     } else {
                                       Get.snackbar(
                                         "مطلوب",
-                                        amountController.text.isEmpty &&
+                                        controller.amountController.text.isEmpty &&
                                                 _chargeController.paymentId ==
                                                     -1
                                             ? 'اختر طريقة الدفع\nادخل مبلغ الشحن'
-                                            : amountController.text.isEmpty
+                                            : controller.amountController.text.isEmpty
                                                 ? "ادخل مبلغ الشحن"
                                                 : 'اختر طريقة الدفع',
                                         snackPosition: SnackPosition.BOTTOM,
@@ -329,7 +331,7 @@ class ShippingWidget extends GetWidget<ChargeController> {
                                     child: InkWell(
                                   onTap: () {
                                     _chargeController.passPaymentIndex(-1);
-                                    amountController.clear();
+                                    controller.amountController.clear();
                                   },
                                   child: Container(
                                     height: 40,
