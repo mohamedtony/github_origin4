@@ -202,7 +202,7 @@ class MyAddsController extends GetxController /*with StateMixin<ShowAddsListResp
     }
     EasyLoading.show();
     repo.get<ShowAddsListResponse>(
-        path: 'ads',
+        path: 'myads',
         fromJson: (json) => ShowAddsListResponse.fromJson(json),
         json: {"token": "Bearer $token"},
         onSuccess: (res) {
