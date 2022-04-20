@@ -7,6 +7,7 @@ part of 'AdsListModel.dart';
 // **************************************************************************
 
 AdsListModel _$AdsListModelFromJson(Map<String, dynamic> json) => AdsListModel(
+      time_ago: json['time_ago'] as String?,
       id: json['id'] as int?,
       status: json['status'] as String?,
       video: json['video'] as String?,
@@ -57,4 +58,5 @@ Map<String, dynamic> _$AdsListModelToJson(AdsListModel instance) =>
       'video': instance.video,
       'attachment_preview_duration': instance.attachment_preview_duration,
       'attachments': instance.attachments,
+      'time_ago': instance.time_ago,
     };

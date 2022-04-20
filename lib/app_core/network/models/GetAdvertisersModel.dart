@@ -12,9 +12,9 @@ class GetAdvertisersModel {
   int? in_blacklist;
   bool? is_liked;
   bool? is_muted;
-  var isLikedObs = false.obs;
-  var iisMutedObs = false.obs;
-  var isInBlackList = 0.obs;
+  var isLikedObs = false ;
+  var iisMutedObs = false ;
+  var isInBlackList = 0 ;
   GetAdvertisersModel({this.id, this.username, this.image,this.chat,this.in_blacklist,this.is_liked,this.is_muted});
 
   factory GetAdvertisersModel.fromJson(Map<String, dynamic> json) => _$GetAdvertisersModelFromJson(json);

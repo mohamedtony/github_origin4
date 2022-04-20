@@ -36,8 +36,6 @@ class CommentsPage extends GetWidget<CommentsController>  {
 
   final CommentsController  controller = Get.put(CommentsController());
 
-
-  // ScrollController? scrollController;
   launchURL(urlLink) async {
     var url = urlLink;
     if(url != null){

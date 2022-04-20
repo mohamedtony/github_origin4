@@ -404,7 +404,7 @@ class AdvertiserListPage extends StatelessWidget {
            // Get.toNamed('/DiscountPage');
           },),
           AdvertiseListItem(icon: 'images/gallery_icon.svg',title: 'المعرض',listTilePressed: (){
-            print('pressed2');
+            Get.toNamed('/GalleryPage');
           },),
           AdvertiseListItem(icon: 'images/report_icon.svg',title: 'التقارير',listTilePressed: (){
             Get.toNamed('/CommentsPage');
