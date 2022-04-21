@@ -31,8 +31,8 @@ class TajerOrderDetailsController extends GetxController {
   void onInit() {
     token = storage.read("token");
     repo=Repository();
-    getOderDetails();
     myOderDetails=AdvertiserOrderDetailsResponse();
+    getOderDetails();
     super.onInit();
   }
 
@@ -98,7 +98,7 @@ class TajerOrderDetailsController extends GetxController {
 
   }
 
-  Future<bool> getOderDetails({int? requestId}) async {
+  void getOderDetails({int? requestId}) async {
     EasyLoading.show();
     repo.get<AdvertiserOrderDetailsResponse>(
         path: 'requests/$requestId',
@@ -112,7 +112,6 @@ class TajerOrderDetailsController extends GetxController {
           print("my reason# ${res.data}");
           myOderDetails.data = res.data;
           update();
-          return true;
 
         },
         onError: (err, res) {
@@ -120,15 +119,15 @@ class TajerOrderDetailsController extends GetxController {
             EasyLoading.dismiss();
           }
           Get.snackbar(
-            "خطأ",
+            "خطأ999",
             res.message.toString(),
             icon: const Icon(Icons.person, color: Colors.red),
             backgroundColor: Colors.yellow,
             snackPosition: SnackPosition.BOTTOM,);
-          return false;
+
         });
 
-    return false;
+
   }
 
   void fetchOderDetails({int? requestId}) async {
