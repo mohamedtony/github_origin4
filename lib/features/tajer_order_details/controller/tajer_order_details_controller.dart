@@ -119,7 +119,7 @@ class TajerOrderDetailsController extends GetxController {
             EasyLoading.dismiss();
           }
           Get.snackbar(
-            "خطأ999",
+            "خطأ",
             res.message.toString(),
             icon: const Icon(Icons.person, color: Colors.red),
             backgroundColor: Colors.yellow,
