@@ -26,9 +26,9 @@ class AdvertiserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    advertisersModel.isLikedObs  = advertisersModel.is_liked!;
-    advertisersModel.iisMutedObs  = advertisersModel.is_muted!;
-    advertisersModel.isInBlackList  = advertisersModel.in_blacklist!;
+    advertisersModel.isLikedObs.value  = advertisersModel.is_liked!;
+    advertisersModel.iisMutedObs.value  = advertisersModel.is_muted!;
+    advertisersModel.isInBlackList.value  = advertisersModel.in_blacklist!;
     return Container(
       height: 85.0.h,
       decoration: BoxDecoration(
@@ -125,11 +125,11 @@ class AdvertiserItem extends StatelessWidget {
                       if(value.status==200){
 
                         if(value.data?.is_liked!=null && value.data!.is_liked==1){
-                          advertisersModel.isLikedObs  = true;
+                          advertisersModel.isLikedObs.value  = true;
                           advertisersModel.is_liked = true;
                           showMyToast("تم الإعجاب بالمعلن بنجاح !");
                         }else{
-                          advertisersModel.isLikedObs = false;
+                          advertisersModel.isLikedObs.value = false;
                           advertisersModel.is_liked = false;
                           showMyToast("تم إلغاء الإعجاب بالمعلن بنجاح !");
                         }
@@ -138,7 +138,7 @@ class AdvertiserItem extends StatelessWidget {
                   },
                   child: Container(
                     padding: EdgeInsets.only(left: 2.0, right: 2.0),
-                    child: advertisersModel.isLikedObs
+                    child: advertisersModel.isLikedObs.isTrue
                         ?  SvgPicture.asset(
                       'images/heart_filled.svg',
                       fit: BoxFit.fill,
@@ -170,11 +170,11 @@ class AdvertiserItem extends StatelessWidget {
                         if(value.status==200){
 
                           if(value.data?.in_blacklist!=null && value.data!.in_blacklist==1){
-                            advertisersModel.isInBlackList  = 1;
+                            advertisersModel.isInBlackList.value  = 1;
                             advertisersModel.in_blacklist = 1;
                             showMyToast("تم متابعة المعلن بنجاح !");
                           }else{
-                            advertisersModel.isInBlackList  = 0;
+                            advertisersModel.isInBlackList.value  = 0;
                             advertisersModel.in_blacklist = 0;
                             showMyToast("تم إلغاء متابعة المعلن بنجاح !");
                           }
@@ -221,7 +221,7 @@ class AdvertiserItem extends StatelessWidget {
                   },
                   child: Obx(()=>Container(
                     padding: EdgeInsets.only(left: 2.0, right: 2.0),
-                    child: advertisersModel.iisMutedObs
+                    child: advertisersModel.iisMutedObs.isTrue
                         ? SvgPicture.asset(
                       'images/chat_icon.svg',
                       fit: BoxFit.fill,

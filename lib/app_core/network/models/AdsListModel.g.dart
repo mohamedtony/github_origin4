@@ -7,10 +7,10 @@ part of 'AdsListModel.dart';
 // **************************************************************************
 
 AdsListModel _$AdsListModelFromJson(Map<String, dynamic> json) => AdsListModel(
-      time_ago: json['time_ago'] as String?,
-      id: json['id'] as int?,
       is_liked: json['is_liked'] as bool?,
       is_disliked: json['is_disliked'] as bool?,
+      time_ago: json['time_ago'] as String?,
+      id: json['id'] as int?,
       status: json['status'] as String?,
       video: json['video'] as String?,
       image: json['image'] as String?,
