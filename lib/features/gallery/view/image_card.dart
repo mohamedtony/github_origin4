@@ -1,3 +1,4 @@
+import 'package:advertisers/features/gallery/controller/gallery_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,27 +8,24 @@ import 'package:get/get.dart';
 import 'package:quds_popup_menu/quds_popup_menu.dart';
 import 'package:video_player/video_player.dart';
 
-class GalleryCard extends StatefulWidget {
-  const GalleryCard({ this.url, Key? key}) : super(key: key);
+class ImageCard extends StatefulWidget {
+
   final String?  url;
+  final int? itemId;
+
+  const ImageCard({ this.url, this.itemId,Key? key,}) : super(key: key);
   @override
-  State<GalleryCard> createState() => _GalleryCardState();
+  State<ImageCard> createState() => _ImageCardState();
 }
 
-class _GalleryCardState extends State<GalleryCard> {
-  late VideoPlayerController _controller;
-  late bool visible;
+class _ImageCardState extends State<ImageCard> {
+   late bool visible;
 
   @override
   void initState() {
     visible = false;
     super.initState();
-    _controller = VideoPlayerController.network(widget.url ??
-        "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4")
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-      });
+
   }
 
   @override
@@ -41,47 +39,15 @@ class _GalleryCardState extends State<GalleryCard> {
           Container(
             height: 169.h,
             // width: 342.w,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-            child:
-            _controller.value.isInitialized
-                ? AspectRatio(
-              aspectRatio: _controller.value.aspectRatio,
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: VideoPlayer(_controller)),
-            )
-                : Container(),
-          ),
-          FloatingActionButton(
-            onPressed: () {
-              setState(() {
-                _controller.value.isPlaying
-                    ? _controller.pause()
-                    : _controller.play();
-              });
-            }, backgroundColor: Colors.transparent,
-            child: Icon(
-              _controller.value.isPlaying
-                  ? Icons.pause
-                  : Icons.play_arrow,
-
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+              image: DecorationImage(image: NetworkImage(widget.url!),fit: BoxFit.fill)
             ),
           ),
           Positioned(
               left: 5,
               top: 5,
 
-              // child: QudsPopupButton(
-              //   backgroundColor: Colors.white10,
-              //   // tooltip: 'اختر قناة',
-              //   items: getMenuItems(),
-              //   //           :[QudsPopupMenuWidget(
-              //   // builder: (c) =>SizedBox())],
-              //   child: Container(
-              //
-              //     color: Colors.transparent,
-              //     child: SvgPicture.asset('images/Share.svg'),
-              //   ),)
 
             child:  PopupMenuButton(
               color: Colors.transparent,
@@ -98,9 +64,15 @@ class _GalleryCardState extends State<GalleryCard> {
                             CircleAvatar(
                                 radius: 15,
                                 backgroundColor: Colors.white54,child:SvgPicture.asset('images/Icon feather-share-2.svg') ),
-                            CircleAvatar(
-                              radius: 15,
-                                backgroundColor: Colors.white54,child: SvgPicture.asset('images/Icon material-delete-sweep.svg')),
+                            InkWell(
+                              onTap: (){
+                                Get.put(GalleryController()).deleteAnItemInGallery(id: widget.itemId);
+                              },
+
+                              child: CircleAvatar(
+                                radius: 15,
+                                  backgroundColor: Colors.white54,child: SvgPicture.asset('images/Icon material-delete-sweep.svg')),
+                            ),
                           ],
                         ),
                       ),
@@ -129,18 +101,7 @@ class _GalleryCardState extends State<GalleryCard> {
                     )
                   ]
               )
-            // InkWell(
-            //     onTap: (){
-            //       setState(() {
-            //         visible=!visible;
-            //       });
-            //     },
-            //     child: Column(
-            //       children: [
-            //         SvgPicture.asset('images/Share.svg'),
-            //
-            //       ],
-            //     ))
+
           )
         ],
       ),

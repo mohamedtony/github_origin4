@@ -396,7 +396,7 @@ class AdvertiserListPage extends StatelessWidget {
             Get.toNamed('/AdvertisingRequestsPage');
           },),
           AdvertiseListItem(icon: 'images/my_ads_icon.svg',title: 'اعلاناتى',listTilePressed: (){
-            print('pressed2');
+            Get.toNamed('/MyAdsPage');
           },),
           AdvertiseListItem(icon: 'images/discount_copon_img.svg',title: 'الخوصومات والكوبوناتي',listTilePressed: (){
             print('pressed2');
@@ -404,10 +404,10 @@ class AdvertiserListPage extends StatelessWidget {
            // Get.toNamed('/DiscountPage');
           },),
           AdvertiseListItem(icon: 'images/gallery_icon.svg',title: 'المعرض',listTilePressed: (){
-            print('pressed2');
+            Get.toNamed('/GalleryPage');
           },),
           AdvertiseListItem(icon: 'images/report_icon.svg',title: 'التقارير',listTilePressed: (){
-            print('pressed2');
+            Get.toNamed('/CommentsPage');
           },),
           AdvertiseListItem(icon: 'images/person_icon.svg',title: 'الموظفين',listTilePressed: (){
             Get.toNamed('/EmployeesPage');

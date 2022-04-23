@@ -15,7 +15,10 @@ GetAdvertisersModel _$GetAdvertisersModelFromJson(Map<String, dynamic> json) =>
       in_blacklist: json['in_blacklist'] as int?,
       is_liked: json['is_liked'] as bool?,
       is_muted: json['is_muted'] as bool?,
-    );
+    )
+      ..isLikedObs = json['isLikedObs'] as bool
+      ..iisMutedObs = json['iisMutedObs'] as bool
+      ..isInBlackList = json['isInBlackList'] as int;
 
 Map<String, dynamic> _$GetAdvertisersModelToJson(
         GetAdvertisersModel instance) =>
@@ -27,4 +30,7 @@ Map<String, dynamic> _$GetAdvertisersModelToJson(
       'in_blacklist': instance.in_blacklist,
       'is_liked': instance.is_liked,
       'is_muted': instance.is_muted,
+      'isLikedObs': instance.isLikedObs,
+      'iisMutedObs': instance.iisMutedObs,
+      'isInBlackList': instance.isInBlackList,
     };

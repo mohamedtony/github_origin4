@@ -26,9 +26,9 @@ class AdvertiserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    advertisersModel.isLikedObs.value = advertisersModel.is_liked!;
-    advertisersModel.iisMutedObs.value = advertisersModel.is_muted!;
-    advertisersModel.isInBlackList.value = advertisersModel.in_blacklist!;
+    advertisersModel.isLikedObs  = advertisersModel.is_liked!;
+    advertisersModel.iisMutedObs  = advertisersModel.is_muted!;
+    advertisersModel.isInBlackList  = advertisersModel.in_blacklist!;
     return Container(
       height: 85.0.h,
       decoration: BoxDecoration(
@@ -125,11 +125,11 @@ class AdvertiserItem extends StatelessWidget {
                       if(value.status==200){
 
                         if(value.data?.is_liked!=null && value.data!.is_liked==1){
-                          advertisersModel.isLikedObs.value = true;
+                          advertisersModel.isLikedObs  = true;
                           advertisersModel.is_liked = true;
                           showMyToast("تم الإعجاب بالمعلن بنجاح !");
                         }else{
-                          advertisersModel.isLikedObs.value = false;
+                          advertisersModel.isLikedObs = false;
                           advertisersModel.is_liked = false;
                           showMyToast("تم إلغاء الإعجاب بالمعلن بنجاح !");
                         }
@@ -138,7 +138,7 @@ class AdvertiserItem extends StatelessWidget {
                   },
                   child: Container(
                     padding: EdgeInsets.only(left: 2.0, right: 2.0),
-                    child: advertisersModel.isLikedObs.isTrue
+                    child: advertisersModel.isLikedObs
                         ?  SvgPicture.asset(
                       'images/heart_filled.svg',
                       fit: BoxFit.fill,
@@ -170,18 +170,18 @@ class AdvertiserItem extends StatelessWidget {
                         if(value.status==200){
 
                           if(value.data?.in_blacklist!=null && value.data!.in_blacklist==1){
-                            advertisersModel.isInBlackList.value = 1;
+                            advertisersModel.isInBlackList  = 1;
                             advertisersModel.in_blacklist = 1;
                             showMyToast("تم متابعة المعلن بنجاح !");
                           }else{
-                            advertisersModel.isInBlackList.value = 0;
+                            advertisersModel.isInBlackList  = 0;
                             advertisersModel.in_blacklist = 0;
                             showMyToast("تم إلغاء متابعة المعلن بنجاح !");
                           }
                         }
                       });
                     },
-                    child:  advertisersModel.isInBlackList.value==0
+                    child:  advertisersModel.isInBlackList ==0
                         ? Image.asset(
                       'images/icon_eye_open.png',
                       fit: BoxFit.fill,
@@ -208,11 +208,11 @@ class AdvertiserItem extends StatelessWidget {
                       if(value.status==200){
 
                         if(value.data?.is_muted!=null && value.data!.is_muted==1){
-                          advertisersModel.iisMutedObs.value = true;
+                          advertisersModel.iisMutedObs  = true;
                           advertisersModel.is_muted = true;
                           showMyToast("تم حظر مراسلة المعلن !");
                         }else{
-                          advertisersModel.iisMutedObs.value = false;
+                          advertisersModel.iisMutedObs  = false;
                           advertisersModel.is_muted = false;
                           showMyToast("تم إلغاء حظر مراسلة المعلن !");
                         }
@@ -221,7 +221,7 @@ class AdvertiserItem extends StatelessWidget {
                   },
                   child: Obx(()=>Container(
                     padding: EdgeInsets.only(left: 2.0, right: 2.0),
-                    child: advertisersModel.iisMutedObs.isTrue
+                    child: advertisersModel.iisMutedObs
                         ? SvgPicture.asset(
                       'images/chat_icon.svg',
                       fit: BoxFit.fill,

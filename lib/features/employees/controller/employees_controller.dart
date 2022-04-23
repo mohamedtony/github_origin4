@@ -467,6 +467,9 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
     }
   }
 
+
+
+
   /// delete employee
   void deleteAnEmployee({int? id}) async {
     EasyLoading.show();
@@ -679,7 +682,7 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
               final dateTime = DateTime.parse(request.actionable!.createdAt!);
               final format = DateFormat('HH:mm a');
               actionsTime.add(format.format(dateTime));
-              actionsDate.add(request.actionable!.addedAt!);
+              actionsDate.add(request.actionable!.addedAt??"");
             }else{
               actionsTime.add("-");
               actionsDate.add("-");

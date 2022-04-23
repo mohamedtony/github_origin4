@@ -1,3 +1,4 @@
+import 'package:advertisers/features/my_comments_advertiser/controller/comments_controller.dart';
 import 'package:advertisers/features/my_orders/view/my_orders_page.dart';
 import 'package:advertisers/features/my_orders_archive/controller/my_orders_archive_controller.dart';
 import 'package:advertisers/features/wallet_module/widgets/processes_widgets/processes_widget.dart';
@@ -273,17 +274,26 @@ class MyOrdersArchivePage extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                              Row(
 
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: [
-                                                  SvgPicture.asset(
-                                                    "images/comments-o.svg",
-                                                  ),
+                                              InkWell(
+                                                onTap: (){
+                                                  Get.put(CommentsController()).commentsList.clear();
+                                                  Get.put(CommentsController()).adsId.value=controller.myRequestsAsClient[index].id??0;
+                                                  Get.put(CommentsController()).getCommentsData(id: controller.myRequestsAsClient[index].id);
+                                                  Get.toNamed('/CommentsPage');
+                                                },
+                                                child: Row(
 
-                                                  Text("${controller.myRequestsAsClient[index].comments}",style: TextStyle( decoration: TextDecoration.underline,fontSize: 14.sp,color: Color(0xff4B4B95),height: 0),),
-                                                ],
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                      "images/comments-o.svg",
+                                                    ),
+
+                                                    Text("${controller.myRequestsAsClient[index].comments}",style: TextStyle( decoration: TextDecoration.underline,fontSize: 14.sp,color: Color(0xff4B4B95),height: 0),),
+                                                  ],
+                                                ),
                                               ),
 
                                               Row(

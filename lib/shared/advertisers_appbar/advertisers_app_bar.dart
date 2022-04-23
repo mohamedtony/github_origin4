@@ -148,7 +148,7 @@ class AppBarWidget extends StatelessWidget {
                     onTap: (){
                       backPressed != null
                           ? backPressed!()
-                          : Navigator.of(context).pop();
+                          :/* Navigator.of(context).pop()*/Get.back();
                     },
                     child: SvgPicture.asset('images/arrow_back.svg',
                       // matchTextDirection: true,

@@ -44,7 +44,7 @@ import 'package:advertisers/features/employees/view/AddEmployeePage.dart';
 import 'package:advertisers/features/employees/view/EmployeeArchivePage.dart';
 import 'package:advertisers/features/employees/view/ShowEmployeePage.dart';
 import 'package:advertisers/features/employees/view/employees_page.dart';
-import 'package:advertisers/features/gallery/gallery_page.dart';
+import 'package:advertisers/features/gallery/view/gallery_page.dart';
 import 'package:advertisers/features/help_and_support/guides_videos/controller/guides_videos_controller.dart';
 import 'package:advertisers/features/help_and_support/guides_videos/guides_videos_page.dart';
 import 'package:advertisers/features/help_and_support/help_and_support_page.dart';
@@ -53,6 +53,8 @@ import 'package:advertisers/features/help_and_support/partener_success_page/part
 import 'package:advertisers/features/help_and_support/redundancy_questions_page/controller/redundancy_questions_controller.dart';
 import 'package:advertisers/features/help_and_support/redundancy_questions_page/redudndancy_questions_page.dart';
 import 'package:advertisers/features/home_page/view/pages/home_bottom_navigation.dart';
+import 'package:advertisers/features/my_ads/view/my_ads_page.dart';
+import 'package:advertisers/features/my_comments_advertiser/view/comments_page.dart';
 import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
 import 'package:advertisers/features/my_orders/view/my_orders_page.dart';
 import 'package:advertisers/features/my_orders_and_my_orders_archive/my_orders_and_my_orders_archive.dart';
@@ -63,7 +65,8 @@ import 'package:advertisers/features/notifications_settings/view/pages/notificat
 import 'package:advertisers/features/reason_rejecting_advertisement/controller/reason_rejecting_advertisement_controller.dart';
 import 'package:advertisers/features/reason_rejecting_advertisement/view/page/reason_rejecting_advertisement.dart';
 import 'package:advertisers/features/request_advertise_module/view/pages/request_advertise_page.dart';
-import 'package:advertisers/features/tax_settings/view/pages/tax_settings_page.dart';
+import 'package:advertisers/features/tajer_order_details/tajer_order_details.dart';
+ import 'package:advertisers/features/tax_settings/view/pages/tax_settings_page.dart';
 import 'package:advertisers/features/users_module/controller/baka_details_controller.dart';
 import 'package:advertisers/features/users_module/controller/choose_baka_controller.dart';
 import 'package:advertisers/features/users_module/controller/forget_password_for_phone_controller.dart';
@@ -361,10 +364,15 @@ class Routes {
     //   name: '/MyOrdersArchivePage',
     //   page: () => MyOrdersArchivePage(),
     // ),
-    // GetPage(
-    //   name: '/MyOrdersPage',
-    //   page: () => MyOrdersPage(),
-    // ),
+    GetPage(
+      name: '/CommentsPage',
+      page: () => CommentsPage(),
+    ),
+    GetPage(
+      name: '/MyAdsPage',
+      page: () => MyAdsPage(),
+    ),
+
     GetPage(
         name: '/MyOrdersAndMyOrdersArchive',
         page: () => MyOrdersAndMyOrdersArchive(),
@@ -428,6 +436,11 @@ class Routes {
       page: () => AdvertiserOrderDetails(),
 
     ),
+    GetPage(
+      name: '/TajerOrderDetails',
+      page: () => TajerOrderDetails(),
+    ),
+
     GetPage(
       name: '/AddEmployeePage',
       page: () => AddEmployeePage(),
