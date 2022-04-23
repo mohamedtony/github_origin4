@@ -48,52 +48,6 @@ class FindAdvertiseController extends GetxController {
   RxList<CategoryModel> categories = <CategoryModel>[].obs;
   var isLoadingGetAdvertisersFromModel = true.obs;
   String? myToken;
-
-  List<String> images = [
-    'الاسرع ردا',
-    'الاقدم',
-    'الاحدث',
-    'الاعلى تقييما',
-    'الاعلى تقييما'
-  ];
-  List<String> sections = [
-    'ابحث عن المعلن من خلال القسم',
-    'الاقدم',
-    'الاعلى تقييما',
-    'الاعلى تقييما',
-    'الاعلى تقييما'
-  ];
-  List<String> socials = [
-    'سناب شات',
-    'الاقدم',
-    'الاعلى تقييما',
-    'الاعلى تقييما',
-    'الاعلى تقييما'
-  ];
-
-  //List<String> numbers=['من 1000 الى 2000','الاقدم','الاعلى تقييما','الاعلى تقييما','الاعلى تقييما'];
-  final List<String> ranges = [
-    '100 - 1000',
-    '1000 - 10000',
-    '10000 - 100000',
-    '100000 - 1000000'
-  ];
-  List<String> countries = [
-    'الدولة',
-    'الاقدم',
-    'الاعلى تقييما',
-    'الاعلى تقييما',
-    'الاعلى تقييما'
-  ];
-  List<String> cities = [
-    'المدينة',
-    'الاقدم',
-    'الاعلى تقييما',
-    'الاعلى تقييما',
-    'الاعلى تقييما'
-  ];
-  List<String> selectedCities = ['مكة', 'جدة', 'الرياض'];
-
   //location range
   RxList<Country> countriesForLocationSheet = <Country>[].obs;
   RxList<Area> areasForLocationSheet = <Area>[].obs;

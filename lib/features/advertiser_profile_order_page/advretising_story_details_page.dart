@@ -1,7 +1,7 @@
-import 'package:advertisers/features/advertising_story_details/Dragabble/constants.dart';
-import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
-import 'package:advertisers/features/advertising_story_details/VideoController.dart';
-import 'package:advertisers/features/advertising_story_details/story_page.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/VideoController2.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/constants.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/overlay_handler2.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/story_page.dart';
 import 'package:advertisers/features/home_page/controller/ads_page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,8 +9,8 @@ import 'package:get/get.dart';
 class AdvertisingStoryDetailsPage extends StatelessWidget {
   AdvertisingStoryDetailsPage({Key? key,required this.onSheetCliked}) : super(key: key);
    Function(BuildContext context,int x) onSheetCliked;
-  final VideoController videoController = Get.put(VideoController());
-  OverlayHandlerProvider overlayHandlerProvider = Get.find();
+  VideoController2 videoController2 = Get.put(VideoController2());
+  OverlayHandlerProvider2 overlayHandlerProvider = Get.find();
    AdsPageController adsPageController = Get.put(AdsPageController());
 
  // StorySmallGetxController  storySmallGetxController = Get.put(StorySmallGetxController());
@@ -76,7 +76,7 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return GetBuilder<OverlayHandlerProvider>(
+    return GetBuilder<OverlayHandlerProvider2>(
         init: overlayHandlerProvider,
         builder: (controller)
     {
@@ -94,9 +94,9 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
           ),
           child: Scaffold(
                resizeToAvoidBottomInset: false,
-              body: Obx(()=>videoController.adslistList.value.isNotEmpty?PageView.builder(
-                itemCount: videoController.adslistList.value.length??0,
-                controller: videoController.pageController,
+              body: Obx(()=>videoController2.adslistList.value.isNotEmpty?PageView.builder(
+                itemCount: videoController2.adslistList.value.length??0,
+                controller: videoController2.pageController,
                 onPageChanged: (x) {
                   //storySmallGetxController.currentIndex.value=0;
                 },
@@ -116,13 +116,13 @@ class AdvertisingStoryDetailsPage extends StatelessWidget {
                     },
                   ),*/
                       StoryScreen(
-                        stories: videoController.adslistList.value[index].attachments,
+                        stories: videoController2.adslistList.value[index].attachments,
                         index:index,
-                        adsListModel: videoController.adslistList.value[index],
-                        user:videoController.adslistList.value[index].user,
-                        pageController1: videoController.pageController,
+                        adsListModel: videoController2.adslistList.value[index],
+                        user:videoController2.adslistList.value[index].user,
+                        pageController1: videoController2.pageController,
                         onClicked: () {
-                          videoController.isSmall.value = true;
+                          videoController2.isSmall.value = true;
                           //Get.showOverlay(loadingWidget: Con);
                           //GetUtils
                           //pageController.viewportFraction = 0.5;

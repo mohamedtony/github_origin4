@@ -1,14 +1,16 @@
 import 'package:advertisers/app_core/network/models/AdsListModel.dart';
-import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/controller/AdvertiserProfileOrderController.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/overlay_handler2.dart';
 import 'package:advertisers/main.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
 enum ButtonState { paused, playing, loading, }
 
-class VideoController extends GetxController {
+class VideoController2 extends GetxController {
  // final Rx<List<Story>> _videoList = Rx<List<Story>>([]);
 
 //  List<Story> get videoList => _videoList.value;
@@ -17,7 +19,8 @@ class VideoController extends GetxController {
   //RxList<GetAdvertisersModel> advertisersModel = <GetAdvertisersModel>[].obs;
   //final Rx<List<AdsListModel>> adslistList = Rx<List<AdsListModel>>([]);
   RxList<AdsListModel> adslistList = <AdsListModel>[].obs;
-  OverlayHandlerProvider overlayHandlerProvider = Get.find();
+  OverlayHandlerProvider2 overlayHandlerProvider = Get.find();
+  AdvertiserProfileOrderController advertiserProfileOrderController =Get.find();
   //List<Story> get adslistList => _videoList.value;
   //late AudioPlayer audioPlayer;
    var isSmall = false.obs;
@@ -28,7 +31,7 @@ class VideoController extends GetxController {
   @override
   Future<void> onInit() async {
     myToken = await storage.read("token");
-    getAdsList();
+    getAdsList(advertiserProfileOrderController.selectedAdvertiseId);
     super.onInit();
     commentController=TextEditingController();
     pageController = PageController(initialPage: overlayHandlerProvider.currentPage, viewportFraction: 1,);
@@ -168,10 +171,10 @@ class VideoController extends GetxController {
     clickedIndex.value = index;
   }
 
-  Future<void> getAdsList() async {
+  Future<void> getAdsList(int userId) async {
    String myToken = await storage.read("token");
 
-    client!.getAdsList(0,1,"Bearer " + myToken,)
+    client!.getAdsList(advertiserProfileOrderController.selectedAdvertiseId,1,"Bearer " + myToken)
         .then((value) {
       if (value.status == 200 && value.data != null && value.data!.isNotEmpty) {
         Logger().d(value.data.toString());

@@ -1,20 +1,21 @@
+import 'package:advertisers/features/advertiser_profile_order_page/overlay_handler2.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'overlay_handler.dart';
 
-class VideoTitleOverlayWidget extends StatefulWidget {
+
+class VideoTitleOverlayWidget2 extends StatefulWidget {
   final Function? onClear;
   final Widget? widget;
 
-  VideoTitleOverlayWidget({this.onClear, this.widget}): assert(widget != null);
+  VideoTitleOverlayWidget2({this.onClear, this.widget}): assert(widget != null);
 
   @override
   _VideoTitleOverlayWidgetState createState() => _VideoTitleOverlayWidgetState();
 }
 
-class _VideoTitleOverlayWidgetState extends State<VideoTitleOverlayWidget> {
-  OverlayHandlerProvider overlayHandlerProvider = Get.find();
+class _VideoTitleOverlayWidgetState extends State<VideoTitleOverlayWidget2> {
+  OverlayHandlerProvider2 overlayHandlerProvider = Get.find();
   double? width;
   double? oldWidth;
   double? oldHeight;
@@ -65,7 +66,7 @@ class _VideoTitleOverlayWidgetState extends State<VideoTitleOverlayWidget> {
       oldWidth = width = MediaQuery.of(context).size.width;
       oldHeight = height = MediaQuery.of(context).size.height;
     }
-   return GetBuilder<OverlayHandlerProvider>(
+   return GetBuilder<OverlayHandlerProvider2>(
       init: overlayHandlerProvider,
       builder: (controller){print("video_overlay_widget ${controller.inPipMode}");
       if(controller.inPipMode != isInPipMode) {

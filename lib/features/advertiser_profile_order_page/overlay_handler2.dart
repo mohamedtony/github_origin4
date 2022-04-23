@@ -10,7 +10,7 @@ import 'package:logger/logger.dart';
 
 import '../../../main.dart';
 
-class OverlayHandlerProvider  extends GetxController{
+class OverlayHandlerProvider2  extends GetxController{
 
   OverlayEntry? overlayEntry;
   double _aspectRatio = 1.77;
@@ -45,9 +45,9 @@ class OverlayHandlerProvider  extends GetxController{
   get aspectRatio => _aspectRatio;
 
   insertOverlay(BuildContext context, OverlayEntry overlay) {
-    if(overlayEntry != null) {
+    /*if(overlayEntry != null) {
       overlayEntry?.remove();
-    }
+    }*/
     overlayEntry = null;
     inPipMode = false;
     Overlay.of(context,/*rootOverlay: true,*/)?.insert(overlay);

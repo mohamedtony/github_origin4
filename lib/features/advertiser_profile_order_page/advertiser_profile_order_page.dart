@@ -1,11 +1,16 @@
 import 'dart:io';
 
 import 'package:advertisers/features/advertiser_profile_order_page/controller/AdvertiserProfileOrderController.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/overlay_handler2.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/widgets/advertiser_copons_tab.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/widgets/my_advertising_page_tab.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/widgets/request_order_tab.dart';
+import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
+import 'package:advertisers/features/advertising_story_details/VideoController.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/features/find_advertise_page/find_advertise_controller.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+import 'package:advertisers/features/home_page/controller/ads_page_controller.dart';
 import 'package:advertisers/features/home_page/view/pages/advertising_page.dart';
 import 'package:advertisers/features/home_page/view/pages/copons_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -24,10 +29,53 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
   AdvertiserProfileOrderPage({Key? key,this.onSheetClicked}) : super(key: key);
   Function(int x)? onSheetClicked;
   AdvertiserProfileOrderController advertiserProfileController = Get.find();
+  OverlayHandlerProvider2 overlayHandlerProvider = Get.put(OverlayHandlerProvider2());
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop:()=> onWillPop() ,
+      onWillPop:()async{
+        print("Exit_profile");
+        print("MainPOP");
+        //Get.back();
+        /* if(overlayHandlerProvider.overlayActive) {
+          overlayHandlerProvider.enablePip(1.77);
+          return false;
+        }*/
+        // Get.delete<VideoController>();
+        // Get.delete<AdsPageController>();
+        /*final VideoController videoController = Get.put(VideoController());
+        OverlayHandlerProvider overlayHandlerProvider = Get.find();
+        AdsPageController adsPageController = Get.put(AdsPageController());*/
+
+        //Get.delete<VideoController>();
+      //  Get.delete<AdsPageController>();
+        //Get.back();
+
+        if(overlayHandlerProvider.overlayActive) {
+          overlayHandlerProvider.updateHidden(false, 300);
+          overlayHandlerProvider.removeOverlay(context);
+          print("isOpen= "+overlayHandlerProvider.isProfileOpend.toString());
+/*          if(!overlayHandlerProvider.isProfileOpend){
+            overlayHandlerProvider.disablePip();
+            overlayHandlerProvider.removeOverlay(context);
+            overlayHandlerProvider.currentPage = 0;
+            // overlayHandlerProvider.isProfileOpend = false;
+          }else{
+            overlayHandlerProvider.updateHidden(false, 300);
+            Get.delete<VideoController>();
+            Get.delete<AdsPageController>();
+            Get.back();
+          }*/
+          /*overlayHandlerProvider.disablePip();
+          overlayHandlerProvider.removeOverlay(context);
+          overlayHandlerProvider.currentPage = 0;*/
+          return false;
+        }else{
+          return true;
+        }
+        return false;
+      },
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(220.0),
@@ -184,6 +232,7 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
                           InkWell(
                             onTap: (){
                               Get.back();
+                              overlayHandlerProvider.updateHidden(false, 300);
                             },
                             child: Container(
                               alignment: Alignment.topLeft,
@@ -660,7 +709,7 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
               ),
               Expanded(
                 child: TabBarView(children: [
-                  AdvertisingPage(
+                  MyAdvertisingPage(
                     /*onSheetClicked: (x){
                       this.onSheetClicke!(x);
                     },*/
@@ -679,10 +728,39 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
       ),
     );
   }
-  Future<bool> onWillPop() async {
-    Get.delete<AdvertiserProfileOrderController>();
-    //Get.delete<FindAdvertiseController>();
+/*  Future<bool> onWillPop() async {
+    print("Exit_profile");
+    print("MainPOP");
+    //Get.back();
+    *//* if(overlayHandlerProvider.overlayActive) {
+          overlayHandlerProvider.enablePip(1.77);
+          return false;
+        }*//*
+    // Get.delete<VideoController>();
+    // Get.delete<AdsPageController>();
+    *//*final VideoController videoController = Get.put(VideoController());
+        OverlayHandlerProvider overlayHandlerProvider = Get.find();
+        AdsPageController adsPageController = Get.put(AdsPageController());*//*
+    if(overlayHandlerProvider.overlayActive) {
+
+      print("isOpen= "+overlayHandlerProvider.isProfileOpend.toString());
+      if(!overlayHandlerProvider.isProfileOpend){
+        overlayHandlerProvider.disablePip();
+        overlayHandlerProvider.removeOverlay(context);
+        overlayHandlerProvider.currentPage = 0;
+        // overlayHandlerProvider.isProfileOpend = false;
+      }else{
+        overlayHandlerProvider.updateHidden(false, 300);
+        Get.delete<VideoController>();
+        Get.delete<AdsPageController>();
+        Get.back();
+      }
+      *//*overlayHandlerProvider.disablePip();
+          overlayHandlerProvider.removeOverlay(context);
+          overlayHandlerProvider.currentPage = 0;*//*
+      return false;
+    }
     return true;
-  }
+  }*/
 
 }

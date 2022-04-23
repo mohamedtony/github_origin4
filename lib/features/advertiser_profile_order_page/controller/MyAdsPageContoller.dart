@@ -20,6 +20,7 @@ import 'package:advertisers/app_core/network/requests/GetAdvertisersRequest.dart
 import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetAdsListResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetAdvertisersResponse.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/controller/AdvertiserProfileOrderController.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
@@ -41,7 +42,7 @@ import 'package:video_compress/video_compress.dart';
 //                         By Mohamed T. Hammad
 
 //=========================================================================================
-class AdsPageController extends GetxController {
+class MyAdsPageContoller extends GetxController {
   var isLoading = true.obs;
   var isEmpty = false.obs;
   RxList<GetAdvertisersModel> advertisersModel = <GetAdvertisersModel>[].obs;
@@ -52,10 +53,10 @@ class AdsPageController extends GetxController {
   RxList<CategoryModel> categories = <CategoryModel>[].obs;
   var isLoadingGetAdvertisersFromModel = true.obs;
   String? myToken;
-   RxList<AdsListModel> adslistList = <AdsListModel>[].obs;
+  RxList<AdsListModel> adslistList = <AdsListModel>[].obs;
 
 
- // List<AdsListModel> get adslistList => _adslistList.value;
+  // List<AdsListModel> get adslistList => _adslistList.value;
 
 
 
@@ -74,6 +75,7 @@ class AdsPageController extends GetxController {
   late TextEditingController searchAdvertiserController;
   var selectedEffectSlidesModel = EffectSlidesModel(id: -1,).obs;
   late RequestAdvertiseController requestAdvertiseController;
+  AdvertiserProfileOrderController advertiserProfileOrderController = Get.find();
 
   final PagingController<int, AdsListModel> pagingController = PagingController(firstPageKey: 1);
   String? type;
@@ -97,10 +99,10 @@ class AdsPageController extends GetxController {
     pagingController.refresh();
   }
 
-  Future<void> getAdsList() async {
+  Future<void> getAdsList(int userId) async {
     String myToken = await storage.read("token");
 
-    client!.getAdsList(0,1,"Bearer " + myToken,)
+    client!.getMyAds(1,"Bearer " + myToken,)
         .then((value) {
       if (value.status == 200 && value.data != null && value.data!.isNotEmpty) {
         Logger().d(value.data.toString());
@@ -120,7 +122,8 @@ class AdsPageController extends GetxController {
     //getAdvertisersRequest!.page=pageKey;
     String myToken = await storage.read("token");
 
-    GetAdsListResponse response = await client!.getAdsList(0,pageKey,"Bearer " + myToken);
+    print("mIDDDD= "+advertiserProfileOrderController.selectedAdvertiseId.toString());
+    GetAdsListResponse response = await client!.getAdsList(advertiserProfileOrderController.selectedAdvertiseId,pageKey,"Bearer " + myToken,);
 
     final completer = Completer<List<AdsListModel>>();
     List<AdsListModel> notifications = [];

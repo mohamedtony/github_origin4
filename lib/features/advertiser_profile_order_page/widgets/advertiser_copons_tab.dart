@@ -33,20 +33,23 @@ class _AdvertiserCoponsTabState extends State<AdvertiserCoponsTab> {
     return Scaffold(
         body:GetBuilder<AdvertiserProfileOrderController>(
           init: coponsPageController,
-          builder: (controller) => PagedListView<int, CoponModelResponse>(
-            pagingController: controller.pagingController,
-            builderDelegate: PagedChildBuilderDelegate<CoponModelResponse>(
-              animateTransitions: true,
-              noItemsFoundIndicatorBuilder: (context){
-                return Container(
-                    alignment: Alignment.topCenter,
-                    margin: EdgeInsets.only(top:20.0),
-                    child: Text('لا يوجد كوبونات !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
-              },
+          builder: (controller) => RefreshIndicator(
+            onRefresh: coponsPageController.loadDataForCopons,
+            child: PagedListView<int, CoponModelResponse>(
+              pagingController: controller.pagingController,
+              builderDelegate: PagedChildBuilderDelegate<CoponModelResponse>(
+                animateTransitions: true,
+                noItemsFoundIndicatorBuilder: (context){
+                  return Container(
+                      alignment: Alignment.topCenter,
+                      margin: EdgeInsets.only(top:20.0),
+                      child: Text('لا يوجد كوبونات !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
+                },
 
-              itemBuilder: (context, item, position) {
-                return CoponItemTap(pos: position, coponModelResponse: item);
-              },
+                itemBuilder: (context, item, position) {
+                  return CoponItemTap(pos: position, coponModelResponse: item);
+                },
+              ),
             ),
           ),)
     );

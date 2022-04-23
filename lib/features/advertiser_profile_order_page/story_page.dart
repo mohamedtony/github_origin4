@@ -4,21 +4,17 @@ import 'package:advertisers/app_core/network/models/AdsListModel.dart';
 import 'package:advertisers/app_core/network/models/Attachment.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersModel.dart';
 import 'package:advertisers/app_core/network/models/UserAdsList.dart';
-import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
-import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_service.dart';
-import 'package:advertisers/features/advertising_story_details/VideoController.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/VideoController2.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/overlay_handler2.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/overlay_service2.dart';
 import 'package:advertisers/features/advertising_story_details/advertiser_details_sheet.dart';
 import 'package:advertisers/features/advertising_story_details/audio_player.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/request_advertise_module/view/pages/request_advertise_page.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:video_player/video_player.dart';
 
 class StoryScreen extends StatefulWidget {
@@ -43,9 +39,9 @@ class _StoryScreenState extends State<StoryScreen>
   VideoPlayerController? _videoController;
   AudioPlayer? audioPlayer;
   int _currentIndex = 0;
-  final VideoController videoGetxController = Get.find();
+  final VideoController2 videoGetxController = Get.find();
 
-  OverlayHandlerProvider overlayHandlerProvider = Get.find();
+  OverlayHandlerProvider2 overlayHandlerProvider = Get.find();
 
   @override
   void initState() {
@@ -97,7 +93,7 @@ class _StoryScreenState extends State<StoryScreen>
   }
   _addVideoWithTitleOverlay(BuildContext context) {
 
-    OverlayService().addVideoTitleOverlay2(context,  DraggableScrollableSheet(
+    OverlayService2().addVideoTitleOverlay2(context,  DraggableScrollableSheet(
       //maxChildSize: 0.8,
       //minChildSize: 100.0,
       maxChildSize: 0.8,
@@ -1384,8 +1380,8 @@ class AnimatedBar extends StatelessWidget {
 
 class UserInfo extends StatelessWidget {
   final AdsListModel adsListModel;
-  final VideoController videoGetxController = Get.find();
-  OverlayHandlerProvider overlayHandlerProvider = Get.find();
+  final VideoController2 videoGetxController = Get.find();
+  OverlayHandlerProvider2 overlayHandlerProvider = Get.find();
   AnimationController? animController;
   VideoPlayerController? videoController;
   AudioPlayer? audioPlayer;

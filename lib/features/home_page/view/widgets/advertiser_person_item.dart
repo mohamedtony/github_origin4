@@ -197,7 +197,7 @@ class AdvertiserItem extends StatelessWidget {
                 )),
                 InkWell(
                   onTap: () async {
-                    String myToken = await storage.read("token");
+                    /*String myToken = await storage.read("token");
                     if(myToken==null ) {
                       showMyToast("مشكلة غير معروفة !");
                       return;
@@ -217,7 +217,7 @@ class AdvertiserItem extends StatelessWidget {
                           showMyToast("تم إلغاء حظر مراسلة المعلن !");
                         }
                       }
-                    });
+                    });*/
                   },
                   child: Obx(()=>Container(
                     padding: EdgeInsets.only(left: 2.0, right: 2.0),

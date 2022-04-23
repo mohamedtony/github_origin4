@@ -11,6 +11,7 @@ import 'package:advertisers/app_core/network/requests/SelectCoponsRequest.dart';
 import 'package:advertisers/app_core/network/requests/UpdateProfileRequest.dart';
 import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
 import 'package:advertisers/app_core/network/requests/login_client_request.dart';
+import 'package:advertisers/app_core/network/responses/AdDetailsResponse.dart';
 import 'package:advertisers/app_core/network/responses/AddRemoveBlackListResponse.dart';
 import 'package:advertisers/app_core/network/responses/AddToFavoriteListResponse.dart';
 import 'package:advertisers/app_core/network/responses/AdvertiserProfileDetailsResponse.dart';
@@ -41,55 +42,55 @@ part 'service.g.dart';
 abstract class RestClient {
 factory RestClient(Dio dio) = _RestClient;
 
-@GET('/countries')
-Future<CountriesResponse> getCountries();
+  @GET('/countries')
+  Future<CountriesResponse> getCountries();
 
-@GET('/subscriptions')
-Future<SubscruptionResponse> getSubscription();
+  @GET('/subscriptions')
+  Future<SubscruptionResponse> getSubscription();
 
-@GET('/subscriptions/{id}')
-Future<SubscriptionDetailsResponse> getSubscriptionDetails(@Path("id") int id);
+  @GET('/subscriptions/{id}')
+  Future<SubscriptionDetailsResponse> getSubscriptionDetails(@Path("id") int id);
 
-@POST('/auth/login')
-Future<LoginClientResponse> login(@Body() LoginClientRequest mLoginRequest);
+  @POST('/auth/login')
+  Future<LoginClientResponse> login(@Body() LoginClientRequest mLoginRequest);
 
-@POST('/subscriptions')
-Future<CreateSubscriptionResponse> createSubscriptions(@Body() CreateSubscriptionRequest createSubscriptionRequest,@Header("Authorization") String token);
+  @POST('/subscriptions')
+  Future<CreateSubscriptionResponse> createSubscriptions(@Body() CreateSubscriptionRequest createSubscriptionRequest,@Header("Authorization") String token);
 
-@POST('/check_copon')
-Future<CreateSubscriptionResponse> checkCopon(@Query('code') String code,@Query('period_id') int? period_id,@Header("Authorization") String token);
+  @POST('/check_copon')
+  Future<CreateSubscriptionResponse> checkCopon(@Query('code') String code,@Query('period_id') int? period_id,@Header("Authorization") String token);
 
-@GET('/profile')
-Future<GetMyProfileInfoResponse> getMyProfile(@Header("Authorization") String token);
+  @GET('/profile')
+  Future<GetMyProfileInfoResponse> getMyProfile(@Header("Authorization") String token);
 
-  @Header('Accept":"application/json')
-  @POST('/auth/register')
-  Future<RegisterClientUserResponse> registerClientUser({
-     FormData? body
-  // @Part() File? image,
-  });
+    @Header('Accept":"application/json')
+    @POST('/auth/register')
+    Future<RegisterClientUserResponse> registerClientUser({
+       FormData? body
+    // @Part() File? image,
+    });
 
-@GET('/profile/blacklist')
-Future<GetBlockedUsersResponse> getBlockedUsers(@Header("Authorization") String token);
+  @GET('/profile/blacklist')
+  Future<GetBlockedUsersResponse> getBlockedUsers(@Header("Authorization") String token);
 
-@GET('/profile/blacklist/{id}')
-Future<AddRemoveBlackListResponse> addRemoveBlackList(@Path("id") int id,@Header("Authorization") String token);
+  @GET('/profile/blacklist/{id}')
+  Future<AddRemoveBlackListResponse> addRemoveBlackList(@Path("id") int id,@Header("Authorization") String token);
 
 
-@GET('/profile/categories')
-Future<GetCategoriesResponse> getCategories(@Header("Authorization") String token);
+  @GET('/profile/categories')
+  Future<GetCategoriesResponse> getCategories(@Header("Authorization") String token);
 
-@POST('/profile/categories')
-Future<GetCategoriesResponse> updateUserCategories(@Body() UpdateUserCategoryRequest updateUserCategoryRequest,@Header("Authorization") String token);
+  @POST('/profile/categories')
+  Future<GetCategoriesResponse> updateUserCategories(@Body() UpdateUserCategoryRequest updateUserCategoryRequest,@Header("Authorization") String token);
 
-@GET('/profile/areas')
-Future<GetUseLocationsResponse> getUseLocations(@Header("Authorization") String token);
+  @GET('/profile/areas')
+  Future<GetUseLocationsResponse> getUseLocations(@Header("Authorization") String token);
 
-@POST('/profile/channels/add')
-Future<CreateSubscriptionResponse> addChannel(@Body() ChannelData channel,@Header("Authorization") String token);
+  @POST('/profile/channels/add')
+  Future<CreateSubscriptionResponse> addChannel(@Body() ChannelData channel,@Header("Authorization") String token);
 
-@POST('/profile/areas')
-Future<GetUseLocationsResponse> setOneCountryAndCities(@Body() OneCountryAndCitiesRequest oneCountryAndCitiesRequest,@Header("Authorization") String token);
+  @POST('/profile/areas')
+  Future<GetUseLocationsResponse> setOneCountryAndCities(@Body() OneCountryAndCitiesRequest oneCountryAndCitiesRequest,@Header("Authorization") String token);
 
 /*
 @POST('/profile/update')
@@ -176,8 +177,8 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   @GET('/copons/{id}/use')
   Future<AdvertiserProfileDetailsResponse> useCopon(@Path("id") int? id,@Header("Authorization") String token);
 
-  @GET('/ads?page={id}')
-  Future<GetAdsListResponse> getAdsList( @Path("id") int? id,@Header("Authorization") String token);
+  @GET('/ads?user_id={user_id}&page={id}')
+  Future<GetAdsListResponse> getAdsList(@Path("user_id") int? user_id, @Path("id") int? id,@Header("Authorization") String token);
 
   @POST('/ads/{id}/comment')
   @FormUrlEncoded()
@@ -200,5 +201,23 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
 
   @GET('/profile/mute/{id}')
   Future<AddToFavoriteListResponse> muteAdvertiser(@Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/ads/{id}')
+  Future<AdDetailsResponse> getAdDetails( @Path("id") int? id,@Header("Authorization") String token);
+
+  @POST('/ads/{id}/rate')
+  @FormUrlEncoded()
+  Future<AddToFavoriteListResponse> rateAds( @Path("id") int? id,@Query('rate') double? rate,@Header("Authorization") String token);
+
+  @GET('/ads/{id}/notify')
+  @FormUrlEncoded()
+  Future<AddToFavoriteListResponse> notify( @Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/ads/{id}/in_front')
+  @FormUrlEncoded()
+  Future<AddToFavoriteListResponse> in_front( @Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/myads?page={id}')
+  Future<GetAdsListResponse> getMyAds(@Path("id") int? id,@Header("Authorization") String token);
 
 }

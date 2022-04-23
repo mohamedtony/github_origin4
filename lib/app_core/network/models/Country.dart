@@ -15,13 +15,15 @@ class Country {
   String? iso_name;
   List<Area>? areas;
   String? type;
+  String?image;
 
   Country({
     this.id,
     this.name,
     this.phone_key,
     this.areas,
-    this.type
+    this.type,
+    this.image
   });
   String itemAsStringByName() {
     return this.name!=null?this.name!:"";

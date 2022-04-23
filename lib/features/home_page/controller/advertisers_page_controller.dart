@@ -214,6 +214,10 @@ class AdvertisersPageController extends GetxController {
       pagingController.error = error;
     }
   }
+  // Call this when the user pull down the screen
+  Future<void> loadDataForAds() async {
+    pagingController.refresh();
+  }
 
   Future<void> getAdvertisersForm(BuildContext context) async {
     print("here");
