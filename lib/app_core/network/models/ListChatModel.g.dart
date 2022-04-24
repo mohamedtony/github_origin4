@@ -9,6 +9,7 @@ part of 'ListChatModel.dart';
 ListChatModel _$ListChatModelFromJson(Map<String, dynamic> json) =>
     ListChatModel(
       id: json['id'] as int?,
+          sent_at_timestamp: json['sent_at_timestamp'] as int?,
       room: json['room'] as String?,
       message_type: json['message_type'] as String?,
       message: json['message'] as String?,
@@ -19,17 +20,21 @@ ListChatModel _$ListChatModelFromJson(Map<String, dynamic> json) =>
       from_user: json['from_user'] == null
           ? null
           : FromUserModel.fromJson(json['from_user'] as Map<String, dynamic>),
+          replied_message: json['replied_message'] == null
+              ? null
+              : RepliedMessage.fromJson(
+              json['replied_message'] as Map<String, dynamic>),
       not_seen: json['not_seen'] as int?,
       sent_at: json['sent_at'] as String?,
       sent_from: json['sent_from'] as String?,
     )
       ..forward = json['forward'] as int?
-      ..replied_message = json['replied_message'] as int?
       ..starred = json['starred'] as bool?;
 
 Map<String, dynamic> _$ListChatModelToJson(ListChatModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+          'sent_at_timestamp': instance.sent_at_timestamp,
       'not_seen': instance.not_seen,
       'forward': instance.forward,
       'replied_message': instance.replied_message,

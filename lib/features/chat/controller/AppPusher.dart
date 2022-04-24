@@ -164,6 +164,9 @@ class AppPusher {
       _channel!.bind(_messaging, (event) {
         //if (event != null) {
           print("XXXXXXXXXXXXXXXXXXXXXXXXX${event?.data}");
+          if (!_pusherData.isClosed){
+
+          }
           _pusherData.sink.add(
               MessageChatModel.fromJson(jsonDecode(event?.data??' '))
               //MessageChatModel(

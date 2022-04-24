@@ -1,4 +1,5 @@
 import 'package:advertisers/app_core/network/models/MessageChatModel.dart';
+import 'package:advertisers/app_core/network/requests/MessageChatModelRequest.dart';
 import 'package:advertisers/features/chat/controller/chat_messages_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -116,9 +117,9 @@ class _LocationShareState extends State<LocationShare> {
                   ),
                 ),
                 onPressed: () {
-                  _chatMessagesController.sendMessage(MessageChatModel(room: widget.room,message:'${widget.latitude}-${widget.longitude}',type: "location",
+                  _chatMessagesController.sendMessage(message:MessageChatModelRequest(room: widget.room,message:'${widget.latitude}-${widget.longitude}',type: "location",
                       from_user_id: widget.fromUserId,
-                      to_user_id: widget.toUserId));
+                      to_user_id: widget.toUserId),);
                   Get.back();
                  // print(
                   //     "Location ${cameraPosition.target.latitude} ${cameraPosition.target.longitude}");

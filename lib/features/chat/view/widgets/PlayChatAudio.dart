@@ -85,8 +85,9 @@ class PlayChatAudioState extends State<PlayChatAudio> with WidgetsBindingObserve
   @override
   Widget build(BuildContext context) {
     return
-      Padding(
-        padding: EdgeInsets.only(left:55.0.w,right:0.0),
+      Container(
+        padding: EdgeInsets.only(left:40.0.w,right:0.0),
+        width: 301.w,
         child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -100,6 +101,7 @@ class PlayChatAudioState extends State<PlayChatAudio> with WidgetsBindingObserve
                   builder: (context, snapshot) {
                     final positionData = snapshot.data;
                     return Container(
+                      height:34,
                     width:179.w,
                       decoration: BoxDecoration(
                           image: DecorationImage(image:AssetImage('images/zigzag.png',))

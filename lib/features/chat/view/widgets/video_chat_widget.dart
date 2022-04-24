@@ -37,8 +37,8 @@ class _VideoChatWidgetState extends State<VideoChatWidget> {
       alignment: Alignment.center,
       children: [
         Container(
-          height: 170,
-          // width: 342.w,
+          height: 139,
+          width: 301.w,
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
           child:
           _controller.value.isInitialized

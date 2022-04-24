@@ -76,6 +76,15 @@
             android:value="2" />
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCGUbK3wD6H3wxhU34yscFclO3_QcXLjS0"/>
+        <provider
+            android:name="vn.hunghd.flutterdownloader.DownloadedFileProvider"
+            android:authorities="${applicationId}.flutter_downloader.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
 
     </application>
 </manifest>

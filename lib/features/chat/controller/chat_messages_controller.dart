@@ -6,16 +6,19 @@ import 'package:advertisers/app_core/network/models/ListChatModel.dart';
 import 'package:advertisers/app_core/network/models/MessageChatModel.dart';
 import 'package:advertisers/app_core/network/models/ToUserModel.dart';
 import 'package:advertisers/app_core/network/repository.dart';
+import 'package:advertisers/app_core/network/requests/MessageChatModelRequest.dart';
 import 'package:advertisers/app_core/network/responses/ListChatResponse.dart';
 import 'package:advertisers/app_core/network/responses/SendMessageResponse.dart';
 import 'package:advertisers/app_core/network/responses/StarMessageResponse.dart';
 import 'package:advertisers/app_core/network/responses/UploadFileResponse.dart';
 import 'package:advertisers/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 class ChatMessagesController extends GetxController {
 
   var messagesChat=<ListChatModel>[].obs;
@@ -24,6 +27,7 @@ class ChatMessagesController extends GetxController {
   var replied=false.obs;
   var chatIndex = 0.obs;
   var repliedIndex=0.obs;
+  var typeOfMessage=''.obs;
   var savedFile = File(' ').obs;
   var file =File(' ').obs;
   var imageBase641 = ''.obs;
@@ -97,7 +101,7 @@ class ChatMessagesController extends GetxController {
     return false;
   }
 
- void uploadFile({required dio.MultipartFile file,required String room,required String type}) async {
+ void uploadFile({required dio.MultipartFile file,required String room,required String type,required ItemScrollController itemScrollController}) async {
 
     EasyLoading.show();
 
@@ -114,9 +118,18 @@ class ChatMessagesController extends GetxController {
             FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
             ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
             //ToUserModel toUserModel=json.decode(Get.parameters["to_user"]??"");
-            sendMessage(MessageChatModel(room: room,message: res.data?.link??' ',type: type,
-                from_user_id: fromUserModel.id,
-                to_user_id: toUserModel.id.toString()));
+            int? from,to;
+            if(fromUserModel.toString()==storage.read("id",).toString()){
+              from=fromUserModel.id??0;
+              to=toUserModel.id??0;
+            }else if(toUserModel.id.toString()==storage.read("id",).toString()){
+              from=toUserModel.id??0;
+              to=fromUserModel.id??0;
+            }
+            sendMessage(message:MessageChatModelRequest(room: room,message: res.data?.link??' ',type: type,
+                from_user_id: from,
+                to_user_id: to.toString()),itemScrollController:itemScrollController);
+
           },
           onError: (err, res) {
             if (EasyLoading.isShow) {
@@ -144,7 +157,7 @@ class ChatMessagesController extends GetxController {
 
   }
 
-  void sendMessage(MessageChatModel message) async {
+  void sendMessage({required MessageChatModelRequest message,ItemScrollController? itemScrollController}) async {
 
     EasyLoading.show();
 
@@ -153,16 +166,22 @@ class ChatMessagesController extends GetxController {
           path: 'send_message',
           fromJson: (json) => SendMessageResponse.fromJson(json),
           json: {"token": "Bearer  $token","message":message.message,"type":message.type,
-            "to_user_id":message.to_user_id,"from_user_id":message.from_user_id},
+            "to_user_id":message.to_user_id,"from_user_id":message.from_user_id,"message_id":message.message_id},
           onSuccess: (res) {
             if (EasyLoading.isShow) {
               EasyLoading.dismiss();
             }
-            //messagesChat.value = res.data!;
+            if(itemScrollController!=null){
+            SchedulerBinding.instance?.addPostFrameCallback((_) {
+              itemScrollController?.scrollTo(
+                  index: messagesChat.length - 1,
+                  duration: const Duration(seconds: 1),
+                  curve: Curves.easeInOutCubic);
+              // _scrollController.animateTo(_height * index,
+              //     duration: const Duration(seconds: 2), curve: Curves.easeIn);
+            });}
 
-            //update();
-
-          },
+                },
           onError: (err, res) {
             if (EasyLoading.isShow) {
               EasyLoading.dismiss();
@@ -203,6 +222,8 @@ class ChatMessagesController extends GetxController {
               EasyLoading.dismiss();
             }
             isStar.value = res.data!.starred??0;
+            messagesChat[chatIndex.value].starred =
+            isStar.value == 1 ? true : false;
             update();
             print('HHHHHHHHHHHHHHHHHH${res.data!.starred??0}');
           },

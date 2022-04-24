@@ -19,7 +19,7 @@ class ChatAndTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return show == Show.content
         ? SizedBox(
-           height: 60,
+           height: 45,
           child: Card(
               color: Colors.grey[200],
               elevation: 3,
@@ -38,21 +38,21 @@ class ChatAndTitle extends StatelessWidget {
                           Get.back();
                         },
                         child: SvgPicture.asset(
-                          'images/back-light.svg',
+                          'images/back-light (1).svg',
                           color: Colors.blue,
-                          height: 30.h,
+                          height: 19.5,width: 5.13,fit: BoxFit.fitWidth,
                         ),
                       ),
                     ),
                   ),
                    CircleAvatar(
-                    radius: 25,
+                    radius: 17,
                     foregroundImage: NetworkImage(
                      image??' ',
     ),
                   ),
-                  const SizedBox(
-                    width: 20,
+                   SizedBox(
+                    width: 20.w,
                   ),
                   Expanded(
                     child: Text(
@@ -60,7 +60,7 @@ class ChatAndTitle extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.w500,
-                        fontSize: 18.sp,
+                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -94,20 +94,24 @@ class ChatAndTitle extends StatelessWidget {
                         }
                       },
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 40, vertical: 3),
+                        height: 30,
+                        width: 111.w,
+                        alignment:Alignment.center,
+                        padding: EdgeInsets.only(
+                            left: 30.w,right: 30.w, top: 4,bottom: 6),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(7),
                             color: const Color(0xff4184CE)),
-                        child: const Text(
+                        child: Text(
                           "الشات",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
+                          style: TextStyle(color: Colors.white, fontSize: 15.sp),
                         ),
                       ),
                     ),
                     SvgPicture.asset(
                       "images/chat.svg",
-                      height: 21,
+                      height: 19.79,
+                      width: 19.79.w,
                     ),
                   ],
                 ),

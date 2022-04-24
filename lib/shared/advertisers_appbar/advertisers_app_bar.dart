@@ -39,9 +39,10 @@ class AppBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height:87,
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: Padding(
-        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+        padding: const EdgeInsets.only(top: 6.0, bottom: 17.0),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
@@ -57,7 +58,7 @@ class AppBarWidget extends StatelessWidget {
                     child: Container(
                       child: Image.asset(
                         "images/Nav.png",
-                        // height: ,
+                         height:35.6 ,width: 32.w,
                         // color: AppStyle.blueTextButton,
                       ),
                     ),
@@ -70,7 +71,7 @@ class AppBarWidget extends StatelessWidget {
               widgetInsteadSearchBar ?? Container(),
               if(isSearchBar == true) Expanded(
                 child: SizedBox(
-                  height: 45.h,
+                  height: 34.h,
                   child: Row(
                     children: [
                       if(searchBarBigRight == false) Container(
@@ -99,7 +100,7 @@ class AppBarWidget extends StatelessWidget {
                                   onTap: searchPressed,
                                   child: SvgPicture.asset(
                                     "images/bx-search-alt.svg",
-                                    height: 10,
+                                    height: 20.81,
                                   ),
                                 ),
                               ),
@@ -109,7 +110,7 @@ class AppBarWidget extends StatelessWidget {
                                   onTap: filterPressed,
                                   child: SvgPicture.asset(
                                     "images/filter.svg",
-                                    height: 10,
+                                    height: 17,
                                   ),
                                 ),
                               ):Container(),
