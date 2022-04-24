@@ -27,7 +27,8 @@ class AdvertisingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        print("MainPOP");
+       // print("MainPOP");
+        print("AdvertisingPage");
         //Get.back();
         /* if(overlayHandlerProvider.overlayActive) {
           overlayHandlerProvider.enablePip(1.77);
@@ -45,11 +46,13 @@ class AdvertisingPage extends StatelessWidget {
             overlayHandlerProvider.disablePip();
             overlayHandlerProvider.removeOverlay(context);
             overlayHandlerProvider.currentPage = 0;
+            Get.delete<VideoController>();
+           // Get.delete<AdsPageController>();
            // overlayHandlerProvider.isProfileOpend = false;
           }else{
             overlayHandlerProvider.updateHidden(false, 300);
              Get.delete<VideoController>();
-             Get.delete<AdsPageController>();
+             //Get.delete<AdsPageController>();
             Get.back();
           }
           /*overlayHandlerProvider.disablePip();

@@ -33,13 +33,14 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
   Function(int x)? onSheetClicked;
   AdvertiserProfileOrderController advertiserProfileController = Get.find();
   OverlayHandlerProvider2 overlayHandlerProvider = Get.put(OverlayHandlerProvider2());
-
+  OverlayHandlerProvider overlayHandlerProvider1 = Get.find();
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop:()async{
-        print("Exit_profile");
-        print("MainPOP");
+        print("advertiserProfile");
+       // print("Exit_profile");
+       // print("MainPOP");
         //Get.back();
         /* if(overlayHandlerProvider.overlayActive) {
           overlayHandlerProvider.enablePip(1.77);
@@ -83,14 +84,13 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
             overlayHandlerProvider.currentPage = 0;
             // overlayHandlerProvider.isProfileOpend = false;
           }else{
-            overlayHandlerProvider.updateHidden(false, 300);
+            overlayHandlerProvider1.updateHidden(false, 300);
             //Get.delete<VideoController>();
            // Get.delete<AdsPageController>();
-            //Get.back();
+            Get.back();
           }
           return false;
         }
-        return false;
       },
       child: Scaffold(
         appBar: PreferredSize(
@@ -248,7 +248,7 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
                           InkWell(
                             onTap: (){
                               Get.back();
-                              overlayHandlerProvider.updateHidden(false, 300);
+                              overlayHandlerProvider1.updateHidden(false, 300);
                             },
                             child: Container(
                               alignment: Alignment.topLeft,
@@ -277,11 +277,11 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
 
                               if(value.data?.is_liked!=null && value.data!.is_liked==1){
                                 advertiserProfileController.isProfileFavorite.value  = true;
-                                advertiserProfileController.advertiserProfileModel!.is_followed = true;
+                                advertiserProfileController.advertiserProfileModel!.is_liked = true;
                                 showMyToast("تم الإعجاب بالمعلن بنجاح !");
                               }else{
                                 advertiserProfileController.isProfileFavorite.value  = false;
-                                advertiserProfileController.advertiserProfileModel!.is_followed = false;
+                                advertiserProfileController.advertiserProfileModel!.is_liked = false;
                                 showMyToast("تم إلغاء الإعجاب بالمعلن بنجاح !");
                               }
                             }

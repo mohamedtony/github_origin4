@@ -229,8 +229,8 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
             EasyLoading.dismiss();
           }
           advertiserProfileModel = value.data;
-          if(advertiserProfileModel?.is_followed!=null) {
-            isProfileFavorite.value = advertiserProfileModel!.is_followed!;
+          if(advertiserProfileModel?.is_liked!=null) {
+            isProfileFavorite.value = advertiserProfileModel!.is_liked!;
           }
           update();
         }

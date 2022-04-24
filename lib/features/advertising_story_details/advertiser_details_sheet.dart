@@ -5,6 +5,7 @@ import 'package:advertisers/app_core/network/models/Channel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/app_core/network/models/EffectSlidesModel.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersFromModel.dart';
+import 'package:advertisers/app_core/network/models/GetAdvertisersModel.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/features/advertising_story_details/report_sheet.dart';
 import 'package:advertisers/features/find_advertise_page/find_advertise_controller.dart';
@@ -97,11 +98,21 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
 
                                       overlayHandlerProvider.adsListModelModel?.user?.image!=null && overlayHandlerProvider.adsListModelModel!.user!.image!.isNotEmpty?Container(
                                         margin: EdgeInsets.only(left: 14.0,top: 10.0),
-                                        child: CircleAvatar(
-                                          radius: 25.0,
-                                          backgroundColor: Colors.grey[300],
-                                          backgroundImage: CachedNetworkImageProvider(
-                                            overlayHandlerProvider.adsListModelModel!.user!.image!,
+                                        child: InkWell(
+                                          onTap: (){
+                                           /* overlayHandlerProvider.updateHidden(true, 0);
+                                            videoController?.pause();
+                                            animController?.stop();
+                                            audioPlayer?.pause();
+                                            print("sdvertiserId= ${adsListModel.id}");*/
+                                           // Get.toNamed('/AdvertiserProfileOrderPage',arguments:GetAdvertisersModel(id: overlayHandlerProvider.adsListModelModel!.user?.id));
+                                          },
+                                          child: CircleAvatar(
+                                            radius: 25.0,
+                                            backgroundColor: Colors.grey[300],
+                                            backgroundImage: CachedNetworkImageProvider(
+                                              overlayHandlerProvider.adsListModelModel!.user!.image!,
+                                            ),
                                           ),
                                         ),
                                       ): Container(
@@ -691,7 +702,7 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
            expand: false,
            builder: (context, scrollController) {
              return ReportSheet(
-                 scrollController: scrollController);
+                 scrollController: scrollController,id:overlayHandlerProvider.adId);
            },
          );
        },

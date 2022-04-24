@@ -891,13 +891,36 @@ class _StoryScreenState extends State<StoryScreen>
                                               if(widget.adsListModel?.is_disliked!=null && widget.adsListModel!.is_disliked!){
                                                 videoGetxController.likeAds(
                                                     widget.adsListModel!.id!);
-                                                widget.adsListModel!.is_liked = true;
+
                                                 setState(() {
+                                                  widget.adsListModel!.is_liked = true;
+                                                  widget.adsListModel!.is_disliked = false;
                                                   if(widget.adsListModel?.likes!=null && widget.adsListModel!.likes!>=0) {
                                                     widget.adsListModel!.likes = (widget.adsListModel!.likes!)+1;
                                                   }
+                                                  if(widget.adsListModel?.dislikes!=null && widget.adsListModel!.dislikes!>0){
+                                                    widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) -1;
+                                                  }
                                                 });
-                                             }else if((widget.adsListModel?.is_liked!=null && !widget.adsListModel!.is_liked!)&& (widget.adsListModel?.is_disliked!=null && !widget.adsListModel!.is_disliked!)){
+                                              }else if(!widget.adsListModel!.is_liked! && !widget.adsListModel!.is_disliked!){
+                                                videoGetxController.likeAds(
+                                                    widget.adsListModel!.id!);
+
+                                                setState(() {
+                                                  widget.adsListModel!.is_liked = true;
+                                                  widget.adsListModel!.is_disliked = false;
+                                                  if(widget.adsListModel?.likes!=null && widget.adsListModel!.likes!>=0) {
+                                                    widget.adsListModel!.likes = (widget.adsListModel!.likes!)+1;
+                                                  }
+                                                  /*if(widget.adsListModel?.dislikes!=null && widget.adsListModel!.dislikes!>0){
+                                                  widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) -1;
+                                                }*/
+                                                });
+
+                                              }
+                                              }
+
+                                            /*else if((widget.adsListModel?.is_liked!=null && !widget.adsListModel!.is_liked!)&& (widget.adsListModel?.is_disliked!=null && !widget.adsListModel!.is_disliked!)){
                                                 videoGetxController.likeAds(
                                                     widget.adsListModel!.id!);
                                                 widget.adsListModel!.is_liked = true;
@@ -907,7 +930,7 @@ class _StoryScreenState extends State<StoryScreen>
                                                   }
                                                 });
                                               }
-                                            }
+                                            }*/
                                           },
                                           child: Image.asset(
                                             'images/like_story.png',
@@ -944,13 +967,35 @@ class _StoryScreenState extends State<StoryScreen>
                                               if(widget.adsListModel?.is_liked!=null && widget.adsListModel!.is_liked!){
                                                 videoGetxController.dislikeAd(
                                                     widget.adsListModel!.id!);
-                                                widget.adsListModel!.is_disliked = true;
+
                                                 setState(() {
+                                                  widget.adsListModel!.is_disliked = true;
+                                                  widget.adsListModel!.is_liked = false;
                                                   if(widget.adsListModel?.dislikes!=null && widget.adsListModel!.dislikes!>=0) {
                                                     widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) +1;
                                                   }
+                                                  if(widget.adsListModel?.likes!=null && widget.adsListModel!.likes!>0){
+                                                    widget.adsListModel!.likes = (widget.adsListModel!.likes!) -1;
+                                                  }
                                                 });
-                                              }else if((widget.adsListModel?.is_liked!=null && !widget.adsListModel!.is_liked!)&& (widget.adsListModel?.is_disliked!=null && !widget.adsListModel!.is_disliked!)){
+                                              }else if(!widget.adsListModel!.is_liked! && !widget.adsListModel!.is_disliked!){
+                                                print("in_dislike");
+                                                videoGetxController.dislikeAd(
+                                                    widget.adsListModel!.id!);
+
+                                                setState(() {
+                                                  widget.adsListModel!.is_disliked = true;
+                                                  widget.adsListModel!.is_liked = false;
+                                                  if(widget.adsListModel?.dislikes!=null && widget.adsListModel!.dislikes!>=0) {
+                                                    widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) +1;
+                                                  }
+                                                 /* if(widget.adsListModel?.likes!=null && widget.adsListModel!.likes!>0){
+                                                    widget.adsListModel!.likes = (widget.adsListModel!.likes!) -1;
+                                                  }*/
+                                                });
+
+                                              }
+                                              /*else if((widget.adsListModel?.is_liked!=null && !widget.adsListModel!.is_liked!)&& (widget.adsListModel?.is_disliked!=null && !widget.adsListModel!.is_disliked!)){
                                                 videoGetxController.dislikeAd(
                                                     widget.adsListModel!.id!);
                                                 widget.adsListModel!.is_disliked = true;
@@ -959,7 +1004,7 @@ class _StoryScreenState extends State<StoryScreen>
                                                     widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) +1;
                                                   }
                                                 });
-                                              }
+                                              }*/
                                             }
                                           },
                                           child: Image.asset(
