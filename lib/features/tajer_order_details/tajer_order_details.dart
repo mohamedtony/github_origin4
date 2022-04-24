@@ -6,6 +6,7 @@ import 'package:advertisers/features/advertiser_order_details/widgets/content_wi
 import 'package:advertisers/features/advertiser_order_details/widgets/content_widgets/links_widget.dart';
 import 'package:advertisers/features/advertiser_order_details/widgets/content_widgets/note_widget.dart';
 import 'package:advertisers/features/advertiser_order_details/widgets/order_details_title.dart';
+import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/tajer_order_details/controller/tajer_order_details_controller.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
@@ -38,6 +39,7 @@ class TajerOrderDetails extends GetWidget<TajerOrderDetailsController> {
 
 
   final TajerOrderDetailsController  controller = Get.put(TajerOrderDetailsController());
+  OverlayHandlerProvider overlayHandlerProvider = Get.find();
 
   TajerOrderDetails({Key? key,}) : super(key: key);
   final List<String> titles = ['المرفقات', 'الروابط', 'الكوبون', 'العنوان'];
@@ -52,6 +54,10 @@ class TajerOrderDetails extends GetWidget<TajerOrderDetailsController> {
           isNotification: false,
           isBack: true,
           isSideMenu: false,
+          backPressed: (){
+            overlayHandlerProvider.updateHidden(false, 300);
+            Get.back();
+          },
         ),
         preferredSize: Size(MediaQuery.of(context).size.width, 120.h),
       ),

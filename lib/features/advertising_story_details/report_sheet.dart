@@ -1,4 +1,6 @@
 import 'package:advertisers/features/advertiser_profile_order_page/controller/AdvertiserProfileOrderController.dart';
+import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
+import 'package:advertisers/features/advertising_story_details/VideoController.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/request_advertise_module/controller/request_advertise_controller.dart';
 import 'package:flutter/material.dart';
@@ -9,25 +11,27 @@ import 'package:get/get.dart';
 //                         By Mohamed T. Hammad
 
 //=========================================================================================
-class NoticeSheet extends StatefulWidget {
+//NoticeSheet
+
+class ReportSheet extends StatefulWidget {
   ScrollController? scrollController;
 
-  NoticeSheet({Key? key, this.scrollController}) : super(key: key);
+  ReportSheet({Key? key, this.scrollController}) : super(key: key);
 
   @override
-  State<NoticeSheet> createState() => _NoticeSheetState();
+  State<ReportSheet> createState() => _ReportSheetState();
 }
 
-class _NoticeSheetState extends State<NoticeSheet> {
-  AdvertiserProfileOrderController advertiserProfileController = Get.find();
+class _ReportSheetState extends State<ReportSheet> {
+  VideoController advertiserProfileController=Get.find();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(advertiserProfileController.isNoticeSaveClicked.isFalse){
+    /*if(advertiserProfileController.isNoticeSaveClicked.isFalse){
       //----------------------------------------- for discount sheet ------------------------------------
       advertiserProfileController.noticeController=  TextEditingController();
-    }
+    }*/
   }
   @override
   Widget build(BuildContext context) {
@@ -52,7 +56,7 @@ class _NoticeSheetState extends State<NoticeSheet> {
                       //padding: EdgeInsets.all(8.0),
                       margin: EdgeInsets.only(right: 8.0),
                       child: Text(
-                        'noticeable'.tr,
+                        'إبلاغ عن محتوى',
                         style: TextStyle(color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
@@ -119,9 +123,9 @@ class _NoticeSheetState extends State<NoticeSheet> {
                           filled: true,
                           hintStyle: TextStyle(
                               color: AppColors.tabColor),
-                          hintText: 'noticeable'.tr,
+                          hintText: 'اكتب بلاغك...',
                           fillColor: Colors.white70),
-                      controller: advertiserProfileController.noticeController,
+                      controller: advertiserProfileController.reportController,
                     ),
                   ),
                 ),
@@ -135,7 +139,7 @@ class _NoticeSheetState extends State<NoticeSheet> {
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 50.0),
                     child: InkWell(
                       onTap: (){
-                        advertiserProfileController.onNoticeSavedClicked(context);
+                        advertiserProfileController.onReportSavedClicked(context);
                       },
                       child: Material(
                         elevation: 6.0,
@@ -164,7 +168,7 @@ class _NoticeSheetState extends State<NoticeSheet> {
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 50.0),
                     child: InkWell(
                       onTap: (){
-                        advertiserProfileController.isNoticeSaveClicked.value = false;
+                      //  advertiserProfileController.isNoticeSaveClicked.value = false;
                         Get.back();
                       },
                       child: Material(
@@ -196,14 +200,5 @@ class _NoticeSheetState extends State<NoticeSheet> {
       ),
     );
   }
-  @override
-  void dispose() {
-    // TODO: implement dispose
 
-    if(advertiserProfileController.isNoticeSaveClicked.isFalse){
-      //----------------------------------------- for discount sheet ------------------------------------
-      advertiserProfileController.noticeController?.dispose();
-    }
-    super.dispose();
-  }
 }

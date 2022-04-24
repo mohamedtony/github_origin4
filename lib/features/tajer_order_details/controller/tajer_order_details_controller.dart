@@ -28,15 +28,24 @@ class TajerOrderDetailsController extends GetxController {
   late Repository repo;
   late String token;
   @override
-  void onInit() {
-    token = storage.read("token");
-    repo=Repository();
-    myOderDetails=AdvertiserOrderDetailsResponse();
-    getOderDetails();
+  Future<void> onInit() async {
+    myOderDetails = AdvertiserOrderDetailsResponse();
+    token = await storage.read("token");
+    if(Get.parameters['requestId']!=null){
+      print("requestId=${Get.parameters['requestId']}");
+      requestId = int.parse(Get.parameters['requestId']!);
+      //fetchOderDetails(requestId: requestId);
+      repo = Repository();
+      getTajerData(id: requestId);
+      getOderDetails(requestId: requestId);
+    }
+
+
+    //getOderDetails();
     super.onInit();
   }
 
-  var addCommentController=TextEditingController().obs;
+  var addCommentController = TextEditingController().obs;
 
   late int requestId;
   final ApiService _apiService = Get.put(ApiService());
@@ -144,7 +153,7 @@ class TajerOrderDetailsController extends GetxController {
       print("my reason# ${data.data}");
       myOderDetails.data = data.data;
       update();
-      Logger().i(response!.data);
+      Logger().i(response.data);
 
     } on dio.DioError catch (error) {
       if (EasyLoading.isShow) {

@@ -1444,32 +1444,41 @@ class UserInfo extends StatelessWidget {
                           ),
                         );
                       },
-                      child: Stack(
-                        children: [
-                          Container(
-                            // width: 50.0,
-                            height: 30.0,
-                            padding: EdgeInsets.only(left: 10, right: 10),
-                            margin: EdgeInsets.only(right: 15.0, left: 4, top: 6),
-                            decoration: new BoxDecoration(
-                                color: Color(0xffCFCFCF),
-                                shape: BoxShape.rectangle,
-                                borderRadius: new BorderRadius.all(
-                                  Radius.circular(40.0),
-                                )),
-                            child: Text("تفاصيل الاعلان"),
-                          ),
-                          Positioned(
-                            right: -2,
-                            child: Image.asset(
-                              'images/story_share.png',
-                              height: 25,
-                              width: 30,
-                              fit: BoxFit.fill,
-                              //color: Colors.white,
+                      child: InkWell(
+                        onTap: (){
+                          overlayHandlerProvider.updateHidden(true, 0);
+                          videoController?.pause();
+                          animController?.stop();
+                          audioPlayer?.pause();
+                          Get.toNamed('/TajerOrderDetails?requestId=${adsListModel.id}');
+                        },
+                        child: Stack(
+                          children: [
+                            Container(
+                              // width: 50.0,
+                              height: 30.0,
+                              padding: EdgeInsets.only(left: 10, right: 10),
+                              margin: EdgeInsets.only(right: 15.0, left: 4, top: 6),
+                              decoration: new BoxDecoration(
+                                  color: Color(0xffCFCFCF),
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: new BorderRadius.all(
+                                    Radius.circular(40.0),
+                                  )),
+                              child: Text("تفاصيل الاعلان"),
                             ),
-                          )
-                        ],
+                            Positioned(
+                              right: -2,
+                              child: Image.asset(
+                                'images/story_share.png',
+                                height: 25,
+                                width: 30,
+                                fit: BoxFit.fill,
+                                //color: Colors.white,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     Expanded(

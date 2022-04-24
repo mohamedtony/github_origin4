@@ -17,7 +17,7 @@ UserAdsList _$UserAdsListFromJson(Map<String, dynamic> json) => UserAdsList(
       country: json['country'] == null
           ? null
           : Country.fromJson(json['country'] as Map<String, dynamic>),
-      rate: json['rate'] as String?,
+      rate: json['rate'] as int?,
       is_ads_in_front: json['is_ads_in_front'] as bool?,
       is_notified_user: json['is_notified_user'] as bool?,
     );

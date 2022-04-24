@@ -103,7 +103,7 @@ class AdvertisersPageController extends GetxController {
     //getAdvertisersRequest!.page=pageKey;
     String myToken = await storage.read("token");
 
-    GetAdvertisersResponse response = await client!.getAdvertisers("Bearer " + myToken!, /*GetAdvertisersRequest(page: pageKey,)*/getAdvertisersRequest!);
+    GetAdvertisersResponse response = await client!.getAdvertisers("Bearer " + myToken, /*GetAdvertisersRequest(page: pageKey,)*/getAdvertisersRequest!);
 
     final completer = Completer<List<GetAdvertisersModel>>();
     List<GetAdvertisersModel> notifications = [];

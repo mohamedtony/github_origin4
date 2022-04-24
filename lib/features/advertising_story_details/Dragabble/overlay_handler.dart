@@ -28,6 +28,9 @@ class OverlayHandlerProvider  extends GetxController{
   var isInfront = false.obs;
   var isNotifiable = false.obs;
 
+
+
+
   enablePip(double aspect) {
     inPipMode = true;
     _aspectRatio = aspect;

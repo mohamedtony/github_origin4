@@ -322,10 +322,10 @@ class MyAdsPage extends GetWidget<MyAddsController>  {
                                                                         )),
                                                                         InkWell(
                                                                           onTap: (){
-                                                                            Get.put(TajerOrderDetailsController()).requestId=int.parse(controller.addsList[index].id.toString() );
+                                                                           /* Get.put(TajerOrderDetailsController()).requestId=int.parse(controller.addsList[index].id.toString() );
                                                                             Get.put(TajerOrderDetailsController()).fetchOderDetails(requestId: controller.addsList[index].id);
-                                                                            Get.put(TajerOrderDetailsController()).getTajerData(id: controller.addsList[index].id);
-                                                                            Get.toNamed('/TajerOrderDetails');
+                                                                            Get.put(TajerOrderDetailsController()).getTajerData(id: controller.addsList[index].id);*/
+                                                                            Get.toNamed('/TajerOrderDetails?requestId=${controller.addsList[index].id}');
                                                                           },
                                                                           child: Text( 'تفاصيل الطلب',
                                                                             style: TextStyle(

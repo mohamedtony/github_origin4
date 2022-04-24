@@ -6,6 +6,7 @@ import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/app_core/network/models/EffectSlidesModel.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersFromModel.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
+import 'package:advertisers/features/advertising_story_details/report_sheet.dart';
 import 'package:advertisers/features/find_advertise_page/find_advertise_controller.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/request_advertise_module/controller/find_order_advertisers_controller.dart';
@@ -291,7 +292,9 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                               Container(
                                 margin: EdgeInsets.only(left: 10.0),
                                 child: RatingBar.builder(
-                                  initialRating: controller.adsListModelModel?.user?.rate!=null && controller.adsListModelModel!.user!.rate!.isNotEmpty?double.parse(controller.adsListModelModel!.user!.rate!):0.0,
+                                  //initialRating: controller.adsListModelModel?.user?.rate!=null && controller.adsListModelModel!.user!.rate!.isNotEmpty?double.parse(controller.adsListModelModel!.user!.rate!):0.0,
+                                  initialRating: controller.adsListModelModel?.user?.rate!=null ?controller.adsListModelModel!.user!.rate!.toDouble():0.0,
+
                                   minRating: 1,
                                   itemSize: 26,
                                   direction: Axis.horizontal,
@@ -320,40 +323,45 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
 
                         //========================================   'ابلاغ عن محتوى'  ===============================
 
-                        Container(
-                          margin: EdgeInsets.only(right: 0.0,top: 10,left: 10),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                        InkWell(
+                          onTap: (){
+                            showMyBottomSheet(context,9);
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(right: 0.0,top: 10,left: 10),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
 
-                              Container(
-                                width: 10,
-                                height: 10,
-                                margin: EdgeInsets.only(right: 10.0,top: 10),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [AppColors.beginColor, AppColors.endColor],
+                                Container(
+                                  width: 10,
+                                  height: 10,
+                                  margin: EdgeInsets.only(right: 10.0,top: 10),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [AppColors.beginColor, AppColors.endColor],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  margin: EdgeInsets.only(right: 10.0, bottom: 3,top: 0),
-                                  alignment: Alignment.topRight,
-                                  child: Text(
-                                    'ابلاغ عن محتوى',
-                                    style: TextStyle(color: Colors.red),
-                                    textAlign: TextAlign.center,
-                                  ),),
-                              ),
-                              Container(
-                                  margin: EdgeInsets.only(left: 20,top:2.0),
-                                  child: Icon(Icons.arrow_forward_ios_rounded,size: 17,color:  Color(0xff486ac7),)),
+                                Expanded(
+                                  child: Container(
+                                    margin: EdgeInsets.only(right: 10.0, bottom: 3,top: 0),
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'ابلاغ عن محتوى',
+                                      style: TextStyle(color: Colors.red),
+                                      textAlign: TextAlign.center,
+                                    ),),
+                                ),
+                                Container(
+                                    margin: EdgeInsets.only(left: 20,top:2.0),
+                                    child: Icon(Icons.arrow_forward_ios_rounded,size: 17,color:  Color(0xff486ac7),)),
 
-                            ],
+                              ],
+                            ),
                           ),
                         ),
 
@@ -663,6 +671,31 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
        overlayHandlerProvider.updateHidden(false, 300);
      });
 
+   }
+   void showMyBottomSheet(BuildContext context,int bottomNumber){
+     showModalBottomSheet(
+       context: context,
+       isScrollControlled: true,
+       shape: RoundedRectangleBorder(
+         borderRadius: BorderRadius.only(
+             topLeft: const Radius.circular(10.0),
+             topRight: const Radius.circular(10.0)),
+       ),
+       clipBehavior: Clip.antiAliasWithSaveLayer,
+       builder: (BuildContext context) {
+         return DraggableScrollableSheet(
+           //maxChildSize: 0.8,
+           //minChildSize: 100.0,
+
+           initialChildSize: 0.67,
+           expand: false,
+           builder: (context, scrollController) {
+             return ReportSheet(
+                 scrollController: scrollController);
+           },
+         );
+       },
+     );
    }
    void showMyToast(String msg) {
      Fluttertoast.showToast(

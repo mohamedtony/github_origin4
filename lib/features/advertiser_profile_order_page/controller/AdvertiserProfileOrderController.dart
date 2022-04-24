@@ -168,6 +168,7 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
   late Uint8List markerIcon;
 
   AdvertiserProfileModel? advertiserProfileModel;
+  var isProfileFavorite = false.obs;
   OverlayHandlerProvider overlayHandlerProvider = Get.find();
 
   // Call this when the user pull down the screen
@@ -228,6 +229,9 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
             EasyLoading.dismiss();
           }
           advertiserProfileModel = value.data;
+          if(advertiserProfileModel?.is_followed!=null) {
+            isProfileFavorite.value = advertiserProfileModel!.is_followed!;
+          }
           update();
         }
       }

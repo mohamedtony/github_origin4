@@ -13,7 +13,7 @@ class VideoController extends GetxController {
 
 //  List<Story> get videoList => _videoList.value;
   late TextEditingController commentController;
-
+  TextEditingController? reportController;
   //RxList<GetAdvertisersModel> advertisersModel = <GetAdvertisersModel>[].obs;
   //final Rx<List<AdsListModel>> adslistList = Rx<List<AdsListModel>>([]);
   RxList<AdsListModel> adslistList = <AdsListModel>[].obs;
@@ -27,6 +27,7 @@ class VideoController extends GetxController {
   String? myToken ;
   @override
   Future<void> onInit() async {
+    reportController = TextEditingController();
     myToken = await storage.read("token");
     getAdsList();
     super.onInit();
@@ -263,6 +264,15 @@ class VideoController extends GetxController {
         textColor: Colors.white,
         //fontFamily: 'Arabic-Regular',
         fontSize: 16.0);
+  }
+
+  void onReportSavedClicked(BuildContext context) {}
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    reportController?.dispose();
+    super.onClose();
   }
 }
 
