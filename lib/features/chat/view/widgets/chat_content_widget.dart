@@ -34,11 +34,11 @@ class ChatContentWidget extends StatelessWidget {
   String downloadsPath;
   ChatContentWidget(
       {Key? key,
-      required this.index,
-      required this.chatUser,
-      required this.message,
-      required this.type,required this.downloadsPath,
-      required this.chatMessagesController,required this.itemScrollController})
+        required this.index,
+        required this.chatUser,
+        required this.message,
+        required this.type,required this.downloadsPath,
+        required this.chatMessagesController,required this.itemScrollController})
       : super(key: key);
   CustomPopupMenuController? menuController = CustomPopupMenuController();
   @override
@@ -58,19 +58,19 @@ class ChatContentWidget extends StatelessWidget {
 
         onLongPress: type == 'location'
             ? () async {
-                String lat = message.message!
-                    .substring(0, message.message!.lastIndexOf('-') - 1);
-                String lon = message.message!
-                    .substring(message.message!.lastIndexOf('-') - 1);
-                print('>>>>>>>>>>>>>>>>$lat $lon');
-                final url =
-                    'https://www.google.com/maps/search/?api=1&query=$lat,$lon';
-                if (await canLaunch(url)) {
-                  await launch(url);
-                } else {
-                  throw 'Could not launch $url';
-                }
-              }
+          String lat = message.message!
+              .substring(0, message.message!.lastIndexOf('-') - 1);
+          String lon = message.message!
+              .substring(message.message!.lastIndexOf('-') - 1);
+          print('>>>>>>>>>>>>>>>>$lat $lon');
+          final url =
+              'https://www.google.com/maps/search/?api=1&query=$lat,$lon';
+          if (await canLaunch(url)) {
+            await launch(url);
+          } else {
+            throw 'Could not launch $url';
+          }
+        }
             : null,
         // child: GestureDetector(
         //   onLongPress:(){
@@ -89,123 +89,63 @@ class ChatContentWidget extends StatelessWidget {
         //       // _scrollController.animateTo(_height * index,
         //       //     duration: const Duration(seconds: 2), curve: Curves.easeIn);
         //     } );},
-          child: Column(
-            crossAxisAlignment: chatUser == ChatUser.sender
-                ? CrossAxisAlignment.start
-                : CrossAxisAlignment.end,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (chatUser == ChatUser.sender)
-                    SizedBox(
-                      width: 200.w,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 12.0,
-                              right: 12,
-                              top: 8,
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100.0),
-                              child: Image.network(
-                                  message.from_user?.image ?? ' ',
-                                  height: 20.0,
-                                  width: 20.0,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, o, e) {
-                                return Image.asset(
-                                  'images/no_image_available.png',
-                                  height: 20.0,
-                                  width: 20.0,
-                                  fit: BoxFit.cover,
-                                );
-                              }),
-                            ),
-                          ),
-                         // if (chatUser == ChatUser.sender)
-                          chatUser == ChatUser.receiver?  Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 0.0,
-                                vertical: 8,
-                              ),
-                              child: Align(
-                                alignment: Alignment.bottomLeft,
-                                child: Text(
-                                  message.to_user?.username ?? ' ',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                              ),
-                            ):Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 0.0,
-                              vertical: 8,
-                            ),
-                            child: Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Text(
-                                message.from_user?.username ?? ' ',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                  //if (chatUser == ChatUser.sender) SizedBox(width: 130.w,),
-                  chatUser == ChatUser.receiver? Padding(
-                    padding: EdgeInsets.only(
-                      right: 48.0.w,
-                      //vertical: 8,
-                    ),
-                    child: Text(
-                      message.sent_at ?? ' ',
-                      style: TextStyle(
-                        color: Colors.black54,
-                        // fontWeight: FontWeight.bold,
-                        fontSize: 10,
-                      ),
-                    ),
-                  ):Padding(
-                    padding: EdgeInsets.only(
-                      left: 10.0.w,
-                      //vertical: 8,
-                    ),
-                    child: Text(
-                      message.sent_at ?? ' ',
-                      style: TextStyle(
-                        color: Colors.black54,
-                        // fontWeight: FontWeight.bold,
-                        fontSize: 10,
-                      ),
-                    ),
-                  ),
-
-                  if (chatUser == ChatUser.sender)
-                    SizedBox(
-                      width: 20.w,
-                    ),
-                 // if (chatUser == ChatUser.receiver) const Spacer(),
-                  if (chatUser == ChatUser.receiver)
-                   Row(
+        child: Column(
+          crossAxisAlignment: chatUser == ChatUser.sender
+              ? CrossAxisAlignment.start
+              : CrossAxisAlignment.end,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (chatUser == ChatUser.sender)
+                  SizedBox(
+                    width: 200.w,
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        //chatUser == ChatUser.receiver?
                         Padding(
+                          padding: const EdgeInsets.only(
+                            left: 12.0,
+                            right: 12,
+                            top: 8,
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100.0),
+                            child: Image.network(
+                                message.from_user?.image ?? ' ',
+                                height: 20.0,
+                                width: 20.0,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, o, e) {
+                                  return Image.asset(
+                                    'images/no_image_available.png',
+                                    height: 20.0,
+                                    width: 20.0,
+                                    fit: BoxFit.cover,
+                                  );
+                                }),
+                          ),
+                        ),
+                        // if (chatUser == ChatUser.sender)
+                        chatUser == ChatUser.receiver?  Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 0.0,
+                            vertical: 8,
+                          ),
+                          child: Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              message.to_user?.username ?? ' ',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        ):Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 0.0,
                             vertical: 8,
@@ -215,15 +155,75 @@ class ChatContentWidget extends StatelessWidget {
                             child: Text(
                               message.from_user?.username ?? ' ',
                               style: TextStyle(
-                                color: Colors.blueAccent,
+                                color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,
                               ),
                             ),
                           ),
                         ),
-                        if (chatUser == ChatUser.sender)
-                            Padding(
+                      ],
+                    ),
+                  ),
+
+                //if (chatUser == ChatUser.sender) SizedBox(width: 130.w,),
+                chatUser == ChatUser.receiver? Padding(
+                  padding: EdgeInsets.only(
+                    right: 48.0.w,
+                    //vertical: 8,
+                  ),
+                  child: Text(
+                    message.sent_at ?? ' ',
+                    style: TextStyle(
+                      color: Colors.black54,
+                      // fontWeight: FontWeight.bold,
+                      fontSize: 10,
+                    ),
+                  ),
+                ):Padding(
+                  padding: EdgeInsets.only(
+                    left: 10.0.w,
+                    //vertical: 8,
+                  ),
+                  child: Text(
+                    message.sent_at ?? ' ',
+                    style: TextStyle(
+                      color: Colors.black54,
+                      // fontWeight: FontWeight.bold,
+                      fontSize: 10,
+                    ),
+                  ),
+                ),
+
+                if (chatUser == ChatUser.sender)
+                  SizedBox(
+                    width: 20.w,
+                  ),
+                // if (chatUser == ChatUser.receiver) const Spacer(),
+                if (chatUser == ChatUser.receiver)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      //chatUser == ChatUser.receiver?
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 0.0,
+                          vertical: 8,
+                        ),
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Text(
+                            message.from_user?.username ?? ' ',
+                            style: TextStyle(
+                              color: Colors.blueAccent,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ),
+                      if (chatUser == ChatUser.sender)
+                        Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 0.0,
                             vertical: 8,
@@ -240,394 +240,394 @@ class ChatContentWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                     //   if (chatUser == ChatUser.receiver)
-                        chatUser == ChatUser.receiver? Padding(
-                            padding: EdgeInsets.only(
-                              left: 12.0,
-                              right: 12,
-                              top: 8,
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100.0),
-                              child: Image.network(
-                                message.from_user?.image ?? ' ',
+                      //   if (chatUser == ChatUser.receiver)
+                      chatUser == ChatUser.receiver? Padding(
+                        padding: EdgeInsets.only(
+                          left: 12.0,
+                          right: 12,
+                          top: 8,
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100.0),
+                          child: Image.network(
+                            message.from_user?.image ?? ' ',
+                            height: 20.0,
+                            width: 20.0,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, o, e) {
+                              return Image.asset(
+                                'images/no_image_available.png',
                                 height: 20.0,
                                 width: 20.0,
                                 fit: BoxFit.cover,
-                                errorBuilder: (context, o, e) {
-                                  return Image.asset(
-                                    'images/no_image_available.png',
-                                    height: 20.0,
-                                    width: 20.0,
-                                    fit: BoxFit.cover,
-                                  );
-                                },
-                              ),
-                            ),
-                          ):Padding(
-                          padding: EdgeInsets.only(
-                            left: 12.0,
-                            right: 12,
-                            top: 8,
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100.0),
-                            child: Image.network(
-                              message.to_user?.image ?? ' ',
-                              height: 20.0,
-                              width: 20.0,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, o, e) {
-                                return Image.asset(
-                                  'images/no_image_available.png',
-                                  height: 20.0,
-                                  width: 20.0,
-                                  fit: BoxFit.cover,
-                                );
-                              },
-                            ),
+                              );
+                            },
                           ),
                         ),
-                      ],
-                    ),
+                      ):Padding(
+                        padding: EdgeInsets.only(
+                          left: 12.0,
+                          right: 12,
+                          top: 8,
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100.0),
+                          child: Image.network(
+                            message.to_user?.image ?? ' ',
+                            height: 20.0,
+                            width: 20.0,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, o, e) {
+                              return Image.asset(
+                                'images/no_image_available.png',
+                                height: 20.0,
+                                width: 20.0,
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
 
-                ],
+              ],
+            ),
+
+            Padding(
+              padding: EdgeInsets.only(
+                top: 0,
+                bottom: 4,
+                left:
+                // Get.locale?.languageCode == const Locale('en').languageCode
+                //     ? chatUser == ChatUser.sender
+                //         ? 30
+                //         : 4
+                //   :
+                chatUser == ChatUser.sender ? 14 : 30,
+                right:
+                // Get.locale?.languageCode == const Locale('en').languageCode
+                //     ? chatUser == ChatUser.sender
+                //         ? 4
+                //         : 30
+                //     :
+                chatUser == ChatUser.sender ? 30 : 4,
               ),
-
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 0,
-                  bottom: 4,
-                  left:
-                  // Get.locale?.languageCode == const Locale('en').languageCode
-                  //     ? chatUser == ChatUser.sender
-                  //         ? 30
-                  //         : 4
-                  //   :
-                  chatUser == ChatUser.sender ? 14 : 30,
-                  right:
-                  // Get.locale?.languageCode == const Locale('en').languageCode
-                  //     ? chatUser == ChatUser.sender
-                  //         ? 4
-                  //         : 30
-                  //     :
-                  chatUser == ChatUser.sender ? 30 : 4,
+              child: Container(
+                decoration: BoxDecoration(
+                    color:const Color(0xffE8E8E8),
+                    borderRadius: BorderRadius.circular(7)
                 ),
-                     child: Container(
-                       decoration: BoxDecoration(
-                         color:const Color(0xffE8E8E8),
-                         borderRadius: BorderRadius.circular(7)
-                       ),
 
-                      child: Column(
-                        children: [
-                          message.replied_message != null?GestureDetector(
-                            onLongPress:(){
-                              List desiredIndex= chatMessagesController.messagesChat.map((element){
-                                if(element.id==message.replied_message?.id){
-                                  print("Indexxxxxxxxxxxxxxxxxxxxxxxxx${element.id}");
-                                  return chatMessagesController.messagesChat.indexOf(element)+1;
-                                }
-                                return 0;
-                              }).toList();
-                              SchedulerBinding.instance?.addPostFrameCallback((_) {
-                                itemScrollController.scrollTo(
-                                    index: desiredIndex[0],
-                                    duration: const Duration(seconds: 1),
-                                    curve: Curves.easeInOutCubic);
-                                // _scrollController.animateTo(_height * index,
-                                //     duration: const Duration(seconds: 2), curve: Curves.easeIn);
-                              } );},
+                child: Column(
+                  children: [
+                    message.replied_message != null?GestureDetector(
+                      onLongPress:(){
+                        List desiredIndex= chatMessagesController.messagesChat.map((element){
+                          if(element.id==message.replied_message?.id){
+                            print("Indexxxxxxxxxxxxxxxxxxxxxxxxx${element.id}");
+                            return chatMessagesController.messagesChat.indexOf(element)+1;
+                          }
+                          return 0;
+                        }).toList();
+                        SchedulerBinding.instance?.addPostFrameCallback((_) {
+                          itemScrollController.scrollTo(
+                              index: desiredIndex[0],
+                              duration: const Duration(seconds: 1),
+                              curve: Curves.easeInOutCubic);
+                          // _scrollController.animateTo(_height * index,
+                          //     duration: const Duration(seconds: 2), curve: Curves.easeIn);
+                        } );},
+                      child: Container(
+                          width: 244.w,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            // border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.transparent),
+                          child: message.message_type == 'text'
+                              ? Padding(
+                            padding: const EdgeInsets.all(4.0),
                             child: Container(
-                                width: 244.w,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                    // border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.transparent),
-                                child: message.message_type == 'text'
-                                    ? Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: Container(
-                                          height: 150,
-                                          width: 244.w,
-                                          decoration: BoxDecoration(
-                                              // border: Border.all(color: Colors.black),
-                                              // color: Colors.lightBlueAccent,
-                                              color: const Color(0xffE8E8E8),
-                                              borderRadius: BorderRadius.circular(25)),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(left: 4.0),
-                                                child: Container(
-                                                  width: 10,
-                                                  height: 140,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.only(
-                                                        topRight: Radius.circular(25),
-                                                        bottomRight: Radius.circular(25)),
-                                                    color: Colors.indigo,
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 220.w,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    // Align(
-                                                    //   alignment:Alignment.centerLeft,
-                                                    //   child: InkWell(
-                                                    //     onTap: (){
-                                                    //       _chatMessagesController.replied.value=false;
-                                                    //     },
-                                                    //     child: Padding(
-                                                    //       padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
-                                                    //       child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
-                                                    //     ),
-                                                    //   ),
-                                                    // ),
-                                                    message.from_me == true
-                                                        ? Text('you')
-                                                        : Text(
-                                                            message.from_user?.username ??
-                                                                ' '),
-                                                    Text(
-                                                      message.message ?? ' ',
-                                                      overflow: TextOverflow.ellipsis,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
+                              height: 150,
+                              width: 244.w,
+                              decoration: BoxDecoration(
+                                // border: Border.all(color: Colors.black),
+                                // color: Colors.lightBlueAccent,
+                                  color: const Color(0xffE8E8E8),
+                                  borderRadius: BorderRadius.circular(25)),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Container(
+                                      width: 10,
+                                      height: 140,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(25),
+                                            bottomRight: Radius.circular(25)),
+                                        color: Colors.indigo,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 220.w,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        // Align(
+                                        //   alignment:Alignment.centerLeft,
+                                        //   child: InkWell(
+                                        //     onTap: (){
+                                        //       _chatMessagesController.replied.value=false;
+                                        //     },
+                                        //     child: Padding(
+                                        //       padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
+                                        //       child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        message.from_me == true
+                                            ? Text('you')
+                                            : Text(
+                                            message.from_user?.username ??
+                                                ' '),
+                                        Text(
+                                          message.message ?? ' ',
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                              : message.message_type == 'sound' ||
+                              message.message_type == 'audio'
+                              ? Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Container(
+                              height: 150,
+                              width: 244.w,
+                              decoration: BoxDecoration(
+                                // border: Border.all(color: Colors.black),
+                                // color: Colors.lightBlueAccent,
+                                  color: const Color(0xffE8E8E8),
+                                  borderRadius: BorderRadius.circular(25)),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets.only(left: 4.0),
+                                    child: Container(
+                                      width: 10,
+                                      height: 140,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(25),
+                                            bottomRight:
+                                            Radius.circular(25)),
+                                        color: Colors.indigo,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 220.w,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        // Align(
+                                        //   alignment:Alignment.centerLeft,
+                                        //   child: InkWell(
+                                        //     onTap: (){
+                                        //       chatMessagesController.replied.value=false;
+                                        //     },
+                                        //     child: Padding(
+                                        //       padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
+                                        //       child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        message.from_me == true
+                                            ? Text('you')
+                                            : Text(message
+                                            .from_user?.username ??
+                                            ' '),
+                                        Text("Voice Message"),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                              : message.message_type == 'video'
+                              ? Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Container(
+                              height: 150,
+                              width: 244.w,
+                              decoration: BoxDecoration(
+                                // border: Border.all(color: Colors.black),
+                                // color: Colors.lightBlueAccent,
+                                  color: const Color(0xffE8E8E8),
+                                  borderRadius:
+                                  BorderRadius.circular(25)),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 4.0),
+                                    child: Container(
+                                      width: 10,
+                                      height: 140,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            topRight:
+                                            Radius.circular(25),
+                                            bottomRight:
+                                            Radius.circular(25)),
+                                        color: Colors.indigo,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 220.w,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        // Align(
+                                        //   alignment:Alignment.centerLeft,
+                                        //   child: InkWell(
+                                        //     onTap: (){
+                                        //       chatMessagesController.replied.value=false;
+                                        //     },
+                                        //     child: Padding(
+                                        //       padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
+                                        //       child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        message.from_me == true
+                                            ? Text('you')
+                                            : Text(message.from_user
+                                            ?.username ??
+                                            ' '),
+                                        Text('Video Message'),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                              : message.message_type == 'location'
+                              ? Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Container(
+                                  height: 150,
+                                  width: 244.w,
+                                  decoration: BoxDecoration(
+                                    // border: Border.all(color: Colors.black),
+                                    // color: Colors.lightBlueAccent,
+                                      color: const Color(0xffE8E8E8),
+                                      borderRadius:
+                                      BorderRadius.circular(25)),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment
+                                          .spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                          const EdgeInsets.only(
+                                              left: 4.0),
+                                          child: Container(
+                                            width: 10,
+                                            height: 140,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius.only(
+                                                  topRight: Radius
+                                                      .circular(
+                                                      25),
+                                                  bottomRight: Radius
+                                                      .circular(
+                                                      25)),
+                                              color: Colors.indigo,
+                                            ),
                                           ),
                                         ),
-                                      )
-                                    : message.message_type == 'sound' ||
-                                            message.message_type == 'audio'
-                                        ? Padding(
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: Container(
-                                              height: 150,
-                                              width: 244.w,
-                                              decoration: BoxDecoration(
-                                                  // border: Border.all(color: Colors.black),
-                                                  // color: Colors.lightBlueAccent,
-                                                  color: const Color(0xffE8E8E8),
-                                                  borderRadius: BorderRadius.circular(25)),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(left: 4.0),
-                                                    child: Container(
-                                                      width: 10,
-                                                      height: 140,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.only(
-                                                            topRight: Radius.circular(25),
-                                                            bottomRight:
-                                                                Radius.circular(25)),
-                                                        color: Colors.indigo,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 220.w,
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
-                                                      children: [
-                                                        // Align(
-                                                        //   alignment:Alignment.centerLeft,
-                                                        //   child: InkWell(
-                                                        //     onTap: (){
-                                                        //       chatMessagesController.replied.value=false;
-                                                        //     },
-                                                        //     child: Padding(
-                                                        //       padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
-                                                        //       child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
-                                                        //     ),
-                                                        //   ),
-                                                        // ),
-                                                        message.from_me == true
-                                                            ? Text('you')
-                                                            : Text(message
-                                                                    .from_user?.username ??
-                                                                ' '),
-                                                        Text("Voice Message"),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                        : message.message_type == 'video'
-                                            ? Padding(
-                                                padding: const EdgeInsets.all(4.0),
-                                                child: Container(
-                                                  height: 150,
-                                                  width: 244.w,
-                                                  decoration: BoxDecoration(
-                                                      // border: Border.all(color: Colors.black),
-                                                      // color: Colors.lightBlueAccent,
-                                                      color: const Color(0xffE8E8E8),
-                                                      borderRadius:
-                                                          BorderRadius.circular(25)),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.spaceBetween,
-                                                    children: [
-                                                      Padding(
-                                                        padding: const EdgeInsets.only(
-                                                            left: 4.0),
-                                                        child: Container(
-                                                          width: 10,
-                                                          height: 140,
-                                                          decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.only(
-                                                                topRight:
-                                                                    Radius.circular(25),
-                                                                bottomRight:
-                                                                    Radius.circular(25)),
-                                                            color: Colors.indigo,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 220.w,
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment.start,
-                                                          children: [
-                                                            // Align(
-                                                            //   alignment:Alignment.centerLeft,
-                                                            //   child: InkWell(
-                                                            //     onTap: (){
-                                                            //       chatMessagesController.replied.value=false;
-                                                            //     },
-                                                            //     child: Padding(
-                                                            //       padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
-                                                            //       child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
-                                                            //     ),
-                                                            //   ),
-                                                            // ),
-                                                            message.from_me == true
-                                                                ? Text('you')
-                                                                : Text(message.from_user
-                                                                        ?.username ??
-                                                                    ' '),
-                                                            Text('Video Message'),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              )
-                                            : message.message_type == 'location'
-                                                ? Padding(
-                                                    padding: const EdgeInsets.all(4.0),
-                                                    child: Container(
-                                                        height: 150,
-                                                        width: 244.w,
-                                                        decoration: BoxDecoration(
-                                                            // border: Border.all(color: Colors.black),
-                                                            // color: Colors.lightBlueAccent,
-                                                            color: const Color(0xffE8E8E8),
-                                                            borderRadius:
-                                                                BorderRadius.circular(25)),
-                                                        child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets.only(
-                                                                        left: 4.0),
-                                                                child: Container(
-                                                                  width: 10,
-                                                                  height: 140,
-                                                                  decoration: BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius.only(
-                                                                            topRight: Radius
-                                                                                .circular(
-                                                                                    25),
-                                                                            bottomRight: Radius
-                                                                                .circular(
-                                                                                    25)),
-                                                                    color: Colors.indigo,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                width: 220.w,
-                                                                child: Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    // Align(
-                                                                    //   alignment:Alignment.centerLeft,
-                                                                    //   child: InkWell(
-                                                                    //     onTap: (){
-                                                                    //       chatMessagesController.replied.value=false;
-                                                                    //     },
-                                                                    //     child: Padding(
-                                                                    //       padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
-                                                                    //       child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
-                                                                    //     ),
-                                                                    //   ),
-                                                                    // ),
-                                                                    message.from_me == true
-                                                                        ? Text('you')
-                                                                        : Text(message
-                                                                                .from_user
-                                                                                ?.username ??
-                                                                            ' '),
-                                                                    Text(
-                                                                        'Location Message'),
-                                                                  ],
-                                                                ),
-                                                              )
-                                                            ])))
-                                                : const SizedBox(
-                                                    height: 0,
-                                                  )),
-                          ):  const SizedBox(
-                       height: 0,
-                     ),
+                                        SizedBox(
+                                          width: 220.w,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment
+                                                .start,
+                                            children: [
+                                              // Align(
+                                              //   alignment:Alignment.centerLeft,
+                                              //   child: InkWell(
+                                              //     onTap: (){
+                                              //       chatMessagesController.replied.value=false;
+                                              //     },
+                                              //     child: Padding(
+                                              //       padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
+                                              //       child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
+                                              //     ),
+                                              //   ),
+                                              // ),
+                                              message.from_me == true
+                                                  ? Text('you')
+                                                  : Text(message
+                                                  .from_user
+                                                  ?.username ??
+                                                  ' '),
+                                              Text(
+                                                  'Location Message'),
+                                            ],
+                                          ),
+                                        )
+                                      ])))
+                              : const SizedBox(
+                            height: 0,
+                          )),
+                    ):  const SizedBox(
+                      height: 0,
+                    ),
 
-              // Padding(
-              //     padding: EdgeInsets.only(
-              //         top: 0,
-              //         bottom: 4,
-              //         left:
-              //             // Get.locale?.languageCode == const Locale('en').languageCode
-              //             //     ? chatUser == ChatUser.sender
-              //             //         ? 30
-              //             //         : 4
-              //             //   :
-              //             chatUser == ChatUser.sender ? 14 : 30,
-              //         right:
-              //             // Get.locale?.languageCode == const Locale('en').languageCode
-              //             //     ? chatUser == ChatUser.sender
-              //             //         ? 4
-              //             //         : 30
-              //             //     :
-              //             chatUser == ChatUser.sender ? 30 : 4,
-              //     ),
-              //     child:
-                  GetBuilder<ChatMessagesController>(
+                    // Padding(
+                    //     padding: EdgeInsets.only(
+                    //         top: 0,
+                    //         bottom: 4,
+                    //         left:
+                    //             // Get.locale?.languageCode == const Locale('en').languageCode
+                    //             //     ? chatUser == ChatUser.sender
+                    //             //         ? 30
+                    //             //         : 4
+                    //             //   :
+                    //             chatUser == ChatUser.sender ? 14 : 30,
+                    //         right:
+                    //             // Get.locale?.languageCode == const Locale('en').languageCode
+                    //             //     ? chatUser == ChatUser.sender
+                    //             //         ? 4
+                    //             //         : 30
+                    //             //     :
+                    //             chatUser == ChatUser.sender ? 30 : 4,
+                    //     ),
+                    //     child:
+                    GetBuilder<ChatMessagesController>(
                       init: ChatMessagesController(),
                       //initState: (_) => AuthController().fetchUserData(),
                       builder: (controller) {
@@ -644,11 +644,11 @@ class ChatContentWidget extends StatelessWidget {
                               Container(
                                 decoration: BoxDecoration(
                                     border: // message.starred == true||
-                                        chatMessagesController.isStar.value == 1
-                                            ?  chatUser == ChatUser.sender?Border.all(color: Colors.black)
+                                    chatMessagesController.isStar.value == 1
+                                        ?  chatUser == ChatUser.sender?Border.all(color: Colors.black)
                                         :Border.all(color: Colors.blueAccent): Border.all(
-                                                width: 0,
-                                                color: Colors.transparent),
+                                        width: 0,
+                                        color: Colors.transparent),
                                     color: chatUser == ChatUser.sender
                                         ? const Color(0xffE8E8E8)
                                         : const Color(0xff44A2D7),
@@ -659,63 +659,63 @@ class ChatContentWidget extends StatelessWidget {
                                     vertical: 0,
                                   ),
                                   child: //type=='sound'?PlayChatAudio(url:message.message??' '):SizedBox()
-                                      type == 'text'
-                                          ? Text(
-                                              message.message ?? ' ',
-                                              style: TextStyle(
-                                                color: chatUser == ChatUser.sender
-                                                    ? const Color(0xff4186CF)
-                                                    : Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 16.sp,
-                                              ),
-                                            )
-                                          : type == 'location'
-                                              ? Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(7)
-                                        ),
-                                        height: 139,
-                                        width: 301.w,
-                                                child: Image.asset(
-                                                    'images/gps-og-image.jpg',
-                                                    height: 139,
-                                                    width: 301.w,fit: BoxFit.cover,
-                                                  ),
-                                              )
-                                              : type == 'sound'
-                                                  ? Container(
-                                                      width: 301.w,
-                                                      child: PlayChatAudio(
-                                                          url: message.message ??
-                                                              ' '))
-                                                  : type == 'video'
-                                                      ? VideoChatWidget(
-                                                          url: message.message,
-                                                        )
-                                                      : SizedBox(
-                                                          height: 139,
-                                                          width: 301.w,
-                                                          child: Image.network(
-                                                              message.message ??
-                                                                  ' ',
-                                                              errorBuilder:
-                                                                  (context, l, t) {
-                                                            return Text(
-                                                                "امتداد غير مدعوم");
-                                                          }),
-                                                        ),
+                                  type == 'text'
+                                      ? Text(
+                                    message.message ?? ' ',
+                                    style: TextStyle(
+                                      color: chatUser == ChatUser.sender
+                                          ? const Color(0xff4186CF)
+                                          : Colors.white,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16.sp,
+                                    ),
+                                  )
+                                      : type == 'location'
+                                      ? Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(7)
+                                    ),
+                                    height: 139,
+                                    width: 301.w,
+                                    child: Image.asset(
+                                      'images/gps-og-image.jpg',
+                                      height: 139,
+                                      width: 301.w,fit: BoxFit.cover,
+                                    ),
+                                  )
+                                      : type == 'sound'
+                                      ? Container(
+                                      width: 301.w,
+                                      child: PlayChatAudio(
+                                          url: message.message ??
+                                              ' '))
+                                      : type == 'video'
+                                      ? VideoChatWidget(
+                                    url: message.message,
+                                  )
+                                      : SizedBox(
+                                    height: 139,
+                                    width: 301.w,
+                                    child: Image.network(
+                                        message.message ??
+                                            ' ',
+                                        errorBuilder:
+                                            (context, l, t) {
+                                          return Text(
+                                              "امتداد غير مدعوم");
+                                        }),
+                                  ),
                                 ),
                               ),
                               //message.starred == true ||
                               chatMessagesController.isStar.value == 1
                                   ? chatUser== ChatUser.sender? Positioned(
-                                      top: -15,
-                                      left: -10,
-                                      child: Icon(
-                                        Icons.star,
-                                        color: Color(0xffF29423),
-                                      )):Positioned(
+                                  top: -15,
+                                  left: -10,
+                                  child: Icon(
+                                    Icons.star,
+                                    color: Color(0xffF29423),
+                                  )):Positioned(
                                   top:-15,
                                   right: -10,
                                   child: Icon(
@@ -734,7 +734,7 @@ class ChatContentWidget extends StatelessWidget {
                                     border: message.starred == true
                                         ? Border.all(color: Colors.blueAccent)
                                         : Border.all(
-                                            width: 0, color: Colors.transparent),
+                                        width: 0, color: Colors.transparent),
                                     color: chatUser == ChatUser.sender
                                         ? const Color(0xffE8E8E8)
                                         : const Color(0xff44A2D7),
@@ -745,59 +745,59 @@ class ChatContentWidget extends StatelessWidget {
                                     vertical: type == 'text' ? 8 : 0,
                                   ),
                                   child: //type=='sound'?PlayChatAudio(url:message.message??' '):SizedBox()
-                                      type == 'text'
-                                          ? Text(
-                                              message.message ?? ' ',
-                                              style: TextStyle(
-                                                color: chatUser == ChatUser.sender
-                                                    ? const Color(0xff4186CF)
-                                                    : Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 16.sp,
-                                              ),
-                                            )
-                                          : type == 'location'
-                                              ? Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(7)
-                                        ),
-                                        height: 139,
-                                        width: 301.w,
-                                        child: Image.asset(
-                                          'images/gps-og-image.jpg',
-                                          height: 139,
-                                          width: 301.w,fit: BoxFit.cover,
-                                        ),
-                                      )
-                                              : type == 'sound'
-                                                  ? PlayChatAudio(
-                                                      url: message.message ?? ' ')
-                                                  : type == 'video'
-                                                      ? VideoChatWidget(
-                                                          url: message.message,
-                                                        )
-                                                      : SizedBox(
-                                                          height: 139.h,
-                                                          width: 301.w,
-                                                          child: Image.network(
-                                                              message.message ??
-                                                                  ' ',
-                                                              errorBuilder:
-                                                                  (context, l, t) {
-                                                            return Text(
-                                                                "امتداد غير مدعوم");
-                                                          }),
-                                                        ),
+                                  type == 'text'
+                                      ? Text(
+                                    message.message ?? ' ',
+                                    style: TextStyle(
+                                      color: chatUser == ChatUser.sender
+                                          ? const Color(0xff4186CF)
+                                          : Colors.white,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16.sp,
+                                    ),
+                                  )
+                                      : type == 'location'
+                                      ? Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(7)
+                                    ),
+                                    height: 139,
+                                    width: 301.w,
+                                    child: Image.asset(
+                                      'images/gps-og-image.jpg',
+                                      height: 139,
+                                      width: 301.w,fit: BoxFit.cover,
+                                    ),
+                                  )
+                                      : type == 'sound'
+                                      ? PlayChatAudio(
+                                      url: message.message ?? ' ')
+                                      : type == 'video'
+                                      ? VideoChatWidget(
+                                    url: message.message,
+                                  )
+                                      : SizedBox(
+                                    height: 139.h,
+                                    width: 301.w,
+                                    child: Image.network(
+                                        message.message ??
+                                            ' ',
+                                        errorBuilder:
+                                            (context, l, t) {
+                                          return Text(
+                                              "امتداد غير مدعوم");
+                                        }),
+                                  ),
                                 ),
                               ),
                               message.starred == true
                                   ?chatUser==ChatUser.sender? const Positioned(
-                                      top: -15,
-                                      left: -10,
-                                      child: Icon(
-                                        Icons.star,
-                                        color: Color(0xffF29423),
-                                      )):const Positioned(
+                                  top: -15,
+                                  left: -10,
+                                  child: Icon(
+                                    Icons.star,
+                                    color: Color(0xffF29423),
+                                  )):const Positioned(
                                   top: -15,
                                   right: -10,
                                   child: Icon(
@@ -810,245 +810,245 @@ class ChatContentWidget extends StatelessWidget {
                         }
                         // return SizedBox();
                       },
-                  )
-              //),
-                        ],
-                      ),
+                    )
+                    //),
+                  ],
+                ),
               ),
-                   ),
+            ),
 
-              // message.replied_message!=null?  Container(
-              //
-              //     decoration: BoxDecoration(
-              //       border: Border.all(color:Colors.grey ),
-              //     ),
-              //     child: Text(message.message??' '),
-              //   ):const SizedBox()
-              //   message.replied_message!=null?
-              //   Container(
-              //       width:244.w,
-              //       height: 100,
-              //
-              //       decoration:BoxDecoration(
-              //         // border: Border.all(color: Colors.grey),
-              //           borderRadius: BorderRadius.circular(15),
-              //           color: Colors.transparent
-              //       ),
-              //       child:  message.message_type=='text'?Padding(
-              //         padding: const EdgeInsets.all(4.0),
-              //         child: Container(
-              //           height: 150,
-              //           width: 244.w,
-              //           decoration:BoxDecoration(
-              //             // border: Border.all(color: Colors.black),
-              //             // color: Colors.lightBlueAccent,
-              //               color: const Color(0xffE8E8E8),
-              //               borderRadius: BorderRadius.circular(25)),
-              //
-              //           child: Row(
-              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //             children: [
-              //               Padding(
-              //                 padding: const EdgeInsets.only(left: 4.0),
-              //                 child: Container(
-              //                   width: 10,
-              //                   height: 140,
-              //                   decoration: BoxDecoration(
-              //                     borderRadius: BorderRadius.only(topRight: Radius.circular(25),bottomRight: Radius.circular(25)),
-              //                     color: Colors.indigo,
-              //                   ),
-              //                 ),
-              //               ),
-              //               SizedBox(
-              //                 width:220.w,
-              //                 child: Column(
-              //                   crossAxisAlignment: CrossAxisAlignment.start,
-              //                   children: [
-              //                     // Align(
-              //                     //   alignment:Alignment.centerLeft,
-              //                     //   child: InkWell(
-              //                     //     onTap: (){
-              //                     //       _chatMessagesController.replied.value=false;
-              //                     //     },
-              //                     //     child: Padding(
-              //                     //       padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
-              //                     //       child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
-              //                     //     ),
-              //                     //   ),
-              //                     // ),
-              //                     message.from_me==true?Text('you'):Text(message.from_user?.username??' '),
-              //                     Text(message.message??' ',overflow: TextOverflow.ellipsis,),
-              //                   ],
-              //                 ),
-              //               ),
-              //
-              //             ],
-              //           ),
-              //         ),
-              //       ):
-              //       message.message_type=='sound'||message.message_type=='audio'?Padding(
-              //         padding: const EdgeInsets.all(4.0),
-              //         child: Container(
-              //           height: 150,
-              //           width: 244.w,
-              //           decoration:BoxDecoration(
-              //             // border: Border.all(color: Colors.black),
-              //             // color: Colors.lightBlueAccent,
-              //               color: const Color(0xffE8E8E8),
-              //               borderRadius: BorderRadius.circular(25)),
-              //
-              //           child: Row(
-              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //             children: [
-              //               Padding(
-              //                 padding: const EdgeInsets.only(left: 4.0),
-              //                 child: Container(
-              //                   width: 10,
-              //                   height: 140,
-              //                   decoration: BoxDecoration(
-              //                     borderRadius: BorderRadius.only(topRight: Radius.circular(25),bottomRight: Radius.circular(25)),
-              //                     color: Colors.indigo,
-              //                   ),
-              //                 ),
-              //               ),
-              //               SizedBox(
-              //                 width:220.w,
-              //                 child: Column(
-              //                   crossAxisAlignment: CrossAxisAlignment.start,
-              //                   children: [
-              //                     // Align(
-              //                     //   alignment:Alignment.centerLeft,
-              //                     //   child: InkWell(
-              //                     //     onTap: (){
-              //                     //       chatMessagesController.replied.value=false;
-              //                     //     },
-              //                     //     child: Padding(
-              //                     //       padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
-              //                     //       child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
-              //                     //     ),
-              //                     //   ),
-              //                     // ),
-              //                     message.from_me==true?Text('you'):Text(message.from_user?.username??' '),
-              //                     Text("Voice Message"),
-              //                   ],
-              //                 ),
-              //               ),
-              //
-              //             ],
-              //           ),
-              //         ),
-              //       )
-              //
-              //
-              //
-              //           : message.message_type=='video'?
-              //       Padding(
-              //         padding: const EdgeInsets.all(4.0),
-              //         child: Container(
-              //           height: 150,
-              //           width: 244.w,
-              //           decoration:BoxDecoration(
-              //             // border: Border.all(color: Colors.black),
-              //             // color: Colors.lightBlueAccent,
-              //               color: const Color(0xffE8E8E8),
-              //               borderRadius: BorderRadius.circular(25)),
-              //
-              //           child: Row(
-              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //             children: [
-              //               Padding(
-              //                 padding: const EdgeInsets.only(left: 4.0),
-              //                 child: Container(
-              //                   width: 10,
-              //                   height: 140,
-              //                   decoration: BoxDecoration(
-              //                     borderRadius: BorderRadius.only(topRight: Radius.circular(25),bottomRight: Radius.circular(25)),
-              //                     color: Colors.indigo,
-              //                   ),
-              //                 ),
-              //               ),
-              //               SizedBox(
-              //                 width:220.w,
-              //                 child: Column(
-              //                   crossAxisAlignment: CrossAxisAlignment.start,
-              //                   children: [
-              //                     // Align(
-              //                     //   alignment:Alignment.centerLeft,
-              //                     //   child: InkWell(
-              //                     //     onTap: (){
-              //                     //       chatMessagesController.replied.value=false;
-              //                     //     },
-              //                     //     child: Padding(
-              //                     //       padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
-              //                     //       child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
-              //                     //     ),
-              //                     //   ),
-              //                     // ),
-              //                     message.from_me==true?Text('you'):Text(message.from_user?.username??' '),
-              //                     Text('Video Message'),
-              //                   ],
-              //                 ),
-              //               ),
-              //
-              //             ],
-              //           ),
-              //         ),
-              //       ): message.message_type=='location'? Padding(
-              //         padding: const EdgeInsets.all(4.0),
-              //         child: Container(
-              //           height: 150,
-              //           width: 244.w,
-              //           decoration:BoxDecoration(
-              //             // border: Border.all(color: Colors.black),
-              //             // color: Colors.lightBlueAccent,
-              //               color: const Color(0xffE8E8E8),
-              //               borderRadius: BorderRadius.circular(25)),
-              //
-              //           child: Row(
-              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //             children: [
-              //               Padding(
-              //                 padding: const EdgeInsets.only(left: 4.0),
-              //                 child: Container(
-              //                   width: 10,
-              //                   height: 140,
-              //                   decoration: BoxDecoration(
-              //                     borderRadius: BorderRadius.only(topRight: Radius.circular(25),bottomRight: Radius.circular(25)),
-              //                     color: Colors.indigo,
-              //                   ),
-              //                 ),
-              //               ),
-              //               SizedBox(
-              //                 width:220.w,
-              //                 child: Column(
-              //                   crossAxisAlignment: CrossAxisAlignment.start,
-              //                   children: [
-              //                     // Align(
-              //                     //   alignment:Alignment.centerLeft,
-              //                     //   child: InkWell(
-              //                     //     onTap: (){
-              //                     //       chatMessagesController.replied.value=false;
-              //                     //     },
-              //                     //     child: Padding(
-              //                     //       padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
-              //                     //       child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
-              //                     //     ),
-              //                     //   ),
-              //                     // ),
-              //                     message.from_me==true?Text('you'):Text(message.from_user?.username??' '),
-              //                     Text('Location Message'),
-              //                   ],
-              //                 ),
-              //               ),
-              //
-              //             ],
-              //           ),
-              //         ),
-              //       ):const SizedBox(height: 0,)
-              //   ):const SizedBox(height:0,),
-            ],
-          ),
+            // message.replied_message!=null?  Container(
+            //
+            //     decoration: BoxDecoration(
+            //       border: Border.all(color:Colors.grey ),
+            //     ),
+            //     child: Text(message.message??' '),
+            //   ):const SizedBox()
+            //   message.replied_message!=null?
+            //   Container(
+            //       width:244.w,
+            //       height: 100,
+            //
+            //       decoration:BoxDecoration(
+            //         // border: Border.all(color: Colors.grey),
+            //           borderRadius: BorderRadius.circular(15),
+            //           color: Colors.transparent
+            //       ),
+            //       child:  message.message_type=='text'?Padding(
+            //         padding: const EdgeInsets.all(4.0),
+            //         child: Container(
+            //           height: 150,
+            //           width: 244.w,
+            //           decoration:BoxDecoration(
+            //             // border: Border.all(color: Colors.black),
+            //             // color: Colors.lightBlueAccent,
+            //               color: const Color(0xffE8E8E8),
+            //               borderRadius: BorderRadius.circular(25)),
+            //
+            //           child: Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               Padding(
+            //                 padding: const EdgeInsets.only(left: 4.0),
+            //                 child: Container(
+            //                   width: 10,
+            //                   height: 140,
+            //                   decoration: BoxDecoration(
+            //                     borderRadius: BorderRadius.only(topRight: Radius.circular(25),bottomRight: Radius.circular(25)),
+            //                     color: Colors.indigo,
+            //                   ),
+            //                 ),
+            //               ),
+            //               SizedBox(
+            //                 width:220.w,
+            //                 child: Column(
+            //                   crossAxisAlignment: CrossAxisAlignment.start,
+            //                   children: [
+            //                     // Align(
+            //                     //   alignment:Alignment.centerLeft,
+            //                     //   child: InkWell(
+            //                     //     onTap: (){
+            //                     //       _chatMessagesController.replied.value=false;
+            //                     //     },
+            //                     //     child: Padding(
+            //                     //       padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
+            //                     //       child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
+            //                     //     ),
+            //                     //   ),
+            //                     // ),
+            //                     message.from_me==true?Text('you'):Text(message.from_user?.username??' '),
+            //                     Text(message.message??' ',overflow: TextOverflow.ellipsis,),
+            //                   ],
+            //                 ),
+            //               ),
+            //
+            //             ],
+            //           ),
+            //         ),
+            //       ):
+            //       message.message_type=='sound'||message.message_type=='audio'?Padding(
+            //         padding: const EdgeInsets.all(4.0),
+            //         child: Container(
+            //           height: 150,
+            //           width: 244.w,
+            //           decoration:BoxDecoration(
+            //             // border: Border.all(color: Colors.black),
+            //             // color: Colors.lightBlueAccent,
+            //               color: const Color(0xffE8E8E8),
+            //               borderRadius: BorderRadius.circular(25)),
+            //
+            //           child: Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               Padding(
+            //                 padding: const EdgeInsets.only(left: 4.0),
+            //                 child: Container(
+            //                   width: 10,
+            //                   height: 140,
+            //                   decoration: BoxDecoration(
+            //                     borderRadius: BorderRadius.only(topRight: Radius.circular(25),bottomRight: Radius.circular(25)),
+            //                     color: Colors.indigo,
+            //                   ),
+            //                 ),
+            //               ),
+            //               SizedBox(
+            //                 width:220.w,
+            //                 child: Column(
+            //                   crossAxisAlignment: CrossAxisAlignment.start,
+            //                   children: [
+            //                     // Align(
+            //                     //   alignment:Alignment.centerLeft,
+            //                     //   child: InkWell(
+            //                     //     onTap: (){
+            //                     //       chatMessagesController.replied.value=false;
+            //                     //     },
+            //                     //     child: Padding(
+            //                     //       padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
+            //                     //       child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
+            //                     //     ),
+            //                     //   ),
+            //                     // ),
+            //                     message.from_me==true?Text('you'):Text(message.from_user?.username??' '),
+            //                     Text("Voice Message"),
+            //                   ],
+            //                 ),
+            //               ),
+            //
+            //             ],
+            //           ),
+            //         ),
+            //       )
+            //
+            //
+            //
+            //           : message.message_type=='video'?
+            //       Padding(
+            //         padding: const EdgeInsets.all(4.0),
+            //         child: Container(
+            //           height: 150,
+            //           width: 244.w,
+            //           decoration:BoxDecoration(
+            //             // border: Border.all(color: Colors.black),
+            //             // color: Colors.lightBlueAccent,
+            //               color: const Color(0xffE8E8E8),
+            //               borderRadius: BorderRadius.circular(25)),
+            //
+            //           child: Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               Padding(
+            //                 padding: const EdgeInsets.only(left: 4.0),
+            //                 child: Container(
+            //                   width: 10,
+            //                   height: 140,
+            //                   decoration: BoxDecoration(
+            //                     borderRadius: BorderRadius.only(topRight: Radius.circular(25),bottomRight: Radius.circular(25)),
+            //                     color: Colors.indigo,
+            //                   ),
+            //                 ),
+            //               ),
+            //               SizedBox(
+            //                 width:220.w,
+            //                 child: Column(
+            //                   crossAxisAlignment: CrossAxisAlignment.start,
+            //                   children: [
+            //                     // Align(
+            //                     //   alignment:Alignment.centerLeft,
+            //                     //   child: InkWell(
+            //                     //     onTap: (){
+            //                     //       chatMessagesController.replied.value=false;
+            //                     //     },
+            //                     //     child: Padding(
+            //                     //       padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
+            //                     //       child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
+            //                     //     ),
+            //                     //   ),
+            //                     // ),
+            //                     message.from_me==true?Text('you'):Text(message.from_user?.username??' '),
+            //                     Text('Video Message'),
+            //                   ],
+            //                 ),
+            //               ),
+            //
+            //             ],
+            //           ),
+            //         ),
+            //       ): message.message_type=='location'? Padding(
+            //         padding: const EdgeInsets.all(4.0),
+            //         child: Container(
+            //           height: 150,
+            //           width: 244.w,
+            //           decoration:BoxDecoration(
+            //             // border: Border.all(color: Colors.black),
+            //             // color: Colors.lightBlueAccent,
+            //               color: const Color(0xffE8E8E8),
+            //               borderRadius: BorderRadius.circular(25)),
+            //
+            //           child: Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               Padding(
+            //                 padding: const EdgeInsets.only(left: 4.0),
+            //                 child: Container(
+            //                   width: 10,
+            //                   height: 140,
+            //                   decoration: BoxDecoration(
+            //                     borderRadius: BorderRadius.only(topRight: Radius.circular(25),bottomRight: Radius.circular(25)),
+            //                     color: Colors.indigo,
+            //                   ),
+            //                 ),
+            //               ),
+            //               SizedBox(
+            //                 width:220.w,
+            //                 child: Column(
+            //                   crossAxisAlignment: CrossAxisAlignment.start,
+            //                   children: [
+            //                     // Align(
+            //                     //   alignment:Alignment.centerLeft,
+            //                     //   child: InkWell(
+            //                     //     onTap: (){
+            //                     //       chatMessagesController.replied.value=false;
+            //                     //     },
+            //                     //     child: Padding(
+            //                     //       padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
+            //                     //       child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
+            //                     //     ),
+            //                     //   ),
+            //                     // ),
+            //                     message.from_me==true?Text('you'):Text(message.from_user?.username??' '),
+            //                     Text('Location Message'),
+            //                   ],
+            //                 ),
+            //               ),
+            //
+            //             ],
+            //           ),
+            //         ),
+            //       ):const SizedBox(height: 0,)
+            //   ):const SizedBox(height:0,),
+          ],
         ),
+      ),
       //),
     );
   }
@@ -1073,7 +1073,7 @@ class ChatContentWidget extends StatelessWidget {
                     .sent_at_timestamp!*1000);
                 //int year=date.year;
                 int timeDiference= DateTime.now().difference(date).inMinutes;
-print("timeDeferrenceVVVVVVVVVVV  $timeDiference $date");
+                print("timeDeferrenceVVVVVVVVVVV  $timeDiference $date");
                 if(timeDiference>30) {
                   CoolAlert.show(
                       context: alertContext,
@@ -1121,8 +1121,8 @@ print("timeDeferrenceVVVVVVVVVVV  $timeDiference $date");
                 chatMessagesController.replied.value = true;
                 chatMessagesController
                     .typeOfMessage.value = chatMessagesController
-                        .messagesChat[chatMessagesController.chatIndex.value]
-                        .message_type ??
+                    .messagesChat[chatMessagesController.chatIndex.value]
+                    .message_type ??
                     ' ';
 
                 // print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>${MediaQuery.of(alertContext).size.width}');
@@ -1148,20 +1148,20 @@ print("timeDeferrenceVVVVVVVVVVV  $timeDiference $date");
               onPressed: () async{
                 menuController?.hideMenu();
                 chatMessagesController.replied.value = false;
-          String type=chatMessagesController
-              .messagesChat[chatMessagesController.chatIndex.value]
-              .message_type??' ';
+                String type=chatMessagesController
+                    .messagesChat[chatMessagesController.chatIndex.value]
+                    .message_type??' ';
 
                 if(type=='sound'||type=='video'||type=='file'||type=='image') {
-                // String  downloadsPath = (await DownloadsPath.downloadsDirectory())?.path ??
-                //       "Downloads path doesn't exist";
+                  // String  downloadsPath = (await DownloadsPath.downloadsDirectory())?.path ??
+                  //       "Downloads path doesn't exist";
                   WidgetsFlutterBinding.ensureInitialized();
                   await FlutterDownloader.initialize(
                       debug: true // optional: set false to disable printing logs to console
                   );
                   final taskId = await FlutterDownloader.enqueue(
                     url: chatMessagesController.messagesChat[chatMessagesController.chatIndex.value]
-                      .message??' ',
+                        .message??' ',
                     savedDir: downloadsPath,
                     showNotification: true,
                     // show download progress in status bar (for Android)
@@ -1176,7 +1176,7 @@ print("timeDeferrenceVVVVVVVVVVV  $timeDiference $date");
                     snackPosition: SnackPosition.BOTTOM,
                   );
                 }
-    },
+              },
               child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
