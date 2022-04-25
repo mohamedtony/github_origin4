@@ -103,7 +103,7 @@ class ChatMessagesController extends GetxController {
 
  void uploadFile({required dio.MultipartFile file,required String room,required String type,required ItemScrollController itemScrollController}) async {
 
-    EasyLoading.show();
+   // EasyLoading.show();
 
     try {
       repo.postWithImageMultipart<UploadFileResponse>(
@@ -119,7 +119,7 @@ class ChatMessagesController extends GetxController {
             ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
             //ToUserModel toUserModel=json.decode(Get.parameters["to_user"]??"");
             int? from,to;
-            if(fromUserModel.toString()==storage.read("id",).toString()){
+            if(fromUserModel.id.toString()==storage.read("id",).toString()){
               from=fromUserModel.id??0;
               to=toUserModel.id??0;
             }else if(toUserModel.id.toString()==storage.read("id",).toString()){
@@ -159,7 +159,7 @@ class ChatMessagesController extends GetxController {
 
   void sendMessage({required MessageChatModelRequest message,ItemScrollController? itemScrollController}) async {
 
-    EasyLoading.show();
+    //EasyLoading.show();
 
     try {
       repo.postWithImageMultipart<SendMessageResponse>(

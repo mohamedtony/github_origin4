@@ -284,57 +284,57 @@ class Repository {
   }
 
 
-  void delete1<RES>({
-    String? path,
-    context,
-    Unmarshable<RES>? fromJson,
-    // Object? json,
-    Map<String, dynamic>? json,
-    Function(int,RES)? onError,
-    Function(RES)? onSuccess,
-    bool? dontShow,
-  }) async {
-    try {
-      if (dontShow != true) {
-        EasyLoading.show();
-      }
-      final encoder = JsonEncoder.withIndent("  ");
-      final body = encoder.convert(json);
-      debugPrintSynchronously("Delete " + base + path! + "\n" + body);
-
-      client.delete(Uri.parse(base + path,),
-        headers: {
-          // 'Content-Type': 'application/json',
-          // 'Accept-Type': 'application/json',
-          "Authorization": json!["token"],
-          "Accept": "application/json",
-        },
-        //body: body,
-      )
-          .then((res) {
-        final data = jsonDecode(res.body);
-        final code = data["status"] as int;
-        print("HTTP Status Code: " + res.statusCode.toString());
-        debugPrint("Internal Status Code: " + code.toString());
-        debugPrintThrottled("Response Body: \n" + encoder.convert(data));
-        if (code != 200) {
-          onError!(code, fromJson!(data));
-          return;
-        }
-        onSuccess!(fromJson!(data));
-      });
-    } on dio.DioError catch (e) {
-      if (EasyLoading.isShow) {
-        EasyLoading.dismiss();
-      }
-      Get.snackbar(
-        "خطأ",
-        "حدث خطأ ما",
-        icon: const Icon(Icons.person, color: Colors.red),
-        backgroundColor: Colors.yellow,
-        snackPosition: SnackPosition.BOTTOM,);
-    }
-  }
+  // void delete<RES>({
+  //   String? path,
+  //   context,
+  //   Unmarshable<RES>? fromJson,
+  //   // Object? json,
+  //   Map<String, dynamic>? json,
+  //   Function(int,RES)? onError,
+  //   Function(RES)? onSuccess,
+  //   bool? dontShow,
+  // }) async {
+  //   try {
+  //     if (dontShow != true) {
+  //       EasyLoading.show();
+  //     }
+  //     final encoder = JsonEncoder.withIndent("  ");
+  //     final body = encoder.convert(json);
+  //     debugPrintSynchronously("Delete " + base + path! + "\n" + body);
+  //
+  //     client.delete(Uri.parse(base + path,),
+  //       headers: {
+  //         // 'Content-Type': 'application/json',
+  //         // 'Accept-Type': 'application/json',
+  //         "Authorization": json!["token"],
+  //         "Accept": "application/json",
+  //       },
+  //       //body: body,
+  //     )
+  //         .then((res) {
+  //       final data = jsonDecode(res.body);
+  //       final code = data["status"] as int;
+  //       print("HTTP Status Code: " + res.statusCode.toString());
+  //       debugPrint("Internal Status Code: " + code.toString());
+  //       debugPrintThrottled("Response Body: \n" + encoder.convert(data));
+  //       if (code != 200) {
+  //         onError!(code, fromJson!(data));
+  //         return;
+  //       }
+  //       onSuccess!(fromJson!(data));
+  //     });
+  //   } on dio.DioError catch (e) {
+  //     if (EasyLoading.isShow) {
+  //       EasyLoading.dismiss();
+  //     }
+  //     Get.snackbar(
+  //       "خطأ",
+  //       "حدث خطأ ما",
+  //       icon: const Icon(Icons.person, color: Colors.red),
+  //       backgroundColor: Colors.yellow,
+  //       snackPosition: SnackPosition.BOTTOM,);
+  //   }
+  // }
 
 
 
