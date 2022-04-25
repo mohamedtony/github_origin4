@@ -284,7 +284,7 @@ class Repository {
   }
 
 
-  void delete<RES>({
+  void delete1<RES>({
     String? path,
     context,
     Unmarshable<RES>? fromJson,
