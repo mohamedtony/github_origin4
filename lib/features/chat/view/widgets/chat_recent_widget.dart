@@ -3,10 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/utils.dart';
 
 class ChatRecentWidget extends StatelessWidget {
-  const ChatRecentWidget({
-    Key? key,
+   ChatRecentWidget({this.name,this.lastMessage,this.url,
+    Key? key, this.timeAgo,this.room,this.not_seen,
   }) : super(key: key);
 
+ final String? name,url,lastMessage,timeAgo,room;
+ final int? not_seen;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,60 +17,69 @@ class ChatRecentWidget extends StatelessWidget {
         left: 4,
         right: 4,
       ),
-      height: 110,
+      height: 82,
+      width: 367.w,
       child: Card(
         clipBehavior: Clip.antiAlias,
-        elevation: 3,
+        elevation: 6,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topRight:
                 Get.locale?.languageCode == const Locale('en').languageCode
-                    ? const Radius.circular(20.0)
-                    : const Radius.circular(100.0),
+                    ? const Radius.circular(17.0)
+                    : const Radius.circular(39.0),
             bottomRight:
                 Get.locale?.languageCode == const Locale('en').languageCode
-                    ? const Radius.circular(20.0)
-                    : const Radius.circular(100.0),
+                    ? const Radius.circular(17.0)
+                    : const Radius.circular(39.0),
             topLeft: Get.locale?.languageCode == const Locale('ar').languageCode
-                ? const Radius.circular(20.0)
-                : const Radius.circular(100.0),
+                ? const Radius.circular(17.0)
+                : const Radius.circular(39.0),
             bottomLeft:
                 Get.locale?.languageCode == const Locale('ar').languageCode
                     ? const Radius.circular(20.0)
-                    : const Radius.circular(100.0),
+                    : const Radius.circular(39.0),
           ),
         ),
         child: Row(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: CircleAvatar(
-                radius: 43,
-                foregroundImage: NetworkImage(
-                  'https://www.neshanstyle.com/blog/wp-content/uploads/2019/11/122-1-710x434.jpg',
+             Padding(
+              padding: EdgeInsets.only(left:16.0.w,right:6,top:6,bottom:6),
+              child: Material(
+                borderRadius: BorderRadius.circular(55),
+                elevation: .5,
+                child: CircleAvatar(
+                  radius: 33,
+                  backgroundColor: Color(0xffE4E4E4),
+                  child: CircleAvatar(
+                    radius: 23,
+                    foregroundImage: NetworkImage( //url??
+                      "https://image.winudf.com/v2/image/Y29tLmFtYXppbmdwaWN0cy5hcmFiLm1hbi5waG90b21ha2VyX3NjcmVlbl8xXzI4b2QzYWht/screen-1.jpg?fakeurl=1&type=.jpg"
+                    ),
+                  ),
                 ),
               ),
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 18.0),
+                padding:  EdgeInsets.symmetric(vertical: 10.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'احمد السيد اسماعيل',
+                      name??' ',
                       style: TextStyle(
-                        color: Colors.blue[900],
+                        color: Color(0xff427FD1),
                         fontWeight: FontWeight.bold,
-                        fontSize: 15,
+                        fontSize: 12,
                       ),
                     ),
                     Text(
-                      'وعليكم السلام ورحمة الله',
+                      lastMessage??' ',
                       style: TextStyle(
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.bold,
+                        color: Color(0xff707070),
+                        fontWeight: FontWeight.bold,overflow:TextOverflow.ellipsis,
                         fontSize: 13,
                       ),
                     ),
@@ -79,8 +90,8 @@ class ChatRecentWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(
                 bottom: 18.0,
-                left: 16,
-                right: 16,
+                left: 16, //
+                // right: 16,
                 top: 8,
               ),
               child: Column(
@@ -88,18 +99,18 @@ class ChatRecentWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    'منذ 3.5 ساعة',
+                    timeAgo??' ',
                     style: TextStyle(
-                      color: Colors.grey[600],
+                      color: Color(0xff212121),
                       // fontWeight: FontWeight.bold,
-                      fontSize: 11,
+                      fontSize: 10,
                     ),
                   ),
                   Container(
                     alignment: Alignment.center,
                     // padding: EdgeInsets.all(6),
-                    height: 25.w,
-                    width: 25.w,
+                    height: 23,
+                    width: 23.w,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100.0),
                       gradient: const LinearGradient(
@@ -111,10 +122,10 @@ class ChatRecentWidget extends StatelessWidget {
                           ]),
                     ),
                     child: Text(
-                      '3',
+                      not_seen.toString(),
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 14.sp,
+                        fontSize: 10,
                       ),
                       textAlign: TextAlign.center,
                     ),
