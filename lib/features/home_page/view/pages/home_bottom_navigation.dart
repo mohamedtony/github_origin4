@@ -260,7 +260,13 @@ class Home extends StatelessWidget {
                     _addVideoWithTitleOverlay(context,);
                   },
                 ),
-                FavoritePage(),
+                FavoritePage(
+                    onAdveriseItemClicked: (x){
+                      overlayHandlerProvider.currentPage = x;
+                      overlayHandlerProvider.isHidden = false;
+                      _addVideoWithTitleOverlay(context,);
+                    },
+                ),
                 AddAdsPage(),
                 ChatRecentPage(),
                 WalletPage(),

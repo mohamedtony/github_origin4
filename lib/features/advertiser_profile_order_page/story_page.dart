@@ -887,21 +887,32 @@ class _StoryScreenState extends State<StoryScreen>
                                               if(widget.adsListModel?.is_disliked!=null && widget.adsListModel!.is_disliked!){
                                                 videoGetxController.likeAds(
                                                     widget.adsListModel!.id!);
-                                                widget.adsListModel!.is_liked = true;
+
                                                 setState(() {
+                                                  widget.adsListModel!.is_liked = true;
+                                                  widget.adsListModel!.is_disliked = false;
                                                   if(widget.adsListModel?.likes!=null && widget.adsListModel!.likes!>=0) {
                                                     widget.adsListModel!.likes = (widget.adsListModel!.likes!)+1;
                                                   }
+                                                  if(widget.adsListModel?.dislikes!=null && widget.adsListModel!.dislikes!>0){
+                                                    widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) -1;
+                                                  }
                                                 });
-                                             }else if((widget.adsListModel?.is_liked!=null && !widget.adsListModel!.is_liked!)&& (widget.adsListModel?.is_disliked!=null && !widget.adsListModel!.is_disliked!)){
+                                              }else if(!widget.adsListModel!.is_liked! && !widget.adsListModel!.is_disliked!){
                                                 videoGetxController.likeAds(
                                                     widget.adsListModel!.id!);
-                                                widget.adsListModel!.is_liked = true;
+
                                                 setState(() {
+                                                  widget.adsListModel!.is_liked = true;
+                                                  widget.adsListModel!.is_disliked = false;
                                                   if(widget.adsListModel?.likes!=null && widget.adsListModel!.likes!>=0) {
                                                     widget.adsListModel!.likes = (widget.adsListModel!.likes!)+1;
                                                   }
+                                                  /*if(widget.adsListModel?.dislikes!=null && widget.adsListModel!.dislikes!>0){
+                                                  widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) -1;
+                                                }*/
                                                 });
+
                                               }
                                             }
                                           },
@@ -940,13 +951,35 @@ class _StoryScreenState extends State<StoryScreen>
                                               if(widget.adsListModel?.is_liked!=null && widget.adsListModel!.is_liked!){
                                                 videoGetxController.dislikeAd(
                                                     widget.adsListModel!.id!);
-                                                widget.adsListModel!.is_disliked = true;
+
                                                 setState(() {
+                                                  widget.adsListModel!.is_disliked = true;
+                                                  widget.adsListModel!.is_liked = false;
                                                   if(widget.adsListModel?.dislikes!=null && widget.adsListModel!.dislikes!>=0) {
                                                     widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) +1;
                                                   }
+                                                  if(widget.adsListModel?.likes!=null && widget.adsListModel!.likes!>0){
+                                                    widget.adsListModel!.likes = (widget.adsListModel!.likes!) -1;
+                                                  }
                                                 });
-                                              }else if((widget.adsListModel?.is_liked!=null && !widget.adsListModel!.is_liked!)&& (widget.adsListModel?.is_disliked!=null && !widget.adsListModel!.is_disliked!)){
+                                              }else if(!widget.adsListModel!.is_liked! && !widget.adsListModel!.is_disliked!){
+                                                print("in_dislike");
+                                                videoGetxController.dislikeAd(
+                                                    widget.adsListModel!.id!);
+
+                                                setState(() {
+                                                  widget.adsListModel!.is_disliked = true;
+                                                  widget.adsListModel!.is_liked = false;
+                                                  if(widget.adsListModel?.dislikes!=null && widget.adsListModel!.dislikes!>=0) {
+                                                    widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) +1;
+                                                  }
+                                                  /* if(widget.adsListModel?.likes!=null && widget.adsListModel!.likes!>0){
+                                                    widget.adsListModel!.likes = (widget.adsListModel!.likes!) -1;
+                                                  }*/
+                                                });
+
+                                              }
+                                              /*else if((widget.adsListModel?.is_liked!=null && !widget.adsListModel!.is_liked!)&& (widget.adsListModel?.is_disliked!=null && !widget.adsListModel!.is_disliked!)){
                                                 videoGetxController.dislikeAd(
                                                     widget.adsListModel!.id!);
                                                 widget.adsListModel!.is_disliked = true;
@@ -955,7 +988,7 @@ class _StoryScreenState extends State<StoryScreen>
                                                     widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) +1;
                                                   }
                                                 });
-                                              }
+                                              }*/
                                             }
                                           },
                                           child: Image.asset(
@@ -1427,7 +1460,7 @@ class UserInfo extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: (){
-                        overlayHandlerProvider.removeOverlay(context);
+                        /*overlayHandlerProvider.removeOverlay(context);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -1438,7 +1471,12 @@ class UserInfo extends StatelessWidget {
                               },
                             ),
                           ),
-                        );
+                        );*/
+                        overlayHandlerProvider.updateHidden(true, 0);
+                        videoController?.pause();
+                        animController?.stop();
+                        audioPlayer?.pause();
+                        Get.toNamed('/TajerOrderDetails?requestId=${adsListModel.id}');
                       },
                       child: Stack(
                         children: [
@@ -1505,12 +1543,12 @@ class UserInfo extends StatelessWidget {
               InkWell(
                 onTap: (){
                   //overlayHandlerProvider.enablePip(1.77);
-                  overlayHandlerProvider.updateHidden(true, 0);
+               /*   overlayHandlerProvider.updateHidden(true, 0);
                   videoController?.pause();
                   animController?.stop();
                   audioPlayer?.pause();
                   print("sdvertiserId= ${adsListModel.id}");
-                  Get.toNamed('/AdvertiserProfileOrderPage',arguments:GetAdvertisersModel(id: adsListModel.user?.id));
+                  Get.toNamed('/AdvertiserProfileOrderPage',arguments:GetAdvertisersModel(id: adsListModel.user?.id));*/
                 },
                 child: CircleAvatar(
                   radius: 25.0,

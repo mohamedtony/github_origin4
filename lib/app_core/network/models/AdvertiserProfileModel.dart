@@ -17,10 +17,11 @@ class AdvertiserProfileModel {
   int? followers,ads_count;
   List<Channel>? channels;
   bool? is_followed;
+  bool?is_liked;
   Country? country;
 
   AdvertiserProfileModel({this.id, this.username, this.country,this.role,this.image,this.type,this.channels,
-    this.rate,this.reply_speed,this.added_from,this.manager_name,this.company_name,this.phone,this.ads_count,this.account_name,this.email,this.followers,this.gender,this.is_followed});
+    this.rate,this.reply_speed,this.added_from,this.manager_name,this.company_name,this.phone,this.ads_count,this.account_name,this.email,this.followers,this.gender,this.is_followed,this.is_liked});
 
   factory AdvertiserProfileModel.fromJson(Map<String, dynamic> json) => _$AdvertiserProfileModelFromJson(json);
 

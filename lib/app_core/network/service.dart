@@ -220,4 +220,11 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   @GET('/myads?page={id}')
   Future<GetAdsListResponse> getMyAds(@Path("id") int? id,@Header("Authorization") String token);
 
+  @POST('/ads/{id}/report')
+  @FormUrlEncoded()
+  Future<AddToFavoriteListResponse> reportAds( @Path("id") int? id,@Field() String? reason,@Header("Authorization") String token);
+
+  @GET('/favourite_ads?page={id}')
+  Future<GetAdsListResponse> getMyFavoriteAds( @Path("id") int? id,@Header("Authorization") String token);
+
 }

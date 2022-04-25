@@ -16,8 +16,8 @@ import 'package:get/get.dart';
 class ReportSheet extends StatefulWidget {
   ScrollController? scrollController;
 
-  ReportSheet({Key? key, this.scrollController}) : super(key: key);
-
+  ReportSheet({Key? key, this.scrollController, this.id}) : super(key: key);
+  int? id;
   @override
   State<ReportSheet> createState() => _ReportSheetState();
 }
@@ -139,7 +139,7 @@ class _ReportSheetState extends State<ReportSheet> {
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 50.0),
                     child: InkWell(
                       onTap: (){
-                        advertiserProfileController.onReportSavedClicked(context);
+                        advertiserProfileController.onReportSavedClicked(context,widget.id!);
                       },
                       child: Material(
                         elevation: 6.0,

@@ -1,6 +1,7 @@
 import 'package:advertisers/app_core/network/models/AdsListModel.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/main.dart';
+import 'package:advertisers/shared/loading_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -266,7 +267,28 @@ class VideoController extends GetxController {
         fontSize: 16.0);
   }
 
-  void onReportSavedClicked(BuildContext context) {}
+  void onReportSavedClicked(BuildContext context,int id) {
+    if(myToken==null ) {
+      showMyToast("مشكلة غير معروفة !");
+      return;
+    }else if(reportController?.text==null){
+      showMyToast("من فضلك يرجى كتابة سبب البلاغ !");
+      return;
+    }else if(reportController!.text.isEmpty){
+      showMyToast("من فضلك يرجى كتابة سبب البلاغ !");
+      return;
+    }
+    LoadingDailog().showLoading(context);
+    client!.reportAds(id,reportController!.text,"Bearer "+myToken!).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        showMyToast("تم إرسال بلاغك بنجاح !");
+        Get.back();
+        Get.back();
+      }
+    });
+  }
 
   @override
   void onClose() {
