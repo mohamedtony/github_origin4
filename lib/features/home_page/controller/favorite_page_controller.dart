@@ -99,6 +99,7 @@ class FavoritePageController extends GetxController {
 
   Future<void> getAdsList() async {
     String myToken = await storage.read("token");
+    print("myToken=${myToken}");
 
     client!.getMyFavoriteAds(1,"Bearer " + myToken,)
         .then((value) {
@@ -119,7 +120,7 @@ class FavoritePageController extends GetxController {
       {GetAdvertisersRequest? getAdvertisersRequest, int? pageKey}) async {
     //getAdvertisersRequest!.page=pageKey;
     String myToken = await storage.read("token");
-
+    print("myToken=${myToken}");
     GetAdsListResponse response = await client!.getMyFavoriteAds(pageKey,"Bearer " + myToken);
 
     final completer = Completer<List<AdsListModel>>();
