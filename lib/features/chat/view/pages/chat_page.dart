@@ -57,11 +57,14 @@ class _ChatPageState extends State<ChatPage> {
   ImagePicker _imagePicker = ImagePicker();
   late  String room;
   String downloadsPath1='unknown';
+  int ? myId;
   var  _streamSubscription;
   TextEditingController chatMessageController=TextEditingController();
    ItemScrollController itemScrollController = ItemScrollController();
   @override
   void initState() {
+    myId=storage.read("id",);
+    print("myId>>>>>>>>>>>>>>>>>>>>>>>>>>>$myId");
      room=Get.parameters['room'].toString();
     _pusher.connect(room:room);
      initDownloadsDirectoryPath();
@@ -73,35 +76,53 @@ setState(() {
     print (">>>>>>>>>>>>>>>>>>>>>${event.type}");
       FromUserModel? from;
        ToUserModel?   to;
-      if(fromUserModel.toString()==storage.read("id",).toString()){
-        from=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
-        to=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
-      }else if(toUserModel.id.toString()==storage.read("id",).toString()){
-        from=FromUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
-        to=ToUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
+      if(fromUserModel.id.toString()==event.from_user_id.toString()){
+        from=fromUserModel;
+        to=toUserModel;
+        _chatMessagesController.messagesChat.add(ListChatModel(
+            message_type: event.type,
+            message: event.message,
+            to_user: to,
+            from_user: from,
+            from_me: true,
+            room: room,
+            //id:event.));
+            id: int.parse(Get.parameters["id"].toString())));
+      }else// if(fromUserModel.id.toString()!=event.from_user_id.toString())
+      {
+        from=FromUserModel(image: toUserModel.image,id: toUserModel.id,username: toUserModel.username);
+        to=ToUserModel(image: fromUserModel.image,id: fromUserModel.id,username: fromUserModel.username);
+        _chatMessagesController.messagesChat.add(ListChatModel(
+            message_type: event.type,
+            message: event.message,
+            to_user: to,
+            from_user: from,
+            from_me: true,
+            room: room,
+            id: int.parse(Get.parameters["id"].toString())));
       }
-      //  if(event.type=='text') {
-        if (event.from_user_id == storage.read("id")) {
-          _chatMessagesController.messagesChat.add(ListChatModel(
-              message_type: event.type,
-              message: event.message,
-              to_user: to,
-              from_user: from,
-              from_me: true,
-              room: room,
-              //id:event.));
-              id: int.parse(Get.parameters["id"].toString())));
-        } else {
-          _chatMessagesController.messagesChat.add(ListChatModel(
-              message_type: event.type,
-              message: event.message,
-              to_user: to,
-              from_user: from,
-              from_me: false,
-              room: room,
-              id: int.parse(Get.parameters["id"].toString())));
-        }
-     // }else if(event.type=='sound'){
+     //  //  if(event.type=='text') {
+     //    if (event.from_user_id == storage.read("id")) {
+     //      _chatMessagesController.messagesChat.add(ListChatModel(
+     //          message_type: event.type,
+     //          message: event.message,
+     //          to_user: to,
+     //          from_user: from,
+     //          from_me: true,
+     //          room: room,
+     //          //id:event.));
+     //          id: int.parse(Get.parameters["id"].toString())));
+     //    } else {
+     //      _chatMessagesController.messagesChat.add(ListChatModel(
+     //          message_type: event.type,
+     //          message: event.message,
+     //          to_user: to,
+     //          from_user: from,
+     //          from_me: false,
+     //          room: room,
+     //          id: int.parse(Get.parameters["id"].toString())));
+     //    }
+     // // }else if(event.type=='sound'){
 
 
     //  }
@@ -309,7 +330,7 @@ height: 812.h-133,
                     child: Container(
                       width: 375.w,
                       padding: const EdgeInsets.all(3),
-                      color: Color(0xff4187cd),
+                      color: const Color(0xff4186CF),
                       child: Row(
                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -855,12 +876,36 @@ height: 812.h-133,
                             child: RawKeyboardListener(
                               focusNode: FocusNode(),
                               onKey: (event) {
-                                // if(event.isKeyPressed(LogicalKeyboardKey.enter)) {
+                                 if(event.isKeyPressed(LogicalKeyboardKey.enter)) {
+                                   FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
+                                   ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
+                                   // print(">>>>>>>>>>>>>>>>>>>>>>${fromUserModel.id}");
+                                   // print(">>>>>>>>>>>>>>>>>>>>>>${toUserModel.id}");
+                                   int? from,to;
+                                   if(fromUserModel.toString()==storage.read("id",).toString()){
+                                     from=fromUserModel.id??0;
+                                     to=toUserModel.id??0;
+                                   }else if(toUserModel.id.toString()!=storage.read("id",).toString()){
+                                     from=toUserModel.id??0;
+                                     to=fromUserModel.id??0;
+                                   }
+                                   //ToUserModel toUserModel=json.decode(Get.parameters["to_user"]??"");
+                                   if( _chatMessagesController.replied.value==false){
+                                     _chatMessagesController.sendMessage(message:MessageChatModelRequest(room: room,message:chatMessageController.text,type: "text",
+                                         from_user_id: from,
+                                         to_user_id: to.toString()),itemScrollController:itemScrollController);
+                                     chatMessageController.text='';
+                                   }else{
+                                     _chatMessagesController.sendMessage(message:MessageChatModelRequest(room: room,message:chatMessageController.text,type: "text",message_id: _chatMessagesController.messagesChat[_chatMessagesController.chatIndex.value].id,
+                                         from_user_id: from,
+                                         to_user_id: to.toString()),itemScrollController:itemScrollController);
+                                     chatMessageController.text='';
+                                   }
                                 // if()
                                 // int cursorPos = chatMessage.selection.base.offset;
                                 // chatMessage.text = chatMessage + '\n' + textFin;
                                 // chatMessage.selection = TextSelection.fromPosition(TextPosition(offset: cursorPos + 1));
-                                //}
+                                }
                               },
 
                               child: Container(
@@ -883,6 +928,7 @@ height: 812.h-133,
                                   child: TextFormField(
                                     // enabled: false,
                                     maxLines: 30,
+
                                     onTap: (){
                                       SchedulerBinding.instance?.addPostFrameCallback((_) {
                                         // _scrollController.animateTo(
@@ -929,17 +975,17 @@ height: 812.h-133,
                                       suffixIcon: Padding(
                                         padding: const EdgeInsets.all(0.0),
                                         child: InkWell(
-                                          onTap: () {
+                                          onTap: ()async {
 
                                             FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
                                             ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
                                             // print(">>>>>>>>>>>>>>>>>>>>>>${fromUserModel.id}");
                                             // print(">>>>>>>>>>>>>>>>>>>>>>${toUserModel.id}");
                                             int? from,to;
-                                            if(fromUserModel.toString()==storage.read("id",).toString()){
+                                            if(fromUserModel.id.toString()==myId.toString()){
                                               from=fromUserModel.id??0;
                                               to=toUserModel.id??0;
-                                            }else if(toUserModel.id.toString()==storage.read("id",).toString()){
+                                            }else if(toUserModel.id.toString()==myId.toString()){
                                               from=toUserModel.id??0;
                                               to=fromUserModel.id??0;
                                             }
@@ -1042,7 +1088,7 @@ height: 812.h-133,
             FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
             ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
             int? from,to;
-            if(fromUserModel.toString()==storage.read("id",).toString()){
+            if(fromUserModel.id.toString()==storage.read("id",).toString()){
               from=fromUserModel.id??0;
               to=toUserModel.id??0;
             }else if(toUserModel.id.toString()==storage.read("id",).toString()){

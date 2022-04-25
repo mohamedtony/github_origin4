@@ -2,6 +2,7 @@ import 'package:advertisers/app_core/network/models/ListChatModel.dart';
 import 'package:advertisers/features/chat/controller/chat_messages_controller.dart';
 import 'package:advertisers/features/chat/view/widgets/PlayChatAudio.dart';
 import 'package:advertisers/features/chat/view/widgets/video_chat_widget.dart';
+import 'package:advertisers/main.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
@@ -51,12 +52,12 @@ class ChatContentWidget extends StatelessWidget {
       menuBuilder: chatMessagesController.replied.value == true
           ? () => SizedBox()
           : getMenuItems,
-      pressType: PressType.singleClick,
+      pressType: PressType.longPress,
       controller: menuController,showArrow: false,enablePassEvent: true,
       position: PreferredPosition.bottom,
       child: InkWell(
 
-        onLongPress: type == 'location'
+        onTap: type == 'location'
             ? () async {
           String lat = message.message!
               .substring(0, message.message!.lastIndexOf('-') - 1);
@@ -128,8 +129,10 @@ class ChatContentWidget extends StatelessWidget {
                                 }),
                           ),
                         ),
-                        // if (chatUser == ChatUser.sender)
-                        chatUser == ChatUser.receiver?  Padding(
+                         if (chatUser == ChatUser.sender)
+                       // chatUser == ChatUser.receiver||message.from_me==false?
+                        message.from_user?.id.toString()==storage.read("id",).toString()?
+                       Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 0.0,
                             vertical: 8,
@@ -137,7 +140,7 @@ class ChatContentWidget extends StatelessWidget {
                           child: Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
-                              message.to_user?.username ?? ' ',
+                              message.from_user?.username ?? ' ',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
@@ -153,7 +156,7 @@ class ChatContentWidget extends StatelessWidget {
                           child: Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
-                              message.from_user?.username ?? ' ',
+                              message.to_user?.username ?? ' ',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
@@ -1085,7 +1088,10 @@ class ChatContentWidget extends StatelessWidget {
                           chatMessagesController.messagesChat.removeAt(index);
                         }
                         Navigator.pop(alertContext);
-                      });
+                      },
+                  onCancelBtnTap: (){
+                    Navigator.pop(alertContext);
+                  });
 
                 }else{
                   Get.snackbar(

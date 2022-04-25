@@ -103,7 +103,8 @@ dependencies:
   scrollable_positioned_list: ^0.2.3
   flutter_downloader: ^1.7.3
   lecle_downloads_path_provider: ^0.0.2+6
-  #audioplayers: ^0.20.1
+  audioplayers: ^0.20.1
+  flutter_rating_bar: ^4.0.0
 #  record: ^3.0.4
 #  flutter_sound_record: ^3.1.0
   #focused_menu: ^1.0.5
