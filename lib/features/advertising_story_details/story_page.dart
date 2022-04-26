@@ -2,15 +2,13 @@ import 'dart:ui';
 
 import 'package:advertisers/app_core/network/models/AdsListModel.dart';
 import 'package:advertisers/app_core/network/models/Attachment.dart';
+import 'package:advertisers/app_core/network/models/GetAdvertisersModel.dart';
 import 'package:advertisers/app_core/network/models/UserAdsList.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_service.dart';
 import 'package:advertisers/features/advertising_story_details/VideoController.dart';
 import 'package:advertisers/features/advertising_story_details/advertiser_details_sheet.dart';
 import 'package:advertisers/features/advertising_story_details/audio_player.dart';
-import 'package:advertisers/features/advertising_story_details/sound_widget.dart';
-import 'package:advertisers/features/advertising_story_details/Story.dart';
-import 'package:advertisers/features/advertising_story_details/User.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/request_advertise_module/view/pages/request_advertise_page.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -316,7 +314,7 @@ class _StoryScreenState extends State<StoryScreen>
                         horizontal: 1.5,
                         vertical: 4.0,
                       ),
-                      child: UserInfo(adsListModel: widget.adsListModel!),
+                      child: UserInfo(adsListModel: widget.adsListModel!,animController: _animController,audioPlayer: audioPlayer,videoController: _videoController,),
                     )
                         : SizedBox(),
                   )
@@ -660,7 +658,14 @@ class _StoryScreenState extends State<StoryScreen>
                                      }
                                      overlayHandlerProvider.isBottomAdsShown = true;
                                      Overlay.of(context)?.insert(getEntry(context, widget.adsListModel));*/
-                                     widget.onSheetCliked(context,9);
+                                    overlayHandlerProvider.isProfileOpend = true;
+                                    overlayHandlerProvider.updateHidden(true, 0);
+                                    _videoController?.pause();
+                                    _animController?.stop();
+                                     audioPlayer?.pause();
+                                     overlayHandlerProvider.advertiserId = widget.adsListModel!.user!.id;
+                                    overlayHandlerProvider.adId = widget.adsListModel!.id;
+                                     widget.onSheetCliked(context,9,);
                                      //Overlay.of(context)?.insert(getEntry(context, widget.adsListModel));
                                     //showBottomSheetForRequest2(Get.overlayContext!);
                                     //_addVideoWithTitleOverlay(context);
@@ -883,14 +888,49 @@ class _StoryScreenState extends State<StoryScreen>
                                         child: InkWell(
                                           onTap: (){
                                             if(widget.adsListModel?.id!=null) {
-                                              videoGetxController.likeAds(
-                                                  widget.adsListModel!.id!);
-                                              setState(() {
-                                                if(widget.adsListModel?.likes!=null && widget.adsListModel!.likes!>=0) {
-                                                  widget.adsListModel!.likes = (widget.adsListModel!.likes!)+1;
-                                                }
-                                              });
-                                            }
+                                              if(widget.adsListModel?.is_disliked!=null && widget.adsListModel!.is_disliked!){
+                                                videoGetxController.likeAds(
+                                                    widget.adsListModel!.id!);
+
+                                                setState(() {
+                                                  widget.adsListModel!.is_liked = true;
+                                                  widget.adsListModel!.is_disliked = false;
+                                                  if(widget.adsListModel?.likes!=null && widget.adsListModel!.likes!>=0) {
+                                                    widget.adsListModel!.likes = (widget.adsListModel!.likes!)+1;
+                                                  }
+                                                  if(widget.adsListModel?.dislikes!=null && widget.adsListModel!.dislikes!>0){
+                                                    widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) -1;
+                                                  }
+                                                });
+                                              }else if(!widget.adsListModel!.is_liked! && !widget.adsListModel!.is_disliked!){
+                                                videoGetxController.likeAds(
+                                                    widget.adsListModel!.id!);
+
+                                                setState(() {
+                                                  widget.adsListModel!.is_liked = true;
+                                                  widget.adsListModel!.is_disliked = false;
+                                                  if(widget.adsListModel?.likes!=null && widget.adsListModel!.likes!>=0) {
+                                                    widget.adsListModel!.likes = (widget.adsListModel!.likes!)+1;
+                                                  }
+                                                  /*if(widget.adsListModel?.dislikes!=null && widget.adsListModel!.dislikes!>0){
+                                                  widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) -1;
+                                                }*/
+                                                });
+
+                                              }
+                                              }
+
+                                            /*else if((widget.adsListModel?.is_liked!=null && !widget.adsListModel!.is_liked!)&& (widget.adsListModel?.is_disliked!=null && !widget.adsListModel!.is_disliked!)){
+                                                videoGetxController.likeAds(
+                                                    widget.adsListModel!.id!);
+                                                widget.adsListModel!.is_liked = true;
+                                                setState(() {
+                                                  if(widget.adsListModel?.likes!=null && widget.adsListModel!.likes!>=0) {
+                                                    widget.adsListModel!.likes = (widget.adsListModel!.likes!)+1;
+                                                  }
+                                                });
+                                              }
+                                            }*/
                                           },
                                           child: Image.asset(
                                             'images/like_story.png',
@@ -924,13 +964,47 @@ class _StoryScreenState extends State<StoryScreen>
                                         child: InkWell(
                                           onTap: (){
                                             if(widget.adsListModel?.id!=null) {
-                                              videoGetxController.dislikeAd(
-                                                  widget.adsListModel!.id!);
-                                              setState(() {
-                                                if(widget.adsListModel?.dislikes!=null && widget.adsListModel!.dislikes!>=0) {
-                                                  widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) +1;
-                                                }
-                                              });
+                                              if(widget.adsListModel?.is_liked!=null && widget.adsListModel!.is_liked!){
+                                                videoGetxController.dislikeAd(
+                                                    widget.adsListModel!.id!);
+
+                                                setState(() {
+                                                  widget.adsListModel!.is_disliked = true;
+                                                  widget.adsListModel!.is_liked = false;
+                                                  if(widget.adsListModel?.dislikes!=null && widget.adsListModel!.dislikes!>=0) {
+                                                    widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) +1;
+                                                  }
+                                                  if(widget.adsListModel?.likes!=null && widget.adsListModel!.likes!>0){
+                                                    widget.adsListModel!.likes = (widget.adsListModel!.likes!) -1;
+                                                  }
+                                                });
+                                              }else if(!widget.adsListModel!.is_liked! && !widget.adsListModel!.is_disliked!){
+                                                print("in_dislike");
+                                                videoGetxController.dislikeAd(
+                                                    widget.adsListModel!.id!);
+
+                                                setState(() {
+                                                  widget.adsListModel!.is_disliked = true;
+                                                  widget.adsListModel!.is_liked = false;
+                                                  if(widget.adsListModel?.dislikes!=null && widget.adsListModel!.dislikes!>=0) {
+                                                    widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) +1;
+                                                  }
+                                                 /* if(widget.adsListModel?.likes!=null && widget.adsListModel!.likes!>0){
+                                                    widget.adsListModel!.likes = (widget.adsListModel!.likes!) -1;
+                                                  }*/
+                                                });
+
+                                              }
+                                              /*else if((widget.adsListModel?.is_liked!=null && !widget.adsListModel!.is_liked!)&& (widget.adsListModel?.is_disliked!=null && !widget.adsListModel!.is_disliked!)){
+                                                videoGetxController.dislikeAd(
+                                                    widget.adsListModel!.id!);
+                                                widget.adsListModel!.is_disliked = true;
+                                                setState(() {
+                                                  if(widget.adsListModel?.dislikes!=null && widget.adsListModel!.dislikes!>=0) {
+                                                    widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) +1;
+                                                  }
+                                                });
+                                              }*/
                                             }
                                           },
                                           child: Image.asset(
@@ -1154,6 +1228,10 @@ class _StoryScreenState extends State<StoryScreen>
         }*/
 
         if (story.type == 'video' || story.type == 'image') {
+          if(story.type == 'image'){
+            //_videoController?.play();
+            _animController?.forward();
+          }
           if (videoGetxController.isVisible.isTrue) {
             videoGetxController.isVisible.value = false;
           } else {
@@ -1169,6 +1247,7 @@ class _StoryScreenState extends State<StoryScreen>
           });*/
 
         } else {
+
           videoGetxController.isVisible.value = true;
           //audioPlayer?.seek(position);
         }
@@ -1352,10 +1431,16 @@ class UserInfo extends StatelessWidget {
   final AdsListModel adsListModel;
   final VideoController videoGetxController = Get.find();
   OverlayHandlerProvider overlayHandlerProvider = Get.find();
+  AnimationController? animController;
+  VideoPlayerController? videoController;
+  AudioPlayer? audioPlayer;
 
   UserInfo({
     Key? key,
     required this.adsListModel,
+    this.videoController,
+    this.animController,
+    this.audioPlayer
   }) : super(key: key);
 
   @override
@@ -1404,32 +1489,41 @@ class UserInfo extends StatelessWidget {
                           ),
                         );
                       },
-                      child: Stack(
-                        children: [
-                          Container(
-                            // width: 50.0,
-                            height: 30.0,
-                            padding: EdgeInsets.only(left: 10, right: 10),
-                            margin: EdgeInsets.only(right: 15.0, left: 4, top: 6),
-                            decoration: new BoxDecoration(
-                                color: Color(0xffCFCFCF),
-                                shape: BoxShape.rectangle,
-                                borderRadius: new BorderRadius.all(
-                                  Radius.circular(40.0),
-                                )),
-                            child: Text("تفاصيل الاعلان"),
-                          ),
-                          Positioned(
-                            right: -2,
-                            child: Image.asset(
-                              'images/story_share.png',
-                              height: 25,
-                              width: 30,
-                              fit: BoxFit.fill,
-                              //color: Colors.white,
+                      child: InkWell(
+                        onTap: (){
+                          overlayHandlerProvider.updateHidden(true, 0);
+                          videoController?.pause();
+                          animController?.stop();
+                          audioPlayer?.pause();
+                          Get.toNamed('/TajerOrderDetails?requestId=${adsListModel.id}');
+                        },
+                        child: Stack(
+                          children: [
+                            Container(
+                              // width: 50.0,
+                              height: 30.0,
+                              padding: EdgeInsets.only(left: 10, right: 10),
+                              margin: EdgeInsets.only(right: 15.0, left: 4, top: 6),
+                              decoration: new BoxDecoration(
+                                  color: Color(0xffCFCFCF),
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: new BorderRadius.all(
+                                    Radius.circular(40.0),
+                                  )),
+                              child: Text("تفاصيل الاعلان"),
                             ),
-                          )
-                        ],
+                            Positioned(
+                              right: -2,
+                              child: Image.asset(
+                                'images/story_share.png',
+                                height: 25,
+                                width: 30,
+                                fit: BoxFit.fill,
+                                //color: Colors.white,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     Expanded(
@@ -1468,8 +1562,13 @@ class UserInfo extends StatelessWidget {
             children: [
               InkWell(
                 onTap: (){
-                  overlayHandlerProvider.enablePip(1.77);
-                  Get.toNamed('/AdvertiserProfileOrderPage',/*arguments:advertisersModel*/);
+                  //overlayHandlerProvider.enablePip(1.77);
+                  overlayHandlerProvider.updateHidden(true, 0);
+                  videoController?.pause();
+                  animController?.stop();
+                  audioPlayer?.pause();
+                  print("sdvertiserId= ${adsListModel.id}");
+                  Get.toNamed('/AdvertiserProfileOrderPage',arguments:GetAdvertisersModel(id: adsListModel.user?.id));
                 },
                 child: CircleAvatar(
                   radius: 25.0,

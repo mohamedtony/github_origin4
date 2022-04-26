@@ -6,6 +6,7 @@ import 'package:advertisers/app_core/network/models/EffectSlidesModel.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersFromModel.dart';
 import 'package:advertisers/features/find_advertise_page/find_advertise_controller.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+import 'package:advertisers/features/home_page/controller/FilterSortAdsController.dart';
 import 'package:advertisers/features/request_advertise_module/controller/find_order_advertisers_controller.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class FilterSortAdsSheet extends StatefulWidget {
 
 class _FilterSortAdsSheetState extends State<FilterSortAdsSheet> {
 
-  FindAdvertiseController findOrderAdvertisersController =Get.put(FindAdvertiseController());
+  FilterSortAdsController findOrderAdvertisersController = Get.put(FilterSortAdsController());
 
   @override
   void initState() {

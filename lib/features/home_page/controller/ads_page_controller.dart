@@ -93,14 +93,14 @@ class AdsPageController extends GetxController {
   }
 
   // Call this when the user pull down the screen
-  Future<void> loadData() async {
+  Future<void> loadDataForAds() async {
     pagingController.refresh();
   }
 
   Future<void> getAdsList() async {
     String myToken = await storage.read("token");
 
-    client!.getAdsList(1,"Bearer " + myToken,)
+    client!.getAdsList(0,1,"Bearer " + myToken,)
         .then((value) {
       if (value.status == 200 && value.data != null && value.data!.isNotEmpty) {
         Logger().d(value.data.toString());
@@ -120,7 +120,7 @@ class AdsPageController extends GetxController {
     //getAdvertisersRequest!.page=pageKey;
     String myToken = await storage.read("token");
 
-    GetAdsListResponse response = await client!.getAdsList(pageKey,"Bearer " + myToken);
+    GetAdsListResponse response = await client!.getAdsList(0,pageKey,"Bearer " + myToken);
 
     final completer = Completer<List<AdsListModel>>();
     List<AdsListModel> notifications = [];

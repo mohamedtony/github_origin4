@@ -1,8 +1,6 @@
 import 'package:advertisers/features/advertising_story_details/Dragabble/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'drag/drag_custom.dart' as dc;
 import 'overlay_handler.dart';
 
 class VideoOverlayWidget extends StatefulWidget {
@@ -125,7 +123,7 @@ class _VideoOverlayWidgetState extends State<VideoOverlayWidget> {
               }
             },
             child: AnimatedContainer(
-              height: height,
+              height:height,
               width: width,
               child: widget.widget,
               duration: Duration(milliseconds: 250),

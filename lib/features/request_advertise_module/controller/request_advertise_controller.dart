@@ -112,7 +112,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
 
 
 
-  late final  HomeNavController controller;
+  late HomeNavController controller;
   List<String> images=['images/snapshat_icon.png','images/instegram.png',
     'images/twitter.png','images/youtube.png','images/facebook.png','images/whatsup.png',];
 
@@ -193,6 +193,8 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
 
      //List<Animation<Offset>> animationsClose = [];
     if(controller.initialized) {
+      controller = Get.find<HomeNavController>();
+    }else{
       controller = Get.find<HomeNavController>();
     }
     super.onInit();

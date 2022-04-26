@@ -222,6 +222,7 @@ class RegisterNewClientUserController extends GetxController {
           storage.write("token", res.data!.token);
           storage.write(
               "data", registerClientUserResponse.value.toJson());
+          storage.write("id", res.data!.id);
           Get.offAllNamed('/Home');
           //Get.toNamed('/chooseBakaPage');
         },

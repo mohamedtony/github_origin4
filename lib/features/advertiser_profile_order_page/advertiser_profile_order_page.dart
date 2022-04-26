@@ -1,20 +1,28 @@
 import 'dart:io';
 
 import 'package:advertisers/features/advertiser_profile_order_page/controller/AdvertiserProfileOrderController.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/overlay_handler2.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/widgets/advertiser_copons_tab.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/widgets/my_advertising_page_tab.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/widgets/request_order_tab.dart';
+import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
+import 'package:advertisers/features/advertising_story_details/VideoController.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/features/find_advertise_page/find_advertise_controller.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+import 'package:advertisers/features/home_page/controller/ads_page_controller.dart';
 import 'package:advertisers/features/home_page/view/pages/advertising_page.dart';
 import 'package:advertisers/features/home_page/view/pages/copons_page.dart';
+import 'package:advertisers/main.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:logger/logger.dart';
 //=========================================================================================
 
 //                         By Mohamed T. Hammad
@@ -24,10 +32,66 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
   AdvertiserProfileOrderPage({Key? key,this.onSheetClicked}) : super(key: key);
   Function(int x)? onSheetClicked;
   AdvertiserProfileOrderController advertiserProfileController = Get.find();
+  OverlayHandlerProvider2 overlayHandlerProvider = Get.put(OverlayHandlerProvider2());
+  OverlayHandlerProvider overlayHandlerProvider1 = Get.find();
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop:()=> onWillPop() ,
+      onWillPop:()async{
+        print("advertiserProfile");
+       // print("Exit_profile");
+       // print("MainPOP");
+        //Get.back();
+        /* if(overlayHandlerProvider.overlayActive) {
+          overlayHandlerProvider.enablePip(1.77);
+          return false;
+        }*/
+        // Get.delete<VideoController>();
+        // Get.delete<AdsPageController>();
+        /*final VideoController videoController = Get.put(VideoController());
+        OverlayHandlerProvider overlayHandlerProvider = Get.find();
+        AdsPageController adsPageController = Get.put(AdsPageController());*/
+
+        //Get.delete<VideoController>();
+      //  Get.delete<AdsPageController>();
+        //Get.back();
+
+        if(overlayHandlerProvider.overlayActive) {
+          overlayHandlerProvider.updateHidden(false, 300);
+          overlayHandlerProvider.removeOverlay(context);
+          print("isOpen= "+overlayHandlerProvider.isProfileOpend.toString());
+/*          if(!overlayHandlerProvider.isProfileOpend){
+            overlayHandlerProvider.disablePip();
+            overlayHandlerProvider.removeOverlay(context);
+            overlayHandlerProvider.currentPage = 0;
+            // overlayHandlerProvider.isProfileOpend = false;
+          }else{
+            overlayHandlerProvider.updateHidden(false, 300);
+            Get.delete<VideoController>();
+            Get.delete<AdsPageController>();
+            Get.back();
+          }*/
+          /*overlayHandlerProvider.disablePip();
+          overlayHandlerProvider.removeOverlay(context);
+          overlayHandlerProvider.currentPage = 0;*/
+          return false;
+        }else{
+          print("hererer");
+          if(overlayHandlerProvider.isProfileOpend){
+            print("hererer");
+            overlayHandlerProvider.disablePip();
+            overlayHandlerProvider.removeOverlay(context);
+            overlayHandlerProvider.currentPage = 0;
+            // overlayHandlerProvider.isProfileOpend = false;
+          }else{
+            overlayHandlerProvider1.updateHidden(false, 300);
+            //Get.delete<VideoController>();
+           // Get.delete<AdsPageController>();
+            Get.back();
+          }
+          return false;
+        }
+      },
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(220.0),
@@ -184,6 +248,7 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
                           InkWell(
                             onTap: (){
                               Get.back();
+                              overlayHandlerProvider1.updateHidden(false, 300);
                             },
                             child: Container(
                               alignment: Alignment.topLeft,
@@ -198,120 +263,145 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Container(
-                        //width: 250.0,
-                        height: 40.0,
-                        margin: EdgeInsets.all(12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(3),
-                              child: advertiserProfileController.advertiserProfileModel?.is_followed!=null && advertiserProfileController.advertiserProfileModel!.is_followed!? Image.asset(
-                                'images/heart_outline2.png',
-                                fit: BoxFit.fill,
-                                height: 25.0,
-                                width: 25.0,
-                              ):Image.asset(
-                                'images/heart_dislike.png',
-                                fit: BoxFit.fill,
-                                height: 25.0,
-                                width: 25.0,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: (){
-                                Get.to(ChatRecentPage());
-                              },
-                              child: Container(
-                                //margin: EdgeInsets.only(right: 20.0),
-                                child: Image.asset(
-                                  'images/chat_icon_advertiser.png',
-                                  fit: BoxFit.cover,
-                                  height: 25.0,
-                                  width: 25.0,
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: (){
-                                advertiserProfileController.isShowChannelsClicked.value = true;
-                                /*if(advertiserProfileController.isShowChannelsClicked.isTrue){
-                                advertiserProfileController.isShowChannelsClicked.value = false;
-                              }else{
-                                advertiserProfileController.isShowChannelsClicked.value = true;
-                              }*/
-                              },
-                              child: Container(
-                                child: Image.asset(
-                                  'images/rss.png',
-                                  fit: BoxFit.cover,
-                                  height: 25.0,
-                                  width: 25.0,
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: (){
-                                Get.toNamed('/AdvertiserQrPage');
-                              },
-                              child: Container(
-                                child: Image.asset(
-                                  'images/qr_code.png',
-                                  fit: BoxFit.cover,
-                                  height: 25.0,
-                                  width: 25.0,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              child: SvgPicture.asset(
-                                'images/Icon_material_stars.svg',
-                                fit: BoxFit.cover,
-                                height: 25.0,
-                                width: 25.0,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: (){
-                                advertiserProfileController.isShowDetailsClicked.value = true;
-                              },
-                              child: Container(
-                                margin: EdgeInsets.all(5),
-                                child: SvgPicture.asset(
-                                  'images/dots.svg',
-                                  fit: BoxFit.cover,
-                                  height: 6.0,
-                                  width: 6.0,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
+                      InkWell(
+                        onTap: () async {
+                          String myToken = await storage.read("token");
+                          if(myToken==null ) {
+                            showMyToast("مشكلة غير معروفة !");
+                            return;
+                          }
+                          client!.likeAdvertiser(advertiserProfileController.advertiserProfileModel!.id,"Bearer "+myToken).then((value) {
+                            print("token");
+                            Logger().i(value.status.toString());
+                            if(value.status==200){
 
-                            colors: [ Color(0xFF589CD6),Color(0xFF4780C4)],
+                              if(value.data?.is_liked!=null && value.data!.is_liked==1){
+                                advertiserProfileController.isProfileFavorite.value  = true;
+                                advertiserProfileController.advertiserProfileModel!.is_liked = true;
+                                showMyToast("تم الإعجاب بالمعلن بنجاح !");
+                              }else{
+                                advertiserProfileController.isProfileFavorite.value  = false;
+                                advertiserProfileController.advertiserProfileModel!.is_liked = false;
+                                showMyToast("تم إلغاء الإعجاب بالمعلن بنجاح !");
+                              }
+                            }
+                          });
+                        },
+                        child: Container(
+                          //width: 250.0,
+                          height: 40.0,
+                          margin: EdgeInsets.all(12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Obx(()=>Container(
+                                padding: EdgeInsets.all(3),
+                                child:  advertiserProfileController.isProfileFavorite.isTrue? Image.asset(
+                                  'images/heart_outline2.png',
+                                  fit: BoxFit.fill,
+                                  height: 25.0,
+                                  width: 25.0,
+                                ):Image.asset(
+                                  'images/heart_dislike.png',
+                                  fit: BoxFit.fill,
+                                  height: 25.0,
+                                  width: 25.0,
+                                ),
+                              )),
+                              InkWell(
+                                onTap: (){
+                                  Get.to(ChatRecentPage());
+                                },
+                                child: Container(
+                                  //margin: EdgeInsets.only(right: 20.0),
+                                  child: Image.asset(
+                                    'images/chat_icon_advertiser.png',
+                                    fit: BoxFit.cover,
+                                    height: 25.0,
+                                    width: 25.0,
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: (){
+                                  advertiserProfileController.isShowChannelsClicked.value = true;
+                                  /*if(advertiserProfileController.isShowChannelsClicked.isTrue){
+                                  advertiserProfileController.isShowChannelsClicked.value = false;
+                                }else{
+                                  advertiserProfileController.isShowChannelsClicked.value = true;
+                                }*/
+                                },
+                                child: Container(
+                                  child: Image.asset(
+                                    'images/rss.png',
+                                    fit: BoxFit.cover,
+                                    height: 25.0,
+                                    width: 25.0,
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: (){
+                                  Get.toNamed('/AdvertiserQrPage');
+                                },
+                                child: Container(
+                                  child: Image.asset(
+                                    'images/qr_code.png',
+                                    fit: BoxFit.cover,
+                                    height: 25.0,
+                                    width: 25.0,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: SvgPicture.asset(
+                                  'images/Icon_material_stars.svg',
+                                  fit: BoxFit.cover,
+                                  height: 25.0,
+                                  width: 25.0,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: (){
+                                  advertiserProfileController.isShowDetailsClicked.value = true;
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.all(5),
+                                  child: SvgPicture.asset(
+                                    'images/dots.svg',
+                                    fit: BoxFit.cover,
+                                    height: 6.0,
+                                    width: 6.0,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          shape: BoxShape.rectangle,
-                          //color: Colors.red,
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(10)
-                          ),
-                          boxShadow: [
-                            // so here your custom shadow goes:
-                            BoxShadow(
-                                color: Colors.black.withAlpha(25),
-                                // the color of a shadow, you can adjust it
-                                spreadRadius: 2,
-                                //also play with this two values to achieve your ideal result
-                                blurRadius: 4.0,
-                                offset: Offset(2,
-                                    1.5) // changes position of shadow, negative value on y-axis makes it appering only on the top of a container
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+
+                              colors: [ Color(0xFF589CD6),Color(0xFF4780C4)],
                             ),
-                          ],
+                            shape: BoxShape.rectangle,
+                            //color: Colors.red,
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            ),
+                            boxShadow: [
+                              // so here your custom shadow goes:
+                              BoxShadow(
+                                  color: Colors.black.withAlpha(25),
+                                  // the color of a shadow, you can adjust it
+                                  spreadRadius: 2,
+                                  //also play with this two values to achieve your ideal result
+                                  blurRadius: 4.0,
+                                  offset: Offset(2,
+                                      1.5) // changes position of shadow, negative value on y-axis makes it appering only on the top of a container
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -660,7 +750,7 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
               ),
               Expanded(
                 child: TabBarView(children: [
-                  AdvertisingPage(
+                  MyAdvertisingPage(
                     /*onSheetClicked: (x){
                       this.onSheetClicke!(x);
                     },*/
@@ -679,10 +769,51 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
       ),
     );
   }
-  Future<bool> onWillPop() async {
-    Get.delete<AdvertiserProfileOrderController>();
-    //Get.delete<FindAdvertiseController>();
-    return true;
+
+  void showMyToast(String msg, {bool? error, BuildContext? context}) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        //fontFamily: 'Arabic-Regular',
+        fontSize: 16.0);
   }
+/*  Future<bool> onWillPop() async {
+    print("Exit_profile");
+    print("MainPOP");
+    //Get.back();
+    *//* if(overlayHandlerProvider.overlayActive) {
+          overlayHandlerProvider.enablePip(1.77);
+          return false;
+        }*//*
+    // Get.delete<VideoController>();
+    // Get.delete<AdsPageController>();
+    *//*final VideoController videoController = Get.put(VideoController());
+        OverlayHandlerProvider overlayHandlerProvider = Get.find();
+        AdsPageController adsPageController = Get.put(AdsPageController());*//*
+    if(overlayHandlerProvider.overlayActive) {
+
+      print("isOpen= "+overlayHandlerProvider.isProfileOpend.toString());
+      if(!overlayHandlerProvider.isProfileOpend){
+        overlayHandlerProvider.disablePip();
+        overlayHandlerProvider.removeOverlay(context);
+        overlayHandlerProvider.currentPage = 0;
+        // overlayHandlerProvider.isProfileOpend = false;
+      }else{
+        overlayHandlerProvider.updateHidden(false, 300);
+        Get.delete<VideoController>();
+        Get.delete<AdsPageController>();
+        Get.back();
+      }
+      *//*overlayHandlerProvider.disablePip();
+          overlayHandlerProvider.removeOverlay(context);
+          overlayHandlerProvider.currentPage = 0;*//*
+      return false;
+    }
+    return true;
+  }*/
 
 }

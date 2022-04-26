@@ -13,6 +13,8 @@ AddToFavoriteListModel _$AddToFavoriteListModelFromJson(
       in_blacklist: json['in_blacklist'] as int?,
       is_liked: json['is_liked'] as int?,
       is_muted: json['is_muted'] as int?,
+      in_front: json['in_front'] as int?,
+      notified: json['notified'] as int?,
     );
 
 Map<String, dynamic> _$AddToFavoriteListModelToJson(
@@ -22,4 +24,6 @@ Map<String, dynamic> _$AddToFavoriteListModelToJson(
       'in_blacklist': instance.in_blacklist,
       'is_liked': instance.is_liked,
       'is_muted': instance.is_muted,
+      'in_front': instance.in_front,
+      'notified': instance.notified,
     };

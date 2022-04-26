@@ -19,6 +19,7 @@ import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestRes
 import 'package:advertisers/features/advertiser_details/controller/advertiser_details_controller.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/activities_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
+import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/home_page/controller/home_navigation_controller.dart';
 import 'package:advertisers/features/home_page/model/SelectedSocialMedia.dart';
@@ -167,9 +168,18 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
   late Uint8List markerIcon;
 
   AdvertiserProfileModel? advertiserProfileModel;
+  var isProfileFavorite = false.obs;
+  OverlayHandlerProvider overlayHandlerProvider = Get.find();
+
+  // Call this when the user pull down the screen
+  Future<void> loadDataForCopons() async {
+    pagingController.refresh();
+  }
+
   @override
   Future<void> onInit() async {
     // TODO: implement onInit
+    overlayHandlerProvider.isProfileOpend = true;
     if(Get.arguments!=null) {
       GetAdvertisersModel vv = Get.arguments as GetAdvertisersModel;
       if(vv!=null){
@@ -219,6 +229,9 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
             EasyLoading.dismiss();
           }
           advertiserProfileModel = value.data;
+          if(advertiserProfileModel?.is_liked!=null) {
+            isProfileFavorite.value = advertiserProfileModel!.is_liked!;
+          }
           update();
         }
       }
@@ -1756,6 +1769,7 @@ void seenCopon(int? id){
     coponDiscountNode.dispose();
     coponUsesNode.dispose();
     coponUrlNode.dispose();
+    overlayHandlerProvider.isProfileOpend = false;
     super.onClose();
   }
 }

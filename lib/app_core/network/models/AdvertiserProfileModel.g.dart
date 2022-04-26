@@ -32,6 +32,7 @@ AdvertiserProfileModel _$AdvertiserProfileModelFromJson(
       followers: json['followers'] as int?,
       gender: json['gender'] as String?,
       is_followed: json['is_followed'] as bool?,
+      is_liked: json['is_liked'] as bool?,
     );
 
 Map<String, dynamic> _$AdvertiserProfileModelToJson(
@@ -55,5 +56,6 @@ Map<String, dynamic> _$AdvertiserProfileModelToJson(
       'ads_count': instance.ads_count,
       'channels': instance.channels,
       'is_followed': instance.is_followed,
+      'is_liked': instance.is_liked,
       'country': instance.country,
     };

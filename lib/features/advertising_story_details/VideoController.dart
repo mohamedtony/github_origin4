@@ -1,7 +1,7 @@
 import 'package:advertisers/app_core/network/models/AdsListModel.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
-import 'package:advertisers/features/advertising_story_details/Story.dart';
 import 'package:advertisers/main.dart';
+import 'package:advertisers/shared/loading_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -10,11 +10,11 @@ import 'package:logger/logger.dart';
 enum ButtonState { paused, playing, loading, }
 
 class VideoController extends GetxController {
-  final Rx<List<Story>> _videoList = Rx<List<Story>>([]);
+ // final Rx<List<Story>> _videoList = Rx<List<Story>>([]);
 
-  List<Story> get videoList => _videoList.value;
+//  List<Story> get videoList => _videoList.value;
   late TextEditingController commentController;
-
+  TextEditingController? reportController;
   //RxList<GetAdvertisersModel> advertisersModel = <GetAdvertisersModel>[].obs;
   //final Rx<List<AdsListModel>> adslistList = Rx<List<AdsListModel>>([]);
   RxList<AdsListModel> adslistList = <AdsListModel>[].obs;
@@ -28,6 +28,7 @@ class VideoController extends GetxController {
   String? myToken ;
   @override
   Future<void> onInit() async {
+    reportController = TextEditingController();
     myToken = await storage.read("token");
     getAdsList();
     super.onInit();
@@ -172,7 +173,7 @@ class VideoController extends GetxController {
   Future<void> getAdsList() async {
    String myToken = await storage.read("token");
 
-    client!.getAdsList(1,"Bearer " + myToken,)
+    client!.getAdsList(0,1,"Bearer " + myToken,)
         .then((value) {
       if (value.status == 200 && value.data != null && value.data!.isNotEmpty) {
         Logger().d(value.data.toString());
@@ -264,6 +265,36 @@ class VideoController extends GetxController {
         textColor: Colors.white,
         //fontFamily: 'Arabic-Regular',
         fontSize: 16.0);
+  }
+
+  void onReportSavedClicked(BuildContext context,int id) {
+    if(myToken==null ) {
+      showMyToast("مشكلة غير معروفة !");
+      return;
+    }else if(reportController?.text==null){
+      showMyToast("من فضلك يرجى كتابة سبب البلاغ !");
+      return;
+    }else if(reportController!.text.isEmpty){
+      showMyToast("من فضلك يرجى كتابة سبب البلاغ !");
+      return;
+    }
+    LoadingDailog().showLoading(context);
+    client!.reportAds(id,reportController!.text,"Bearer "+myToken!).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        showMyToast("تم إرسال بلاغك بنجاح !");
+        Get.back();
+        Get.back();
+      }
+    });
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    reportController?.dispose();
+    super.onClose();
   }
 }
 

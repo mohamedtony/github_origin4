@@ -1,11 +1,7 @@
 import 'package:advertisers/features/advertising_story_details/Dragabble/constants.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/features/advertising_story_details/VideoController.dart';
-import 'package:advertisers/features/advertising_story_details/data.dart';
-import 'package:advertisers/features/advertising_story_details/small_ads_page.dart';
 import 'package:advertisers/features/advertising_story_details/story_page.dart';
-import 'package:advertisers/features/advertising_story_details/story_page_controller_forsmall.dart';
-import 'package:advertisers/features/advertising_story_details/story_page_forsmall.dart';
 import 'package:advertisers/features/home_page/controller/ads_page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

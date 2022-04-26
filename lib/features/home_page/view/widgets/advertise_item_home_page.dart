@@ -64,7 +64,7 @@ class AdvertiseItem extends StatelessWidget {
               children: [
                 Container(
                     margin: EdgeInsets.only(right: 16.0),
-                    child: Text('منذ 6 دقائق',
+                    child: Text('${adsListModel.time_ago ?? ''}',
                         style: TextStyle(color: Colors.white))),
                 Container(
                   margin: EdgeInsets.all(16.0),
@@ -72,7 +72,7 @@ class AdvertiseItem extends StatelessWidget {
                     children: [
                       InkWell(
                           onTap: (){
-                          Get.toNamed('/AdvertiserProfileOrderPage',arguments:GetAdvertisersModel(id: adsListModel.id));
+                              Get.toNamed('/AdvertiserProfileOrderPage',arguments:GetAdvertisersModel(id: adsListModel.user!.id));
                           },
                         child: new Container(
                             width: 50.0,

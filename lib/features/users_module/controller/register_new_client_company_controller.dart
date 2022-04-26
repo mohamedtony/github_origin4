@@ -249,6 +249,7 @@ class RegisterNewClientCompanyController extends GetxController {
         onSuccess: (res) async {
           storage.write(
               "data", registerClientUserResponse.value.toJson());
+          storage.write("id", res.data!.id);
           print("registerToken ${res.data!.token}");
           await storage.write("token", res.data!.token);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(

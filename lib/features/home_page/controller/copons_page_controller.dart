@@ -61,6 +61,11 @@ class CoponsPageController extends GetxController {
     }
   }
 
+  // Call this when the user pull down the screen
+  Future<void> loadDataForCopos() async {
+    pagingController.refresh();
+  }
+
   @override
   Future<void> onInit() async {
     // TODO: implement onInit

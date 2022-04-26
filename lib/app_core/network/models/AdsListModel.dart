@@ -13,6 +13,8 @@ class AdsListModel {
   int? show_profile;
   String? type;
   bool?is_favourite;
+  bool?is_liked;
+  bool?is_disliked;
   bool?has_comment;
   UserAdsList? user;
   int?comments;
@@ -28,7 +30,7 @@ class AdsListModel {
   List<Attachment>? attachments;
   String? time_ago;
 
-  AdsListModel({this.time_ago,this.id,this.status,this.video,this.image,this.user,this.likes,this.dislikes,this.shares,this.status_txt,this.description,this.type,this.views,this.attachments,this.started_at,this.attachment_preview_duration,this.comments,this.favourites,this.has_comment,this.is_favourite,this.show_app,this.show_profile,});
+  AdsListModel({this.is_liked,this.is_disliked,this.time_ago,this.id,this.status,this.video,this.image,this.user,this.likes,this.dislikes,this.shares,this.status_txt,this.description,this.type,this.views,this.attachments,this.started_at,this.attachment_preview_duration,this.comments,this.favourites,this.has_comment,this.is_favourite,this.show_app,this.show_profile,});
 
   factory AdsListModel.fromJson(Map<String, dynamic> json) => _$AdsListModelFromJson(json);
 

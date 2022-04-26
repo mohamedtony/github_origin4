@@ -1,17 +1,12 @@
 import 'package:advertisers/app_core/network/models/AdsListModel.dart';
-import 'package:advertisers/features/advertising_story_details/Dragabble/advretising_story_details_page.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
-import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_service.dart';
 import 'package:advertisers/features/advertising_story_details/VideoController.dart';
-import 'package:advertisers/features/advertising_story_details/small_ads_page.dart';
+import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/home_page/controller/ads_page_controller.dart';
 import 'package:advertisers/features/home_page/controller/home_navigation_controller.dart';
 import 'package:advertisers/features/home_page/view/widgets/advertise_item_home_page.dart';
 import 'package:advertisers/features/request_advertise_module/view/pages/request_advertise_page.dart';
-import 'package:advertisers/features/home_page/app_colors.dart';
-import 'package:advertisers/features/request_advertise_module/view/widgets/attatchements_sheet.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -32,21 +27,37 @@ class AdvertisingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        print("MainPOP");
+       // print("MainPOP");
+        print("AdvertisingPage");
         //Get.back();
         /* if(overlayHandlerProvider.overlayActive) {
           overlayHandlerProvider.enablePip(1.77);
           return false;
         }*/
-        Get.delete<VideoController>();
-        Get.delete<AdsPageController>();
+       // Get.delete<VideoController>();
+       // Get.delete<AdsPageController>();
         /*final VideoController videoController = Get.put(VideoController());
         OverlayHandlerProvider overlayHandlerProvider = Get.find();
         AdsPageController adsPageController = Get.put(AdsPageController());*/
         if(overlayHandlerProvider.overlayActive) {
-          overlayHandlerProvider.disablePip();
+
+          print("isOpen= "+overlayHandlerProvider.isProfileOpend.toString());
+          if(!overlayHandlerProvider.isProfileOpend){
+            overlayHandlerProvider.disablePip();
+            overlayHandlerProvider.removeOverlay(context);
+            overlayHandlerProvider.currentPage = 0;
+            Get.delete<VideoController>();
+           // Get.delete<AdsPageController>();
+           // overlayHandlerProvider.isProfileOpend = false;
+          }else{
+            overlayHandlerProvider.updateHidden(false, 300);
+             Get.delete<VideoController>();
+             //Get.delete<AdsPageController>();
+            Get.back();
+          }
+          /*overlayHandlerProvider.disablePip();
           overlayHandlerProvider.removeOverlay(context);
-          overlayHandlerProvider.currentPage = 0;
+          overlayHandlerProvider.currentPage = 0;*/
           return false;
         }
         return true;
@@ -54,7 +65,7 @@ class AdvertisingPage extends StatelessWidget {
       child: Stack(
         children: [
           RefreshIndicator(
-            onRefresh: adsPageController.loadData,
+            onRefresh: adsPageController.loadDataForAds,
             child: PagedListView<int, AdsListModel>(
               pagingController: adsPageController.pagingController,
 

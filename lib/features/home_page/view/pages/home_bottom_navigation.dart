@@ -251,14 +251,22 @@ class Home extends StatelessWidget {
                 HomePage(
                   onSheetClicke: (x){
                     print('tonyClicked:$x');
+                    overlayHandlerProvider.isHidden = false;
                     showBottomSheetForRequest(context,x);
                   },
                   onAdveriseItemClicked: (x){
                     overlayHandlerProvider.currentPage = x;
+                    overlayHandlerProvider.isHidden = false;
                     _addVideoWithTitleOverlay(context,);
                   },
                 ),
-                FavoritePage(),
+                FavoritePage(
+                    onAdveriseItemClicked: (x){
+                      overlayHandlerProvider.currentPage = x;
+                      overlayHandlerProvider.isHidden = false;
+                      _addVideoWithTitleOverlay(context,);
+                    },
+                ),
                 AddAdsPage(),
                 ChatRecentPage(),
                 WalletPage(),
@@ -267,8 +275,8 @@ class Home extends StatelessWidget {
       ),
     );
   }
-    Future<Widget> showBottomSheetForRequest(BuildContext context,int bottomNumber)  async {
-      return await showModalBottomSheet(
+    Future<void> showBottomSheetForRequest(BuildContext context,int bottomNumber)  async {
+        showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         shape: RoundedRectangleBorder(

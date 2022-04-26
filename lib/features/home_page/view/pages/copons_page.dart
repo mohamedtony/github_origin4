@@ -32,20 +32,23 @@ class _CoponsPageState extends State<CoponsPage> {
     return Scaffold(
       body:GetBuilder<CoponsPageController>(
           init: coponsPageController,
-          builder: (controller) => PagedListView<int, CoponModelResponse>(
-            pagingController: controller.pagingController,
-            builderDelegate: PagedChildBuilderDelegate<CoponModelResponse>(
-              animateTransitions: true,
-              noItemsFoundIndicatorBuilder: (context){
-                return Container(
-                    alignment: Alignment.topCenter,
-                    margin: EdgeInsets.only(top:20.0),
-                    child: Text('لا يوجد كوبونات !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
-              },
+          builder: (controller) => RefreshIndicator(
+            onRefresh: coponsPageController.loadDataForCopos,
+            child: PagedListView<int, CoponModelResponse>(
+              pagingController: controller.pagingController,
+              builderDelegate: PagedChildBuilderDelegate<CoponModelResponse>(
+                animateTransitions: true,
+                noItemsFoundIndicatorBuilder: (context){
+                  return Container(
+                      alignment: Alignment.topCenter,
+                      margin: EdgeInsets.only(top:20.0),
+                      child: Text('لا يوجد كوبونات !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
+                },
 
-              itemBuilder: (context, item, position) {
-                return CoponItem(pos: position, coponModelResponse: item);
-              },
+                itemBuilder: (context, item, position) {
+                  return CoponItem(pos: position, coponModelResponse: item);
+                },
+              ),
             ),
           ),)
     );

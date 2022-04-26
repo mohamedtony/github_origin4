@@ -7,6 +7,8 @@ part of 'AdsListModel.dart';
 // **************************************************************************
 
 AdsListModel _$AdsListModelFromJson(Map<String, dynamic> json) => AdsListModel(
+      is_liked: json['is_liked'] as bool?,
+      is_disliked: json['is_disliked'] as bool?,
       time_ago: json['time_ago'] as String?,
       id: json['id'] as int?,
       status: json['status'] as String?,
@@ -45,6 +47,8 @@ Map<String, dynamic> _$AdsListModelToJson(AdsListModel instance) =>
       'show_profile': instance.show_profile,
       'type': instance.type,
       'is_favourite': instance.is_favourite,
+      'is_liked': instance.is_liked,
+      'is_disliked': instance.is_disliked,
       'has_comment': instance.has_comment,
       'user': instance.user,
       'comments': instance.comments,
