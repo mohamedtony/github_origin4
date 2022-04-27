@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 //                         By Mohamed T. Hammad
 
 //=========================================================================================
-class HomeNavController extends GetxController with GetSingleTickerProviderStateMixin {
+class HomeNavController extends GetxController with GetTickerProviderStateMixin {
   var tabIndex = 0;
   var isSmall = false.obs;
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -25,11 +25,13 @@ class HomeNavController extends GetxController with GetSingleTickerProviderState
   var videoController = VideoController().obs;
   RxList stories =  [].obs;
   //RxList<Country> countriesForLocationSheet = <Country>[].obs;
+  late TabController tabController;
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     animateController = AnimationController(vsync: this).obs;
+    tabController = TabController(length: 3, vsync: this);
   }
 
 }
