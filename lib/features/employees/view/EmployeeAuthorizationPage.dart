@@ -30,6 +30,8 @@ class _EmployeeAuthorizationPageState extends State<EmployeeAuthorizationPage> {
   @override
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
+    var originalWidth=MediaQuery.of(context).size.width;
+    var originalHeight=MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: PreferredSize(
         child: AppBarWidget(
@@ -184,19 +186,61 @@ class _EmployeeAuthorizationPageState extends State<EmployeeAuthorizationPage> {
                                               color: Color(0xffF5F5F5),
                                               borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
                                             ),
-                                            child:  Center(
-                                              child: Padding(
-                                                padding: const EdgeInsets.symmetric(horizontal:8.0,vertical:3),
-                                                child: Text(
-                                                  controller.privilegedList[index],
-                                                  style: TextStyle(
-                                                      fontSize: 16.sp,
-                                                      color: const Color(
-                                                          0xff244094),
-                                                      fontFamily: 'A Jannat LT, Regular'
+                                            child:  Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal:20.0,vertical:3),
+                                                  child: Text(
+                                                    controller.privilegedList[index],
+                                                    style: TextStyle(
+                                                        fontSize: 16.sp,
+                                                        color: const Color(
+                                                            0xff244094),
+                                                        fontFamily: 'A Jannat LT, Regular'
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
+
+                                                Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal:8.0,),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                    children: [
+                                                      Container(
+                                                        width: 12,
+                                                        height: 12,
+                                                        child: Checkbox(
+                                                          checkColor: Colors.white,
+                                                          fillColor: MaterialStateProperty.all(  Colors.lightBlue),
+                                                          value: controller.isChecked,
+                                                          shape: CircleBorder(),
+                                                          onChanged: (bool? value) {
+                                                            setState(() {
+                                                              controller.isChecked = value!;
+                                                            });
+                                                          },
+                                                        ),
+                                                      ),
+
+                                                      Padding(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 5),                                                        child: Text(
+                                                        "الكل",
+                                                        style: TextStyle(
+                                                            fontSize: 14.sp,
+                                                            color: const Color(
+                                                                0xff244094),
+                                                            decoration: TextDecoration.underline,
+                                                            fontFamily: 'A Jannat LT, Regular'
+                                                        ),
+                                                      ),
+                                                      ),
+
+
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
@@ -207,144 +251,97 @@ class _EmployeeAuthorizationPageState extends State<EmployeeAuthorizationPage> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
+
                                               /// view
                                               Container(
-                                                width: MediaQuery.of(context).size.width*.25,
+                                                width: (originalWidth*(double.parse((150/originalWidth).toStringAsFixed(2)))),
                                                 decoration: BoxDecoration(
                                                     color: controller.isChecked?const Color(0xffF5F5F5):Colors.white,
                                                     borderRadius: BorderRadius.circular(10),
                                                     border: Border.all(color: Color(0xff4184CE),width: .5)
                                                 ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal:8.0,),
-                                                  child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                    children: [
-                                                      Container(
-                                                        width: 12,
-                                                        height: 12,
-                                                        child: Checkbox(
-                                                          checkColor: Colors.white,
-                                                          fillColor: MaterialStateProperty.all(  Colors.lightBlue),
-                                                          value: controller.isChecked,
-                                                          shape: CircleBorder(),
-                                                          onChanged: (bool? value) {
-                                                            setState(() {
-                                                              controller.isChecked = value!;
-                                                            });
-                                                          },
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                  children: [
+                                                    Container(
+                                                      width: 12,
+                                                      height: 12,
+                                                      child: Checkbox(
+                                                        checkColor: Colors.white,
+                                                        fillColor: MaterialStateProperty.all(  Colors.lightBlue),
+                                                        value: controller.isChecked,
+                                                        shape: CircleBorder(),
+                                                        onChanged: (bool? value) {
+                                                          setState(() {
+                                                            controller.isChecked = value!;
+                                                          });
+                                                        },
+                                                      ),
+                                                    ),
+
+                                                    Padding(
+                                                      padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 5),                                                        child: Text(
+                                                        "عرض",
+                                                        style: TextStyle(
+                                                            fontSize: 14.sp,
+                                                            color: const Color(
+                                                                0xff244094),
+                                                            fontFamily: 'A Jannat LT, Regular'
                                                         ),
                                                       ),
+                                                    ),
 
-                                                      Padding(
-                                                        padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 5),                                                        child: Text(
-                                                          "عرض",
-                                                          style: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              color: const Color(
-                                                                  0xff244094),
-                                                              fontFamily: 'A Jannat LT, Regular'
-                                                          ),
-                                                        ),
-                                                      ),
+                                                  const  SizedBox(
+                                                      width: 5,
+                                                    )
 
-
-                                                    ],
-                                                  ),
+                                                  ],
                                                 ),
                                               ),
                                               /// add
                                               Container(
-                                                width: MediaQuery.of(context).size.width*.25,
+                                                width: (originalWidth*(double.parse((150/originalWidth).toStringAsFixed(2)))),
                                                 decoration: BoxDecoration(
                                                     color: controller.isChecked?const Color(0xffF5F5F5):Colors.white,
                                                     borderRadius: BorderRadius.circular(10),
                                                     border: Border.all(color: Color(0xff4184CE),width: .5)
                                                 ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal:8.0,),
-                                                  child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                    children: [
-                                                      Container(
-                                                        width: 12,
-                                                        height: 12,
-                                                        child: Checkbox(
-                                                          checkColor: Colors.white,
-                                                          fillColor: MaterialStateProperty.all(  Colors.lightBlue),
-                                                          value: controller.isChecked,
-                                                          shape: CircleBorder(),
-                                                          onChanged: (bool? value) {
-                                                            setState(() {
-                                                              controller.isChecked = value!;
-                                                            });
-                                                          },
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                  children: [
+                                                    Container(
+                                                      width: 12,
+                                                      height: 12,
+                                                      child: Checkbox(
+                                                        checkColor: Colors.white,
+                                                        fillColor: MaterialStateProperty.all(  Colors.lightBlue),
+                                                        value: controller.isChecked,
+                                                        shape: CircleBorder(),
+                                                        onChanged: (bool? value) {
+                                                          setState(() {
+                                                            controller.isChecked = value!;
+                                                          });
+                                                        },
+                                                      ),
+                                                    ),
+
+                                                    Padding(
+                                                      padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 5),
+                                                      child: Text(
+                                                        "اضافة وتعديل",
+                                                        style: TextStyle(
+                                                            fontSize: 14.sp,
+                                                            color: const Color(
+                                                                0xff244094),
+                                                            fontFamily: 'A Jannat LT, Regular'
                                                         ),
                                                       ),
+                                                    ),
 
-                                                      Padding(
-                                                        padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 5),
-                                                        child: Text(
-                                                          "اضافة",
-                                                          style: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              color: const Color(
-                                                                  0xff244094),
-                                                              fontFamily: 'A Jannat LT, Regular'
-                                                          ),
-                                                        ),
-                                                      ),
-
-
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              /// edit
-                                              Container(
-                                                width: MediaQuery.of(context).size.width*.25,
-                                                decoration: BoxDecoration(
-                                                    color: controller.isChecked?const Color(0xffF5F5F5):Colors.white,
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    border: Border.all(color: Color(0xff4184CE),width: .5)
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal:8.0,),
-                                                  child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                    children: [
-                                                      Container(
-                                                        width: 12,
-                                                        height: 12,
-                                                        child: Checkbox(
-                                                          checkColor: Colors.white,
-                                                          fillColor: MaterialStateProperty.all(  Colors.lightBlue),
-                                                          value: controller.isChecked,
-                                                          shape: CircleBorder(),
-                                                          onChanged: (bool? value) {
-                                                            setState(() {
-                                                              controller.isChecked = value!;
-                                                            });
-                                                          },
-                                                        ),
-                                                      ),
-
-                                                      Padding(
-                                                        padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 5),
-                                                        child: Text(
-                                                          "تعديل",
-                                                          style: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              color: const Color(
-                                                                  0xff244094),
-                                                              fontFamily: 'A Jannat LT, Regular'
-                                                          ),
-                                                        ),
-                                                      ),
-
-
-                                                    ],
-                                                  ),
+                                                    const  SizedBox(
+                                                      width: 5,
+                                                    )
+                                                  ],
                                                 ),
                                               ),
 
@@ -405,53 +402,7 @@ class _EmployeeAuthorizationPageState extends State<EmployeeAuthorizationPage> {
                                                   ),
                                                 ),
                                               ),
-                                              /// remove
-                                              Container(
-                                                width: MediaQuery.of(context).size.width*.25,
-                                                decoration: BoxDecoration(
-                                                    color: controller.isChecked_setting_remove?const Color(0xffF5F5F5):Colors.white,
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    border: Border.all(color: Color(0xff4184CE),width: .5)
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal:8.0,),
-                                                  child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                    children: [
-                                                      Container(
-                                                        width: 12,
-                                                        height: 12,
-                                                        child: Checkbox(
-                                                          checkColor: Colors.white,
-                                                          fillColor: MaterialStateProperty.all(  Colors.lightBlue),
-                                                          value: controller.isChecked_setting_remove,
-                                                          shape: CircleBorder(),
-                                                          onChanged: (bool? value) {
-                                                            setState(() {
-                                                              controller.isChecked_setting_remove = value!;
-                                                            });
-                                                          },
-                                                        ),
-                                                      ),
 
-                                                      Padding(
-                                                        padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 5),
-                                                        child: Text(
-                                                          "حذف",
-                                                          style: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              color: const Color(
-                                                                  0xff244094),
-                                                              fontFamily: 'A Jannat LT, Regular'
-                                                          ),
-                                                        ),
-                                                      ),
-
-
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
                                               /// pay
                                               Container(
                                                 width: MediaQuery.of(context).size.width*.25,

@@ -118,22 +118,22 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                       child: Container(
                         padding:const EdgeInsets.all(10),
                         child: SmartRefresher(
-                          controller: controller.refreshController,
+                          controller: controller.refreshController2,
                           enablePullUp: true,
                           onRefresh: () async {
                             /*final result = await */controller.fetchEmployeesList();
                             if (controller.myEmployees.isNotEmpty) {
-                              controller.refreshController.refreshCompleted();
+                              controller.refreshController2.refreshCompleted();
                             } /*else {
-                              controller.refreshController.refreshFailed();
+                              controller.refreshController2.refreshFailed();
                             }*/
                           },
                           onLoading: () async {
                             /*final result = await*/ controller.fetchEmployeesList();
                             if (controller.myEmployees.isNotEmpty) {
-                              controller.refreshController.loadComplete();
+                              controller.refreshController2.loadComplete();
                             } /*else {
-                              controller.refreshController.loadFailed();
+                              controller.refreshController2.loadFailed();
                             }*/
                           },
                           child: ListView(
@@ -283,7 +283,7 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                                           //
                                                                           Padding(
                                                                             padding: const EdgeInsets.only(top:8.0,left: 12),
-                                                                            child: SvgPicture.asset( uiEmployeeRequests.status==1?'images/hand.svg': 'images/android-done-all-green.svg',
+                                                                            child: SvgPicture.asset( uiEmployeeRequests.status==0?'images/hand.svg': 'images/android-done-all-green.svg',
                                                                               width: 50,
                                                                               height: 30,
                                                                               fit: BoxFit.fill,
@@ -292,10 +292,10 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
 
                                                                           Padding(
                                                                             padding: const EdgeInsets.only(top:8.0),
-                                                                            child: Text(uiEmployeeRequests.status==0?"نشط":"موقوف",
+                                                                            child: Text(uiEmployeeRequests.status==1?"نشط":"موقوف",
                                                                               style: TextStyle(
                                                                                   fontSize: 15.sp,
-                                                                                  color:  uiEmployeeRequests.status==0?const Color(0xff0B9C2D): const Color(0xffFFB300),
+                                                                                  color:  uiEmployeeRequests.status==1?const Color(0xff0B9C2D): const Color(0xffFFB300),
                                                                                   fontFamily: 'A Jannat LT, Regular'
                                                                               ),
                                                                             ),
@@ -387,7 +387,7 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                             child: EmployeeSlideRightItemsAction(
                                                               firstWidget:   InkWell(
                                                                 onTap: (){
-                                                                  if(uiEmployeeRequests.status==1){
+                                                                  if(uiEmployeeRequests.status==0){
                                                                     controller.stopOrActivateEmployee(id: uiEmployeeRequests.id);
                                                                   }else{
                                                                     Get.snackbar("حسنا",
@@ -447,7 +447,7 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                               ),
                                                               secondWidget: InkWell(
                                                                 onTap: (){
-                                                                  if(uiEmployeeRequests.status==0){
+                                                                  if(uiEmployeeRequests.status==1){
                                                                     controller.stopOrActivateEmployee(id: uiEmployeeRequests.id);
                                                                   }else{
                                                                     Get.snackbar("حسنا",

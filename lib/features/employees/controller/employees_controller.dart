@@ -166,12 +166,17 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
 
   final RefreshController refreshController = RefreshController(initialRefresh: true);
 
+
+  final RefreshController refreshController2 = RefreshController(initialRefresh: true);
+
+
   Future<bool> getRequestsData({bool isRefresh = false}) async {
     if (isRefresh) {
       currentPage = 1;
     } else {
       if (currentPage >= totalPages) {
         refreshController.loadNoData();
+        refreshController2.loadNoData();
         return false;
       }
     }
@@ -544,13 +549,13 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
           EasyLoading.dismiss();
         }
 
-        if(data.data!.status==0){
+        if(data.data!.status==1){
           Get.snackbar("حسنا",
             "تم تنشيط الموظف بنجاح",
             icon: const Icon(Icons.check, color: Colors.green),
             backgroundColor: Colors.yellow,
             snackPosition: SnackPosition.TOP,);
-        }else if(data.data!.status==1){
+        }else if(data.data!.status==0){
           Get.snackbar("حسنا",
             "تم ايقاف الموظف بنجاح",
             icon: const Icon(Icons.check, color: Colors.green),
