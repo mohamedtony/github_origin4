@@ -101,7 +101,7 @@ class ChatMessagesController extends GetxController {
     return false;
   }
 
- void uploadFile({required dio.MultipartFile file,required String room,required String type,required ItemScrollController itemScrollController}) async {
+ void uploadFile({required dio.MultipartFile file,required String room,required String type,required ItemScrollController itemScrollController,required int indexOfMessage}) async {
 
    // EasyLoading.show();
 
@@ -115,6 +115,7 @@ class ChatMessagesController extends GetxController {
             if (EasyLoading.isShow) {
               EasyLoading.dismiss();
             }
+            messagesChat[indexOfMessage].uploaded=true;
             FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
             ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
             //ToUserModel toUserModel=json.decode(Get.parameters["to_user"]??"");

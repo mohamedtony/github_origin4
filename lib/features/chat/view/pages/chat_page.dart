@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
+import 'package:advertisers/app_core/network/models/RepliedMessage.dart';
 import 'package:advertisers/app_core/network/requests/MessageChatModelRequest.dart';
 import 'package:advertisers/features/chat/view/widgets/AudioChatMessage.dart';
+import 'package:intl/intl.dart';
 import 'package:lecle_downloads_path_provider/lecle_downloads_path_provider.dart';
 import 'package:location/location.dart'as location;
 import 'package:advertisers/features/chat/view/pages/LocationShare.dart';
@@ -49,11 +51,15 @@ class _ChatPageState extends State<ChatPage> {
   Record _audioRecorder = Record();
   bool isComplete = false;
   bool isRecordTapped=false;
+  late String filePathForNetworkView;
  // ScrollController _scrollController = new ScrollController();
   ChatMessagesController _chatMessagesController=Get.put(ChatMessagesController());
   final _pusher=AppPusher();
   int charactersLength=0;
-
+  FromUserModel? from;
+  ToUserModel?   to;
+  FromUserModel? fromUserModel;
+  ToUserModel? toUserModel;
   ImagePicker _imagePicker = ImagePicker();
   late  String room;
   String downloadsPath1='unknown';
@@ -63,7 +69,10 @@ class _ChatPageState extends State<ChatPage> {
    ItemScrollController itemScrollController = ItemScrollController();
   @override
   void initState() {
+    getApplicationDocumentsDirectory().then((value) => filePathForNetworkView=value.toString());
     myId=storage.read("id",);
+     fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
+    toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
     print("myId>>>>>>>>>>>>>>>>>>>>>>>>>>>$myId");
      room=Get.parameters['room'].toString();
     _pusher.connect(room:room);
@@ -71,27 +80,25 @@ class _ChatPageState extends State<ChatPage> {
     _streamSubscription = _pusher.stream.listen((event) {
      // print(">>>>>>>>>>>>>>>${event.data?.imageUrl}"
 setState(() {
-      FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
-      ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
+
     print (">>>>>>>>>>>>>>>>>>>>>${event.type}");
-      FromUserModel? from;
-       ToUserModel?   to;
-      if(fromUserModel.id.toString()==event.from_user_id.toString()){
+
+      if(fromUserModel?.id.toString()==event.from_user_id.toString()){
         from=fromUserModel;
         to=toUserModel;
-        _chatMessagesController.messagesChat.add(ListChatModel(
-            message_type: event.type,
-            message: event.message,
-            to_user: to,
-            from_user: from,
-            from_me: true,
-            room: room,
-            //id:event.));
-            id: int.parse(Get.parameters["id"].toString())));
+        // _chatMessagesController.messagesChat.add(ListChatModel(
+        //     message_type: event.type,
+        //     message: event.message,
+        //     to_user: to,
+        //     from_user: from,
+        //     from_me: true,
+        //     room: room,
+        //     //id:event.));
+        //     id: int.parse(Get.parameters["id"].toString())));
       }else// if(fromUserModel.id.toString()!=event.from_user_id.toString())
       {
-        from=FromUserModel(image: toUserModel.image,id: toUserModel.id,username: toUserModel.username);
-        to=ToUserModel(image: fromUserModel.image,id: fromUserModel.id,username: fromUserModel.username);
+        from=FromUserModel(image: toUserModel?.image,id: toUserModel?.id,username: toUserModel?.username);
+        to=ToUserModel(image: fromUserModel?.image,id: fromUserModel?.id,username: fromUserModel?.username);
         _chatMessagesController.messagesChat.add(ListChatModel(
             message_type: event.type,
             message: event.message,
@@ -172,8 +179,8 @@ setState(() {
               width: 375.w,
               child: ChatAndTitle(
                 show: Show.content,
-                name: _chatMessagesController.messagesChat.isNotEmpty?_chatMessagesController.messagesChat[0].to_user?.username??' ':' ',
-                image: _chatMessagesController.messagesChat.isNotEmpty?_chatMessagesController.messagesChat[0].to_user?.image??' ':' ',
+                name: toUserModel?.username??' ',
+                image: toUserModel?.image??' ',
 
               ),
             ),
@@ -300,6 +307,26 @@ height: 812.h-133,
                   chatMessagesController:_chatMessagesController ,downloadsPath:downloadsPath1
                   // message: 'عليكم السلام ورحمة الله وبركاته',
                 );
+              }else if(_chatMessagesController.messagesChat[index].from_me==false&&(_chatMessagesController.messagesChat[index].message_type=='file')){
+                return ChatContentWidget(
+                    key: ValueKey(_chatMessagesController.messagesChat[index]),
+                    chatUser: ChatUser.receiver,index: index,itemScrollController:itemScrollController,
+                    message: _chatMessagesController.messagesChat[index],
+                    type: 'file',
+                    path:filePathForNetworkView,
+                    chatMessagesController:_chatMessagesController ,downloadsPath:downloadsPath1
+                  // message: 'عليكم السلام ورحمة الله وبركاته',
+                );
+              }else if(_chatMessagesController.messagesChat[index].from_me==true&&(_chatMessagesController.messagesChat[index].message_type=='file')){
+                return ChatContentWidget(
+                    key: ValueKey(_chatMessagesController.messagesChat[index]),
+                    chatUser: ChatUser.sender,index: index,itemScrollController:itemScrollController,
+                    message: _chatMessagesController.messagesChat[index],
+                    type: 'file',
+                    path:filePathForNetworkView,
+                    chatMessagesController:_chatMessagesController ,downloadsPath:downloadsPath1
+                  // message: 'عليكم السلام ورحمة الله وبركاته',
+                );
               }
               return SizedBox();
               },
@@ -377,8 +404,47 @@ height: 812.h-133,
                             onTap:()async{
                               stopRecord().then((value)async {
                                 if(value==true) {
+                                  if( _chatMessagesController.replied.value==false){
+                                    _chatMessagesController.messagesChat.add(ListChatModel(
+                                        message_type: "sound",
+                                        message: recordFilePath,
+                                        to_user: toUserModel,
+                                        from_user: fromUserModel,
+                                        from_me: true,
+                                        uploaded: false,
+                                        room: room,sent_at: DateFormat("MMM yyyy dd hh:mm:ss").format(DateTime.now()) ,//DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()) ,
+                                        //id:event.));
+                                        id: int.parse(Get.parameters["id"].toString())));
+                                    chatMessageController.text='';
+                                  }else {
+
+                                    _chatMessagesController
+                                        .messagesChat.add(
+                                        ListChatModel(
+                                            message_type: "sound",
+                                            message: recordFilePath,
+                                            to_user: toUserModel,
+                                            from_user: fromUserModel,
+
+                                            from_me: true,
+                                            uploaded: false,
+                                            room: room,
+                                            replied_message: RepliedMessage(
+                                                message: _chatMessagesController
+                                                    .messagesChat[_chatMessagesController
+                                                    .chatIndex.value]
+                                                    .message,
+                                                message_type: "sound",
+                                                replied_message: recordFilePath),
+                                            //id:event.));
+                                            id: int.parse(
+                                                Get.parameters["id"]
+                                                    .toString())));
+
+                                  }
                                   _chatMessagesController.uploadFile(
                                       room: room,
+                                      indexOfMessage: _chatMessagesController.messagesChat.length-1,
                                       type: "sound",
                                       file:dio.MultipartFile.fromBytes(await File(recordFilePath??'').readAsBytes(),
                                       // await dio
@@ -399,44 +465,45 @@ height: 812.h-133,
                             onTap: ()async {
 
                               final XFile? file = await _imagePicker.pickImage(source: ImageSource.camera);
+                              if( _chatMessagesController.replied.value==false){
+                                _chatMessagesController.messagesChat.add(ListChatModel(
+                                    message_type: "image",
+                                    message: file?.path,
+                                    to_user: toUserModel,
+                                    from_user: fromUserModel,
+                                    from_me: true,
+                                    uploaded: false,
+                                    room: room,sent_at: DateFormat("MMM yyyy dd hh:mm:ss").format(DateTime.now()) ,//DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()) ,
+                                    //id:event.));
+                                    id: int.parse(Get.parameters["id"].toString())));
+                                chatMessageController.text='';
+                              }else {
 
-                              // await _imagePicker
-                              //     .pickImage(
-                              //     source: ImageSource.camera,
-                              //     // imageQuality: 60,
-                              //     // maxWidth: 1280,
-                              //     // maxHeight: 720
-                              // )
-                              //     .then((file) async {
-                               // _chatMessagesController.file.value= File.fromUri(Uri.file(file!.path));
-                               //  _chatMessagesController.savedFile.value =
-                               //      File.fromUri(Uri.file(file!.path));
-                                // RegisterNewClientUserController.photo =
-                                // await dio.MultipartFile.fromFile(file.path,
-                                //     filename: file.path
-                                //         .substring(file.path.lastIndexOf("/") + 1));
+                                _chatMessagesController
+                                    .messagesChat.add(
+                                    ListChatModel(
+                                        message_type: "image",
+                                        message: file?.path,
+                                        to_user: toUserModel,
+                                        from_user: fromUserModel,
 
+                                        from_me: true,
+                                        uploaded: false,
+                                        room: room,
+                                        replied_message: RepliedMessage(
+                                            message: _chatMessagesController
+                                                .messagesChat[_chatMessagesController
+                                                .chatIndex.value]
+                                                .message,
+                                            message_type: "image",
+                                            replied_message: recordFilePath),
+                                        //id:event.));
+                                        id: int.parse(
+                                            Get.parameters["id"]
+                                                .toString())));
 
-                                // ChatMessagesController.photo =
-                                // await dio.MultipartFile.fromFile(file!.path,
-                                //     filename: file.path
-                                //         .substring(file.path.lastIndexOf("/") + 1));
-
-                                //         provider = FileImage(savedFile);
-
-
-                                //         setState(()
-                                //         {
-
-                                // _chatMessagesController.imageBase641.value =
-                                //     base64Encode(_chatMessagesController
-                                //         .savedFile.value
-                                //         .readAsBytesSync());
-
-                                //           file1=multi1;
-                                //         });
-                                //
-                              _chatMessagesController.uploadFile(room: room,type: "image",file: await dio.MultipartFile.fromFile(file!.path,
+                              }
+                              _chatMessagesController.uploadFile(room: room,indexOfMessage: _chatMessagesController.messagesChat.length-1,type: "image",file: await dio.MultipartFile.fromFile(file!.path,
                                   filename: file.path
                                       .substring(file.path.lastIndexOf("/") + 1)),itemScrollController:itemScrollController);
                                 // FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
@@ -952,7 +1019,7 @@ height: 812.h-133,
                                     controller: chatMessageController,
                                     // keyboardType: TextInputType.text,
                                     decoration: InputDecoration(
-                                      hintText: '..............',
+                                      //hintText: '..............',
                                       contentPadding:  EdgeInsets.symmetric(vertical: 2.0,horizontal: 10.w),
                                       border: InputBorder.none,
                                       focusedBorder: InputBorder.none,
@@ -976,7 +1043,7 @@ height: 812.h-133,
                                         padding: const EdgeInsets.all(0.0),
                                         child: InkWell(
                                           onTap: ()async {
-
+                                            if(chatMessageController.text!=''){
                                             FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
                                             ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
                                             // print(">>>>>>>>>>>>>>>>>>>>>>${fromUserModel.id}");
@@ -994,13 +1061,55 @@ height: 812.h-133,
                                              _chatMessagesController.sendMessage(message:MessageChatModelRequest(room: room,message:chatMessageController.text,type: "text",
                                                 from_user_id: from,
                                                 to_user_id: to.toString()),itemScrollController:itemScrollController);
+
+                                             _chatMessagesController.messagesChat.add(ListChatModel(
+                                                 message_type: "text",
+                                                 message: chatMessageController.text,
+                                                 to_user: toUserModel,
+                                                 from_user: fromUserModel,
+                                                 from_me: true,
+                                                 room: room,sent_at: DateFormat("MMM yyyy dd hh:mm:ss").format(DateTime.now()) ,//DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()) ,
+                                                 //id:event.));
+                                                 id: int.parse(Get.parameters["id"].toString())));
                                              chatMessageController.text='';
-                                           }else{
-                                              _chatMessagesController.sendMessage(message:MessageChatModelRequest(room: room,message:chatMessageController.text,type: "text",message_id: _chatMessagesController.messagesChat[_chatMessagesController.chatIndex.value].id,
-                                                from_user_id: from,
-                                                to_user_id: to.toString()),itemScrollController:itemScrollController);
-                                              chatMessageController.text='';
-                                           }
+                                           }else {
+                                             _chatMessagesController
+                                                 .sendMessage(
+                                                 message: MessageChatModelRequest(
+                                                     room: room,
+                                                     message: chatMessageController
+                                                         .text,
+                                                     type: "text",
+                                                     message_id: _chatMessagesController
+                                                         .messagesChat[_chatMessagesController
+                                                         .chatIndex.value].id,
+                                                     from_user_id: from,
+                                                     to_user_id: to.toString()),
+                                                 itemScrollController: itemScrollController);
+                                             _chatMessagesController
+                                                 .messagesChat.add(
+                                                 ListChatModel(
+                                                     message_type: "text",
+                                                     message: chatMessageController
+                                                         .text,
+                                                     to_user: toUserModel,
+                                                     from_user: fromUserModel,
+                                                     from_me: true,
+                                                     room: room,
+                                                     replied_message: RepliedMessage(
+                                                         message: _chatMessagesController
+                                                             .messagesChat[_chatMessagesController
+                                                             .chatIndex.value]
+                                                             .message,
+                                                         message_type: "text",
+                                                         replied_message: chatMessageController
+                                                             .text),
+                                                     //id:event.));
+                                                     id: int.parse(
+                                                         Get.parameters["id"]
+                                                             .toString())));
+                                             chatMessageController.text = '';
+                                           }}
                                             // _chatMessagesController.messagesChat.add(ListChatModel(message: chatMessageController.text,room: room,from_me: true,
                                             // from_user:fromUserModel,
                                             //     to_user: toUserModel,
@@ -1071,8 +1180,46 @@ height: 812.h-133,
             FilePickerResult? result = await FilePicker.platform.pickFiles(allowedExtensions: ['pdf', 'doc'],type: FileType.custom,);
 
             if (result != null) {
+     print(">>>>>>>>>>>>>>>>>>>>>?????????????????${result.files.first.path}");
+    if( _chatMessagesController.replied.value==false){
+    _chatMessagesController.messagesChat.add(ListChatModel(
+    message_type: "file",
+    message: result.files.first.path,
+    to_user: toUserModel,
+    from_user: fromUserModel,
+    from_me: true,
+    uploaded: false,
+    room: room,sent_at: DateFormat("MMM yyyy dd hh:mm:ss").format(DateTime.now()) ,//DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()) ,
+    //id:event.));
+    id: int.parse(Get.parameters["id"].toString())));
+    chatMessageController.text='';
+    }else {
 
-               _chatMessagesController.uploadFile(room: room,type: "file",file: await dio.MultipartFile.fromFile(result.files.first.path??' ',
+    _chatMessagesController
+        .messagesChat.add(
+    ListChatModel(
+    message_type: "file",
+    message: result.files.first.path,
+    to_user: toUserModel,
+    from_user: fromUserModel,
+
+    from_me: true,
+    uploaded: false,
+    room: room,
+    replied_message: RepliedMessage(
+    message: _chatMessagesController
+        .messagesChat[_chatMessagesController
+        .chatIndex.value]
+        .message,
+    message_type: "file",
+    replied_message: recordFilePath),
+    //id:event.));
+    id: int.parse(
+    Get.parameters["id"]
+        .toString())));
+
+    }
+               _chatMessagesController.uploadFile(room: room,indexOfMessage: _chatMessagesController.messagesChat.length-1,type: "file",file: await dio.MultipartFile.fromFile(result.files.first.path??' ',
                   filename: result.files.first.path
                       ?.substring(result.files.first.path?.lastIndexOf("/")??0 + 1)),itemScrollController:itemScrollController);
               // _chatMessagesController.sendMessage(MessageChatModel(room: room,message:chatMessageController.text,type: "document",
@@ -1156,7 +1303,45 @@ height: 812.h-133,
                 onTap: () async {
                   final XFile? file = await _imagePicker.pickImage(source: ImageSource.gallery);
       if (file != null) {
-        _chatMessagesController.uploadFile(room: room,
+        if( _chatMessagesController.replied.value==false){
+          _chatMessagesController.messagesChat.add(ListChatModel(
+              message_type: "image",
+              message: file.path,
+              to_user: toUserModel,
+              from_user: fromUserModel,
+              from_me: true,
+              uploaded: false,
+              room: room,sent_at: DateFormat("MMM yyyy dd hh:mm:ss").format(DateTime.now()) ,//DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()) ,
+              //id:event.));
+              id: int.parse(Get.parameters["id"].toString())));
+          chatMessageController.text='';
+        }else {
+
+          _chatMessagesController
+              .messagesChat.add(
+              ListChatModel(
+                  message_type: "image",
+                  message: file.path,
+                  to_user: toUserModel,
+                  from_user: fromUserModel,
+
+                  from_me: true,
+                  uploaded: false,
+                  room: room,
+                  replied_message: RepliedMessage(
+                      message: _chatMessagesController
+                          .messagesChat[_chatMessagesController
+                          .chatIndex.value]
+                          .message,
+                      message_type: "image",
+                      replied_message: recordFilePath),
+                  //id:event.));
+                  id: int.parse(
+                      Get.parameters["id"]
+                          .toString())));
+
+        }
+        _chatMessagesController.uploadFile(room: room,indexOfMessage: _chatMessagesController.messagesChat.length-1,
             type: "image",
             file: await dio.MultipartFile.fromFile(file.path ??
                 ' ',
@@ -1173,7 +1358,45 @@ height: 812.h-133,
                 onTap: ()async {
                   final XFile? file = await _imagePicker.pickVideo(source: ImageSource.gallery);
                   if (file != null) {
-                    _chatMessagesController.uploadFile(room: room,
+                    if( _chatMessagesController.replied.value==false){
+                      _chatMessagesController.messagesChat.add(ListChatModel(
+                          message_type: "video",
+                          message: file.path,
+                          to_user: toUserModel,
+                          from_user: fromUserModel,
+                          from_me: true,
+                          uploaded: false,
+                          room: room,sent_at: DateFormat("MMM yyyy dd hh:mm:ss").format(DateTime.now()) ,//DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()) ,
+                          //id:event.));
+                          id: int.parse(Get.parameters["id"].toString())));
+                      chatMessageController.text='';
+                    }else {
+
+                      _chatMessagesController
+                          .messagesChat.add(
+                          ListChatModel(
+                              message_type: "video",
+                              message: file.path,
+                              to_user: toUserModel,
+                              from_user: fromUserModel,
+
+                              from_me: true,
+                              uploaded: false,
+                              room: room,
+                              replied_message: RepliedMessage(
+                                  message: _chatMessagesController
+                                      .messagesChat[_chatMessagesController
+                                      .chatIndex.value]
+                                      .message,
+                                  message_type: "video",
+                                  replied_message: recordFilePath),
+                              //id:event.));
+                              id: int.parse(
+                                  Get.parameters["id"]
+                                      .toString())));
+
+                    }
+                    _chatMessagesController.uploadFile(room: room,indexOfMessage: _chatMessagesController.messagesChat.length-1,
                         type: "video",
                         file: await dio.MultipartFile.fromFile(file.path ??
                             ' ',

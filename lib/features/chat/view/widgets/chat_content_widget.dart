@@ -9,10 +9,12 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:flutter_file_view/flutter_file_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:lecle_downloads_path_provider/lecle_downloads_path_provider.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:quds_popup_menu/quds_popup_menu.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,12 +31,14 @@ class ChatContentWidget extends StatelessWidget {
   final ListChatModel message;
   final String type;
   final int index;
+  final String? path;
   late BuildContext alertContext;
   ScrollController _scrollController = new ScrollController();
   ItemScrollController itemScrollController;
   String downloadsPath;
   ChatContentWidget(
       {Key? key,
+        this.path,
         required this.index,
         required this.chatUser,
         required this.message,
@@ -54,7 +58,7 @@ class ChatContentWidget extends StatelessWidget {
           : getMenuItems,
       pressType: PressType.longPress,
       controller: menuController,showArrow: false,enablePassEvent: true,
-      position: PreferredPosition.bottom,
+      position: chatMessagesController.chatIndex.value<3?PreferredPosition.bottom:chatMessagesController.chatIndex.value>chatMessagesController.messagesChat.length-3?PreferredPosition.top:PreferredPosition.bottom,
       child: InkWell(
 
         onTap: type == 'location'
@@ -394,13 +398,14 @@ class ChatContentWidget extends StatelessWidget {
                                         //     ),
                                         //   ),
                                         // ),
-                                        message.from_me == true
+                                       // message.from_me == true
+                                        chatMessagesController.messagesChat[chatMessagesController.chatIndex.value].from_user?.id==storage.read("id",)
                                             ? Text('you')
                                             : Text(
-                                            message.from_user?.username ??
+                                            message.to_user?.username ??
                                                 ' '),
                                         Text(
-                                          message.message ?? ' ',
+                                          chatMessagesController.replied.value==true ?chatMessagesController.messagesChat[chatMessagesController.chatIndex.value].message ?? ' ':message.replied_message?.message??'',
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ],
@@ -696,19 +701,26 @@ class ChatContentWidget extends StatelessWidget {
                                       ? VideoChatWidget(
                                     url: message.message,
                                   )
-                                      : SizedBox(
+                                      :type=='image'? SizedBox(
                                     height: 139,
                                     width: 301.w,
-                                    child: Image.network(
+                                    child: message.message!=null&&message.message!.contains('http')?Image.network(
                                         message.message ??
                                             ' ',
                                         errorBuilder:
                                             (context, l, t) {
                                           return Text(
                                               "امتداد غير مدعوم");
-                                        }),
-                                  ),
-                                ),
+                                        }):Image.file(File(message.message??''),errorBuilder:(context, l, t) {
+    return Text(
+    "امتداد غير مدعوم");})
+
+                        ):SizedBox(
+                                      height: 139,
+                                      width: 301.w,
+                                      child: message.message!=null&&message.message!.contains('http')? NetworkFileViewer(downloadUrl:message.message??'', downloadPath: path??'',onViewPressed: () {
+
+                                      },):LocalFileViewer(filePath: message.message??'')))
                               ),
                               //message.starred == true ||
                               chatMessagesController.isStar.value == 1
@@ -750,7 +762,9 @@ class ChatContentWidget extends StatelessWidget {
                                   child: //type=='sound'?PlayChatAudio(url:message.message??' '):SizedBox()
                                   type == 'text'
                                       ? Text(
-                                    message.message ?? ' ',
+                                    message.replied_message!=null&&controller.replied.value==true&&controller.chatIndex.value==index?message.replied_message?.message??'':message.message??''
+                                    ,
+                                   // message.message ?? ' ',
                                     style: TextStyle(
                                       color: chatUser == ChatUser.sender
                                           ? const Color(0xff4186CF)
@@ -779,18 +793,25 @@ class ChatContentWidget extends StatelessWidget {
                                       ? VideoChatWidget(
                                     url: message.message,
                                   )
-                                      : SizedBox(
+                                      : type=="image"?SizedBox(
                                     height: 139.h,
                                     width: 301.w,
-                                    child: Image.network(
+                                    child: message.message!=null&&message.message!.contains('http')?Image.network(
                                         message.message ??
                                             ' ',
                                         errorBuilder:
                                             (context, l, t) {
                                           return Text(
                                               "امتداد غير مدعوم");
-                                        }),
-                                  ),
+                                        }):Image.file(File(message.message??''),errorBuilder:(context, l, t) {
+                        return Text(
+                        "امتداد غير مدعوم");}),
+                                  ):SizedBox(
+                                    height: 364,
+                                      width: 301.w,
+                                      child:message.message!=null&&message.message!.contains('http')? NetworkFileViewer(downloadUrl:message.message??'', downloadPath: path??'',onViewPressed: () {
+
+                                      },):LocalFileViewer(filePath: message.message??'')),
                                 ),
                               ),
                               message.starred == true
@@ -1049,6 +1070,12 @@ class ChatContentWidget extends StatelessWidget {
             //         ),
             //       ):const SizedBox(height: 0,)
             //   ):const SizedBox(height:0,),
+         message.uploaded==true?   Align(
+              alignment: Alignment.centerLeft,
+              child: Icon(Icons.upload_rounded,color:Colors.blueAccent),
+            ):Align(
+           alignment: Alignment.centerLeft,
+           child: Icon(Icons.not_interested,color:Colors.blueAccent)),
           ],
         ),
       ),
@@ -1253,7 +1280,9 @@ class ChatContentWidget extends StatelessWidget {
                   "التمييز بنجمة",
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
+
               ])),
+
         ]));
   }
 }

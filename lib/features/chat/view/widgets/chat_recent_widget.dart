@@ -53,7 +53,7 @@ class ChatRecentWidget extends StatelessWidget {
                   backgroundColor: Color(0xffE4E4E4),
                   child: CircleAvatar(
                     radius: 23,
-                    foregroundImage: NetworkImage( //url??
+                    foregroundImage: NetworkImage( url??
                       "https://image.winudf.com/v2/image/Y29tLmFtYXppbmdwaWN0cy5hcmFiLm1hbi5waG90b21ha2VyX3NjcmVlbl8xXzI4b2QzYWht/screen-1.jpg?fakeurl=1&type=.jpg"
                     ),
                   ),
