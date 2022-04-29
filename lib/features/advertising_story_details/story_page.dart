@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:advertisers/app_core/FirebaseDynamicLinkes.dart';
 import 'package:advertisers/app_core/network/models/AdsListModel.dart';
 import 'package:advertisers/app_core/network/models/Attachment.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersModel.dart';
@@ -19,6 +19,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
 
 class StoryScreen extends StatefulWidget {
@@ -111,7 +112,7 @@ class _StoryScreenState extends State<StoryScreen>
       },
     ));
   }
-  final _scaffoldKey = new GlobalKey<ScaffoldState>();
+/*  final _scaffoldKey = new GlobalKey<ScaffoldState>();
   void _showModalSheet() {
     showModalBottomSheet(
         context: context,
@@ -123,11 +124,11 @@ class _StoryScreenState extends State<StoryScreen>
             ),
           );
         });
-  }
-  void _showBottomSheet() {
-    /*setState(() {
+  }*/
+/*  void _showBottomSheet() {
+    *//*setState(() {
       _showPersBottomSheetCallBack = null;
-    });*/
+    });*//*
 
     _scaffoldKey.currentState
         ?.showBottomSheet((context) {
@@ -141,13 +142,13 @@ class _StoryScreenState extends State<StoryScreen>
     })
         .closed
         .whenComplete(() {
-     /* if (mounted) {
+     *//* if (mounted) {
         setState(() {
           _showPersBottomSheetCallBack = _showBottomSheet;
         });
-      }*/
+      }*//*
     });
-  }
+  }*/
 
   OverlayEntry getEntry(context, AdsListModel? adsListModel) {
 
@@ -188,7 +189,7 @@ class _StoryScreenState extends State<StoryScreen>
       print("WillPopScope");
       return false;
     },child: Scaffold(
-      key: _scaffoldKey,
+     // key: _scaffoldKey,
       backgroundColor: Colors.black,
       resizeToAvoidBottomInset: overlayHandlerProvider.inPipMode?false:true,
       body: story!=null?GestureDetector(
@@ -205,7 +206,7 @@ class _StoryScreenState extends State<StoryScreen>
         child: Stack(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(bottom: /*overlayHandlerProvider.inPipMode?40:*/75),
+              margin: EdgeInsets.only(bottom: /*overlayHandlerProvider.inPipMode?40:*/45),
               child: widget.stories!=null && widget.stories!.isNotEmpty?PageView.builder(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
@@ -694,7 +695,7 @@ class _StoryScreenState extends State<StoryScreen>
                             ],
                           ),
                           Container(
-                            padding: EdgeInsets.only(top: 6),
+                            padding: EdgeInsets.only(top: 6,bottom: 10),
                             color: Colors.white,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -757,17 +758,20 @@ class _StoryScreenState extends State<StoryScreen>
                                         ),
                                       ),
                                     ),
-                                    Text(
+                                    /*Text(
                                       "تعليق",
                                       style: TextStyle(color: Color(0xff4286D2)),
-                                    )
+                                    )*/
                                   ],
                                 ),
                                 Column(
                                   children: [
                                     InkWell(
-                                      onTap: () {
+                                      onTap: () async {
                                         videoGetxController.clickedIndex.value = 1;
+                                        String url = await FirebaseDynamicLinkService.createDynamicLink(true, widget.adsListModel!.id!,videoGetxController.currentPagination,false);
+                                        Share.share('${url}');
+                                        print("dynaicLink=$url");
                                       },
                                       child: Container(
                                         width: 35.0,
@@ -806,10 +810,10 @@ class _StoryScreenState extends State<StoryScreen>
                                         ),
                                       ),
                                     ),
-                                    Text(
+                                    /*Text(
                                       "مشاركة",
                                       style: TextStyle(color: Color(0xff4286D2)),
-                                    )
+                                    )*/
                                   ],
                                 ),
                                 Column(
@@ -866,10 +870,10 @@ class _StoryScreenState extends State<StoryScreen>
                                         ),
                                       ),
                                     ),
-                                    Text(
+                                    /*Text(
                                       "مفضلة",
                                       style: TextStyle(color: Color(0xff4286D2)),
-                                    )
+                                    )*/
                                   ],
                                 ),
                                 Column(
@@ -933,7 +937,7 @@ class _StoryScreenState extends State<StoryScreen>
                                             }*/
                                           },
                                           child: Image.asset(
-                                            'images/like_story.png',
+                                            widget.adsListModel!.is_liked!=null && widget.adsListModel!.is_liked!?'images/like_story.png':'images/like_unfilled.png',
                                             height: 20,
                                             width: 25,
                                             fit: BoxFit.fill,
@@ -942,10 +946,10 @@ class _StoryScreenState extends State<StoryScreen>
                                         ),
                                       ),
                                     ),
-                                    Text(
+                                    /*Text(
                                         "${widget.adsListModel?.likes??0}",
                                       style: TextStyle(color: Color(0xff4286D2)),
-                                    )
+                                    )*/
                                   ],
                                 ),
                                 Column(
@@ -1008,7 +1012,7 @@ class _StoryScreenState extends State<StoryScreen>
                                             }
                                           },
                                           child: Image.asset(
-                                            'images/icon_dislike3.png',
+                                            widget.adsListModel?.is_disliked!=null && widget.adsListModel!.is_disliked!?'images/icon_dislike3.png':'images/dislike_unfilled.png',
                                             height: 45,
                                             width: 45,
                                             fit: BoxFit.fill,
@@ -1017,10 +1021,10 @@ class _StoryScreenState extends State<StoryScreen>
                                         ),
                                       ),
                                     ),
-                                    Text(
+                                    /*Text(
                                       "${widget.adsListModel?.dislikes??0}",
                                       style: TextStyle(color: Color(0xff4286D2)),
-                                    )
+                                    )*/
                                   ],
                                 ),
                               ],
@@ -1038,8 +1042,8 @@ class _StoryScreenState extends State<StoryScreen>
                                     Expanded(
                                       child: Container(
                                         // width: 50.0,
-                                        height: 44.0,
-                                        margin: EdgeInsets.all(6.0),
+                                        height: 35.0,
+                                        margin: EdgeInsets.only(bottom: 6.0,left: 6.0,right: 6.0),
                                         decoration: new BoxDecoration(
                                             color: Colors.grey[200],
                                             shape: BoxShape.rectangle,
@@ -1068,8 +1072,8 @@ class _StoryScreenState extends State<StoryScreen>
                                                   },
                                                   child: Image.asset(
                                                     'images/minutemailer2x.png',
-                                                    height: 25,
-                                                    width: 30,
+                                                    height: 20,
+                                                    width: 25,
                                                     fit: BoxFit.fill,
                                                     //color: Colors.white,
                                                   ),
@@ -1568,7 +1572,7 @@ class UserInfo extends StatelessWidget {
                   animController?.stop();
                   audioPlayer?.pause();
                   print("sdvertiserId= ${adsListModel.id}");
-                  Get.toNamed('/AdvertiserProfileOrderPage',arguments:GetAdvertisersModel(id: adsListModel.user?.id));
+                  Get.toNamed('/AdvertiserProfileOrderPage?id=${adsListModel.user!.id}');
                 },
                 child: CircleAvatar(
                   radius: 25.0,

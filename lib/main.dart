@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:advertisers/app_core/FirebaseDynamicLinkes.dart';
 import 'package:advertisers/app_core/app_localization/app_localization.dart';
 import 'package:advertisers/app_core/network/service.dart';
 import 'package:advertisers/app_core/routes/routes.dart';
@@ -19,7 +20,6 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logger/logger.dart';
-
 import 'features/employees/view/AddEmployeePage.dart';
 
 
@@ -34,6 +34,8 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   // account.getPreferences();
   await Firebase.initializeApp();
+
+  FirebaseDynamicLinkService.initDynamicLink();
 
   dio = Dio();
   dio?.options.headers['Content-Type'] = 'application/json';
@@ -125,6 +127,15 @@ class _MyAppState extends State<MyApp> {
         minTextAdapt: true,
         splitScreenMode: true,
         builder:()=>GetMaterialApp(
+          routingCallback: (r){
+           // r!.route.;
+           // r.route.navigator.
+           // print("routingCall"+r!.toString());
+            //Get.back();
+          },
+          onUnknownRoute: (r){
+            print("onUnknownRoute");
+          },
           localizationsDelegates: const [
             // THIS CLASS WILL BE ADDED LATER
             // A class which loads the translations from JSON files

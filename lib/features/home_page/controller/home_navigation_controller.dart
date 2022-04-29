@@ -10,7 +10,6 @@ class HomeNavController extends GetxController with GetTickerProviderStateMixin 
   var tabIndex = 0;
   var isSmall = false.obs;
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   void changeTabIndex(int index) {
     tabIndex = index;
     update();

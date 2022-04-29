@@ -1,3 +1,4 @@
+import 'package:advertisers/app_core/FirebaseDynamicLinkes.dart';
 import 'package:advertisers/app_core/network/models/AdsListModel.dart';
 import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
@@ -22,6 +23,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:share_plus/share_plus.dart';
 //=========================================================================================
 
 //                         By Mohamed T. Hammad
@@ -608,54 +610,61 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                         ),
 
                         //======================================== 'شارك الملف التعريفى مع' ===============================
-                        Container(
-                          margin: EdgeInsets.only(right: 0.0,top: 10,left: 10),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                        InkWell(
+                          onTap: () async {
+                            String url = await FirebaseDynamicLinkService.createDynamicLink(true,overlayHandlerProvider.adsListModelModel!.user!.id! ,-1,true);
+                            Share.share('${url}');
+                            print("dynaicLink=$url");
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(right: 0.0,top: 10,left: 10),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
 
-                              Container(
-                                width: 10,
-                                height: 10,
-                                margin: EdgeInsets.only(right: 10.0,top: 10),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [AppColors.beginColor, AppColors.endColor],
+                                Container(
+                                  width: 10,
+                                  height: 10,
+                                  margin: EdgeInsets.only(right: 10.0,top: 10),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [AppColors.beginColor, AppColors.endColor],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  margin: EdgeInsets.only(right: 10.0, bottom: 3,top: 0),
-                                  alignment: Alignment.topRight,
-                                  child: Text(
-                                    'شارك الملف التعريفى مع',
-                                    style: TextStyle(color: Color(0xff4184CE)),
-                                    textAlign: TextAlign.center,
-                                  ),),
-                              ),
-                              Directionality(textDirection: TextDirection.ltr, child: Container(
-                                width: 35.0,
-                                height: 35.0,
-                                //padding: EdgeInsets.all(10),
-                                /* decoration: new BoxDecoration(
-                                            color: Colors.grey[300],
-                                            shape: BoxShape.circle,
-                                          ),*/
-                                child: Image.asset(
-                                  'images/telegram.png',
-                                  height: 25,
-                                  width: 30,
-                                  fit: BoxFit.fill,
-                                  matchTextDirection: true,
-                                  //color: Colors.white,
+                                Expanded(
+                                  child: Container(
+                                    margin: EdgeInsets.only(right: 10.0, bottom: 3,top: 0),
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'شارك الملف التعريفى مع',
+                                      style: TextStyle(color: Color(0xff4184CE)),
+                                      textAlign: TextAlign.center,
+                                    ),),
                                 ),
-                              ),)
+                                Directionality(textDirection: TextDirection.ltr, child: Container(
+                                  width: 35.0,
+                                  height: 35.0,
+                                  //padding: EdgeInsets.all(10),
+                                  /* decoration: new BoxDecoration(
+                                              color: Colors.grey[300],
+                                              shape: BoxShape.circle,
+                                            ),*/
+                                  child: Image.asset(
+                                    'images/telegram.png',
+                                    height: 25,
+                                    width: 30,
+                                    fit: BoxFit.fill,
+                                    matchTextDirection: true,
+                                    //color: Colors.white,
+                                  ),
+                                ),)
 
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ],

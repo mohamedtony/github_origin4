@@ -180,12 +180,14 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
   Future<void> onInit() async {
     // TODO: implement onInit
     overlayHandlerProvider.isProfileOpend = true;
-    if(Get.arguments!=null) {
-      GetAdvertisersModel vv = Get.arguments as GetAdvertisersModel;
-      if(vv!=null){
-        print("vvvv not null "+ vv.id.toString());
-        selectedAdvertiseId = vv.id!;
-      }
+    if(Get.parameters!=null) {
+       if(Get.parameters["id"]!=null) {
+         String? vv = Get.parameters["id"];
+         if (vv != null) {
+           print("vvvv not null " + vv);
+           selectedAdvertiseId = int.parse(vv);
+         }
+       }
     }
 
     descriptionController =  TextEditingController();
@@ -1534,7 +1536,7 @@ class AdvertiserProfileOrderController extends GetxController with GetTickerProv
       {/*String brandId, String catgegoryId,*/ int? pageKey}) async {
     String myToken = await storage.read("token");
 
-    CoponsResponse response = await client!.getMyCopons(pageKey,"Bearer " + myToken);
+    CoponsResponse response = await client!.getAdvertisersCopons(pageKey,"Bearer " + myToken);
     final completer = Completer<List<CoponModelResponse>>();
     List<CoponModelResponse> notifications = [];
     if(response.data!=null && response.data!.isNotEmpty) {

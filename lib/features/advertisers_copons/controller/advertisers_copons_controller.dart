@@ -142,7 +142,7 @@ String? dropdownValue;
       {/*String brandId, String catgegoryId,*/ int? pageKey}) async {
     String myToken = await storage.read("token");
 
-    CoponsResponse response = await client!.getAdvertisersCopons(pageKey,"Bearer " + myToken);
+    CoponsResponse response = await client!.getClientsCopons(pageKey,"Bearer " + myToken);
     final completer = Completer<List<CoponModelResponse>>();
     List<CoponModelResponse> notifications = [];
     if(response.data!=null && response.data!.isNotEmpty) {
@@ -186,7 +186,7 @@ String? dropdownValue;
       {/*String brandId, String catgegoryId,*/ int? pageKey}) async {
     String myToken = await storage.read("token");
 
-    CoponsResponse response = await client!.getMyCopons(pageKey,"Bearer " + myToken);
+    CoponsResponse response = await client!.getAppCopons(pageKey,"Bearer " + myToken);
     final completer = Completer<List<CoponModelResponse>>();
     List<CoponModelResponse> notifications = [];
     if(response.data!=null && response.data!.isNotEmpty) {

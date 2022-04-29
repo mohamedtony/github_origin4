@@ -141,10 +141,10 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   Future<CoponsResponse> getAdvertisersCopons( @Path("id") int? id,@Header("Authorization") String token);
 
   @GET('/copons/clients?page={id}')
-  Future<CoponsResponse> getClientsCoponsWhitId( @Path("id") int? id,@Header("Authorization") String token);
+  Future<CoponsResponse> getClientsCopons( @Path("id") int? id,@Header("Authorization") String token);
 
   @GET('/copons/clients?user_id={userid}&page={id}')
-  Future<CoponsResponse> getClientsCopons( @Path("userid") int? userid,@Path("id") int? id,@Header("Authorization") String token);
+  Future<CoponsResponse> getClientsCoponsWhitId( @Path("userid") int? userid,@Path("id") int? id,@Header("Authorization") String token);
 
   @GET('/mycopons?page={id}')
   Future<CoponsResponse> getMyCopons( /*@Path("userid") int? userid,*/@Path("id") int? id,@Header("Authorization") String token);

@@ -1,11 +1,14 @@
 import 'dart:ui';
+import 'package:advertisers/app_core/FirebaseDynamicLinkes.dart';
 import 'package:advertisers/features/advertiser_settings_page/widgets/location_range_sheet.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/advretising_story_details_page.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_service.dart';
+import 'package:advertisers/features/advertising_story_details/VideoController.dart';
 import 'package:advertisers/features/advertising_story_details/advertiser_details_sheet.dart';
 import 'package:advertisers/features/chat/view/pages/chat_recent_page.dart';
 import 'package:advertisers/features/find_advertise_page/filter_order_advertisers_sheet.dart';
+import 'package:advertisers/features/home_page/controller/ads_page_controller.dart';
 import 'package:advertisers/features/home_page/controller/home_navigation_controller.dart';
 import 'package:advertisers/features/home_page/view/pages/add_ad_page.dart';
 import 'package:advertisers/features/home_page/view/pages/favorite_page.dart';
@@ -21,6 +24,7 @@ import 'package:advertisers/features/request_advertise_module/view/widgets/disco
 import 'package:advertisers/features/request_advertise_module/view/widgets/notice_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/urls_bottom_sheet.dart';
 import 'package:advertisers/features/wallet_module/wallet_page.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -54,7 +58,7 @@ class Home extends StatelessWidget {
       builder: (controller)=>DefaultTabController(
         length: 5,
         child: Scaffold(
-          key: controller.scaffoldKey,
+          //key: controller.scaffoldKey,
             resizeToAvoidBottomInset:false,
             bottomNavigationBar: Material(
             child: TabBar(
@@ -276,6 +280,7 @@ class Home extends StatelessWidget {
       ),
     );
   }
+
     Future<void> showBottomSheetForRequest(BuildContext context,int bottomNumber)  async {
         showModalBottomSheet(
         context: context,
@@ -344,6 +349,8 @@ class Home extends StatelessWidget {
           );
         },
       );
+
+
       /*showMaterialModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
