@@ -105,6 +105,7 @@ dependencies:
   lecle_downloads_path_provider: ^0.0.2+6
   audioplayers: ^0.20.1
   flutter_rating_bar: ^4.0.0
+  firebase_dynamic_links: ^4.2.1
   flutter_file_view: ^2.0.5
 #  record: ^3.0.4
 #  flutter_sound_record: ^3.1.0

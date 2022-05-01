@@ -19,6 +19,7 @@ import 'package:advertisers/features/home_page/view/pages/copons_page.dart';
 import 'package:advertisers/main.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -81,7 +82,7 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
           overlayHandlerProvider.currentPage = 0;*/
           return false;
         }else{
-          print("hererer");
+          print("hererer111");
           if(overlayHandlerProvider.isProfileOpend){
             print("hererer");
             overlayHandlerProvider.disablePip();
@@ -89,12 +90,14 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
             overlayHandlerProvider.currentPage = 0;
             // overlayHandlerProvider.isProfileOpend = false;
           }else{
+            print("hererer2");
             overlayHandlerProvider1.updateHidden(false, 300);
             //Get.delete<VideoController>();
            // Get.delete<AdsPageController>();
             Get.back();
+
           }
-          return false;
+          return true;
         }
       },
       child: Scaffold(
@@ -252,8 +255,26 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: (){
-                              Get.back();
-                              overlayHandlerProvider1.updateHidden(false, 300);
+                              print("Hereeeeeeeeeeeeeeeeee");
+                              //Navigator.of(context).pop();
+                             // Navigator.of(context).pop();
+                             // Get.back();
+                            //  Navigator.maybePop(context);
+                              //SystemNavigator.pop();
+                              //Get.offAndToNamed("/home");
+                             // exit(0);
+                             // SystemNavigator.pop();
+
+
+                              if(Get.previousRoute.isEmpty){
+                                print("previousRoute=> ${Get.previousRoute}");
+                                //SystemNavigator.pop();
+                                Get.offNamedUntil('/Home', (route) => false);
+                              }else{
+                                Get.back();
+                                overlayHandlerProvider1.updateHidden(false, 300);
+                              }
+                             // overlayHandlerProvider1.updateHidden(false, 300);
                             },
                             child: Container(
                               alignment: Alignment.topLeft,

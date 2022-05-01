@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:advertisers/app_core/network/models/FromUserModel.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersModel.dart';
+import 'package:advertisers/app_core/network/models/ToUserModel.dart';
 import 'package:advertisers/features/find_advertise_page/find_advertise_controller.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/home_page/controller/advertisers_page_controller.dart';
@@ -9,6 +13,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+
+import '../../../../app_core/network/models/User.dart';
 //=========================================================================================
 
 //                         By Mohamed T. Hammad
@@ -53,7 +59,7 @@ class AdvertiserItem extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: (){
-                    Get.toNamed('/AdvertiserProfileOrderPage',arguments:advertisersModel);
+                    Get.toNamed('/AdvertiserProfileOrderPage?id=${advertisersModel.id}');
                   },
                   child: Container(
                     width: 75.0,
@@ -218,6 +224,21 @@ class AdvertiserItem extends StatelessWidget {
                         }
                       }
                     });*/
+
+                    //  Get.to(ChatRecentPage());
+
+                    //String myId = await storage.read("id");
+                    dynamic data = await storage.read("data");
+
+                    User user = User.fromJson(data);
+
+                    print("UserId=${user.id}");
+                    print("UserId=${user.username}");
+                    print("UserIrrd=${advertisersModel.id}");
+                    Get.toNamed('/ChatPage?room=${advertisersModel.id}-${user.id}'
+                        '&from_user=${json.encode(FromUserModel(id: user.id,username: user.username,image: user.image))}&to_user=${json.encode(ToUserModel(id: advertisersModel.id,image:    advertisersModel.image,username:advertisersModel.username))}&id=${0}');
+
+
                   },
                   child: Obx(()=>Container(
                     padding: EdgeInsets.only(left: 2.0, right: 2.0),

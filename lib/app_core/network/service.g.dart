@@ -614,7 +614,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<CoponsResponse> getClientsCoponsWhitId(id, token) async {
+  Future<CoponsResponse> getClientsCopons(id, token) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -632,7 +632,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<CoponsResponse> getClientsCopons(userid, id, token) async {
+  Future<CoponsResponse> getClientsCoponsWhitId(userid, id, token) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);

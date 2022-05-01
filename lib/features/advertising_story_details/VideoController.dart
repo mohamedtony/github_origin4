@@ -25,6 +25,7 @@ class VideoController extends GetxController {
    var isFavoriate = false.obs;
 
   late PageController pageController;
+  int currentPagination = -1;
   String? myToken ;
   @override
   Future<void> onInit() async {
@@ -39,6 +40,13 @@ class VideoController extends GetxController {
     /*_videoList.bindStream(
         StoryScreen(stories: stories)
     );*/
+  }
+  // Call this when the user pull down the screen
+  Future<void> loadDataForAds() async {
+   adslistList.value=[];
+   currentPagination = 1;
+   overlayHandlerProvider.currentPage=0;
+   getAdsList();
   }
   @override
   void onReady() {
@@ -173,14 +181,85 @@ class VideoController extends GetxController {
   Future<void> getAdsList() async {
    String myToken = await storage.read("token");
 
-    client!.getAdsList(0,1,"Bearer " + myToken,)
+   if(Get.parameters['page']!=null){
+     print("mmmmmmmmmmmmm"+Get.parameters['page']!);
+     currentPagination = int.parse(Get.parameters['page']!);
+   }else{
+     currentPagination = 1;
+   }
+    client!.getAdsList(0,currentPagination,"Bearer " + myToken,)
         .then((value) {
+      if (value.status == 200 && value.data != null && value.data!.isNotEmpty) {
+        Logger().d(value.data.toString());
+        if(value.pagination?.current_page!=null){
+          currentPagination = value.pagination!.current_page!;
+          print("currentPagination=$currentPagination");
+        }
+
+        /*isLoading.value = false;
+        isEmpty.value = false;
+        advertisersModel.value = value.data!;*/
+
+        if(Get.parameters!=null && Get.parameters['id']!=null){
+
+          int? index = value.data?.indexWhere((element) => element.id==int.parse(Get.parameters['id']!));
+          print("StoryIndex=${index}");
+         if(index!=null&& index!=-1){
+           print("cuuuuurentPage=${overlayHandlerProvider.currentPage}");
+           overlayHandlerProvider.currentPage = index;
+           pageController = PageController(initialPage: overlayHandlerProvider.currentPage, viewportFraction: 1,);
+           /*pageController.animateToPage(
+             index,
+             duration: const Duration(milliseconds: 500),
+             curve: Curves.easeInOut,
+           );*/
+
+         }else{
+           pageController = PageController(initialPage: overlayHandlerProvider.currentPage, viewportFraction: 1,);
+         }
+        }
+        print("cuuuuurentPage=${overlayHandlerProvider.currentPage}");
+        adslistList.value = value.data!;
+      } else {
+        /*isLoading.value = false;
+        isEmpty.value = true;*/
+      }
+    });
+  }
+
+  Future<void> getAdsListPage(int page) async {
+    String myToken = await storage.read("token");
+
+    /*if(Get.parameters['page']!=null){
+      currentPage = int.parse(Get.parameters['page']!);
+    }else{
+      currentPage = 1;
+    }*/
+    client!.getAdsList(0,page,"Bearer " + myToken,)
+        .then((value) {
+      Logger().d(value.data.toString());
       if (value.status == 200 && value.data != null && value.data!.isNotEmpty) {
         Logger().d(value.data.toString());
         /*isLoading.value = false;
         isEmpty.value = false;
         advertisersModel.value = value.data!;*/
-        adslistList.value = value.data!;
+
+        /*if(Get.parameters!=null && Get.parameters['id']!=null){
+
+          int? index = value.data?.indexWhere((element) => element.id==int.parse(Get.parameters['id']!));
+          print("StoryIndex=${index}");
+          if(index!=null){
+            overlayHandlerProvider.currentPage = index;
+            pageController = PageController(initialPage: overlayHandlerProvider.currentPage, viewportFraction: 1,);
+            *//*pageController.animateToPage(
+             index,
+             duration: const Duration(milliseconds: 500),
+             curve: Curves.easeInOut,
+           );*//*
+
+          }
+        }*/
+        adslistList.value.addAll(value.data!);
       } else {
         /*isLoading.value = false;
         isEmpty.value = true;*/

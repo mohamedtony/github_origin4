@@ -24,6 +24,8 @@ import 'package:advertisers/features/advertiser_settings_page/controller/Adverti
 import 'package:advertisers/features/advertising_influence_channels/controller/advertising_influence_channels_controller.dart';
 import 'package:advertisers/features/advertising_influence_channels/view/page/advertising_influence_channels_page.dart';
 import 'package:advertisers/features/advertising_requests/view/advertising_requests_page.dart';
+import 'package:advertisers/features/advertising_story_details/Dragabble/advretising_story_details_page.dart';
+import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/features/blocked_users_page/blocked_users_page.dart';
 import 'package:advertisers/features/chat/controller/chat_controller.dart';
 import 'package:advertisers/features/chat/controller/chat_messages_controller.dart';
@@ -106,6 +108,7 @@ import 'package:advertisers/features/wallet_module/widgets/wallet_intro/controll
 import 'package:advertisers/features/wallet_module/widgets/wallet_intro/wallet_intro_page.dart';
 import 'package:advertisers/reason_rejecting_advertisement_customer/view/page/reason_rejecting_advertisement_customer.dart';
 import 'package:get/get.dart';
+
 
 class Routes {
   static final routes = [
@@ -308,7 +311,10 @@ class Routes {
     GetPage(
       name: '/Home',
       page: () => Home(),
-
+      binding: BindingsBuilder(() {
+        //Get.lazyPut<AdvertiserProfileOrderController>(() => AdvertiserProfileOrderController());
+        Get.lazyPut<OverlayHandlerProvider>(() => OverlayHandlerProvider());
+      }),
     ),
     GetPage(
       name: '/DiscountPage',
@@ -522,6 +528,7 @@ class Routes {
       page: () => AdvertiserProfileOrderPage(),
       binding: BindingsBuilder(() {
         Get.lazyPut<AdvertiserProfileOrderController>(() => AdvertiserProfileOrderController());
+        Get.lazyPut<OverlayHandlerProvider>(() => OverlayHandlerProvider());
       }),
 
     ),
@@ -533,13 +540,18 @@ class Routes {
       }),*/
 
     ),
-    /*GetPage(
+   GetPage(
       name: '/AdvertisingStoryDetailsPage',
-      page: () => AdvertisingStoryDetailsPage(),
-      *//*binding: BindingsBuilder(() {
-        Get.lazyPut<AdvertiserProfileOrderController>(() => AdvertiserProfileOrderController());
-      }),*//*
+      page: () => AdvertisingStoryDetailsPage(
+        onSheetCliked: (_,__){
 
-    ),*/
+        },
+      ),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<AdvertiserProfileOrderController>(() => AdvertiserProfileOrderController());
+        Get.lazyPut<OverlayHandlerProvider>(() => OverlayHandlerProvider());
+      }),
+
+    ),
   ];
 }
