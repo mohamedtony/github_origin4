@@ -13,7 +13,7 @@ class UserAdsList {
   String? address;
   bool?is_liked;
   bool?in_blacklist;
-  int? rate;
+  double? rate;
   bool?is_ads_in_front;
   bool?is_notified_user;
   Country?country;

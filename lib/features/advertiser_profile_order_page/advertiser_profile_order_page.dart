@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:advertisers/app_core/network/models/FromUserModel.dart';
+import 'package:advertisers/app_core/network/models/ToUserModel.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/controller/AdvertiserProfileOrderController.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/overlay_handler2.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/widgets/advertiser_copons_tab.dart';
@@ -23,6 +26,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:logger/logger.dart';
+
+import '../../app_core/network/models/User.dart';
 //=========================================================================================
 
 //                         By Mohamed T. Hammad
@@ -309,8 +314,20 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
                                 ),
                               )),
                               InkWell(
-                                onTap: (){
-                                  Get.to(ChatRecentPage());
+                                onTap: () async {
+                                //  Get.to(ChatRecentPage());
+
+                                  //String myId = await storage.read("id");
+                                  dynamic data = await storage.read("data");
+
+                                 User user = User.fromJson(data);
+
+                                  print("UserId=${user.id}");
+                                  print("UserId=${user.username}");
+                                  print("UserIrrd=${advertiserProfileController.advertiserProfileModel!.id}");
+                                  Get.toNamed('/ChatPage?room=${advertiserProfileController.advertiserProfileModel!.id}-${user.id}'
+                                      '&from_user=${json.encode(FromUserModel(id: user.id,username: user.username,image: user.image))}&to_user=${json.encode(ToUserModel(id:    advertiserProfileController.advertiserProfileModel?.id,image:    advertiserProfileController.advertiserProfileModel?.image,username:    advertiserProfileController.advertiserProfileModel?.username))}&id=${0}');
+
                                 },
                                 child: Container(
                                   //margin: EdgeInsets.only(right: 20.0),

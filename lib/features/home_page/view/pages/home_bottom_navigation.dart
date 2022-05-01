@@ -9,6 +9,7 @@ import 'package:advertisers/features/find_advertise_page/filter_order_advertiser
 import 'package:advertisers/features/home_page/controller/home_navigation_controller.dart';
 import 'package:advertisers/features/home_page/view/pages/add_ad_page.dart';
 import 'package:advertisers/features/home_page/view/pages/favorite_page.dart';
+import 'package:advertisers/features/home_page/view/pages/filter_advertisers_sheet_home.dart';
 import 'package:advertisers/features/home_page/view/pages/filter_sort_ads_sheet.dart';
 import 'package:advertisers/features/home_page/view/pages/home_tabs_page.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
@@ -330,8 +331,12 @@ class Home extends StatelessWidget {
                 return AdvertiserDetailsSheet(
                     scrollController: scrollController
                 );
-              }else /*if(bottomNumber==10)*/{
+              }else if(bottomNumber==10){
                 return FilterSortAdsSheet(
+                    scrollController: scrollController
+                );
+              }else /*if(bottomNumber==10)*/{
+                return FilterAdvertisesPageSheet(
                     scrollController: scrollController
                 );
               }

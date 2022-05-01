@@ -20,6 +20,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../main.dart';
 //=========================================================================================
@@ -44,7 +45,7 @@ class _FindAdvertisePageState extends State<FindAdvertisePage> {
     // TODO: implement initState
     findAdvertiseController.pagingController.addPageRequestListener((pageKey) async {
       print("hhhhhhhhhhhhhhhhhhhhhhhh");
-      await findAdvertiseController.fetchPage(pageKey, type: /*findAdvertiseController?.type??*/null);
+      await findAdvertiseController.fetchPage(pageKey);
     });
     super.initState();
   }
@@ -227,88 +228,96 @@ class _FindAdvertisePageState extends State<FindAdvertisePage> {
           ],
         ),
         Expanded(
-            child: PagedListView<int, GetAdvertisersModel>(
-              pagingController: findAdvertiseController.pagingController,
 
-              builderDelegate: PagedChildBuilderDelegate<GetAdvertisersModel>(
-                animateTransitions: true,
-                noItemsFoundIndicatorBuilder: (context){
-                  return Container(
+          child: PagedListView<int, GetAdvertisersModel>(
+            pagingController: findAdvertiseController.pagingController,
+
+            builderDelegate: PagedChildBuilderDelegate<GetAdvertisersModel>(
+              animateTransitions: true,
+              newPageErrorIndicatorBuilder: (context){
+                return const SizedBox();
+              },
+              noMoreItemsIndicatorBuilder: (context){
+                return const SizedBox();
+              },
+              noItemsFoundIndicatorBuilder: (context){
+                return Container(
                     alignment: Alignment.topCenter,
-                      margin: EdgeInsets.only(top:20.0),
-                      child: Text('لا يوجد معلنين !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
-                },
-                /*firstPageProgressIndicatorBuilder: (context)=>ListView(
-                  shrinkWrap: true,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 10.0,),
-                      child: ListTile(
-                        leading: MyShimmerWidget.circular(height: 64, width: 64),
-                        title: Align(
-                          alignment: Alignment.centerLeft,
-                          child: MyShimmerWidget.rectangular(height: 16,
-                            width: MediaQuery.of(context).size.width*2,),
+                    margin: EdgeInsets.only(top:20.0),
+                    child: Text('لا يوجد معلنين !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
+              },
+              /*firstPageProgressIndicatorBuilder: (context)=>ListView(
+                      shrinkWrap: true,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 10.0,),
+                          child: ListTile(
+                            leading: MyShimmerWidget.circular(height: 64, width: 64),
+                            title: Align(
+                              alignment: Alignment.centerLeft,
+                              child: MyShimmerWidget.rectangular(height: 16,
+                                width: MediaQuery.of(context).size.width*2,),
+                            ),
+                            // subtitle: MyShimmerWidget.rectangular(height: 14),
+                          ),
                         ),
-                        // subtitle: MyShimmerWidget.rectangular(height: 14),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 10.0,),
-                      child: ListTile(
-                        leading: MyShimmerWidget.circular(height: 64, width: 64),
-                        title: Align(
-                          alignment: Alignment.centerLeft,
-                          child: MyShimmerWidget.rectangular(height: 16,
-                            width: MediaQuery.of(context).size.width*2,),
+                        Container(
+                          margin: EdgeInsets.only(top: 10.0,),
+                          child: ListTile(
+                            leading: MyShimmerWidget.circular(height: 64, width: 64),
+                            title: Align(
+                              alignment: Alignment.centerLeft,
+                              child: MyShimmerWidget.rectangular(height: 16,
+                                width: MediaQuery.of(context).size.width*2,),
+                            ),
+                            // subtitle: MyShimmerWidget.rectangular(height: 14),
+                          ),
                         ),
-                        // subtitle: MyShimmerWidget.rectangular(height: 14),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 10.0,),
-                      child: ListTile(
-                        leading: MyShimmerWidget.circular(height: 64, width: 64),
-                        title: Align(
-                          alignment: Alignment.centerLeft,
-                          child: MyShimmerWidget.rectangular(height: 16,
-                            width: MediaQuery.of(context).size.width*2,),
-                        ),
-                        // subtitle: MyShimmerWidget.rectangular(height: 14),
-                      ),
-                    )
-                  ],
-                ),*/
+                        Container(
+                          margin: EdgeInsets.only(top: 10.0,),
+                          child: ListTile(
+                            leading: MyShimmerWidget.circular(height: 64, width: 64),
+                            title: Align(
+                              alignment: Alignment.centerLeft,
+                              child: MyShimmerWidget.rectangular(height: 16,
+                                width: MediaQuery.of(context).size.width*2,),
+                            ),
+                            // subtitle: MyShimmerWidget.rectangular(height: 14),
+                          ),
+                        )
+                      ],
+                    ),*/
 
-                itemBuilder: (context, item, position) {
-                  return  InkWell(
-                      onTap: (){
-                        findAdvertiseController.changeIndex(position, item.id!);
-                      },
-                      child: FindAdvertiseItem(advertisersModel:item,findAdvertiseController: controller,index: position,));
-                  /*if(findAdvertiseController.isLoading.value){
-                    return   Container(
-                      margin: EdgeInsets.only(top: 10.0,),
-                      child: ListTile(
-                        leading: MyShimmerWidget.circular(height: 64, width: 64),
-                        title: Align(
-                          alignment: Alignment.centerLeft,
-                          child: MyShimmerWidget.rectangular(height: 16,
-                            width: MediaQuery.of(context).size.width*2,),
-                        ),
-                        // subtitle: MyShimmerWidget.rectangular(height: 14),
-                      ),
-                    );
-                  }else{
-                    return  InkWell(
-                        onTap: (){
-                          findAdvertiseController.changeIndex(position, item.id!);
-                        },
-                        child: FindAdvertiseItem(advertisersModel:item,findAdvertiseController: controller,index: position,));
-                  }*/
-                },
-              ),
-            )
+              itemBuilder: (context, item, position) {
+                return  InkWell(
+                    onTap: (){
+                      findAdvertiseController.changeIndex(position, item.id!);
+                    },
+                    child: FindAdvertiseItem(advertisersModel:item,findAdvertiseController: controller,index: position,));
+                /*if(findAdvertiseController.isLoading.value){
+                        return   Container(
+                          margin: EdgeInsets.only(top: 10.0,),
+                          child: ListTile(
+                            leading: MyShimmerWidget.circular(height: 64, width: 64),
+                            title: Align(
+                              alignment: Alignment.centerLeft,
+                              child: MyShimmerWidget.rectangular(height: 16,
+                                width: MediaQuery.of(context).size.width*2,),
+                            ),
+                            // subtitle: MyShimmerWidget.rectangular(height: 14),
+                          ),
+                        );
+                      }else{
+                        return  InkWell(
+                            onTap: (){
+                              findAdvertiseController.changeIndex(position, item.id!);
+                            },
+                            child: FindAdvertiseItem(advertisersModel:item,findAdvertiseController: controller,index: position,));
+                      }*/
+              },
+            ),
+          ),
+
         ),
         /*Expanded(
       child: ListView(

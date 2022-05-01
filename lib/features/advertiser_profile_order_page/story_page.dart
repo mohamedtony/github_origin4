@@ -1413,7 +1413,7 @@ class AnimatedBar extends StatelessWidget {
 
 class UserInfo extends StatelessWidget {
   final AdsListModel adsListModel;
-  final VideoController2 videoGetxController = Get.find();
+  VideoController2 videoGetxController = Get.find();
   OverlayHandlerProvider2 overlayHandlerProvider = Get.find();
   AnimationController? animController;
   VideoPlayerController? videoController;
