@@ -46,8 +46,9 @@ class ChatRecentWidget extends StatelessWidget {
              Padding(
               padding: EdgeInsets.only(left:16.0.w,right:6,top:6,bottom:6),
               child: Material(
-                borderRadius: BorderRadius.circular(55),
-                elevation: .5,
+                borderRadius: BorderRadius.circular(85),
+                // elevation: .5,
+                // color:Colors.transparent,
                 child: CircleAvatar(
                   radius: 33,
                   backgroundColor: Color(0xffE4E4E4),

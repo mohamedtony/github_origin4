@@ -20,7 +20,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 class ChatMessagesController extends GetxController {
-
+  ItemScrollController itemScrollController=ItemScrollController();
   var messagesChat=<ListChatModel>[].obs;
   static dio.MultipartFile? photo;
   var tapped=false.obs;
@@ -71,6 +71,14 @@ class ChatMessagesController extends GetxController {
               EasyLoading.dismiss();
             }
             messagesChat.value = res.data!.reversed.toList();
+            SchedulerBinding.instance?.addPostFrameCallback((_) {
+              itemScrollController?.scrollTo(
+                  index: messagesChat.length - 1,
+                  duration: const Duration(seconds: 1),
+                  curve: Curves.easeInOutCubic);
+              // _scrollController.animateTo(_height * index,
+              //     duration: const Duration(seconds: 2), curve: Curves.easeIn);
+            });
 
             update();
             return true;
@@ -158,7 +166,7 @@ class ChatMessagesController extends GetxController {
 
   }
 
-  void sendMessage({required MessageChatModelRequest message,ItemScrollController? itemScrollController}) async {
+  void sendMessage({required MessageChatModelRequest message,ItemScrollController? itemScrollController, int? indexOfMessage}) async {
 
     //EasyLoading.show();
 
@@ -172,15 +180,16 @@ class ChatMessagesController extends GetxController {
             if (EasyLoading.isShow) {
               EasyLoading.dismiss();
             }
-            if(itemScrollController!=null){
-            SchedulerBinding.instance?.addPostFrameCallback((_) {
-              itemScrollController?.scrollTo(
-                  index: messagesChat.length - 1,
-                  duration: const Duration(seconds: 1),
-                  curve: Curves.easeInOutCubic);
-              // _scrollController.animateTo(_height * index,
-              //     duration: const Duration(seconds: 2), curve: Curves.easeIn);
-            });}
+            messagesChat[indexOfMessage??0].uploaded=true;
+            //if(itemScrollController!=null){
+            // SchedulerBinding.instance?.addPostFrameCallback((_) {
+            //   itemScrollController?.scrollTo(
+            //       index: messagesChat.length - 1,
+            //       duration: const Duration(seconds: 1),
+            //       curve: Curves.easeInOutCubic);
+            //   // _scrollController.animateTo(_height * index,
+            //   //     duration: const Duration(seconds: 2), curve: Curves.easeIn);
+            // });}
 
                 },
           onError: (err, res) {
