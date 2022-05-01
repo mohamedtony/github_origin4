@@ -261,10 +261,20 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
                              // Get.back();
                             //  Navigator.maybePop(context);
                               //SystemNavigator.pop();
-                              Get.offAndToNamed("/home");
+                              //Get.offAndToNamed("/home");
                              // exit(0);
                              // SystemNavigator.pop();
-                              overlayHandlerProvider1.updateHidden(false, 300);
+
+
+                              if(Get.previousRoute.isEmpty){
+                                print("previousRoute=> ${Get.previousRoute}");
+                                //SystemNavigator.pop();
+                                Get.offNamedUntil('/Home', (route) => false);
+                              }else{
+                                Get.back();
+                                overlayHandlerProvider1.updateHidden(false, 300);
+                              }
+                             // overlayHandlerProvider1.updateHidden(false, 300);
                             },
                             child: Container(
                               alignment: Alignment.topLeft,

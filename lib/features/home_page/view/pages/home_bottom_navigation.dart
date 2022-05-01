@@ -53,229 +53,263 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomeNavController>(
-      init: HomeNavController(),
-      builder: (controller)=>DefaultTabController(
-        length: 5,
-        child: Scaffold(
-          //key: controller.scaffoldKey,
-            resizeToAvoidBottomInset:false,
-            bottomNavigationBar: Material(
-            child: TabBar(
-                unselectedLabelColor: AppColors.unseletabColor,
-                indicatorSize: TabBarIndicatorSize.tab,
-                onTap: (index){
-                  if(index!=0){
-                    overlayHandlerProvider.removeOverlay(context);
-                  }
-                },
-                padding: EdgeInsets.only(left: 6.0,right: 6.0,top: 6.0,bottom: 4.0),
-                /*indicatorColor: AppColors.indicatorColor,
-                        indicatorWeight: 4.0,*/
-                indicator: BoxDecoration(
+    return WillPopScope(
+      onWillPop: ()async{
+        print("WillPopScope Nav");
+        if(overlayHandlerProvider.overlayActive) {
 
-                    borderRadius: BorderRadius.circular(4.0),
-                    color: AppColors.tabColor),
-                labelPadding:
-                const EdgeInsets.only(left: 8.0, right: 8.0),
-                indicatorPadding: const EdgeInsets.only(top:-2.0),
+          print("isOpen= "+overlayHandlerProvider.isProfileOpend.toString());
+          if(!overlayHandlerProvider.isProfileOpend){
+            overlayHandlerProvider.disablePip();
+            overlayHandlerProvider.removeOverlay(context);
+            overlayHandlerProvider.currentPage = 0;
+            Get.delete<VideoController>();
+            // Get.delete<AdsPageController>();
+            // overlayHandlerProvider.isProfileOpend = false;
+          }else{
+            overlayHandlerProvider.updateHidden(false, 300);
+            Get.delete<VideoController>();
+            //Get.delete<AdsPageController>();
+            Get.back();
+          }
+          /*overlayHandlerProvider.disablePip();
+          overlayHandlerProvider.removeOverlay(context);
+          overlayHandlerProvider.currentPage = 0;*/
+          return false;
+        }
+        return true;
+      },
+      child: GetBuilder<HomeNavController>(
+        init: HomeNavController(),
+        builder: (controller)=>DefaultTabController(
+          length: 5,
+          child: Scaffold(
+            //key: controller.scaffoldKey,
+              resizeToAvoidBottomInset:false,
+              backgroundColor: Colors.transparent,
+              bottomNavigationBar: Material(
+              child: TabBar(
+                  unselectedLabelColor: AppColors.unseletabColor,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  onTap: (index){
+                    if(index!=0){
+                      overlayHandlerProvider.removeOverlay(context);
+                    }
+                  },
+                  padding: EdgeInsets.only(left: 6.0,right: 6.0,top: 6.0,bottom: 4.0),
+                  /*indicatorColor: AppColors.indicatorColor,
+                          indicatorWeight: 4.0,*/
+                  indicator: BoxDecoration(
+
+                      borderRadius: BorderRadius.circular(4.0),
+                      color: AppColors.tabColor),
+                  labelPadding:
+                  const EdgeInsets.only(left: 8.0, right: 8.0),
+                  indicatorPadding: const EdgeInsets.only(top:-2.0),
 
 
-                //isScrollable: true,
-                /*indicator: BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [Colors.redAccent, Colors.orangeAccent]),
-                            borderRadius: BorderRadius.circular(50),
-                            color: Colors.redAccent),*/
-                tabs: [
-                  Container(
-                    child: Tab(
-                      height: 50.0,
-                      iconMargin: EdgeInsets.zero,
-                      icon: ImageIcon(AssetImage(
-                'images/home_icon.png',),size: 20,),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          child: Text("الرئيسية",),
+                  //isScrollable: true,
+                  /*indicator: BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: [Colors.redAccent, Colors.orangeAccent]),
+                              borderRadius: BorderRadius.circular(50),
+                              color: Colors.redAccent),*/
+                  tabs: [
+                    Container(
+                      child: Tab(
+                        height: 50.0,
+                        iconMargin: EdgeInsets.zero,
+                        icon: ImageIcon(AssetImage(
+                  'images/home_icon.png',),size: 20,),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            child: Text("الرئيسية",),
+                          ),
                         ),
                       ),
+                      /*decoration: BoxDecoration(
+                                *//* gradient: LinearGradient(
+                                      colors: [Colors.redAccent, Colors.orangeAccent]),*//*
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(6.0),
+                                      topRight: Radius.circular(6.0)),
+                                  color: AppColors.tabColor),*/
                     ),
-                    /*decoration: BoxDecoration(
-                              *//* gradient: LinearGradient(
-                                    colors: [Colors.redAccent, Colors.orangeAccent]),*//*
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(6.0),
-                                    topRight: Radius.circular(6.0)),
-                                color: AppColors.tabColor),*/
-                  ),
-                  Container(
-                    child: Tab(
-                      height: 50.0,
-                      iconMargin: EdgeInsets.zero,
-                      icon: ImageIcon(AssetImage(
-                        'images/heart_outline.png',),size: 20,),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          child: Text("المفضلة",),
+                    Container(
+                      child: Tab(
+                        height: 50.0,
+                        iconMargin: EdgeInsets.zero,
+                        icon: ImageIcon(AssetImage(
+                          'images/heart_outline.png',),size: 20,),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            child: Text("المفضلة",),
+                          ),
                         ),
                       ),
+                      /*decoration: BoxDecoration(
+                                *//* gradient: LinearGradient(
+                                      colors: [Colors.redAccent, Colors.orangeAccent]),*//*
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(6.0),
+                                      topRight: Radius.circular(6.0)),
+                                  color: AppColors.tabColor),*/
                     ),
-                    /*decoration: BoxDecoration(
-                              *//* gradient: LinearGradient(
-                                    colors: [Colors.redAccent, Colors.orangeAccent]),*//*
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(6.0),
-                                    topRight: Radius.circular(6.0)),
-                                color: AppColors.tabColor),*/
-                  ),
-                  Container(
-                    child: Tab(
-                      height: 50.0,
-                      iconMargin: EdgeInsets.zero,
-                      icon:  Icon(Icons.add_circle_outline,size: 24.0,),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          child: Text("إعلان",),
+                    Container(
+                      child: Tab(
+                        height: 50.0,
+                        iconMargin: EdgeInsets.zero,
+                        icon:  Icon(Icons.add_circle_outline,size: 24.0,),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            child: Text("إعلان",),
+                          ),
                         ),
                       ),
+                      /*decoration: BoxDecoration(
+                                *//* gradient: LinearGradient(
+                                      colors: [Colors.redAccent, Colors.orangeAccent]),*//*
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(6.0),
+                                      topRight: Radius.circular(6.0)),
+                                  color: AppColors.tabColor),*/
                     ),
-                    /*decoration: BoxDecoration(
-                              *//* gradient: LinearGradient(
-                                    colors: [Colors.redAccent, Colors.orangeAccent]),*//*
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(6.0),
-                                    topRight: Radius.circular(6.0)),
-                                color: AppColors.tabColor),*/
-                  ),
-                  Container(
-                    child: Tab(
-                      height: 50.0,
-                      iconMargin: EdgeInsets.zero,
-                      icon: ImageIcon(AssetImage(
-                        'images/chat_icon.png',),size: 20,),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          child: Text("الشات",),
+                    Container(
+                      child: Tab(
+                        height: 50.0,
+                        iconMargin: EdgeInsets.zero,
+                        icon: ImageIcon(AssetImage(
+                          'images/chat_icon.png',),size: 20,),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            child: Text("الشات",),
+                          ),
                         ),
                       ),
+                      /*decoration: BoxDecoration(
+                                *//* gradient: LinearGradient(
+                                      colors: [Colors.redAccent, Colors.orangeAccent]),*//*
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(6.0),
+                                      topRight: Radius.circular(6.0)),
+                                  color: AppColors.tabColor),*/
                     ),
-                    /*decoration: BoxDecoration(
-                              *//* gradient: LinearGradient(
-                                    colors: [Colors.redAccent, Colors.orangeAccent]),*//*
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(6.0),
-                                    topRight: Radius.circular(6.0)),
-                                color: AppColors.tabColor),*/
-                  ),
-                  Container(
-                    child: Tab(
-                      height: 50.0,
-                      iconMargin: EdgeInsets.zero,
-                      icon: ImageIcon(AssetImage(
-                        'images/wallet_home.png',),size: 20,),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          child: Text("المحفظة",),
+                    Container(
+                      child: Tab(
+                        height: 50.0,
+                        iconMargin: EdgeInsets.zero,
+                        icon: ImageIcon(AssetImage(
+                          'images/wallet_home.png',),size: 20,),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            child: Text("المحفظة",),
+                          ),
                         ),
                       ),
+                      /*decoration: BoxDecoration(
+                                *//* gradient: LinearGradient(
+                                      colors: [Colors.redAccent, Colors.orangeAccent]),*//*
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(6.0),
+                                      topRight: Radius.circular(6.0)),
+                                  color: AppColors.tabColor),*/
                     ),
-                    /*decoration: BoxDecoration(
-                              *//* gradient: LinearGradient(
-                                    colors: [Colors.redAccent, Colors.orangeAccent]),*//*
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(6.0),
-                                    topRight: Radius.circular(6.0)),
-                                color: AppColors.tabColor),*/
-                  ),
-                ]),
+                  ]),
 
 
-          /*bottomNavigationBar: Material(
-            child: BottomNavigationBar(
-              onTap: controller.changeTabIndex,
-              currentIndex: controller.tabIndex,
-              backgroundColor: AppColors.bgTabColor,
-              // fixedColor: Colors.red,
-              //selectedItemColor: AppColors.selectedLabelColor,
-              selectedItemColor: AppColors.tabColor,
-              //unselectedItemColor: AppColors.unSelectedLabelColor,
-              unselectedItemColor: AppColors.unseletabColor,
-              // selectedLabelStyle: TextStyle(color: AppColors.indicatorColor),
-              type: BottomNavigationBarType.fixed,
+            /*bottomNavigationBar: Material(
+              child: BottomNavigationBar(
+                onTap: controller.changeTabIndex,
+                currentIndex: controller.tabIndex,
+                backgroundColor: AppColors.bgTabColor,
+                // fixedColor: Colors.red,
+                //selectedItemColor: AppColors.selectedLabelColor,
+                selectedItemColor: AppColors.tabColor,
+                //unselectedItemColor: AppColors.unSelectedLabelColor,
+                unselectedItemColor: AppColors.unseletabColor,
+                // selectedLabelStyle: TextStyle(color: AppColors.indicatorColor),
+                type: BottomNavigationBarType.fixed,
 
-              selectedIconTheme:  IconThemeData(color: AppColors.tabColor, size: 25, opacity: .8),
-              unselectedIconTheme:
-              IconThemeData(color: AppColors.unseletabColor, size: 25, opacity: .8),
-              items: [
-                BottomNavigationBarItem(
-                  icon: Container(
-                    color: Colors.green,
-                    child: ImageIcon(AssetImage(
-            'images/home_icon.png')),
+                selectedIconTheme:  IconThemeData(color: AppColors.tabColor, size: 25, opacity: .8),
+                unselectedIconTheme:
+                IconThemeData(color: AppColors.unseletabColor, size: 25, opacity: .8),
+                items: [
+                  BottomNavigationBarItem(
+                    icon: Container(
+                      color: Colors.green,
+                      child: ImageIcon(AssetImage(
+              'images/home_icon.png')),
+                    ),
+                   // activeIcon: new Icon(Icons.filter_list_alt),
+                    label: 'الرئيسية',
                   ),
-                 // activeIcon: new Icon(Icons.filter_list_alt),
-                  label: 'الرئيسية',
-                ),
-                BottomNavigationBarItem(
-                  icon: ImageIcon(AssetImage(
-                      'images/heart_outline.png')),
-                  label: 'المفضلة',
-                ),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.add_circle_outline,),
-                    label: 'إعلان',
-                ),
-                BottomNavigationBarItem(
-                  icon: ImageIcon(AssetImage(
-                      'images/chat_icon.png')),
-                  label: 'الشات',
-                ),
-                BottomNavigationBarItem(
-                  icon: ImageIcon(AssetImage(
-                      'images/wallet_home.png')),
-                  label: 'المحفظة',
-                )
-              ],
-            ),*/
+                  BottomNavigationBarItem(
+                    icon: ImageIcon(AssetImage(
+                        'images/heart_outline.png')),
+                    label: 'المفضلة',
+                  ),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.add_circle_outline,),
+                      label: 'إعلان',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: ImageIcon(AssetImage(
+                        'images/chat_icon.png')),
+                    label: 'الشات',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: ImageIcon(AssetImage(
+                        'images/wallet_home.png')),
+                    label: 'المحفظة',
+                  )
+                ],
+              ),*/
+            ),
+            body: SafeArea(
+              top: false,
+              child: TabBarView(
+                  children: [
+                    /*Navigator(
+                      key: controller.navigatorKey,
+                      onGenerateRoute: (routeSettings) {
+                        return MaterialPageRoute(
+                          builder: (context) => HomePage(),
+                        );
+                      },
+                    ),*/
+                    HomePage(
+                      onSheetClicke: (x){
+                        print('tonyClicked:$x');
+                        overlayHandlerProvider.isHidden = false;
+                        showBottomSheetForRequest(context,x);
+                      },
+                      onAdveriseItemClicked: (x){
+                       // if(x<20) {
+                          print('tonyClickedPage20=>:${x % 20}');
+                          overlayHandlerProvider.currentPage = x % 20;
+                       // }
+                        overlayHandlerProvider.isHidden = false;
+                        _addVideoWithTitleOverlay(context,);
+                      },
+                    ),
+                    FavoritePage(
+                        onAdveriseItemClicked: (x){
+                          overlayHandlerProvider.currentPage = x;
+                          overlayHandlerProvider.isHidden = false;
+                          _addVideoWithTitleOverlay(context,);
+                        },
+                    ),
+                    AddAdsPage(),
+                    ChatRecentPage(),
+                    WalletPage(),
+                  ]),
+            ),
           ),
-          body: TabBarView(
-              children: [
-                /*Navigator(
-                  key: controller.navigatorKey,
-                  onGenerateRoute: (routeSettings) {
-                    return MaterialPageRoute(
-                      builder: (context) => HomePage(),
-                    );
-                  },
-                ),*/
-                HomePage(
-                  onSheetClicke: (x){
-                    print('tonyClicked:$x');
-                    overlayHandlerProvider.isHidden = false;
-                    showBottomSheetForRequest(context,x);
-                  },
-                  onAdveriseItemClicked: (x){
-                    overlayHandlerProvider.currentPage = x;
-                    overlayHandlerProvider.isHidden = false;
-                    _addVideoWithTitleOverlay(context,);
-                  },
-                ),
-                FavoritePage(
-                    onAdveriseItemClicked: (x){
-                      overlayHandlerProvider.currentPage = x;
-                      overlayHandlerProvider.isHidden = false;
-                      _addVideoWithTitleOverlay(context,);
-                    },
-                ),
-                AddAdsPage(),
-                ChatRecentPage(),
-                WalletPage(),
-              ]),
         ),
       ),
     );

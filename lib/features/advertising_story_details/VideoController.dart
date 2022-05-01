@@ -45,6 +45,7 @@ class VideoController extends GetxController {
   Future<void> loadDataForAds() async {
    adslistList.value=[];
    currentPagination = 1;
+   overlayHandlerProvider.currentPage=0;
    getAdsList();
   }
   @override
@@ -181,6 +182,7 @@ class VideoController extends GetxController {
    String myToken = await storage.read("token");
 
    if(Get.parameters['page']!=null){
+     print("mmmmmmmmmmmmm"+Get.parameters['page']!);
      currentPagination = int.parse(Get.parameters['page']!);
    }else{
      currentPagination = 1;
@@ -202,7 +204,8 @@ class VideoController extends GetxController {
 
           int? index = value.data?.indexWhere((element) => element.id==int.parse(Get.parameters['id']!));
           print("StoryIndex=${index}");
-         if(index!=null){
+         if(index!=null&& index!=-1){
+           print("cuuuuurentPage=${overlayHandlerProvider.currentPage}");
            overlayHandlerProvider.currentPage = index;
            pageController = PageController(initialPage: overlayHandlerProvider.currentPage, viewportFraction: 1,);
            /*pageController.animateToPage(
@@ -211,8 +214,11 @@ class VideoController extends GetxController {
              curve: Curves.easeInOut,
            );*/
 
+         }else{
+           pageController = PageController(initialPage: overlayHandlerProvider.currentPage, viewportFraction: 1,);
          }
         }
+        print("cuuuuurentPage=${overlayHandlerProvider.currentPage}");
         adslistList.value = value.data!;
       } else {
         /*isLoading.value = false;

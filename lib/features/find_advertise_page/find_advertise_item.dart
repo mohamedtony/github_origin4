@@ -37,7 +37,7 @@ class FindAdvertiseItem extends StatelessWidget {
     advertisersModel.iisMutedObs.value  = advertisersModel.is_muted!;
     advertisersModel.isInBlackList.value  = advertisersModel.in_blacklist!;
     return Obx(()=>Container(
-      height: 85.0.h,
+      height: 90.0.h,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -62,35 +62,57 @@ class FindAdvertiseItem extends StatelessWidget {
                   onTap: (){
                     Get.toNamed('/AdvertiserProfileOrderPage?id=${advertisersModel.id}');
                   },
-                  child: Container(
-                    width: 75.0,
-                    height: 75.0,
-                    margin: EdgeInsets.only(right: 6.0, left: 6.0),
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 80.5,
+                        width: 80.5,
+                       margin: EdgeInsets.all(3.0),
+                    padding: EdgeInsets.all(2),
                     decoration: new BoxDecoration(
                       shape: BoxShape.circle,
-                      image: advertisersModel.image != null &&
-                          advertisersModel.image!.isNotEmpty
-                          ? DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(advertisersModel.image!),
-                      )
-                          : DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage('images/user.png'),
-                      ),
-                      boxShadow: [
-                        // so here your custom shadow goes:
-                        BoxShadow(
-                          color: Colors.black.withAlpha(25),
-                          // the color of a shadow, you can adjust it
-                          spreadRadius: 3,
-                          //also play with this two values to achieve your ideal result
-                          blurRadius: 7,
-                          offset: Offset(7,
-                              0), // changes position of shadow, negative value on y-axis makes it appering only on the top of a container
-                        ),
-                      ],
+                      color: findAdvertiseController.indexClicked.value==index?Color(0xFFFFCC99):Colors.white,
                     ),
+                        child: Container(
+                          width: 75.0,
+                          height: 75.0,
+                          margin: EdgeInsets.only(right: 4.0, left: 4.0),
+                          //padding: EdgeInsets.all(10),
+
+                          decoration: new BoxDecoration(
+                            shape: BoxShape.circle,
+
+                            image: advertisersModel.image != null &&
+                                advertisersModel.image!.isNotEmpty
+                                ? DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(advertisersModel.image!),
+                            )
+                                : DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage('images/user.png'),
+                            ),
+                            boxShadow: [
+                              // so here your custom shadow goes:
+                              BoxShadow(
+                                color: Colors.black.withAlpha(25),
+                                // the color of a shadow, you can adjust it
+                                spreadRadius: 3,
+                                //also play with this two values to achieve your ideal result
+                                blurRadius: 7,
+                                offset: Offset(7,
+                                    0), // changes position of shadow, negative value on y-axis makes it appering only on the top of a container
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                          bottom: 4,
+                          left: 0,
+                          right: 0,
+                          child: Image.asset('images/finger.png',height: 18,width: 18,))
+                    ],
                   ),
                 ),
                 Flexible(

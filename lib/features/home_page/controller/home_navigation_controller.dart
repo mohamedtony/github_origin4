@@ -1,3 +1,4 @@
+import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/features/advertising_story_details/VideoController.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,7 @@ class HomeNavController extends GetxController with GetTickerProviderStateMixin 
     update();
   }
 
-  Future<bool> onWillPop() async {
-    return !await navigatorKey.currentState!.maybePop();
-  }
+
 
   var pageController = PageController().obs;
   var animateController;
