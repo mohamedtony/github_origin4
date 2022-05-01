@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,8 +24,11 @@ class _VideoChatWidgetState extends State<VideoChatWidget> {
   void initState() {
     visible = false;
     super.initState();
-    _controller = VideoPlayerController.network(
-        "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4")
+    _controller = widget.url!.contains('http')?VideoPlayerController.network(
+        widget.url??''//"https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4"
+    ):VideoPlayerController.file(
+        File(widget.url??'')//"https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4"
+    )
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});

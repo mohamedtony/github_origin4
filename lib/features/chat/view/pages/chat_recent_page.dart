@@ -5,6 +5,7 @@ import 'package:advertisers/features/chat/controller/chat_controller.dart';
 import 'package:advertisers/features/chat/view/pages/chat_page.dart';
 import 'package:advertisers/features/chat/view/widgets/chat_and_title.dart';
 import 'package:advertisers/features/chat/view/widgets/chat_recent_widget.dart';
+import 'package:advertisers/main.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -65,8 +66,8 @@ class ChatRecentPage extends StatelessWidget {
                         '&from_user=${json.encode(_chatController.listChat[index].from_user)}&to_user=${json.encode(_chatController.listChat[index].to_user)}&id=${_chatController.listChat[index].id}');
                   },
                   child: ChatRecentWidget(lastMessage: _chatController.listChat[index].message,
-                  name:_chatController.listChat[index].to_user?.username??' ',not_seen:_chatController.listChat[index].not_seen ,
-                  timeAgo: _chatController.listChat[index].sent_from??' ',url: _chatController.listChat[index].from_user?.image??' ',room:_chatController.listChat[index].room??' '),
+                  name:_chatController.listChat[index].from_user?.id.toString()==storage.read('id').toString()?_chatController.listChat[index].to_user?.username??' ':_chatController.listChat[index].from_user?.username??' ',not_seen:_chatController.listChat[index].not_seen ,
+                  timeAgo: _chatController.listChat[index].sent_from??' ',url: _chatController.listChat[index].from_user?.id.toString()==storage.read('id').toString()?_chatController.listChat[index].to_user?.image??' ':_chatController.listChat[index].from_user?.image??' ',room:_chatController.listChat[index].room??' '),
                 ),
               )
           ),

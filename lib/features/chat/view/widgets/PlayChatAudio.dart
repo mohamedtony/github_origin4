@@ -44,10 +44,10 @@ class PlayChatAudioState extends State<PlayChatAudio> with WidgetsBindingObserve
         });
     // Try to load audio from a source and catch any errors.
     try {
-      await _player.setAudioSource(AudioSource.uri(Uri.parse(
+     widget.url.contains('http')? await _player.setAudioSource(AudioSource.uri(Uri.parse(
          // "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3"
         widget.url
-      )));
+      ))):await _player.setFilePath(widget.url);
     } catch (e) {
       print("Error loading audio source: $e");
     }

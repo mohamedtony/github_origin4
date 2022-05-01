@@ -13,6 +13,7 @@ ListChatModel _$ListChatModelFromJson(Map<String, dynamic> json) =>
       message_type: json['message_type'] as String?,
       message: json['message'] as String?,
       from_me: json['from_me'] as bool?,
+      uploaded: json['uploaded'] as bool?,
       to_user: json['to_user'] == null
           ? null
           : ToUserModel.fromJson(json['to_user'] as Map<String, dynamic>),
@@ -47,4 +48,5 @@ Map<String, dynamic> _$ListChatModelToJson(ListChatModel instance) =>
       'from_user': instance.from_user,
       'to_user': instance.to_user,
       'replied_message': instance.replied_message,
+      'uploaded': instance.uploaded,
     };

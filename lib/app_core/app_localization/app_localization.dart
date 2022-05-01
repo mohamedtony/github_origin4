@@ -13,14 +13,14 @@ class LocalizationService extends Translations {
   // Supported languages
   // Needs to be same order with locales
   static final langs = [
-    'English',
+    //'English',
     'Arabic',
   ];
 
   // Supported locales
   // Needs to be same order with langs
   static final locales = [
-    Locale('en', 'US'),
+    //Locale('en', 'US'),
     Locale('ar', 'EG'),
   ];
 
@@ -28,7 +28,7 @@ class LocalizationService extends Translations {
   // Translations are separated maps in `app_localization` file
   @override
   Map<String, Map<String, String>> get keys => {
-    'en_US': enUS, // lang/en_us.dart
+    //'en_US': enUS, // lang/en_us.dart
     'ar_EG': arEG, // lang/tr_tr.dart
   };
 

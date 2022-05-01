@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
+import 'package:advertisers/app_core/network/models/RepliedMessage.dart';
 import 'package:advertisers/app_core/network/requests/MessageChatModelRequest.dart';
 import 'package:advertisers/features/chat/view/widgets/AudioChatMessage.dart';
+import 'package:advertisers/features/chat/view/widgets/chat_content_widget_2.dart';
+import 'package:intl/intl.dart';
 import 'package:lecle_downloads_path_provider/lecle_downloads_path_provider.dart';
 import 'package:location/location.dart'as location;
 import 'package:advertisers/features/chat/view/pages/LocationShare.dart';
@@ -49,21 +52,29 @@ class _ChatPageState extends State<ChatPage> {
   Record _audioRecorder = Record();
   bool isComplete = false;
   bool isRecordTapped=false;
+  late String filePathForNetworkView;
  // ScrollController _scrollController = new ScrollController();
   ChatMessagesController _chatMessagesController=Get.put(ChatMessagesController());
   final _pusher=AppPusher();
   int charactersLength=0;
-
+  FromUserModel? from;
+  ToUserModel?   to;
+  FromUserModel? fromUserModel;
+  ToUserModel? toUserModel;
   ImagePicker _imagePicker = ImagePicker();
   late  String room;
   String downloadsPath1='unknown';
   int ? myId;
   var  _streamSubscription;
   TextEditingController chatMessageController=TextEditingController();
-   ItemScrollController itemScrollController = ItemScrollController();
+   
+  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
   @override
   void initState() {
+    getApplicationDocumentsDirectory().then((value) => filePathForNetworkView=value.toString());
     myId=storage.read("id",);
+     fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
+    toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
     print("myId>>>>>>>>>>>>>>>>>>>>>>>>>>>$myId");
      room=Get.parameters['room'].toString();
     _pusher.connect(room:room);
@@ -71,27 +82,26 @@ class _ChatPageState extends State<ChatPage> {
     _streamSubscription = _pusher.stream.listen((event) {
      // print(">>>>>>>>>>>>>>>${event.data?.imageUrl}"
 setState(() {
-      FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
-      ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
+
     print (">>>>>>>>>>>>>>>>>>>>>${event.type}");
-      FromUserModel? from;
-       ToUserModel?   to;
-      if(fromUserModel.id.toString()==event.from_user_id.toString()){
+
+      if(fromUserModel?.id.toString()==event.from_user_id.toString()){
         from=fromUserModel;
         to=toUserModel;
-        _chatMessagesController.messagesChat.add(ListChatModel(
-            message_type: event.type,
-            message: event.message,
-            to_user: to,
-            from_user: from,
-            from_me: true,
-            room: room,
-            //id:event.));
-            id: int.parse(Get.parameters["id"].toString())));
-      }else// if(fromUserModel.id.toString()!=event.from_user_id.toString())
+        // _chatMessagesController.messagesChat.add(ListChatModel(
+        //     message_type: event.type,
+        //     message: event.message,
+        //     to_user: to,
+        //     from_user: from,
+        //     from_me: true,
+        //     room: room,
+        //     //id:event.));
+        //     id: int.parse(Get.parameters["id"].toString())));
+      }
+       if(storage.read('id').toString()!=event.from_user_id.toString())
       {
-        from=FromUserModel(image: toUserModel.image,id: toUserModel.id,username: toUserModel.username);
-        to=ToUserModel(image: fromUserModel.image,id: fromUserModel.id,username: fromUserModel.username);
+        from=FromUserModel(image: toUserModel?.image,id: toUserModel?.id,username: toUserModel?.username);
+        to=ToUserModel(image: fromUserModel?.image,id: fromUserModel?.id,username: fromUserModel?.username);
         _chatMessagesController.messagesChat.add(ListChatModel(
             message_type: event.type,
             message: event.message,
@@ -128,7 +138,6 @@ setState(() {
     //  }
 });
       });
-
 
     super.initState();
   }
@@ -172,8 +181,9 @@ setState(() {
               width: 375.w,
               child: ChatAndTitle(
                 show: Show.content,
-                name: _chatMessagesController.messagesChat.isNotEmpty?_chatMessagesController.messagesChat[0].to_user?.username??' ':' ',
-                image: _chatMessagesController.messagesChat.isNotEmpty?_chatMessagesController.messagesChat[0].to_user?.image??' ':' ',
+                name: storage.read('id')==toUserModel?.id?fromUserModel?.username??' ':toUserModel?.username??' ',
+                image: storage.read('id')==toUserModel?.id?fromUserModel?.image??' ':toUserModel?.image??' ',
+
 
               ),
             ),
@@ -183,7 +193,7 @@ setState(() {
 
                 SizedBox(
 height: 812.h-133,
-                  child:
+                 child:
                   SmartRefresher(
     controller: _chatMessagesController.refreshController,
     enablePullUp: true,
@@ -198,7 +208,9 @@ height: 812.h-133,
     onLoading: () async {
     final result = await _chatMessagesController.getMessagesList(room: room);
     if (result) {
-    _chatMessagesController.refreshController.loadComplete();
+     // _chatMessagesController.itemScrollController.scrollTo(index: _chatMessagesController.messagesChat.length-1,duration: Duration(milliseconds: 300));
+
+      _chatMessagesController.refreshController.loadComplete();
     } else {
     //_chatMessagesController.refreshController.loadFailed();
     }
@@ -207,97 +219,123 @@ height: 812.h-133,
           height: 812.h-200,
       child: ScrollablePositionedList.builder(
                       padding: const EdgeInsets.symmetric(vertical: 20),
-                      physics: const BouncingScrollPhysics(),
-        itemScrollController: itemScrollController,
+                     // physics: const BouncingScrollPhysics(),
+        physics: ScrollPhysics(),
+       itemScrollController: _chatMessagesController.itemScrollController,
+        itemPositionsListener:itemPositionsListener,
+       // reverse: true,
+        initialScrollIndex: 19,
              // controller: _scrollController,
+        scrollDirection: Axis.vertical,
               itemCount: _chatMessagesController.messagesChat.length,
               itemBuilder: (context, index) {
 
+                //_chatMessagesController.itemScrollController.scrollTo(index: _chatMessagesController.messagesChat.length-1,duration: Duration(milliseconds: 300));
               if(_chatMessagesController.messagesChat[index].from_me==false&&_chatMessagesController.messagesChat[index].message_type=='text'){
-                       return ChatContentWidget(
+                       return ChatContentWidget2(
                          key: ValueKey(_chatMessagesController.messagesChat[index]),
-                          chatUser: ChatUser.receiver,index: index,itemScrollController:itemScrollController,
+                          chatUser: ChatUser.receiver,index: index,itemScrollController:_chatMessagesController.itemScrollController,
                           message: _chatMessagesController.messagesChat[index],
                           type: 'text',
                          chatMessagesController:_chatMessagesController ,downloadsPath:downloadsPath1
                           //message: 'السلام عليكم',
                         );}else if(_chatMessagesController.messagesChat[index].from_me==true&&_chatMessagesController.messagesChat[index].message_type=='text') {
-                return ChatContentWidget(
+                return ChatContentWidget2(
                   key: ValueKey(_chatMessagesController.messagesChat[index]),
-                  chatUser: ChatUser.sender,itemScrollController:itemScrollController,
+                  chatUser: ChatUser.sender,itemScrollController:_chatMessagesController.itemScrollController,
                   message: _chatMessagesController.messagesChat[index],
                   type: 'text',index: index,
                   chatMessagesController:_chatMessagesController ,downloadsPath:downloadsPath1
                   // message: 'عليكم السلام ورحمة الله وبركاته',
                 );
               }else if(_chatMessagesController.messagesChat[index].from_me==false&&(_chatMessagesController.messagesChat[index].message_type=='sound'||_chatMessagesController.messagesChat[index].message_type=='audio')){
-                return ChatContentWidget(
+                return ChatContentWidget2(
                   key: ValueKey(_chatMessagesController.messagesChat[index]),
-                  chatUser: ChatUser.receiver,index: index,itemScrollController:itemScrollController,
+                  chatUser: ChatUser.receiver,index: index,itemScrollController:_chatMessagesController.itemScrollController,
                   message: _chatMessagesController.messagesChat[index],
                   type: 'sound',chatMessagesController:_chatMessagesController ,downloadsPath:downloadsPath1
                   // message: 'عليكم السلام ورحمة الله وبركاته',
                 );
               }else if(_chatMessagesController.messagesChat[index].from_me==true&&(_chatMessagesController.messagesChat[index].message_type=='sound'||_chatMessagesController.messagesChat[index].message_type=='audio')){
-                return ChatContentWidget(
+                return ChatContentWidget2(
                   key: ValueKey(_chatMessagesController.messagesChat[index]),
-                  chatUser: ChatUser.sender,index: index,itemScrollController:itemScrollController,
+                  chatUser: ChatUser.sender,index: index,itemScrollController:_chatMessagesController.itemScrollController,
                   message: _chatMessagesController.messagesChat[index],
                   type: 'sound',chatMessagesController:_chatMessagesController ,downloadsPath:downloadsPath1
                   // message: 'عليكم السلام ورحمة الله وبركاته',
                 );
               }else if(_chatMessagesController.messagesChat[index].from_me==false&&(_chatMessagesController.messagesChat[index].message_type=='photo'||_chatMessagesController.messagesChat[index].message_type=='image')){
-                return ChatContentWidget(
+                return ChatContentWidget2(
                   key: ValueKey(_chatMessagesController.messagesChat[index]),
-                  chatUser: ChatUser.receiver,index: index,itemScrollController:itemScrollController,
+                  chatUser: ChatUser.receiver,index: index,itemScrollController:_chatMessagesController.itemScrollController,
                   message: _chatMessagesController.messagesChat[index],
                   type: 'image',
                   chatMessagesController:_chatMessagesController ,downloadsPath:downloadsPath1
                   // message: 'عليكم السلام ورحمة الله وبركاته',
                 );
               }else if(_chatMessagesController.messagesChat[index].from_me==true&&(_chatMessagesController.messagesChat[index].message_type=='photo'||_chatMessagesController.messagesChat[index].message_type=='image')){
-                return ChatContentWidget(
+                return ChatContentWidget2(
                   key: ValueKey(_chatMessagesController.messagesChat[index]),
-                  chatUser: ChatUser.sender,index: index,itemScrollController:itemScrollController,
+                  chatUser: ChatUser.sender,index: index,itemScrollController:_chatMessagesController.itemScrollController,
                   message: _chatMessagesController.messagesChat[index],
                   type: 'image',
                   chatMessagesController:_chatMessagesController ,downloadsPath:downloadsPath1
                   // message: 'عليكم السلام ورحمة الله وبركاته',
                 );
               }else if(_chatMessagesController.messagesChat[index].from_me==false&&_chatMessagesController.messagesChat[index].message_type=='location'){
-                return ChatContentWidget(
+                return ChatContentWidget2(
                   key: ValueKey(_chatMessagesController.messagesChat[index]),
-                  chatUser: ChatUser.receiver,index: index,itemScrollController:itemScrollController,
+                  chatUser: ChatUser.receiver,index: index,itemScrollController:_chatMessagesController.itemScrollController,
                   message: _chatMessagesController.messagesChat[index],
                   type: 'location',
                   chatMessagesController:_chatMessagesController ,downloadsPath:downloadsPath1
                   // message: 'عليكم السلام ورحمة الله وبركاته',
                 );
               }else if(_chatMessagesController.messagesChat[index].from_me==true&&_chatMessagesController.messagesChat[index].message_type=='location'){
-                return ChatContentWidget(
+                return ChatContentWidget2(
                   key: ValueKey(_chatMessagesController.messagesChat[index]),
-                  chatUser: ChatUser.sender,index: index,itemScrollController:itemScrollController,
+                  chatUser: ChatUser.sender,index: index,itemScrollController:_chatMessagesController.itemScrollController,
                   message: _chatMessagesController.messagesChat[index],
                   type: 'location',
                   chatMessagesController:_chatMessagesController ,downloadsPath:downloadsPath1
                   // message: 'عليكم السلام ورحمة الله وبركاته',
                 );
               }else if(_chatMessagesController.messagesChat[index].from_me==false&&_chatMessagesController.messagesChat[index].message_type=='video'){
-                return ChatContentWidget(
+                return ChatContentWidget2(
                   key: ValueKey(_chatMessagesController.messagesChat[index]),
-                  chatUser: ChatUser.receiver,index: index,itemScrollController:itemScrollController,
+                  chatUser: ChatUser.receiver,index: index,itemScrollController:_chatMessagesController.itemScrollController,
                   message: _chatMessagesController.messagesChat[index],
                   type: 'video',
                   chatMessagesController:_chatMessagesController ,downloadsPath:downloadsPath1
                   // message: 'عليكم السلام ورحمة الله وبركاته',
                 );
               }else if(_chatMessagesController.messagesChat[index].from_me==true&&_chatMessagesController.messagesChat[index].message_type=='video'){
-                return ChatContentWidget(
+                return ChatContentWidget2(
                   key: ValueKey(_chatMessagesController.messagesChat[index]),
-                  chatUser: ChatUser.sender,index: index,itemScrollController:itemScrollController,
+                  chatUser: ChatUser.sender,index: index,itemScrollController:_chatMessagesController.itemScrollController,
                   message: _chatMessagesController.messagesChat[index],
                   type: 'video',
                   chatMessagesController:_chatMessagesController ,downloadsPath:downloadsPath1
+                  // message: 'عليكم السلام ورحمة الله وبركاته',
+                );
+              }else if(_chatMessagesController.messagesChat[index].from_me==false&&(_chatMessagesController.messagesChat[index].message_type=='file')){
+                return ChatContentWidget2(
+                    key: ValueKey(_chatMessagesController.messagesChat[index]),
+                    chatUser: ChatUser.receiver,index: index,itemScrollController:_chatMessagesController.itemScrollController,
+                    message: _chatMessagesController.messagesChat[index],
+                    type: 'file',
+                    path:filePathForNetworkView,
+                    chatMessagesController:_chatMessagesController ,downloadsPath:downloadsPath1
+                  // message: 'عليكم السلام ورحمة الله وبركاته',
+                );
+              }else if(_chatMessagesController.messagesChat[index].from_me==true&&(_chatMessagesController.messagesChat[index].message_type=='file')){
+                return ChatContentWidget2(
+                    key: ValueKey(_chatMessagesController.messagesChat[index]),
+                    chatUser: ChatUser.sender,index: index,itemScrollController:_chatMessagesController.itemScrollController,
+                    message: _chatMessagesController.messagesChat[index],
+                    type: 'file',
+                    path:filePathForNetworkView,
+                    chatMessagesController:_chatMessagesController ,downloadsPath:downloadsPath1
                   // message: 'عليكم السلام ورحمة الله وبركاته',
                 );
               }
@@ -332,7 +370,7 @@ height: 812.h-133,
                       padding: const EdgeInsets.all(3),
                       color: const Color(0xff4186CF),
                       child: Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           // InkWell(
                           //   onTap: () {
@@ -344,123 +382,8 @@ height: 812.h-133,
                           //     color: Colors.white,
                           //   ),
                           // ),
-                          Padding(
-                            padding: EdgeInsets.only(top:0.0,right:7.w),
-                            child:isRecordTapped==false?InkWell(
-                                 onTap: (){
-                                   startRecord();
-                                   setState(() {
-                                     isRecordTapped=true;
-                                   });
-                                 },
-
-                                // SocialMediaRecorder(
-                                //   sendRequestFunction: (soundFile) async{
-                                // print('>>>>>>>>>>>>>>>>>>>>>>>>>>>${soundFile
-                                //     .path}');
-                                //
-                                //
-                                // _chatMessagesController.uploadFile(
-                                //     room: room, type: "sound", file: await dio
-                                //     .MultipartFile.fromFile(soundFile.path,
-                                //     filename: soundFile.path
-                                //         .substring(soundFile.path.lastIndexOf(
-                                //         "/") + 1)));
-                                //   },
-                                //   backGroundColor:const Color(0xff4187cd),
-                                //  recordIcon:const Icon(Icons.mic,color: Colors.white,),
-                                //   //encode: AudioEncoderType.AAC
-                                // ),
-                               child: Icon(Icons.mic,color: Colors.white,),
-
-                              ):InkWell(
-                            onTap:()async{
-                              stopRecord().then((value)async {
-                                if(value==true) {
-                                  _chatMessagesController.uploadFile(
-                                      room: room,
-                                      type: "sound",
-                                      file:dio.MultipartFile.fromBytes(await File(recordFilePath??'').readAsBytes(),
-                                      // await dio
-                                      //     .MultipartFile.fromFile(
-                                      //     recordFilePath ?? '',
-                                          filename: recordFilePath
-                                              ?.substring(
-                                              recordFilePath?.lastIndexOf(
-                                                  "/") ?? 0 + 1)),
-                                      itemScrollController: itemScrollController);
-                                }});
 
 
-                            },
-                              child: Icon(Icons.pause,color: Colors.red,),
-                          )),
-                          InkWell(
-                            onTap: ()async {
-
-                              final XFile? file = await _imagePicker.pickImage(source: ImageSource.camera);
-
-                              // await _imagePicker
-                              //     .pickImage(
-                              //     source: ImageSource.camera,
-                              //     // imageQuality: 60,
-                              //     // maxWidth: 1280,
-                              //     // maxHeight: 720
-                              // )
-                              //     .then((file) async {
-                               // _chatMessagesController.file.value= File.fromUri(Uri.file(file!.path));
-                               //  _chatMessagesController.savedFile.value =
-                               //      File.fromUri(Uri.file(file!.path));
-                                // RegisterNewClientUserController.photo =
-                                // await dio.MultipartFile.fromFile(file.path,
-                                //     filename: file.path
-                                //         .substring(file.path.lastIndexOf("/") + 1));
-
-
-                                // ChatMessagesController.photo =
-                                // await dio.MultipartFile.fromFile(file!.path,
-                                //     filename: file.path
-                                //         .substring(file.path.lastIndexOf("/") + 1));
-
-                                //         provider = FileImage(savedFile);
-
-
-                                //         setState(()
-                                //         {
-
-                                // _chatMessagesController.imageBase641.value =
-                                //     base64Encode(_chatMessagesController
-                                //         .savedFile.value
-                                //         .readAsBytesSync());
-
-                                //           file1=multi1;
-                                //         });
-                                //
-                              _chatMessagesController.uploadFile(room: room,type: "image",file: await dio.MultipartFile.fromFile(file!.path,
-                                  filename: file.path
-                                      .substring(file.path.lastIndexOf("/") + 1)),itemScrollController:itemScrollController);
-                                // FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
-                                // ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
-                                //ToUserModel toUserModel=json.decode(Get.parameters["to_user"]??"");
-                                // _chatMessagesController.sendMessage(MessageChatModel(room: room,message:,type: "image",
-                                //     from_user_id: fromUserModel.id,
-                                //     to_user_id: toUserModel.id.toString()));
-                             // });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(left:0.0,bottom: 10,top: 13,),
-                              child:SvgPicture.asset(
-                                    "images/chatCamera.svg",
-                                    height: 35,width: 35,
-                                    color: Colors.white,fit: BoxFit.fitWidth,
-                                  ), //Icon(Icons.camera_alt_outlined,color: Colors.white,),
-                            )
-                            // SvgPicture.asset(
-                            //   "images/camera.svg",
-                            //   height: 50,
-                            //   color: Colors.white,
-                            // ),
-                          ),
                           SizedBox(width: 244.w,),
                           // SizedBox(
                           //    width: 244.w,
@@ -606,7 +529,7 @@ height: 812.h-133,
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Padding(
-                              padding:  EdgeInsets.only(left:3.0.w,right: 10.w),
+                              padding:  EdgeInsets.only(left:0.0.w,right: 0),
                               child: QudsPopupButton(
                                 // backgroundColor: Colors.red,
                                   tooltip: 'T',
@@ -633,7 +556,7 @@ height: 812.h-133,
                 ),
                 Positioned(
                   bottom: 8,
-                  left: 45.w,
+                  left: 40.w,
                   child: Container(
                     alignment: Alignment.bottomCenter,
                     height: _chatMessagesController.replied.value==true?150:45,
@@ -659,7 +582,7 @@ height: 812.h-133,
                                 borderRadius: BorderRadius.circular(15),
                                 color: Colors.transparent
                               ),
-                              child:  _chatMessagesController.typeOfMessage.value=='text'?Padding(
+                              child:  _chatMessagesController.messagesChat[_chatMessagesController.chatIndex.value].message_type=='text'?Padding(
                                 padding: const EdgeInsets.all(4.0),
                                 child: Container(
                                   height: 150,
@@ -869,6 +792,110 @@ height: 812.h-133,
                                     ],
                                   ),
                                 ),
+                              ):_chatMessagesController.messagesChat[_chatMessagesController.chatIndex.value].message_type=='image'?
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Container(
+                                  height: 150,
+                                  width: 244.w,
+                                  decoration:BoxDecoration(
+                                    // border: Border.all(color: Colors.black),
+                                    // color: Colors.lightBlueAccent,
+                                      color: const Color(0xffE8E8E8),
+                                      borderRadius: BorderRadius.circular(25)),
+
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 4.0),
+                                        child: Container(
+                                          width: 10,
+                                          height: 140,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(topRight: Radius.circular(25),bottomRight: Radius.circular(25)),
+                                            color: Colors.indigo,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width:220.w,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Align(
+                                              alignment:Alignment.centerLeft,
+                                              child: InkWell(
+                                                onTap: (){
+                                                  _chatMessagesController.replied.value=false;
+                                                },
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
+                                                  child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
+                                                ),
+                                              ),
+                                            ),
+                                            _chatMessagesController.messagesChat[_chatMessagesController.chatIndex.value].from_me==true?Text('you'):Text(_chatMessagesController.messagesChat[_chatMessagesController.chatIndex.value].from_user?.username??' '),
+                                            Image.network(_chatMessagesController.messagesChat[_chatMessagesController.chatIndex.value].message??'',height: 39,width: 70,),
+                                            //),
+                                          ],
+                                        ),
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                              ):_chatMessagesController.messagesChat[_chatMessagesController.chatIndex.value].message_type=='file'? Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Container(
+                                  height: 150,
+                                  width: 244.w,
+                                  decoration:BoxDecoration(
+                                    // border: Border.all(color: Colors.black),
+                                    // color: Colors.lightBlueAccent,
+                                      color: const Color(0xffE8E8E8),
+                                      borderRadius: BorderRadius.circular(25)),
+
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 4.0),
+                                        child: Container(
+                                          width: 10,
+                                          height: 140,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(topRight: Radius.circular(25),bottomRight: Radius.circular(25)),
+                                            color: Colors.indigo,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width:220.w,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Align(
+                                              alignment:Alignment.centerLeft,
+                                              child: InkWell(
+                                                onTap: (){
+                                                  _chatMessagesController.replied.value=false;
+                                                },
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 5),
+                                                  child: SvgPicture.asset('images/baseline-clear-24px.svg',height :19,width:19,color:Colors.black),
+                                                ),
+                                              ),
+                                            ),
+                                            _chatMessagesController.messagesChat[_chatMessagesController.chatIndex.value].from_me==true?Text('you'):Text(_chatMessagesController.messagesChat[_chatMessagesController.chatIndex.value].from_user?.username??' '),
+                                            Text('File Message'),
+                                          ],
+                                        ),
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
                               ):const SizedBox(height: 0,)
                           ):const SizedBox(height:0,),
                           SizedBox(
@@ -893,12 +920,12 @@ height: 812.h-133,
                                    if( _chatMessagesController.replied.value==false){
                                      _chatMessagesController.sendMessage(message:MessageChatModelRequest(room: room,message:chatMessageController.text,type: "text",
                                          from_user_id: from,
-                                         to_user_id: to.toString()),itemScrollController:itemScrollController);
+                                         to_user_id: to.toString()),itemScrollController:_chatMessagesController.itemScrollController);
                                      chatMessageController.text='';
                                    }else{
                                      _chatMessagesController.sendMessage(message:MessageChatModelRequest(room: room,message:chatMessageController.text,type: "text",message_id: _chatMessagesController.messagesChat[_chatMessagesController.chatIndex.value].id,
                                          from_user_id: from,
-                                         to_user_id: to.toString()),itemScrollController:itemScrollController);
+                                         to_user_id: to.toString()),itemScrollController:_chatMessagesController.itemScrollController);
                                      chatMessageController.text='';
                                    }
                                 // if()
@@ -952,7 +979,7 @@ height: 812.h-133,
                                     controller: chatMessageController,
                                     // keyboardType: TextInputType.text,
                                     decoration: InputDecoration(
-                                      hintText: '..............',
+                                      //hintText: '..............',
                                       contentPadding:  EdgeInsets.symmetric(vertical: 2.0,horizontal: 10.w),
                                       border: InputBorder.none,
                                       focusedBorder: InputBorder.none,
@@ -976,7 +1003,7 @@ height: 812.h-133,
                                         padding: const EdgeInsets.all(0.0),
                                         child: InkWell(
                                           onTap: ()async {
-
+                                            if(chatMessageController.text!=''){
                                             FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
                                             ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
                                             // print(">>>>>>>>>>>>>>>>>>>>>>${fromUserModel.id}");
@@ -991,21 +1018,92 @@ height: 812.h-133,
                                             }
                                             //ToUserModel toUserModel=json.decode(Get.parameters["to_user"]??"");
                                            if( _chatMessagesController.replied.value==false){
-                                             _chatMessagesController.sendMessage(message:MessageChatModelRequest(room: room,message:chatMessageController.text,type: "text",
-                                                from_user_id: from,
-                                                to_user_id: to.toString()),itemScrollController:itemScrollController);
+
+
+                                             _chatMessagesController.messagesChat.add(ListChatModel(
+                                                 message_type: "text",
+                                                 message: chatMessageController.text,
+                                                 to_user: toUserModel,
+                                                 from_user: fromUserModel,
+                                                 from_me: true,
+                                                 uploaded: true,
+                                                 room: room,sent_at: DateFormat("dd MMM yyyy hh:mm:ss").format(DateTime.now()) ,//DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()) ,
+                                                 //id:event.));
+                                                 id: int.parse(Get.parameters["id"].toString())));
+
+    SchedulerBinding.instance?.addPostFrameCallback((_) {
+    _chatMessagesController.itemScrollController?.scrollTo(
+    index: _chatMessagesController.messagesChat.length - 1,
+    duration: const Duration(milliseconds: 300),
+    curve: Curves.easeInOutCubic);
+    // _scrollController.animateTo(_height * index,
+    //     duration: const Duration(seconds: 2), curve: Curves.easeIn);
+    });
+    _chatMessagesController.sendMessage(message:MessageChatModelRequest(room: room,message:chatMessageController.text,type: "text",
+    from_user_id: from,
+    to_user_id: to.toString()),itemScrollController:_chatMessagesController.itemScrollController,indexOfMessage: _chatMessagesController.messagesChat.length-1);
                                              chatMessageController.text='';
-                                           }else{
-                                              _chatMessagesController.sendMessage(message:MessageChatModelRequest(room: room,message:chatMessageController.text,type: "text",message_id: _chatMessagesController.messagesChat[_chatMessagesController.chatIndex.value].id,
-                                                from_user_id: from,
-                                                to_user_id: to.toString()),itemScrollController:itemScrollController);
-                                              chatMessageController.text='';
-                                           }
+                                           }else {
+                                                                                         _chatMessagesController
+                                                 .messagesChat.add(
+                                                 ListChatModel(
+                                                     message_type: "text",
+                                                     message: chatMessageController
+                                                         .text,
+                                                     to_user: toUserModel,
+                                                     from_user: fromUserModel,
+                                                     from_me: true,
+                                                     uploaded: true,
+                                                     room: room,
+                                                   sent_at: DateFormat("dd MMM yyyy hh:mm:ss").format(DateTime.now()) ,//DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()) ,
+                                                     replied_message: RepliedMessage(
+                                                         id: _chatMessagesController
+                                                             .messagesChat[_chatMessagesController
+                                                             .chatIndex.value]
+                                                             .id??0,
+                                                         message: _chatMessagesController
+                                                             .messagesChat[_chatMessagesController
+                                                             .chatIndex.value]
+                                                             .message,
+                                                         message_type: _chatMessagesController
+                                                             .messagesChat[_chatMessagesController
+                                                             .chatIndex.value]
+                                                             .message_type,
+                                                         replied_message: chatMessageController
+                                                             .text),
+                                                     //id:event.));
+                                                     ));
+
+    SchedulerBinding.instance?.addPostFrameCallback((_) {
+    _chatMessagesController.itemScrollController?.scrollTo(
+    index: _chatMessagesController.messagesChat.length - 1,
+    duration: const Duration(milliseconds: 300),
+    curve: Curves.easeInOutCubic);
+
+    // _scrollController.animateTo(_height * index,
+    //     duration: const Duration(seconds: 2), curve: Curves.easeIn);
+    });
+    _chatMessagesController
+        .sendMessage(
+    message: MessageChatModelRequest(
+    room: room,
+    message: chatMessageController
+        .text,
+    type: "text",
+    message_id: _chatMessagesController
+        .messagesChat[_chatMessagesController
+        .chatIndex.value].id,
+    from_user_id: from,
+    to_user_id: to.toString()),
+    itemScrollController: _chatMessagesController.itemScrollController);
+                                                                                         chatMessageController.text = '';
+    }}
+    }
                                             // _chatMessagesController.messagesChat.add(ListChatModel(message: chatMessageController.text,room: room,from_me: true,
                                             // from_user:fromUserModel,
                                             //     to_user: toUserModel,
                                             //     message_type: "text",id:int.parse(Get.parameters["id"].toString()) ));
-                                          },
+    ,
                                           child: Transform(
                                             alignment: Alignment.center,
                                             transform: Matrix4.rotationY(
@@ -1046,6 +1144,240 @@ height: 812.h-133,
                     ),
                   ),
                 ),
+                Positioned(
+                  right: 40.w,
+                  bottom: 2,
+                  child: InkWell(
+                      onTap: ()async {
+
+                        final XFile? file = await _imagePicker.pickImage(source: ImageSource.camera);
+                        if( _chatMessagesController.replied.value==false){
+                          _chatMessagesController.messagesChat.add(ListChatModel(
+                              message_type: "image",
+                              message: file?.path,
+                              to_user: toUserModel,
+                              from_user: fromUserModel,
+                              from_me: true,
+                              uploaded: false,
+                              room: room,sent_at: DateFormat("dd MMM yyyy hh:mm:ss").format(DateTime.now()) ,//DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()) ,
+                              //id:event.));
+                              id: int.parse(Get.parameters["id"].toString())));
+                          chatMessageController.text='';
+                        }else {
+
+                          _chatMessagesController
+                              .messagesChat.add(
+                              ListChatModel(
+                                  message_type: "image",
+                                  message: file?.path,
+                                  to_user: toUserModel,
+                                  from_user: fromUserModel,
+                                  sent_at: DateFormat("dd MMM yyyy hh:mm:ss").format(DateTime.now()),
+                                  from_me: true,
+                                  uploaded: false,
+                                  room: room,
+                                  replied_message: RepliedMessage(
+                                      message: _chatMessagesController
+                                          .messagesChat[_chatMessagesController
+                                          .chatIndex.value]
+                                          .message,
+                                      message_type: "image",
+                                      replied_message: recordFilePath),
+                                  //id:event.));
+                                  id: int.parse(
+                                      Get.parameters["id"]
+                                          .toString())));
+
+                        }
+                        SchedulerBinding.instance?.addPostFrameCallback((_) {
+                          _chatMessagesController.itemScrollController?.scrollTo(
+                              index: _chatMessagesController.messagesChat.length - 1,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOutCubic);
+
+                          // _scrollController.animateTo(_height * index,
+                          //     duration: const Duration(seconds: 2), curve: Curves.easeIn);
+                        });
+                        _chatMessagesController.uploadFile(room: room,indexOfMessage: _chatMessagesController.messagesChat.length-1,type: "image",file: await dio.MultipartFile.fromFile(file!.path,
+                            filename: file.path
+                                .substring(file.path.lastIndexOf("/") + 1)),itemScrollController:_chatMessagesController.itemScrollController);
+                        // FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
+                        // ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
+                        //ToUserModel toUserModel=json.decode(Get.parameters["to_user"]??"");
+                        // _chatMessagesController.sendMessage(MessageChatModel(room: room,message:,type: "image",
+                        //     from_user_id: fromUserModel.id,
+                        //     to_user_id: toUserModel.id.toString()));
+                        // });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left:0.0,bottom: 10,top: 13,),
+                        child:SvgPicture.asset(
+                          "images/chatCamera.svg",
+                          height: 35,width: 30,
+                          color: Colors.white,fit: BoxFit.fitWidth,
+                        ), //Icon(Icons.camera_alt_outlined,color: Colors.white,),
+                      )
+                    // SvgPicture.asset(
+                    //   "images/camera.svg",
+                    //   height: 50,
+                    //   color: Colors.white,
+                    // ),
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: Padding(
+                      padding: EdgeInsets.only(top:10.0,right:7.w),
+                      child:
+                      // isRecordTapped==
+                      //     false?InkWell(
+                      //      onTap: (){
+                      //        startRecord();
+                      //        setState(() {
+                      //          isRecordTapped=true;
+                      //        });
+                      //      },
+
+                      SocialMediaRecorder(
+                          backGroundColor: const Color(0xff4186CF),
+                          sendRequestFunction: (value) async{
+                            print('>>>>>>>>>>>>>>>>>>>>>>>>>>>${value
+                                .path}');
+
+                            if(value.path!='') {
+                              if( _chatMessagesController.replied.value==false){
+                                _chatMessagesController.messagesChat.add(ListChatModel(
+                                    message_type: "sound",
+                                    message: value.path,
+                                    to_user: toUserModel,
+                                    from_user: fromUserModel,
+                                    from_me: true,
+                                    uploaded: false,
+
+                                    room: room,sent_at: DateFormat("dd MMM yyyy hh:mm:ss").format(DateTime.now()) ,//DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()) ,
+                                    //id:event.));
+                                    id: int.parse(Get.parameters["id"].toString())));
+                                chatMessageController.text='';
+                              }else {
+
+                                _chatMessagesController
+                                    .messagesChat.add(
+                                    ListChatModel(
+                                        message_type: "sound",
+                                        message: value.path,
+                                        to_user: toUserModel,
+                                        from_user: fromUserModel,
+                                        sent_at: DateFormat("dd MMM yyyy hh:mm:ss").format(DateTime.now()),
+                                        from_me: true,
+                                        uploaded: false,
+                                        room: room,
+                                        replied_message: RepliedMessage(
+                                            message: _chatMessagesController
+                                                .messagesChat[_chatMessagesController
+                                                .chatIndex.value]
+                                                .message,
+                                            message_type: "sound",
+                                            replied_message: value.path),
+                                        //id:event.));
+                                        id: int.parse(
+                                            Get.parameters["id"]
+                                                .toString())));
+
+                              }
+SchedulerBinding.instance?.addPostFrameCallback((_) {
+_chatMessagesController.itemScrollController?.scrollTo(
+index: _chatMessagesController.messagesChat.length - 1,
+duration: const Duration(milliseconds: 300),
+curve: Curves.easeInOutCubic);
+// _scrollController.animateTo(_height * index,
+//     duration: const Duration(seconds: 2), curve: Curves.easeIn);
+});
+                              _chatMessagesController.uploadFile(
+                                  room: room,
+                                  indexOfMessage: _chatMessagesController.messagesChat.length-1,
+                                  type: "sound",
+                                  file:dio.MultipartFile.fromBytes(await File(value.path??'').readAsBytes(),
+                                      // await dio
+                                      //     .MultipartFile.fromFile(
+                                      //     recordFilePath ?? '',
+                                      filename: value.path
+                                          .substring(
+                                          value.path?.lastIndexOf(
+                                              "/") ?? 0 + 1)),
+                                  itemScrollController :_chatMessagesController.itemScrollController);
+                            }
+                          },
+                          //   backGroundColor:const Color(0xff4187cd),
+                          //  recordIcon:const Icon(Icons.mic,color: Colors.white,),
+                          //   //encode: AudioEncoderType.AAC
+                          // ),
+                          recordIcon: Icon(Icons.mic,color: Colors.white,
+
+                            // ):
+                            //   InkWell(
+                            // onTap:()async{
+                            //   stopRecord().then((value)async {
+                            //     if(value==true) {
+                            //       if( _chatMessagesController.replied.value==false){
+                            //         _chatMessagesController.messagesChat.add(ListChatModel(
+                            //             message_type: "sound",
+                            //             message: recordFilePath,
+                            //             to_user: toUserModel,
+                            //             from_user: fromUserModel,
+                            //             from_me: true,
+                            //             uploaded: false,
+                            //             room: room,sent_at: DateFormat("MMM yyyy dd hh:mm:ss").format(DateTime.now()) ,//DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()) ,
+                            //             //id:event.));
+                            //             id: int.parse(Get.parameters["id"].toString())));
+                            //         chatMessageController.text='';
+                            //       }else {
+                            //
+                            //         _chatMessagesController
+                            //             .messagesChat.add(
+                            //             ListChatModel(
+                            //                 message_type: "sound",
+                            //                 message: recordFilePath,
+                            //                 to_user: toUserModel,
+                            //                 from_user: fromUserModel,
+                            //
+                            //                 from_me: true,
+                            //                 uploaded: false,
+                            //                 room: room,
+                            //                 replied_message: RepliedMessage(
+                            //                     message: _chatMessagesController
+                            //                         .messagesChat[_chatMessagesController
+                            //                         .chatIndex.value]
+                            //                         .message,
+                            //                     message_type: "sound",
+                            //                     replied_message: recordFilePath),
+                            //                 //id:event.));
+                            //                 id: int.parse(
+                            //                     Get.parameters["id"]
+                            //                         .toString())));
+                            //
+                            //       }
+                            //       _chatMessagesController.uploadFile(
+                            //           room: room,
+                            //           indexOfMessage: _chatMessagesController.messagesChat.length-1,
+                            //           type: "sound",
+                            //           file:dio.MultipartFile.fromBytes(await File(recordFilePath??'').readAsBytes(),
+                            //           // await dio
+                            //           //     .MultipartFile.fromFile(
+                            //           //     recordFilePath ?? '',
+                            //               filename: recordFilePath
+                            //                   ?.substring(
+                            //                   recordFilePath?.lastIndexOf(
+                            //                       "/") ?? 0 + 1)),
+                            //           itemScrollController _chatMessagesController.itemScrollController);
+                            //     }});
+                            //
+                            //
+                            // },
+                            //   child: Icon(Icons.pause,color: Colors.red,),
+                            // )
+                          ))),
+                ),
               ],
             ),
           ],
@@ -1071,10 +1403,57 @@ height: 812.h-133,
             FilePickerResult? result = await FilePicker.platform.pickFiles(allowedExtensions: ['pdf', 'doc'],type: FileType.custom,);
 
             if (result != null) {
+     print(">>>>>>>>>>>>>>>>>>>>>?????????????????${result.files.first.path}");
+    if( _chatMessagesController.replied.value==false){
+    _chatMessagesController.messagesChat.add(ListChatModel(
+    message_type: "file",
+    message: result.files.first.path,
+    to_user: toUserModel,
+    from_user: fromUserModel,
+    from_me: true,
+    uploaded: false,
+    room: room,sent_at: DateFormat("dd MMM yyyy hh:mm:ss").format(DateTime.now()) ,//DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()) ,
+    //id:event.));
+    id: int.parse(Get.parameters["id"].toString())));
+    chatMessageController.text='';
+    }else {
 
-               _chatMessagesController.uploadFile(room: room,type: "file",file: await dio.MultipartFile.fromFile(result.files.first.path??' ',
+    _chatMessagesController
+        .messagesChat.add(
+    ListChatModel(
+    message_type: "file",
+    message: result.files.first.path,
+    to_user: toUserModel,
+    from_user: fromUserModel,
+        sent_at: DateFormat("dd MMM yyyy hh:mm:ss").format(DateTime.now()),
+    from_me: true,
+    uploaded: false,
+    room: room,
+    replied_message: RepliedMessage(
+    message: _chatMessagesController
+        .messagesChat[_chatMessagesController
+        .chatIndex.value]
+        .message,
+    message_type: "file",
+    replied_message: recordFilePath),
+    //id:event.));
+    id: int.parse(
+    Get.parameters["id"]
+        .toString())));
+
+    }
+     SchedulerBinding.instance?.addPostFrameCallback((_) {
+       _chatMessagesController.itemScrollController?.scrollTo(
+           index: _chatMessagesController.messagesChat.length - 1,
+           duration: const Duration(milliseconds: 300),
+           curve: Curves.easeInOutCubic);
+
+       // _scrollController.animateTo(_height * index,
+       //     duration: const Duration(seconds: 2), curve: Curves.easeIn);
+     });
+               _chatMessagesController.uploadFile(room: room,indexOfMessage: _chatMessagesController.messagesChat.length-1,type: "file",file: await dio.MultipartFile.fromFile(result.files.first.path??' ',
                   filename: result.files.first.path
-                      ?.substring(result.files.first.path?.lastIndexOf("/")??0 + 1)),itemScrollController:itemScrollController);
+                      ?.substring(result.files.first.path?.lastIndexOf("/")??0 + 1)),itemScrollController:_chatMessagesController.itemScrollController);
               // _chatMessagesController.sendMessage(MessageChatModel(room: room,message:chatMessageController.text,type: "document",
               //     from_user_id: fromUserModel.id,
               //     to_user_id: toUserModel.id.toString()));
@@ -1103,7 +1482,7 @@ height: 812.h-133,
 
           }),
       QudsPopupMenuItem(
-          title: Text('اضافة جهةاتصال'),
+          title: Text('اضافة جهة اتصال'),
           onPressed: () async{
             ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
     if (await FlutterContacts.requestPermission()) {
@@ -1156,12 +1535,59 @@ height: 812.h-133,
                 onTap: () async {
                   final XFile? file = await _imagePicker.pickImage(source: ImageSource.gallery);
       if (file != null) {
-        _chatMessagesController.uploadFile(room: room,
+        if( _chatMessagesController.replied.value==false){
+          _chatMessagesController.messagesChat.add(ListChatModel(
+              message_type: "image",
+              message: file.path,
+              to_user: toUserModel,
+              from_user: fromUserModel,
+              from_me: true,
+              uploaded: false,
+              room: room, sent_at: DateFormat("dd MMM yyyy hh:mm:ss").format(DateTime.now()) ,//DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()) ,
+              //id:event.));
+              id: int.parse(Get.parameters["id"].toString())));
+          chatMessageController.text='';
+        }else {
+
+          _chatMessagesController
+              .messagesChat.add(
+              ListChatModel(
+                  message_type: "image",
+                  message: file.path,
+                  to_user: toUserModel,
+                  from_user: fromUserModel,
+                  sent_at: DateFormat("dd MMM yyyy hh:mm:ss").format(DateTime.now()),
+                  from_me: true,
+                  uploaded: false,
+                  room: room,
+                  replied_message: RepliedMessage(
+                      message: _chatMessagesController
+                          .messagesChat[_chatMessagesController
+                          .chatIndex.value]
+                          .message,
+                      message_type: "image",
+                      replied_message: recordFilePath),
+                  //id:event.));
+                  id: int.parse(
+                      Get.parameters["id"]
+                          .toString())));
+
+        }
+        SchedulerBinding.instance?.addPostFrameCallback((_) {
+          _chatMessagesController.itemScrollController?.scrollTo(
+              index: _chatMessagesController.messagesChat.length - 1,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOutCubic);
+
+          // _scrollController.animateTo(_height * index,
+          //     duration: const Duration(seconds: 2), curve: Curves.easeIn);
+        });
+        _chatMessagesController.uploadFile(room: room,indexOfMessage: _chatMessagesController.messagesChat.length-1,
             type: "image",
             file: await dio.MultipartFile.fromFile(file.path ??
                 ' ',
                 filename: file.path
-                    ?.substring(file.path.lastIndexOf("/") ?? 0 + 1)),itemScrollController:itemScrollController);
+                    ?.substring(file.path.lastIndexOf("/") ?? 0 + 1)),itemScrollController:_chatMessagesController.itemScrollController);
         Navigator.pop(context);
       }},
                 title: Text("صورة"),
@@ -1173,12 +1599,59 @@ height: 812.h-133,
                 onTap: ()async {
                   final XFile? file = await _imagePicker.pickVideo(source: ImageSource.gallery);
                   if (file != null) {
-                    _chatMessagesController.uploadFile(room: room,
+                    if( _chatMessagesController.replied.value==false){
+                      _chatMessagesController.messagesChat.add(ListChatModel(
+                          message_type: "video",
+                          message: file.path,
+                          to_user: toUserModel,
+                          from_user: fromUserModel,
+                          from_me: true,
+                          uploaded: false,
+                          room: room,sent_at: DateFormat("dd MMM yyyy hh:mm:ss").format(DateTime.now()) ,//DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()) ,
+                          //id:event.));
+                          id: int.parse(Get.parameters["id"].toString())));
+                      chatMessageController.text='';
+                    }else {
+
+                      _chatMessagesController
+                          .messagesChat.add(
+                          ListChatModel(
+                              message_type: "video",
+                              message: file.path,
+                              to_user: toUserModel,
+                              from_user: fromUserModel,
+                              sent_at: DateFormat("dd MMM yyyy hh:mm:ss").format(DateTime.now()),
+                              from_me: true,
+                              uploaded: false,
+                              room: room,
+                              replied_message: RepliedMessage(
+                                  message: _chatMessagesController
+                                      .messagesChat[_chatMessagesController
+                                      .chatIndex.value]
+                                      .message,
+                                  message_type: "video",
+                                  replied_message: recordFilePath),
+                              //id:event.));
+                              id: int.parse(
+                                  Get.parameters["id"]
+                                      .toString())));
+
+                    }
+                    SchedulerBinding.instance?.addPostFrameCallback((_) {
+                      _chatMessagesController.itemScrollController?.scrollTo(
+                          index: _chatMessagesController.messagesChat.length - 1,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOutCubic);
+
+                      // _scrollController.animateTo(_height * index,
+                      //     duration: const Duration(seconds: 2), curve: Curves.easeIn);
+                    });
+                    _chatMessagesController.uploadFile(room: room,indexOfMessage: _chatMessagesController.messagesChat.length-1,
                         type: "video",
                         file: await dio.MultipartFile.fromFile(file.path ??
                             ' ',
                             filename: file.path
-                                ?.substring(file.path.lastIndexOf("/") ?? 0 + 1)),itemScrollController:itemScrollController);
+                                ?.substring(file.path.lastIndexOf("/") ?? 0 + 1)),itemScrollController:_chatMessagesController.itemScrollController);
                     Navigator.pop(context);
                   }
                 },
