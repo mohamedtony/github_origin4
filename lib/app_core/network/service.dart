@@ -26,6 +26,7 @@ import 'package:advertisers/app_core/network/responses/GetBlockedUsersResponse.d
 import 'package:advertisers/app_core/network/responses/GetCategoriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetMyProfileInfoResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetProductsAndAdsTypesResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetRulesResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetUseLocationsResponse.dart';
 import 'package:advertisers/app_core/network/responses/LoginClientResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
@@ -226,5 +227,9 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
 
   @GET('/favourite_ads?page={id}')
   Future<GetAdsListResponse> getMyFavoriteAds( @Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/employees/{id}/roles')
+  Future<GetRulesResponse> getMyEmployeeRules( @Path("id") int? id,@Header("Authorization") String token);
+
 
 }

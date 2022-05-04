@@ -298,6 +298,8 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
                       /// authorization btn
                       InkWell(
                         onTap: (){
+                          Get.put(EmployeesController()).getRules(controller.showEmployeeDetails.data!.user!.id??1);
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(

@@ -16,11 +16,7 @@ MessageChatModelRequest _$MessageChatModelRequestFromJson(
       from_user_id: json['from_user_id'] as int?,
       image: json['image'] as String?,
       type: json['type'] as String?,
-      message_id:  json['message_id'] as int?,
-      // json['replied_message'] == null
-      //     ? null
-      //     : RepliedMessage.fromJson(
-      //         json['replied_message'] as Map<String, dynamic>),
+      message_id: json['message_id'] as int?,
     );
 
 Map<String, dynamic> _$MessageChatModelRequestToJson(

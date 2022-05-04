@@ -35,12 +35,13 @@ class _EmployeeAuthorizationPageState extends State<EmployeeAuthorizationPage> {
     return Scaffold(
       appBar: PreferredSize(
         child: AppBarWidget(
+          my_height: 120.sp,
           isSearchBar: false,
           isNotification: false,
           isBack: true,
           isSideMenu: false,
         ),
-        preferredSize: Size(MediaQuery.of(context).size.width, 93.h),
+        preferredSize: Size(MediaQuery.of(context).size.width, 120),
       ),
       body: GetBuilder<EmployeesController>(
         init: EmployeesController(),
@@ -89,7 +90,7 @@ class _EmployeeAuthorizationPageState extends State<EmployeeAuthorizationPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        width:MediaQuery.of(context).size.width*.4,
+                        width:MediaQuery.of(context).size.width*.44,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -98,16 +99,17 @@ class _EmployeeAuthorizationPageState extends State<EmployeeAuthorizationPage> {
                               child: Container(
                                 width: 30,
                                 height: 30,
-                                decoration: const BoxDecoration(
+                                decoration:   BoxDecoration(
                                    shape: BoxShape.circle,
-                                  image: DecorationImage(image: AssetImage('images/man img.png'),fit: BoxFit.fill),
+                                  image: DecorationImage(image: controller.profileImage.value.isNotEmpty?
+                                  NetworkImage(controller.profileImage.value):NetworkImage(controller.noImage),fit: BoxFit.fill),
                                 ),
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal:8.0),
                               child: Text(
-                                "محمد احمد حسين",
+                               controller.showEmployeeDetails.data!.user!.username??"",
                                 style: TextStyle(
                                     fontSize: 14.sp,
                                     color: const Color(
@@ -161,49 +163,170 @@ class _EmployeeAuthorizationPageState extends State<EmployeeAuthorizationPage> {
                 /// my privileged list
                 Container(
                   height: MediaQuery.of(context).size.height*.63,
-                  child: ListView.builder(
-                       shrinkWrap: true,
-                       itemCount:  controller.privilegedList.length ,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 5, right: 5, left: 5),
-                          child: Container(
-                            child: StreamBuilder<Object>(
-                                stream: null,
-                                builder: (context, snapshot) {
-                                  return
-                                    Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.center,
-                                      children: [
-                                        /// action name
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            decoration: const BoxDecoration(
-                                              color: Color(0xffF5F5F5),
-                                              borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
-                                            ),
-                                            child:  Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal:20.0,vertical:3),
-                                                  child: Text(
-                                                    controller.privilegedList[index],
-                                                    style: TextStyle(
-                                                        fontSize: 16.sp,
-                                                        color: const Color(
-                                                            0xff244094),
-                                                        fontFamily: 'A Jannat LT, Regular'
+                  child:  GetBuilder<EmployeesController>(
+                    init: EmployeesController(),
+                    builder: (controller) => ListView.builder(
+                         shrinkWrap: true,
+                         itemCount:  controller.myEmployeeRules.length ,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 5, right: 5, left: 5),
+                            child: Container(
+                              child: StreamBuilder<Object>(
+                                  stream: null,
+                                  builder: (context, snapshot) {
+                                    return
+                                      Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                        children: [
+                                          /// action name
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              decoration: const BoxDecoration(
+                                                color: Color(0xffF5F5F5),
+                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
+                                              ),
+                                              child:  Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.symmetric(horizontal:20.0,vertical:3),
+                                                    child: Text(
+                                                      controller.myEmployeeRules[index].name??"",
+                                                      style: TextStyle(
+                                                          fontSize: 16.sp,
+                                                          color: const Color(
+                                                              0xff244094),
+                                                          fontFamily: 'A Jannat LT, Regular'
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
 
-                                                Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal:8.0,),
+                                                  Padding(
+                                                    padding: const EdgeInsets.symmetric(horizontal:8.0,),
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                      children: [
+                                                        Container(
+                                                          width: 12,
+                                                          height: 12,
+                                                          child: Checkbox(
+                                                            checkColor: Colors.white,
+                                                            fillColor: MaterialStateProperty.all(  Colors.lightBlue),
+                                                            value: controller.isChecked,
+                                                            shape: CircleBorder(),
+                                                            onChanged: (bool? value) {
+                                                              setState(() {
+                                                                controller.isChecked = value!;
+                                                              });
+                                                            },
+                                                          ),
+                                                        ),
+
+                                                        Padding(
+                                                          padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 5),                                                        child: Text(
+                                                          "الكل",
+                                                          style: TextStyle(
+                                                              fontSize: 14.sp,
+                                                              color: const Color(
+                                                                  0xff244094),
+                                                              decoration: TextDecoration.underline,
+                                                              fontFamily: 'A Jannat LT, Regular'
+                                                          ),
+                                                        ),
+                                                        ),
+
+
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+
+
+                                          Container(
+                                            height:controller.myEmployeeRules[index].actions!=null&&controller.myEmployeeRules[index].actions!.isNotEmpty?
+                                            ((controller.myEmployeeRules[index].actions!.length/2.0).ceil()*55) :10,
+                                            child: GridView.builder(
+                                                gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,/*crossAxisSpacing: 10*/
+                                                  childAspectRatio: MediaQuery.of(context).size.width /
+                                                      (MediaQuery.of(context).size.height / 7),),
+                                                itemCount: controller.myEmployeeRules[index].actions!=null&&controller.myEmployeeRules[index].actions!.isNotEmpty?
+                                                controller.myEmployeeRules[index].actions!.length:0,
+                                                itemBuilder: (BuildContext context, int actionIndex) {
+                                                  return Padding(
+                                                    padding: const EdgeInsets.all(6.0),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          color: controller.myEmployeeRules[index].actions![actionIndex].isSelected==true?const Color(0xffF5F5F5):Colors.white,
+                                                          borderRadius: BorderRadius.circular(10),
+                                                          border: Border.all(color: Color(0xff4184CE),width: .5)
+                                                      ),
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                        children: [
+                                                          Container(
+                                                            width: 12,
+                                                            height: 12,
+                                                            child: Checkbox(
+                                                              checkColor: Colors.white,
+                                                              fillColor: MaterialStateProperty.all(Colors.lightBlue),
+                                                              value: controller.myEmployeeRules[index].actions![actionIndex].isSelected,
+                                                              shape: CircleBorder(),
+                                                              onChanged: (bool? value) {
+                                                                setState(() {
+                                                                  controller.myEmployeeRules[index].actions![actionIndex].isSelected = value!;
+                                                                });
+                                                              },
+                                                            ),
+                                                          ),
+
+                                                          Padding(
+                                                            padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 1),
+                                                            child: Text(
+                                                              controller.myEmployeeRules[index].actions![actionIndex].text??"",
+                                                            style: TextStyle(
+                                                                fontSize: 14.sp,
+                                                                color: const Color(
+                                                                    0xff244094),
+                                                                fontFamily: 'A Jannat LT, Regular'
+                                                            ),
+                                                          ),
+                                                          ),
+
+                                                          const  SizedBox(
+                                                            width: 5,
+                                                          )
+
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                            ),
+                                          ),
+
+                                         /* /// row of view & add & edit
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal:8.0 ),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+
+                                                /// view
+                                                Container(
+                                                  width: (originalWidth*(double.parse((150/originalWidth).toStringAsFixed(2)))),
+                                                  decoration: BoxDecoration(
+                                                      color: controller.isChecked?const Color(0xffF5F5F5):Colors.white,
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      border: Border.all(color: Color(0xff4184CE),width: .5)
+                                                  ),
                                                   child: Row(
                                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                     children: [
@@ -224,243 +347,188 @@ class _EmployeeAuthorizationPageState extends State<EmployeeAuthorizationPage> {
                                                       ),
 
                                                       Padding(
-                                                        padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 5),                                                        child: Text(
-                                                        "الكل",
-                                                        style: TextStyle(
-                                                            fontSize: 14.sp,
-                                                            color: const Color(
-                                                                0xff244094),
-                                                            decoration: TextDecoration.underline,
-                                                            fontFamily: 'A Jannat LT, Regular'
+                                                        padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 5),                                                        child: Text(
+                                                          "عرض",
+                                                          style: TextStyle(
+                                                              fontSize: 14.sp,
+                                                              color: const Color(
+                                                                  0xff244094),
+                                                              fontFamily: 'A Jannat LT, Regular'
+                                                          ),
                                                         ),
                                                       ),
-                                                      ),
 
+                                                    const  SizedBox(
+                                                        width: 5,
+                                                      )
 
                                                     ],
                                                   ),
                                                 ),
+                                                /// add
+                                                Container(
+                                                  width: (originalWidth*(double.parse((150/originalWidth).toStringAsFixed(2)))),
+                                                  decoration: BoxDecoration(
+                                                      color: controller.isChecked?const Color(0xffF5F5F5):Colors.white,
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      border: Border.all(color: Color(0xff4184CE),width: .5)
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                    children: [
+                                                      Container(
+                                                        width: 12,
+                                                        height: 12,
+                                                        child: Checkbox(
+                                                          checkColor: Colors.white,
+                                                          fillColor: MaterialStateProperty.all(  Colors.lightBlue),
+                                                          value: controller.isChecked,
+                                                          shape: CircleBorder(),
+                                                          onChanged: (bool? value) {
+                                                            setState(() {
+                                                              controller.isChecked = value!;
+                                                            });
+                                                          },
+                                                        ),
+                                                      ),
+
+                                                      Padding(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 5),
+                                                        child: Text(
+                                                          "اضافة وتعديل",
+                                                          style: TextStyle(
+                                                              fontSize: 14.sp,
+                                                              color: const Color(
+                                                                  0xff244094),
+                                                              fontFamily: 'A Jannat LT, Regular'
+                                                          ),
+                                                        ),
+                                                      ),
+
+                                                      const  SizedBox(
+                                                        width: 5,
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+
                                               ],
                                             ),
                                           ),
-                                        ),
 
-                                        /// row of view & add & edit
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal:8.0 ),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-
-                                              /// view
-                                              Container(
-                                                width: (originalWidth*(double.parse((150/originalWidth).toStringAsFixed(2)))),
-                                                decoration: BoxDecoration(
-                                                    color: controller.isChecked?const Color(0xffF5F5F5):Colors.white,
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    border: Border.all(color: Color(0xff4184CE),width: .5)
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                  children: [
-                                                    Container(
-                                                      width: 12,
-                                                      height: 12,
-                                                      child: Checkbox(
-                                                        checkColor: Colors.white,
-                                                        fillColor: MaterialStateProperty.all(  Colors.lightBlue),
-                                                        value: controller.isChecked,
-                                                        shape: CircleBorder(),
-                                                        onChanged: (bool? value) {
-                                                          setState(() {
-                                                            controller.isChecked = value!;
-                                                          });
-                                                        },
-                                                      ),
-                                                    ),
-
-                                                    Padding(
-                                                      padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 5),                                                        child: Text(
-                                                        "عرض",
-                                                        style: TextStyle(
-                                                            fontSize: 14.sp,
-                                                            color: const Color(
-                                                                0xff244094),
-                                                            fontFamily: 'A Jannat LT, Regular'
-                                                        ),
-                                                      ),
-                                                    ),
-
-                                                  const  SizedBox(
-                                                      width: 5,
-                                                    )
-
-                                                  ],
-                                                ),
-                                              ),
-                                              /// add
-                                              Container(
-                                                width: (originalWidth*(double.parse((150/originalWidth).toStringAsFixed(2)))),
-                                                decoration: BoxDecoration(
-                                                    color: controller.isChecked?const Color(0xffF5F5F5):Colors.white,
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    border: Border.all(color: Color(0xff4184CE),width: .5)
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                  children: [
-                                                    Container(
-                                                      width: 12,
-                                                      height: 12,
-                                                      child: Checkbox(
-                                                        checkColor: Colors.white,
-                                                        fillColor: MaterialStateProperty.all(  Colors.lightBlue),
-                                                        value: controller.isChecked,
-                                                        shape: CircleBorder(),
-                                                        onChanged: (bool? value) {
-                                                          setState(() {
-                                                            controller.isChecked = value!;
-                                                          });
-                                                        },
-                                                      ),
-                                                    ),
-
-                                                    Padding(
-                                                      padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 5),
-                                                      child: Text(
-                                                        "اضافة وتعديل",
-                                                        style: TextStyle(
-                                                            fontSize: 14.sp,
-                                                            color: const Color(
-                                                                0xff244094),
-                                                            fontFamily: 'A Jannat LT, Regular'
-                                                        ),
-                                                      ),
-                                                    ),
-
-                                                    const  SizedBox(
-                                                      width: 5,
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-
-                                            ],
-                                          ),
-                                        ),
-
-                                        /// row of accept & remove & pay
-                                        Padding(
-                                          padding: const EdgeInsets.only(left:8.0,right: 8,top: 5 ),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              /// accept
-                                              Container(
-                                                width: MediaQuery.of(context).size.width*.25,
-                                                decoration: BoxDecoration(
-                                                    color: controller.isChecked_setting_accept?const Color(0xffF5F5F5):Colors.white,
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    border: Border.all(color: Color(0xff4184CE),width: .5)
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal:8.0,),
-                                                  child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                    children: [
-                                                      Container(
-                                                        width: 12,
-                                                        height: 12,
-                                                        child: Checkbox(
-                                                          checkColor: Colors.white,
-                                                          fillColor: MaterialStateProperty.all(  Colors.lightBlue),
-                                                          value: controller.isChecked_setting_accept,
-                                                          shape: CircleBorder(),
-                                                          onChanged: (bool? value) {
-                                                            setState(() {
-                                                              controller.isChecked_setting_accept = value!;
-                                                            });
-                                                          },
-                                                        ),
-                                                      ),
-
-                                                      Padding(
-                                                        padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 5),
-                                                        child: Text(
-                                                          "موافقة",
-                                                          style: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              color: const Color(
-                                                                  0xff244094),
-                                                              fontFamily: 'A Jannat LT, Regular'
+                                          /// row of accept & remove & pay
+                                          Padding(
+                                            padding: const EdgeInsets.only(left:8.0,right: 8,top: 5 ),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                /// accept
+                                                Container(
+                                                  width: MediaQuery.of(context).size.width*.25,
+                                                  decoration: BoxDecoration(
+                                                      color: controller.isChecked_setting_accept?const Color(0xffF5F5F5):Colors.white,
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      border: Border.all(color: Color(0xff4184CE),width: .5)
+                                                  ),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.symmetric(horizontal:8.0,),
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                      children: [
+                                                        Container(
+                                                          width: 12,
+                                                          height: 12,
+                                                          child: Checkbox(
+                                                            checkColor: Colors.white,
+                                                            fillColor: MaterialStateProperty.all(  Colors.lightBlue),
+                                                            value: controller.isChecked_setting_accept,
+                                                            shape: CircleBorder(),
+                                                            onChanged: (bool? value) {
+                                                              setState(() {
+                                                                controller.isChecked_setting_accept = value!;
+                                                              });
+                                                            },
                                                           ),
                                                         ),
-                                                      ),
 
-
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-
-                                              /// pay
-                                              Container(
-                                                width: MediaQuery.of(context).size.width*.25,
-                                                decoration: BoxDecoration(
-                                                    color: controller.isChecked?const Color(0xffF5F5F5):Colors.white,
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    border: Border.all(color: Color(0xff4184CE),width: .5)
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal:8.0,),
-                                                  child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                    children: [
-                                                      Container(
-                                                        width: 12,
-                                                        height: 12,
-                                                        child: Checkbox(
-                                                          checkColor: Colors.white,
-                                                          fillColor: MaterialStateProperty.all(  Colors.lightBlue),
-                                                          value: controller.isChecked,
-                                                          shape: CircleBorder(),
-                                                          onChanged: (bool? value) {
-                                                            setState(() {
-                                                              controller.isChecked = value!;
-                                                            });
-                                                          },
-                                                        ),
-                                                      ),
-
-                                                      Padding(
-                                                        padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 5),
-                                                        child: Text(
-                                                          "دفع",
-                                                          style: TextStyle(
-                                                              fontSize: 14.sp,
-                                                              color: const Color(
-                                                                  0xff244094),
-                                                              fontFamily: 'A Jannat LT, Regular'
+                                                        Padding(
+                                                          padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 5),
+                                                          child: Text(
+                                                            "موافقة",
+                                                            style: TextStyle(
+                                                                fontSize: 14.sp,
+                                                                color: const Color(
+                                                                    0xff244094),
+                                                                fontFamily: 'A Jannat LT, Regular'
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
 
 
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
 
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                }
+                                                /// pay
+                                                Container(
+                                                  width: MediaQuery.of(context).size.width*.25,
+                                                  decoration: BoxDecoration(
+                                                      color: controller.isChecked?const Color(0xffF5F5F5):Colors.white,
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      border: Border.all(color: Color(0xff4184CE),width: .5)
+                                                  ),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.symmetric(horizontal:8.0,),
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                      children: [
+                                                        Container(
+                                                          width: 12,
+                                                          height: 12,
+                                                          child: Checkbox(
+                                                            checkColor: Colors.white,
+                                                            fillColor: MaterialStateProperty.all(  Colors.lightBlue),
+                                                            value: controller.isChecked,
+                                                            shape: CircleBorder(),
+                                                            onChanged: (bool? value) {
+                                                              setState(() {
+                                                                controller.isChecked = value!;
+                                                              });
+                                                            },
+                                                          ),
+                                                        ),
+
+                                                        Padding(
+                                                          padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 5),
+                                                          child: Text(
+                                                            "دفع",
+                                                            style: TextStyle(
+                                                                fontSize: 14.sp,
+                                                                color: const Color(
+                                                                    0xff244094),
+                                                                fontFamily: 'A Jannat LT, Regular'
+                                                            ),
+                                                          ),
+                                                        ),
+
+
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+
+                                              ],
+                                            ),
+                                          ),*/
+                                        ],
+                                      );
+                                  }
+                              ),
                             ),
-                          ),
-                        );
-                      }),
+                          );
+                        }),
+                  ),
                 ),
 
                 /// action btns save & cancel

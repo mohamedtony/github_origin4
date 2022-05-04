@@ -7,6 +7,7 @@ import 'package:advertisers/app_core/network/models/RequestModel.dart';
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/requests/AddEmployeeRequest.dart';
 import 'package:advertisers/app_core/network/responses/AddEmployeeResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetRulesResponse.dart';
 import 'package:advertisers/app_core/network/responses/ListEmployeesModelResponse.dart';
 import 'package:advertisers/app_core/network/responses/ListOperationsResponse.dart';
 import 'package:advertisers/app_core/network/responses/MyRequestsResponse.dart';
@@ -261,6 +262,7 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
   List<int> parentRequestsIds=[];
 
   List <Employee> myEmployees = [];
+  RxList<Rules> myEmployeeRules = <Rules>[].obs;
   List<int> myEmployeesIds=[];
 
   List<Operation> actions=[];
@@ -472,7 +474,24 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
     }
   }
 
+  /// get employee rules
+  Future<void> getRules(int id) async {
+    String myToken = await storage.read("token");
 
+    client!.getMyEmployeeRules(id,"Bearer " + myToken,)
+        .then((value) {
+      if (value.status == 200 && value.rules != null && value.rules!.isNotEmpty) {
+        Logger().d(value.rules.toString());
+        /*isLoading.value = false;
+        isEmpty.value = false;
+        advertisersModel.value = value.data!;*/
+        myEmployeeRules.value = value.rules!;
+      } else {
+        /*isLoading.value = false;
+        isEmpty.value = true;*/
+      }
+    });
+  }
 
 
   /// delete employee
