@@ -289,38 +289,38 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      InkWell(
-                        onTap: () async {
-                          String myToken = await storage.read("token");
-                          if(myToken==null ) {
-                            showMyToast("مشكلة غير معروفة !");
-                            return;
-                          }
-                          client!.likeAdvertiser(advertiserProfileController.advertiserProfileModel!.id,"Bearer "+myToken).then((value) {
-                            print("token");
-                            Logger().i(value.status.toString());
-                            if(value.status==200){
+                      Container(
+                        //width: 250.0,
+                        height: 40.0,
+                        margin: EdgeInsets.all(12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Obx(()=>InkWell(
+                              onTap: () async {
+                                String myToken = await storage.read("token");
+                                if(myToken==null ) {
+                                  showMyToast("مشكلة غير معروفة !");
+                                  return;
+                                }
+                                client!.likeAdvertiser(advertiserProfileController.advertiserProfileModel!.id,"Bearer "+myToken).then((value) {
+                                  print("token");
+                                  Logger().i(value.status.toString());
+                                  if(value.status==200){
 
-                              if(value.data?.is_liked!=null && value.data!.is_liked==1){
-                                advertiserProfileController.isProfileFavorite.value  = true;
-                                advertiserProfileController.advertiserProfileModel!.is_liked = true;
-                                showMyToast("تم الإعجاب بالمعلن بنجاح !");
-                              }else{
-                                advertiserProfileController.isProfileFavorite.value  = false;
-                                advertiserProfileController.advertiserProfileModel!.is_liked = false;
-                                showMyToast("تم إلغاء الإعجاب بالمعلن بنجاح !");
-                              }
-                            }
-                          });
-                        },
-                        child: Container(
-                          //width: 250.0,
-                          height: 40.0,
-                          margin: EdgeInsets.all(12),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Obx(()=>Container(
+                                    if(value.data?.is_liked!=null && value.data!.is_liked==1){
+                                      advertiserProfileController.isProfileFavorite.value  = true;
+                                      advertiserProfileController.advertiserProfileModel!.is_liked = true;
+                                      showMyToast("تم متابعة المعلن بنجاح !");
+                                    }else{
+                                      advertiserProfileController.isProfileFavorite.value  = false;
+                                      advertiserProfileController.advertiserProfileModel!.is_liked = false;
+                                      showMyToast("تم إلغاء متابعة المعلن بنجاح !");
+                                    }
+                                  }
+                                });
+                              },
+                              child: Container(
                                 padding: EdgeInsets.all(3),
                                 child:  advertiserProfileController.isProfileFavorite.isTrue? Image.asset(
                                   'images/heart_outline2.png',
@@ -333,113 +333,113 @@ class AdvertiserProfileOrderPage extends StatelessWidget {
                                   height: 25.0,
                                   width: 25.0,
                                 ),
-                              )),
-                              InkWell(
-                                onTap: () async {
-                                //  Get.to(ChatRecentPage());
-
-                                  //String myId = await storage.read("id");
-                                  dynamic data = await storage.read("data");
-
-                                 User user = User.fromJson(data);
-
-                                  print("UserId=${user.id}");
-                                  print("UserId=${user.username}");
-                                  print("UserIrrd=${advertiserProfileController.advertiserProfileModel!.id}");
-                                  Get.toNamed('/ChatPage?room=${advertiserProfileController.advertiserProfileModel!.id}-${user.id}'
-                                      '&from_user=${json.encode(FromUserModel(id: user.id,username: user.username,image: user.image))}&to_user=${json.encode(ToUserModel(id:    advertiserProfileController.advertiserProfileModel?.id,image:    advertiserProfileController.advertiserProfileModel?.image,username:    advertiserProfileController.advertiserProfileModel?.username))}&id=${0}');
-
-                                },
-                                child: Container(
-                                  //margin: EdgeInsets.only(right: 20.0),
-                                  child: Image.asset(
-                                    'images/chat_icon_advertiser.png',
-                                    fit: BoxFit.cover,
-                                    height: 25.0,
-                                    width: 25.0,
-                                  ),
-                                ),
                               ),
-                              InkWell(
-                                onTap: (){
-                                  advertiserProfileController.isShowChannelsClicked.value = true;
-                                  /*if(advertiserProfileController.isShowChannelsClicked.isTrue){
-                                  advertiserProfileController.isShowChannelsClicked.value = false;
-                                }else{
-                                  advertiserProfileController.isShowChannelsClicked.value = true;
-                                }*/
-                                },
-                                child: Container(
-                                  child: Image.asset(
-                                    'images/rss.png',
-                                    fit: BoxFit.cover,
-                                    height: 25.0,
-                                    width: 25.0,
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: (){
-                                  Get.toNamed('/AdvertiserQrPage');
-                                },
-                                child: Container(
-                                  child: Image.asset(
-                                    'images/qr_code.png',
-                                    fit: BoxFit.cover,
-                                    height: 25.0,
-                                    width: 25.0,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                child: SvgPicture.asset(
-                                  'images/Icon_material_stars.svg',
+                            )),
+                            InkWell(
+                              onTap: () async {
+                              //  Get.to(ChatRecentPage());
+
+                                //String myId = await storage.read("id");
+                                dynamic data = await storage.read("data");
+
+                               User user = User.fromJson(data);
+
+                                print("UserId=${user.id}");
+                                print("UserId=${user.username}");
+                                print("UserIrrd=${advertiserProfileController.advertiserProfileModel!.id}");
+                                Get.toNamed('/ChatPage?room=${advertiserProfileController.advertiserProfileModel!.id}-${user.id}'
+                                    '&from_user=${json.encode(FromUserModel(id: user.id,username: user.username,image: user.image))}&to_user=${json.encode(ToUserModel(id:    advertiserProfileController.advertiserProfileModel?.id,image:    advertiserProfileController.advertiserProfileModel?.image,username:    advertiserProfileController.advertiserProfileModel?.username))}&id=${0}');
+
+                              },
+                              child: Container(
+                                //margin: EdgeInsets.only(right: 20.0),
+                                child: Image.asset(
+                                  'images/chat_icon_advertiser.png',
                                   fit: BoxFit.cover,
                                   height: 25.0,
                                   width: 25.0,
                                 ),
                               ),
-                              InkWell(
-                                onTap: (){
-                                  advertiserProfileController.isShowDetailsClicked.value = true;
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.all(5),
-                                  child: SvgPicture.asset(
-                                    'images/dots.svg',
-                                    fit: BoxFit.cover,
-                                    height: 6.0,
-                                    width: 6.0,
-                                  ),
+                            ),
+                            InkWell(
+                              onTap: (){
+                                advertiserProfileController.isShowChannelsClicked.value = true;
+                                /*if(advertiserProfileController.isShowChannelsClicked.isTrue){
+                                advertiserProfileController.isShowChannelsClicked.value = false;
+                              }else{
+                                advertiserProfileController.isShowChannelsClicked.value = true;
+                              }*/
+                              },
+                              child: Container(
+                                child: Image.asset(
+                                  'images/rss.png',
+                                  fit: BoxFit.cover,
+                                  height: 25.0,
+                                  width: 25.0,
                                 ),
                               ),
-                            ],
-                          ),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-
-                              colors: [ Color(0xFF589CD6),Color(0xFF4780C4)],
                             ),
-                            shape: BoxShape.rectangle,
-                            //color: Colors.red,
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(10)
-                            ),
-                            boxShadow: [
-                              // so here your custom shadow goes:
-                              BoxShadow(
-                                  color: Colors.black.withAlpha(25),
-                                  // the color of a shadow, you can adjust it
-                                  spreadRadius: 2,
-                                  //also play with this two values to achieve your ideal result
-                                  blurRadius: 4.0,
-                                  offset: Offset(2,
-                                      1.5) // changes position of shadow, negative value on y-axis makes it appering only on the top of a container
+                            InkWell(
+                              onTap: (){
+                                Get.toNamed('/AdvertiserQrPage');
+                              },
+                              child: Container(
+                                child: Image.asset(
+                                  'images/qr_code.png',
+                                  fit: BoxFit.cover,
+                                  height: 25.0,
+                                  width: 25.0,
+                                ),
                               ),
-                            ],
+                            ),
+                            Container(
+                              child: SvgPicture.asset(
+                                'images/Icon_material_stars.svg',
+                                fit: BoxFit.cover,
+                                height: 25.0,
+                                width: 25.0,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: (){
+                                advertiserProfileController.isShowDetailsClicked.value = true;
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(5),
+                                child: SvgPicture.asset(
+                                  'images/dots.svg',
+                                  fit: BoxFit.cover,
+                                  height: 6.0,
+                                  width: 6.0,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+
+                            colors: [ Color(0xFF589CD6),Color(0xFF4780C4)],
                           ),
+                          shape: BoxShape.rectangle,
+                          //color: Colors.red,
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(10)
+                          ),
+                          boxShadow: [
+                            // so here your custom shadow goes:
+                            BoxShadow(
+                                color: Colors.black.withAlpha(25),
+                                // the color of a shadow, you can adjust it
+                                spreadRadius: 2,
+                                //also play with this two values to achieve your ideal result
+                                blurRadius: 4.0,
+                                offset: Offset(2,
+                                    1.5) // changes position of shadow, negative value on y-axis makes it appering only on the top of a container
+                            ),
+                          ],
                         ),
                       ),
                     ],

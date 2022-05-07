@@ -156,11 +156,11 @@ class FindAdvertiseItem extends StatelessWidget {
                         if(value.data?.is_liked!=null && value.data!.is_liked==1){
                           advertisersModel.isLikedObs.value  = true;
                           advertisersModel.is_liked = true;
-                          showMyToast("تم الإعجاب بالمعلن بنجاح !");
+                          showMyToast("تم متابعة المعلن بنجاح !");
                         }else{
                           advertisersModel.isLikedObs.value = false;
                           advertisersModel.is_liked = false;
-                          showMyToast("تم إلغاء الإعجاب بالمعلن بنجاح !");
+                          showMyToast("تم إلغاء متابعة المعلن بنجاح !");
                         }
                       }
                     });
