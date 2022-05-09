@@ -278,7 +278,7 @@ class VideoController extends GetxController {
       if(value.status==200){
         if(value.data?.liked!=null && value.data!.liked==1){
           Fluttertoast.showToast(
-              msg: "تم إضافة هذاالاعلان إلى المفضلة بنجاح !",
+              msg: "تم إضافة هذا الاعلان إلى المفضلة بنجاح !",
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
@@ -288,7 +288,7 @@ class VideoController extends GetxController {
               fontSize: 16.0);
         }else{
           Fluttertoast.showToast(
-              msg: "تم حذف هذاالاعلان من المفضلة بنجاح !",
+              msg: "تم حذف هذا الاعلان من المفضلة بنجاح !",
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,

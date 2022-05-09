@@ -27,7 +27,7 @@ class OverlayHandlerProvider  extends GetxController{
   var in_blackList = 0.obs;
   var isInfront = false.obs;
   var isNotifiable = false.obs;
-
+  var isAdFavorite = false.obs;
 
 
 
@@ -87,6 +87,7 @@ class OverlayHandlerProvider  extends GetxController{
     in_blackList.value=0;
      isInfront.value = false;
      isNotifiable.value = false;
+     isAdFavorite.value = false;
 
     String myToken  = await storage.read("token");
     print("in addddd");
@@ -108,6 +109,9 @@ class OverlayHandlerProvider  extends GetxController{
           }
           if(adsListModelModel?.user?.in_blacklist!=null && adsListModelModel!.user!.in_blacklist! ){
             in_blackList.value = 1;
+          }
+          if(adsListModelModel?.is_favourite!=null && adsListModelModel!.is_favourite!){
+            isAdFavorite.value = true;
           }
 
           if(adsListModelModel?.user?.is_liked!=null && adsListModelModel!.user!.is_liked! ){
@@ -143,9 +147,9 @@ class OverlayHandlerProvider  extends GetxController{
       showMyToast("مشكلة غير معروفة !");
       return;
     }
-    if(adsListModelModel?.is_favourite!=null &&adsListModelModel!.is_favourite!){
+    /*if(adsListModelModel?.is_favourite!=null &&adsListModelModel!.is_favourite!){
       Fluttertoast.showToast(
-          msg: "تم إضافة هذاالاعلان إلى المفضلة بنجاح !",
+          msg: "تم إضافة هذا الاعلان إلى المفضلة بنجاح !",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -154,14 +158,14 @@ class OverlayHandlerProvider  extends GetxController{
           //fontFamily: 'Arabic-Regular',
           fontSize: 16.0);
       return;
-    }
+    }*/
     client!.favouriteAd(id,"Bearer "+myToken!).then((value) {
       print("token");
       Logger().i(value.status.toString());
       if(value.status==200){
         if(value.data?.liked!=null && value.data!.liked==1){
           Fluttertoast.showToast(
-              msg: "تم إضافة هذاالاعلان إلى المفضلة بنجاح !",
+              msg: "تم إضافة هذا الاعلان إلى المفضلة بنجاح !",
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
@@ -169,9 +173,11 @@ class OverlayHandlerProvider  extends GetxController{
               textColor: Colors.white,
               //fontFamily: 'Arabic-Regular',
               fontSize: 16.0);
+          isAdFavorite.value = true;
+          adsListModelModel?.is_favourite = true;
         }else{
           Fluttertoast.showToast(
-              msg: "تم حذف هذاالاعلان من المفضلة بنجاح !",
+              msg: "تم حذف هذا الاعلان من المفضلة بنجاح !",
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
@@ -179,6 +185,8 @@ class OverlayHandlerProvider  extends GetxController{
               textColor: Colors.white,
               //fontFamily: 'Arabic-Regular',
               fontSize: 16.0);
+          isAdFavorite.value = false;
+          adsListModelModel?.is_favourite = false;
         }
 
 

@@ -243,7 +243,7 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                                               .adsListModelModel!
                                                               .is_liked = true;
                                                           showMyToast(
-                                                              "تم الإعجاب بالمعلن بنجاح !");
+                                                              "تم متابعةالمعلن بنجاح !");
                                                         } else {
                                                           overlayHandlerProvider
                                                               .isLikedObs
@@ -252,7 +252,7 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                                               .adsListModelModel!
                                                               .is_liked = false;
                                                           showMyToast(
-                                                              "تم إلغاء الإعجاب بالمعلن بنجاح !");
+                                                              "تم إلغاء متابعة المعلن بنجاح !");
                                                         }
                                                       }
                                                     });
@@ -330,14 +330,14 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                                                   .value = 1;
                                                               //overlayHandlerProvider.adsListModelModel!.is = 1;
                                                               showMyToast(
-                                                                  "تم متابعة المعلن بنجاح !");
+                                                                  "تم إظهار المعلن بنجاح !");
                                                             } else {
                                                               overlayHandlerProvider
                                                                   .in_blackList
                                                                   .value = 0;
                                                               //overlayHandlerProvider.in_blackList.value  = 0;
                                                               showMyToast(
-                                                                  "تم إلغاء متابعة المعلن بنجاح !");
+                                                                  "تم إخفاء المعلن بنجاح !");
                                                             }
                                                           }
                                                         });
@@ -818,14 +818,52 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                         ),
                                       ),
                                     ),
-                                    Container(
+                                    Obx(
+                                          () => InkWell(
+                                        onTap: () async {
+                                          if (overlayHandlerProvider.adId !=
+                                              null) {
+                                            print("idddd= " +
+                                                overlayHandlerProvider.adId
+                                                    .toString());
+                                            overlayHandlerProvider.favoriteAds(
+                                                overlayHandlerProvider.adId!);
+                                          }
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.only(
+                                              left: 2.0, right: 2.0),
+                                          margin:
+                                          EdgeInsets.only(left: 10, top: 2.0,),
+                                          child:
+                                          overlayHandlerProvider
+                                              .isAdFavorite
+                                              .isTrue
+                                              ? SvgPicture.asset(
+                                            'images/heart_filled.svg',
+                                            fit:
+                                            BoxFit.fill,
+                                            height: 45.0,
+                                            width: 45.0,
+                                          )
+                                              : SvgPicture.asset(
+                                            'images/heart_solid.svg',
+                                            fit:
+                                            BoxFit.fill,
+                                            height: 45.0,
+                                            width: 45.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    /*Container(
                                         margin:
                                             EdgeInsets.only(left: 20, top: 2.0),
                                         child: Icon(
                                           Icons.arrow_forward_ios_rounded,
                                           size: 17,
                                           color: Color(0xff486ac7),
-                                        )),
+                                        )),*/
                                   ],
                                 ),
                               ),

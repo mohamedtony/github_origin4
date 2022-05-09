@@ -666,7 +666,7 @@ class _StoryScreenState extends State<StoryScreen>
                                      audioPlayer?.pause();
                                      overlayHandlerProvider.advertiserId = widget.adsListModel!.user!.id;
                                     overlayHandlerProvider.adId = widget.adsListModel!.id;
-                                     widget.onSheetCliked(context,9,);
+                                     widget.onSheetCliked(context,9);
                                      //Overlay.of(context)?.insert(getEntry(context, widget.adsListModel));
                                     //showBottomSheetForRequest2(Get.overlayContext!);
                                     //_addVideoWithTitleOverlay(context);

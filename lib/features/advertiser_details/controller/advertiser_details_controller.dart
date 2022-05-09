@@ -62,15 +62,12 @@ class AdvertisingDetailsController extends GetxController with GetTickerProvider
   int adTypeId = -1;
   var showInPlatform = false.obs;
   void switchShowInPlatform (){
-    print("kkk"+showInPlatform.value.toString());
     if(showInPlatform.isTrue){
       showInPlatform.value = false;
       endAdvertisingDate.value = '';
     }else{
       showInPlatform.value = true;
     }
-    print("kkk"+showInPlatform.value.toString());
-    //update();
   }
 
   String? dateType;
@@ -194,37 +191,6 @@ void setStateBehavior(){
     selectedDiscountPercentage = "$count";
     //update();
   }
-
-/*
-  DateRange? dateRange = DateRange(fromDate: "اختر نطاق زمني",toDate: ".........");
-
-  void addDateRange(String? fromDate,toDate){
-    dateRange = DateRange(fromDate: fromDate,toDate: toDate) ;
-    update();
-  }
-*/
-
-/*  String? endAdvertisingDateCoupon;
-
-  void addendAdvertisingDateCoupon(String? endDate){
-    endAdvertisingDateCoupon = endDate;
-    update();
-  }*/
-/*
-  String? endAdvertisingDate;
-
-  void addendAdvertisingDate(String? endDate){
-    endAdvertisingDate = endDate;
-    update();
-  }*/
-
-  /* List<UrlDataType>? urlList = [
-     *//*UrlDataType(
-       id: 0,
-       urlName: "",
-       urlTitle: ""
-     ),*//*
-   ];*/
 
    List<int>? checkList = [];
 

@@ -129,7 +129,24 @@ class ClientSettingPage extends StatelessWidget {
                               onTap: () {
                                 //controller.deleteImage(index);
                               },
-                              child: Container(
+                              child: Obx(()=> (controller.clientProfileModel.value.country?.image!=null && controller.clientProfileModel.value.country!.image!.isNotEmpty)?CircleAvatar(
+                            radius: 16.0,
+                            backgroundColor:
+                            Colors.grey[300],
+                            backgroundImage:
+                            CachedNetworkImageProvider(
+                              controller.clientProfileModel.value.country!.image!,
+                            ),
+                          ):const SizedBox())))
+                      /*Positioned(
+                          bottom: 10.0,
+                          left: 0.0,
+                          right: 25.0,
+                          child: InkWell(
+                              onTap: () {
+                                //controller.deleteImage(index);
+                              },
+                              child: Obx(()=>Container(
                                 alignment: Alignment.bottomCenter,
                                 decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
@@ -140,21 +157,21 @@ class ClientSettingPage extends StatelessWidget {
                                   height: 32.0,
                                   width: 32.0,
                                 ):CachedNetworkImage(
-                              imageUrl: controller
-                                  .clientProfileModel.value.image ??
-                                '',
-                                placeholder: (context, url) =>
-                                const SpinKitThreeBounce(
-                                  color: Colors.grey,
-                                  size: 25,
-                                ),
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
-                                fit: BoxFit.fill,
-                                height: 32.0,
-                                width: 32.0,
-                              ) ,
-                              )))
+                                  imageUrl: controller
+                                      .clientProfileModel.value.country!.image! ??
+                                      '',
+                                  placeholder: (context, url) =>
+                                  const SpinKitThreeBounce(
+                                    color: Colors.grey,
+                                    size: 25,
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                                  fit: BoxFit.fill,
+                                  height: 32.0,
+                                  width: 32.0,
+                                ) ,
+                              ))))*/
                     ],
                   ),
                   Column(
