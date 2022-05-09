@@ -72,7 +72,7 @@ class ChatContentWidget2 extends StatelessWidget {
           PopupMenuItem<String>(
               child: TextButton(
                   onPressed: () {
-
+                    Navigator.pop(alertContext);
                     // DateTime currentPhoneDate = DateTime.now(); //DateTime
                     //
                     // Timestamp myTimeStamp = Timestamp.fromDate(currentPhoneDate);
@@ -164,10 +164,10 @@ class ChatContentWidget2 extends StatelessWidget {
                       ),
                     ),
                   ])),),
-          PopupMenuItem<String>(
+          chatMessagesController.messagesChat[chatMessagesController.chatIndex.value].message_type!='text'?  PopupMenuItem<String>(
               child: TextButton(
                   onPressed: () async{
-
+                    Navigator.pop(alertContext);
                     chatMessagesController.replied.value = false;
                     String type=chatMessagesController
                         .messagesChat[chatMessagesController.chatIndex.value]
@@ -176,15 +176,18 @@ class ChatContentWidget2 extends StatelessWidget {
                     if(type=='sound'||type=='video'||type=='file'||type=='image') {
                       // String  downloadsPath = (await DownloadsPath.downloadsDirectory())?.path ??
                       //       "Downloads path doesn't exist";
-                      WidgetsFlutterBinding.ensureInitialized();
-                      await FlutterDownloader.initialize(
-                          debug: true // optional: set false to disable printing logs to console
-                      );
+                      // WidgetsFlutterBinding.ensureInitialized();
+                      // await FlutterDownloader.initialize(
+                      //     debug: true // optional: set false to disable printing logs to console
+                      // );
                       final taskId = await FlutterDownloader.enqueue(
                         url: chatMessagesController.messagesChat[chatMessagesController.chatIndex.value]
                             .message??' ',
                         savedDir: downloadsPath,
                         showNotification: true,
+
+                           fileName:chatMessagesController.messagesChat[chatMessagesController.chatIndex.value].message?.
+                           substring(chatMessagesController.messagesChat[chatMessagesController.chatIndex.value].message!.lastIndexOf("/") + 1),
                         // show download progress in status bar (for Android)
                         openFileFromNotification: true, // click on notification to open downloaded file (for Android)
                       );
@@ -197,7 +200,7 @@ class ChatContentWidget2 extends StatelessWidget {
                         snackPosition: SnackPosition.BOTTOM,
                       );
                     }
-                    Navigator.pop(alertContext);
+
                   },
                   child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                     Padding(
@@ -215,7 +218,7 @@ class ChatContentWidget2 extends StatelessWidget {
                         style: TextStyle(color: Colors.white, fontSize: 15),
                       ),
                     ),
-                  ])),),
+                  ])),):const PopupMenuItem<String>(child: Text("_____________",style: TextStyle(color: Colors.white),),),
           PopupMenuItem<String>(
               child: TextButton(
                   onPressed: () async {
@@ -668,14 +671,26 @@ class ChatContentWidget2 extends StatelessWidget {
                                           //   ),
                                           // ),
                                           // message.from_me == true
-                                          message.from_me == true&&chatMessagesController.messagesChat[chatMessagesController.chatIndex.value].from_user?.id==storage.read("id",)
+                                          message.uploaded==false?message.from_me == true&&chatMessagesController.messagesChat[chatMessagesController.chatIndex.value].from_user?.id==storage.read("id",)
                                               ? Text('you')
                                               : Text(
                                               message.to_user?.username ??
-                                                  ' '),
-                                          Text(
-                                            chatMessagesController.replied.value==true ?chatMessagesController.messagesChat[chatMessagesController.chatIndex.value].message ?? ' ':message.replied_message?.message??'',
-                                            overflow: TextOverflow.ellipsis,
+                                                  ' '):message.from_me == true?message.from_user?.id==storage.read("id",)&&chatUser == ChatUser.receiver?Text(
+                                              message.from_user?.username ??
+                                                  ' '):message.from_me == true?message.from_user?.id==storage.read("id",)&&chatUser == ChatUser.sender?
+                                               Text(
+                                              message.to_user?.username ??
+                                                  ' '):Text('You'):SizedBox():SizedBox(),
+                                          InkWell(
+                                            onTap: (){
+                                              if((chatMessagesController.replied.value==true ?chatMessagesController.messagesChat[chatMessagesController.chatIndex.value].message ?? ' ':message.replied_message?.message??'').contains('http')==true){
+                                                launch( chatMessagesController.replied.value==true ?chatMessagesController.messagesChat[chatMessagesController.chatIndex.value].message ?? ' ':message.replied_message?.message??'');
+                                              }
+                                            },
+                                            child: Text(
+                                              chatMessagesController.replied.value==true ?chatMessagesController.messagesChat[chatMessagesController.chatIndex.value].message ?? ' ':message.replied_message?.message??'',
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -1197,16 +1212,23 @@ class ChatContentWidget2 extends StatelessWidget {
                                       ),
                                       child: //type=='sound'?PlayChatAudio(url:message.message??' '):SizedBox()
                                       type == 'text'
-                                          ? Text(
+                                          ? InkWell(
+                                        onTap:(){
+                                          if(message.message?.contains('http')==true){
+                                            launch(message.message??' ');
+                                          }
+                        },
+                                            child: Text(
                                         message.message ?? ' ',
                                         style: TextStyle(
-                                          color: chatUser == ChatUser.sender
-                                              ? const Color(0xff4186CF)
-                                              : Colors.white,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16.sp,
+                                            color: chatUser == ChatUser.sender
+                                                ? const Color(0xff4186CF)
+                                                : Colors.white,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16.sp,
                                         ),
-                                      )
+                                      ),
+                                          )
                                           : type == 'location'
                                           ? Container(
                                         decoration: BoxDecoration(
@@ -1290,18 +1312,27 @@ class ChatContentWidget2 extends StatelessWidget {
                                   ),
                                   child: //type=='sound'?PlayChatAudio(url:message.message??' '):SizedBox()
                                   type == 'text'
-                                      ? Text(
+                                      ? InkWell(
+                                    onTap:(){
+                                      if((message.replied_message!=null&&controller.replied.value==true&&controller.chatIndex.value==index?message.replied_message?.message??'':message.message??'').contains('http')==true){
+                                       launch(message.replied_message!=null&&controller.replied.value==true&&controller.chatIndex.value==index?message.replied_message?.message??'':message.message??''
+                                       );
+                                      }
+
+                        },
+                                        child: Text(
                                     message.replied_message!=null&&controller.replied.value==true&&controller.chatIndex.value==index?message.replied_message?.message??'':message.message??''
                                     ,
                                     // message.message ?? ' ',
                                     style: TextStyle(
-                                      color: chatUser == ChatUser.sender
-                                          ? const Color(0xff4186CF)
-                                          : Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16.sp,
+                                        color: chatUser == ChatUser.sender
+                                            ? const Color(0xff4186CF)
+                                            : Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16.sp,
                                     ),
-                                  )
+                                  ),
+                                      )
                                       : type == 'location'
                                       ? Container(
                                     decoration: BoxDecoration(
@@ -1599,12 +1630,12 @@ class ChatContentWidget2 extends StatelessWidget {
             //         ),
             //       ):const SizedBox(height: 0,)
             //   ):const SizedBox(height:0,),
-            message.uploaded==true?   Align(
+            message.uploaded==true? const  Align(
               alignment: Alignment.centerLeft,
-              child: Icon(Icons.upload_rounded,color:Colors.blueAccent),
-            ):Align(
+              child: SizedBox()//Icon(Icons.upload_rounded,color:Colors.blueAccent),
+            ):const Align(
                 alignment: Alignment.centerLeft,
-                child: Icon(Icons.not_interested,color:Colors.blueAccent)),
+                child:  Icon(Icons.not_interested,color:Colors.blueAccent)),
           ],
         ),
       ),

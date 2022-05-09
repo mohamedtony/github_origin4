@@ -74,6 +74,8 @@ dependencies:
   device_info: ^2.0.3
   shimmer: ^2.0.0
   firebase_messaging:
+  flutter_local_notifications:
+  overlay_support:
   cached_network_image: ^3.2.0
   google_maps_flutter: ^2.1.1
   url_launcher: ^6.0.17

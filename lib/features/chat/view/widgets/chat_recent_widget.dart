@@ -4,10 +4,10 @@ import 'package:get/utils.dart';
 
 class ChatRecentWidget extends StatelessWidget {
    ChatRecentWidget({this.name,this.lastMessage,this.url,
-    Key? key, this.timeAgo,this.room,this.not_seen,
+    Key? key, this.timeAgo,this.room,this.not_seen,this.type,
   }) : super(key: key);
 
- final String? name,url,lastMessage,timeAgo,room;
+ final String? name,url,lastMessage,timeAgo,room,type;
  final int? not_seen;
   @override
   Widget build(BuildContext context) {
@@ -77,7 +77,7 @@ class ChatRecentWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      lastMessage??' ',
+                      type=='text'?lastMessage??' ':type??' ',
                       style: TextStyle(
                         color: Color(0xff707070),
                         fontWeight: FontWeight.bold,overflow:TextOverflow.ellipsis,
