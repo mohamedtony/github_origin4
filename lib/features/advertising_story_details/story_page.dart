@@ -9,6 +9,9 @@ import 'package:advertisers/features/advertising_story_details/Dragabble/overlay
 import 'package:advertisers/features/advertising_story_details/VideoController.dart';
 import 'package:advertisers/features/advertising_story_details/advertiser_details_sheet.dart';
 import 'package:advertisers/features/advertising_story_details/audio_player.dart';
+import 'package:advertisers/features/advertising_story_details/vimo_video/controls_config.dart';
+import 'package:advertisers/features/advertising_story_details/vimo_video/quality_links.dart';
+import 'package:advertisers/features/advertising_story_details/vimo_video/vimeoplayer_trinity.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/request_advertise_module/view/pages/request_advertise_page.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -21,6 +24,7 @@ import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
+import 'package:better_player/better_player.dart';
 
 class StoryScreen extends StatefulWidget {
    List<Attachment>? stories;
@@ -48,6 +52,11 @@ class _StoryScreenState extends State<StoryScreen>
 
   OverlayHandlerProvider overlayHandlerProvider = Get.find();
 
+  late QualityLinks _quality;
+  var _qualityValue;
+  BetterPlayerController? _betterPlayerController;
+  ControlsConfig? config;
+
   @override
   void initState() {
     super.initState();
@@ -67,8 +76,8 @@ class _StoryScreenState extends State<StoryScreen>
 
     _animController?.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        _videoController?.dispose();
-        _videoController = null;
+        _betterPlayerController?.dispose();
+        _betterPlayerController = null;
         _animController?.stop();
         _animController?.reset();
         setState(() {
@@ -94,6 +103,7 @@ class _StoryScreenState extends State<StoryScreen>
     _pageController?.dispose();
     _animController?.dispose();
     _videoController?.dispose();
+    _betterPlayerController?.dispose();
     super.dispose();
   }
   _addVideoWithTitleOverlay(BuildContext context) {
@@ -220,17 +230,69 @@ class _StoryScreenState extends State<StoryScreen>
                       fit: BoxFit.cover,
                     );
                   } else if (story.type == "video") {
-                    if (_videoController?.value != null &&
-                        _videoController!.value.isInitialized) {
-                      return !_videoController!.value.isBuffering
-                          ? FittedBox(
-                        fit: BoxFit.cover,
-                        child: SizedBox(
+
+                    return _betterPlayerController!=null
+                        ? FittedBox(
+                      fit: BoxFit.cover,
+                      child: /*SizedBox(
                           width: _videoController!.value.size.width,
                           height: _videoController!.value.size.height,
                           child: AspectRatio(
                             aspectRatio: 16/9,
                             child: VideoPlayer(_videoController!),
+                          ),
+                        )*/
+                      SizedBox(
+                        width: Get.width,
+                        height: Get.height,
+                        child: AspectRatio(
+                          aspectRatio: 16/9,
+                          child: VimeoPlayer(id: '680589403', autoPlay: true, loaderColor: Colors.pink,betterPlayerController: _betterPlayerController),
+                        ),
+                      )
+                       /* SizedBox(
+                          width: Get.width,
+                          height: Get.height,
+                          child: AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: BetterPlayer(
+                              controller: _betterPlayerController as BetterPlayerController,
+                            ),
+                          ),
+                        ),*/
+                    )
+                        : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: CircularProgressIndicator(
+                              color: Colors.white.withOpacity(0.5)),
+                        ),
+                      ],
+                    );
+
+                   /* if (_betterPlayerController?.videoPlayerController?.value.initialized != null &&
+                        _betterPlayerController!.videoPlayerController!.value.initialized) {
+                      return ! _betterPlayerController!.videoPlayerController!.value.isBuffering
+                          ? FittedBox(
+                        fit: BoxFit.cover,
+                        child: *//*SizedBox(
+                          width: _videoController!.value.size.width,
+                          height: _videoController!.value.size.height,
+                          child: AspectRatio(
+                            aspectRatio: 16/9,
+                            child: VideoPlayer(_videoController!),
+                          ),
+                        )*//*
+                        SizedBox(
+                          width: _betterPlayerController!.videoPlayerController!.value.size!.width,
+                          height: _betterPlayerController!.videoPlayerController!.value.size!.height,
+                          child: AspectRatio(
+                            aspectRatio: 16/9,
+                            child: VimeoPlayer(id: '680589403', autoPlay: true, loaderColor: Colors.pink,betterPlayerController: _betterPlayerController),
                           ),
                         ),
                       )
@@ -259,7 +321,7 @@ class _StoryScreenState extends State<StoryScreen>
                           ),
                         ],
                       );
-                    }
+                    }*/
                   } else if (story.type == 'audio') {
                     if (audioPlayer != null && _animController != null) {
                       return AudioPlayerUrl(
@@ -315,7 +377,7 @@ class _StoryScreenState extends State<StoryScreen>
                         horizontal: 1.5,
                         vertical: 4.0,
                       ),
-                      child: UserInfo(adsListModel: widget.adsListModel!,animController: _animController,audioPlayer: audioPlayer,videoController: _videoController,),
+                      child: UserInfo(adsListModel: widget.adsListModel!,animController: _animController,audioPlayer: audioPlayer,betterPlayerController: _betterPlayerController),
                     )
                         : SizedBox(),
                   )
@@ -369,17 +431,17 @@ class _StoryScreenState extends State<StoryScreen>
             widget.animationController.forward(from: t);*/
                       });
                     }else if (story.type == 'video') {
-                      _videoController?.position.then((position) {
-                        Duration dur =
-                            _videoController!.value.duration;
+                      _betterPlayerController?.videoPlayerController?.position.then((position) {
+                        Duration? dur =
+                            _betterPlayerController!.videoPlayerController!.value.duration;
                         if (position != null &&
                             (position.inMilliseconds - (10 * 1000)) >0) {
-                          print("kkkkkkkkkkkdur=${dur.inMinutes}");
+                          print("kkkkkkkkkkkdur=${dur?.inMinutes}");
                           final double t =
                           (((position.inSeconds) - 10) /
-                              (dur.inSeconds))
+                              (dur!.inSeconds))
                               .clamp(0.0, 1.0);
-                          _videoController?.seekTo(Duration(
+                          _betterPlayerController?.videoPlayerController?.seekTo(Duration(
                               milliseconds: position.inMilliseconds -
                                   (10 * 1000)));
                           _animController?.reverse(from: t);
@@ -426,11 +488,11 @@ class _StoryScreenState extends State<StoryScreen>
                   onTap: () {
                     if (story.type == 'video') {
                       if (story.type == 'video') {
-                        if (_videoController!.value.isPlaying) {
-                          _videoController?.pause();
+                        if (_betterPlayerController!.videoPlayerController!.value!=null && _betterPlayerController!.videoPlayerController!.value.isPlaying) {
+                          _betterPlayerController!.videoPlayerController!.pause();
                           _animController?.stop();
                         } else {
-                          _videoController?.play();
+                          _betterPlayerController!.videoPlayerController!.play();
                           _animController?.forward();
                         }
                       }
@@ -513,17 +575,17 @@ class _StoryScreenState extends State<StoryScreen>
             widget.animationController.forward(from: t);*/
                           });
                         } else if (story.type == 'video') {
-                          _videoController?.position.then((position) {
-                            Duration dur =
-                                _videoController!.value.duration;
-                            if (position != null &&
+                          _betterPlayerController?.videoPlayerController?.position.then((position) {
+                            Duration? dur =
+                                _betterPlayerController!.videoPlayerController!.value.duration;
+                            if (dur!=null && position != null &&
                                 (position.inMilliseconds + (10 * 1000)) < dur.inMilliseconds) {
                               print("kkkkkkkkkkkdur=${dur.inMinutes}");
                               final double t =
                               (((position.inSeconds) + 10) /
                                   (dur.inSeconds))
                                   .clamp(0.0, 1.0);
-                              _videoController?.seekTo(Duration(
+                              _betterPlayerController?.videoPlayerController?.seekTo(Duration(
                                   milliseconds: position.inMilliseconds +
                                       (10 * 1000)));
                               _animController?.forward(from: t);
@@ -661,7 +723,7 @@ class _StoryScreenState extends State<StoryScreen>
                                      Overlay.of(context)?.insert(getEntry(context, widget.adsListModel));*/
                                     overlayHandlerProvider.isProfileOpend = true;
                                     overlayHandlerProvider.updateHidden(true, 0);
-                                    _videoController?.pause();
+                                    _betterPlayerController?.videoPlayerController?.pause();
                                     _animController?.stop();
                                      audioPlayer?.pause();
                                      overlayHandlerProvider.advertiserId = widget.adsListModel!.user!.id;
@@ -1264,17 +1326,83 @@ class _StoryScreenState extends State<StoryScreen>
     print("nextPage");
     _animController?.stop();
     _animController?.reset();
-    _videoController?.dispose();
-    _videoController = null;
+    _betterPlayerController?.dispose();
+    _betterPlayerController = null;
     switch (story!.type) {
       case 'image':
         _animController!.duration =Duration(seconds: widget.adsListModel!.attachment_preview_duration!);
         _animController?.forward();
         break;
       case 'video':
-        _videoController?.dispose();
-        _videoController = null;
-        _videoController = VideoPlayerController.network(story.path!)
+        _betterPlayerController?.dispose();
+        _betterPlayerController = null;
+
+        //Create class
+        _quality = QualityLinks('680589403');
+
+        //Initializing video controllers when receiving data from Vimeo
+        _quality.getQualitiesSync().then((value) {
+          _qualityValue = value[value.lastKey()];
+          print("url="+_qualityValue.toString());
+
+          // Create resolutions map
+          Map<String, String> resolutionsMap = {};
+          value.keys.forEach((key) {
+            String processedKey = key.split(" ")[0];
+            resolutionsMap[processedKey] = value[key];
+          });
+
+          BetterPlayerDataSource betterPlayerDataSource = BetterPlayerDataSource(
+              BetterPlayerDataSourceType.network, _qualityValue,
+              resolutions: resolutionsMap);
+
+          //print("mDuration="+betterPlayerDataSource.overriddenDuration!.toString());
+          setState(() {
+            _betterPlayerController = BetterPlayerController(
+                BetterPlayerConfiguration(
+                  autoPlay: false,
+                  looping: false,
+                  fullScreenByDefault: false,
+
+                  controlsConfiguration: BetterPlayerControlsConfiguration(showControls: false),
+                ),
+                betterPlayerDataSource: betterPlayerDataSource);
+            /*if (betterPlayerDataSource!=null &&_betterPlayerController?.videoPlayerController?.value!=null&& _betterPlayerController!.videoPlayerController!.value.initialized) {
+              _animController!.duration = _betterPlayerController!.videoPlayerController!.value.duration;
+            print("mDuration= "+_betterPlayerController!.videoPlayerController!.value.duration.toString());
+              //_videoController?.setVolume(50);
+              _betterPlayerController!.play();
+              _animController!.forward();
+            }*/
+            //_betterPlayerController!.play();
+
+
+
+          });
+          _animController!.duration = Duration(seconds: 860);
+          print("url="+_animController!.duration.toString());
+          //_betterPlayerController?.setVolume(50);
+          _betterPlayerController!.play();
+          _animController!.forward();
+
+          /*_videoController?.dispose();
+          _videoController = null;
+          _videoController = VideoPlayerController.network(_qualityValue!)
+            ..initialize().then((_) {
+              setState(() {});
+              if (_videoController!.value.isInitialized) {
+                _animController!.duration = _videoController!.value.duration;
+                print("url="+_animController!.duration.toString());
+                //_betterPlayerController?.setVolume(50);
+                _betterPlayerController!.play();
+                _animController!.forward();
+              }
+            });*/
+
+        });
+
+
+         /* _videoController = VideoPlayerController.network(story.path!)
           ..initialize().then((_) {
             setState(() {});
             if (_videoController!.value.isInitialized) {
@@ -1283,7 +1411,7 @@ class _StoryScreenState extends State<StoryScreen>
               _videoController!.play();
               _animController!.forward();
             }
-          });
+          });*/
         break;
       case 'audio':
       //videoGetxController.playButtonNotifier.value = ButtonState.paused;
@@ -1436,13 +1564,14 @@ class UserInfo extends StatelessWidget {
   final VideoController videoGetxController = Get.find();
   OverlayHandlerProvider overlayHandlerProvider = Get.find();
   AnimationController? animController;
-  VideoPlayerController? videoController;
+  //VideoPlayerController? videoController;
+  BetterPlayerController? betterPlayerController;
   AudioPlayer? audioPlayer;
 
   UserInfo({
     Key? key,
     required this.adsListModel,
-    this.videoController,
+    this.betterPlayerController,
     this.animController,
     this.audioPlayer
   }) : super(key: key);
@@ -1496,7 +1625,8 @@ class UserInfo extends StatelessWidget {
                       child: InkWell(
                         onTap: (){
                           overlayHandlerProvider.updateHidden(true, 0);
-                          videoController?.pause();
+                          betterPlayerController?.pause();
+                          //betterPlayerController?.videoPlayerController?.pause();
                           animController?.stop();
                           audioPlayer?.pause();
                           Get.toNamed('/TajerOrderDetails?requestId=${adsListModel.id}');
@@ -1568,7 +1698,7 @@ class UserInfo extends StatelessWidget {
                 onTap: (){
                   //overlayHandlerProvider.enablePip(1.77);
                   overlayHandlerProvider.updateHidden(true, 0);
-                  videoController?.pause();
+                  betterPlayerController?.pause();
                   animController?.stop();
                   audioPlayer?.pause();
                   print("sdvertiserId= ${adsListModel.id}");
