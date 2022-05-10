@@ -63,9 +63,9 @@ class ChatRecentPage extends StatelessWidget {
                 itemBuilder: (_, index) => InkWell(
                   onTap: () {
                     Get.toNamed('/ChatPage?room=${_chatController.listChat[index].room}'
-                        '&from_user=${json.encode(_chatController.listChat[index].from_user)}&to_user=${json.encode(_chatController.listChat[index].to_user)}&id=${_chatController.listChat[index].id}');
+                        '&from_user=${json.encode(_chatController.listChat[index].from_user)}&to_user=${json.encode(_chatController.listChat[index].to_user)}&id=${_chatController.listChat[index].id}&not_seen=${_chatController.listChat[index].not_seen}');
                   },
-                  child: ChatRecentWidget(lastMessage: _chatController.listChat[index].message,
+                  child: ChatRecentWidget(lastMessage: _chatController.listChat[index].message,type: _chatController.listChat[index].message_type,
                   name:_chatController.listChat[index].from_user?.id.toString()==storage.read('id').toString()?_chatController.listChat[index].to_user?.username??' ':_chatController.listChat[index].from_user?.username??' ',not_seen:_chatController.listChat[index].not_seen ,
                   timeAgo: _chatController.listChat[index].sent_from??' ',url: _chatController.listChat[index].from_user?.id.toString()==storage.read('id').toString()?_chatController.listChat[index].to_user?.image??' ':_chatController.listChat[index].from_user?.image??' ',room:_chatController.listChat[index].room??' '),
                 ),

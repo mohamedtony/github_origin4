@@ -56,7 +56,7 @@ class _ChatPageState extends State<ChatPage> {
  // ScrollController _scrollController = new ScrollController();
   ChatMessagesController _chatMessagesController=Get.put(ChatMessagesController());
   final _pusher=AppPusher();
-  int charactersLength=0;
+  int charactersLength=0; double initialMessageHeight=45,increasedMessageHeight=0,counter=0;
   FromUserModel? from;
   ToUserModel?   to;
   FromUserModel? fromUserModel;
@@ -224,7 +224,7 @@ height: 812.h-133,
        itemScrollController: _chatMessagesController.itemScrollController,
         itemPositionsListener:itemPositionsListener,
        // reverse: true,
-        initialScrollIndex: 19,
+        initialScrollIndex: 19-int.parse(Get.parameters['not_seen']??'0'),
              // controller: _scrollController,
         scrollDirection: Axis.vertical,
               itemCount: _chatMessagesController.messagesChat.length,
@@ -559,7 +559,7 @@ height: 812.h-133,
                   left: 40.w,
                   child: Container(
                     alignment: Alignment.bottomCenter,
-                    height: _chatMessagesController.replied.value==true?150:45,
+                    height: _chatMessagesController.replied.value==true?150:initialMessageHeight+increasedMessageHeight,
                     width: 244.w,
 
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(25),
@@ -899,40 +899,40 @@ height: 812.h-133,
                               ):const SizedBox(height: 0,)
                           ):const SizedBox(height:0,),
                           SizedBox(
-                            height: 45,
+                            height: initialMessageHeight+increasedMessageHeight,
                             child: RawKeyboardListener(
                               focusNode: FocusNode(),
                               onKey: (event) {
-                                 if(event.isKeyPressed(LogicalKeyboardKey.enter)) {
-                                   FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
-                                   ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
-                                   // print(">>>>>>>>>>>>>>>>>>>>>>${fromUserModel.id}");
-                                   // print(">>>>>>>>>>>>>>>>>>>>>>${toUserModel.id}");
-                                   int? from,to;
-                                   if(fromUserModel.toString()==storage.read("id",).toString()){
-                                     from=fromUserModel.id??0;
-                                     to=toUserModel.id??0;
-                                   }else if(toUserModel.id.toString()!=storage.read("id",).toString()){
-                                     from=toUserModel.id??0;
-                                     to=fromUserModel.id??0;
-                                   }
-                                   //ToUserModel toUserModel=json.decode(Get.parameters["to_user"]??"");
-                                   if( _chatMessagesController.replied.value==false){
-                                     _chatMessagesController.sendMessage(message:MessageChatModelRequest(room: room,message:chatMessageController.text,type: "text",
-                                         from_user_id: from,
-                                         to_user_id: to.toString()),itemScrollController:_chatMessagesController.itemScrollController);
-                                     chatMessageController.text='';
-                                   }else{
-                                     _chatMessagesController.sendMessage(message:MessageChatModelRequest(room: room,message:chatMessageController.text,type: "text",message_id: _chatMessagesController.messagesChat[_chatMessagesController.chatIndex.value].id,
-                                         from_user_id: from,
-                                         to_user_id: to.toString()),itemScrollController:_chatMessagesController.itemScrollController);
-                                     chatMessageController.text='';
-                                   }
+                                 // if(event.isKeyPressed(LogicalKeyboardKey.enter)) {
+                                 //   FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
+                                 //   ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
+                                 //   // print(">>>>>>>>>>>>>>>>>>>>>>${fromUserModel.id}");
+                                 //   // print(">>>>>>>>>>>>>>>>>>>>>>${toUserModel.id}");
+                                 //   int? from,to;
+                                 //   if(fromUserModel.toString()==storage.read("id",).toString()){
+                                 //     from=fromUserModel.id??0;
+                                 //     to=toUserModel.id??0;
+                                 //   }else if(toUserModel.id.toString()!=storage.read("id",).toString()){
+                                 //     from=toUserModel.id??0;
+                                 //     to=fromUserModel.id??0;
+                                 //   }
+                                 //   //ToUserModel toUserModel=json.decode(Get.parameters["to_user"]??"");
+                                 //   if( _chatMessagesController.replied.value==false){
+                                 //     _chatMessagesController.sendMessage(message:MessageChatModelRequest(room: room,message:chatMessageController.text,type: "text",
+                                 //         from_user_id: from,
+                                 //         to_user_id: to.toString()),itemScrollController:_chatMessagesController.itemScrollController);
+                                 //     chatMessageController.text='';
+                                 //   }else{
+                                 //     _chatMessagesController.sendMessage(message:MessageChatModelRequest(room: room,message:chatMessageController.text,type: "text",message_id: _chatMessagesController.messagesChat[_chatMessagesController.chatIndex.value].id,
+                                 //         from_user_id: from,
+                                 //         to_user_id: to.toString()),itemScrollController:_chatMessagesController.itemScrollController);
+                                 //     chatMessageController.text='';
+                             // }
                                 // if()
                                 // int cursorPos = chatMessage.selection.base.offset;
                                 // chatMessage.text = chatMessage + '\n' + textFin;
                                 // chatMessage.selection = TextSelection.fromPosition(TextPosition(offset: cursorPos + 1));
-                                }
+                               // }
                               },
 
                               child: Container(
@@ -956,14 +956,14 @@ height: 812.h-133,
                                     // enabled: false,
                                     maxLines: 30,
 
-                                    onTap: (){
-                                      SchedulerBinding.instance?.addPostFrameCallback((_) {
-                                        // _scrollController.animateTo(
-                                        //     _scrollController.position.maxScrollExtent,
-                                        //     duration: const Duration(milliseconds: 300),
-                                        //     curve: Curves.fastOutSlowIn);
-                                      });
-                                    },
+                                    // onTap: (){
+                                    //   SchedulerBinding.instance?.addPostFrameCallback((_) {
+                                    //     // _scrollController.animateTo(
+                                    //     //     _scrollController.position.maxScrollExtent,
+                                    //     //     duration: const Duration(milliseconds: 300),
+                                    //     //     curve: Curves.fastOutSlowIn);
+                                    //   });
+                                    // },
                                     keyboardType: TextInputType.multiline,
                                     style: TextStyle(fontSize: 14.sp),
                                     textAlign: Get.locale?.languageCode ==
@@ -973,6 +973,13 @@ height: 812.h-133,
                                     onChanged: (val){
                                       setState(() {
                                         charactersLength=val.length;
+                                        if(charactersLength%33==0){
+                                         setState(() {
+                                           counter++;
+                                           increasedMessageHeight=22.5*counter;
+                                           print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$charactersLength   $counter      $increasedMessageHeight");
+                                         });
+                                        }
                                       });
 
                                     },
@@ -1043,6 +1050,7 @@ height: 812.h-133,
     from_user_id: from,
     to_user_id: to.toString()),itemScrollController:_chatMessagesController.itemScrollController,indexOfMessage: _chatMessagesController.messagesChat.length-1);
                                              chatMessageController.text='';
+                                             _chatMessagesController.replied.value=false;
                                            }else {
                                                                                          _chatMessagesController
                                                  .messagesChat.add(
@@ -1098,6 +1106,7 @@ height: 812.h-133,
     itemScrollController: _chatMessagesController.itemScrollController);
                                                                                          chatMessageController.text = '';
     }}
+                                            _chatMessagesController.replied.value=false;
     }
                                             // _chatMessagesController.messagesChat.add(ListChatModel(message: chatMessageController.text,room: room,from_me: true,
                                             // from_user:fromUserModel,
