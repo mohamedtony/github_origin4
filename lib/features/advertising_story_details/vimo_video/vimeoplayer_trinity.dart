@@ -4,6 +4,7 @@ import 'package:advertisers/features/advertising_story_details/vimo_video/qualit
 import 'package:better_player/better_player.dart';
 import 'package:better_player/src/video_player/video_player.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:vimeoplayer_trinity/src/controls_config.dart';
 
 //Video player class
@@ -80,12 +81,16 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
           ? CircularProgressIndicator(
               color: widget.loaderColor,
               backgroundColor: widget.loaderBackgroundColor)
-          : AspectRatio(
-              aspectRatio: 16 / 9,
-              child: BetterPlayer(
-                controller: widget.betterPlayerController as BetterPlayerController,
-              ),
-            ),
+          : FittedBox(
+        fit: BoxFit.cover,
+        child: SizedBox(
+          width: Get.width,
+          height: Get.height,
+          child: BetterPlayer(
+            controller: widget.betterPlayerController as BetterPlayerController,
+          ),
+        ),
+      ),
     );
   }
 

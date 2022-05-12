@@ -227,4 +227,8 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   @GET('/favourite_ads?page={id}')
   Future<GetAdsListResponse> getMyFavoriteAds( @Path("id") int? id,@Header("Authorization") String token);
 
+  @GET('/ads/{id}/seen')
+  Future<AdvertiserProfileDetailsResponse> seenAds(@Path("id") int? id,@Header("Authorization") String token);
+
+
 }

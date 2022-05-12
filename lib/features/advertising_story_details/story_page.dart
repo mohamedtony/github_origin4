@@ -18,10 +18,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
 import 'package:better_player/better_player.dart';
@@ -43,8 +40,12 @@ class StoryScreen extends StatefulWidget {
 
 class _StoryScreenState extends State<StoryScreen>
     with SingleTickerProviderStateMixin {
+
+  //============================= page controller for PageView Builder ===========================
   PageController? _pageController;
   AnimationController? _animController;
+
+  //=======================================
   VideoPlayerController? _videoController;
   AudioPlayer? audioPlayer;
   int _currentIndex = 0;
@@ -63,20 +64,14 @@ class _StoryScreenState extends State<StoryScreen>
     _pageController = PageController();
     _animController = AnimationController(vsync: this);
 
-    print("StoryPage222");
     if(widget.stories!=null && widget.stories!.length>_currentIndex) {
       final Attachment firstStory = widget.stories![_currentIndex];
       _loadStory(story: firstStory, animateToPage: false);
     }
-    /*if(widget.stories!=null && widget.stories!.length>overlayHandlerProvider.currentPage && widget.stories![overlayHandlerProvider.currentPage]!=null) {
-      final Attachment firstStory = widget.stories![overlayHandlerProvider
-          .currentPage];
-      _loadStory(story: firstStory, animateToPage: false);
-    }*/
 
     _animController?.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        _betterPlayerController?.dispose();
+       // _betterPlayerController?.dispose();
         _betterPlayerController = null;
         _animController?.stop();
         _animController?.reset();
@@ -96,6 +91,10 @@ class _StoryScreenState extends State<StoryScreen>
         });
       }
     });
+
+    if(widget.adsListModel?.id!=null) {
+      videoGetxController.seenAds(widget.adsListModel!.id);
+    }
   }
 
   @override
@@ -103,7 +102,7 @@ class _StoryScreenState extends State<StoryScreen>
     _pageController?.dispose();
     _animController?.dispose();
     _videoController?.dispose();
-    _betterPlayerController?.dispose();
+   // _betterPlayerController?.dispose();
     super.dispose();
   }
   _addVideoWithTitleOverlay(BuildContext context) {
@@ -247,7 +246,7 @@ class _StoryScreenState extends State<StoryScreen>
                         height: Get.height,
                         child: AspectRatio(
                           aspectRatio: 16/9,
-                          child: VimeoPlayer(id: '680589403', autoPlay: true, loaderColor: Colors.pink,betterPlayerController: _betterPlayerController),
+                          child: VimeoPlayer(id: /*'680589403'*/story.video_id, autoPlay: true, loaderColor: Colors.pink,betterPlayerController: _betterPlayerController),
                         ),
                       )
                        /* SizedBox(
@@ -1326,7 +1325,7 @@ class _StoryScreenState extends State<StoryScreen>
     print("nextPage");
     _animController?.stop();
     _animController?.reset();
-    _betterPlayerController?.dispose();
+   // _betterPlayerController?.dispose();
     _betterPlayerController = null;
     switch (story!.type) {
       case 'image':
@@ -1334,16 +1333,16 @@ class _StoryScreenState extends State<StoryScreen>
         _animController?.forward();
         break;
       case 'video':
-        _betterPlayerController?.dispose();
+       // _betterPlayerController?.dispose();
         _betterPlayerController = null;
 
         //Create class
-        _quality = QualityLinks('680589403');
+        _quality = QualityLinks(/*'680589403'*/story.video_id);
 
         //Initializing video controllers when receiving data from Vimeo
         _quality.getQualitiesSync().then((value) {
           _qualityValue = value[value.lastKey()];
-          print("url="+_qualityValue.toString());
+          print("url="+value.toString());
 
           // Create resolutions map
           Map<String, String> resolutionsMap = {};
@@ -1363,7 +1362,8 @@ class _StoryScreenState extends State<StoryScreen>
                   autoPlay: false,
                   looping: false,
                   fullScreenByDefault: false,
-
+                    //aspectRatio: 1/1,
+                    fit: BoxFit.cover,
                   controlsConfiguration: BetterPlayerControlsConfiguration(showControls: false),
                 ),
                 betterPlayerDataSource: betterPlayerDataSource);
@@ -1379,7 +1379,8 @@ class _StoryScreenState extends State<StoryScreen>
 
 
           });
-          _animController!.duration = Duration(seconds: 860);
+          print("mmduration="+videoGetxController.videoDuration.toString());
+          _animController!.duration = Duration(seconds: videoGetxController.videoDuration);
           print("url="+_animController!.duration.toString());
           //_betterPlayerController?.setVolume(50);
           _betterPlayerController!.play();
