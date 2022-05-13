@@ -1,3 +1,4 @@
+import 'package:advertisers/features/advertiser_profile_order_page/VideoController2.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/controller/AdvertiserProfileOrderController.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/features/advertising_story_details/VideoController.dart';
@@ -23,7 +24,7 @@ class ReportSheet extends StatefulWidget {
 }
 
 class _ReportSheetState extends State<ReportSheet> {
-  VideoController advertiserProfileController=Get.find();
+  VideoController2 advertiserProfileController=Get.find();
   @override
   void initState() {
     // TODO: implement initState

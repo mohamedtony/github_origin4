@@ -20,7 +20,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:video_player/video_player.dart';
 import 'package:better_player/better_player.dart';
 
 class StoryScreen extends StatefulWidget {
@@ -46,7 +45,7 @@ class _StoryScreenState extends State<StoryScreen>
   AnimationController? _animController;
 
   //=======================================
-  VideoPlayerController? _videoController;
+  //VideoPlayerController? _videoController;
   AudioPlayer? audioPlayer;
   int _currentIndex = 0;
   final VideoController videoGetxController = Get.find();
@@ -101,94 +100,8 @@ class _StoryScreenState extends State<StoryScreen>
   void dispose() {
     _pageController?.dispose();
     _animController?.dispose();
-    _videoController?.dispose();
    // _betterPlayerController?.dispose();
     super.dispose();
-  }
-  _addVideoWithTitleOverlay(BuildContext context) {
-
-    OverlayService().addVideoTitleOverlay2(context,  DraggableScrollableSheet(
-      //maxChildSize: 0.8,
-      //minChildSize: 100.0,
-      maxChildSize: 0.8,
-      initialChildSize: 0.4,
-      expand: false,
-      snap: true,
-      builder: (context, scrollController) {
-        return AdvertiserDetailsSheet(
-            scrollController: scrollController
-        );
-      },
-    ));
-  }
-/*  final _scaffoldKey = new GlobalKey<ScaffoldState>();
-  void _showModalSheet() {
-    showModalBottomSheet(
-        context: context,
-        builder: (builder) {
-          return new Container(
-            color: Colors.greenAccent,
-            child: new Center(
-              child: new Text("Hi ModalSheet"),
-            ),
-          );
-        });
-  }*/
-/*  void _showBottomSheet() {
-    *//*setState(() {
-      _showPersBottomSheetCallBack = null;
-    });*//*
-
-    _scaffoldKey.currentState
-        ?.showBottomSheet((context) {
-      return new Container(
-        height: 300.0,
-        color: Colors.greenAccent,
-        child: new Center(
-          child: new Text("Hi BottomSheet"),
-        ),
-      );
-    })
-        .closed
-        .whenComplete(() {
-     *//* if (mounted) {
-        setState(() {
-          _showPersBottomSheetCallBack = _showBottomSheet;
-        });
-      }*//*
-    });
-  }*/
-
-  OverlayEntry getEntry(context, AdsListModel? adsListModel) {
-
-    overlayHandlerProvider.sheetId = adsListModel!.id!;
-    OverlayEntry? entry;
-
-    entry = OverlayEntry(
-      opaque: false,
-      maintainState: true,
-      builder: (_) => DraggableScrollableSheet(
-        //maxChildSize: 0.8,
-        minChildSize: 0.0,
-        //maxChildSize: 0.9,
-        //maxChildSize: 0.4,
-        initialChildSize: 0.6,
-
-       snap: false,
-       expand: false,
-       // maxChildSize: 0.444,
-        builder: (context, scrollController) {
-          scrollController.addListener(() {
-            print("dragablr");
-          });
-          return AdvertiserDetailsSheet(
-              scrollController: scrollController,
-              adsListModel:adsListModel
-          );
-        },
-      ).paddingZero,
-    );
-    return entry;
   }
 
   @override
@@ -246,19 +159,9 @@ class _StoryScreenState extends State<StoryScreen>
                         height: Get.height,
                         child: AspectRatio(
                           aspectRatio: 16/9,
-                          child: VimeoPlayer(id: /*'680589403'*/story.video_id, autoPlay: true, loaderColor: Colors.pink,betterPlayerController: _betterPlayerController),
+                          child: VimeoPlayer(id: '680589403'/*story.video_id*/, autoPlay: true, loaderColor: Colors.pink,betterPlayerController: _betterPlayerController),
                         ),
                       )
-                       /* SizedBox(
-                          width: Get.width,
-                          height: Get.height,
-                          child: AspectRatio(
-                            aspectRatio: 16 / 9,
-                            child: BetterPlayer(
-                              controller: _betterPlayerController as BetterPlayerController,
-                            ),
-                          ),
-                        ),*/
                     )
                         : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -272,55 +175,6 @@ class _StoryScreenState extends State<StoryScreen>
                         ),
                       ],
                     );
-
-                   /* if (_betterPlayerController?.videoPlayerController?.value.initialized != null &&
-                        _betterPlayerController!.videoPlayerController!.value.initialized) {
-                      return ! _betterPlayerController!.videoPlayerController!.value.isBuffering
-                          ? FittedBox(
-                        fit: BoxFit.cover,
-                        child: *//*SizedBox(
-                          width: _videoController!.value.size.width,
-                          height: _videoController!.value.size.height,
-                          child: AspectRatio(
-                            aspectRatio: 16/9,
-                            child: VideoPlayer(_videoController!),
-                          ),
-                        )*//*
-                        SizedBox(
-                          width: _betterPlayerController!.videoPlayerController!.value.size!.width,
-                          height: _betterPlayerController!.videoPlayerController!.value.size!.height,
-                          child: AspectRatio(
-                            aspectRatio: 16/9,
-                            child: VimeoPlayer(id: '680589403', autoPlay: true, loaderColor: Colors.pink,betterPlayerController: _betterPlayerController),
-                          ),
-                        ),
-                      )
-                          : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                                color: Colors.white.withOpacity(0.5)),
-                          ),
-                        ],
-                      );
-                    } else {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                                color: Colors.white.withOpacity(0.5)),
-                          ),
-                        ],
-                      );
-                    }*/
                   } else if (story.type == 'audio') {
                     if (audioPlayer != null && _animController != null) {
                       return AudioPlayerUrl(
@@ -333,20 +187,6 @@ class _StoryScreenState extends State<StoryScreen>
                 child: Text('لا يوجد مرفقات'),
               ),
             ),
-            /*InkWell(
-              onTap: (){
-                overlayHandlerProvider.enablePip(1.77);
-              },
-              child: Image.asset(
-                'images/pausedown10.png',
-                height: 100,
-                width: 100,
-                fit: BoxFit.fill,
-                color: videoGetxController.clickedIndex == 0
-                    ? Colors.white
-                    : Colors.blue,
-              ),
-            ),*/
             Positioned(
               top: overlayHandlerProvider.inPipMode?10.0:40,
               left: 2.0,
@@ -425,9 +265,6 @@ class _StoryScreenState extends State<StoryScreen>
                             });
                           }
                         });
-                        /*  final double t = (position.inSeconds / audioDuration).clamp(0.0, 1.0);
-            print("tttttttt+ ${t}");
-            widget.animationController.forward(from: t);*/
                       });
                     }else if (story.type == 'video') {
                       _betterPlayerController?.videoPlayerController?.position.then((position) {
@@ -468,9 +305,6 @@ class _StoryScreenState extends State<StoryScreen>
                     height: overlayHandlerProvider.inPipMode?65:100,
                     width: overlayHandlerProvider.inPipMode?65:100,
                     fit: BoxFit.fill,
-                    /* color: videoGetxController.clickedIndex == 0
-                        ? Colors.white
-                        : Colors.blue,*/
                   ),
                 ),
               ),
@@ -632,56 +466,12 @@ class _StoryScreenState extends State<StoryScreen>
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-
-                    /* Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Image.asset(
-                        'images/small_screen.png',
-                        height: 25,
-                        width: 30,
-                        fit: BoxFit.fill,
-                        color:  videoGetxController.clickedIndex==0?Colors.white:Colors.blue,
-                      ),
-                      Image.asset(
-                        'images/small_screen.png',
-                        height: 25,
-                        width: 30,
-                        fit: BoxFit.fill,
-                        color:  videoGetxController.clickedIndex==0?Colors.white:Colors.blue,
-                      ),
-                    ],
-                  ),*/
                     Container(
                       //height: 130,
                       //padding: EdgeInsets.only(top: 6),
                       // color: Colors.white,
                       child: Column(
                         children: <Widget>[
-                          /*Container(
-                          width: 62,
-                          height: 62,
-                          margin: EdgeInsets.all(4),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: SvgPicture.asset(
-                                'images/filter_edit.svg',
-                                fit: BoxFit.fill,
-                                //color: Colors.white,
-                                height: 24.0,
-                                width: 30.0,
-                              ),
-                            ),)
-                          ,decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [AppColors.beginColor, AppColors.endColor],
-                          ),
-                        ),),*/
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -711,15 +501,6 @@ class _StoryScreenState extends State<StoryScreen>
                                 alignment: Alignment.bottomRight,
                                 child: InkWell(
                                   onTap: (){
-
-                                     //overlayHandlerProvider.disablePip();
-
-
-                                     /*if(overlayHandlerProvider.isBottomAdsShown && overlayHandlerProvider.sheetId==widget.adsListModel!.id!){
-                                       return;
-                                     }
-                                     overlayHandlerProvider.isBottomAdsShown = true;
-                                     Overlay.of(context)?.insert(getEntry(context, widget.adsListModel));*/
                                     overlayHandlerProvider.isProfileOpend = true;
                                     overlayHandlerProvider.updateHidden(true, 0);
                                     _betterPlayerController?.videoPlayerController?.pause();
@@ -728,19 +509,6 @@ class _StoryScreenState extends State<StoryScreen>
                                      overlayHandlerProvider.advertiserId = widget.adsListModel!.user!.id;
                                     overlayHandlerProvider.adId = widget.adsListModel!.id;
                                      widget.onSheetCliked(context,9);
-                                     //Overlay.of(context)?.insert(getEntry(context, widget.adsListModel));
-                                    //showBottomSheetForRequest2(Get.overlayContext!);
-                                    //_addVideoWithTitleOverlay(context);
-                                    //  widget.onSheetCliked(context,9);
-                                    /*_addVideoWithTitleOverlay(context);
-                                    showMaterialModalBottomSheet(
-                                      context: context,
-                                      builder: (context) => AdvertiserDetailsSheet(),
-                                    );*/
-                                    //_showModalSheet();
-                                    //_addVideoWithTitleOverlay(context);
-                                    /* Navigator.of(context)
-                                        .push(MaterialPageRoute(builder: (context) => AdvertiserDetailsSheet()));*/
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only( left: 10.0,bottom:5.0),
@@ -771,21 +539,10 @@ class _StoryScreenState extends State<StoryScreen>
                                         }else{
                                           videoGetxController.clickedIndex.value = 0;
                                         }
-                                        //if()
-                                        //videoGetxController.isCommentVisible.value = true;
-                                        //widget.onClicked();
-/*
-                                        videoGetxController.clickedIndex.value = 0;
-                                        Navigator.pop(context,[_pageController,_animController,_videoController,widget.stories]);
-*/
                                       },
                                       child: Container(
                                         width: 35.0,
                                         height: 35.0,
-                                        /*decoration: new BoxDecoration(
-                                        color: Colors.grey[300],
-                                        shape: BoxShape.circle,
-                                      ),*/
                                         decoration:
                                         videoGetxController.clickedIndex == 0
                                             ? BoxDecoration(
@@ -819,10 +576,6 @@ class _StoryScreenState extends State<StoryScreen>
                                         ),
                                       ),
                                     ),
-                                    /*Text(
-                                      "تعليق",
-                                      style: TextStyle(color: Color(0xff4286D2)),
-                                    )*/
                                   ],
                                 ),
                                 Column(
@@ -871,10 +624,6 @@ class _StoryScreenState extends State<StoryScreen>
                                         ),
                                       ),
                                     ),
-                                    /*Text(
-                                      "مشاركة",
-                                      style: TextStyle(color: Color(0xff4286D2)),
-                                    )*/
                                   ],
                                 ),
                                 Column(
@@ -901,20 +650,7 @@ class _StoryScreenState extends State<StoryScreen>
                                         width: 35.0,
                                         height: 35.0,
                                         padding: EdgeInsets.all(10),
-                                        decoration:
-                                        /*videoGetxController.clickedIndex == 2
-                                            ? BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          gradient: LinearGradient(
-                                            begin: Alignment.topCenter,
-                                            end: Alignment.bottomCenter,
-                                            colors: [
-                                              AppColors.beginColor,
-                                              AppColors.endColor
-                                            ],
-                                          ),
-                                        )
-                                            :*/ new BoxDecoration(
+                                        decoration: new BoxDecoration(
                                           color: Colors.grey[300],
                                           shape: BoxShape.circle,
                                         ),
@@ -923,18 +659,9 @@ class _StoryScreenState extends State<StoryScreen>
                                           height: 20,
                                           width: 20,
                                           fit: BoxFit.fill,
-                                          /*color:
-                                          videoGetxController.clickedIndex ==
-                                              2
-                                              ? Colors.white
-                                              : null,*/
                                         ),
                                       ),
                                     ),
-                                    /*Text(
-                                      "مفضلة",
-                                      style: TextStyle(color: Color(0xff4286D2)),
-                                    )*/
                                   ],
                                 ),
                                 Column(
@@ -977,25 +704,9 @@ class _StoryScreenState extends State<StoryScreen>
                                                   if(widget.adsListModel?.likes!=null && widget.adsListModel!.likes!>=0) {
                                                     widget.adsListModel!.likes = (widget.adsListModel!.likes!)+1;
                                                   }
-                                                  /*if(widget.adsListModel?.dislikes!=null && widget.adsListModel!.dislikes!>0){
-                                                  widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) -1;
-                                                }*/
-                                                });
-
-                                              }
-                                              }
-
-                                            /*else if((widget.adsListModel?.is_liked!=null && !widget.adsListModel!.is_liked!)&& (widget.adsListModel?.is_disliked!=null && !widget.adsListModel!.is_disliked!)){
-                                                videoGetxController.likeAds(
-                                                    widget.adsListModel!.id!);
-                                                widget.adsListModel!.is_liked = true;
-                                                setState(() {
-                                                  if(widget.adsListModel?.likes!=null && widget.adsListModel!.likes!>=0) {
-                                                    widget.adsListModel!.likes = (widget.adsListModel!.likes!)+1;
-                                                  }
                                                 });
                                               }
-                                            }*/
+                                              }
                                           },
                                           child: Image.asset(
                                             widget.adsListModel!.is_liked!=null && widget.adsListModel!.is_liked!?'images/like_story.png':'images/like_unfilled.png',
@@ -1007,10 +718,6 @@ class _StoryScreenState extends State<StoryScreen>
                                         ),
                                       ),
                                     ),
-                                    /*Text(
-                                        "${widget.adsListModel?.likes??0}",
-                                      style: TextStyle(color: Color(0xff4286D2)),
-                                    )*/
                                   ],
                                 ),
                                 Column(
@@ -1054,22 +761,8 @@ class _StoryScreenState extends State<StoryScreen>
                                                   if(widget.adsListModel?.dislikes!=null && widget.adsListModel!.dislikes!>=0) {
                                                     widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) +1;
                                                   }
-                                                 /* if(widget.adsListModel?.likes!=null && widget.adsListModel!.likes!>0){
-                                                    widget.adsListModel!.likes = (widget.adsListModel!.likes!) -1;
-                                                  }*/
                                                 });
-
                                               }
-                                              /*else if((widget.adsListModel?.is_liked!=null && !widget.adsListModel!.is_liked!)&& (widget.adsListModel?.is_disliked!=null && !widget.adsListModel!.is_disliked!)){
-                                                videoGetxController.dislikeAd(
-                                                    widget.adsListModel!.id!);
-                                                widget.adsListModel!.is_disliked = true;
-                                                setState(() {
-                                                  if(widget.adsListModel?.dislikes!=null && widget.adsListModel!.dislikes!>=0) {
-                                                    widget.adsListModel!.dislikes = (widget.adsListModel!.dislikes!) +1;
-                                                  }
-                                                });
-                                              }*/
                                             }
                                           },
                                           child: Image.asset(
@@ -1082,10 +775,6 @@ class _StoryScreenState extends State<StoryScreen>
                                         ),
                                       ),
                                     ),
-                                    /*Text(
-                                      "${widget.adsListModel?.dislikes??0}",
-                                      style: TextStyle(color: Color(0xff4286D2)),
-                                    )*/
                                   ],
                                 ),
                               ],
@@ -1093,11 +782,9 @@ class _StoryScreenState extends State<StoryScreen>
                           ),
                           Visibility(
                               visible:videoGetxController.clickedIndex.value==0?true:false,
-                              //replacement: SizedBox(),
                               child:  Container(
                                 color: Colors.white,
                                 child: Row(
-                                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Expanded(
@@ -1117,10 +804,6 @@ class _StoryScreenState extends State<StoryScreen>
                                             Container(
                                               width: 50.0,
                                               height: 50.0,
-                                              /* decoration: new BoxDecoration(
-                                          color: Colors.grey[300],
-                                          shape: BoxShape.circle,
-                                        ),*/
                                               child: Align(
                                                 alignment: Alignment.center,
                                                 child: InkWell(
@@ -1200,47 +883,6 @@ class _StoryScreenState extends State<StoryScreen>
       ):Container(child: Text("لا يوجد مرفق"),),
     ),);
   }
-  void showBottomSheetForRequest2(BuildContext context,){
-   // Get.
-    /*Get.bottomSheet(AdvertiserDetailsSheet(
-        //scrollController: scrollController
-    ),);*/
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      barrierColor: Colors.transparent,
-      clipBehavior: Clip.hardEdge,
-      //barrierColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(10.0),
-            topRight: const Radius.circular(10.0)),
-      ),
-      //clipBehavior: Clip.antiAliasWithSaveLayer,
-      builder: (BuildContext context) {
-        return Overlay(
-          initialEntries: [
-            OverlayEntry(opaque:true,builder: (context){
-              return DraggableScrollableSheet(
-                //maxChildSize: 0.8,
-                //minChildSize: 100.0,
-                //maxChildSize: 0.9,
-                initialChildSize: 0.4,
-                maxChildSize: 0.444,
-                expand: false,
-                builder: (context, scrollController) {
-                  return AdvertiserDetailsSheet(
-                      scrollController: scrollController
-                  );
-                },
-              );
-            })
-          ],
-        );
-      },
-    );
-  }
 
   void _onTapDown(TapDownDetails details, Attachment story) {
     videoGetxController.clickedIndex.value =-1;
@@ -1273,25 +915,11 @@ class _StoryScreenState extends State<StoryScreen>
             _currentIndex += 1;
             _loadStory(story: widget.stories![_currentIndex]);
           } else {
-            // Out of bounds - loop story
-            // You can also Navigator.of(context).pop() here
-            // _currentIndex = 0;
-            //_loadStory(story: widget.stories[_currentIndex]);
             widget.pageController1?.nextPage(
                 duration: Duration(milliseconds: 1000), curve: Curves.ease);
           }
         });
       } else {
-        /*if (story.media == MediaType.video) {
-          if (_videoController!.value.isPlaying) {
-            _videoController?.pause();
-            _animController?.stop();
-          } else {
-            _videoController?.play();
-            _animController?.forward();
-          }
-        }*/
-
         if (story.type == 'video' || story.type == 'image') {
           if(story.type == 'image'){
             //_videoController?.play();
@@ -1302,15 +930,6 @@ class _StoryScreenState extends State<StoryScreen>
           } else {
             videoGetxController.isVisible.value = true;
           }
-
-          /*_videoController?.position.then((position){
-            Duration dur = _videoController!.value.duration;
-            print("kkkkkkkkkkkdur=${dur.inMinutes}");
-            final double t = (((position!.inSeconds)+10) / (dur.inSeconds)).clamp(0.0, 1.0);
-            _videoController?.seekTo(position);
-            _animController?.forward(from: t);
-          });*/
-
         } else {
 
           videoGetxController.isVisible.value = true;
@@ -1337,10 +956,10 @@ class _StoryScreenState extends State<StoryScreen>
         _betterPlayerController = null;
 
         //Create class
-        _quality = QualityLinks(/*'680589403'*/story.video_id);
+        _quality = QualityLinks('680589403'/*story.video_id*/);
 
         //Initializing video controllers when receiving data from Vimeo
-        _quality.getQualitiesSync().then((value) {
+        _quality.getQualitiesSync("home").then((value) {
           _qualityValue = value[value.lastKey()];
           print("url="+value.toString());
 
@@ -1364,20 +983,9 @@ class _StoryScreenState extends State<StoryScreen>
                   fullScreenByDefault: false,
                     //aspectRatio: 1/1,
                     fit: BoxFit.cover,
-                  controlsConfiguration: BetterPlayerControlsConfiguration(showControls: false),
+                  controlsConfiguration: BetterPlayerControlsConfiguration(showControls: false,enableQualities: true),
                 ),
                 betterPlayerDataSource: betterPlayerDataSource);
-            /*if (betterPlayerDataSource!=null &&_betterPlayerController?.videoPlayerController?.value!=null&& _betterPlayerController!.videoPlayerController!.value.initialized) {
-              _animController!.duration = _betterPlayerController!.videoPlayerController!.value.duration;
-            print("mDuration= "+_betterPlayerController!.videoPlayerController!.value.duration.toString());
-              //_videoController?.setVolume(50);
-              _betterPlayerController!.play();
-              _animController!.forward();
-            }*/
-            //_betterPlayerController!.play();
-
-
-
           });
           print("mmduration="+videoGetxController.videoDuration.toString());
           _animController!.duration = Duration(seconds: videoGetxController.videoDuration);
@@ -1385,74 +993,11 @@ class _StoryScreenState extends State<StoryScreen>
           //_betterPlayerController?.setVolume(50);
           _betterPlayerController!.play();
           _animController!.forward();
-
-          /*_videoController?.dispose();
-          _videoController = null;
-          _videoController = VideoPlayerController.network(_qualityValue!)
-            ..initialize().then((_) {
-              setState(() {});
-              if (_videoController!.value.isInitialized) {
-                _animController!.duration = _videoController!.value.duration;
-                print("url="+_animController!.duration.toString());
-                //_betterPlayerController?.setVolume(50);
-                _betterPlayerController!.play();
-                _animController!.forward();
-              }
-            });*/
-
         });
-
-
-         /* _videoController = VideoPlayerController.network(story.path!)
-          ..initialize().then((_) {
-            setState(() {});
-            if (_videoController!.value.isInitialized) {
-              _animController!.duration = _videoController!.value.duration;
-              _videoController?.setVolume(50);
-              _videoController!.play();
-              _animController!.forward();
-            }
-          });*/
         break;
       case 'audio':
-      //videoGetxController.playButtonNotifier.value = ButtonState.paused;
-      //Duration? dur = await videoGetxController.play(story.url);
-      /// print("mDuration= ${dur?.inMinutes}");
-      /*audioPlayer?.release();
-           audioPlayer?.dispose();*/
         audioPlayer = null;
         audioPlayer = AudioPlayer();
-        /*audioPlayer = null;
-       audioPlayer?.release();
-       audioPlayer?.dispose();
-      audioPlayer = AudioPlayer();*/
-        /*     audioPlayer ??= AudioPlayer();
-      audioPlayer?.setUrl(story.url);
-      audioPlayer?.onDurationChanged.listen((Duration duration) {
-        _animController!.duration =duration;
-        audioPlayer?.play(story.url);
-        _animController!.forward();
-        //_animController?.forward(from: 10);
-      });*/
-        /*audioPlayer?.onAudioPositionChanged.listen((Duration position) async {
-        setState(() {
-          _animController?.duration = position;
-          _animController!.forward(from: position.);
-        });
-      });*/
-        //print("mDuration= ${duration}");
-
-        /*_animController!.duration = Duration(minutes: 3);
-        _animController!.forward();*/
-        /*_videoController = VideoPlayerController.network(story.url)
-          ..initialize().then((_) {
-            setState(() {});
-            if (_videoController!.value.isInitialized) {
-              _animController!.duration = _videoController!.value.duration;
-              _videoController!.play();
-              _animController!.forward();
-            }
-          });*/
         break;
     }
     if (animateToPage) {
@@ -1463,36 +1008,6 @@ class _StoryScreenState extends State<StoryScreen>
       );
     }
   }
-}
-
-class StickyPageWrapper extends StatelessWidget {
-  final Widget child;
-  const StickyPageWrapper({Key? key, required this.child}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        child,
-        Positioned(
-          left: 0,
-          bottom: 0,
-          child: Hero(
-            tag: 'bottom_sheet',
-            child: Container(
-              color: Colors.orange,
-              height: size.height / 4,
-              width: size.width,
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
 }
 
 class AnimatedBar extends StatelessWidget {
@@ -1719,94 +1234,4 @@ class UserInfo extends StatelessWidget {
       ),
     );
   }
-
 }
-
-/*
-class Modal extends StatelessWidget {
-  const Modal({
-    Key? key,
-    required this.visible,
-    required this.onClose,
-    required this.modal,
-    required this.child,
-  }) : super(key: key);
-
-  final Widget child;
-  final Widget modal;
-  final bool visible;
-  final VoidCallback onClose;
-
-  @override
-  Widget build(BuildContext context) {
-    return Barrier(
-      visible: visible,
-      onClose: onClose,
-      child: PortalTarget(
-        visible: visible,
-        closeDuration: kThemeAnimationDuration,
-        portalFollower: TweenAnimationBuilder<double>(
-          duration: kThemeAnimationDuration,
-          curve: Curves.easeOut,
-          tween: Tween(begin: 0, end: visible ? 1 : 0),
-          builder: (context, progress, child) {
-            return Transform(
-              transform: Matrix4.translationValues(0, (1 - progress) * 50, 0),
-              child: Opacity(
-                opacity: progress,
-                child: child,
-              ),
-            );
-          },
-          child: Center(child: modal),
-        ),
-        child: child,
-      ),
-    );
-  }
-}
-
-class Barrier extends StatelessWidget {
-  const Barrier({
-    Key? key,
-    required this.onClose,
-    required this.visible,
-    required this.child,
-  }) : super(key: key);
-
-  final Widget child;
-  final VoidCallback onClose;
-  final bool visible;
-
-  @override
-  Widget build(BuildContext context) {
-    return PortalTarget(
-      visible: visible,
-      closeDuration: kThemeAnimationDuration,
-      portalFollower: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: onClose,
-        child: TweenAnimationBuilder<Color>(
-          duration: kThemeAnimationDuration,
-          tween: ColorTween(
-            begin: Colors.transparent,
-            end: visible ? Colors.black54 : Colors.transparent,
-          ),
-          builder: (context, color, child) {
-            return ColoredBox(color: color);
-          },
-        ),
-      ),
-      child: child,
-    );
-  }
-}
-
-/// Non-nullable version of ColorTween.
-class ColorTween extends Tween<Color> {
-  ColorTween({required Color begin, required Color end})
-      : super(begin: begin, end: end);
-
-  @override
-  Color lerp(double t) => Color.lerp(begin, end, t)!;
-}*/

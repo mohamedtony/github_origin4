@@ -11,8 +11,9 @@ import 'package:advertisers/app_core/network/models/FromUserModel.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersFromModel.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersModel.dart';
 import 'package:advertisers/app_core/network/models/ToUserModel.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/overlay_handler2.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/report_sheet.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
-import 'package:advertisers/features/advertising_story_details/report_sheet.dart';
 import 'package:advertisers/features/find_advertise_page/find_advertise_controller.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/request_advertise_module/controller/find_order_advertisers_controller.dart';
@@ -47,20 +48,20 @@ class AdvertiserDetailsSheet extends StatefulWidget {
 }
 
 class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
-  OverlayHandlerProvider overlayHandlerProvider = Get.find();
+  OverlayHandlerProvider2 overlayHandlerProvider2 = Get.find();
 
   @override
   void initState() {
     super.initState();
-    overlayHandlerProvider.getProvile();
+    overlayHandlerProvider2.getProvile();
   }
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<OverlayHandlerProvider>(
-        init: overlayHandlerProvider,
+    return GetBuilder<OverlayHandlerProvider2>(
+        init: overlayHandlerProvider2,
         builder: (controller) {
-          return overlayHandlerProvider.adsListModelModel != null
+          return overlayHandlerProvider2.adsListModelModel != null
               ? Scaffold(
             body: Container(
               color: Colors.white,
@@ -104,12 +105,12 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                 children: [
                                   Stack(
                                     children: [
-                                      overlayHandlerProvider
+                                      overlayHandlerProvider2
                                           .adsListModelModel
                                           ?.user
                                           ?.image !=
                                           null &&
-                                          overlayHandlerProvider
+                                          overlayHandlerProvider2
                                               .adsListModelModel!
                                               .user!
                                               .image!
@@ -119,12 +120,12 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                             left: 14.0, top: 10.0),
                                         child: InkWell(
                                           onTap: () {
-                                            /* overlayHandlerProvider.updateHidden(true, 0);
+                                            /* overlayHandlerProvider2.updateHidden(true, 0);
                                             videoController?.pause();
                                             animController?.stop();
                                             audioPlayer?.pause();
                                             print("sdvertiserId= ${adsListModel.id}");*/
-                                            // Get.toNamed('/AdvertiserProfileOrderPage',arguments:GetAdvertisersModel(id: overlayHandlerProvider.adsListModelModel!.user?.id));
+                                            // Get.toNamed('/AdvertiserProfileOrderPage',arguments:GetAdvertisersModel(id: overlayHandlerProvider2.adsListModelModel!.user?.id));
                                           },
                                           child: CircleAvatar(
                                             radius: 25.0,
@@ -132,7 +133,7 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                             Colors.grey[300],
                                             backgroundImage:
                                             CachedNetworkImageProvider(
-                                              overlayHandlerProvider
+                                              overlayHandlerProvider2
                                                   .adsListModelModel!
                                                   .user!
                                                   .image!,
@@ -152,13 +153,13 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                               'images/user.png'),
                                         ),
                                       ),
-                                      if (overlayHandlerProvider
+                                      if (overlayHandlerProvider2
                                           .adsListModelModel
                                           ?.user
                                           ?.country
                                           ?.image !=
                                           null &&
-                                          overlayHandlerProvider
+                                          overlayHandlerProvider2
                                               .adsListModelModel!
                                               .user!
                                               .country!
@@ -172,7 +173,7 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                             Colors.grey[300],
                                             backgroundImage:
                                             CachedNetworkImageProvider(
-                                              overlayHandlerProvider
+                                              overlayHandlerProvider2
                                                   .adsListModelModel!
                                                   .user!
                                                   .country!
@@ -187,7 +188,7 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                       margin: EdgeInsets.only(
                                           right: 6.0, bottom: 8),
                                       child: Text(
-                                        '${overlayHandlerProvider.adsListModelModel?.user?.username ?? ''}',
+                                        '${overlayHandlerProvider2.adsListModelModel?.user?.username ?? ''}',
                                         style: TextStyle(
                                             color: AppColors
                                                 .advertiseNameColor,
@@ -221,7 +222,7 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                               }
                                               client!
                                                   .likeAdvertiser(
-                                                  overlayHandlerProvider
+                                                  overlayHandlerProvider2
                                                       .adsListModelModel!
                                                       .user!
                                                       .id,
@@ -236,19 +237,19 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                                       value.data!
                                                           .is_liked ==
                                                           1) {
-                                                    overlayHandlerProvider
+                                                    overlayHandlerProvider2
                                                         .isLikedObs
                                                         .value = true;
-                                                    overlayHandlerProvider
+                                                    overlayHandlerProvider2
                                                         .adsListModelModel!
                                                         .is_liked = true;
                                                     showMyToast(
                                                         "تم متابعةالمعلن بنجاح !");
                                                   } else {
-                                                    overlayHandlerProvider
+                                                    overlayHandlerProvider2
                                                         .isLikedObs
                                                         .value = false;
-                                                    overlayHandlerProvider
+                                                    overlayHandlerProvider2
                                                         .adsListModelModel!
                                                         .is_liked = false;
                                                     showMyToast(
@@ -261,7 +262,7 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                               padding: EdgeInsets.only(
                                                   left: 2.0, right: 2.0),
                                               child:
-                                              overlayHandlerProvider
+                                              overlayHandlerProvider2
                                                   .isLikedObs
                                                   .isTrue
                                                   ? SvgPicture.asset(
@@ -283,7 +284,7 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                         ),
                                         Obx(() => Container(
                                           margin:
-                                          overlayHandlerProvider
+                                          overlayHandlerProvider2
                                               .in_blackList
                                               .value ==
                                               1
@@ -308,7 +309,7 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                               }
                                               client!
                                                   .blacklistAdvertiser(
-                                                  overlayHandlerProvider
+                                                  overlayHandlerProvider2
                                                       .adsListModelModel!
                                                       .user!
                                                       .id,
@@ -325,24 +326,24 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                                       value.data!
                                                           .in_blacklist ==
                                                           1) {
-                                                    overlayHandlerProvider
+                                                    overlayHandlerProvider2
                                                         .in_blackList
                                                         .value = 1;
-                                                    //overlayHandlerProvider.adsListModelModel!.is = 1;
+                                                    //overlayHandlerProvider2.adsListModelModel!.is = 1;
                                                     showMyToast(
                                                         "تم إظهار المعلن بنجاح !");
                                                   } else {
-                                                    overlayHandlerProvider
+                                                    overlayHandlerProvider2
                                                         .in_blackList
                                                         .value = 0;
-                                                    //overlayHandlerProvider.in_blackList.value  = 0;
+                                                    //overlayHandlerProvider2.in_blackList.value  = 0;
                                                     showMyToast(
                                                         "تم إخفاء المعلن بنجاح !");
                                                   }
                                                 }
                                               });
                                             },
-                                            child: overlayHandlerProvider
+                                            child: overlayHandlerProvider2
                                                 .in_blackList
                                                 .value ==
                                                 0
@@ -372,10 +373,10 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                             print(
                                                 "UserId=${user.username}");
                                             print(
-                                                "UserIrrd=${overlayHandlerProvider.adsListModelModel!.user!.id}");
+                                                "UserIrrd=${overlayHandlerProvider2.adsListModelModel!.user!.id}");
                                             Get.toNamed(
-                                                '/ChatPage?room=${overlayHandlerProvider.adsListModelModel!.user!.id}-${user.id}'
-                                                    '&from_user=${json.encode(FromUserModel(id: user.id, username: user.username, image: user.image))}&to_user=${json.encode(ToUserModel(id: overlayHandlerProvider.adsListModelModel!.user!.id, image: overlayHandlerProvider.adsListModelModel!.user!.image, username: overlayHandlerProvider.adsListModelModel!.user!.username))}&id=${0}');
+                                                '/ChatPage?room=${overlayHandlerProvider2.adsListModelModel!.user!.id}-${user.id}'
+                                                    '&from_user=${json.encode(FromUserModel(id: user.id, username: user.username, image: user.image))}&to_user=${json.encode(ToUserModel(id: overlayHandlerProvider2.adsListModelModel!.user!.id, image: overlayHandlerProvider2.adsListModelModel!.user!.image, username: overlayHandlerProvider2.adsListModelModel!.user!.username))}&id=${0}');
                                           },
                                           child: Container(
                                             padding: EdgeInsets.only(
@@ -469,15 +470,15 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                   ),
                                   onRatingUpdate: (rating) {
                                     print(rating);
-                                    if (overlayHandlerProvider
+                                    if (overlayHandlerProvider2
                                         .adsListModelModel?.id !=
                                         null) {
                                       print("idddd= " +
-                                          overlayHandlerProvider
+                                          overlayHandlerProvider2
                                               .adsListModelModel!.id
                                               .toString());
-                                      overlayHandlerProvider.rateAds(
-                                          overlayHandlerProvider
+                                      overlayHandlerProvider2.rateAds(
+                                          overlayHandlerProvider2
                                               .adsListModelModel!.id!,
                                           rating);
                                     }
@@ -558,15 +559,15 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                 return;
                               }
                               print(
-                                  "token${overlayHandlerProvider.adsListModelModel!.id}");
+                                  "token${overlayHandlerProvider2.adsListModelModel!.id}");
                               client!
                                   .in_front(
-                                  overlayHandlerProvider
+                                  overlayHandlerProvider2
                                       .adsListModelModel!.id,
                                   "Bearer " + myToken)
                                   .then((value) {
                                 print(
-                                    "token${overlayHandlerProvider.adsListModelModel!.id}");
+                                    "token${overlayHandlerProvider2.adsListModelModel!.id}");
                                 // Logger().i(value.status.toString());
                                 Get.back();
                                 if (value.status == 200) {
@@ -672,15 +673,15 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                 return;
                               }
                               print(
-                                  "token${overlayHandlerProvider.adsListModelModel!.id}");
+                                  "token${overlayHandlerProvider2.adsListModelModel!.id}");
                               client!
                                   .notify(
-                                  overlayHandlerProvider
+                                  overlayHandlerProvider2
                                       .adsListModelModel!.id,
                                   "Bearer " + myToken)
                                   .then((value) {
                                 print(
-                                    "token${overlayHandlerProvider.adsListModelModel!.id}");
+                                    "token${overlayHandlerProvider2.adsListModelModel!.id}");
                                 // Logger().i(value.status.toString());
                                 Get.back();
                                 if (value.status == 200) {
@@ -796,13 +797,13 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                               Expanded(
                                 child: InkWell(
                                   onTap: () {
-                                    if (overlayHandlerProvider.adId !=
+                                    if (overlayHandlerProvider2.adId !=
                                         null) {
                                       print("idddd= " +
-                                          overlayHandlerProvider.adId
+                                          overlayHandlerProvider2.adId
                                               .toString());
-                                      overlayHandlerProvider.favoriteAds(
-                                          overlayHandlerProvider.adId!);
+                                      overlayHandlerProvider2.favoriteAds(
+                                          overlayHandlerProvider2.adId!);
                                     }
                                   },
                                   child: Container(
@@ -821,13 +822,13 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                               Obx(
                                     () => InkWell(
                                   onTap: () async {
-                                    if (overlayHandlerProvider.adId !=
+                                    if (overlayHandlerProvider2.adId !=
                                         null) {
                                       print("idddd= " +
-                                          overlayHandlerProvider.adId
+                                          overlayHandlerProvider2.adId
                                               .toString());
-                                      overlayHandlerProvider.favoriteAds(
-                                          overlayHandlerProvider.adId!);
+                                      overlayHandlerProvider2.favoriteAds(
+                                          overlayHandlerProvider2.adId!);
                                     }
                                   },
                                   child: Container(
@@ -836,7 +837,7 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                     margin:
                                     EdgeInsets.only(left: 10, top: 2.0,),
                                     child:
-                                    overlayHandlerProvider
+                                    overlayHandlerProvider2
                                         .isAdFavorite
                                         .isTrue
                                         ? SvgPicture.asset(
@@ -874,7 +875,7 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                             String url = await FirebaseDynamicLinkService
                                 .createDynamicLink(
                                 true,
-                                overlayHandlerProvider
+                                overlayHandlerProvider2
                                     .adsListModelModel!.user!.id!,
                                 -1,
                                 true);
@@ -960,13 +961,13 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
   void dispose() {
     // TODO: implement dispose
     print("disposeeeeee");
-    overlayHandlerProvider.sheetId = -1;
-    overlayHandlerProvider.isBottomAdsShown = false;
-    overlayHandlerProvider.isProfileOpend = false;
+    overlayHandlerProvider2.sheetId = -1;
+    overlayHandlerProvider2.isBottomAdsShown = false;
+    overlayHandlerProvider2.isProfileOpend = false;
 
     super.dispose();
     Future.delayed(Duration.zero, () async {
-      overlayHandlerProvider.updateHidden(false, 300);
+      overlayHandlerProvider2.updateHidden(false, 300);
     });
   }
 
@@ -990,7 +991,7 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
           builder: (context, scrollController) {
             return ReportSheet(
                 scrollController: scrollController,
-                id: overlayHandlerProvider.adId);
+                id: overlayHandlerProvider2.adId);
           },
         );
       },

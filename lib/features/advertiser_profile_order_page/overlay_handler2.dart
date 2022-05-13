@@ -27,6 +27,7 @@ class OverlayHandlerProvider2  extends GetxController{
   var in_blackList = 0.obs;
   var isInfront = false.obs;
   var isNotifiable = false.obs;
+  var isAdFavorite = false.obs;
 
   enablePip(double aspect) {
     inPipMode = true;
@@ -45,25 +46,25 @@ class OverlayHandlerProvider2  extends GetxController{
   get aspectRatio => _aspectRatio;
 
   insertOverlay(BuildContext context, OverlayEntry overlay) {
-    /*if(overlayEntry != null) {
+    if(overlayEntry != null) {
       overlayEntry?.remove();
-    }*/
+    }
     overlayEntry = null;
     inPipMode = false;
     Overlay.of(context,/*rootOverlay: true,*/)?.insert(overlay);
     overlayEntry = overlay;
   }
-   insertOverlay2(BuildContext context, OverlayEntry overlay) {
-     /*if(overlayEntry != null) {
+  insertOverlay2(BuildContext context, OverlayEntry overlay) {
+    /*if(overlayEntry != null) {
        overlayEntry?.remove();
      }
      overlayEntry = null;
      inPipMode = false;*/
 
-     Overlay.of(context)?.insert(/*overlayEntry!,above:*/ overlay,above: overlayEntry);
+    Overlay.of(context)?.insert(/*overlayEntry!,above:*/ overlay,above: overlayEntry);
 
-     //overlayEntry = overlay;
-   }
+    //overlayEntry = overlay;
+  }
 
   removeOverlay(BuildContext context) {
     if(overlayEntry != null) {
@@ -74,7 +75,7 @@ class OverlayHandlerProvider2  extends GetxController{
 
   void updateHidden(bool bool,double height) {
     isHidden = bool;
-   // Constants.VIDEO_TITLE_HEIGHT_PIP = height;
+    // Constants.VIDEO_TITLE_HEIGHT_PIP = height;
     update();
   }
 
@@ -82,8 +83,9 @@ class OverlayHandlerProvider2  extends GetxController{
     EasyLoading.show();
     isLikedObs.value=false;
     in_blackList.value=0;
-     isInfront.value = false;
-     isNotifiable.value = false;
+    isInfront.value = false;
+    isNotifiable.value = false;
+    isAdFavorite.value = false;
 
     String myToken  = await storage.read("token");
     print("in addddd");
@@ -106,6 +108,9 @@ class OverlayHandlerProvider2  extends GetxController{
           if(adsListModelModel?.user?.in_blacklist!=null && adsListModelModel!.user!.in_blacklist! ){
             in_blackList.value = 1;
           }
+          if(adsListModelModel?.is_favourite!=null && adsListModelModel!.is_favourite!){
+            isAdFavorite.value = true;
+          }
 
           if(adsListModelModel?.user?.is_liked!=null && adsListModelModel!.user!.is_liked! ){
             isLikedObs.value = true;
@@ -118,12 +123,12 @@ class OverlayHandlerProvider2  extends GetxController{
   }
 
   Future<void> rateAds(int id,double rate) async {
-   String myToken = await storage.read("token");
+    String myToken = await storage.read("token");
     if(myToken==null ) {
       showMyToast("مشكلة غير معروفة !");
       return;
     }
-   print("token");
+    print("token");
     client!.rateAds(id,rate,"Bearer "+myToken).then((value) {
       print("token");
       Logger().i(value.status.toString());
@@ -140,7 +145,7 @@ class OverlayHandlerProvider2  extends GetxController{
       showMyToast("مشكلة غير معروفة !");
       return;
     }
-    if(adsListModelModel?.is_favourite!=null &&adsListModelModel!.is_favourite!){
+    /*if(adsListModelModel?.is_favourite!=null &&adsListModelModel!.is_favourite!){
       Fluttertoast.showToast(
           msg: "تم إضافة هذا الاعلان إلى المفضلة بنجاح !",
           toastLength: Toast.LENGTH_LONG,
@@ -151,7 +156,7 @@ class OverlayHandlerProvider2  extends GetxController{
           //fontFamily: 'Arabic-Regular',
           fontSize: 16.0);
       return;
-    }
+    }*/
     client!.favouriteAd(id,"Bearer "+myToken!).then((value) {
       print("token");
       Logger().i(value.status.toString());
@@ -166,6 +171,8 @@ class OverlayHandlerProvider2  extends GetxController{
               textColor: Colors.white,
               //fontFamily: 'Arabic-Regular',
               fontSize: 16.0);
+          isAdFavorite.value = true;
+          adsListModelModel?.is_favourite = true;
         }else{
           Fluttertoast.showToast(
               msg: "تم حذف هذا الاعلان من المفضلة بنجاح !",
@@ -176,6 +183,8 @@ class OverlayHandlerProvider2  extends GetxController{
               textColor: Colors.white,
               //fontFamily: 'Arabic-Regular',
               fontSize: 16.0);
+          isAdFavorite.value = false;
+          adsListModelModel?.is_favourite = false;
         }
 
 
@@ -187,15 +196,15 @@ class OverlayHandlerProvider2  extends GetxController{
   }
 
   void showMyToast(String msg,/*bool error,BuildContext context*/) {
-       FocusManager.instance.primaryFocus?.unfocus();
-       Fluttertoast.showToast(
-         msg: msg,
-         toastLength: Toast.LENGTH_LONG,
-         gravity: ToastGravity.BOTTOM,
-         timeInSecForIosWeb: 1,
-         backgroundColor:Colors.grey,
-         textColor: Colors.white,
-         //fontFamily: 'Arabic-Regular',
-         fontSize: 16.0);
+    FocusManager.instance.primaryFocus?.unfocus();
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor:Colors.grey,
+        textColor: Colors.white,
+        //fontFamily: 'Arabic-Regular',
+        fontSize: 16.0);
   }
 }
