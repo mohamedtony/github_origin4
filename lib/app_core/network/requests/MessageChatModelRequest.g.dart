@@ -17,6 +17,7 @@ MessageChatModelRequest _$MessageChatModelRequestFromJson(
       image: json['image'] as String?,
       type: json['type'] as String?,
       message_id: json['message_id'] as int?,
+      replied_come_from: json['replied_come_from'] as int?,
     );
 
 Map<String, dynamic> _$MessageChatModelRequestToJson(
@@ -29,5 +30,6 @@ Map<String, dynamic> _$MessageChatModelRequestToJson(
       'image': instance.image,
       'type': instance.type,
       'from_user_id': instance.from_user_id,
+      'replied_come_from': instance.replied_come_from,
       'message_id': instance.message_id,
     };

@@ -26,6 +26,9 @@ class ChatMessagesController extends GetxController {
   var tapped=false.obs;
   var replied=false.obs;
   var chatIndex = 0.obs;
+  var chatDeleteIndex = 0.obs;
+  var deleteFlag=false.obs;
+  var lastIndex = 0.obs;
   var repliedIndex=0.obs;
   var typeOfMessage=''.obs;
   var savedFile = File(' ').obs;
@@ -175,7 +178,7 @@ class ChatMessagesController extends GetxController {
           path: 'send_message',
           fromJson: (json) => SendMessageResponse.fromJson(json),
           json: {"token": "Bearer  $token","message":message.message,"type":message.type,
-            "to_user_id":message.to_user_id,"from_user_id":message.from_user_id,"message_id":message.message_id},
+            "to_user_id":message.to_user_id,"from_user_id":message.from_user_id,"message_id":message.message_id,"replied_come_from":message.replied_come_from},
           onSuccess: (res) {
             if (EasyLoading.isShow) {
               EasyLoading.dismiss();
@@ -277,6 +280,47 @@ class ChatMessagesController extends GetxController {
               EasyLoading.dismiss();
             }
            // isStar.value = res.data!.starred??0;
+          },
+          onError: (err, res) {
+            if (EasyLoading.isShow) {
+              EasyLoading.dismiss();
+            }
+            Get.snackbar(
+              "خطأ",
+              res.message.toString(),
+              icon: const Icon(Icons.person, color: Colors.red),
+              backgroundColor: Colors.yellow,
+              snackPosition: SnackPosition.BOTTOM,);
+          });
+    } catch (e) {
+      if (EasyLoading.isShow) {
+        EasyLoading.dismiss();
+      }
+      Get.snackbar(
+        "خطأ",
+        "حدث خطأ ما",
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
+
+    }
+
+  }
+
+  void deleteMessageForMe(int messageId) async {
+
+    EasyLoading.show();
+
+    try {
+      repo.delete<StarMessageResponse>(
+          path: 'chat/$messageId/delete_for_me',
+          fromJson: (json) => StarMessageResponse.fromJson(json),
+          json: {"token": "Bearer  $token",},
+          onSuccess: (res) {
+            if (EasyLoading.isShow) {
+              EasyLoading.dismiss();
+            }
+            // isStar.value = res.data!.starred??0;
           },
           onError: (err, res) {
             if (EasyLoading.isShow) {

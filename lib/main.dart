@@ -108,7 +108,7 @@ void main() async{
   //client.getTasks().then((it) => logger.i(it));
 
   await GetStorage.init();
-  await Firebase.initializeApp();
+ // await Firebase.initializeApp();
 
   auth = FirebaseAuth.instance;
 

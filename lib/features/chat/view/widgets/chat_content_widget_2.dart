@@ -46,7 +46,8 @@ class ChatContentWidget2 extends StatelessWidget {
         required this.chatUser,
         required this.message,
         required this.type,required this.downloadsPath,
-        required this.chatMessagesController,required this.itemScrollController})
+        required this.chatMessagesController,
+        required this.itemScrollController})
       : super(key: key);
   CustomPopupMenuController? menuController = CustomPopupMenuController();
   @override
@@ -54,6 +55,108 @@ class ChatContentWidget2 extends StatelessWidget {
     //currentIndex=index;
     alertContext = context;
     print('%%%%%%%%%%%%%%${chatMessagesController.isStar}');
+    DateTime date=DateTime.fromMillisecondsSinceEpoch(chatMessagesController
+        .messagesChat[chatMessagesController.chatIndex.value]
+        .sent_at_timestamp!*1000);
+    //int year=date.year;
+    int timeDiference= DateTime.now().difference(date).inMinutes;
+    AlertDialog alert = AlertDialog(
+      backgroundColor: Colors.black12,
+
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(32.0))),
+      title: SizedBox(
+        height: timeDiference>30?119:179,
+        width: 250.w,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: timeDiference>30?60:120,
+              width: 250.w,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(color: Colors.black38,
+                  borderRadius: BorderRadius.circular(32)),
+              child: Column(
+                children: [
+                  timeDiference<30? TextButton(onPressed: (){
+                    // chatMessagesController.replied.value = false;
+                    //
+                    // DateTime date=DateTime.fromMillisecondsSinceEpoch(chatMessagesController
+                    //     .messagesChat[chatMessagesController.chatIndex.value]
+                    //     .sent_at_timestamp!*1000);
+                    // //int year=date.year;
+                    // int timeDiference= DateTime.now().difference(date).inMinutes;
+                    // print("timeDeferrenceVVVVVVVVVVV  $timeDiference $date");
+                    // if(timeDiference<30) {
+                      // CoolAlert.show(
+                      //     context: alertContext,
+                      //     type: CoolAlertType.warning,
+                      //     text: 'هل تريد بالفعل حذف هذه الرسالة ؟',
+                      //     onConfirmBtnTap: () {
+                            if (index == chatMessagesController.chatDeleteIndex.value) {
+      if(index==chatMessagesController.messagesChat.length-1){
+      chatMessagesController.lastIndex.value=index-1;
+      chatMessagesController.chatIndex.value=index-1;
+      chatMessagesController.messagesChat.removeAt(index);
+      chatMessagesController.deleteMessage(message.id ?? 0);
+      }else {
+        chatMessagesController.messagesChat.removeAt(index);
+        chatMessagesController.deleteMessage(message.id ?? 0);
+      }  }
+                            chatMessagesController.deleteFlag.value=false;
+                            Navigator.pop(alertContext);
+                    //      // },
+                    //      // onCancelBtnTap: (){
+                    //         Navigator.pop(alertContext);
+                    //       //});
+                    //
+                    // }else{
+                    //   Get.snackbar(
+                    //     "تنبيه",
+                    //     "يجب ان يمر نصف ساعة على الرسالة اولا",
+                    //     icon: const Icon(Icons.person, color: Colors.red),
+                    //     backgroundColor: Colors.yellow,
+                    //     snackPosition: SnackPosition.BOTTOM,
+                    //   );
+                    // }
+                  },
+                      child:Text('الحذف لدى الجميع',style: TextStyle(color: Colors.redAccent),)):SizedBox(),
+                  TextButton(onPressed: (){
+                    if (index == chatMessagesController.chatDeleteIndex.value) {
+                      if(index==chatMessagesController.messagesChat.length-1){
+                        chatMessagesController.lastIndex.value=index-1;
+                        chatMessagesController.chatIndex.value=index-1;
+                        chatMessagesController.messagesChat.removeAt(index);
+                        chatMessagesController.deleteMessageForMe(message.id ?? 0);
+                      }else{
+                      chatMessagesController.messagesChat.removeAt(index);
+                      chatMessagesController.deleteMessageForMe(message.id ?? 0);
+
+                    }}
+                   // chatMessagesController.deleteFlag.value=false;
+                    Navigator.pop(alertContext);
+                  },
+                      child:Text('الحذف لدى فقط',style: TextStyle(color: Colors.redAccent))),
+                ],
+              ),
+            ),
+            SizedBox(height: 10,),
+            Container(
+              width:250.w,
+              decoration: BoxDecoration(color: Colors.black38,
+                  borderRadius: BorderRadius.circular(32)),
+              child: TextButton(onPressed: (){
+                Navigator.pop(alertContext);
+              },
+                  child:Text('الغاء',style: TextStyle(color: Colors.lightBlue),)),
+            ),
+          ],
+        ),
+      ),
+      //content: Text("This is an alert message."),
+
+    );
 
 
     final button = PopupMenuButton(
@@ -68,47 +171,55 @@ class ChatContentWidget2 extends StatelessWidget {
         //   child: Icon(Icons.event),),
         itemBuilder: (_) {
           chatMessagesController.chatIndex.value=index;
+          chatMessagesController.chatDeleteIndex.value=index;
         return <PopupMenuItem<String>>[
           PopupMenuItem<String>(
               child: TextButton(
                   onPressed: () {
+                    //chatMessagesController.deleteFlag.value=true;
                     Navigator.pop(alertContext);
-                    // DateTime currentPhoneDate = DateTime.now(); //DateTime
+
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                        return alert;
+                        },
+                        );
+
+
+                    // chatMessagesController.replied.value = false;
                     //
-                    // Timestamp myTimeStamp = Timestamp.fromDate(currentPhoneDate);
-                    chatMessagesController.replied.value = false;
-
-                    DateTime date=DateTime.fromMillisecondsSinceEpoch(chatMessagesController
-                        .messagesChat[chatMessagesController.chatIndex.value]
-                        .sent_at_timestamp!*1000);
-                    //int year=date.year;
-                    int timeDiference= DateTime.now().difference(date).inMinutes;
-                    print("timeDeferrenceVVVVVVVVVVV  $timeDiference $date");
-                    if(timeDiference>30) {
-                      CoolAlert.show(
-                          context: alertContext,
-                          type: CoolAlertType.warning,
-                          text: 'هل تريد بالفعل حذف هذه الرسالة ؟',
-                          onConfirmBtnTap: () {
-                            if (index == chatMessagesController.chatIndex.value) {
-                              chatMessagesController.deleteMessage(message.id ?? 0);
-                              chatMessagesController.messagesChat.removeAt(index);
-                            }
-                            Navigator.pop(alertContext);
-                          },
-                          onCancelBtnTap: (){
-                            Navigator.pop(alertContext);
-                          });
-
-                    }else{
-                      Get.snackbar(
-                        "تنبيه",
-                        "يجب ان يمر نصف ساعة على الرسالة اولا",
-                        icon: const Icon(Icons.person, color: Colors.red),
-                        backgroundColor: Colors.yellow,
-                        snackPosition: SnackPosition.BOTTOM,
-                      );
-                    }
+                    // DateTime date=DateTime.fromMillisecondsSinceEpoch(chatMessagesController
+                    //     .messagesChat[chatMessagesController.chatIndex.value]
+                    //     .sent_at_timestamp!*1000);
+                    // //int year=date.year;
+                    // int timeDiference= DateTime.now().difference(date).inMinutes;
+                    // print("timeDeferrenceVVVVVVVVVVV  $timeDiference $date");
+                    // if(timeDiference>30) {
+                    //   CoolAlert.show(
+                    //       context: alertContext,
+                    //       type: CoolAlertType.warning,
+                    //       text: 'هل تريد بالفعل حذف هذه الرسالة ؟',
+                    //       onConfirmBtnTap: () {
+                    //         if (index == chatMessagesController.chatIndex.value) {
+                    //           chatMessagesController.deleteMessage(message.id ?? 0);
+                    //           chatMessagesController.messagesChat.removeAt(index);
+                    //         }
+                    //         Navigator.pop(alertContext);
+                    //       },
+                    //       onCancelBtnTap: (){
+                    //         Navigator.pop(alertContext);
+                    //       });
+                    //
+                    // }else{
+                    //   Get.snackbar(
+                    //     "تنبيه",
+                    //     "يجب ان يمر نصف ساعة على الرسالة اولا",
+                    //     icon: const Icon(Icons.person, color: Colors.red),
+                    //     backgroundColor: Colors.yellow,
+                    //     snackPosition: SnackPosition.BOTTOM,
+                    //   );
+                    // }
 
                   },
                   child: Row(
@@ -675,12 +786,13 @@ class ChatContentWidget2 extends StatelessWidget {
                                               ? Text('you')
                                               : Text(
                                               message.to_user?.username ??
-                                                  ' '):message.from_me == true?message.from_user?.id==storage.read("id",)&&chatUser == ChatUser.receiver?Text(
-                                              message.from_user?.username ??
-                                                  ' '):message.from_me == true?message.from_user?.id==storage.read("id",)&&chatUser == ChatUser.sender?
-                                               Text(
+                                                  ' '):message.from_me == true&&message.replied_message?.replied_come_from==storage.read("id",)?Text('You'):Text(
                                               message.to_user?.username ??
-                                                  ' '):Text('You'):SizedBox():SizedBox(),
+                                                  ' '),
+                                              // :message.from_me == true?message.from_user?.id==storage.read("id",)&&chatUser == ChatUser.sender?
+                                              //  Text(
+                                              // message.to_user?.username ??
+                                              //     ' '),
                                           InkWell(
                                             onTap: (){
                                               if((chatMessagesController.replied.value==true ?chatMessagesController.messagesChat[chatMessagesController.chatIndex.value].message ?? ' ':message.replied_message?.message??'').contains('http')==true){
@@ -1647,6 +1759,8 @@ class ChatContentWidget2 extends StatelessWidget {
 
     return button;
   }
+
+
 
 
 }

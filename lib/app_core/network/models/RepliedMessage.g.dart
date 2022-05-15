@@ -13,12 +13,14 @@ RepliedMessage _$RepliedMessageFromJson(Map<String, dynamic> json) =>
       message: json['message'] as String?,
       replied_message: json['replied_message'] as String?,
       sent_at: json['sent_at'] as String?,
+      replied_come_from: json['replied_come_from'] as int?,
       sent_from: json['sent_from'] as String?,
     );
 
 Map<String, dynamic> _$RepliedMessageToJson(RepliedMessage instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'replied_come_from': instance.replied_come_from,
       'message_type': instance.message_type,
       'message': instance.message,
       'sent_at': instance.sent_at,
