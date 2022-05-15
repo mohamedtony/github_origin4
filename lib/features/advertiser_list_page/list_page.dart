@@ -37,7 +37,7 @@ class ListPage extends StatelessWidget {
           leadingWidth: 56.0,
           title:      InkWell(
             onTap: (){
-              Get.toNamed('/NotificationsPage');
+              Get.toNamed('/NotificationsScreen');
             },
             child: Center(
               child: Container(

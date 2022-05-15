@@ -19,12 +19,14 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+var chatPageOpen=0.obs;
 class ChatMessagesController extends GetxController {
   ItemScrollController itemScrollController=ItemScrollController();
   var messagesChat=<ListChatModel>[].obs;
   static dio.MultipartFile? photo;
   var tapped=false.obs;
   var replied=false.obs;
+
   var chatIndex = 0.obs;
   var chatDeleteIndex = 0.obs;
   var deleteFlag=false.obs;

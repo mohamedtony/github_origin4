@@ -6,6 +6,7 @@ import 'package:advertisers/app_core/FirebaseDynamicLinkes.dart';
 import 'package:advertisers/app_core/app_localization/app_localization.dart';
 import 'package:advertisers/app_core/network/service.dart';
 import 'package:advertisers/app_core/routes/routes.dart';
+import 'package:advertisers/features/chat/controller/chat_messages_controller.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -177,6 +178,7 @@ class _MyAppState extends State<MyApp> {
         print(message.notification.toString()??' ');
         print("DDDDDDDDDDDDDDDDDD${message.data.toString()??' '}");
        late BuildContext? context1 = navigatorKey.currentState?.overlay?.context;
+       if(chatPageOpen==0){
         await showDialog(
             context:context1?? context,
             builder: (BuildContext context) {
@@ -224,7 +226,7 @@ class _MyAppState extends State<MyApp> {
         //   );
         // }
 
-      });
+      }});
 
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
         print('AAAAAAAAAAAAAAAAAAAAAAAAAA${message.data}');
@@ -232,6 +234,13 @@ class _MyAppState extends State<MyApp> {
         if(message.data["model_type"]=="ads_request") {
           Get.toNamed('/AdvertiserDetailsPage?requestId=${message
               .data["model_id"]}');
+        }else if(message.data["model_type"]=="chat"){
+          // Get.toNamed('/ChatPage?requestId=${message
+          //     .data["model_id"]}');
+        }else if(message.data["model_type"]=="ads"){
+          Get.toNamed('/HomePage');
+        }  else if(message.data["model_type"]=="comment"){
+          Get.toNamed('/CommentsPage');
         }
         //   Navigator.pushNamed(
         //     context,

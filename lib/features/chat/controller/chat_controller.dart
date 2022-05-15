@@ -24,6 +24,7 @@ RefreshController(initialRefresh: true);
     super.onInit();
   }
 var currentIndex=0.obs;
+
 int currentPage = 1;
 
 late int totalPages=0;

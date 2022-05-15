@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math' as math;
 import 'package:advertisers/app_core/network/models/RepliedMessage.dart';
 import 'package:advertisers/app_core/network/requests/MessageChatModelRequest.dart';
+import 'package:advertisers/features/chat/controller/chat_messages_controller.dart';
 import 'package:advertisers/features/chat/view/widgets/AudioChatMessage.dart';
 import 'package:advertisers/features/chat/view/widgets/chat_content_widget_2.dart';
 import 'package:intl/intl.dart';
@@ -41,6 +42,8 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:social_media_recorder/audio_encoder_type.dart';
 import 'package:social_media_recorder/screen/social_media_recorder.dart';
 
+import '../../controller/chat_messages_controller.dart';
+
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
 
@@ -75,6 +78,7 @@ class _ChatPageState extends State<ChatPage> {
       ItemPositionsListener.create();
   @override
   void initState() {
+
     getApplicationDocumentsDirectory()
         .then((value) => filePathForNetworkView = value.toString());
     myId = storage.read(
@@ -150,7 +154,7 @@ class _ChatPageState extends State<ChatPage> {
         //  }
       });
     });
-
+    chatPageOpen.value=1;
     super.initState();
   }
 
@@ -1985,6 +1989,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void dispose() {
     //_pusher.disconnect();
+  chatPageOpen.value=0;
     super.dispose();
   }
 
