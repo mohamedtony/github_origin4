@@ -1,12 +1,20 @@
+import 'dart:convert';
+
+import 'package:advertisers/app_core/network/models/FromUserModel.dart';
+import 'package:advertisers/app_core/network/models/ListChatModel.dart';
 import 'package:advertisers/app_core/network/models/MessageChatModel.dart';
+import 'package:advertisers/app_core/network/models/RepliedMessage.dart';
+import 'package:advertisers/app_core/network/models/ToUserModel.dart';
 import 'package:advertisers/app_core/network/requests/MessageChatModelRequest.dart';
 import 'package:advertisers/features/chat/controller/chat_messages_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:map_picker/map_picker.dart';
 import 'package:location/location.dart'as location;
 import 'package:geocoding/geocoding.dart';
@@ -117,6 +125,60 @@ class _LocationShareState extends State<LocationShare> {
                   ),
                 ),
                 onPressed: () {
+                  FromUserModel? fromUserModel;
+                  ToUserModel? toUserModel;
+                  fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
+                  toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));
+                  if( _chatMessagesController.replied.value==false){
+                    _chatMessagesController.messagesChat.add(ListChatModel(
+                        message_type: "location",
+                        message: '${widget.latitude}-${widget.longitude}',
+                        to_user: toUserModel,
+                        from_user: fromUserModel,
+                        from_me: true,
+                        uploaded: false,
+                        room: widget.room, sent_at: DateFormat("dd MMM yyyy hh:mm:ss").format(DateTime.now()) ,//DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now()) ,
+                        //id:event.));
+                        id: int.parse(Get.parameters["id"].toString())));
+
+                  }else {
+
+                    _chatMessagesController
+                        .messagesChat.add(
+                        ListChatModel(
+                            message_type: "location",
+                            message: '${widget.latitude}-${widget.longitude}',
+                            to_user: toUserModel,
+                            from_user: fromUserModel,
+                            sent_at: DateFormat("dd MMM yyyy hh:mm:ss").format(DateTime.now()),
+                            from_me: true,
+                            uploaded: false,
+                            room: widget.room,
+                            replied_message: RepliedMessage(
+                                id: _chatMessagesController
+                                    .messagesChat[_chatMessagesController
+                                    .chatIndex.value]
+                                    .id??0,
+                                message: _chatMessagesController
+                                    .messagesChat[_chatMessagesController
+                                    .chatIndex.value]
+                                    .message,
+                                message_type: _chatMessagesController
+                                    .messagesChat[_chatMessagesController
+                                    .chatIndex.value]
+                                    .message_type,
+                                replied_message: '${widget.latitude}-${widget.longitude}')));
+
+                  }
+                  SchedulerBinding.instance?.addPostFrameCallback((_) {
+                    _chatMessagesController.itemScrollController?.scrollTo(
+                        index: _chatMessagesController.messagesChat.length - 1,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOutCubic);
+
+                    // _scrollController.animateTo(_height * index,
+                    //     duration: const Duration(seconds: 2), curve: Curves.easeIn);
+                  });
                   _chatMessagesController.sendMessage(message:MessageChatModelRequest(room: widget.room,message:'${widget.latitude}-${widget.longitude}',type: "location",
                       from_user_id: widget.fromUserId,
                       to_user_id: widget.toUserId),);

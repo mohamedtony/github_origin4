@@ -2,6 +2,7 @@ import 'package:advertisers/app_core/network/models/AdsListModel.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/controller/AdvertiserProfileOrderController.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/overlay_handler2.dart';
 import 'package:advertisers/main.dart';
+import 'package:advertisers/shared/loading_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,7 +16,7 @@ class VideoController2 extends GetxController {
 
 //  List<Story> get videoList => _videoList.value;
   late TextEditingController commentController;
-
+  TextEditingController? reportController;
   //RxList<GetAdvertisersModel> advertisersModel = <GetAdvertisersModel>[].obs;
   //final Rx<List<AdsListModel>> adslistList = Rx<List<AdsListModel>>([]);
   RxList<AdsListModel> adslistList = <AdsListModel>[].obs;
@@ -28,8 +29,11 @@ class VideoController2 extends GetxController {
 
   late PageController pageController;
   String? myToken ;
+  int videoDuration = 0;
+
   @override
   Future<void> onInit() async {
+    reportController = TextEditingController();
     myToken = await storage.read("token");
     getAdsList(advertiserProfileOrderController.selectedAdvertiseId);
     super.onInit();
@@ -46,6 +50,17 @@ class VideoController2 extends GetxController {
     // TODO: implement onReady
     print("onReady");
     super.onReady();
+  }
+  Future<void>  seenAds(int? id)async{
+    client!.seenAds(id,"Bearer "+myToken!).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        // Get.back();
+        print("copon seen ${id}");
+        Logger().i(value.data.toString());
+      }
+    });
   }
   Future<void> commentAds(int? id) async {
     if(commentController.text==null || commentController.text.isEmpty){
@@ -200,7 +215,7 @@ class VideoController2 extends GetxController {
       if(value.status==200){
         if(value.data?.liked!=null && value.data!.liked==1){
           Fluttertoast.showToast(
-              msg: "تم إضافة هذاالاعلان إلى المفضلة بنجاح !",
+              msg: "تم إضافة هذا الاعلان إلى المفضلة بنجاح !",
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
@@ -210,7 +225,7 @@ class VideoController2 extends GetxController {
               fontSize: 16.0);
         }else{
           Fluttertoast.showToast(
-              msg: "تم حذف هذاالاعلان من المفضلة بنجاح !",
+              msg: "تم حذف هذا الاعلان من المفضلة بنجاح !",
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
@@ -266,6 +281,36 @@ class VideoController2 extends GetxController {
         textColor: Colors.white,
         //fontFamily: 'Arabic-Regular',
         fontSize: 16.0);
+  }
+
+  void onReportSavedClicked(BuildContext context,int id) {
+    if(myToken==null ) {
+      showMyToast("مشكلة غير معروفة !");
+      return;
+    }else if(reportController?.text==null){
+      showMyToast("من فضلك يرجى كتابة سبب البلاغ !");
+      return;
+    }else if(reportController!.text.isEmpty){
+      showMyToast("من فضلك يرجى كتابة سبب البلاغ !");
+      return;
+    }
+    LoadingDailog().showLoading(context);
+    client!.reportAds(id,reportController!.text,"Bearer "+myToken!).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        showMyToast("تم إرسال بلاغك بنجاح !");
+        Get.back();
+        Get.back();
+      }
+    });
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    reportController?.dispose();
+    super.onClose();
   }
 }
 

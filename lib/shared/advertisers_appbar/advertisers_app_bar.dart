@@ -195,7 +195,7 @@ class AppBarWidget extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey[500]!,
-              blurRadius: 20.0,
+              blurRadius: 4.0,
               spreadRadius: 1.0,
             )
           ]),

@@ -614,7 +614,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<CoponsResponse> getClientsCoponsWhitId(id, token) async {
+  Future<CoponsResponse> getClientsCopons(id, token) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -632,7 +632,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<CoponsResponse> getClientsCopons(userid, id, token) async {
+  Future<CoponsResponse> getClientsCoponsWhitId(userid, id, token) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -1114,6 +1114,24 @@ class _RestClient implements RestClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = GetAdsListResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AdvertiserProfileDetailsResponse> seenAds(id, token) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AdvertiserProfileDetailsResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/ads/${id}/seen',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AdvertiserProfileDetailsResponse.fromJson(_result.data!);
     return value;
   }
 

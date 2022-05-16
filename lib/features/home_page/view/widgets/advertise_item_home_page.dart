@@ -72,7 +72,7 @@ class AdvertiseItem extends StatelessWidget {
                     children: [
                       InkWell(
                           onTap: (){
-                              Get.toNamed('/AdvertiserProfileOrderPage',arguments:GetAdvertisersModel(id: adsListModel.user!.id));
+                              Get.toNamed('/AdvertiserProfileOrderPage?id=${adsListModel.user!.id}',arguments:GetAdvertisersModel(id: adsListModel.user!.id));
                           },
                         child: new Container(
                             width: 50.0,

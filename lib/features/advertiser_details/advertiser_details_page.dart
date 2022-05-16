@@ -10,7 +10,6 @@ import 'package:advertisers/features/advertiser_details/sheets/advertising_date_
 import 'package:advertisers/features/advertiser_details/sheets/advertising_description_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/attatchements_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/discount_coupon_sheet.dart';
-import 'package:advertisers/features/advertiser_details/sheets/discount_coupon_sheet_advertising_details.dart';
 import 'package:advertisers/features/advertiser_details/sheets/notice_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/urls_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_details/widgets/channel_single_item.dart';
@@ -28,6 +27,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+//=========================================================================================
+
+//                         only api By Mohamed T. Hammad
+
+//=========================================================================================
+
 class AdvertiserDetailsPage extends StatefulWidget {
   const AdvertiserDetailsPage({Key? key}) : super(key: key);
 
@@ -37,20 +42,7 @@ class AdvertiserDetailsPage extends StatefulWidget {
 
 class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
 
-  final AdvertisingDetailsController controller =
-  Get.put(AdvertisingDetailsController());
-
-  // final AddressBottomSheetAdvertiserDetailsPageController addressBottomSheetAdvertiserDetailsPageController =
-  // Get.put(AddressBottomSheetAdvertiserDetailsPageController());
-
-  launchURL(urlLink) async {
-    var url = urlLink;
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  final AdvertisingDetailsController controller = Get.put(AdvertisingDetailsController());
 
   @override
   Widget build(BuildContext context) {
@@ -119,10 +111,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                                 width: 8.0,
                               ),
                             ),
-
                             dropdownSearchDecoration: InputDecoration(
-                              // filled: true,
-                              //fillColor: Color(0xFFF2F2F2),
                               contentPadding:
                               EdgeInsets.only(right: 20.0, top: 0.0, bottom: 0.0),
                               border: InputBorder.none,
@@ -148,39 +137,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                             selectedItem: controller.selectedCategory.value.id!=null?controller.selectedCategory.value:controller.categories.value[0]
                         ): Container(
                             alignment: Alignment.centerRight,
-                            child: const Text("لا يوجد منتجات")))/*DropdownButton<String>(
-                            underline: const SizedBox.shrink(),
-                            icon: SvgPicture.asset('images/dropdown_icon.svg'),
-                            hint: _selectedProductTyp.isNotEmpty
-                                ? Center(
-                                child: Text(
-                                  _selectedProductTyp,
-                                  style: TextStyle(fontSize: 12.sp),
-                                ))
-                                : const Center(
-                              child: Text(
-                                'منتجات مواد غذائية - حلويات وشكولاتة',
-                                style: TextStyle(color: Color(0xff041D67),fontSize: 13),
-                              ),
-                            ),
-                            items: _productType.map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: TextStyle(fontSize: 14.sp),
-                                ),
-                              );
-                            }).toList(),
-                            // value: _selectedLocation,
-                            // isDense: true,
-                            isExpanded: true,
-                            onChanged: (newVal) {
-                              setState(() {
-                                _selectedProductTyp = newVal!;
-                              });
-                            },
-                          )*/,
+                            child: const Text("لا يوجد منتجات"))),
                       ),
                     ),
                   ],
@@ -239,28 +196,13 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                               width: 8.0,
                             ),
                           ),
-                          dropdownSearchDecoration: InputDecoration(
+                          dropdownSearchDecoration: const InputDecoration(
                             labelStyle: TextStyle(color: Color(0xff041D67),fontSize: 16),
                             // filled: true,
                             //fillColor: Color(0xFFF2F2F2),
                             contentPadding:
                             EdgeInsets.only(right: 20.0, top: 0.0, bottom: 0.0),
                             border: InputBorder.none,
-                            /*focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                                  borderSide: BorderSide(
-                                      width: 1, color: AppColors.borderDropDownColor),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                                  borderSide: BorderSide(
-                                      width: 1, color: AppColors.borderDropDownColor),
-                                ),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                                    borderSide: BorderSide(
-                                      width: 1,
-                                    )),*/
                           ),
                           items: controller.ads_types.value,
                           dropdownBuilder: (BuildContext context, s) {
@@ -283,45 +225,14 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
 
                         ): Container(
                             alignment: Alignment.centerRight,
-                            child: const Text("لا يوجد اعلانات")))/*DropdownButton<String>(
-                            underline: const SizedBox.shrink(),
-                            icon: SvgPicture.asset('images/dropdown_icon.svg'),
-                            hint: _selectedProductTyp.isNotEmpty
-                                ? Container(
-                                child: Text(
-                                  _selectedProductTyp,
-                                  style: TextStyle(fontSize: 12.sp),
-                                ))
-                                :  Container(
-                              child: Text(
-                                'تغطية افتتاح مع الحضور',
-                                style: TextStyle(color: Color(0xff041D67),fontSize: 13),
-                              ),
-                            ),
-                            items: _productType.map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: TextStyle(fontSize: 14.sp),
-                                ),
-                              );
-                            }).toList(),
-                            // value: _selectedLocation,
-                            // isDense: true,
-                            isExpanded: true,
-                            onChanged: (newVal) {
-                              setState(() {
-                                _selectedProductTyp = newVal!;
-                              });
-                            },
-                          )*/,
+                            child: const Text("لا يوجد اعلانات"))),
                       ),
                     ),
                   ],
                 ),
               ),
             ),
+            //============================== date of ad sheet ================================
             Container(
               margin: const EdgeInsets.all(15.0),
               decoration: BoxDecoration(
@@ -335,7 +246,6 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                 child: InkWell(
                   onTap: (){
                     showBottomSheetForRequest(context,1);
-
                   },
                   child: Row(
                     children: [
@@ -382,6 +292,8 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                 ),
               ),
             ),
+
+            //============================== channels sheet ================================
             Container(
               margin: const EdgeInsets.all(15.0),
               decoration: BoxDecoration(
@@ -403,19 +315,6 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                         onTap: (){
 
                           showBottomSheetForRequest(context,2);
-                          /*void _modalBottomSheetMenu(){
-                              showModalBottomSheet(
-
-                                // isScrollControlled: true,
-                                  context: context,
-                                  builder: (builder,){
-                                    return AdvertisingChannelsPage(
-                                     // scrollController: ,
-                                    );
-                                  }
-                              );
-                            }
-                            _modalBottomSheetMenu();*/
                         },
                         child: Container(
                           alignment: Alignment.center,
@@ -487,6 +386,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
               ),
             ),
 
+            //============================== desc of ads sheet ================================
             Item(
               onTap: (){
                 showBottomSheetForRequest(context,3);
@@ -502,6 +402,8 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                 ],
               ),
             ),
+
+            //============================== attachements of ads sheet ================================
             Item(
               onTap: (){
                 showModalBottomSheet(
@@ -580,6 +482,8 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                 )),
               ),
             ),
+
+            //============================== links of ads sheet ================================
             Item(
               onTap: (){
                 showBottomSheetForRequest(context,4);
@@ -687,16 +591,11 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
               ),
 
             )),
+
+            //============================== address of ads sheet ================================
             Item(
               onTap: (){
                 showBottomSheetForRequest(context,5);
-                /*showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (builder){
-                      return AddressBottomSheetAdvertiserDetailsPage();
-                    }
-                );*/
               },
               title: 'العنوان',
               child: Padding(
@@ -763,18 +662,11 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                 )),
               ),
             ),
+
+            //============================== copon of ads sheet ================================
             Item(
               onTap: (){
-               /* showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (builder){
-                      return DiscountCouponSheetAdvertisingDetails();
-                    }
-                );*/
-
                 showBottomSheetForRequest(context, 6);
-
               },
               title: 'كوبون المعلن',
               child: Padding(
@@ -970,6 +862,8 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                 ),
               ),
             ),
+
+            //============================== copon of ads sheet ================================
             Item(
               onTap: (){
                 showBottomSheetForRequest(context, 7);
@@ -1082,16 +976,21 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
             ),
           ],
         ),
-      )
-
-      /*GetBuilder<AdvertisingDetailsController>(
-        init: AdvertisingDetailsController(),
-        builder: (controller) => ,
-      )*/
-      ,
+      ),
     );
   }
 
+  //======================   to launch a url from copon (link of strore) ================================
+  launchURL(urlLink) async {
+    var url = urlLink;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  //======================   to show bottom sheets ================================
   void showBottomSheetForRequest(BuildContext context,int bottomNumber){
     showModalBottomSheet(
       context: context,

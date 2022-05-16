@@ -13,6 +13,10 @@ GetAdsListResponse _$GetAdsListResponseFromJson(Map<String, dynamic> json) =>
       data: (json['data'] as List<dynamic>?)
           ?.map((e) => AdsListModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      pagination: json['pagination'] == null
+          ? null
+          : PaginationModel.fromJson(
+              json['pagination'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$GetAdsListResponseToJson(GetAdsListResponse instance) =>
@@ -20,4 +24,5 @@ Map<String, dynamic> _$GetAdsListResponseToJson(GetAdsListResponse instance) =>
       'status': instance.status,
       'message': instance.message,
       'data': instance.data,
+      'pagination': instance.pagination,
     };

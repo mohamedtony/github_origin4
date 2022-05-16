@@ -122,10 +122,13 @@ class AdsPageController extends GetxController {
 
     GetAdsListResponse response = await client!.getAdsList(0,pageKey,"Bearer " + myToken);
 
+
     final completer = Completer<List<AdsListModel>>();
     List<AdsListModel> notifications = [];
     if(response.data!=null && response.data!.isNotEmpty) {
       notifications = response.data!;
+      print("pagfgfgf=${response.pagination!.current_page}");
+      Get.parameters['page']=response.pagination!.current_page.toString();
     }
     completer.complete(notifications);
     return completer.future;

@@ -1,8 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-import 'dart:isolate';
-
 import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/app_core/network/models/Channel.dart';
@@ -64,7 +60,7 @@ class AdvertisersPageController extends GetxController {
   var selectedEffectSlidesModel = EffectSlidesModel(id: -1,).obs;
   late RequestAdvertiseController requestAdvertiseController;
 
-  final PagingController<int, GetAdvertisersModel> pagingController = PagingController(firstPageKey: 0);
+  final PagingController<int, GetAdvertisersModel> pagingController = PagingController(firstPageKey: 1);
   String? type;
 
   @override
@@ -103,6 +99,8 @@ class AdvertisersPageController extends GetxController {
     //getAdvertisersRequest!.page=pageKey;
     String myToken = await storage.read("token");
 
+    print("request= ");
+    Logger().i(getAdvertisersRequest!.toJson());
     GetAdvertisersResponse response = await client!.getAdvertisers("Bearer " + myToken, /*GetAdvertisersRequest(page: pageKey,)*/getAdvertisersRequest!);
 
     final completer = Completer<List<GetAdvertisersModel>>();
@@ -114,7 +112,78 @@ class AdvertisersPageController extends GetxController {
     return completer.future;
     // return topSellingList;
   }
-  GetAdvertisersRequest? getAdvertisersRequest2;
+  GetAdvertisersRequest? getAdvertisersRequest2 = GetAdvertisersRequest(page: 1);
+/*  Future<void> fetchPageSearch(int pageKey,{GetAdvertisersRequest? getAdvertisersRequest,String? type}) async {
+    print("hhhhhhhhhhhhhhhhhhhhhhhhpageKey11= "+pageKey.toString());
+    String myToken = await storage.read("token");
+    //try {
+      List<GetAdvertisersModel>? newItems;
+      if(pageKey==1){
+        pagingController.itemList = [];
+      }
+    //  getAdvertisersRequest2!.page = pageKey;
+    //  newItems = await getNotifications(pageKey: pageKey,getAdvertisersRequest: getAdvertisersRequest2);
+      GetAdvertisersResponse response = await client!.getAdvertisers("Bearer " + myToken, *//*GetAdvertisersRequest(page: pageKey,)*//*getAdvertisersRequest2!);
+
+      if(response.data!=null) {
+        newItems = response.data;
+      }else{
+        newItems = [];
+      }
+      bool isLastPage = response.pagination!.last_page == pageKey;
+      print("Lasttt${response.pagination!.last_page}");
+      if (isLastPage) {
+        print("isLast = " + isLastPage.toString());
+        pagingController.appendLastPage(newItems!);
+        // pagingController. = "tony";
+      } else {
+        //final nextPageKey = pageKey + newItems.length;
+        int nextPageKey = ++pageKey;
+        print("nextPageKey=" + nextPageKey.toString());
+       // if(type!=null) {
+          pagingController.appendPage(newItems!, nextPageKey);
+        //}
+        //pagingController.itemList = newItems;
+      }
+
+*//*      if((type!=null && type=="search") && pageKey==0) {
+        //pagingController.refresh();
+        pagingController.itemList = [];
+        //pagingController.appendPage(newItems);
+        bool isLastPage = newItems == null || newItems.isEmpty;
+        if (isLastPage) {
+          print("isLast = " + isLastPage.toString());
+          pagingController.appendLastPage(newItems!);
+          // pagingController. = "tony";
+        } else {
+          //final nextPageKey = pageKey + newItems.length;
+          int nextPageKey = ++pageKey;
+          print("nextPageKey=" + nextPageKey.toString());
+          pagingController.appendPage(newItems, nextPageKey);
+          //pagingController.itemList = newItems;
+        }
+      }else{
+        bool isLastPage = newItems == null || newItems.isEmpty;
+        if (isLastPage) {
+          print("isLast = " + isLastPage.toString());
+          pagingController.appendLastPage(newItems!);
+          // pagingController. = "tony";
+        } else {
+          //final nextPageKey = pageKey + newItems.length;
+          int nextPageKey = ++pageKey;
+          print("nextPageKey=" + nextPageKey.toString());
+          pagingController.appendPage(newItems, nextPageKey);
+          //pagingController.itemList = newItems;
+        }
+      }*//*
+      // print("first=" + newItems.first.Code.toString());
+      //print("last=" + newItems.last.Code.toString());
+
+
+   *//* } catch (error) {
+      pagingController.error = error;
+    }*//*
+  }*/
   Future<void> fetchPage(int pageKey,{GetAdvertisersRequest? getAdvertisersRequest,String? type}) async {
     print("hhhhhhhhhhhhhhhhhhhhhhhhpageKey= "+pageKey.toString());
     try {
@@ -140,7 +209,7 @@ class AdvertisersPageController extends GetxController {
       }*/
       List<GetAdvertisersModel>? newItems;
       if(type!=null){
-        print("tyyyype");
+        print("tyyyype=$myToken");
         if(pageKey==0){
           pagingController.itemList = [];
         }
@@ -155,13 +224,17 @@ class AdvertisersPageController extends GetxController {
           //final nextPageKey = pageKey + newItems.length;
           int nextPageKey = ++pageKey;
           print("nextPageKey=" + nextPageKey.toString());
-          pagingController.appendPage(newItems, nextPageKey);
+          if(type!=null) {
+            pagingController.appendPage(newItems, nextPageKey);
+          }
           //pagingController.itemList = newItems;
         }
       }else{
         print("tyyyype2");
-        newItems = await getNotifications(pageKey: pageKey,getAdvertisersRequest: GetAdvertisersRequest(page: pageKey));
+        getAdvertisersRequest2!.page = pageKey;
+        newItems = await getNotifications(pageKey: pageKey,getAdvertisersRequest:getAdvertisersRequest2 /*GetAdvertisersRequest(page: pageKey)*/);
         print("tyyyype3");
+        Logger().i(newItems[0].toJson());
         bool isLastPage = newItems == null || newItems.isEmpty;
         if (isLastPage) {
           print("isLast = " + isLastPage.toString());
@@ -216,7 +289,9 @@ class AdvertisersPageController extends GetxController {
   }
   // Call this when the user pull down the screen
   Future<void> loadDataForAds() async {
-    pagingController.refresh();
+    getAdvertisersRequest2 = GetAdvertisersRequest(page: 1);
+    pagingController.itemList=[];
+    fetchPage(1);
   }
 
   Future<void> getAdvertisersForm(BuildContext context) async {

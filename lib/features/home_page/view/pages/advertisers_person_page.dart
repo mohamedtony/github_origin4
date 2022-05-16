@@ -21,6 +21,18 @@ class AdvertisersPage extends StatelessWidget {
 
         builderDelegate: PagedChildBuilderDelegate<GetAdvertisersModel>(
           animateTransitions: true,
+          firstPageErrorIndicatorBuilder:(context){
+            return Container(
+                alignment: Alignment.topCenter,
+                margin: EdgeInsets.only(top:20.0),
+                child: Text('لا يوجد معلنين !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
+          },
+          newPageErrorIndicatorBuilder:(context){
+            return Container(
+                alignment: Alignment.topCenter,
+                margin: EdgeInsets.only(top:6.0),
+                child: Text('لا يوجد المزيد من معلنين !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
+          },
           noItemsFoundIndicatorBuilder: (context){
             return Container(
                 alignment: Alignment.topCenter,

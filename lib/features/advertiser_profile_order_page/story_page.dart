@@ -5,10 +5,13 @@ import 'package:advertisers/app_core/network/models/Attachment.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersModel.dart';
 import 'package:advertisers/app_core/network/models/UserAdsList.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/VideoController2.dart';
+import 'package:advertisers/features/advertiser_profile_order_page/advertiser_details_sheet.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/overlay_handler2.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/overlay_service2.dart';
-import 'package:advertisers/features/advertising_story_details/advertiser_details_sheet.dart';
 import 'package:advertisers/features/advertising_story_details/audio_player.dart';
+import 'package:advertisers/features/advertising_story_details/vimo_video/controls_config.dart';
+import 'package:advertisers/features/advertising_story_details/vimo_video/quality_links.dart';
+import 'package:advertisers/features/advertising_story_details/vimo_video/vimeoplayer_trinity.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/request_advertise_module/view/pages/request_advertise_page.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -16,6 +19,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
+import 'package:better_player/better_player.dart';
 
 class StoryScreen extends StatefulWidget {
    List<Attachment>? stories;
@@ -36,12 +40,17 @@ class _StoryScreenState extends State<StoryScreen>
     with SingleTickerProviderStateMixin {
   PageController? _pageController;
   AnimationController? _animController;
-  VideoPlayerController? _videoController;
+  //VideoPlayerController? _videoController;
   AudioPlayer? audioPlayer;
   int _currentIndex = 0;
   final VideoController2 videoGetxController = Get.find();
 
   OverlayHandlerProvider2 overlayHandlerProvider = Get.find();
+
+  late QualityLinks _quality;
+  var _qualityValue;
+  BetterPlayerController? _betterPlayerController;
+  ControlsConfig? config;
 
   @override
   void initState() {
@@ -62,8 +71,9 @@ class _StoryScreenState extends State<StoryScreen>
 
     _animController?.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        _videoController?.dispose();
-        _videoController = null;
+       // _videoController?.dispose();
+       // _videoController = null;
+        _betterPlayerController = null;
         _animController?.stop();
         _animController?.reset();
         setState(() {
@@ -82,13 +92,17 @@ class _StoryScreenState extends State<StoryScreen>
         });
       }
     });
+
+    if(widget.adsListModel?.id!=null) {
+      videoGetxController.seenAds(widget.adsListModel!.id);
+    }
   }
 
   @override
   void dispose() {
     _pageController?.dispose();
     _animController?.dispose();
-    _videoController?.dispose();
+    //_videoController?.dispose();
     super.dispose();
   }
   _addVideoWithTitleOverlay(BuildContext context) {
@@ -102,6 +116,7 @@ class _StoryScreenState extends State<StoryScreen>
       snap: true,
       builder: (context, scrollController) {
         return AdvertiserDetailsSheet(
+            /*"profile",*/
             scrollController: scrollController
         );
       },
@@ -168,6 +183,7 @@ class _StoryScreenState extends State<StoryScreen>
             print("dragablr");
           });
           return AdvertiserDetailsSheet(
+             /* "profile",*/
               scrollController: scrollController,
               adsListModel:adsListModel
           );
@@ -201,7 +217,7 @@ class _StoryScreenState extends State<StoryScreen>
         child: Stack(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(bottom: /*overlayHandlerProvider.inPipMode?40:*/75),
+              margin: EdgeInsets.only(bottom: /*overlayHandlerProvider.inPipMode?40:*/45),
               child: widget.stories!=null && widget.stories!.isNotEmpty?PageView.builder(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
@@ -215,46 +231,38 @@ class _StoryScreenState extends State<StoryScreen>
                       fit: BoxFit.cover,
                     );
                   } else if (story.type == "video") {
-                    if (_videoController?.value != null &&
-                        _videoController!.value.isInitialized) {
-                      return !_videoController!.value.isBuffering
-                          ? FittedBox(
+                    return _betterPlayerController!=null /*&& _betterPlayerController!.isVideoInitialized()!*//*&& _betterPlayerController?.videoPlayerController?.value!=null && _betterPlayerController!.videoPlayerController!.value.initialized*/
+                        ? FittedBox(
                         fit: BoxFit.cover,
-                        child: SizedBox(
+                        child: /*SizedBox(
                           width: _videoController!.value.size.width,
                           height: _videoController!.value.size.height,
                           child: AspectRatio(
                             aspectRatio: 16/9,
                             child: VideoPlayer(_videoController!),
                           ),
+                        )*/
+                        SizedBox(
+                          width: Get.width,
+                          height: Get.height,
+                          child: AspectRatio(
+                            aspectRatio: 16/9,
+                            child: VimeoPlayer(id: '680589403'/*story.video_id*/, autoPlay: true, loaderColor: Colors.pink,betterPlayerController: _betterPlayerController),
+                          ),
+                        )
+                    )
+                        : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: CircularProgressIndicator(
+                              color: Colors.white.withOpacity(0.5)),
                         ),
-                      )
-                          : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                                color: Colors.white.withOpacity(0.5)),
-                          ),
-                        ],
-                      );
-                    } else {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                                color: Colors.white.withOpacity(0.5)),
-                          ),
-                        ],
-                      );
-                    }
+                      ],
+                    );
                   } else if (story.type == 'audio') {
                     if (audioPlayer != null && _animController != null) {
                       return AudioPlayerUrl(
@@ -310,7 +318,7 @@ class _StoryScreenState extends State<StoryScreen>
                         horizontal: 1.5,
                         vertical: 4.0,
                       ),
-                      child: UserInfo(adsListModel: widget.adsListModel!,animController: _animController,audioPlayer: audioPlayer,videoController: _videoController,),
+                      child: UserInfo(adsListModel: widget.adsListModel!,animController: _animController,audioPlayer: audioPlayer,betterPlayerController: _betterPlayerController,),
                     )
                         : SizedBox(),
                   )
@@ -364,17 +372,17 @@ class _StoryScreenState extends State<StoryScreen>
             widget.animationController.forward(from: t);*/
                       });
                     }else if (story.type == 'video') {
-                      _videoController?.position.then((position) {
-                        Duration dur =
-                            _videoController!.value.duration;
+                      _betterPlayerController?.videoPlayerController?.position.then((position) {
+                        Duration? dur =
+                            _betterPlayerController!.videoPlayerController!.value.duration;
                         if (position != null &&
                             (position.inMilliseconds - (10 * 1000)) >0) {
-                          print("kkkkkkkkkkkdur=${dur.inMinutes}");
+                          print("kkkkkkkkkkkdur=${dur?.inMinutes}");
                           final double t =
                           (((position.inSeconds) - 10) /
-                              (dur.inSeconds))
+                              (dur!.inSeconds))
                               .clamp(0.0, 1.0);
-                          _videoController?.seekTo(Duration(
+                          _betterPlayerController?.videoPlayerController?.seekTo(Duration(
                               milliseconds: position.inMilliseconds -
                                   (10 * 1000)));
                           _animController?.reverse(from: t);
@@ -421,11 +429,11 @@ class _StoryScreenState extends State<StoryScreen>
                   onTap: () {
                     if (story.type == 'video') {
                       if (story.type == 'video') {
-                        if (_videoController!.value.isPlaying) {
-                          _videoController?.pause();
+                        if (_betterPlayerController!.videoPlayerController!.value!=null && _betterPlayerController!.videoPlayerController!.value.isPlaying) {
+                          _betterPlayerController!.videoPlayerController!.pause();
                           _animController?.stop();
                         } else {
-                          _videoController?.play();
+                          _betterPlayerController!.videoPlayerController!.play();
                           _animController?.forward();
                         }
                       }
@@ -508,17 +516,17 @@ class _StoryScreenState extends State<StoryScreen>
             widget.animationController.forward(from: t);*/
                           });
                         } else if (story.type == 'video') {
-                          _videoController?.position.then((position) {
-                            Duration dur =
-                                _videoController!.value.duration;
-                            if (position != null &&
+                          _betterPlayerController?.videoPlayerController?.position.then((position) {
+                            Duration? dur =
+                                _betterPlayerController!.videoPlayerController!.value.duration;
+                            if (dur!=null && position != null &&
                                 (position.inMilliseconds + (10 * 1000)) < dur.inMilliseconds) {
                               print("kkkkkkkkkkkdur=${dur.inMinutes}");
                               final double t =
                               (((position.inSeconds) + 10) /
                                   (dur.inSeconds))
                                   .clamp(0.0, 1.0);
-                              _videoController?.seekTo(Duration(
+                              _betterPlayerController?.videoPlayerController?.seekTo(Duration(
                                   milliseconds: position.inMilliseconds +
                                       (10 * 1000)));
                               _animController?.forward(from: t);
@@ -656,12 +664,13 @@ class _StoryScreenState extends State<StoryScreen>
                                      Overlay.of(context)?.insert(getEntry(context, widget.adsListModel));*/
                                     overlayHandlerProvider.isProfileOpend = true;
                                     overlayHandlerProvider.updateHidden(true, 0);
-                                    _videoController?.pause();
+                                    _betterPlayerController?.pause();
                                     _animController?.stop();
                                      audioPlayer?.pause();
                                      overlayHandlerProvider.advertiserId = widget.adsListModel!.user!.id;
                                     overlayHandlerProvider.adId = widget.adsListModel!.id;
-                                     widget.onSheetCliked(context,9,);
+                                    showBottomSheetForRequest(context, 9);
+                                     //widget.onSheetCliked(context,9,);
                                      //Overlay.of(context)?.insert(getEntry(context, widget.adsListModel));
                                     //showBottomSheetForRequest2(Get.overlayContext!);
                                     //_addVideoWithTitleOverlay(context);
@@ -690,7 +699,7 @@ class _StoryScreenState extends State<StoryScreen>
                             ],
                           ),
                           Container(
-                            padding: EdgeInsets.only(top: 6),
+                            padding: EdgeInsets.only(top: 6,bottom: 10),
                             color: Colors.white,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -753,10 +762,10 @@ class _StoryScreenState extends State<StoryScreen>
                                         ),
                                       ),
                                     ),
-                                    Text(
+                                    /*Text(
                                       "تعليق",
                                       style: TextStyle(color: Color(0xff4286D2)),
-                                    )
+                                    )*/
                                   ],
                                 ),
                                 Column(
@@ -802,10 +811,10 @@ class _StoryScreenState extends State<StoryScreen>
                                         ),
                                       ),
                                     ),
-                                    Text(
+                                    /*Text(
                                       "مشاركة",
                                       style: TextStyle(color: Color(0xff4286D2)),
-                                    )
+                                    )*/
                                   ],
                                 ),
                                 Column(
@@ -862,10 +871,10 @@ class _StoryScreenState extends State<StoryScreen>
                                         ),
                                       ),
                                     ),
-                                    Text(
+                                    /*Text(
                                       "مفضلة",
                                       style: TextStyle(color: Color(0xff4286D2)),
-                                    )
+                                    )*/
                                   ],
                                 ),
                                 Column(
@@ -917,7 +926,7 @@ class _StoryScreenState extends State<StoryScreen>
                                             }
                                           },
                                           child: Image.asset(
-                                            'images/like_story.png',
+                                            widget.adsListModel!.is_liked!=null && widget.adsListModel!.is_liked!?'images/like_story.png':'images/like_unfilled.png',
                                             height: 20,
                                             width: 25,
                                             fit: BoxFit.fill,
@@ -926,10 +935,10 @@ class _StoryScreenState extends State<StoryScreen>
                                         ),
                                       ),
                                     ),
-                                    Text(
+                                   /* Text(
                                         "${widget.adsListModel?.likes??0}",
                                       style: TextStyle(color: Color(0xff4286D2)),
-                                    )
+                                    )*/
                                   ],
                                 ),
                                 Column(
@@ -992,7 +1001,7 @@ class _StoryScreenState extends State<StoryScreen>
                                             }
                                           },
                                           child: Image.asset(
-                                            'images/icon_dislike3.png',
+                                            widget.adsListModel?.is_disliked!=null && widget.adsListModel!.is_disliked!?'images/icon_dislike3.png':'images/dislike_unfilled.png',
                                             height: 45,
                                             width: 45,
                                             fit: BoxFit.fill,
@@ -1001,10 +1010,10 @@ class _StoryScreenState extends State<StoryScreen>
                                         ),
                                       ),
                                     ),
-                                    Text(
+                                    /*Text(
                                       "${widget.adsListModel?.dislikes??0}",
                                       style: TextStyle(color: Color(0xff4286D2)),
-                                    )
+                                    )*/
                                   ],
                                 ),
                               ],
@@ -1022,8 +1031,8 @@ class _StoryScreenState extends State<StoryScreen>
                                     Expanded(
                                       child: Container(
                                         // width: 50.0,
-                                        height: 44.0,
-                                        margin: EdgeInsets.all(6.0),
+                                        height: 35.0,
+                                        margin: EdgeInsets.only(bottom: 6.0,left: 6.0,right: 6.0),
                                         decoration: new BoxDecoration(
                                             color: Colors.grey[200],
                                             shape: BoxShape.rectangle,
@@ -1052,8 +1061,8 @@ class _StoryScreenState extends State<StoryScreen>
                                                   },
                                                   child: Image.asset(
                                                     'images/minutemailer2x.png',
-                                                    height: 25,
-                                                    width: 30,
+                                                    height: 20,
+                                                    width: 25,
                                                     fit: BoxFit.fill,
                                                     //color: Colors.white,
                                                   ),
@@ -1150,6 +1159,7 @@ class _StoryScreenState extends State<StoryScreen>
                 expand: false,
                 builder: (context, scrollController) {
                   return AdvertiserDetailsSheet(
+                      /*"profile",*/
                       scrollController: scrollController
                   );
                 },
@@ -1244,26 +1254,55 @@ class _StoryScreenState extends State<StoryScreen>
     print("nextPage");
     _animController?.stop();
     _animController?.reset();
-    _videoController?.dispose();
-    _videoController = null;
+    _betterPlayerController = null;
     switch (story!.type) {
       case 'image':
         _animController!.duration =Duration(seconds: widget.adsListModel!.attachment_preview_duration!);
         _animController?.forward();
         break;
       case 'video':
-        _videoController?.dispose();
-        _videoController = null;
-        _videoController = VideoPlayerController.network(story.path!)
-          ..initialize().then((_) {
-            setState(() {});
-            if (_videoController!.value.isInitialized) {
-              _animController!.duration = _videoController!.value.duration;
-              _videoController?.setVolume(50);
-              _videoController!.play();
-              _animController!.forward();
-            }
+      // _betterPlayerController?.dispose();
+        _betterPlayerController = null;
+
+        //Create class
+        _quality = QualityLinks('680589403'/*story.video_id*/);
+
+        //Initializing video controllers when receiving data from Vimeo
+        _quality.getQualitiesSync("profile").then((value) {
+          _qualityValue = value[value.lastKey()];
+          print("url="+value.toString());
+
+          // Create resolutions map
+          Map<String, String> resolutionsMap = {};
+          value.keys.forEach((key) {
+            String processedKey = key.split(" ")[0];
+            resolutionsMap[processedKey] = value[key];
           });
+
+          BetterPlayerDataSource betterPlayerDataSource = BetterPlayerDataSource(
+              BetterPlayerDataSourceType.network, _qualityValue,
+              resolutions: resolutionsMap);
+
+          //print("mDuration="+betterPlayerDataSource.overriddenDuration!.toString());
+          setState(() {
+            _betterPlayerController = BetterPlayerController(
+                BetterPlayerConfiguration(
+                  autoPlay: false,
+                  looping: false,
+                  fullScreenByDefault: false,
+                  //aspectRatio: 1/1,
+                  fit: BoxFit.cover,
+                  controlsConfiguration: BetterPlayerControlsConfiguration(showControls: false),
+                ),
+                betterPlayerDataSource: betterPlayerDataSource);
+          });
+          print("mmduration="+videoGetxController.videoDuration.toString());
+          _animController!.duration = Duration(seconds: videoGetxController.videoDuration);
+          print("url="+_animController!.duration.toString());
+          //_betterPlayerController?.setVolume(50);
+          _betterPlayerController!.play();
+          _animController!.forward();
+        });
         break;
       case 'audio':
       //videoGetxController.playButtonNotifier.value = ButtonState.paused;
@@ -1345,7 +1384,115 @@ class StickyPageWrapper extends StatelessWidget {
   }
 
 }
+Future<void> showBottomSheetForRequest(BuildContext context,int bottomNumber)  async {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+          topLeft: const Radius.circular(10.0),
+          topRight: const Radius.circular(10.0)),
+    ),
+    clipBehavior: Clip.antiAliasWithSaveLayer,
+    builder: (BuildContext context) {
+      return DraggableScrollableSheet(
+        //maxChildSize: 0.8,
+        //minChildSize: 100.0,
+        //maxChildSize: 0.9,
+        initialChildSize: bottomNumber==6?0.84:0.67,
+        expand: false,
+        builder: (context, scrollController) {
 
+         // if(bottomNumber==9) {
+            return AdvertiserDetailsSheet(
+             /* "profile",*/
+                scrollController: scrollController
+            );
+         // }
+        },
+      );
+    },
+  );
+
+
+  /*showMaterialModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+       // expand: true,
+        isDismissible: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+       // clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (context) => BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+
+            initialChildSize: 0.67,
+            expand: false,
+            builder: (context, scrollController) {
+              return AttatchementPage(
+                  scrollController: scrollController);
+            },
+          )
+        ),
+      );*/
+
+/*      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        isDismissible: true,
+        //barrierColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+        //clipBehavior: Clip.antiAliasWithSaveLayer,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (context) =>  BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          child: DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+            initialChildSize: 0.67,
+           // expand: true,
+            builder: (context, scrollController) {
+              return ActivitiesBottomSheet(
+                  scrollController: scrollController);
+            },
+          )),
+      );*/
+
+  /* showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) {
+          return DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+
+            initialChildSize: 0.67,
+            expand: false,
+            builder: (context, scrollController) {
+              return ActivitiesBottomSheet(
+                  scrollController: scrollController);
+            },
+          );
+        },
+      );*/
+}
 class AnimatedBar extends StatelessWidget {
   final AnimationController animController;
   final int position;
@@ -1413,16 +1560,17 @@ class AnimatedBar extends StatelessWidget {
 
 class UserInfo extends StatelessWidget {
   final AdsListModel adsListModel;
-  final VideoController2 videoGetxController = Get.find();
+  VideoController2 videoGetxController = Get.find();
   OverlayHandlerProvider2 overlayHandlerProvider = Get.find();
   AnimationController? animController;
-  VideoPlayerController? videoController;
+  BetterPlayerController? betterPlayerController;
+  //VideoPlayerController? videoController;
   AudioPlayer? audioPlayer;
 
   UserInfo({
     Key? key,
     required this.adsListModel,
-    this.videoController,
+    this.betterPlayerController,
     this.animController,
     this.audioPlayer
   }) : super(key: key);
@@ -1473,7 +1621,7 @@ class UserInfo extends StatelessWidget {
                           ),
                         );*/
                         overlayHandlerProvider.updateHidden(true, 0);
-                        videoController?.pause();
+                        betterPlayerController?.pause();
                         animController?.stop();
                         audioPlayer?.pause();
                         Get.toNamed('/TajerOrderDetails?requestId=${adsListModel.id}');

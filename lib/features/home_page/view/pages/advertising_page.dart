@@ -153,21 +153,6 @@ class AdvertisingPage extends StatelessWidget {
               ),
             ),
           ),
-          /*ListView(
-            children: [
-              //Obx(()=>homeNavController.isSmall.isTrue?SmallAdsPage():SizedBox()),
-              InkWell(
-                onTap: (){
-                  //_addVideoWithTitleOverlay(context);
-                  this.onAdveriseItemClicked!(0);
-                },
-                  child: AdvertiseItem()),
-              AdvertiseItem(),
-              AdvertiseItem(),
-              AdvertiseItem(),
-              AdvertiseItem(),
-            ],
-          ),*/
           type!=null && type=="advertiserOrderProfiel"?SizedBox():Align(
             alignment: Alignment.centerLeft,
             child: Container(

@@ -168,7 +168,7 @@ class _ReportSheetState extends State<ReportSheet> {
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 50.0),
                     child: InkWell(
                       onTap: (){
-                      //  advertiserProfileController.isNoticeSaveClicked.value = false;
+                        //  advertiserProfileController.isNoticeSaveClicked.value = false;
                         Get.back();
                       },
                       child: Material(

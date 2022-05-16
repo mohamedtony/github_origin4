@@ -2,15 +2,36 @@
 
 import 'package:advertisers/features/users_module/view/screens/splash_screen.dart';
 import 'package:advertisers/main.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 
+class StartPage extends StatefulWidget {
+  const StartPage({Key? key}) : super(key: key);
 
-class StartPage extends StatelessWidget {
-  StartPage({Key? key}) : super(key: key);
+  @override
+  State<StartPage> createState() => _StartPageState();
+}
 
+class _StartPageState extends State<StartPage> {
+
+  @override
+  void initState() {
+
+    super.initState();
+
+  }
+
+// class StartPage extends StatelessWidget {
+//   StartPage({Key? key}) : super(key: key);
+@override
+  void dispose() {
+
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     print("width >>>>>> ${MediaQuery.of(context).size.width}  height >>>>>${MediaQuery.of(context).size.height}");
