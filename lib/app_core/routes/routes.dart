@@ -123,13 +123,13 @@ class Routes {
     GetPage(
       name: '/',
       page: () =>StartPage(),),
-    // GetPage(
-    //   name: '/ChatPage',
-    //   page: () =>ChatPage(),
-    //     binding: BindingsBuilder(() {
-    //       Get.lazyPut<ChatMessagesController>(() => ChatMessagesController());
-    //
-    //     })),
+    GetPage(
+      name: '/ChatPage',
+      page: () =>ChatPage(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut<ChatMessagesController>(() => ChatMessagesController());
+
+        })),
     GetPage(
       name: '/ChatRecentPage',
       page: () =>ChatRecentPage(),
@@ -229,11 +229,11 @@ class Routes {
       page: () => WalletPage(),
 
     ),
-    // GetPage(
-    //   name: '/ChatPage',
-    //   page: () => ChatPage(),
-    //
-    // ),
+    GetPage(
+      name: '/ChatPage',
+      page: () => ChatPage(),
+
+    ),
     GetPage(
       name: '/ChatRecentPage',
       page: () => ChatRecentPage(),

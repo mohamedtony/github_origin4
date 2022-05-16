@@ -223,6 +223,69 @@ class Repository {
         snackPosition: SnackPosition.BOTTOM,);
     }
   }
+
+  void post<RES>({
+    String? path,
+    context,
+    Unmarshable<RES>? fromJson,
+    Map<String, dynamic>? json,
+    Map<String, dynamic>? request,
+    Function(int,RES)? onError,
+    Function(RES)? onSuccess,
+    bool? dontShow,
+  }) async {
+    try {
+      if (dontShow != true) {
+        EasyLoading.show();
+      }
+      final encoder = JsonEncoder.withIndent("  ");
+      final body = encoder.convert(request);
+      debugPrintSynchronously("POST " + base + path! + "\n" + body);
+
+
+      client
+          .post(Uri.parse(base + path,),
+        headers: {
+          // 'Content-Type': 'application/json',
+          // 'Accept-Type': 'application/json',
+          "Authorization": json!["token"],
+          "Accept": "application/json",
+        },
+        body: body,
+      )
+          .then((res) {
+        final data = jsonDecode(res.body);
+        final code = data["status"] as int;
+        //final message=data["message"];
+        //final note = data["message"] as String;
+        // if (note != null && note != "done"){
+        //   print("isisisHere " + path);
+        //   // Toast.show(note, context,
+        //   //     gravity: Toast.BOTTOM, duration: Toast.LENGTH_LONG);
+        // }
+        print("HTTP Status Code: " + res.statusCode.toString());
+        debugPrint("Internal Status Code: " + code.toString());
+        debugPrintThrottled("Response Body: \n" + encoder.convert(data));
+        if (code != 200) {
+          onError!(code, fromJson!(data));
+          return;
+        }
+        onSuccess!(fromJson!(data));
+      });
+    } on dio.DioError catch (e) {
+      if (EasyLoading.isShow) {
+        EasyLoading.dismiss();
+      }
+      Get.snackbar(
+        "خطأ",
+        "حدث خطأ ما",
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
+    }
+  }
+
+
   void delete<RES>({
     String? path,
     context,

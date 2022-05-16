@@ -4,6 +4,7 @@
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/requests/login_client_request.dart';
 import 'package:advertisers/app_core/network/responses/LoginClientResponse.dart';
+import 'package:advertisers/app_core/network/responses/LoginClientResponse2.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/features/users_module/app_colors.dart';
 import 'package:advertisers/main.dart';
@@ -95,13 +96,18 @@ class LoginController extends GetxController{
     }
     EasyLoading.show();
     Repository repo=Repository();
-    repo.postWithImageMultipart<LoginClientResponse>(path: 'auth/login',fromJson:(json) => LoginClientResponse.fromJson(json),
+    repo.postWithImageMultipart<LoginClientResponse2>(path: 'auth/login',fromJson:(json) => LoginClientResponse2.fromJson(json),
         json:{"phone": countryCode.value.replaceFirst('+','',0)+int.parse(phoneController.text??'0').toString(),"password": passwordController.text
           ,"fcm_token": token,},onSuccess:(res) {
       print('mToken'+res.data!.token!);
       storage.write("token", res.data!.token);
       storage.write("data",res.data!.toJson());
       storage.write("id", res.data!.id);
+      if(res.data!.owners!=null&&res.data!.owners!.isNotEmpty){
+        storage.write("ownerid", res.data!.owners![0].userId);
+        print("controller.ownerId ${res.data!.owners![0].userId} = ${storage.read("ownerid")}");
+      }
+
       if(EasyLoading.isShow){
         EasyLoading.dismiss();
       }
@@ -113,7 +119,7 @@ class LoginController extends GetxController{
           isValid.value=false;
 
           phoneMess.value=res.data!.phone??'';
-          passwordMess.value=res.data!.password??'';
+         // passwordMess.value=res.data!.password??'';
 
 
           checkLogin(context);

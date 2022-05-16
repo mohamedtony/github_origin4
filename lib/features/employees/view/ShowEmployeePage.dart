@@ -1,6 +1,7 @@
 import 'package:advertisers/app_core/network/models/Operation.dart';
 import 'package:advertisers/features/employees/controller/add_employee_controller.dart';
 import 'package:advertisers/features/employees/controller/employees_controller.dart';
+import 'package:advertisers/features/employees/controller/rules_controller.dart';
 import 'package:advertisers/features/employees/view/EmployeeArchivePage.dart';
 import 'package:advertisers/features/employees/view/EmployeeAuthorizationPage.dart';
 import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
@@ -298,7 +299,9 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
                       /// authorization btn
                       InkWell(
                         onTap: (){
-                          Get.put(EmployeesController()).getRules(controller.showEmployeeDetails.data!.user!.id??1);
+                         // Get.put(RulesController()).employeeId.value=controller.showEmployeeDetails.data!.id!;
+                          //Get.put(EmployeesController()).getRules(controller.showEmployeeDetails.data!.user!.id??1);
+                          Get.put(RulesController()).showEmployeeDetails.data=controller.showEmployeeDetails.data!;
 
                           Navigator.push(
                             context,

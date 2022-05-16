@@ -28,7 +28,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:dio/dio.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class EmployeesController extends GetxController with StateMixin<ListEmployeesModelResponse>{
+class EmployeesController extends GetxController /*with StateMixin<ListEmployeesModelResponse>*/{
 
   var myRequestsAsClient=<RequestModel>[].obs;
   var currentIndex=0.obs;
@@ -57,6 +57,10 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
   AddEmployeeRequest newEmployee=AddEmployeeRequest();
   ShowEmployeeDetailsResponse showEmployeeDetails=ShowEmployeeDetailsResponse();
 
+  List<bool> addAllRules = <bool>[].obs;
+  var employeeId=0.obs;
+
+  List roles=[];
 
   List<String> privilegedList=['الاعدادات','الطلبات','اعلاناتي','الخصومات والكوبونات','إضافة اعلان','الشات','التنبيهات','المعرض','الموظفين','المحفظة',
   'الدعم','التقارير','التعليقات'];
@@ -148,7 +152,8 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
     repo=Repository();
     token =storage.read("token");
     searchController=TextEditingController();
-    fetchEmployeesList(pageZero: false);
+   // fetchEmployeesList(pageZero: false);
+    getEmployeesList();
     // getRequestsData();
     // restAll();
     // loadMore();
@@ -274,7 +279,8 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
     scrollController?.addListener(() async {
       if (scrollController?.position.maxScrollExtent ==
           scrollController?.position.pixels) {
-         fetchEmployeesList(pageZero: false);
+         //fetchEmployeesList(pageZero: false);
+         getEmployeesList();
       }
     });
   }
@@ -298,7 +304,7 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
 
 
   /// fetchAdvertisingRequests
-  void fetchEmployeesList({bool? pageZero}) async {
+  /*void fetchEmployeesList({bool? pageZero}) async {
     pageZero == true? page=1: page++;
     String url ='https://advertiser.cefour.com/api/v1/employees';
     print("URL+++> $url");
@@ -336,11 +342,43 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
         change(null, status: RxStatus.error(errorDescription));
       }
     }
+  }*/
+  void getEmployeesList({bool isRefresh = false}) async {
+
+    EasyLoading.show();
+    repo.get<ListEmployeesModelResponse>(
+        path: 'employees',
+        fromJson: (json) => ListEmployeesModelResponse.fromJson(json),
+        json: {"token": "Bearer $token"},//"Bearer  $token"},
+        onSuccess: (res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          res.employee!.forEach((request) {
+            if(!myEmployeesIds.contains(request.id)){
+              myEmployees.add(request);
+              myEmployeesIds.add(request.id!);
+            }
+          });
+          update();
+        },
+        onError: (err, res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
   }
 
 
   /// fetch employee
   void fetchAnEmployee({int? id}) async {
+    employeeId.value=id!;
     EasyLoading.show();
      String url ='https://advertiser.cefour.com/api/v1/employees/$id';
     print("URL+++> $url");
@@ -396,19 +434,25 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
 
 
     } on dio.DioError catch (error) {
+      Get.snackbar(
+        "خطأ",
+        error.message.toString(),
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
       if (error.response?.statusCode == 401 ||
           error.response?.statusCode == 422) {
         // Error occurred while fetching data
-        change(null,
-            status: RxStatus.error(
-                'حدث خطأ ما ${error.response?.statusCode}'));
+        // change(null,
+        //     status: RxStatus.error(
+        //         'حدث خطأ ما ${error.response?.statusCode}'));
       } else if (error.error is SocketException) {
-        change(null,
-            status: RxStatus.error(
-                'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
+        // change(null,
+        //     status: RxStatus.error(
+        //         'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
       } else {
         String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-        change(null, status: RxStatus.error(errorDescription));
+        //change(null, status: RxStatus.error(errorDescription));
       }
     }
   }
@@ -440,7 +484,8 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
           snackPosition: SnackPosition.TOP,);
 
         restAll();
-        fetchEmployeesList();
+       // fetchEmployeesList();
+        getEmployeesList();
         Get.toNamed('/EmployeesPage');
       }else{
         if (EasyLoading.isShow) {
@@ -457,7 +502,7 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
 
 
      } on dio.DioError catch (error) {
-      if (error.response?.statusCode == 401 ||
+     /* if (error.response?.statusCode == 401 ||
           error.response?.statusCode == 422) {
         change(null,
             status: RxStatus.error(
@@ -470,7 +515,7 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
       } else {
         String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
         change(null, status: RxStatus.error(errorDescription));
-      }
+      }*/
     }
   }
 
@@ -492,6 +537,8 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
       }
     });
   }
+
+
 
 
   /// delete employee
@@ -518,7 +565,8 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
           backgroundColor: Colors.yellow,
           snackPosition: SnackPosition.TOP,);
           restAll();
-          fetchEmployeesList();
+         // fetchEmployeesList();
+        getEmployeesList();
 
       }else{
         if (EasyLoading.isShow) {
@@ -533,19 +581,25 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
       }
 
     } on dio.DioError catch (error) {
+      Get.snackbar(
+        "خطأ",
+        error.message.toString(),
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
       if (error.response?.statusCode == 401 ||
           error.response?.statusCode == 422) {
         // Error occurred while fetching data
-        change(null,
-            status: RxStatus.error(
-                'حدث خطأ ما ${error.response?.statusCode}'));
+        // change(null,
+        //     status: RxStatus.error(
+        //         'حدث خطأ ما ${error.response?.statusCode}'));
       } else if (error.error is SocketException) {
-        change(null,
-            status: RxStatus.error(
-                'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
+        // change(null,
+        //     status: RxStatus.error(
+        //         'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
       } else {
         String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-        change(null, status: RxStatus.error(errorDescription));
+        //change(null, status: RxStatus.error(errorDescription));
       }
     }
   }
@@ -583,7 +637,8 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
         }
 
         restAll();
-        fetchEmployeesList();
+       // fetchEmployeesList();
+        getEmployeesList();
 
       }else{
         if (EasyLoading.isShow) {
@@ -598,19 +653,25 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
       }
 
     } on dio.DioError catch (error) {
+      Get.snackbar(
+        "خطأ",
+        error.message.toString(),
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
       if (error.response?.statusCode == 401 ||
           error.response?.statusCode == 422) {
         // Error occurred while fetching data
-        change(null,
-            status: RxStatus.error(
-                'حدث خطأ ما ${error.response?.statusCode}'));
+        // change(null,
+        //     status: RxStatus.error(
+        //         'حدث خطأ ما ${error.response?.statusCode}'));
       } else if (error.error is SocketException) {
-        change(null,
-            status: RxStatus.error(
-                'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
+        // change(null,
+        //     status: RxStatus.error(
+        //         'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
       } else {
         String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-        change(null, status: RxStatus.error(errorDescription));
+       // change(null, status: RxStatus.error(errorDescription));
       }
     }
   }
@@ -661,19 +722,25 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
 
       // Logger().i(response!.data);
     } on dio.DioError catch (error) {
+      Get.snackbar(
+        "خطأ",
+        error.message.toString(),
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
       if (error.response?.statusCode == 401 ||
           error.response?.statusCode == 422) {
         // Error occurred while fetching data
-        change(null,
-            status: RxStatus.error(
-                'حدث خطأ ما ${error.response?.statusCode}'));
+        // change(null,
+        //     status: RxStatus.error(
+        //         'حدث خطأ ما ${error.response?.statusCode}'));
       } else if (error.error is SocketException) {
-        change(null,
-            status: RxStatus.error(
-                'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
+        // change(null,
+        //     status: RxStatus.error(
+        //         'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
       } else {
         String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-        change(null, status: RxStatus.error(errorDescription));
+       // change(null, status: RxStatus.error(errorDescription));
       }
     }
   }
@@ -731,19 +798,25 @@ class EmployeesController extends GetxController with StateMixin<ListEmployeesMo
 
 
     } on dio.DioError catch (error) {
+      Get.snackbar(
+        "خطأ",
+        error.message.toString(),
+        icon: const Icon(Icons.person, color: Colors.red),
+        backgroundColor: Colors.yellow,
+        snackPosition: SnackPosition.BOTTOM,);
       if (error.response?.statusCode == 401 ||
           error.response?.statusCode == 422) {
         // Error occurred while fetching data
-        change(null,
-            status: RxStatus.error(
-                'حدث خطأ ما ${error.response?.statusCode}'));
+        // change(null,
+        //     status: RxStatus.error(
+        //         'حدث خطأ ما ${error.response?.statusCode}'));
       } else if (error.error is SocketException) {
-        change(null,
-            status: RxStatus.error(
-                'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
+        // change(null,
+        //     status: RxStatus.error(
+        //         'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
       } else {
         String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-        change(null, status: RxStatus.error(errorDescription));
+       // change(null, status: RxStatus.error(errorDescription));
       }
     }
   }

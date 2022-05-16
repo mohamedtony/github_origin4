@@ -12,6 +12,7 @@ import 'package:advertisers/app_core/network/requests/UpdateProfileRequest.dart'
 import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
 import 'package:advertisers/app_core/network/requests/login_client_request.dart';
 import 'package:advertisers/app_core/network/responses/AdDetailsResponse.dart';
+import 'package:advertisers/app_core/network/responses/AddEmployeeResponse.dart';
 import 'package:advertisers/app_core/network/responses/AddRemoveBlackListResponse.dart';
 import 'package:advertisers/app_core/network/responses/AddToFavoriteListResponse.dart';
 import 'package:advertisers/app_core/network/responses/AdvertiserProfileDetailsResponse.dart';
@@ -230,6 +231,5 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
 
   @GET('/employees/{id}/roles')
   Future<GetRulesResponse> getMyEmployeeRules( @Path("id") int? id,@Header("Authorization") String token);
-
 
 }
