@@ -159,7 +159,7 @@ class AddEmployeeController extends GetxController with StateMixin<AddEmployeeRe
           icon: const Icon(Icons.check, color: Colors.green),
           backgroundColor: Colors.yellow,
           snackPosition: SnackPosition.TOP,);
-        Get.find<EmployeesController>().fetchEmployeesList();
+        Get.find<EmployeesController>().getEmployeesList();
          Get.toNamed('/EmployeesPage');
          restAll();
          // Successfully fetched news data

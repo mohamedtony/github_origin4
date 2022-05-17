@@ -8,6 +8,7 @@ import 'dart:math' as math;
 
 
 class AppBarWidget extends StatelessWidget {
+  double? my_height;
   TextEditingController? controller;
   bool? isBack, isSearchBar,isSideMenu,isFilter,
       isNotification,searchBarBigLeft,searchBarBigRight;
@@ -20,6 +21,7 @@ class AppBarWidget extends StatelessWidget {
   AppBarWidget({
     Key? key,
     this.controller,
+    this.my_height,
     this.widgetInsteadSearchBar,
     this.isBack = true,
     this.searchBarBigLeft = true,
@@ -39,7 +41,7 @@ class AppBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height:87,
+      height:my_height??120,
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: Padding(
         padding: const EdgeInsets.only(top: 6.0, bottom: 17.0),

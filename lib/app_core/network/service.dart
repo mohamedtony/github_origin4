@@ -12,6 +12,7 @@ import 'package:advertisers/app_core/network/requests/UpdateProfileRequest.dart'
 import 'package:advertisers/app_core/network/requests/UpdateUserCategoryRequest.dart';
 import 'package:advertisers/app_core/network/requests/login_client_request.dart';
 import 'package:advertisers/app_core/network/responses/AdDetailsResponse.dart';
+import 'package:advertisers/app_core/network/responses/AddEmployeeResponse.dart';
 import 'package:advertisers/app_core/network/responses/AddRemoveBlackListResponse.dart';
 import 'package:advertisers/app_core/network/responses/AddToFavoriteListResponse.dart';
 import 'package:advertisers/app_core/network/responses/AdvertiserProfileDetailsResponse.dart';
@@ -26,6 +27,7 @@ import 'package:advertisers/app_core/network/responses/GetBlockedUsersResponse.d
 import 'package:advertisers/app_core/network/responses/GetCategoriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetMyProfileInfoResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetProductsAndAdsTypesResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetRulesResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetUseLocationsResponse.dart';
 import 'package:advertisers/app_core/network/responses/LoginClientResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
@@ -230,5 +232,8 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   @GET('/ads/{id}/seen')
   Future<AdvertiserProfileDetailsResponse> seenAds(@Path("id") int? id,@Header("Authorization") String token);
 
+
+  @GET('/employees/{id}/roles')
+  Future<GetRulesResponse> getMyEmployeeRules( @Path("id") int? id,@Header("Authorization") String token);
 
 }
