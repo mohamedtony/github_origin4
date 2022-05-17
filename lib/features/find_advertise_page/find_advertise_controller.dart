@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:advertisers/UploadBackgroundService.dart';
 import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/app_core/network/models/Channel.dart';
@@ -19,6 +20,7 @@ import 'package:advertisers/main.dart';
 import 'package:advertisers/shared/loading_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -770,6 +772,35 @@ class FindAdvertiseController extends GetxController {
     selectedAdvertiseId = bakaId;
   }
 
+  Future<void> onUploadFiles( int ads_request_id) async {
+/*    final service = FlutterBackgroundService();
+    var isRunning = await service.isRunning();
+    if (!isRunning) {
+      await service.startService();
+      Map<String, dynamic> mymap3={
+        "token": "Bearer " + myToken!,
+        "ads_request_id":ads_request_id,
+        "attachments[]": requestAdvertiseController.imageFideoFiles!.isNotEmpty ? requestAdvertiseController.imageFideoFilesPathStr: null,
+      };
+      Logger().i("mymap"+mymap3.toString());
+      FlutterBackgroundService().invoke("setAsForeground",mymap3);
+      return;
+    }*/
+
+    /*final service = FlutterBackgroundService();
+    var isRunning = await service.isRunning();
+    if (!isRunning) {
+      await UploadBackgroundService().initializeService();
+    }
+*/
+    Map<String, dynamic> mymap3={
+      "token": "Bearer " + myToken!,
+      "ads_request_id":ads_request_id,
+      "attachments[]": requestAdvertiseController.imageFideoFiles!.isNotEmpty ? requestAdvertiseController.imageFideoFilesPathStr: null,
+    };
+    Logger().i("mymap"+mymap3.toString());
+    FlutterBackgroundService().invoke("setAsForeground",mymap3);
+  }
   Future<void> onSendRequestClicked(BuildContext context) async {
     if (requestAdvertiseController.categoryId == -1) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -903,7 +934,7 @@ class FindAdvertiseController extends GetxController {
       "repeat_count":requestAdvertiseController.isFlixble.isTrue?
           int.parse(requestAdvertiseController.selectedCounterController.text):1,
       "channels[]": requestAdvertiseController.channelsIds,
-      "attachments[]": requestAdvertiseController.imageFideoFiles!.isNotEmpty ? requestAdvertiseController.imageFideoFiles : null,
+      //"attachments[]": requestAdvertiseController.imageFideoFiles!.isNotEmpty ? requestAdvertiseController.imageFideoFiles : null,
  /*     "links[][title]": requestAdvertiseController.links.value.isNotEmpty
           ? requestAdvertiseController.links.value.map((e) => e.title).toList()
           : null,
@@ -926,7 +957,10 @@ class FindAdvertiseController extends GetxController {
       "plan_file": requestAdvertiseController.planFile,
       "inline":requestAdvertiseController.showInPlatform.isTrue?1:0
     };
+
     Map<String, dynamic> mymap2={};
+    //ttttttttttttott
+
     if(requestAdvertiseController.links.value.isNotEmpty){
       for (var value1 in requestAdvertiseController.links.value) {
         mymap2={
@@ -946,8 +980,13 @@ class FindAdvertiseController extends GetxController {
         json: mymap,
         onSuccess: (res) async {
           //Navigator.of(context).pop();
-          Get.back();
           Logger().i(res.data!.toJson());
+
+          if(requestAdvertiseController.imageFideoFiles!=null && requestAdvertiseController.imageFideoFiles!.isNotEmpty && res.data?.id!=null){
+            onUploadFiles(res.data!.id!);
+          }
+          Get.back();
+
           if (res.message != null) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('تم إنشاء طلبك بنجاح !', style: TextStyle(

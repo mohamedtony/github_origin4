@@ -67,6 +67,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
   RxList<FileModel>  attatechedFilesImageAndVideo =<FileModel>[].obs;
   var isAttachementSaveClicked = false.obs;
   List<myDio.MultipartFile>? imageFideoFiles = [];
+  List<String>? imageFideoFilesPathStr = [];
   List<File> imageFideoRealFiles = [];
   final ImagePicker _picker = ImagePicker();
   List<XFile>? images2;
@@ -287,6 +288,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
     attatechedFilesImageAndVideo.removeAt(index);
     imageFideoFiles?.removeAt(index);
     imageFideoRealFiles.removeAt(index);
+    imageFideoFilesPathStr?.removeAt(index);
   }
   Future<void> showChoiceImageOrVideoDialogForAttatchement(BuildContext context)
   {
@@ -412,6 +414,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
                 .split(Platform.pathSeparator)
                 .last);
         imageFideoFiles?.add(mFile);
+        imageFideoFilesPathStr?.add(value.path);
         imageFideoRealFiles.add(value);
       });
     }
@@ -453,6 +456,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
                   .split(Platform.pathSeparator)
                   .last);
           imageFideoFiles?.add(mFile);
+          imageFideoFilesPathStr?.add(videoFile.path);
           imageFideoRealFiles.add(videoFile);
           /*print("videoLength= "+videoFile.lengthSync().toString());
            await compressVideo(videoFile).then((value) async {
@@ -477,6 +481,7 @@ class RequestAdvertiseController extends GetxController with GetTickerProviderSt
                     .split(Platform.pathSeparator)
                     .last);
             imageFideoFiles?.add(mFile);
+            imageFideoFilesPathStr?.add(value.path);
             imageFideoRealFiles.add(value);
           });
         }
@@ -523,6 +528,7 @@ Future<File> compressVideo(File file) async {
                   .split(Platform.pathSeparator)
                   .last);
           imageFideoFiles?.add(mFile);
+          imageFideoFilesPathStr?.add(value.path);
           imageFideoRealFiles?.add(value);
         });
       });
@@ -544,6 +550,7 @@ Future<File> compressVideo(File file) async {
             .split(Platform.pathSeparator)
             .last);
     imageFideoFiles?.add(mFile);
+    imageFideoFilesPathStr?.add(videoFile.path);
     imageFideoRealFiles?.add(videoFile);
     /*print("videoLength= "+videoFile.lengthSync().toString());
      compressVideo(videoFile).then((value) async {
