@@ -27,6 +27,9 @@ class VideoController extends GetxController {
   late PageController pageController;
   int currentPagination = -1;
   String? myToken ;
+  int videoDuration = 0;
+
+
   @override
   Future<void> onInit() async {
     reportController = TextEditingController();
@@ -54,6 +57,19 @@ class VideoController extends GetxController {
     print("onReady");
     super.onReady();
   }
+
+  Future<void>  seenAds(int? id)async{
+    client!.seenAds(id,"Bearer "+myToken!).then((value) {
+      print("token");
+      Logger().i(value.status.toString());
+      if(value.status==200){
+        // Get.back();
+        print("copon seen ${id}");
+        Logger().i(value.data.toString());
+      }
+    });
+  }
+
   Future<void> commentAds(int? id) async {
     if(commentController.text==null || commentController.text.isEmpty){
       showMyToast("يرجى إضافة تعليق !");

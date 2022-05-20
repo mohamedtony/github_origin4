@@ -3,6 +3,7 @@ import 'package:advertisers/features/advertiser_list_page/advertise_list_control
 import 'package:advertisers/features/advertiser_list_page/advertiser_list_page.dart';
 import 'package:advertisers/features/client_list_page/client_list_page.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+import 'package:advertisers/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -25,7 +26,7 @@ class ListPage extends StatelessWidget {
           leading: InkWell(
             onTap: (){
               controller.changeIndex(0);
-            },
+             },
             child: Container(
               margin: EdgeInsets.only(right: 10.0),
               child: Obx(()=>SvgPicture.asset(
@@ -61,13 +62,22 @@ class ListPage extends StatelessWidget {
                   controller.tabIndex.value==1?'images/left_clicked.svg':'images/left_notclicked.svg',
                   // color: Colors.white,
                 ),
-              ):/*Container(
+              ):
+              /*Container(
                 margin: EdgeInsets.only(left: 10.0),
                 child: SvgPicture.asset(
                   controller.tabIndex.value==1?'images/left_clicked.svg':'images/left_notclicked.svg',
                   // color: Colors.white,
                 ),
-              )*/const SizedBox(),)
+              )*/
+              storage.read("ownerid")!=null?Container(
+                margin: EdgeInsets.only(left: 10.0),
+                child: SvgPicture.asset(
+                  controller.tabIndex.value==1?'images/left_clicked.svg':'images/left_notclicked.svg',
+                  // color: Colors.white,
+                ),
+              )
+              : const SizedBox(),)
             ),
           ],
           flexibleSpace: Container(
@@ -351,182 +361,182 @@ class ListPage extends StatelessWidget {
                   ),
                 ],
               ))
-            /*TabBar(
-              controller: controller.controller,
-                unselectedLabelColor: AppColors.tabColor,
-                indicatorSize: TabBarIndicatorSize.tab,
-                padding: EdgeInsets.only(
-                    left: 14.0, right: 14.0, top: 6.0, bottom: 4.0),
-                indicator: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6.0),
-                    color: AppColors.tabColor),
-                labelPadding:
-                const EdgeInsets.only(left: 4.0, right: 4.0),
-                indicatorPadding: const EdgeInsets.all(0),
-                tabs: [
-                  Container(
-                    child: Tab(
-                      height: 60.0,
-                      iconMargin: EdgeInsets.zero,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          child: Text(
-                            'ads'.tr,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    height: 60.0,
-                    iconMargin: EdgeInsets.zero,
-                    child: Container(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          child: Text(
-                            'advertisers'.tr,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    height: 60.0,
-                    iconMargin: EdgeInsets.zero,
-                    child: Container(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'coupons'.tr,
-                        ),
-                      ),
-                    ),
-                  ),
-                ]),*/
-            /*ListView(
-              scrollDirection:  Axis.horizontal,
-              shrinkWrap: true,
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  width: 100,
-                  height: 75,
-                  decoration:  BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      gradient:  const LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        colors: [AppColors.beginColor, AppColors.endColor],
-                      ),
-                      *//*boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey[300]!,
-                          blurRadius: 20.0,
-                          spreadRadius: 1.0,
-                        )
-                      ]*//*
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-
-                      Text("title",style: const TextStyle(color: Colors.white,fontSize: 18),),
-                      Text("name",style: const TextStyle(color: Colors.white,fontSize: 16),),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  width: 100,
-                  height: 75,
-                  decoration:  BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    gradient:  const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [AppColors.beginColor, AppColors.endColor],
-                    ),
-                    *//*boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey[300]!,
-                          blurRadius: 20.0,
-                          spreadRadius: 1.0,
-                        )
-                      ]*//*
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-
-                      Text("title",style: const TextStyle(color: Colors.white,fontSize: 18),),
-                      Text("name",style: const TextStyle(color: Colors.white,fontSize: 16),),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  width: 100,
-                  height: 75,
-                  decoration:  BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    gradient:  const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [AppColors.beginColor, AppColors.endColor],
-                    ),
-                    *//*boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey[300]!,
-                          blurRadius: 20.0,
-                          spreadRadius: 1.0,
-                        )
-                      ]*//*
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-
-                      Text("title",style: const TextStyle(color: Colors.white,fontSize: 18),),
-                      Text("name",style: const TextStyle(color: Colors.white,fontSize: 16),),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  width: 100,
-                  height: 75,
-                  decoration:  BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    gradient:  const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [AppColors.beginColor, AppColors.endColor],
-                    ),
-                    *//*boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey[300]!,
-                          blurRadius: 20.0,
-                          spreadRadius: 1.0,
-                        )
-                      ]*//*
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-
-                      Text("title",style: const TextStyle(color: Colors.white,fontSize: 18),),
-                      Text("name",style: const TextStyle(color: Colors.white,fontSize: 16),),
-                    ],
-                  ),
-                ),
-              ],
-            )*/
+            // /*TabBar(
+            //   controller: controller.controller,
+            //     unselectedLabelColor: AppColors.tabColor,
+            //     indicatorSize: TabBarIndicatorSize.tab,
+            //     padding: EdgeInsets.only(
+            //         left: 14.0, right: 14.0, top: 6.0, bottom: 4.0),
+            //     indicator: BoxDecoration(
+            //         borderRadius: BorderRadius.circular(6.0),
+            //         color: AppColors.tabColor),
+            //     labelPadding:
+            //     const EdgeInsets.only(left: 4.0, right: 4.0),
+            //     indicatorPadding: const EdgeInsets.all(0),
+            //     tabs: [
+            //       Container(
+            //         child: Tab(
+            //           height: 60.0,
+            //           iconMargin: EdgeInsets.zero,
+            //           child: Align(
+            //             alignment: Alignment.center,
+            //             child: Container(
+            //               child: Text(
+            //                 'ads'.tr,
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //       Tab(
+            //         height: 60.0,
+            //         iconMargin: EdgeInsets.zero,
+            //         child: Container(
+            //           child: Align(
+            //             alignment: Alignment.center,
+            //             child: Container(
+            //               child: Text(
+            //                 'advertisers'.tr,
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //       Tab(
+            //         height: 60.0,
+            //         iconMargin: EdgeInsets.zero,
+            //         child: Container(
+            //           child: Align(
+            //             alignment: Alignment.center,
+            //             child: Text(
+            //               'coupons'.tr,
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ]),*/
+            // /*ListView(
+            //   scrollDirection:  Axis.horizontal,
+            //   shrinkWrap: true,
+            //   children: [
+            //     Container(
+            //       margin: const EdgeInsets.symmetric(horizontal: 5),
+            //       width: 100,
+            //       height: 75,
+            //       decoration:  BoxDecoration(
+            //           borderRadius: BorderRadius.circular(12),
+            //           gradient:  const LinearGradient(
+            //               begin: Alignment.topCenter,
+            //               end: Alignment.bottomCenter,
+            //             colors: [AppColors.beginColor, AppColors.endColor],
+            //           ),
+            //           *//*boxShadow: [
+            //             BoxShadow(
+            //               color: Colors.grey[300]!,
+            //               blurRadius: 20.0,
+            //               spreadRadius: 1.0,
+            //             )
+            //           ]*//*
+            //       ),
+            //       child: Column(
+            //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //         crossAxisAlignment: CrossAxisAlignment.center,
+            //         children: [
+            //
+            //           Text("title",style: const TextStyle(color: Colors.white,fontSize: 18),),
+            //           Text("name",style: const TextStyle(color: Colors.white,fontSize: 16),),
+            //         ],
+            //       ),
+            //     ),
+            //     Container(
+            //       margin: const EdgeInsets.symmetric(horizontal: 5),
+            //       width: 100,
+            //       height: 75,
+            //       decoration:  BoxDecoration(
+            //         borderRadius: BorderRadius.circular(12),
+            //         gradient:  const LinearGradient(
+            //           begin: Alignment.topCenter,
+            //           end: Alignment.bottomCenter,
+            //           colors: [AppColors.beginColor, AppColors.endColor],
+            //         ),
+            //         *//*boxShadow: [
+            //             BoxShadow(
+            //               color: Colors.grey[300]!,
+            //               blurRadius: 20.0,
+            //               spreadRadius: 1.0,
+            //             )
+            //           ]*//*
+            //       ),
+            //       child: Column(
+            //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //         crossAxisAlignment: CrossAxisAlignment.center,
+            //         children: [
+            //
+            //           Text("title",style: const TextStyle(color: Colors.white,fontSize: 18),),
+            //           Text("name",style: const TextStyle(color: Colors.white,fontSize: 16),),
+            //         ],
+            //       ),
+            //     ),
+            //     Container(
+            //       margin: const EdgeInsets.symmetric(horizontal: 5),
+            //       width: 100,
+            //       height: 75,
+            //       decoration:  BoxDecoration(
+            //         borderRadius: BorderRadius.circular(12),
+            //         gradient:  const LinearGradient(
+            //           begin: Alignment.topCenter,
+            //           end: Alignment.bottomCenter,
+            //           colors: [AppColors.beginColor, AppColors.endColor],
+            //         ),
+            //         *//*boxShadow: [
+            //             BoxShadow(
+            //               color: Colors.grey[300]!,
+            //               blurRadius: 20.0,
+            //               spreadRadius: 1.0,
+            //             )
+            //           ]*//*
+            //       ),
+            //       child: Column(
+            //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //         crossAxisAlignment: CrossAxisAlignment.center,
+            //         children: [
+            //
+            //           Text("title",style: const TextStyle(color: Colors.white,fontSize: 18),),
+            //           Text("name",style: const TextStyle(color: Colors.white,fontSize: 16),),
+            //         ],
+            //       ),
+            //     ),
+            //     Container(
+            //       margin: const EdgeInsets.symmetric(horizontal: 5),
+            //       width: 100,
+            //       height: 75,
+            //       decoration:  BoxDecoration(
+            //         borderRadius: BorderRadius.circular(12),
+            //         gradient:  const LinearGradient(
+            //           begin: Alignment.topCenter,
+            //           end: Alignment.bottomCenter,
+            //           colors: [AppColors.beginColor, AppColors.endColor],
+            //         ),
+            //         *//*boxShadow: [
+            //             BoxShadow(
+            //               color: Colors.grey[300]!,
+            //               blurRadius: 20.0,
+            //               spreadRadius: 1.0,
+            //             )
+            //           ]*//*
+            //       ),
+            //       child: Column(
+            //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //         crossAxisAlignment: CrossAxisAlignment.center,
+            //         children: [
+            //
+            //           Text("title",style: const TextStyle(color: Colors.white,fontSize: 18),),
+            //           Text("name",style: const TextStyle(color: Colors.white,fontSize: 16),),
+            //         ],
+            //       ),
+            //     ),
+            //   ],
+            // )*/
           ),
         ),
 

@@ -62,801 +62,801 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
         builder: (controller) {
           return overlayHandlerProvider.adsListModelModel != null
               ? Scaffold(
-                  body: Container(
+            body: Container(
+              color: Colors.white,
+              //height: 50,
+              child: ListView(
+                controller: widget.scrollController,
+                //physics:const AlwaysScrollableScrollPhysics(),
+                children: [
+                  Container(
                     color: Colors.white,
-                    //height: 50,
-                    child: ListView(
-                      controller: widget.scrollController,
-                      //physics:const AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                          color: Colors.white,
+                          padding: EdgeInsets.only(top: 10.0),
+                          //padding: EdgeInsets.all(8.0),
+                          color: AppColors.bottomSheetTabColor,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Container(
-                                padding: EdgeInsets.only(top: 10.0),
-                                //padding: EdgeInsets.all(8.0),
-                                color: AppColors.bottomSheetTabColor,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(left: 5.0),
-                                        child: Image.asset(
-                                          'images/dropdown.png',
-                                          fit: BoxFit.fill,
-                                          height: 35.0,
-                                          width: 35.0,
-                                        ),
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Stack(
-                                          children: [
-                                            overlayHandlerProvider
-                                                            .adsListModelModel
-                                                            ?.user
-                                                            ?.image !=
-                                                        null &&
-                                                    overlayHandlerProvider
-                                                        .adsListModelModel!
-                                                        .user!
-                                                        .image!
-                                                        .isNotEmpty
-                                                ? Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 14.0, top: 10.0),
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        /* overlayHandlerProvider.updateHidden(true, 0);
+                              InkWell(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(left: 5.0),
+                                  child: Image.asset(
+                                    'images/dropdown.png',
+                                    fit: BoxFit.fill,
+                                    height: 35.0,
+                                    width: 35.0,
+                                  ),
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.start,
+                                children: [
+                                  Stack(
+                                    children: [
+                                      overlayHandlerProvider
+                                          .adsListModelModel
+                                          ?.user
+                                          ?.image !=
+                                          null &&
+                                          overlayHandlerProvider
+                                              .adsListModelModel!
+                                              .user!
+                                              .image!
+                                              .isNotEmpty
+                                          ? Container(
+                                        margin: EdgeInsets.only(
+                                            left: 14.0, top: 10.0),
+                                        child: InkWell(
+                                          onTap: () {
+                                            /* overlayHandlerProvider.updateHidden(true, 0);
                                             videoController?.pause();
                                             animController?.stop();
                                             audioPlayer?.pause();
                                             print("sdvertiserId= ${adsListModel.id}");*/
-                                                        // Get.toNamed('/AdvertiserProfileOrderPage',arguments:GetAdvertisersModel(id: overlayHandlerProvider.adsListModelModel!.user?.id));
-                                                      },
-                                                      child: CircleAvatar(
-                                                        radius: 25.0,
-                                                        backgroundColor:
-                                                            Colors.grey[300],
-                                                        backgroundImage:
-                                                            CachedNetworkImageProvider(
-                                                          overlayHandlerProvider
-                                                              .adsListModelModel!
-                                                              .user!
-                                                              .image!,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  )
-                                                : Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 14.0, top: 10.0),
-                                                    child: CircleAvatar(
-                                                      radius: 25.0,
-                                                      backgroundColor:
-                                                          Colors.grey[300],
-                                                      backgroundImage:
-                                                          AssetImage(
-                                                              'images/user.png'),
-                                                    ),
-                                                  ),
-                                            if (overlayHandlerProvider
-                                                        .adsListModelModel
-                                                        ?.user
-                                                        ?.country
-                                                        ?.image !=
-                                                    null &&
-                                                overlayHandlerProvider
-                                                    .adsListModelModel!
-                                                    .user!
-                                                    .country!
-                                                    .image!
-                                                    .isNotEmpty)
-                                              Positioned(
-                                                left: 0.0,
-                                                child: CircleAvatar(
-                                                  radius: 16.0,
-                                                  backgroundColor:
-                                                      Colors.grey[300],
-                                                  backgroundImage:
-                                                      CachedNetworkImageProvider(
-                                                    overlayHandlerProvider
-                                                        .adsListModelModel!
-                                                        .user!
-                                                        .country!
-                                                        .image!,
-                                                  ),
-                                                ),
-                                              )
-                                          ],
-                                        ),
-                                        Expanded(
-                                          child: Container(
-                                            margin: EdgeInsets.only(
-                                                right: 6.0, bottom: 8),
-                                            child: Text(
-                                              '${overlayHandlerProvider.adsListModelModel?.user?.username ?? ''}',
-                                              style: TextStyle(
-                                                  color: AppColors
-                                                      .advertiseNameColor,
-                                                  fontSize: 24.0,
-                                                  fontFamily:
-                                                      'DecoType-Regular',
-                                                  fontWeight: FontWeight.w400),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
+                                            // Get.toNamed('/AdvertiserProfileOrderPage',arguments:GetAdvertisersModel(id: overlayHandlerProvider.adsListModelModel!.user?.id));
+                                          },
+                                          child: CircleAvatar(
+                                            radius: 25.0,
+                                            backgroundColor:
+                                            Colors.grey[300],
+                                            backgroundImage:
+                                            CachedNetworkImageProvider(
+                                              overlayHandlerProvider
+                                                  .adsListModelModel!
+                                                  .user!
+                                                  .image!,
                                             ),
                                           ),
                                         ),
-                                        Container(
-                                          width: 158.0,
-                                          // margin: EdgeInsets.only(left: 10.0,right: 3.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Obx(
-                                                () => InkWell(
-                                                  onTap: () async {
-                                                    String myToken =
-                                                        await storage
-                                                            .read("token");
-                                                    if (myToken == null) {
-                                                      showMyToast(
-                                                          "مشكلة غير معروفة !");
-                                                      return;
-                                                    }
-                                                    client!
-                                                        .likeAdvertiser(
-                                                            overlayHandlerProvider
-                                                                .adsListModelModel!
-                                                                .user!
-                                                                .id,
-                                                            "Bearer " + myToken)
-                                                        .then((value) {
-                                                      print("token");
-                                                      // Logger().i(value.status.toString());
-                                                      if (value.status == 200) {
-                                                        if (value.data
-                                                                    ?.is_liked !=
-                                                                null &&
-                                                            value.data!
-                                                                    .is_liked ==
-                                                                1) {
-                                                          overlayHandlerProvider
-                                                              .isLikedObs
-                                                              .value = true;
-                                                          overlayHandlerProvider
-                                                              .adsListModelModel!
-                                                              .is_liked = true;
-                                                          showMyToast(
-                                                              "تم متابعةالمعلن بنجاح !");
-                                                        } else {
-                                                          overlayHandlerProvider
-                                                              .isLikedObs
-                                                              .value = false;
-                                                          overlayHandlerProvider
-                                                              .adsListModelModel!
-                                                              .is_liked = false;
-                                                          showMyToast(
-                                                              "تم إلغاء متابعة المعلن بنجاح !");
-                                                        }
-                                                      }
-                                                    });
-                                                  },
-                                                  child: Container(
-                                                    padding: EdgeInsets.only(
-                                                        left: 2.0, right: 2.0),
-                                                    child:
-                                                        overlayHandlerProvider
-                                                                .isLikedObs
-                                                                .isTrue
-                                                            ? SvgPicture.asset(
-                                                                'images/heart_filled.svg',
-                                                                fit:
-                                                                    BoxFit.fill,
-                                                                height: 45.0,
-                                                                width: 45.0,
-                                                              )
-                                                            : SvgPicture.asset(
-                                                                'images/heart_solid.svg',
-                                                                fit:
-                                                                    BoxFit.fill,
-                                                                height: 45.0,
-                                                                width: 45.0,
-                                                              ),
-                                                  ),
-                                                ),
+                                      )
+                                          : Container(
+                                        margin: EdgeInsets.only(
+                                            left: 14.0, top: 10.0),
+                                        child: CircleAvatar(
+                                          radius: 25.0,
+                                          backgroundColor:
+                                          Colors.grey[300],
+                                          backgroundImage:
+                                          AssetImage(
+                                              'images/user.png'),
+                                        ),
+                                      ),
+                                      if (overlayHandlerProvider
+                                          .adsListModelModel
+                                          ?.user
+                                          ?.country
+                                          ?.image !=
+                                          null &&
+                                          overlayHandlerProvider
+                                              .adsListModelModel!
+                                              .user!
+                                              .country!
+                                              .image!
+                                              .isNotEmpty)
+                                        Positioned(
+                                          left: 0.0,
+                                          child: CircleAvatar(
+                                            radius: 16.0,
+                                            backgroundColor:
+                                            Colors.grey[300],
+                                            backgroundImage:
+                                            CachedNetworkImageProvider(
+                                              overlayHandlerProvider
+                                                  .adsListModelModel!
+                                                  .user!
+                                                  .country!
+                                                  .image!,
+                                            ),
+                                          ),
+                                        )
+                                    ],
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      margin: EdgeInsets.only(
+                                          right: 6.0, bottom: 8),
+                                      child: Text(
+                                        '${overlayHandlerProvider.adsListModelModel?.user?.username ?? ''}',
+                                        style: TextStyle(
+                                            color: AppColors
+                                                .advertiseNameColor,
+                                            fontSize: 24.0,
+                                            fontFamily:
+                                            'DecoType-Regular',
+                                            fontWeight: FontWeight.w400),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 158.0,
+                                    // margin: EdgeInsets.only(left: 10.0,right: 3.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.end,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Obx(
+                                              () => InkWell(
+                                            onTap: () async {
+                                              String myToken =
+                                              await storage
+                                                  .read("token");
+                                              if (myToken == null) {
+                                                showMyToast(
+                                                    "مشكلة غير معروفة !");
+                                                return;
+                                              }
+                                              client!
+                                                  .likeAdvertiser(
+                                                  overlayHandlerProvider
+                                                      .adsListModelModel!
+                                                      .user!
+                                                      .id,
+                                                  "Bearer " + myToken)
+                                                  .then((value) {
+                                                print("token");
+                                                // Logger().i(value.status.toString());
+                                                if (value.status == 200) {
+                                                  if (value.data
+                                                      ?.is_liked !=
+                                                      null &&
+                                                      value.data!
+                                                          .is_liked ==
+                                                          1) {
+                                                    overlayHandlerProvider
+                                                        .isLikedObs
+                                                        .value = true;
+                                                    overlayHandlerProvider
+                                                        .adsListModelModel!
+                                                        .is_liked = true;
+                                                    showMyToast(
+                                                        "تم متابعةالمعلن بنجاح !");
+                                                  } else {
+                                                    overlayHandlerProvider
+                                                        .isLikedObs
+                                                        .value = false;
+                                                    overlayHandlerProvider
+                                                        .adsListModelModel!
+                                                        .is_liked = false;
+                                                    showMyToast(
+                                                        "تم إلغاء متابعة المعلن بنجاح !");
+                                                  }
+                                                }
+                                              });
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 2.0, right: 2.0),
+                                              child:
+                                              overlayHandlerProvider
+                                                  .isLikedObs
+                                                  .isTrue
+                                                  ? SvgPicture.asset(
+                                                'images/heart_filled.svg',
+                                                fit:
+                                                BoxFit.fill,
+                                                height: 45.0,
+                                                width: 45.0,
+                                              )
+                                                  : SvgPicture.asset(
+                                                'images/heart_solid.svg',
+                                                fit:
+                                                BoxFit.fill,
+                                                height: 45.0,
+                                                width: 45.0,
                                               ),
-                                              Obx(() => Container(
-                                                    margin:
-                                                        overlayHandlerProvider
-                                                                    .in_blackList
-                                                                    .value ==
-                                                                1
-                                                            ? EdgeInsets.only(
-                                                                left: 10.0,
-                                                                right: 10.0,
-                                                                bottom: 4.0)
-                                                            : EdgeInsets.only(
-                                                                left: 10.0,
-                                                                right: 10.0,
-                                                                bottom: 4.0),
-                                                    child: InkWell(
-                                                      onTap: () async {
-                                                        //blockedUsersController.removeBlockedUser(blockedUserModel.id!);
-                                                        String myToken =
-                                                            await storage
-                                                                .read("token");
-                                                        if (myToken == null) {
-                                                          showMyToast(
-                                                              "مشكلة غير معروفة !");
-                                                          return;
-                                                        }
-                                                        client!
-                                                            .blacklistAdvertiser(
-                                                                overlayHandlerProvider
-                                                                    .adsListModelModel!
-                                                                    .user!
-                                                                    .id,
-                                                                "Bearer " +
-                                                                    myToken)
-                                                            .then((value) {
-                                                          //print("token= ${advertisersModel.id}");
-                                                          //Logger().i(value.status.toString());
-                                                          if (value.status ==
-                                                              200) {
-                                                            if (value.data
-                                                                        ?.in_blacklist !=
-                                                                    null &&
-                                                                value.data!
-                                                                        .in_blacklist ==
-                                                                    1) {
-                                                              overlayHandlerProvider
-                                                                  .in_blackList
-                                                                  .value = 1;
-                                                              //overlayHandlerProvider.adsListModelModel!.is = 1;
-                                                              showMyToast(
-                                                                  "تم إظهار المعلن بنجاح !");
-                                                            } else {
-                                                              overlayHandlerProvider
-                                                                  .in_blackList
-                                                                  .value = 0;
-                                                              //overlayHandlerProvider.in_blackList.value  = 0;
-                                                              showMyToast(
-                                                                  "تم إخفاء المعلن بنجاح !");
-                                                            }
-                                                          }
-                                                        });
-                                                      },
-                                                      child: overlayHandlerProvider
-                                                                  .in_blackList
-                                                                  .value ==
-                                                              0
-                                                          ? Image.asset(
-                                                              'images/icon_eye_open.png',
-                                                              fit: BoxFit.fill,
-                                                              height: 18.0,
-                                                              width: 26.0,
-                                                            )
-                                                          : Image.asset(
-                                                              'images/icon_eye_off.png',
-                                                              fit: BoxFit.fill,
-                                                              height: 23.0,
-                                                              width: 26.0,
-                                                            ),
-                                                    ),
-                                                  )),
-                                              InkWell(
-                                                onTap: () async {
-                                                  dynamic data = await storage
-                                                      .read("data");
+                                            ),
+                                          ),
+                                        ),
+                                        Obx(() => Container(
+                                          margin:
+                                          overlayHandlerProvider
+                                              .in_blackList
+                                              .value ==
+                                              1
+                                              ? EdgeInsets.only(
+                                              left: 10.0,
+                                              right: 10.0,
+                                              bottom: 4.0)
+                                              : EdgeInsets.only(
+                                              left: 10.0,
+                                              right: 10.0,
+                                              bottom: 4.0),
+                                          child: InkWell(
+                                            onTap: () async {
+                                              //blockedUsersController.removeBlockedUser(blockedUserModel.id!);
+                                              String myToken =
+                                              await storage
+                                                  .read("token");
+                                              if (myToken == null) {
+                                                showMyToast(
+                                                    "مشكلة غير معروفة !");
+                                                return;
+                                              }
+                                              client!
+                                                  .blacklistAdvertiser(
+                                                  overlayHandlerProvider
+                                                      .adsListModelModel!
+                                                      .user!
+                                                      .id,
+                                                  "Bearer " +
+                                                      myToken)
+                                                  .then((value) {
+                                                //print("token= ${advertisersModel.id}");
+                                                //Logger().i(value.status.toString());
+                                                if (value.status ==
+                                                    200) {
+                                                  if (value.data
+                                                      ?.in_blacklist !=
+                                                      null &&
+                                                      value.data!
+                                                          .in_blacklist ==
+                                                          1) {
+                                                    overlayHandlerProvider
+                                                        .in_blackList
+                                                        .value = 1;
+                                                    //overlayHandlerProvider.adsListModelModel!.is = 1;
+                                                    showMyToast(
+                                                        "تم إظهار المعلن بنجاح !");
+                                                  } else {
+                                                    overlayHandlerProvider
+                                                        .in_blackList
+                                                        .value = 0;
+                                                    //overlayHandlerProvider.in_blackList.value  = 0;
+                                                    showMyToast(
+                                                        "تم إخفاء المعلن بنجاح !");
+                                                  }
+                                                }
+                                              });
+                                            },
+                                            child: overlayHandlerProvider
+                                                .in_blackList
+                                                .value ==
+                                                0
+                                                ? Image.asset(
+                                              'images/icon_eye_open.png',
+                                              fit: BoxFit.fill,
+                                              height: 18.0,
+                                              width: 26.0,
+                                            )
+                                                : Image.asset(
+                                              'images/icon_eye_off.png',
+                                              fit: BoxFit.fill,
+                                              height: 23.0,
+                                              width: 26.0,
+                                            ),
+                                          ),
+                                        )),
+                                        InkWell(
+                                          onTap: () async {
+                                            dynamic data = await storage
+                                                .read("data");
 
-                                                  User user =
-                                                      User.fromJson(data);
+                                            User user =
+                                            User.fromJson(data);
 
-                                                  print("UserId=${user.id}");
-                                                  print(
-                                                      "UserId=${user.username}");
-                                                  print(
-                                                      "UserIrrd=${overlayHandlerProvider.adsListModelModel!.user!.id}");
-                                                  Get.toNamed(
-                                                      '/ChatPage?room=${overlayHandlerProvider.adsListModelModel!.user!.id}-${user.id}'
-                                                      '&from_user=${json.encode(FromUserModel(id: user.id, username: user.username, image: user.image))}&to_user=${json.encode(ToUserModel(id: overlayHandlerProvider.adsListModelModel!.user!.id, image: overlayHandlerProvider.adsListModelModel!.user!.image, username: overlayHandlerProvider.adsListModelModel!.user!.username))}&id=${0}');
-                                                },
-                                                child: Container(
-                                                  padding: EdgeInsets.only(
-                                                      left: 2.0, right: 2.0),
-                                                  child: /* advertisersModel.iisMutedObs.isTrue
+                                            print("UserId=${user.id}");
+                                            print(
+                                                "UserId=${user.username}");
+                                            print(
+                                                "UserIrrd=${overlayHandlerProvider.adsListModelModel!.user!.id}");
+                                            Get.toNamed(
+                                                '/ChatPage?room=${overlayHandlerProvider.adsListModelModel!.user!.id}-${user.id}'
+                                                    '&from_user=${json.encode(FromUserModel(id: user.id, username: user.username, image: user.image))}&to_user=${json.encode(ToUserModel(id: overlayHandlerProvider.adsListModelModel!.user!.id, image: overlayHandlerProvider.adsListModelModel!.user!.image, username: overlayHandlerProvider.adsListModelModel!.user!.username))}&id=${0}');
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.only(
+                                                left: 2.0, right: 2.0),
+                                            child: /* advertisersModel.iisMutedObs.isTrue
                                                 ? SvgPicture.asset(
                                               'images/chat_icon.svg',
                                               fit: BoxFit.fill,
                                               height: 45.0,
                                               width: 45.0,
                                             ):*/
-                                                      SvgPicture.asset(
-                                                    'images/chat_icon_dot.svg',
-                                                    fit: BoxFit.fill,
-                                                    height: 45.0,
-                                                    width: 45.0,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                            SvgPicture.asset(
+                                              'images/chat_icon_dot.svg',
+                                              fit: BoxFit.fill,
+                                              height: 45.0,
+                                              width: 45.0,
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
+                            ],
+                          ),
+                        ),
 
-                              //========================================   'تقييم المحتوى'  ===============================
+                        //========================================   'تقييم المحتوى'  ===============================
 
+                        Container(
+                          margin: EdgeInsets.only(right: 0.0, top: 30),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                               Container(
-                                margin: EdgeInsets.only(right: 0.0, top: 30),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 10,
-                                      height: 10,
-                                      margin:
-                                          EdgeInsets.only(right: 10.0, top: 10),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        gradient: LinearGradient(
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter,
-                                          colors: [
-                                            AppColors.beginColor,
-                                            AppColors.endColor
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        margin: EdgeInsets.only(
-                                            right: 10.0, bottom: 3, top: 0),
-                                        alignment: Alignment.topRight,
-                                        child: Text(
-                                          'تقييم المحتوى',
-                                          style: TextStyle(
-                                              color: Color(0xff4184CE)),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(left: 10.0),
-                                      child: RatingBar.builder(
-                                        //initialRating: controller.adsListModelModel?.user?.rate!=null && controller.adsListModelModel!.user!.rate!.isNotEmpty?double.parse(controller.adsListModelModel!.user!.rate!):0.0,
-                                        initialRating: controller
-                                                    .adsListModelModel
-                                                    ?.user
-                                                    ?.rate !=
-                                                null
-                                            ? controller
-                                                .adsListModelModel!.user!.rate!
-                                                .toDouble()
-                                            : 0.0,
-
-                                        minRating: 1,
-                                        itemSize: 26,
-                                        direction: Axis.horizontal,
-                                        textDirection: TextDirection.ltr,
-                                        allowHalfRating: true,
-                                        itemCount: 5,
-                                        itemPadding: EdgeInsets.symmetric(
-                                            horizontal: 2.0),
-                                        itemBuilder: (context, _) => Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
-                                        onRatingUpdate: (rating) {
-                                          print(rating);
-                                          if (overlayHandlerProvider
-                                                  .adsListModelModel?.id !=
-                                              null) {
-                                            print("idddd= " +
-                                                overlayHandlerProvider
-                                                    .adsListModelModel!.id
-                                                    .toString());
-                                            overlayHandlerProvider.rateAds(
-                                                overlayHandlerProvider
-                                                    .adsListModelModel!.id!,
-                                                rating);
-                                          }
-                                        },
-                                      ),
-                                    )
-                                  ],
+                                width: 10,
+                                height: 10,
+                                margin:
+                                EdgeInsets.only(right: 10.0, top: 10),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      AppColors.beginColor,
+                                      AppColors.endColor
+                                    ],
+                                  ),
                                 ),
                               ),
-
-                              //========================================   'ابلاغ عن محتوى'  ===============================
-
-                              InkWell(
-                                onTap: () {
-                                  showMyBottomSheet(context, 9);
-                                },
+                              Expanded(
                                 child: Container(
                                   margin: EdgeInsets.only(
-                                      right: 0.0, top: 10, left: 10),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width: 10,
-                                        height: 10,
-                                        margin: EdgeInsets.only(
-                                            right: 10.0, top: 10),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          gradient: LinearGradient(
-                                            begin: Alignment.topCenter,
-                                            end: Alignment.bottomCenter,
-                                            colors: [
-                                              AppColors.beginColor,
-                                              AppColors.endColor
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          margin: EdgeInsets.only(
-                                              right: 10.0, bottom: 3, top: 0),
-                                          alignment: Alignment.topRight,
-                                          child: Text(
-                                            'ابلاغ عن محتوى',
-                                            style: TextStyle(color: Colors.red),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                          margin: EdgeInsets.only(
-                                              left: 20, top: 2.0),
-                                          child: Icon(
-                                            Icons.arrow_forward_ios_rounded,
-                                            size: 17,
-                                            color: Color(0xff486ac7),
-                                          )),
-                                    ],
+                                      right: 10.0, bottom: 3, top: 0),
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    'تقييم المحتوى',
+                                    style: TextStyle(
+                                        color: Color(0xff4184CE)),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
                               ),
-
-                              //======================================== 'إظهار الاعلانات دائما فى المقدمة' ===============================
                               Container(
-                                margin: EdgeInsets.only(
-                                    right: 0.0, top: 10, left: 10),
-                                child: InkWell(
-                                  onTap: () async {
-                                    String myToken =
-                                        await storage.read("token");
-                                    LoadingDailog().showLoading(context);
-                                    if (myToken == null) {
-                                      showMyToast("مشكلة غير معروفة !");
-                                      Get.back();
-                                      return;
-                                    }
-                                    print(
-                                        "token${overlayHandlerProvider.adsListModelModel!.id}");
-                                    client!
-                                        .in_front(
-                                            overlayHandlerProvider
-                                                .adsListModelModel!.id,
-                                            "Bearer " + myToken)
-                                        .then((value) {
-                                      print(
-                                          "token${overlayHandlerProvider.adsListModelModel!.id}");
-                                      // Logger().i(value.status.toString());
-                                      Get.back();
-                                      if (value.status == 200) {
-                                        if (value.message != null) {
-                                          showMyToast(value.message!);
-                                        }
-                                        if (value.data?.in_front != null &&
-                                            value.data!.in_front == 0) {
-                                          controller.isInfront.value = false;
-                                          showMyToast(
-                                              "سوف يتم تعطيل إظهار الاعلانات الخاصة بهذا المعلن دائما فى المقدمة !");
-                                        } else {
-                                          controller.isInfront.value = true;
-                                          showMyToast(
-                                              "سوف يتم إظهار الاعلانات الخاصة بهذا المعلن دائما فى المقدمة !");
-                                        }
-                                      }
-                                    });
-                                  },
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width: 10,
-                                        height: 10,
-                                        margin: EdgeInsets.only(
-                                            right: 10.0, top: 10),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          gradient: LinearGradient(
-                                            begin: Alignment.topCenter,
-                                            end: Alignment.bottomCenter,
-                                            colors: [
-                                              AppColors.beginColor,
-                                              AppColors.endColor
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          margin: EdgeInsets.only(
-                                              right: 10.0, bottom: 3, top: 0),
-                                          alignment: Alignment.topRight,
-                                          child: Text(
-                                            'إظهار الاعلانات دائما فى المقدمة',
-                                            style: TextStyle(
-                                                color: Color(0xff4184CE)),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      ),
-                                      Obx(() => Container(
-                                            child: controller.isInfront.isTrue
-                                                ? Container(
-                                                    //margin: EdgeInsets.only(left: 10.0,bottom: 10.0),
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      left: 10.0,
-                                                    ),
-                                                    child: Image.asset(
-                                                      'images/switch_icon_right.png',
-                                                      scale: 2,
-                                                      width: 45,
-                                                      height: 40,
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  )
-                                                : Container(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      right: 10.0,
-                                                      //left: 10.0
-                                                    ),
-                                                    //margin: EdgeInsets.only(bottom: 10.0),
-                                                    child: Image.asset(
-                                                      'images/no_chat_left.png',
-                                                      scale: 2,
-                                                      width: 45,
-                                                      height: 40,
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  ),
-                                          )),
-                                    ],
+                                margin: EdgeInsets.only(left: 10.0),
+                                child: RatingBar.builder(
+                                  //initialRating: controller.adsListModelModel?.user?.rate!=null && controller.adsListModelModel!.user!.rate!.isNotEmpty?double.parse(controller.adsListModelModel!.user!.rate!):0.0,
+                                  initialRating: controller
+                                      .adsListModelModel
+                                      ?.user
+                                      ?.rate !=
+                                      null
+                                      ? controller
+                                      .adsListModelModel!.user!.rate!
+                                      .toDouble()
+                                      : 0.0,
+
+                                  minRating: 1,
+                                  itemSize: 26,
+                                  direction: Axis.horizontal,
+                                  textDirection: TextDirection.ltr,
+                                  allowHalfRating: true,
+                                  itemCount: 5,
+                                  itemPadding: EdgeInsets.symmetric(
+                                      horizontal: 2.0),
+                                  itemBuilder: (context, _) => Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
                                   ),
-                                ),
-                              ),
-
-                              //======================================== 'نبهنى بلإعلانات الجديدة' ===============================
-                              Container(
-                                margin: EdgeInsets.only(
-                                    right: 0.0, top: 10, left: 10),
-                                child: InkWell(
-                                  onTap: () async {
-                                    String myToken =
-                                        await storage.read("token");
-                                    LoadingDailog().showLoading(context);
-                                    if (myToken == null) {
-                                      showMyToast("مشكلة غير معروفة !");
-                                      Get.back();
-                                      return;
-                                    }
-                                    print(
-                                        "token${overlayHandlerProvider.adsListModelModel!.id}");
-                                    client!
-                                        .notify(
-                                            overlayHandlerProvider
-                                                .adsListModelModel!.id,
-                                            "Bearer " + myToken)
-                                        .then((value) {
-                                      print(
-                                          "token${overlayHandlerProvider.adsListModelModel!.id}");
-                                      // Logger().i(value.status.toString());
-                                      Get.back();
-                                      if (value.status == 200) {
-                                        if (value.data?.notified != null &&
-                                            value.data!.notified == 0) {
-                                          showMyToast(
-                                              "سوف يتم تعطيل الاشعارات الخاصة بأى اعلان جديد خاص بهذا المعلن");
-                                          controller.isNotifiable.value = false;
-                                        } else {
-                                          showMyToast(
-                                              "سوف يتم ارسال اشعار بأى اعلان جديد خاص بهذا المعلن");
-                                          controller.isNotifiable.value = true;
-                                        }
-                                      }
-                                    });
-                                  },
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width: 10,
-                                        height: 10,
-                                        margin: EdgeInsets.only(
-                                            right: 10.0, top: 10),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          gradient: LinearGradient(
-                                            begin: Alignment.topCenter,
-                                            end: Alignment.bottomCenter,
-                                            colors: [
-                                              AppColors.beginColor,
-                                              AppColors.endColor
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          margin: EdgeInsets.only(
-                                              right: 10.0, bottom: 3, top: 0),
-                                          alignment: Alignment.topRight,
-                                          child: Text(
-                                            'نبهنى بلإعلانات الجديدة',
-                                            style: TextStyle(
-                                                color: Color(0xff4184CE)),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      ),
-                                      Obx(() => Container(
-                                            child: controller
-                                                    .isNotifiable.isTrue
-                                                ? Container(
-                                                    //margin: EdgeInsets.only(left: 10.0,bottom: 10.0),
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      left: 10.0,
-                                                    ),
-                                                    child: Image.asset(
-                                                      'images/switch_icon_right.png',
-                                                      scale: 2,
-                                                      width: 45,
-                                                      height: 40,
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  )
-                                                : Container(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      right: 10.0,
-                                                      //left: 10.0
-                                                    ),
-                                                    //margin: EdgeInsets.only(bottom: 10.0),
-                                                    child: Image.asset(
-                                                      'images/no_chat_left.png',
-                                                      scale: 2,
-                                                      width: 45,
-                                                      height: 40,
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  ),
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-
-                              //======================================== 'حفظ فى المفضلة' ===============================
-                              Container(
-                                margin: EdgeInsets.only(
-                                    right: 0.0, top: 10, left: 10),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 10,
-                                      height: 10,
-                                      margin:
-                                          EdgeInsets.only(right: 10.0, top: 10),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        gradient: LinearGradient(
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter,
-                                          colors: [
-                                            AppColors.beginColor,
-                                            AppColors.endColor
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: InkWell(
-                                        onTap: () {
-                                          if (overlayHandlerProvider.adId !=
-                                              null) {
-                                            print("idddd= " +
-                                                overlayHandlerProvider.adId
-                                                    .toString());
-                                            overlayHandlerProvider.favoriteAds(
-                                                overlayHandlerProvider.adId!);
-                                          }
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.only(
-                                              right: 10.0, bottom: 3, top: 0),
-                                          alignment: Alignment.topRight,
-                                          child: Text(
-                                            'حفظ فى المفضلة',
-                                            style: TextStyle(
-                                                color: Color(0xff4184CE)),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Obx(
-                                          () => InkWell(
-                                        onTap: () async {
-                                          if (overlayHandlerProvider.adId !=
-                                              null) {
-                                            print("idddd= " +
-                                                overlayHandlerProvider.adId
-                                                    .toString());
-                                            overlayHandlerProvider.favoriteAds(
-                                                overlayHandlerProvider.adId!);
-                                          }
-                                        },
-                                        child: Container(
-                                          padding: EdgeInsets.only(
-                                              left: 2.0, right: 2.0),
-                                          margin:
-                                          EdgeInsets.only(left: 10, top: 2.0,),
-                                          child:
+                                  onRatingUpdate: (rating) {
+                                    print(rating);
+                                    if (overlayHandlerProvider
+                                        .adsListModelModel?.id !=
+                                        null) {
+                                      print("idddd= " +
                                           overlayHandlerProvider
-                                              .isAdFavorite
-                                              .isTrue
-                                              ? SvgPicture.asset(
-                                            'images/heart_filled.svg',
-                                            fit:
-                                            BoxFit.fill,
-                                            height: 45.0,
-                                            width: 45.0,
-                                          )
-                                              : SvgPicture.asset(
-                                            'images/heart_solid.svg',
-                                            fit:
-                                            BoxFit.fill,
-                                            height: 45.0,
-                                            width: 45.0,
-                                          ),
-                                        ),
-                                      ),
+                                              .adsListModelModel!.id
+                                              .toString());
+                                      overlayHandlerProvider.rateAds(
+                                          overlayHandlerProvider
+                                              .adsListModelModel!.id!,
+                                          rating);
+                                    }
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+
+                        //========================================   'ابلاغ عن محتوى'  ===============================
+
+                        InkWell(
+                          onTap: () {
+                            showMyBottomSheet(context, 9);
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(
+                                right: 0.0, top: 10, left: 10),
+                            child: Row(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 10,
+                                  height: 10,
+                                  margin: EdgeInsets.only(
+                                      right: 10.0, top: 10),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        AppColors.beginColor,
+                                        AppColors.endColor
+                                      ],
                                     ),
-                                    /*Container(
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        right: 10.0, bottom: 3, top: 0),
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'ابلاغ عن محتوى',
+                                      style: TextStyle(color: Colors.red),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                    margin: EdgeInsets.only(
+                                        left: 20, top: 2.0),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      size: 17,
+                                      color: Color(0xff486ac7),
+                                    )),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        //======================================== 'إظهار الاعلانات دائما فى المقدمة' ===============================
+                        Container(
+                          margin: EdgeInsets.only(
+                              right: 0.0, top: 10, left: 10),
+                          child: InkWell(
+                            onTap: () async {
+                              String myToken =
+                              await storage.read("token");
+                              LoadingDailog().showLoading(context);
+                              if (myToken == null) {
+                                showMyToast("مشكلة غير معروفة !");
+                                Get.back();
+                                return;
+                              }
+                              print(
+                                  "token${overlayHandlerProvider.adsListModelModel!.id}");
+                              client!
+                                  .in_front(
+                                  overlayHandlerProvider
+                                      .adsListModelModel!.id,
+                                  "Bearer " + myToken)
+                                  .then((value) {
+                                print(
+                                    "token${overlayHandlerProvider.adsListModelModel!.id}");
+                                // Logger().i(value.status.toString());
+                                Get.back();
+                                if (value.status == 200) {
+                                  if (value.message != null) {
+                                    showMyToast(value.message!);
+                                  }
+                                  if (value.data?.in_front != null &&
+                                      value.data!.in_front == 0) {
+                                    controller.isInfront.value = false;
+                                    showMyToast(
+                                        "سوف يتم تعطيل إظهار الاعلانات الخاصة بهذا المعلن دائما فى المقدمة !");
+                                  } else {
+                                    controller.isInfront.value = true;
+                                    showMyToast(
+                                        "سوف يتم إظهار الاعلانات الخاصة بهذا المعلن دائما فى المقدمة !");
+                                  }
+                                }
+                              });
+                            },
+                            child: Row(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 10,
+                                  height: 10,
+                                  margin: EdgeInsets.only(
+                                      right: 10.0, top: 10),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        AppColors.beginColor,
+                                        AppColors.endColor
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        right: 10.0, bottom: 3, top: 0),
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'إظهار الاعلانات دائما فى المقدمة',
+                                      style: TextStyle(
+                                          color: Color(0xff4184CE)),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                                Obx(() => Container(
+                                  child: controller.isInfront.isTrue
+                                      ? Container(
+                                    //margin: EdgeInsets.only(left: 10.0,bottom: 10.0),
+                                    padding:
+                                    const EdgeInsets.only(
+                                      left: 10.0,
+                                    ),
+                                    child: Image.asset(
+                                      'images/switch_icon_right.png',
+                                      scale: 2,
+                                      width: 45,
+                                      height: 40,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  )
+                                      : Container(
+                                    padding:
+                                    const EdgeInsets.only(
+                                      right: 10.0,
+                                      //left: 10.0
+                                    ),
+                                    //margin: EdgeInsets.only(bottom: 10.0),
+                                    child: Image.asset(
+                                      'images/no_chat_left.png',
+                                      scale: 2,
+                                      width: 45,
+                                      height: 40,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                )),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        //======================================== 'نبهنى بلإعلانات الجديدة' ===============================
+                        Container(
+                          margin: EdgeInsets.only(
+                              right: 0.0, top: 10, left: 10),
+                          child: InkWell(
+                            onTap: () async {
+                              String myToken =
+                              await storage.read("token");
+                              LoadingDailog().showLoading(context);
+                              if (myToken == null) {
+                                showMyToast("مشكلة غير معروفة !");
+                                Get.back();
+                                return;
+                              }
+                              print(
+                                  "token${overlayHandlerProvider.adsListModelModel!.id}");
+                              client!
+                                  .notify(
+                                  overlayHandlerProvider
+                                      .adsListModelModel!.id,
+                                  "Bearer " + myToken)
+                                  .then((value) {
+                                print(
+                                    "token${overlayHandlerProvider.adsListModelModel!.id}");
+                                // Logger().i(value.status.toString());
+                                Get.back();
+                                if (value.status == 200) {
+                                  if (value.data?.notified != null &&
+                                      value.data!.notified == 0) {
+                                    showMyToast(
+                                        "سوف يتم تعطيل الاشعارات الخاصة بأى اعلان جديد خاص بهذا المعلن");
+                                    controller.isNotifiable.value = false;
+                                  } else {
+                                    showMyToast(
+                                        "سوف يتم ارسال اشعار بأى اعلان جديد خاص بهذا المعلن");
+                                    controller.isNotifiable.value = true;
+                                  }
+                                }
+                              });
+                            },
+                            child: Row(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 10,
+                                  height: 10,
+                                  margin: EdgeInsets.only(
+                                      right: 10.0, top: 10),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        AppColors.beginColor,
+                                        AppColors.endColor
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        right: 10.0, bottom: 3, top: 0),
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'نبهنى بلإعلانات الجديدة',
+                                      style: TextStyle(
+                                          color: Color(0xff4184CE)),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                                Obx(() => Container(
+                                  child: controller
+                                      .isNotifiable.isTrue
+                                      ? Container(
+                                    //margin: EdgeInsets.only(left: 10.0,bottom: 10.0),
+                                    padding:
+                                    const EdgeInsets.only(
+                                      left: 10.0,
+                                    ),
+                                    child: Image.asset(
+                                      'images/switch_icon_right.png',
+                                      scale: 2,
+                                      width: 45,
+                                      height: 40,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  )
+                                      : Container(
+                                    padding:
+                                    const EdgeInsets.only(
+                                      right: 10.0,
+                                      //left: 10.0
+                                    ),
+                                    //margin: EdgeInsets.only(bottom: 10.0),
+                                    child: Image.asset(
+                                      'images/no_chat_left.png',
+                                      scale: 2,
+                                      width: 45,
+                                      height: 40,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                )),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        //======================================== 'حفظ فى المفضلة' ===============================
+                        Container(
+                          margin: EdgeInsets.only(
+                              right: 0.0, top: 10, left: 10),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 10,
+                                height: 10,
+                                margin:
+                                EdgeInsets.only(right: 10.0, top: 10),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      AppColors.beginColor,
+                                      AppColors.endColor
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    if (overlayHandlerProvider.adId !=
+                                        null) {
+                                      print("idddd= " +
+                                          overlayHandlerProvider.adId
+                                              .toString());
+                                      overlayHandlerProvider.favoriteAds(
+                                          overlayHandlerProvider.adId!);
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        right: 10.0, bottom: 3, top: 0),
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'حفظ فى المفضلة',
+                                      style: TextStyle(
+                                          color: Color(0xff4184CE)),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Obx(
+                                    () => InkWell(
+                                  onTap: () async {
+                                    if (overlayHandlerProvider.adId !=
+                                        null) {
+                                      print("idddd= " +
+                                          overlayHandlerProvider.adId
+                                              .toString());
+                                      overlayHandlerProvider.favoriteAds(
+                                          overlayHandlerProvider.adId!);
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.only(
+                                        left: 2.0, right: 2.0),
+                                    margin:
+                                    EdgeInsets.only(left: 10, top: 2.0,),
+                                    child:
+                                    overlayHandlerProvider
+                                        .isAdFavorite
+                                        .isTrue
+                                        ? SvgPicture.asset(
+                                      'images/heart_filled.svg',
+                                      fit:
+                                      BoxFit.fill,
+                                      height: 45.0,
+                                      width: 45.0,
+                                    )
+                                        : SvgPicture.asset(
+                                      'images/heart_solid.svg',
+                                      fit:
+                                      BoxFit.fill,
+                                      height: 45.0,
+                                      width: 45.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              /*Container(
                                         margin:
                                             EdgeInsets.only(left: 20, top: 2.0),
                                         child: Icon(
@@ -864,95 +864,95 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                           size: 17,
                                           color: Color(0xff486ac7),
                                         )),*/
-                                  ],
-                                ),
-                              ),
+                            ],
+                          ),
+                        ),
 
-                              //======================================== 'شارك الملف التعريفى مع' ===============================
-                              InkWell(
-                                onTap: () async {
-                                  String url = await FirebaseDynamicLinkService
-                                      .createDynamicLink(
-                                          true,
-                                          overlayHandlerProvider
-                                              .adsListModelModel!.user!.id!,
-                                          -1,
-                                          true);
-                                  Share.share('${url}');
-                                  print("dynaicLink=$url");
-                                },
-                                child: Container(
+                        //======================================== 'شارك الملف التعريفى مع' ===============================
+                        InkWell(
+                          onTap: () async {
+                            String url = await FirebaseDynamicLinkService
+                                .createDynamicLink(
+                                true,
+                                overlayHandlerProvider
+                                    .adsListModelModel!.user!.id!,
+                                -1,
+                                true);
+                            Share.share('${url}');
+                            print("dynaicLink=$url");
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(
+                                right: 0.0, top: 10, left: 10),
+                            child: Row(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 10,
+                                  height: 10,
                                   margin: EdgeInsets.only(
-                                      right: 0.0, top: 10, left: 10),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width: 10,
-                                        height: 10,
-                                        margin: EdgeInsets.only(
-                                            right: 10.0, top: 10),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          gradient: LinearGradient(
-                                            begin: Alignment.topCenter,
-                                            end: Alignment.bottomCenter,
-                                            colors: [
-                                              AppColors.beginColor,
-                                              AppColors.endColor
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          margin: EdgeInsets.only(
-                                              right: 10.0, bottom: 3, top: 0),
-                                          alignment: Alignment.topRight,
-                                          child: Text(
-                                            'شارك الملف التعريفى مع',
-                                            style: TextStyle(
-                                                color: Color(0xff4184CE)),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      ),
-                                      Directionality(
-                                        textDirection: TextDirection.ltr,
-                                        child: Container(
-                                          width: 35.0,
-                                          height: 35.0,
-                                          //padding: EdgeInsets.all(10),
-                                          /* decoration: new BoxDecoration(
+                                      right: 10.0, top: 10),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        AppColors.beginColor,
+                                        AppColors.endColor
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        right: 10.0, bottom: 3, top: 0),
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'شارك الملف التعريفى مع',
+                                      style: TextStyle(
+                                          color: Color(0xff4184CE)),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                                Directionality(
+                                  textDirection: TextDirection.ltr,
+                                  child: Container(
+                                    width: 35.0,
+                                    height: 35.0,
+                                    //padding: EdgeInsets.all(10),
+                                    /* decoration: new BoxDecoration(
                                               color: Colors.grey[300],
                                               shape: BoxShape.circle,
                                             ),*/
-                                          child: Image.asset(
-                                            'images/telegram.png',
-                                            height: 25,
-                                            width: 30,
-                                            fit: BoxFit.fill,
-                                            matchTextDirection: true,
-                                            //color: Colors.white,
-                                          ),
-                                        ),
-                                      )
-                                    ],
+                                    child: Image.asset(
+                                      'images/telegram.png',
+                                      height: 25,
+                                      width: 30,
+                                      fit: BoxFit.fill,
+                                      matchTextDirection: true,
+                                      //color: Colors.white,
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                )
+                ],
+              ),
+            ),
+          )
               : const Center(
-                  child: CircularProgressIndicator(
-                  color: Colors.blue,
-                ));
+              child: CircularProgressIndicator(
+                color: Colors.blue,
+              ));
         });
   }
 
