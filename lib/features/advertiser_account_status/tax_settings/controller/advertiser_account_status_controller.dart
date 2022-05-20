@@ -13,6 +13,7 @@ class AdvertiserAccountStatusController extends GetxController {
   late Repository repo;
   List<int>? checkList = [];
   var fromDate=DateTime.now().obs;
+  var toDate=DateTime.now().obs;
   var id=''.obs;
   var reasonId=0.obs;
   var textMessage=' '.obs;

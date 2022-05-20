@@ -26,7 +26,7 @@ class ChatMessagesController extends GetxController {
   static dio.MultipartFile? photo;
   var tapped=false.obs;
   var replied=false.obs;
-
+  var enabled=false.obs;
   var chatIndex = 0.obs;
   var chatDeleteIndex = 0.obs;
   var deleteFlag=false.obs;

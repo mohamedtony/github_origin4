@@ -49,6 +49,7 @@ class AddAdvertiserChannelController extends GetxController {
   var selectedWomenPercentage = '0'.obs;
   var selectedBoysPercentage = '0'.obs;
   var selectedGirlsPercentage = '0'.obs;
+  var linkMes = ''.obs;
   var country = Country().obs;
   var area = Area().obs;
   var areas=[].obs;
@@ -58,6 +59,7 @@ class AddAdvertiserChannelController extends GetxController {
   late String token;
   late Repository repo;
   RxList<dynamic> selectedUserLocations = <dynamic>[].obs;
+  GlobalKey<FormState> addAdvertiserChannelControllerKeyForm = GlobalKey<FormState>(debugLabel: 'addAdvertiserChannelControllerKeyForm');
  @override
  void onInit() {
    repo=Repository();
@@ -169,6 +171,30 @@ class AddAdvertiserChannelController extends GetxController {
    });
    super.onInit();
  }
+
+
+  String? validateAccountName(String name){
+    if (name.length<5){
+      return 'اسم الحساب لا يقل 5 حروف';
+    }
+      return null;
+
+
+  }
+  String? validateLink(String link){
+    String pattern =
+        r'^((?:.|\n)*?)((http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?)';
+    RegExp regExp = RegExp(pattern);
+    if (link.isEmpty) {
+      return linkMes.value="يجب ادخال موقع";
+    } else if (!(regExp.hasMatch(link))) {
+      return linkMes.value="الويب سايت يجب ان يبدا من www";
+    } else {
+      return linkMes.value='';
+    }
+
+
+  }
   List<int>? checkList = [];
   List<int>? checkCitiesCountriesIds = [];
   List <CitiesCountries> citiesCountriesController = [

@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 
 class NotificationItem extends StatelessWidget {
   final BuildContext context;
+  final NotificationsController controller;
   final NotificationsModel notificationModel;
   final int index;
   final VoidCallback? onTap;
@@ -17,7 +18,7 @@ class NotificationItem extends StatelessWidget {
   final Future<bool> Function(DismissDirection)? confirmDismiss;
   const NotificationItem(
       this.context,
-      this.notificationModel,
+      this.notificationModel,this.controller,
       this.index, {
         Key? key,
         this.onTap,
@@ -27,6 +28,7 @@ class NotificationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //controller.selectedIndex.value=index;
     return InkWell(
       onTap: onTap,
       onLongPress: onLongPress,
@@ -40,9 +42,8 @@ class NotificationItem extends StatelessWidget {
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(17.r),
-              color:// notificationModel.read
-                 // ? AppColors.light
-              //    :
+              color: notificationModel.seen!=null&& notificationModel.seen==true? AppColors.light
+                 :
               AppColors.defaultGrey,
               boxShadow: [
                 BoxShadow(
@@ -102,8 +103,12 @@ class NotificationItem extends StatelessWidget {
                                           AppColors.appBarGradient2
                                         ])),
                                 ///icons along with notification type
-                                // child: SvgPicture.asset(
-                                //     notificationModel.iconPath),
+                                child: SvgPicture.asset(
+                                    notificationModel.model_type=='chat'?'images/notification/chat-notification.svg':notificationModel.model_type=='ads_request'?
+                                'images/notification/orders-notification.svg':notificationModel.model_type=='comment'?'images/notification/comments-notification.svg':
+                                    notificationModel.model_type=='ads'?'images/notification/ads-notification.svg': notificationModel.model_type=='subscription'?
+                                    'images/notification/subscriptions-notification.svg': notificationModel.model_type=='wallet'?'images/notification/wallet-notification.svg':
+                                    notificationModel.model_type=='employee'?'images/notification/hiring-notification.svg':notificationModel.model_type=='withdraw'?'images/notification/payment-notification.svg':''),
                               ),
                             ],
                           ),
@@ -112,7 +117,7 @@ class NotificationItem extends StatelessWidget {
                       const Spacer(),
                       Text(
                         // notificationModel.dateTime,
-                         notificationModel.created_at??' ',
+                         notificationModel.created_at?.substring(0,19)??' ',
                         style: TextStyle(
                             fontSize: 10.sp,
                             color: AppColors.darkGrey,
@@ -142,7 +147,7 @@ class NotificationItem extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 5),
-                  if (notificationModel.user != null)
+                  if (notificationModel.model_type == "employee")
                   //  if (notificationModel.profileData != null)
                     Container(
                       height: 46.h,
@@ -200,7 +205,7 @@ class NotificationItem extends StatelessWidget {
                                       builder: (context) {
                                         return const DefaultAlertDialog();
                                       });
-                                  controller.read(index);
+                                 // controller.read(index);
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
@@ -236,8 +241,8 @@ class NotificationItem extends StatelessWidget {
                     )
                 ]),
                 Visibility(
-                 // visible: notificationModel.pinned,
-                  visible: true,
+                  visible: notificationModel.starred==1?true:false,
+
                   child: Padding(
                     padding:
                     const EdgeInsetsDirectional.only(bottom: 4, end: 4),

@@ -79,7 +79,7 @@ class AdvertisingInfluenceChannelsPage extends StatelessWidget {
               ),
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20,vertical: 15),
-                child: Text("دقة البينات تساعد التاجر على الوصول إليك وتعطيك مصداقية أكبر لدى عملائك",style: TextStyle(fontSize: 14.sp,color: Colors.black54),),),
+                child: Text("دقة البيانات تساعد التاجر على الوصول إليك وتعطيك مصداقية أكبر لدى عملائك",style: TextStyle(fontSize: 14.sp,color: Colors.black54),),),
             ),
           ),
          const SizedBox(

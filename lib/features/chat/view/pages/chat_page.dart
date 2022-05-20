@@ -81,79 +81,85 @@ class _ChatPageState extends State<ChatPage> {
 
     getApplicationDocumentsDirectory()
         .then((value) => filePathForNetworkView = value.toString());
-    myId = storage.read(
+    if(storage.read(
       "id",
-    );
-    fromUserModel =
-        FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"] ?? ''));
-    toUserModel =
-        ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"] ?? ''));
-    print("myId>>>>>>>>>>>>>>>>>>>>>>>>>>>$myId");
-    room = Get.parameters['room'].toString();
-    _pusher.connect(room: room);
-    initDownloadsDirectoryPath();
-    _streamSubscription = _pusher.stream.listen((event) {
-      // print(">>>>>>>>>>>>>>>${event.data?.imageUrl}"
-      setState(() {
-        print(">>>>>>>>>>>>>>>>>>>>>${event.type}");
+    )!=null) {
+      myId = storage.read(
+        "id",
+      );
+    }
+    if(Get.parameters.isNotEmpty) {
+      fromUserModel =
+          FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"] ?? ''));
+      toUserModel =
+          ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"] ?? ''));
+      print("myId>>>>>>>>>>>>>>>>>>>>>>>>>>>$myId");
+      room = Get.parameters['room'].toString();
+      _pusher.connect(room: room);
+      initDownloadsDirectoryPath();
+      _streamSubscription = _pusher.stream.listen((event) {
+        // print(">>>>>>>>>>>>>>>${event.data?.imageUrl}"
+        setState(() {
+          print(">>>>>>>>>>>>>>>>>>>>>${event.type}");
 
-        if (fromUserModel?.id.toString() == event.from_user_id.toString()) {
-          from = fromUserModel;
-          to = toUserModel;
-          // _chatMessagesController.messagesChat.add(ListChatModel(
-          //     message_type: event.type,
-          //     message: event.message,
-          //     to_user: to,
-          //     from_user: from,
-          //     from_me: true,
-          //     room: room,
-          //     //id:event.));
-          //     id: int.parse(Get.parameters["id"].toString())));
-        }
-        if (storage.read('id').toString() != event.from_user_id.toString()) {
-          from = FromUserModel(
-              image: toUserModel?.image,
-              id: toUserModel?.id,
-              username: toUserModel?.username);
-          to = ToUserModel(
-              image: fromUserModel?.image,
-              id: fromUserModel?.id,
-              username: fromUserModel?.username);
-          _chatMessagesController.messagesChat.add(ListChatModel(
-              message_type: event.type,
-              message: event.message,
-              to_user: to,
-              from_user: from,
-              from_me: true,
-              room: room,
-              id: int.parse(Get.parameters["id"].toString())));
-        }
-        //  //  if(event.type=='text') {
-        //    if (event.from_user_id == storage.read("id")) {
-        //      _chatMessagesController.messagesChat.add(ListChatModel(
-        //          message_type: event.type,
-        //          message: event.message,
-        //          to_user: to,
-        //          from_user: from,
-        //          from_me: true,
-        //          room: room,
-        //          //id:event.));
-        //          id: int.parse(Get.parameters["id"].toString())));
-        //    } else {
-        //      _chatMessagesController.messagesChat.add(ListChatModel(
-        //          message_type: event.type,
-        //          message: event.message,
-        //          to_user: to,
-        //          from_user: from,
-        //          from_me: false,
-        //          room: room,
-        //          id: int.parse(Get.parameters["id"].toString())));
-        //    }
-        // // }else if(event.type=='sound'){
+          if (fromUserModel?.id.toString() == event.from_user_id.toString()) {
+            from = fromUserModel;
+            to = toUserModel;
+            // _chatMessagesController.messagesChat.add(ListChatModel(
+            //     message_type: event.type,
+            //     message: event.message,
+            //     to_user: to,
+            //     from_user: from,
+            //     from_me: true,
+            //     room: room,
+            //     //id:event.));
+            //     id: int.parse(Get.parameters["id"].toString())));
+          }
+          if (storage.read('id').toString() != event.from_user_id.toString()) {
+            from = FromUserModel(
+                image: toUserModel?.image,
+                id: toUserModel?.id,
+                username: toUserModel?.username);
+            to = ToUserModel(
+                image: fromUserModel?.image,
+                id: fromUserModel?.id,
+                username: fromUserModel?.username);
+            _chatMessagesController.messagesChat.add(ListChatModel(
+                message_type: event.type,
+                message: event.message,
+                to_user: to,
+                from_user: from,
+                from_me: true,
+                room: room,
+                id: int.parse(Get.parameters["id"].toString())));
+          }
+          //  //  if(event.type=='text') {
+          //    if (event.from_user_id == storage.read("id")) {
+          //      _chatMessagesController.messagesChat.add(ListChatModel(
+          //          message_type: event.type,
+          //          message: event.message,
+          //          to_user: to,
+          //          from_user: from,
+          //          from_me: true,
+          //          room: room,
+          //          //id:event.));
+          //          id: int.parse(Get.parameters["id"].toString())));
+          //    } else {
+          //      _chatMessagesController.messagesChat.add(ListChatModel(
+          //          message_type: event.type,
+          //          message: event.message,
+          //          to_user: to,
+          //          from_user: from,
+          //          from_me: false,
+          //          room: room,
+          //          id: int.parse(Get.parameters["id"].toString())));
+          //    }
+          // // }else if(event.type=='sound'){
 
-        //  }
+          //  }
+        });
       });
-    });
+    }
     chatPageOpen.value=1;
     super.initState();
   }
@@ -1413,6 +1419,7 @@ class _ChatPageState extends State<ChatPage> {
                                                 }
                                               });
                                             },
+                                            enabled: _chatMessagesController.enabled.value,
                                             controller: chatMessageController,
                                             // keyboardType: TextInputType.text,
                                             decoration: InputDecoration(
@@ -1444,6 +1451,7 @@ class _ChatPageState extends State<ChatPage> {
                                                     const EdgeInsets.all(0.0),
                                                 child: InkWell(
                                                   onTap: () async {
+                                                    _chatMessagesController.enabled.value=true;
                                                     if (chatMessageController
                                                             .text !=
                                                         '') {
@@ -1994,6 +2002,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   List<QudsPopupMenuBase> getMenuItems() {
+    _chatMessagesController.enabled.value=false;
     return [
       QudsPopupMenuItem(
           title: Text('مكتبة الصور والفيديوهات'),

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:advertisers/features/advertising_influence_channels/controller/advertising_influence_channels_controller.dart';
 import 'package:advertisers/features/advertising_influence_channels/view/widgets/advertising_influence_channels_widget.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -364,7 +365,20 @@ class _AdvertisingInfluenceChannelsPageListWidgetState extends State<Advertising
                                 ),
                                 InkWell(
                                   onTap: (){
-                                    controller.deleteChannel(channelId: controller.channels[index].id??0);
+                                    CoolAlert.show(
+                                      context: context,title: "تحذير",
+                                      type: CoolAlertType.warning,
+                                      cancelBtnText: "الغاء",
+                                      showCancelBtn: true,
+                                      confirmBtnText: "حذف",
+                                      text: 'هل تريد بالفعل حذف هذه القناة ؟',
+                                      onConfirmBtnTap: (){
+                                        controller.deleteChannel(channelId: controller.channels[index].id??0);
+                                      },onCancelBtnTap: (){
+                                        Navigator.pop(context);
+                                    }
+                                    );
+
 
                                   },
                                   child: Icon(Icons.delete_forever,color: Color(0xff5aa1d0),),

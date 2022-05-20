@@ -57,7 +57,7 @@ void main() async{
     channel = const AndroidNotificationChannel(
       'high_importance_channel', // id
       'High Importance Notifications', // title
-      'This channel is used for important notifications.', // description
+      //'This channel is used for important notifications.', // description
       importance: Importance.high,
     );
 
@@ -196,11 +196,22 @@ class _MyAppState extends State<MyApp> {
                     child: Text("go"),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      if(message.data["model_type"]==": ads_request") {
+                      if(message.data["model_type"]=="ads_request") {
                         Get.toNamed('/AdvertiserDetailsPage?requestId=${message
                             .data["model_id"]}');
+                      }else if(message.data["model_type"]=="chat"){
+                        // Get.toNamed('/ChatPage?requestId=${message
+                        //     .data["model_id"]}');
+                      }else if(message.data["model_type"]=="ads"){
+                        Get.toNamed('/HomePage');
+                      }  else if(message.data["model_type"]=="comment"){
+                        Get.toNamed('/CommentsPage');
+                      } else if(message.data["model_type"]=="wallet"){
+                        Get.toNamed('/WalletPage');
+                      }else if(message.data["model_type"]=="employee"){
+                        Get.toNamed('/EmployeesPage');
                       }
-                     // Navigator.of(context).pop();
+                      // Navigator.of(context).pop();
                     },
                   )
                 ],
@@ -241,7 +252,16 @@ class _MyAppState extends State<MyApp> {
           Get.toNamed('/HomePage');
         }  else if(message.data["model_type"]=="comment"){
           Get.toNamed('/CommentsPage');
+        }else if(message.data["model_type"]=="wallet"){
+          Get.toNamed('/WalletPage');
+        }else if(message.data["model_type"]=="employee"){
+          Get.toNamed('/EmployeesPage');
         }
+        // else if(message.data["model_type"]=="comment"){
+        //   Get.toNamed('/CommentsPage');
+        // }else if(message.data["model_type"]=="comment"){
+        //   Get.toNamed('/CommentsPage');
+        // }
         //   Navigator.pushNamed(
         //     context,
         //     '/message',

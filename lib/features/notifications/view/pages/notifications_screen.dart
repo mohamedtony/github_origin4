@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 // List<NotificationModel> notifications = [
 //   NotificationModel(
@@ -106,24 +107,53 @@ class NotificationsScreen extends StatelessWidget {
                 child: MediaQuery.removePadding(
                   context: context,
                   removeTop: true,
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) =>
-                         NotificationItem(context, controller.notifications[index],
-                            index,
-                            onTap: () => controller.read(index),
-                            onLongPress: () {
-                              controller.read(index);
-                              controller.pin(index);
-                            },
-                            confirmDismiss: (dismissDirection) {
-                              if (controller.notifications[index].pinned) {
-                                return Future.value(false);
-                              }
-                              controller.remove(index);
-                              return Future.value(true);
-                            }),
-                    itemCount: controller.notifications.length,
+                  child: SmartRefresher(
+                    controller: controller.refreshController,
+                    enablePullUp: true,
+                    onRefresh: () async {
+                      final result = await controller.getNotifications(isRefresh: true);
+                      if (result) {
+                        controller.refreshController.refreshCompleted();
+                      } else {
+                        controller.refreshController.refreshFailed();
+                      }
+                    },
+                    onLoading: () async {
+                      final result = await controller.getNotifications();
+                      if (result) {
+                        controller.refreshController.loadComplete();
+                      } else {
+                        controller.refreshController.loadFailed();
+                      }
+                    },
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      reverse: true,
+                      itemBuilder: (context, index) {
+
+                          return NotificationItem(context, controller.notifications[index],
+                              controller,index,
+                              onTap: () {
+
+                              // controller.read(index);
+                              },
+                              onLongPress: () {
+                                controller.selectedIndex.value=index;
+                                //controller.read(index);
+                               if(controller.selectedIndex.value==index){
+                                 controller.starMessage(notificationId:controller.notifications[controller.selectedIndex.value].id??0);
+                               }
+                               // controller.pin(index);
+                              },
+                              confirmDismiss: (dismissDirection) {
+                                // if (controller.notifications[index].pinned) {
+                                //   return Future.value(false);
+                                // }
+                                controller.remove(index);
+                                return Future.value(true);
+                              });},
+                      itemCount: controller.notifications.length,
+                    ),
                   ),
                 ),
               ),
