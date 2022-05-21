@@ -1,12 +1,15 @@
+import 'package:advertisers/app_core/network/models/AdTypeModel.dart';
 import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/app_core/network/models/Channel.dart';
 import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/app_core/network/models/EffectSlidesModel.dart';
+import 'package:advertisers/app_core/network/models/GetAdsFilterForm.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersFromModel.dart';
 import 'package:advertisers/features/find_advertise_page/find_advertise_controller.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/home_page/controller/FilterSortAdsController.dart';
+import 'package:advertisers/features/home_page/controller/ads_page_controller.dart';
 import 'package:advertisers/features/request_advertise_module/controller/find_order_advertisers_controller.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -29,14 +32,14 @@ class FilterSortAdsSheet extends StatefulWidget {
 
 class _FilterSortAdsSheetState extends State<FilterSortAdsSheet> {
 
-  FilterSortAdsController findOrderAdvertisersController = Get.put(FilterSortAdsController());
+  AdsPageController findOrderAdvertisersController = Get.put(AdsPageController());
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     if(findOrderAdvertisersController.isFilterSavedClicked.isFalse) {
-      findOrderAdvertisersController.getAdvertisersForm(context);
+      findOrderAdvertisersController.getAdsForm(context);
     }
   }
   double _startValue = 20.0;
@@ -283,9 +286,9 @@ class _FilterSortAdsSheetState extends State<FilterSortAdsSheet> {
                         size: 25,
                       ),
                     )
-                        :findOrderAdvertisersController.advertisersFormModel.value.categories!=null && findOrderAdvertisersController.advertisersFormModel.value.categories!.isNotEmpty
+                        :findOrderAdvertisersController.getAdsFilterForm.value.types!=null && findOrderAdvertisersController.getAdsFilterForm.value.types!.isNotEmpty
                         ?
-                    DropdownSearch<CategoryModel>(
+                    DropdownSearch<AdTypeModel>(
                         mode: Mode.MENU,
                         dropDownButton: Container(
                           margin: const EdgeInsets.only(left: 0.0),
@@ -341,24 +344,24 @@ class _FilterSortAdsSheetState extends State<FilterSortAdsSheet> {
                                   width: 1,
                                 )),
                             fillColor: Colors.white),
-                        items: findOrderAdvertisersController.advertisersFormModel.value.categories,
+                        items: findOrderAdvertisersController.getAdsFilterForm.value.types,
                         // label: "Menu mode",
-                        itemAsString: (CategoryModel? u) => u?.itemAsStringByName()??'',
+                        itemAsString: (AdTypeModel? u) => u?.itemAsStringByName()??'',
                         // hint: "الدولة",
                         //popupItemDisabled: (String s) => s.startsWith('I'),
                         onChanged: (category) {
                           //controller.country.value = country!;
-                          findOrderAdvertisersController.selectedCategory.value = category!;
+                          findOrderAdvertisersController.selectedType.value = category!;
                         },
-                        selectedItem: findOrderAdvertisersController.selectedCategory.value.id!=null?findOrderAdvertisersController.selectedCategory.value:findOrderAdvertisersController.advertisersFormModel.value.categories![
+                        selectedItem: findOrderAdvertisersController.selectedType.value.id!=null?findOrderAdvertisersController.selectedType.value:findOrderAdvertisersController.getAdsFilterForm.value.types![
                         0]) : Container(
                         alignment: Alignment.centerRight,
-                        child: const Text("لا يوجد اقسام")),
+                        child: const Text("لا يوجد بيانات")),
                   ),
                 ),
 
 //--------------------------  third section chips  عرض المعلنين بحسب عدد متابعيهم--------------------
-                Divider(
+               /* Divider(
                   color: Colors.black54,
                   thickness: .5,
                   endIndent: 20,
@@ -384,8 +387,8 @@ class _FilterSortAdsSheetState extends State<FilterSortAdsSheet> {
                           textAlign: TextAlign.center,
                         ))
                   ],
-                ),
-                Row(
+                ),*/
+                /*Row(
                   children: [
                     Expanded(
                       flex: 2,
@@ -420,7 +423,7 @@ class _FilterSortAdsSheetState extends State<FilterSortAdsSheet> {
                                   '${(s?.name ?? '')}',
                                   style: TextStyle(
                                       color: AppColors.white,
-                                      /*decoration: TextDecoration.underline,decorationThickness: 2,*/
+                                      *//*decoration: TextDecoration.underline,decorationThickness: 2,*//*
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.w500),
                                   textAlign: TextAlign.start,
@@ -512,7 +515,7 @@ class _FilterSortAdsSheetState extends State<FilterSortAdsSheet> {
                                     s!.id==null || s.id==-1?'إختر':'${(s.count_to ?? '')}'+'-'+'${(s.count_from ?? '')}',
                                     style: TextStyle(
                                         color: AppColors.activitiesDropDown,
-                                        /*decoration: TextDecoration.underline,decorationThickness: 2,*/
+                                        *//*decoration: TextDecoration.underline,decorationThickness: 2,*//*
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.w500),
                                     textAlign: TextAlign.start,
@@ -572,7 +575,7 @@ class _FilterSortAdsSheetState extends State<FilterSortAdsSheet> {
                           ),
                         ))
                   ],
-                ),
+                ),*/
 //--------------------------  fourth section chips ترتيب المعلنين حسب نطاقاتهم الجغارفية--------------------
                 Divider(
                   color: Colors.black54,
@@ -1103,6 +1106,10 @@ class _FilterSortAdsSheetState extends State<FilterSortAdsSheet> {
                           ),
                           values: RangeValues(_startValue, _endValue),
                           onChanged: (values) {
+                            print("Values=${ values.start.toInt()}");
+                            print("Values=${ values.end.toInt()}");
+                            findOrderAdvertisersController.fromDistance = values.start.toInt();
+                            findOrderAdvertisersController.toDistance = values.end.toInt();
                             setState(() {
                               _startValue = values.start;
                               _endValue = values.end;
@@ -1306,8 +1313,8 @@ class _FilterSortAdsSheetState extends State<FilterSortAdsSheet> {
     if(findOrderAdvertisersController.isFilterSavedClicked.isFalse) {
       findOrderAdvertisersController.isLoadingGetAdvertisersFromModel.value =
       true;
-      findOrderAdvertisersController.advertisersFormModel.value =
-          GetAdvertisersFromModel();
+      findOrderAdvertisersController.getAdsFilterForm.value =
+          GetAdsFilterForm();
       findOrderAdvertisersController.advertisersTopRated.value = [];
       findOrderAdvertisersController.categories.value = [];
       findOrderAdvertisersController.selectedUserLocations.value = [];

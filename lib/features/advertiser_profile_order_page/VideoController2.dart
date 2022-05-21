@@ -1,4 +1,5 @@
 import 'package:advertisers/app_core/network/models/AdsListModel.dart';
+import 'package:advertisers/app_core/network/requests/GetAdsRequest.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/controller/AdvertiserProfileOrderController.dart';
 import 'package:advertisers/features/advertiser_profile_order_page/overlay_handler2.dart';
 import 'package:advertisers/main.dart';
@@ -189,7 +190,7 @@ class VideoController2 extends GetxController {
   Future<void> getAdsList(int userId) async {
    String myToken = await storage.read("token");
 
-    client!.getAdsList(advertiserProfileOrderController.selectedAdvertiseId,1,"Bearer " + myToken)
+    client!.getAdsList(advertiserProfileOrderController.selectedAdvertiseId,1,"Bearer " + myToken,GetAdsRequest())
         .then((value) {
       if (value.status == 200 && value.data != null && value.data!.isNotEmpty) {
         Logger().d(value.data.toString());

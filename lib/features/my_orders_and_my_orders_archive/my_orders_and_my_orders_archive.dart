@@ -1,4 +1,5 @@
 import 'package:advertisers/features/my_orders_archive/view/my_orders_archive_page.dart';
+import 'package:advertisers/features/my_orders_archive/view/myorders_archive_sheets.dart';
 import 'package:flutter/material.dart';
 import 'package:advertisers/features/my_orders/view/my_orders_page.dart';
 import 'package:advertisers/features/my_orders_archive/controller/my_orders_archive_controller.dart';
@@ -7,8 +8,9 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyOrdersAndMyOrdersArchive extends StatelessWidget {
-  const MyOrdersAndMyOrdersArchive({Key? key}) : super(key: key);
+   MyOrdersAndMyOrdersArchive({Key? key}) : super(key: key);
 
+  MyOrdersArchiveController myOrdersArchiveController = Get.put(MyOrdersArchiveController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,11 +21,19 @@ class MyOrdersAndMyOrdersArchive extends StatelessWidget {
           isNotification: false,
           isBack: true,
           searchBarBigRight: false,
+          filterPressed: (){
+            if(myOrdersArchiveController.tabId==1) {
+              showBottomSheetForRequest(context, "archive");
+            }else{
+              showBottomSheetForRequest(context, "orders");
+            }
+          },
         ),
         preferredSize:  Size(
             MediaQuery.of(context).size.width,
             90.0
         ),
+
       ),
       body:  Container(
         color: Color(0xffF5F5F5),
@@ -31,7 +41,7 @@ class MyOrdersAndMyOrdersArchive extends StatelessWidget {
           children: [
 
             GetBuilder<MyOrdersArchiveController>(
-                init: MyOrdersArchiveController(),
+                init: myOrdersArchiveController,
                 builder: (controller) => Container(
                   height: 50,
                   child:   Padding(
@@ -379,6 +389,110 @@ class MyOrdersAndMyOrdersArchive extends StatelessWidget {
         ),
       ),
     );
+  }
+  Future<void> showBottomSheetForRequest(BuildContext context,String type)  async {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(10.0),
+            topRight: const Radius.circular(10.0)),
+      ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      builder: (BuildContext context) {
+        return DraggableScrollableSheet(
+          //maxChildSize: 0.8,
+          //minChildSize: 100.0,
+          //maxChildSize: 0.9,
+          initialChildSize: 0.67,
+          expand: false,
+          builder: (context, scrollController) {
+            return MyOrdersArchiveSheets(
+                scrollController: scrollController,type: type,);
+          },
+        );
+      },
+    );
+
+
+    /*showMaterialModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+       // expand: true,
+        isDismissible: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+       // clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (context) => BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+
+            initialChildSize: 0.67,
+            expand: false,
+            builder: (context, scrollController) {
+              return AttatchementPage(
+                  scrollController: scrollController);
+            },
+          )
+        ),
+      );*/
+
+/*      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        isDismissible: true,
+        //barrierColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+        //clipBehavior: Clip.antiAliasWithSaveLayer,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (context) =>  BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          child: DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+            initialChildSize: 0.67,
+           // expand: true,
+            builder: (context, scrollController) {
+              return ActivitiesBottomSheet(
+                  scrollController: scrollController);
+            },
+          )),
+      );*/
+
+    /* showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) {
+          return DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+
+            initialChildSize: 0.67,
+            expand: false,
+            builder: (context, scrollController) {
+              return ActivitiesBottomSheet(
+                  scrollController: scrollController);
+            },
+          );
+        },
+      );*/
   }
 }
 

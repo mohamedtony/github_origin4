@@ -9,10 +9,9 @@ part of 'GetAdvertisersFromModel.dart';
 GetAdvertisersFromModel _$GetAdvertisersFromModelFromJson(
         Map<String, dynamic> json) =>
     GetAdvertisersFromModel(
-      sort_types: json['sort_types'] == null
-          ? null
-          : SortTypesAdvertisersModel.fromJson(
-              json['sort_types'] as Map<String, dynamic>),
+      sort_types: (json['sort_types'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ),
       categories: (json['categories'] as List<dynamic>?)
           ?.map((e) => CategoryModel.fromJson(e as Map<String, dynamic>))
           .toList(),

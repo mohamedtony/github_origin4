@@ -193,8 +193,7 @@ class Repository {
       final body = encoder.convert(json);
       debugPrintSynchronously("GET " + base + path! + "\n" + body);
 
-      client
-          .get(Uri.parse(base + path,),
+      client.get(Uri.parse(base + path,),
         headers: {
           // 'Content-Type': 'application/json',
           // 'Accept-Type': 'application/json',

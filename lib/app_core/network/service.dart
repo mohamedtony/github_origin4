@@ -2,9 +2,11 @@
 import 'dart:io';
 
 import 'package:advertisers/app_core/network/models/ChannelData.dart';
+import 'package:advertisers/app_core/network/models/GetAdsFilterForm.dart';
 import 'package:advertisers/app_core/network/models/LinkModel.dart';
 import 'package:advertisers/app_core/network/requests/CreateAdvertiseRequest.dart';
 import 'package:advertisers/app_core/network/requests/CreateSubscriptionRequest.dart';
+import 'package:advertisers/app_core/network/requests/GetAdsRequest.dart';
 import 'package:advertisers/app_core/network/requests/GetAdvertisersRequest.dart';
 import 'package:advertisers/app_core/network/requests/OneCountryAndCitiesRequest.dart';
 import 'package:advertisers/app_core/network/requests/SelectCoponsRequest.dart';
@@ -20,6 +22,7 @@ import 'package:advertisers/app_core/network/responses/CoponsResponse.dart';
 import 'package:advertisers/app_core/network/responses/CountriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateSubscriptionResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetAdsFilterFormResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetAdsListResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetAdvertisersFormResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetAdvertisersResponse.dart';
@@ -30,6 +33,8 @@ import 'package:advertisers/app_core/network/responses/GetProductsAndAdsTypesRes
 import 'package:advertisers/app_core/network/responses/GetRulesResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetUseLocationsResponse.dart';
 import 'package:advertisers/app_core/network/responses/LoginClientResponse.dart';
+import 'package:advertisers/app_core/network/responses/MyRequestFiltersResponse.dart';
+import 'package:advertisers/app_core/network/responses/MyRequestsResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/app_core/network/responses/RequestDetailsResponse.dart';
 import 'package:advertisers/app_core/network/responses/SubscriptionDetailsResponse.dart';
@@ -180,7 +185,16 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   Future<AdvertiserProfileDetailsResponse> useCopon(@Path("id") int? id,@Header("Authorization") String token);
 
   @GET('/ads?user_id={user_id}&page={id}')
-  Future<GetAdsListResponse> getAdsList(@Path("user_id") int? user_id, @Path("id") int? id,@Header("Authorization") String token);
+  Future<GetAdsListResponse> getAdsList(@Path("user_id") int? user_id, @Path("id") int? id,@Header("Authorization") String token,@Body() GetAdsRequest getAdsRequest);
+
+  @GET('/ads?page={id}&name=mohamed')
+  Future<GetAdsListResponse> getAdsListHome(
+      @Path("id") int? id, @Header("Authorization") String token, /*{@Query("page") int? user_id,@Query("ads_types[]") List<int>? ads_types,@Query("filters[]") List<String>? filters,
+        @Query("countries[]") List<int>? countries,@Query("areas[]") List<int>? areas,@Query("country_category[]") List<int>? country_category,
+        @Query("distance_from") int? distance_from,@Query("distance_to") int? distance_to,@Query("name") String? name,@Query("date_from") String? date_from,@Query("date_to") String? date_to}*/);
+
+  @GET('/ads')
+  Future<GetAdsListResponse> getAdsListHome2(@Queries() Map<String, dynamic> queries,@Header("Authorization") String token,);
 
   @POST('/ads/{id}/comment')
   @FormUrlEncoded()
@@ -232,8 +246,16 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   @GET('/ads/{id}/seen')
   Future<AdvertiserProfileDetailsResponse> seenAds(@Path("id") int? id,@Header("Authorization") String token);
 
+  @GET('/ads/filter_form')
+  Future<GetAdsFilterFormResponse> filterForm(@Header("Authorization") String token);
+
+  @GET('/requests/filter_form')
+  Future<MyRequestFiltersResponse> myRequestsFilterForm(@Header("Authorization") String token);
 
   @GET('/employees/{id}/roles')
   Future<GetRulesResponse> getMyEmployeeRules( @Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/myrequests')
+  Future<MyRequestsResponse> getMyRequests(@Queries() Map<String, dynamic> queries,@Header("Authorization") String token,);
 
 }
