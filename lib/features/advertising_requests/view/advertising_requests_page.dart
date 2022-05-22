@@ -7,6 +7,7 @@ import 'package:advertisers/features/advertising_requests/widgets/advertising_re
 import 'package:advertisers/features/advertising_requests/widgets/advertising_requests_slide_right_items_wraper.dart';
 import 'package:advertisers/features/advertising_requests/widgets/click_picture_widget.dart';
 import 'package:advertisers/features/advertising_requests/widgets/filter_bottom_sheet.dart';
+import 'package:advertisers/features/advertising_requests/widgets/filter_sort_requests_sheet.dart';
 import 'package:advertisers/features/advertising_requests/widgets/single_statistics_item.dart';
 import 'package:advertisers/features/customer_order_invoice_out_puts/order_invoice_controller.dart';
 import 'package:advertisers/features/reason_rejecting_advertisement/controller/reason_rejecting_advertisement_controller.dart';
@@ -60,16 +61,18 @@ class AdvertisingRequestsPage extends GetWidget<AdvertisingRequestsController>  
                 controller.fetchAdvertisingRequests(pageZero: true);
               },
               filterPressed: (){
-                void _modalBottomSheetMenu(){
+                showBottomSheetForRequest(context, "type");
+                /*void _modalBottomSheetMenu(){
                   showModalBottomSheet(
                       isScrollControlled: true,
                       context: context,
                       builder: (builder){
-                        return  FilterBottomSheetWidget(areas:state!.data!.areas ,sorts: state!.data!.sorts,);
+                        //return  FilterBottomSheetWidget(areas:state!.data!.areas ,sorts: state!.data!.sorts,);
+                        return  FilterSortRequestsSheet(areas:state!.data!.areas ,sorts: state!.data!.sorts,);
                       }
                   );
                 }
-                _modalBottomSheetMenu();
+                _modalBottomSheetMenu();*/
               },
             ),
             preferredSize:  Size(
@@ -864,5 +867,111 @@ class AdvertisingRequestsPage extends GetWidget<AdvertisingRequestsController>  
           ),
         ));
   }
+
+  Future<void> showBottomSheetForRequest(BuildContext context,String type)  async {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(10.0),
+            topRight: const Radius.circular(10.0)),
+      ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      builder: (BuildContext context) {
+        return DraggableScrollableSheet(
+          //maxChildSize: 0.8,
+          //minChildSize: 100.0,
+          //maxChildSize: 0.9,
+          initialChildSize: 0.67,
+          expand: false,
+          builder: (context, scrollController) {
+            return FilterSortRequestsSheet(
+              scrollController: scrollController,);
+          },
+        );
+      },
+    );
+
+
+    /*showMaterialModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+       // expand: true,
+        isDismissible: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+       // clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (context) => BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+
+            initialChildSize: 0.67,
+            expand: false,
+            builder: (context, scrollController) {
+              return AttatchementPage(
+                  scrollController: scrollController);
+            },
+          )
+        ),
+      );*/
+
+/*      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        isDismissible: true,
+        //barrierColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+        //clipBehavior: Clip.antiAliasWithSaveLayer,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (context) =>  BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          child: DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+            initialChildSize: 0.67,
+           // expand: true,
+            builder: (context, scrollController) {
+              return ActivitiesBottomSheet(
+                  scrollController: scrollController);
+            },
+          )),
+      );*/
+
+    /* showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) {
+          return DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+
+            initialChildSize: 0.67,
+            expand: false,
+            builder: (context, scrollController) {
+              return ActivitiesBottomSheet(
+                  scrollController: scrollController);
+            },
+          );
+        },
+      );*/
+  }
+
 }
 

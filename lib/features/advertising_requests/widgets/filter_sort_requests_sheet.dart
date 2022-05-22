@@ -1,4 +1,3 @@
-
 import 'package:advertisers/app_core/network/models/AdTypeModel.dart';
 import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
@@ -7,14 +6,11 @@ import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/app_core/network/models/EffectSlidesModel.dart';
 import 'package:advertisers/app_core/network/models/GetAdsFilterForm.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersFromModel.dart';
-import 'package:advertisers/app_core/network/models/GetMyRequestsFilterForm.dart';
-import 'package:advertisers/app_core/network/models/SelectedNotSelectedFilterAdsType.dart';
+import 'package:advertisers/features/advertising_requests/controller/advertising_requests_controller.dart';
 import 'package:advertisers/features/find_advertise_page/find_advertise_controller.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/home_page/controller/FilterSortAdsController.dart';
 import 'package:advertisers/features/home_page/controller/ads_page_controller.dart';
-import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
-import 'package:advertisers/features/my_orders_archive/controller/my_orders_archive_controller.dart';
 import 'package:advertisers/features/request_advertise_module/controller/find_order_advertisers_controller.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -26,39 +22,25 @@ import 'package:get/get.dart';
 //                         By Mohamed T. Hammad
 
 //=========================================================================================
-class MyOrdersArchiveSheets extends StatefulWidget {
+class FilterSortRequestsSheet extends StatefulWidget {
   ScrollController? scrollController;
 
-  String? type;
-  MyOrdersArchiveSheets({Key? key, this.scrollController,this.type}) : super(key: key);
+  FilterSortRequestsSheet({Key? key, this.scrollController}) : super(key: key);
 
   @override
-  State<MyOrdersArchiveSheets> createState() => _MyOrdersArchiveSheetsState();
+  State<FilterSortRequestsSheet> createState() => _FilterSortRequestsSheetState();
 }
 
-class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
+class _FilterSortRequestsSheetState extends State<FilterSortRequestsSheet> {
 
-  MyOrdersArchiveController findOrderAdvertisersController = Get.put(MyOrdersArchiveController());
-  MyOrdersController findOrderAdvertisersController2 = Get.put(MyOrdersController());
+  AdvertisingRequestsController findOrderAdvertisersController = Get.put(AdvertisingRequestsController());
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-     if(widget.type=="archive") {
-       if( Get
-           .find<MyOrdersArchiveController>()
-           .isFilterSavedClicked
-           .isFalse ){
-         Get.find<MyOrdersArchiveController>().getAdsForm(context);
-       }
-    }else{
-       if( Get
-           .find<MyOrdersController>()
-           .isFilterSavedClicked
-           .isFalse ){
-         Get.find<MyOrdersController>().getAdsForm(context);
-       }
+    if(findOrderAdvertisersController.isFilterSavedClicked.isFalse) {
+      findOrderAdvertisersController.getAdsForm(context);
     }
   }
   double _startValue = 20.0;
@@ -180,10 +162,12 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                   ),
                   child: Obx(()=>SingleChildScrollView(
                     scrollDirection: Axis.vertical,
-                    child: (widget.type=="archive"?  Get.find<MyOrdersArchiveController>().advertisersTopRated.isNotEmpty: Get.find<MyOrdersController>().advertisersTopRated.isNotEmpty )?
+                    child: findOrderAdvertisersController
+                        .advertisersTopRated.isNotEmpty
+                        ?
                     Wrap(
                       direction: Axis.horizontal,
-                      children: (widget.type=="archive"?  Get.find<MyOrdersArchiveController>().advertisersTopRated.value: Get.find<MyOrdersController>().advertisersTopRated.value )
+                      children: findOrderAdvertisersController.advertisersTopRated.value
                           .map(
                             (value) => InkWell(
                           onTap: (){
@@ -249,7 +233,7 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                       )
                           .toList(),
                     )
-                        : (widget.type=="archive"?  Get.find<MyOrdersArchiveController>().isLoadingGetAdvertisersFromModel.value: Get.find<MyOrdersController>().isLoadingGetAdvertisersFromModel.value )
+                        : findOrderAdvertisersController.isLoadingGetAdvertisersFromModel.value
                         ? Container(
                         alignment: Alignment.topCenter,
                         child: const CircularProgressIndicator(
@@ -261,9 +245,7 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                     ,
                   )),
                 ),
-
-//--------------------------  second section chips عرض المعلنين بحسب أقسام إعلانتهم--------------------
-
+//--------------------------  fourth section chips ترتيب المعلنين حسب نطاقاتهم الجغارفية--------------------
                 Divider(
                   color: Colors.black54,
                   thickness: .5,
@@ -285,102 +267,285 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                     Container(
                         margin: EdgeInsets.only(right: 5.0, bottom: 3),
                         child: Text(
-                          'ترتيب حسب',
+                          'ترتيب الطلبات حسب نطاقاتهم الجغارفية',
                           style: TextStyle(color: Colors.white),
                           textAlign: TextAlign.center,
                         ))
                   ],
                 ),
-                Container(
-                  margin: const EdgeInsets.only(
-                      top: 10.0, left: 10.0, right: 10.0, bottom: 8.0),
-                  height: 35.0,
-                  child: Obx(
-                        () => (widget.type=="archive"?  Get.find<MyOrdersArchiveController>().isLoadingGetAdvertisersFromModel.isTrue: Get.find<MyOrdersController>().isLoadingGetAdvertisersFromModel.isTrue )
-                        ? Container(
-                      child: const SpinKitThreeBounce(
-                        color: Colors.blue,
-                        size: 25,
-                      ),
-                    )
-                        :(widget.type=="archive"? (Get.find<MyOrdersArchiveController>().requestsTypes!=null && Get.find<MyOrdersArchiveController>().requestsTypes.value.isNotEmpty):(Get.find<MyOrdersController>().requestsTypes!=null && Get.find<MyOrdersController>().requestsTypes.value.isNotEmpty))
-                        ?
-                    DropdownSearch<SelectedNotSelectedFilterAdsType>(
-                        mode: Mode.MENU,
-                        dropDownButton: Container(
-                          margin: const EdgeInsets.only(left: 0.0),
-                          child: SvgPicture.asset(
-                            'images/dropdown_icon.svg',
-                            fit: BoxFit.fill,
-                            height: 8.0,
-                            width: 8.0,
-                            color: AppColors.buttonDropDown,
+                Row(
+                  //  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.only(
+                            top: 10.0, left: 10.0, right: 10.0, bottom: 8.0),
+                        height: 35.0,
+                        child: Obx(() => findOrderAdvertisersController
+                            .isLoadingGetAdvertisersFromModel.value
+                            ? Container(
+                          child: const SpinKitThreeBounce(
+                            color: Colors.blue,
+                            size: 25,
                           ),
-                        ),
-                        dropdownBuilder: (BuildContext context, s) {
-                          return Text(
-                            '${(s?.name ?? '')}',
-                            style: TextStyle(
-                                color: AppColors.activitiesDropDown,
+                        )
+                            : DropdownSearch<Country>(
+                            enabled: findOrderAdvertisersController
+                                .isCountryEnabled.value,
+                            mode: Mode.MENU,
+                            dropdownBuilder: (BuildContext context, s) {
+                              return Text(
+                                '${(s?.name ?? '')}',
+                                style: TextStyle(
+                                    color: AppColors.activitiesDropDown,
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w500),
+                                textAlign: TextAlign.start,
+                              );
+                            },
+                            dropDownButton: Container(
+                              margin: const EdgeInsets.only(left: 0.0),
+                              child: SvgPicture.asset(
+                                'images/dropdown_icon.svg',
+                                fit: BoxFit.fill,
+                                height: 8.0,
+                                width: 8.0,
+                                color: AppColors.buttonDropDown,
+                              ),
+                            ),
+                            dropdownSearchDecoration: const InputDecoration(
+                                filled: true,
+                                //fillColor: Color(0xFFF2F2F2),
+                                contentPadding: EdgeInsets.only(
+                                    right: 20.0, top: 0.0, bottom: 0.0),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                      const Radius.circular(12)),
+                                  borderSide: BorderSide(
+                                      width: 0.4,
+                                      color: AppColors.borderDropDownColor),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
+                                  borderSide: BorderSide(
+                                      width: 0.4,
+                                      color: AppColors.borderDropDownColor),
+                                ),
+                                disabledBorder: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
+                                  borderSide: BorderSide(
+                                      width: 0.4,
+                                      color: AppColors.borderDropDownColor),
+                                ),
+                                border: const OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(12)),
+                                    borderSide: BorderSide(
+                                      width: 1,
+                                    )),
+                                fillColor: Colors.white),
+                            items: findOrderAdvertisersController
+                                .countriesForLocationSheet,
+                            // label: "Menu mode",
+                            itemAsString: (Country? u) =>
+                            u?.itemAsStringByName() ?? '',
+                            /*popupItemDisabled: (String s) => s.startsWith('I'),
+                                    onChanged:  (String? s) => controller.addItem(s!),*/
+                            onChanged: (c) {
+                              findOrderAdvertisersController
+                                  .changeCountry(c);
+                              findOrderAdvertisersController.selectedCountry.value = c!;
+                            },
+                            selectedItem:
+                            findOrderAdvertisersController.selectedCountry.value!=null &&  findOrderAdvertisersController.selectedCountry.value.id!=null? findOrderAdvertisersController.selectedCountry.value:findOrderAdvertisersController
+                                .countriesForLocationSheet[0])),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.only(
+                            top: 10.0, left: 10.0, right: 10.0, bottom: 8.0),
+                        height: 35.0,
+                        child: Obx(() => findOrderAdvertisersController
+                            .isLoadingGetAdvertisersFromModel.value
+                            ? Container(
+                          child: const SpinKitThreeBounce(
+                            color: Colors.blue,
+                            size: 25,
+                          ),
+                        )
+                            : findOrderAdvertisersController
+                            .areasForLocationSheet.isNotEmpty
+                            ? DropdownSearch<Area>(
+                            mode: Mode.MENU,
+                            enabled:
+                            findOrderAdvertisersController
+                                .isAreaEnabled.value,
+                            dropDownButton: Container(
+                              margin: const EdgeInsets.only(left: 0.0),
+                              child: SvgPicture.asset(
+                                'images/dropdown_icon.svg',
+                                fit: BoxFit.fill,
+                                height: 8.0,
+                                width: 8.0,
+                                color: AppColors.buttonDropDown,
+                              ),
+                            ),
+                            /*dropdownButtonBuilder: (BuildContext context){
+                                       return Text('mm');
+                                    },*/
+                            dropdownBuilder: (BuildContext context, s) {
+                              return Text(
+                                '${(s?.name ?? '')}',
+                                style: TextStyle(
+                                    color: AppColors.activitiesDropDown,
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w500),
+                                textAlign: TextAlign.start,
+                              );
+                            },
+                            dropdownSearchDecoration: const InputDecoration(
+                                filled: true,
+                                //fillColor: Color(0xFFF2F2F2),
+                                contentPadding: EdgeInsets.only(
+                                    right: 20.0, top: 0.0, bottom: 0.0),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                      const Radius.circular(12)),
+                                  borderSide: BorderSide(
+                                      width: 0.4,
+                                      color: AppColors.borderDropDownColor),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
+                                  borderSide: BorderSide(
+                                      width: 0.4,
+                                      color: AppColors.borderDropDownColor),
+                                ),
+                                disabledBorder: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
+                                  borderSide: BorderSide(
+                                      width: 0.4,
+                                      color: AppColors.borderDropDownColor),
+                                ),
+                                border: const OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(12)),
+                                    borderSide: BorderSide(
+                                      width: 1,
+                                    )),
+                                fillColor: Colors.white),
+                            items:
+                            findOrderAdvertisersController
+                                .areasForLocationSheet,
+                            // label: "Menu mode",
+                            itemAsString: (Area? u) =>
+                            u?.itemAsStringByName() ?? '',
+                            onChanged: (area) {
+                              findOrderAdvertisersController
+                                  .changeArea(area);
+                              findOrderAdvertisersController.selectedArea.value = area!;
+                            },
+                            selectedItem:
+                            findOrderAdvertisersController.selectedArea.value!=null &&  findOrderAdvertisersController.selectedArea.value.id!=null ?findOrderAdvertisersController.selectedArea.value :findOrderAdvertisersController
+                                .areasForLocationSheet
+                                .value[0])
+                            : Container(
+                            alignment: Alignment.centerRight,
+                            child: Text("لا يوجد مناطق"))),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(14.0),
+                    color: /*value=='الاقدم' || value=='الاسرع ردا'
+                        ? AppColors.filterAdvertiserColor
+                        .withOpacity(.60)
+                        :*/ AppColors.white,
+                  ),
+                  margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 12),
+                  padding: EdgeInsets.only(right: 10),
+                  alignment: Alignment.centerRight,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Obx(()=>findOrderAdvertisersController
+                        .selectedUserLocations.isNotEmpty
+                        ?
+                    Wrap(
+                      direction: Axis.horizontal,
+                      children: findOrderAdvertisersController.selectedUserLocations.value
+                          .map(
+                            (value) => InkWell(
+                          onTap: (){
+                            findOrderAdvertisersController.onSelectedLocationClicked(value!.id);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(10.0),
+                              color:  AppColors.selectedCity
+                              ,
+                            ),
+                            margin: EdgeInsets.only(left: 8, bottom: 5,top: 5),
+                            // height: 30,
+                            padding: EdgeInsets.only(
+                                top: 2, bottom: 2, left: 16, right: 16),
+                            child: Text(
+                              value?.name ?? '',
+                              style: TextStyle(
+                                color: AppColors.white,
+                                fontSize: 14.0,
+                              )
+                              ,
+                              // textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ), /*Container(
+                          height: 30,
+                          margin: EdgeInsets.only(
+                              left: 4.0, top: 8, bottom: 6),
+                          child: Chip(
+                            elevation: 3.0,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14))),
+                            */ /*shape: StadiumBorder(
+                                    side: BorderSide(
+                                        color: AppColors
+                                            .activitiesSheetRounded,
+                                        width: 0.5)),*/ /*
+                            labelPadding: EdgeInsets.only(
+                               bottom: 20),
+                            label: Text(
+                              value ?? '',
+                              style: TextStyle(
+                                color: AppColors
+                                    .activitiesDropDown,
                                 fontSize: 16.0,
-                                fontWeight: FontWeight.w500),
-                            textAlign: TextAlign.start,
-                          );
-                        },
-                        dropdownSearchDecoration: const InputDecoration(
-                            filled: true,
-                            //fillColor: Color(0xFFF2F2F2),
-                            contentPadding: EdgeInsets.only(
-                                right: 20.0, top: 0.0, bottom: 0.0),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                  const Radius.circular(12)),
-                              borderSide: BorderSide(
-                                  width: 0.4,
-                                  color: AppColors.borderDropDownColor),
+                              ),
+                             // textAlign: TextAlign.center,
                             ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(12)),
-                              borderSide: BorderSide(
-                                  width: 0.4,
-                                  color: AppColors.borderDropDownColor),
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(12)),
-                              borderSide: BorderSide(
-                                  width: 0.4,
-                                  color: AppColors.borderDropDownColor),
-                            ),
-                            border: const OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(12)),
-                                borderSide: BorderSide(
-                                  width: 1,
-                                )),
-                            fillColor: Colors.white),
-                        items: widget.type=="archive"? Get.find<MyOrdersArchiveController>().requestsTypes.value:Get.find<MyOrdersController>().requestsTypes.value,
-                        // label: "Menu mode",
-                        itemAsString: (SelectedNotSelectedFilterAdsType? u) => u?.name??'',
-                        // hint: "الدولة",
-                        //popupItemDisabled: (String s) => s.startsWith('I'),
-                        onChanged: (category) {
-                          //controller.country.value = country!;
-                          if(widget.type=="archive"){
-                            Get.find<MyOrdersArchiveController>().selectedNotSelectedFilterAdsType.value = category!;
-                          }else{
-                            Get.find<MyOrdersController>().selectedNotSelectedFilterAdsType.value = category!;
-                          }
-                        },
-                        selectedItem: (widget.type=="archive"? Get.find<MyOrdersArchiveController>().selectedNotSelectedFilterAdsType.value!=null &&Get.find<MyOrdersArchiveController>().selectedNotSelectedFilterAdsType.value.key!=null?Get.find<MyOrdersArchiveController>().selectedNotSelectedFilterAdsType.value:Get.find<MyOrdersArchiveController>().requestsTypes.value[0]:
-                        Get.find<MyOrdersController>().selectedNotSelectedFilterAdsType.value!=null &&Get.find<MyOrdersController>().selectedNotSelectedFilterAdsType.value.key!=null?Get.find<MyOrdersController>().selectedNotSelectedFilterAdsType.value:Get.find<MyOrdersController>().requestsTypes.value[0])
-                    ) : Container(
-                        alignment: Alignment.centerRight,
-                        child: const Text("لا يوجد بيانات")),
+                            backgroundColor:
+                            AppColors.bottomSheetTabColor,
+                          ),
+                        ),*/
+                      )
+                          .toList(),
+                    )
+                        : Container(
+                        height: 40.0,
+                        alignment: Alignment.center,
+                        child: const Text('لا يوجد عناصر')))
+                    ,
                   ),
                 ),
-                //--------------------------  fifth section chips 'ابجث باسم المعلن--------------------
+//--------------------------  fifth section chips 'ابجث باسم المعلن--------------------
                 Divider(
                   color: Colors.black54,
                   thickness: .5,
@@ -413,7 +578,7 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                     textAlignVertical: TextAlignVertical.center,
                     //controller: controller.kayanNameController,
                     //  enabled: controller.isEnabled.value,
-                    controller: widget.type=="archive"?findOrderAdvertisersController.searchAdvertiserController:findOrderAdvertisersController2.searchAdvertiserController,
+                    controller: findOrderAdvertisersController.searchAdvertiserController,
                     style:  TextStyle(
                         color: AppColors.activitiesDropDown,
                         /*decoration: TextDecoration.underline,decorationThickness: 2,*/
@@ -425,9 +590,6 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                         fontWeight: FontWeight.w500,
                         fontSize: 14.0),*/
                     onChanged: (s){
-                      if(s.isEmpty){
-                        //findOrderAdvertisersController.type=null;
-                      }
                     },
                     decoration: InputDecoration(
                         contentPadding: const EdgeInsets.only(
@@ -463,7 +625,7 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                             /*decoration: TextDecoration.underline,decorationThickness: 2,*/
                             fontSize: 16.0,
                             fontWeight: FontWeight.w500),
-                        hintText: 'ابجث عن المحتوى الإعلانى باسم المعلن',
+                        hintText: 'ابجث عن الطلبات باسم المعلن',
                         fillColor: Colors.white70),
                   ),
                 ),
@@ -498,22 +660,17 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                       color: Colors.white),
                   child: InkWell(
                     onTap: (){
-                      if( widget.type=="archive"){
-                        findOrderAdvertisersController.showChoiceImageDialog(context);
-                      }else{
-                        findOrderAdvertisersController2.showChoiceImageDialog(context);
-                      }
+                      findOrderAdvertisersController.showChoiceImageDialog(context);
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(
-                              left: 10.0, right: 14.0, bottom: 4.0,top: 4.0),
+                              left: 10.0, right: 14.0, bottom: 4.0,top: 4),
                           child: Obx(()=>Text(
-                            widget.type=="archive"?(findOrderAdvertisersController.fromDate1.isNotEmpty&&findOrderAdvertisersController.toDate1.isNotEmpty?"من ${findOrderAdvertisersController.fromDate1.value} - إلى ${findOrderAdvertisersController.toDate1.value}" : findOrderAdvertisersController.fromDate1.isNotEmpty?"تاريخ الطلب : ${findOrderAdvertisersController.fromDate1.value}":"اختر تاريخ محدد  أو مرن للطلب"):
-                            (findOrderAdvertisersController2.fromDate1.isNotEmpty&&findOrderAdvertisersController2.toDate1.isNotEmpty?"من ${findOrderAdvertisersController2.fromDate1.value} - إلى ${findOrderAdvertisersController2.toDate1.value}" : findOrderAdvertisersController2.fromDate1.isNotEmpty?"تاريخ الطلب : ${findOrderAdvertisersController2.fromDate1.value}":"اختر تاريخ محدد  أو مرن للطلب"),
-                            style: TextStyle(
+                           (findOrderAdvertisersController.fromDate1.isNotEmpty&&findOrderAdvertisersController.toDate1.isNotEmpty?"من ${findOrderAdvertisersController.fromDate1.value} - إلى ${findOrderAdvertisersController.toDate1.value}" : findOrderAdvertisersController.fromDate1.isNotEmpty?"تاريخ الطلب : ${findOrderAdvertisersController.fromDate1.value}":"اختر تاريخ محدد  أو مرن للطلب")
+                            ,style: TextStyle(
                                 color: AppColors.activitiesDropDown,
                                 /*decoration: TextDecoration.underline,decorationThickness: 2,*/
                                 fontSize: 16.0,
@@ -537,7 +694,7 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                   endIndent: 20,
                   indent: 20,
                 ),
-                Padding(
+                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -547,8 +704,7 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                         height: 35,
                         margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
                         child: InkWell(
-                          onTap: () => widget.type=="archive"?findOrderAdvertisersController
-                              .onDateClickedSaved(context):findOrderAdvertisersController2
+                          onTap: () => findOrderAdvertisersController
                               .onDateClickedSaved(context),
                           child: Material(
                             elevation: 6.0,
@@ -578,13 +734,7 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                         child: InkWell(
 
                           onTap: () {
-                            if(widget.type=="archive") {
-                              findOrderAdvertisersController.onReturnClicked(
-                                  context);
-                            }else{
-                              findOrderAdvertisersController2.onReturnClicked(
-                                  context);
-                            }
+                            findOrderAdvertisersController.onReturnClicked(context);
                             // Get.back();
                           },
                           child: Material(
@@ -622,37 +772,19 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
   @override
   void dispose() {
     // TODO: implement dispose
-    if(widget.type=="archive") {
-      if(findOrderAdvertisersController.isFilterSavedClicked.isFalse) {
-        findOrderAdvertisersController.isLoadingGetAdvertisersFromModel.value =
-        true;
-        findOrderAdvertisersController.getMyRequestsFilterForm.value =
-            GetMyRequestsFilterForm();
-        findOrderAdvertisersController.advertisersTopRated.value = [];
-        findOrderAdvertisersController.categories.value = [];
-        findOrderAdvertisersController.selectedUserLocations.value = [];
-        findOrderAdvertisersController.isAreaEnabled.value = true;
-        findOrderAdvertisersController.isCountryEnabled.value = true;
-        findOrderAdvertisersController.requestsTypes.value = [];
-        findOrderAdvertisersController.fromDate1.value = "";
-        findOrderAdvertisersController.toDate1.value = "";
-      }
-    }else{
-      if(findOrderAdvertisersController2.isFilterSavedClicked.isFalse) {
-        findOrderAdvertisersController2.isLoadingGetAdvertisersFromModel.value =
-        true;
-        findOrderAdvertisersController2.getMyRequestsFilterForm.value =
-            GetMyRequestsFilterForm();
-        findOrderAdvertisersController2.advertisersTopRated.value = [];
-        findOrderAdvertisersController2.selectedUserLocations.value = [];
-        findOrderAdvertisersController2.isAreaEnabled.value = true;
-        findOrderAdvertisersController2.isCountryEnabled.value = true;
-        findOrderAdvertisersController2.requestsTypes.value = [];
-        findOrderAdvertisersController2.fromDate1.value = "";
-        findOrderAdvertisersController2.toDate1.value = "";
-      }
-    }
+    if(findOrderAdvertisersController.isFilterSavedClicked.isFalse) {
+      findOrderAdvertisersController.isLoadingGetAdvertisersFromModel.value =
+      true;
 
+      //findOrderAdvertisersController.advertisersTopRated.value = [];
+      findOrderAdvertisersController.selectedUserLocations.value = [];
+      findOrderAdvertisersController.isAreaEnabled.value = true;
+      findOrderAdvertisersController.isCountryEnabled.value = true;
+      findOrderAdvertisersController.searchAdvertiserController.text = '';
+      findOrderAdvertisersController.selectedCountry.value = Country();
+      findOrderAdvertisersController.selectedArea.value = Area();
+      findOrderAdvertisersController.areasForLocationSheet.value = [];
+    }
 /*    RxList<Country> countriesForLocationSheet = <Country>[].obs;
     RxList<Area> areasForLocationSheet = <Area>[].obs;
     var countryForLocationSheet  = Country().obs;

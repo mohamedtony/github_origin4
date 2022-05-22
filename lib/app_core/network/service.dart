@@ -28,6 +28,7 @@ import 'package:advertisers/app_core/network/responses/GetAdvertisersFormRespons
 import 'package:advertisers/app_core/network/responses/GetAdvertisersResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetBlockedUsersResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetCategoriesResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetCouponsFilterFormResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetMyProfileInfoResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetProductsAndAdsTypesResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetRulesResponse.dart';
@@ -39,6 +40,7 @@ import 'package:advertisers/app_core/network/responses/RegisterClientUserRespons
 import 'package:advertisers/app_core/network/responses/RequestDetailsResponse.dart';
 import 'package:advertisers/app_core/network/responses/SubscriptionDetailsResponse.dart';
 import 'package:advertisers/app_core/network/responses/SubscruptionResponse.dart';
+import 'package:advertisers/app_core/network/responses/advertising_requests_response.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:retrofit/retrofit.dart';
@@ -147,8 +149,8 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   @GET('copons/advertisers?page={id}')
   Future<CoponsResponse> getAdvertisersCopons( @Path("id") int? id,@Header("Authorization") String token);
 
-  @GET('/copons/clients?page={id}')
-  Future<CoponsResponse> getClientsCopons( @Path("id") int? id,@Header("Authorization") String token);
+  @GET('/copons/clients')
+  Future<CoponsResponse> getClientsCopons(@Queries() Map<String, dynamic> queries,@Header("Authorization") String token);
 
   @GET('/copons/clients?user_id={userid}&page={id}')
   Future<CoponsResponse> getClientsCoponsWhitId( @Path("userid") int? userid,@Path("id") int? id,@Header("Authorization") String token);
@@ -258,4 +260,12 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   @GET('/myrequests')
   Future<MyRequestsResponse> getMyRequests(@Queries() Map<String, dynamic> queries,@Header("Authorization") String token,);
 
+  @GET('/myrequests')
+  Future<AdvertisingRequestsResponse> getMyRequestsAdvertising(@Queries() Map<String, dynamic> queries,@Header("Authorization") String token,);
+
+  @GET('/copons/filter_form')
+  Future<GetCouponsFilterFormResponse> getCoupounsFilterForm(@Header("Authorization") String token,);
+
+  @GET('/copons/filter_form2')
+  Future<GetCouponsFilterFormResponse> getCoupounsShopsFilterForm(@Header("Authorization") String token,);
 }

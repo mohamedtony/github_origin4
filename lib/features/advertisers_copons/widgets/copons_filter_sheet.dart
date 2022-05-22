@@ -9,6 +9,7 @@ import 'package:advertisers/app_core/network/models/GetAdsFilterForm.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersFromModel.dart';
 import 'package:advertisers/app_core/network/models/GetMyRequestsFilterForm.dart';
 import 'package:advertisers/app_core/network/models/SelectedNotSelectedFilterAdsType.dart';
+import 'package:advertisers/features/advertisers_copons/controller/advertisers_copons_controller.dart';
 import 'package:advertisers/features/find_advertise_page/find_advertise_controller.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/home_page/controller/FilterSortAdsController.dart';
@@ -26,40 +27,26 @@ import 'package:get/get.dart';
 //                         By Mohamed T. Hammad
 
 //=========================================================================================
-class MyOrdersArchiveSheets extends StatefulWidget {
+class CoponsFilterSheet extends StatefulWidget {
   ScrollController? scrollController;
 
   String? type;
-  MyOrdersArchiveSheets({Key? key, this.scrollController,this.type}) : super(key: key);
+  CoponsFilterSheet({Key? key, this.scrollController,this.type}) : super(key: key);
 
   @override
-  State<MyOrdersArchiveSheets> createState() => _MyOrdersArchiveSheetsState();
+  State<CoponsFilterSheet> createState() => _CoponsFilterSheetState();
 }
 
-class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
+class _CoponsFilterSheetState extends State<CoponsFilterSheet> {
 
-  MyOrdersArchiveController findOrderAdvertisersController = Get.put(MyOrdersArchiveController());
-  MyOrdersController findOrderAdvertisersController2 = Get.put(MyOrdersController());
+  AdvertisersCoponsController findOrderAdvertisersController = Get.put(AdvertisersCoponsController());
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-     if(widget.type=="archive") {
-       if( Get
-           .find<MyOrdersArchiveController>()
-           .isFilterSavedClicked
-           .isFalse ){
-         Get.find<MyOrdersArchiveController>().getAdsForm(context);
-       }
-    }else{
-       if( Get
-           .find<MyOrdersController>()
-           .isFilterSavedClicked
-           .isFalse ){
-         Get.find<MyOrdersController>().getAdsForm(context);
-       }
-    }
+    findOrderAdvertisersController.getCoponsFilterForm(context);
   }
   double _startValue = 20.0;
   double _endValue = 90.0;
@@ -117,7 +104,7 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                         //padding: EdgeInsets.all(8.0),
                         margin: EdgeInsets.only(right: 8.0),
                         child: Text(
-                          'فرز وترتيب الطلبات بحسب',
+                          'فرز وترتيب الكوبونات بحسب',
                           style: TextStyle(color: Colors.white),
                           textAlign: TextAlign.center,
                         ),
@@ -163,7 +150,7 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                     Container(
                         margin: EdgeInsets.only(right: 5.0, bottom: 3,top: 16),
                         child: Text(
-                          'عرض الطلبات بحسب',
+                          'عرض الكوبونات بحسب',
                           style: TextStyle(color: Colors.white),
                           textAlign: TextAlign.center,
                         ))
@@ -180,10 +167,10 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                   ),
                   child: Obx(()=>SingleChildScrollView(
                     scrollDirection: Axis.vertical,
-                    child: (widget.type=="archive"?  Get.find<MyOrdersArchiveController>().advertisersTopRated.isNotEmpty: Get.find<MyOrdersController>().advertisersTopRated.isNotEmpty )?
+                    child:findOrderAdvertisersController.advertisersTopRated.isNotEmpty?
                     Wrap(
                       direction: Axis.horizontal,
-                      children: (widget.type=="archive"?  Get.find<MyOrdersArchiveController>().advertisersTopRated.value: Get.find<MyOrdersController>().advertisersTopRated.value )
+                      children: findOrderAdvertisersController.advertisersTopRated
                           .map(
                             (value) => InkWell(
                           onTap: (){
@@ -249,7 +236,7 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                       )
                           .toList(),
                     )
-                        : (widget.type=="archive"?  Get.find<MyOrdersArchiveController>().isLoadingGetAdvertisersFromModel.value: Get.find<MyOrdersController>().isLoadingGetAdvertisersFromModel.value )
+                        : findOrderAdvertisersController.isLoadingGetAdvertisersFromModel.value
                         ? Container(
                         alignment: Alignment.topCenter,
                         child: const CircularProgressIndicator(
@@ -285,7 +272,7 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                     Container(
                         margin: EdgeInsets.only(right: 5.0, bottom: 3),
                         child: Text(
-                          'ترتيب حسب',
+                          'ترتيب الكوبونات بحسب المتاجر',
                           style: TextStyle(color: Colors.white),
                           textAlign: TextAlign.center,
                         ))
@@ -296,16 +283,16 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                       top: 10.0, left: 10.0, right: 10.0, bottom: 8.0),
                   height: 35.0,
                   child: Obx(
-                        () => (widget.type=="archive"?  Get.find<MyOrdersArchiveController>().isLoadingGetAdvertisersFromModel.isTrue: Get.find<MyOrdersController>().isLoadingGetAdvertisersFromModel.isTrue )
+                        () => findOrderAdvertisersController.isLoadingGetAdvertisersFromModel.isTrue
                         ? Container(
                       child: const SpinKitThreeBounce(
                         color: Colors.blue,
                         size: 25,
                       ),
                     )
-                        :(widget.type=="archive"? (Get.find<MyOrdersArchiveController>().requestsTypes!=null && Get.find<MyOrdersArchiveController>().requestsTypes.value.isNotEmpty):(Get.find<MyOrdersController>().requestsTypes!=null && Get.find<MyOrdersController>().requestsTypes.value.isNotEmpty))
+                        :findOrderAdvertisersController.getAdsFilterForm.value.stores!=null && findOrderAdvertisersController.getAdsFilterForm.value.stores!.isNotEmpty
                         ?
-                    DropdownSearch<SelectedNotSelectedFilterAdsType>(
+                    DropdownSearch<String>(
                         mode: Mode.MENU,
                         dropDownButton: Container(
                           margin: const EdgeInsets.only(left: 0.0),
@@ -319,7 +306,7 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                         ),
                         dropdownBuilder: (BuildContext context, s) {
                           return Text(
-                            '${(s?.name ?? '')}',
+                            '${(s ?? '')}',
                             style: TextStyle(
                                 color: AppColors.activitiesDropDown,
                                 fontSize: 16.0,
@@ -360,176 +347,22 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                                   width: 1,
                                 )),
                             fillColor: Colors.white),
-                        items: widget.type=="archive"? Get.find<MyOrdersArchiveController>().requestsTypes.value:Get.find<MyOrdersController>().requestsTypes.value,
+                        items: findOrderAdvertisersController.getAdsFilterForm.value.stores,
                         // label: "Menu mode",
-                        itemAsString: (SelectedNotSelectedFilterAdsType? u) => u?.name??'',
+                        itemAsString: (String? u) => u??'',
                         // hint: "الدولة",
                         //popupItemDisabled: (String s) => s.startsWith('I'),
                         onChanged: (category) {
                           //controller.country.value = country!;
-                          if(widget.type=="archive"){
-                            Get.find<MyOrdersArchiveController>().selectedNotSelectedFilterAdsType.value = category!;
-                          }else{
-                            Get.find<MyOrdersController>().selectedNotSelectedFilterAdsType.value = category!;
-                          }
+                          findOrderAdvertisersController.selectedSortType.value = category!;
                         },
-                        selectedItem: (widget.type=="archive"? Get.find<MyOrdersArchiveController>().selectedNotSelectedFilterAdsType.value!=null &&Get.find<MyOrdersArchiveController>().selectedNotSelectedFilterAdsType.value.key!=null?Get.find<MyOrdersArchiveController>().selectedNotSelectedFilterAdsType.value:Get.find<MyOrdersArchiveController>().requestsTypes.value[0]:
-                        Get.find<MyOrdersController>().selectedNotSelectedFilterAdsType.value!=null &&Get.find<MyOrdersController>().selectedNotSelectedFilterAdsType.value.key!=null?Get.find<MyOrdersController>().selectedNotSelectedFilterAdsType.value:Get.find<MyOrdersController>().requestsTypes.value[0])
+                        selectedItem:findOrderAdvertisersController.selectedSortType.value.isNotEmpty?findOrderAdvertisersController.selectedSortType.value:'اختر متجر'
                     ) : Container(
                         alignment: Alignment.centerRight,
-                        child: const Text("لا يوجد بيانات")),
+                        child: Center(child: const Text("لا يوجد بيانات"))),
                   ),
                 ),
-                //--------------------------  fifth section chips 'ابجث باسم المعلن--------------------
-                Divider(
-                  color: Colors.black54,
-                  thickness: .5,
-                  endIndent: 20,
-                  indent: 20,
-                ),
-                Container(
-                  height: 38,
-                  margin: EdgeInsets.only(left: 10, right: 10),
-                  decoration: const BoxDecoration(
-                      border: Border(
-                        top: const BorderSide(
-                            color: AppColors.editProfileContainerColor,
-                            width: 0.4),
-                        bottom: const BorderSide(
-                            color: AppColors.editProfileContainerColor,
-                            width: 0.4),
-                        left: const BorderSide(
-                            color: AppColors.editProfileContainerColor,
-                            width: 0.4),
-                        right: BorderSide(
-                            color: AppColors.editProfileContainerColor,
-                            width: 0.4),
-                      ),
-                      borderRadius:
-                      const BorderRadius.all(Radius.circular(12.0)),
-                      color: Colors.white),
-                  child: TextField(
-                    textAlign: TextAlign.start,
-                    textAlignVertical: TextAlignVertical.center,
-                    //controller: controller.kayanNameController,
-                    //  enabled: controller.isEnabled.value,
-                    controller: widget.type=="archive"?findOrderAdvertisersController.searchAdvertiserController:findOrderAdvertisersController2.searchAdvertiserController,
-                    style:  TextStyle(
-                        color: AppColors.activitiesDropDown,
-                        /*decoration: TextDecoration.underline,decorationThickness: 2,*/
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500),
-                    /*style: TextStyle(
-                        color: (AppColors.editProfileTextColorOpa)
-                            .withOpacity(0.51),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14.0),*/
-                    onChanged: (s){
-                      if(s.isEmpty){
-                        //findOrderAdvertisersController.type=null;
-                      }
-                    },
-                    decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(
-                            left: 10.0, right: 14.0, bottom: 12.0),
-                        // isCollapsed: true,
-                        prefixIcon: Container(
-                          padding: EdgeInsets.all(8.0),
-                          child: SvgPicture.asset(
-                            'images/search_icon.svg',
-                          ),
-                        ),
-                        /*suffixIcon: Container(
-                          margin: const EdgeInsets.only(left: 0.0),
-                          padding: EdgeInsets.only(left: 5.0,right: 5,top: 13,bottom: 15),
-                          child: SvgPicture.asset(
-                            'images/dropdown_icon.svg',
-                            fit: BoxFit.fill,
-                            height: 8.0,
-                            width: 8.0,
-                            color: AppColors.buttonDropDown,
-                          ),
-                        ),*/
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(70.0),
-                          borderSide: const BorderSide(
-                            width: 0,
-                            style: BorderStyle.none,
-                          ),
-                        ),
-                        filled: true,
-                        hintStyle: TextStyle(
-                            color: AppColors.activitiesDropDown,
-                            /*decoration: TextDecoration.underline,decorationThickness: 2,*/
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w500),
-                        hintText: 'ابجث عن المحتوى الإعلانى باسم المعلن',
-                        fillColor: Colors.white70),
-                  ),
-                ),
-                //--------------------------  fifth section chips 'ابجث باسم المعلن--------------------
-                Divider(
-                  color: Colors.black54,
-                  thickness: .5,
-                  endIndent: 20,
-                  indent: 20,
-                ),
-                Container(
-                  height: 38,
-                  width: Get.width,
-                  margin: EdgeInsets.only(left: 10, right: 10),
-                  decoration: const BoxDecoration(
-                      border: Border(
-                        top: const BorderSide(
-                            color: AppColors.editProfileContainerColor,
-                            width: 0.4),
-                        bottom: const BorderSide(
-                            color: AppColors.editProfileContainerColor,
-                            width: 0.4),
-                        left: const BorderSide(
-                            color: AppColors.editProfileContainerColor,
-                            width: 0.4),
-                        right: BorderSide(
-                            color: AppColors.editProfileContainerColor,
-                            width: 0.4),
-                      ),
-                      borderRadius:
-                      const BorderRadius.all(Radius.circular(12.0)),
-                      color: Colors.white),
-                  child: InkWell(
-                    onTap: (){
-                      if( widget.type=="archive"){
-                        findOrderAdvertisersController.showChoiceImageDialog(context);
-                      }else{
-                        findOrderAdvertisersController2.showChoiceImageDialog(context);
-                      }
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 10.0, right: 14.0, bottom: 4.0,top: 4.0),
-                          child: Obx(()=>Text(
-                            widget.type=="archive"?(findOrderAdvertisersController.fromDate1.isNotEmpty&&findOrderAdvertisersController.toDate1.isNotEmpty?"من ${findOrderAdvertisersController.fromDate1.value} - إلى ${findOrderAdvertisersController.toDate1.value}" : findOrderAdvertisersController.fromDate1.isNotEmpty?"تاريخ الطلب : ${findOrderAdvertisersController.fromDate1.value}":"اختر تاريخ محدد  أو مرن للطلب"):
-                            (findOrderAdvertisersController2.fromDate1.isNotEmpty&&findOrderAdvertisersController2.toDate1.isNotEmpty?"من ${findOrderAdvertisersController2.fromDate1.value} - إلى ${findOrderAdvertisersController2.toDate1.value}" : findOrderAdvertisersController2.fromDate1.isNotEmpty?"تاريخ الطلب : ${findOrderAdvertisersController2.fromDate1.value}":"اختر تاريخ محدد  أو مرن للطلب"),
-                            style: TextStyle(
-                                color: AppColors.activitiesDropDown,
-                                /*decoration: TextDecoration.underline,decorationThickness: 2,*/
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w500),)),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 10.0),
-                          child: Image.asset(
-                            "images/calender.png",
-                            height: 20,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+
 //--------------------------  six section حفظ استعادة--------------------
                 Divider(
                   color: Colors.black54,
@@ -547,8 +380,7 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                         height: 35,
                         margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
                         child: InkWell(
-                          onTap: () => widget.type=="archive"?findOrderAdvertisersController
-                              .onDateClickedSaved(context):findOrderAdvertisersController2
+                          onTap: () => findOrderAdvertisersController
                               .onDateClickedSaved(context),
                           child: Material(
                             elevation: 6.0,
@@ -578,14 +410,8 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
                         child: InkWell(
 
                           onTap: () {
-                            if(widget.type=="archive") {
-                              findOrderAdvertisersController.onReturnClicked(
-                                  context);
-                            }else{
-                              findOrderAdvertisersController2.onReturnClicked(
-                                  context);
-                            }
-                            // Get.back();
+                            findOrderAdvertisersController.onReturnClicked(context);
+
                           },
                           child: Material(
                             elevation: 6.0,
@@ -622,36 +448,14 @@ class _MyOrdersArchiveSheetsState extends State<MyOrdersArchiveSheets> {
   @override
   void dispose() {
     // TODO: implement dispose
-    if(widget.type=="archive") {
+
       if(findOrderAdvertisersController.isFilterSavedClicked.isFalse) {
         findOrderAdvertisersController.isLoadingGetAdvertisersFromModel.value =
         true;
-        findOrderAdvertisersController.getMyRequestsFilterForm.value =
-            GetMyRequestsFilterForm();
         findOrderAdvertisersController.advertisersTopRated.value = [];
-        findOrderAdvertisersController.categories.value = [];
-        findOrderAdvertisersController.selectedUserLocations.value = [];
-        findOrderAdvertisersController.isAreaEnabled.value = true;
-        findOrderAdvertisersController.isCountryEnabled.value = true;
         findOrderAdvertisersController.requestsTypes.value = [];
-        findOrderAdvertisersController.fromDate1.value = "";
-        findOrderAdvertisersController.toDate1.value = "";
       }
-    }else{
-      if(findOrderAdvertisersController2.isFilterSavedClicked.isFalse) {
-        findOrderAdvertisersController2.isLoadingGetAdvertisersFromModel.value =
-        true;
-        findOrderAdvertisersController2.getMyRequestsFilterForm.value =
-            GetMyRequestsFilterForm();
-        findOrderAdvertisersController2.advertisersTopRated.value = [];
-        findOrderAdvertisersController2.selectedUserLocations.value = [];
-        findOrderAdvertisersController2.isAreaEnabled.value = true;
-        findOrderAdvertisersController2.isCountryEnabled.value = true;
-        findOrderAdvertisersController2.requestsTypes.value = [];
-        findOrderAdvertisersController2.fromDate1.value = "";
-        findOrderAdvertisersController2.toDate1.value = "";
-      }
-    }
+
 
 /*    RxList<Country> countriesForLocationSheet = <Country>[].obs;
     RxList<Area> areasForLocationSheet = <Area>[].obs;
