@@ -1190,7 +1190,8 @@ class ChatContentWidget2 extends StatelessWidget {
                           controller.tapped.value = false;
                           //controller.isStar.value==0;
                           return Stack(
-                            overflow: Overflow.visible,
+                            clipBehavior: Clip.none,
+                            //overflow: Overflow.visible,
                             fit: StackFit.passthrough,
                             children: [
                               Container(
@@ -1293,7 +1294,8 @@ class ChatContentWidget2 extends StatelessWidget {
                           );
                         } else {
                           return Stack(
-                            overflow: Overflow.visible,
+                            clipBehavior: Clip.none,
+                            //overflow: Overflow.visible,
                             children: [
                               Container(
                                 decoration: BoxDecoration(

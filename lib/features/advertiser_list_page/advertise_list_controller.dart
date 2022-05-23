@@ -31,6 +31,9 @@ class AdvertiseListController extends GetxController with GetSingleTickerProvide
   var clientProfileModel = ClientProfileModel().obs;
   late Repository repo;
   bool showEmployees=true;
+
+  var employeesRulesResponse =EmployeesRulesResponse().obs;
+
   bool showSettings=true;
   bool showAdsRequests=true;
   bool showMyAds=true;
@@ -93,6 +96,9 @@ class AdvertiseListController extends GetxController with GetSingleTickerProvide
             }else{
               showEmployees= res.data!.show!;
             }
+
+            employeesRulesResponse.value.data=res.data;
+
             print("showEmployees $showEmployees");
             update();
 
@@ -100,12 +106,6 @@ class AdvertiseListController extends GetxController with GetSingleTickerProvide
             if (EasyLoading.isShow) {
               EasyLoading.dismiss();
             }
-            // Get.snackbar(
-            //   " خطأ ${res.status}",
-            //   res.message.toString(),
-            //   icon: const Icon(Icons.person, color: Colors.red),
-            //   backgroundColor: Colors.yellow,
-            //   snackPosition: SnackPosition.BOTTOM,);
           }
           update();
         },

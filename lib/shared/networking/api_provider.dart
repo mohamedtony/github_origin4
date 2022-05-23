@@ -1,6 +1,6 @@
 import 'package:advertisers/shared/networking/custom_interceptor.dart';
 import 'package:dio/dio.dart';
-
+import 'package:advertisers/main.dart';
 class ApiService {
   static final interceptors = [
     CustomInterceptor(),
@@ -14,8 +14,15 @@ class ApiService {
   ];
   final Dio dioClient = Dio(
     BaseOptions(
-      baseUrl:
-          '',
+      baseUrl: '',
+      headers: {
+        // 'Content-Type': 'application/json',
+        // 'Accept-Type': 'application/json',
+        "Authorization": storage.read("token"),
+        "Accept": "application/json",
+        if(storage.read("ownerid")!=null)
+          "OwnerID": "${storage.read("ownerid")}",
+      },
       connectTimeout: 60000,
       receiveTimeout: 60000,
     ),

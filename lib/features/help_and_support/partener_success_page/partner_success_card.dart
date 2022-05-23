@@ -18,7 +18,7 @@ final String title,text,image;
 
         ),
         child: Stack(
-          alignment: Alignment.center,overflow: Overflow.visible,
+          alignment: Alignment.center, clipBehavior: Clip.none, //overflow: Overflow.visible,
 
           children: [
             Padding(

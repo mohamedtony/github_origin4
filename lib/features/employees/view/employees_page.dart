@@ -1,5 +1,6 @@
 import 'package:advertisers/features/advertiser_invoice_input/controller/advertiser_invoice_input_controller.dart';
 import 'package:advertisers/features/advertiser_invoice_input/view/advertiser_invoice_input_page.dart';
+import 'package:advertisers/features/advertiser_list_page/advertise_list_controller.dart';
 import 'package:advertisers/features/advertiser_order_details/controller/advertiser_order_details_controller.dart';
 import 'package:advertisers/features/advertising_requests/controller/advertising_requests_controller.dart';
 import 'package:advertisers/features/advertising_requests/widgets/advertising_requests_slide_right_item.dart';
@@ -28,10 +29,11 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:advertisers/main.dart';
 class EmployeesPage extends GetWidget<EmployeesController>  {
 
   final EmployeesController  controller = Get.put(EmployeesController());
+  final AdvertiseListController rulesController = Get.put(AdvertiseListController());
 
 
   // ScrollController? scrollController;
@@ -180,7 +182,20 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                 /// card
                                                 InkWell(
                                                   onTap:(){
-                                                    controller.fetchAnEmployee(id: uiEmployeeRequests!.id);
+
+
+                                                    if(storage.read("ownerid")!=null) {
+                                                      if (rulesController.employeesRulesResponse.value.data!=null&&rulesController.employeesRulesResponse.value.data!.addEdit !=
+                                                          null &&
+                                                          rulesController
+                                                              .employeesRulesResponse.value.data!.addEdit !=
+                                                              false) {
+                                                        controller.fetchAnEmployee(id: uiEmployeeRequests!.id);
+                                                      }}else{
+                                                      controller.fetchAnEmployee(id: uiEmployeeRequests!.id);
+                                                    }
+
+
 
                                                   },
                                                   child: Container(
@@ -236,14 +251,17 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                                       children: [
 
-                                                                        Padding(
-                                                                          padding: const EdgeInsets.only(top:8.0),
-                                                                          child: Text(  "${uiEmployeeRequests.user!.username ?? ''}",
-                                                                            style: TextStyle(
-                                                                                fontSize: 14.sp,
-                                                                                color: const Color(
-                                                                                    0xff244094),
-                                                                                fontFamily: 'A Jannat LT, Bold'
+                                                                        Container(
+                                                                          width:MediaQuery.of(context).size.width*.32,
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.only(top:8.0),
+                                                                            child: Text(  "${uiEmployeeRequests.user!.username ?? ''}",
+                                                                              style: TextStyle(
+                                                                                  fontSize: 14.sp,
+                                                                                  color: const Color(
+                                                                                      0xff244094),
+                                                                                  fontFamily: 'A Jannat LT, Bold'
+                                                                              ),
                                                                             ),
                                                                           ),
                                                                         ),
@@ -274,7 +292,7 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                                       ],
                                                                     ),
                                                                     /// spacer
-                                                                    Container(width: MediaQuery.of(context).size.width*.12,),
+                                                                    Container(width: MediaQuery.of(context).size.width*.08,),
                                                                     /// employee type
                                                                     Column(
                                                                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -390,15 +408,37 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                               child: EmployeeSlideRightItemsAction(
                                                                 firstWidget:   InkWell(
                                                                   onTap: (){
-                                                                    if(uiEmployeeRequests.status==0){
-                                                                      controller.stopOrActivateEmployee(id: uiEmployeeRequests.id);
-                                                                    }else{
-                                                                      Get.snackbar("حسنا",
-                                                                        "هذا الموظف نشط بالفعل",
-                                                                        icon: const Icon(Icons.check, color: Colors.green),
-                                                                        backgroundColor: Colors.yellow,
-                                                                        snackPosition: SnackPosition.TOP,);
+
+                                                                    if(storage.read("ownerid")!=null) {
+                                                                      if (rulesController.employeesRulesResponse.value.data!=null&&rulesController.employeesRulesResponse.value.data!.status !=
+                                                                          null &&
+                                                                          rulesController
+                                                                              .employeesRulesResponse.value.data!.status !=
+                                                                              false) {
+                                                                        print("rulesController.employeesRulesResponse.value.data!.status active ${rulesController
+                                                                            .employeesRulesResponse.value.data!.status}");
+                                                                        if(uiEmployeeRequests.status==0){
+                                                                          controller.stopOrActivateEmployee(id: uiEmployeeRequests.id);
+                                                                        }else{
+                                                                          Get.snackbar("حسنا",
+                                                                            "هذا الموظف نشط بالفعل",
+                                                                            icon: const Icon(Icons.check, color: Colors.green),
+                                                                            backgroundColor: Colors.yellow,
+                                                                            snackPosition: SnackPosition.TOP,);
+                                                                        }
+                                                                      }}else{
+                                                                      if(uiEmployeeRequests.status==0){
+                                                                        controller.stopOrActivateEmployee(id: uiEmployeeRequests.id);
+                                                                      }else{
+                                                                        Get.snackbar("حسنا",
+                                                                          "هذا الموظف نشط بالفعل",
+                                                                          icon: const Icon(Icons.check, color: Colors.green),
+                                                                          backgroundColor: Colors.yellow,
+                                                                          snackPosition: SnackPosition.TOP,);
+                                                                      }
                                                                     }
+
+
 
                                                                   },
                                                                   child: Container(
@@ -450,14 +490,35 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                                 ),
                                                                 secondWidget: InkWell(
                                                                   onTap: (){
-                                                                    if(uiEmployeeRequests.status==1){
-                                                                      controller.stopOrActivateEmployee(id: uiEmployeeRequests.id);
-                                                                    }else{
-                                                                      Get.snackbar("حسنا",
-                                                                        "هذا الموظف موقوف بالفعل",
-                                                                        icon: const Icon(Icons.check, color: Colors.green),
-                                                                        backgroundColor: Colors.yellow,
-                                                                        snackPosition: SnackPosition.TOP,);
+                                                                    if(storage.read("ownerid")!=null) {
+                                                                      if (rulesController.employeesRulesResponse.value.data!=null&&rulesController.employeesRulesResponse.value.data!.status !=
+                                                                          null &&
+                                                                          rulesController
+                                                                              .employeesRulesResponse.value.data!.status !=
+                                                                              false) {
+                                                                        print("rulesController.employeesRulesResponse.value.data!.status stop ${rulesController
+                                                                            .employeesRulesResponse.value.data!.status}");
+                                                                        if(uiEmployeeRequests.status==1){
+                                                                          print("uiEmployeeRequests.status ${uiEmployeeRequests.status}");
+                                                                          controller.stopOrActivateEmployee(id: uiEmployeeRequests.id);
+                                                                        }else{
+                                                                          Get.snackbar("حسنا",
+                                                                            "هذا الموظف موقوف بالفعل",
+                                                                            icon: const Icon(Icons.check, color: Colors.green),
+                                                                            backgroundColor: Colors.yellow,
+                                                                            snackPosition: SnackPosition.TOP,);
+                                                                        }
+                                                                      }}else{
+                                                                      if(uiEmployeeRequests.status==1){
+                                                                        print("uiEmployeeRequests.status ${uiEmployeeRequests.status}");
+                                                                        controller.stopOrActivateEmployee(id: uiEmployeeRequests.id);
+                                                                      }else{
+                                                                        Get.snackbar("حسنا",
+                                                                          "هذا الموظف موقوف بالفعل",
+                                                                          icon: const Icon(Icons.check, color: Colors.green),
+                                                                          backgroundColor: Colors.yellow,
+                                                                          snackPosition: SnackPosition.TOP,);
+                                                                      }
                                                                     }
                                                                   },
                                                                   child: Container(
@@ -507,52 +568,108 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                                 ),
                                                                 thirdWidget: InkWell(
                                                                   onTap: (){
-                                                                    Get.defaultDialog(
-                                                                      title: "هل تريد حذف هذا الموظف !",
-                                                                      content: Row(
-                                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                        children: [
-                                                                        InkWell(
-                                                                          onTap: (){
 
-                                                                            controller.deleteAnEmployee(id: uiEmployeeRequests.id);
-                                                                            Get.back();
-                                                                          },
-                                                                          child: Container(
-                                                                            width: 80,
-                                                                            decoration: BoxDecoration(
-                                                                              color: Colors.red,
-                                                                              borderRadius: BorderRadius.circular(8),
-                                                                            ),
-                                                                            child: const Padding(
-                                                                              padding:  EdgeInsets.symmetric(horizontal:8.0,vertical: 4),
-                                                                              child: Center(child: Text("نعم",style: TextStyle(color: Colors.white,fontSize: 12),)),
-                                                                            ),
-                                                                          ),
-                                                                        ),
+                                                                    if(storage.read("ownerid")!=null) {
+                                                                      if (rulesController.employeesRulesResponse.value.data!=null&&rulesController.employeesRulesResponse.value.data!.delete !=
+                                                                          null &&
+                                                                          rulesController
+                                                                              .employeesRulesResponse.value.data!.delete !=
+                                                                              false) {
+                                                                        Get.defaultDialog(
+                                                                            title: "هل تريد حذف هذا الموظف !",
+                                                                            content: Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                              children: [
+                                                                                InkWell(
+                                                                                  onTap: (){
 
-                                                                        InkWell(
-                                                                          onTap: (){
-                                                                            Get.back();
-                                                                          },
-                                                                          child: Container(
-                                                                            width: 80,
-                                                                            decoration: BoxDecoration(
-                                                                              color: Colors.green,
-                                                                              borderRadius: BorderRadius.circular(8),
-                                                                            ),
-                                                                            child: const Padding(
-                                                                              padding:  EdgeInsets.symmetric(horizontal:8.0,vertical: 4),
-                                                                              child: Center(child: Text("لا",style: TextStyle(color: Colors.white,fontSize: 12),)),
-                                                                            ),
-                                                                          ),
-                                                                        ),
+                                                                                    controller.deleteAnEmployee(id: uiEmployeeRequests.id);
+                                                                                    Get.back();
+                                                                                  },
+                                                                                  child: Container(
+                                                                                    width: 80,
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: Colors.red,
+                                                                                      borderRadius: BorderRadius.circular(8),
+                                                                                    ),
+                                                                                    child: const Padding(
+                                                                                      padding:  EdgeInsets.symmetric(horizontal:8.0,vertical: 4),
+                                                                                      child: Center(child: Text("نعم",style: TextStyle(color: Colors.white,fontSize: 12),)),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
 
-                                                                      ],),
-                                                                      backgroundColor: Colors.white,
-                                                                      titleStyle: const TextStyle(color: Colors.red,fontSize: 16),
-                                                                       barrierDismissible: false
-                                                                    );
+                                                                                InkWell(
+                                                                                  onTap: (){
+                                                                                    Get.back();
+                                                                                  },
+                                                                                  child: Container(
+                                                                                    width: 80,
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: Colors.green,
+                                                                                      borderRadius: BorderRadius.circular(8),
+                                                                                    ),
+                                                                                    child: const Padding(
+                                                                                      padding:  EdgeInsets.symmetric(horizontal:8.0,vertical: 4),
+                                                                                      child: Center(child: Text("لا",style: TextStyle(color: Colors.white,fontSize: 12),)),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+
+                                                                              ],),
+                                                                            backgroundColor: Colors.white,
+                                                                            titleStyle: const TextStyle(color: Colors.red,fontSize: 16),
+                                                                            barrierDismissible: false
+                                                                        );
+                                                                      }}else{
+                                                                      Get.defaultDialog(
+                                                                          title: "هل تريد حذف هذا الموظف !",
+                                                                          content: Row(
+                                                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                            children: [
+                                                                              InkWell(
+                                                                                onTap: (){
+
+                                                                                  controller.deleteAnEmployee(id: uiEmployeeRequests.id);
+                                                                                  Get.back();
+                                                                                },
+                                                                                child: Container(
+                                                                                  width: 80,
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: Colors.red,
+                                                                                    borderRadius: BorderRadius.circular(8),
+                                                                                  ),
+                                                                                  child: const Padding(
+                                                                                    padding:  EdgeInsets.symmetric(horizontal:8.0,vertical: 4),
+                                                                                    child: Center(child: Text("نعم",style: TextStyle(color: Colors.white,fontSize: 12),)),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+
+                                                                              InkWell(
+                                                                                onTap: (){
+                                                                                  Get.back();
+                                                                                },
+                                                                                child: Container(
+                                                                                  width: 80,
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: Colors.green,
+                                                                                    borderRadius: BorderRadius.circular(8),
+                                                                                  ),
+                                                                                  child: const Padding(
+                                                                                    padding:  EdgeInsets.symmetric(horizontal:8.0,vertical: 4),
+                                                                                    child: Center(child: Text("لا",style: TextStyle(color: Colors.white,fontSize: 12),)),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+
+                                                                            ],),
+                                                                          backgroundColor: Colors.white,
+                                                                          titleStyle: const TextStyle(color: Colors.red,fontSize: 16),
+                                                                          barrierDismissible: false
+                                                                      );
+                                                                    }
+
 
                                                                   },
                                                                   child: Container(
@@ -675,14 +792,31 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                     padding: const EdgeInsets.only(bottom:64.0),
                     child: InkWell(
                       onTap: (){
-                        //  Get.toNamed('/AddEmployeePage');
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddEmployeePage(),
-                          ),
-                        );
-                      },
+                        if(storage.read("ownerid")!=null) {
+                            if (rulesController.employeesRulesResponse.value.data!=null&&rulesController
+                                        .employeesRulesResponse.value.data!.addEdit !=
+                                    null &&
+                                rulesController
+                                        .employeesRulesResponse.value.data!.addEdit !=
+                                    false) {
+                              print("rulesController.employeesRulesResponse.value.data!.addEdit ${rulesController
+                                  .employeesRulesResponse.value.data!.addEdit}");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddEmployeePage(),
+                                ),
+                              );
+                            }
+                }else{
+                    Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddEmployeePage(),
+                            ),
+                          );
+                        }
+              },
                       child: SvgPicture.asset('images/add-employee.svg',
                         width: MediaQuery.of(context).size.width*.23,
                         height:MediaQuery.of(context).size.width*.23,

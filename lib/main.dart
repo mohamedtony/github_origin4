@@ -56,7 +56,7 @@ void main() async{
     channel = const AndroidNotificationChannel(
       'high_importance_channel', // id
       'High Importance Notifications', // title
-      'This channel is used for important notifications.', // description
+      //'This channel is used for important notifications.', // description
       importance: Importance.high,
     );
 
@@ -314,7 +314,7 @@ class _MyAppState extends State<MyApp> {
         designSize: const Size(375, 812),
         minTextAdapt: true,
         splitScreenMode: true,
-        builder:()=>GetMaterialApp(
+        builder: (BuildContext context, Widget? child) => GetMaterialApp(
           navigatorKey: navigatorKey,
           routingCallback: (r){
            // r!.route.;
