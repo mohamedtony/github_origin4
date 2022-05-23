@@ -578,17 +578,17 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<CoponsResponse> getAppCopons(id, token) async {
+  Future<CoponsResponse> getAppCopons(queries, token) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
+    queryParameters.addAll(queries);
     final _headers = <String, dynamic>{r'Authorization': token};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<CoponsResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, 'copons/app?page=${id}',
+                .compose(_dio.options, 'copons/app',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CoponsResponse.fromJson(_result.data!);

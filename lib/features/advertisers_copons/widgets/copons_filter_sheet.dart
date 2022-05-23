@@ -46,7 +46,8 @@ class _CoponsFilterSheetState extends State<CoponsFilterSheet> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    findOrderAdvertisersController.getCoponsFilterForm(context);
+    if(findOrderAdvertisersController.isFilterSavedClicked.isFalse)
+           findOrderAdvertisersController.getCoponsFilterForm(context);
   }
   double _startValue = 20.0;
   double _endValue = 90.0;
@@ -450,10 +451,9 @@ class _CoponsFilterSheetState extends State<CoponsFilterSheet> {
     // TODO: implement dispose
 
       if(findOrderAdvertisersController.isFilterSavedClicked.isFalse) {
-        findOrderAdvertisersController.isLoadingGetAdvertisersFromModel.value =
-        true;
+        findOrderAdvertisersController.isLoadingGetAdvertisersFromModel.value = true;
         findOrderAdvertisersController.advertisersTopRated.value = [];
-        findOrderAdvertisersController.requestsTypes.value = [];
+        findOrderAdvertisersController.selectedSortType.value = '';
       }
 
 

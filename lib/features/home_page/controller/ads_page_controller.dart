@@ -47,8 +47,7 @@ class AdsPageController extends GetxController {
   RxList<GetAdvertisersModel> advertisersModel = <GetAdvertisersModel>[].obs;
   var getAdsFilterForm = GetAdsFilterForm().obs;
 
-  RxList<SelectedNotSelectedFilterAdsType> advertisersTopRated =
-      <SelectedNotSelectedFilterAdsType>[].obs;
+  RxList<SelectedNotSelectedFilterAdsType> advertisersTopRated = <SelectedNotSelectedFilterAdsType>[].obs;
   RxList<CategoryModel> categories = <CategoryModel>[].obs;
   var isLoadingGetAdvertisersFromModel = true.obs;
   String? myToken;

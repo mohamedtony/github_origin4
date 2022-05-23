@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:advertisers/app_core/network/models/CoponModelResponse.dart';
+import 'package:advertisers/app_core/network/requests/GetAdvertisersCoponsRequest.dart';
 import 'package:advertisers/app_core/network/responses/CoponsResponse.dart';
 import 'package:advertisers/main.dart';
 import 'package:get/get.dart';
@@ -23,7 +24,8 @@ class DiscountPageController extends GetxController {
       {/*String brandId, String catgegoryId,*/ int? pageKey}) async {
     String myToken = await storage.read("token");
 
-    CoponsResponse response = await client!.getAppCopons(pageKey,"Bearer " + myToken);
+
+    CoponsResponse response = await client!.getAppCopons(GetAdvertisersCoponsRequest(page: pageKey).toJson(),"Bearer " + myToken);
     final completer = Completer<List<CoponModelResponse>>();
     List<CoponModelResponse> notifications = [];
     if(response.data!=null && response.data!.isNotEmpty) {

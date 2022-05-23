@@ -108,7 +108,11 @@ String? dropdownValue;
     getMyRequestsModelRequest = GetAdvertisersCoponsRequest(
       filters: sortByStrings.isNotEmpty ? sortByStrings.join(",") : null,
       store_name: selectedSortType.value!="اختر متجر"?selectedSortType.value:null,    );
-       advertiserCoponspagingController.refresh();
+    if(tabId==1) {
+      advertiserCoponspagingController.refresh();
+    }else{
+      appCoponspagingController.refresh();
+    }
     //pagingController.refresh();
     //refreshController.resetNoData();
     //getRequestsData(isRefresh: true);
@@ -124,8 +128,15 @@ String? dropdownValue;
     selectedNotSelectedFilterAdsType.value = SelectedNotSelectedFilterAdsType();
     //fromDate1.value = "";
     //toDate1.value = "";
+    selectedSortType.value = '';
     getMyRequestsModelRequest = GetAdvertisersCoponsRequest(page: 1,);
-    getRequestsData(isRefresh: true);
+    if(tabId==1) {
+      lastPage = -1;
+      advertiserCoponspagingController.refresh();
+    }else{
+      lastPageApp = -1;
+      appCoponspagingController.refresh();
+    }
     Get.back();
   }
 
@@ -147,6 +158,11 @@ String? dropdownValue;
   int tabId = 1;
   void passIndex(newIndex){
     tabId = newIndex;
+    /*if(newIndex==1) {
+      advertiserCoponspagingController.refresh();
+    }else{
+      appCoponspagingController.refresh();
+    }*/
     update();
   }
 
@@ -187,7 +203,7 @@ String? dropdownValue;
   late TextEditingController searchAdvertiserController;
   var search='';
   int lastPage = -1;
-
+  int lastPageApp = -1;
   @override
   void onInit() {
     // passIndex;
@@ -201,7 +217,7 @@ String? dropdownValue;
     token =storage.read("token");
     searchController=TextEditingController();
     searchAdvertiserController =TextEditingController();
-    getRequestsData();
+   // getRequestsData();
     super.onInit();
   }
   final PagingController<int, CoponModelResponse> advertiserCoponspagingController = PagingController(firstPageKey: 1);
@@ -298,11 +314,17 @@ String? dropdownValue;
       {/*String brandId, String catgegoryId,*/ int? pageKey}) async {
     String myToken = await storage.read("token");
 
-    CoponsResponse response = await client!.getAppCopons(pageKey,"Bearer " + myToken);
+    getMyRequestsModelRequest.page = 1;
+    Logger().i(getMyRequestsModelRequest.toJson());
+    CoponsResponse response = await client!.getAppCopons(getMyRequestsModelRequest.toJson(),"Bearer " + myToken);
+
     final completer = Completer<List<CoponModelResponse>>();
     List<CoponModelResponse> notifications = [];
     if(response.data!=null && response.data!.isNotEmpty) {
       notifications = response.data!;
+    }
+    if(response.pagination?.last_page!=null) {
+      lastPageApp = response.pagination!.last_page!;
     }
     completer.complete(notifications);
     return completer.future;
@@ -316,9 +338,9 @@ String? dropdownValue;
     try {
       List<CoponModelResponse> newItems = await getAppCopons(pageKey: pageKey);
 
-      bool isLastPage = newItems.isEmpty;
-      if (isLastPage) {
-        print("isLast = " + isLastPage.toString());
+    //  bool isLastPage = newItems.isEmpty;
+      if (lastPageApp==pageKey) {
+        //print("isLast = " + isLastPage.toString());
         appCoponspagingController.appendLastPage(newItems);
         // pagingController. = "tony";
       } else {

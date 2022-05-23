@@ -1,4 +1,6 @@
 import 'package:advertisers/app_core/network/models/CoponModelResponse.dart';
+import 'package:advertisers/app_core/network/requests/GetAdvertisersCoponsRequest.dart';
+import 'package:advertisers/app_core/network/requests/GetMyRequestsModelRequest.dart';
 import 'package:advertisers/features/advertisers_copons/controller/advertisers_copons_controller.dart';
 import 'package:advertisers/features/advertisers_copons/widgets/advertiser_copon_item.dart';
 import 'package:advertisers/features/advertisers_copons/widgets/discount_copon_sheet_advertiser.dart';
@@ -26,6 +28,7 @@ class _ShopsPageState extends State<ShopsPage> {
   @override
   void initState() {
     // TODO: implement initState
+    coponsPageController.getMyRequestsModelRequest = GetAdvertisersCoponsRequest(page: 1);
     coponsPageController.advertiserCoponspagingController.addPageRequestListener((pageKey) async {
       print("hhhhhhhhhhhhhhhhhhhhhhhh");
       await coponsPageController.fetchAdvertiserCoponsPage(pageKey);

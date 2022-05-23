@@ -9,7 +9,9 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AdvertisersCopons extends StatelessWidget {
-  const AdvertisersCopons({Key? key}) : super(key: key);
+   AdvertisersCopons({Key? key}) : super(key: key);
+
+  AdvertisersCoponsController  advertisersCoponsController = Get.put(AdvertisersCoponsController());
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,12 @@ class AdvertisersCopons extends StatelessWidget {
           isBack: true,
           searchBarBigRight: false,
           filterPressed: (){
-            showBottomSheetForRequest(context,"kk");
+            showBottomSheetForRequest(context, "shops");
+                       /* if(advertisersCoponsController.tabId==1) {
+                          showBottomSheetForRequest(context, "shops");
+                        }else{
+                          showBottomSheetForRequest(context, "app");
+                        }*/
           },
         ),
         preferredSize:  Size(
@@ -36,7 +43,7 @@ class AdvertisersCopons extends StatelessWidget {
           children: [
 
             GetBuilder<AdvertisersCoponsController>(
-                init: AdvertisersCoponsController(),
+                init: advertisersCoponsController,
                 builder: (controller) => Container(
                   height: 50,
                   child:   Padding(

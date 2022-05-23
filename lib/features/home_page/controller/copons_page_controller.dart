@@ -1,8 +1,13 @@
 import 'dart:async';
 
 import 'package:advertisers/app_core/network/models/CoponModelResponse.dart';
+import 'package:advertisers/app_core/network/models/GetCouponsFilterModel.dart';
+import 'package:advertisers/app_core/network/models/SelectedNotSelectedFilterAdsType.dart';
+import 'package:advertisers/app_core/network/requests/GetAdvertisersCoponsRequest.dart';
 import 'package:advertisers/app_core/network/responses/CoponsResponse.dart';
 import 'package:advertisers/main.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:logger/logger.dart';
@@ -17,17 +22,35 @@ class CoponsPageController extends GetxController {
   List<CoponModelResponse>? coponsResponse;
   late String myToken;
 
-  final PagingController<int, CoponModelResponse> pagingController = PagingController(firstPageKey: 1);
+  int lastPage = -1;
 
+  var isLoading = true.obs;
+  var isEmpty = false.obs;
+  var getAdsFilterForm = GetCouponsFilterModel().obs;
+
+  RxList<SelectedNotSelectedFilterAdsType> advertisersTopRated = <SelectedNotSelectedFilterAdsType>[].obs;
+  var isLoadingGetAdvertisersFromModel = true.obs;
+  RxList<dynamic> selectedUserLocations = <dynamic>[].obs;
+  var isFilterSavedClicked = false.obs;
+  var isAreaEnabled = true.obs;
+  var isCountryEnabled = true.obs;
+  var selectedType = ''.obs;
+  late TextEditingController searchAdvertiserController;
+  final PagingController<int, CoponModelResponse> pagingController = PagingController(firstPageKey: 1);
+  GetAdvertisersCoponsRequest getMyRequestsModelRequest = GetAdvertisersCoponsRequest(page: 1);
   Future<List<CoponModelResponse>> getCopons(
       {/*String brandId, String catgegoryId,*/ int? pageKey}) async {
     String myToken = await storage.read("token");
-
-    CoponsResponse response = await client!.getAppCopons(pageKey,"Bearer " + myToken);
+    Logger().i(getMyRequestsModelRequest!.toJson());
+    getMyRequestsModelRequest!.page = pageKey;
+    CoponsResponse response = await client!.getAppCopons(getMyRequestsModelRequest.toJson(),"Bearer " + myToken);
     final completer = Completer<List<CoponModelResponse>>();
     List<CoponModelResponse> notifications = [];
     if(response.data!=null && response.data!.isNotEmpty) {
       notifications = response.data!;
+    }
+    if(response.pagination?.last_page!=null){
+      lastPage = response.pagination!.last_page!;
     }
     completer.complete(notifications);
     return completer.future;
@@ -41,9 +64,9 @@ class CoponsPageController extends GetxController {
     try {
       List<CoponModelResponse> newItems = await getCopons(pageKey: pageKey);
 
-      bool isLastPage = newItems.isEmpty;
-      if (isLastPage) {
-        print("isLast = " + isLastPage.toString());
+     // bool isLastPage = newItems.isEmpty;
+      if (lastPage==pageKey) {
+       // print("isLast = " + isLastPage.toString());
         pagingController.appendLastPage(newItems);
         // pagingController. = "tony";
       } else {
@@ -63,9 +86,32 @@ class CoponsPageController extends GetxController {
 
   // Call this when the user pull down the screen
   Future<void> loadDataForCopos() async {
-    pagingController.refresh();
+   // pagingController.refresh();
+    getMyRequestsModelRequest = GetAdvertisersCoponsRequest(page: 1);
+    pagingController.itemList=[];
+    fetchPage(1);
   }
-
+  Future<void> getCoponsFilterForm(BuildContext context) async {
+    print("here");
+    String myToken = await storage.read("token");
+    client!.getCoupounsShopsFilterForm("Bearer " + myToken).then((value) {
+      if (value.status == 200 && value.data != null) {
+        getAdsFilterForm.value = value.data!;
+        getAdsFilterForm.value.stores?.insert(0,'اختر متجر');
+        advertisersTopRated.value = [];
+        isLoadingGetAdvertisersFromModel.value = false;
+        getAdsFilterForm.value.filters?.entries.forEach((element) {
+          advertisersTopRated.add(
+              SelectedNotSelectedFilterAdsType(
+                name: element.value,
+                key: element.key,
+              ));
+        });
+      } else {
+        isLoadingGetAdvertisersFromModel.value = false;
+      }
+    });
+  }
   @override
   Future<void> onInit() async {
     // TODO: implement onInit
@@ -81,6 +127,8 @@ class CoponsPageController extends GetxController {
         update();
       }
     });*/
+     searchAdvertiserController = TextEditingController();
+
     super.onInit();
 
     print("token");
@@ -151,4 +199,63 @@ class CoponsPageController extends GetxController {
       }
     });
   }
+
+  onDateClickedSaved(BuildContext context) {
+    isFilterSavedClicked.value = true;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          "تم حفظ البيانات بنجاح !",
+          style: TextStyle(
+              color: Colors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
+        )));
+    Get.back();
+    isLoading.value = true;
+    List<String>? sortByStrings = [];
+    advertisersTopRated.forEach((element) {
+      if (element.isSelected.isTrue) {
+        sortByStrings.add(element.key!);
+      }
+    });
+
+    Logger().i(GetAdvertisersCoponsRequest(
+      filters: sortByStrings.isNotEmpty ? sortByStrings.join(",") : null,
+      store_name: selectedType.value!="اختر متجر"?selectedType.value:null,
+        users: searchAdvertiserController.text.isNotEmpty
+            ? searchAdvertiserController.text
+            : null
+    )
+        .toJson());
+    getMyRequestsModelRequest = GetAdvertisersCoponsRequest(
+
+        filters: sortByStrings.isNotEmpty ? sortByStrings.join(",") : null,
+        store_name: selectedType.value!="اختر متجر"?selectedType.value:null,
+        users: searchAdvertiserController.text.isNotEmpty
+            ? searchAdvertiserController.text
+            : null);
+    pagingController.refresh();
+  }
+
+  void showToast(msg) {
+    Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 14.0,
+    );
+  }
+
+  void onReturnClicked(BuildContext context) {
+    isFilterSavedClicked.value = false;
+    selectedType.value = '';
+    advertisersTopRated.value.forEach((element) {
+      element.isSelected.value = false;
+    });
+    selectedUserLocations.value = [];
+    searchAdvertiserController.text = '';
+        getMyRequestsModelRequest = GetAdvertisersCoponsRequest(page: 1);
+    pagingController.refresh();
+  }
+
 }

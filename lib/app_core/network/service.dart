@@ -142,8 +142,8 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   @GET('/advertiser_profile/{id}')
   Future<AdvertiserProfileDetailsResponse> getAdveriserProfileDetail(@Path("id") int? id,@Header("Authorization") String token);
   //@GET('/copons/app')
-  @GET('copons/app?page={id}')
-  Future<CoponsResponse> getAppCopons( @Path("id") int? id,@Header("Authorization") String token);
+  @GET('copons/app')
+  Future<CoponsResponse> getAppCopons(@Queries() Map<String, dynamic> queries,@Header("Authorization") String token);
 
 
   @GET('copons/advertisers?page={id}')
