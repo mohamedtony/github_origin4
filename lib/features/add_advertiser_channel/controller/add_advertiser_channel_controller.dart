@@ -133,6 +133,7 @@ class AddAdvertiserChannelController extends GetxController {
            element) => element.id == -1);
        if(areaIn==null) {
          areasForLocationSheet.insert(0, Area(id: -2, name: 'كل المناطق'));
+        // areasForLocationSheet.insert(0, Area(id: -2, name: ''));
          areasForLocationSheet.insert(0, Area(id: -1, name: 'إختر'));
        }
 /*        Country? countryIn = countriesForLocationSheet.firstWhereOrNull((element) => element.id==clientProfileModel.value.country_id);
@@ -290,6 +291,7 @@ class AddAdvertiserChannelController extends GetxController {
               element) => element.id == -1);
           if(areaIn==null) {
             areasForLocationSheet.insert(0, Area(id: -2, name: 'كل المناطق'));
+            //areasForLocationSheet.insert(0, Area(id: -2, name: ''));
             areasForLocationSheet.insert(0, Area(id: -1, name: 'إختر'));
           }
         } else {

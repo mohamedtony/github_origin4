@@ -2,6 +2,7 @@
 import 'package:advertisers/app_core/network/models/NotificationsModel.dart';
 import 'package:advertisers/app_core/network/models/StarNotificationModel.dart';
 import 'package:advertisers/app_core/network/repository.dart';
+import 'package:advertisers/app_core/network/responses/AccountSettingRulesResponse.dart';
 import 'package:advertisers/app_core/network/responses/GeneralResponse.dart';
 import 'package:advertisers/app_core/network/responses/NotificationsResponse.dart';
 import 'package:advertisers/app_core/network/responses/StarMessageResponse.dart';
@@ -38,6 +39,7 @@ class NotificationsController extends GetxController {
     super.onInit();
   }
   var selectedIndex=0.obs;
+  var confirm=false.obs;
   int currentPage = 1;
 
   late int totalPages=0;
@@ -141,4 +143,36 @@ return true;
             snackPosition: SnackPosition.BOTTOM,);
         });
   }
+
+void deleteMessage({required int notificationId}) {
+  EasyLoading.show();
+  Repository repo = Repository();
+
+  repo.get<AccountSettingRulesResponse>(
+      path: 'notifications/$notificationId/delete',
+      fromJson: (json) => AccountSettingRulesResponse.fromJson(json),
+      json: {
+        "token": "Bearer $token",
+
+      },
+      onSuccess: (res) {
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
+        notifications.removeAt(selectedIndex.value);
+        update();
+      },
+      onError: (err, res) {
+
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
+        Get.snackbar(
+          "خطأ",
+          err.toString(),
+          icon: const Icon(Icons.person, color: Colors.red),
+          backgroundColor: Colors.yellow,
+          snackPosition: SnackPosition.BOTTOM,);
+      });
+}
 }

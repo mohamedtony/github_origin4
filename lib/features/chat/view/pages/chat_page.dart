@@ -55,6 +55,7 @@ class _ChatPageState extends State<ChatPage> {
   String statusText = "";
   Record _audioRecorder = Record();
   bool isComplete = false;
+  bool enabled = true;
   bool isRecordTapped = false;
   late String filePathForNetworkView;
   // ScrollController _scrollController = new ScrollController();
@@ -78,7 +79,7 @@ class _ChatPageState extends State<ChatPage> {
       ItemPositionsListener.create();
   @override
   void initState() {
-
+   enabled=true;
     getApplicationDocumentsDirectory()
         .then((value) => filePathForNetworkView = value.toString());
     if(storage.read(
@@ -185,6 +186,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Obx(() => Scaffold(
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(75),
@@ -738,7 +740,7 @@ class _ChatPageState extends State<ChatPage> {
                                   padding:
                                       EdgeInsets.only(left: 0.0.w, right: 0),
                                   child: QudsPopupButton(
-                                    // backgroundColor: Colors.red,
+                                     backgroundColor: const Color(0xff4186CF),
                                     tooltip: 'T',
                                     items: getMenuItems(),
                                     child: const Icon(
@@ -1386,7 +1388,8 @@ class _ChatPageState extends State<ChatPage> {
                                           child: TextFormField(
                                             // enabled: false,
                                             maxLines: 30,
-
+                                            focusNode: FocusNode(),
+                                            enableInteractiveSelection: _chatMessagesController.enabled.value,
                                             // onTap: (){
                                             //   SchedulerBinding.instance?.addPostFrameCallback((_) {
                                             //     // _scrollController.animateTo(
@@ -1419,7 +1422,9 @@ class _ChatPageState extends State<ChatPage> {
                                                 }
                                               });
                                             },
-                                            enabled: _chatMessagesController.enabled.value,
+
+
+
                                             controller: chatMessageController,
                                             // keyboardType: TextInputType.text,
                                             decoration: InputDecoration(
@@ -1451,7 +1456,7 @@ class _ChatPageState extends State<ChatPage> {
                                                     const EdgeInsets.all(0.0),
                                                 child: InkWell(
                                                   onTap: () async {
-                                                    _chatMessagesController.enabled.value=true;
+
                                                     if (chatMessageController
                                                             .text !=
                                                         '') {
@@ -1707,6 +1712,7 @@ class _ChatPageState extends State<ChatPage> {
                       bottom: 2,
                       child: InkWell(
                           onTap: () async {
+                            _chatMessagesController.enabled.value=false;
                             final XFile? file = await _imagePicker.pickImage(
                                 source: ImageSource.camera);
                             if (_chatMessagesController.replied.value ==
@@ -1826,6 +1832,7 @@ class _ChatPageState extends State<ChatPage> {
                               SocialMediaRecorder(
                                   backGroundColor: const Color(0xff4186CF),
                                   sendRequestFunction: (value) async {
+                                    _chatMessagesController.enabled.value=false;
                                     print(
                                         '>>>>>>>>>>>>>>>>>>>>>>>>>>>${value.path}');
 
@@ -2002,16 +2009,38 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   List<QudsPopupMenuBase> getMenuItems() {
-    _chatMessagesController.enabled.value=false;
+
+    //unfocus();
+
+
     return [
       QudsPopupMenuItem(
-          title: Text('مكتبة الصور والفيديوهات'),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left:8.0),
+                child: Icon(Icons.image,color: Colors.white,),
+              ),
+              Text('مكتبة الصور والفيديوهات',style: TextStyle(color: Colors.white),),
+            ],
+          ),
           onPressed: () {
             showChoiceImageDialog(context);
           }),
       QudsPopupMenuItem(
-          title: Text('مستندات الهاتف'),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left:8.0),
+                child: Icon(Icons.attach_file,color: Colors.white,),
+              ),
+              Text('مستندات الهاتف',style: TextStyle(color: Colors.white)),
+            ],
+          ),
           onPressed: () async {
+            _chatMessagesController.enabled.value=false;
             FilePickerResult? result = await FilePicker.platform.pickFiles(
               allowedExtensions: ['pdf', 'doc'],
               type: FileType.custom,
@@ -2083,8 +2112,20 @@ class _ChatPageState extends State<ChatPage> {
             }
           }),
       QudsPopupMenuItem(
-          title: Text('مشاركة موقع'),
+          title:Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left:8.0),
+                child: Icon(Icons.location_on,color: Colors.white,),
+              ),
+              Text('مشاركة موقع',style: TextStyle(color: Colors.white)),
+            ],
+          ),
           onPressed: () {
+            _chatMessagesController.enabled.value=false;
+            FocusScope.of(context).unfocus();
+
             FromUserModel fromUserModel = FromUserModel.fromJson(
                 jsonDecode(Get.parameters["from_user"] ?? ''));
             ToUserModel toUserModel = ToUserModel.fromJson(
@@ -2119,8 +2160,18 @@ class _ChatPageState extends State<ChatPage> {
             });
           }),
       QudsPopupMenuItem(
-          title: Text('اضافة جهة اتصال'),
+          title:Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left:8.0),
+                child: Icon(Icons.group,color: Colors.white,),
+              ),
+              Text('اضافة جهة اتصال',style: TextStyle(color: Colors.white)),
+            ],
+          ),
           onPressed: () async {
+            _chatMessagesController.enabled.value=false;
             ToUserModel toUserModel = ToUserModel.fromJson(
                 jsonDecode(Get.parameters["to_user"] ?? ''));
             if (await FlutterContacts.requestPermission()) {
@@ -2432,5 +2483,13 @@ class _ChatPageState extends State<ChatPage> {
 
     print("EEEEEEEEEEEEEEEEEEEEEEEEEEE${RecordMp3.instance.status}");
     return Future.value(s);
+  }
+  var currentFocus;
+  unfocus() {
+    currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
   }
 }

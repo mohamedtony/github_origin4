@@ -48,7 +48,7 @@ return false;
             if (EasyLoading.isShow) {
               EasyLoading.dismiss();
             }
-            listChat.value = res.data!.reversed.toList();
+            listChat.value = res.data!;
 
             update();
             return true;

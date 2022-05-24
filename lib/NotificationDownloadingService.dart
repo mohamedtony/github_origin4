@@ -46,7 +46,7 @@ class NotificationService {
     AndroidNotificationDetails(
         '12345',   //Required for Android 8.0 or after
         'channelName: String', //Required for Android 8.0 or after
-        'channelDescription: String', //Required for Android 8.0 or after
+        //'channelDescription: String', //Required for Android 8.0 or after
         importance: Importance.max,
         priority: Priority.max,
       playSound: true,

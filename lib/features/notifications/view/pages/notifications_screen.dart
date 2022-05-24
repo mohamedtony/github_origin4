@@ -5,6 +5,7 @@ import 'package:advertisers/features/notifications/view/widgets/constants.dart';
 import 'package:advertisers/features/notifications/view/widgets/default_button.dart';
 import 'package:advertisers/features/notifications/view/widgets/notification_item.dart';
 import 'package:advertisers/features/notifications/view/widgets/notification_model.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -146,11 +147,30 @@ class NotificationsScreen extends StatelessWidget {
                                // controller.pin(index);
                               },
                               confirmDismiss: (dismissDirection) {
+                                controller.selectedIndex.value=index;
+                                controller.confirm.value=false;
+                                CoolAlert.show(
+                                        context: context,
+                                        type: CoolAlertType.warning,
+                                        text: 'هل تريد بالفعل حذف هذه الرسالة ؟',
+                                        onConfirmBtnTap: () {
+                                          controller.confirm.value=true;
+                                          if(controller.selectedIndex.value==index) {
+                                            controller.deleteMessage(notificationId:controller.notifications[controller.selectedIndex.value].id??0);
+
+                                          }
+                                          Navigator.pop(context);
+                                        },showCancelBtn: true,
+                                        onCancelBtnTap: (){
+                                          controller.confirm.value=false;
+                                          Navigator.pop(context);
+                                        });
+
                                 // if (controller.notifications[index].pinned) {
                                 //   return Future.value(false);
                                 // }
-                                controller.remove(index);
-                                return Future.value(true);
+                                //controller.remove(index);
+                                return Future.value(controller.confirm.value);
                               });},
                       itemCount: controller.notifications.length,
                     ),

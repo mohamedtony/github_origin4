@@ -26,7 +26,7 @@ class ChatMessagesController extends GetxController {
   static dio.MultipartFile? photo;
   var tapped=false.obs;
   var replied=false.obs;
-  var enabled=false.obs;
+  var enabled=true.obs;
   var chatIndex = 0.obs;
   var chatDeleteIndex = 0.obs;
   var deleteFlag=false.obs;
@@ -78,7 +78,7 @@ class ChatMessagesController extends GetxController {
             messagesChat.value = res.data!.reversed.toList();
             SchedulerBinding.instance?.addPostFrameCallback((_) {
               itemScrollController?.scrollTo(
-                  index: messagesChat.length - 1,
+                  index: messagesChat.length - 1-int.parse(Get.parameters["not_seen"]??'0'),
                   duration: const Duration(seconds: 1),
                   curve: Curves.easeInOutCubic);
               // _scrollController.animateTo(_height * index,
@@ -128,6 +128,7 @@ class ChatMessagesController extends GetxController {
             if (EasyLoading.isShow) {
               EasyLoading.dismiss();
             }
+            messagesChat[indexOfMessage??0].uploaded=true;
             messagesChat[indexOfMessage].uploaded=true;
             FromUserModel fromUserModel=FromUserModel.fromJson(jsonDecode(Get.parameters["from_user"]??''));
             ToUserModel toUserModel=ToUserModel.fromJson(jsonDecode(Get.parameters["to_user"]??''));

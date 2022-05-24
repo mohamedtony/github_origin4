@@ -18,8 +18,8 @@ final String title,text,image;
 
         ),
         child: Stack(
-          alignment: Alignment.center,//overflow: Overflow.visible,
-
+          alignment: Alignment.center,overflow: Overflow.visible,
+          clipBehavior: Clip.none,
           children: [
             Padding(
               padding: const EdgeInsets.all(4.0),

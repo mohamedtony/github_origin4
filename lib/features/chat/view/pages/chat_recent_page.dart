@@ -59,7 +59,7 @@ class ChatRecentPage extends StatelessWidget {
               child: Obx(()=>ListView.builder(
                 padding: const EdgeInsets.only(bottom: 16),
                 physics: const BouncingScrollPhysics(),
-                reverse: true,
+
                 itemCount: _chatController.listChat.length,
                 itemBuilder: (_, index) => InkWell(
                   onTap: () {
