@@ -10,6 +10,7 @@ import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestResponse.dart';
 import 'package:advertisers/app_core/network/service.dart';
 import 'package:advertisers/app_core/routes/routes.dart';
+import 'package:advertisers/features/chat/controller/chat_messages_controller.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -294,7 +295,7 @@ void main() async{
     channel = const AndroidNotificationChannel(
       'high_importance_channel', // id
       'High Importance Notifications', // title
-      'This channel is used for important notifications.', // description
+      //'This channel is used for important notifications.', // description
       importance: Importance.high,
     );
 
@@ -346,7 +347,7 @@ void main() async{
   //client.getTasks().then((it) => logger.i(it));
 
   await GetStorage.init();
-  await Firebase.initializeApp();
+ // await Firebase.initializeApp();
 
   auth = FirebaseAuth.instance;
 
@@ -415,6 +416,7 @@ class _MyAppState extends State<MyApp> {
         print(message.notification.toString()??' ');
         print("DDDDDDDDDDDDDDDDDD${message.data.toString()??' '}");
        late BuildContext? context1 = navigatorKey.currentState?.overlay?.context;
+       if(chatPageOpen==0){
         await showDialog(
             context:context1?? context,
             builder: (BuildContext context) {
@@ -432,11 +434,22 @@ class _MyAppState extends State<MyApp> {
                     child: Text("go"),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      if(message.data["model_type"]==": ads_request") {
+                      if(message.data["model_type"]=="ads_request") {
                         Get.toNamed('/AdvertiserDetailsPage?requestId=${message
                             .data["model_id"]}');
+                      }else if(message.data["model_type"]=="chat"){
+                        // Get.toNamed('/ChatPage?requestId=${message
+                        //     .data["model_id"]}');
+                      }else if(message.data["model_type"]=="ads"){
+                        Get.toNamed('/HomePage');
+                      }  else if(message.data["model_type"]=="comment"){
+                        Get.toNamed('/CommentsPage');
+                      } else if(message.data["model_type"]=="wallet"){
+                        Get.toNamed('/WalletPage');
+                      }else if(message.data["model_type"]=="employee"){
+                        Get.toNamed('/EmployeesPage');
                       }
-                     // Navigator.of(context).pop();
+                      // Navigator.of(context).pop();
                     },
                   )
                 ],
@@ -462,7 +475,7 @@ class _MyAppState extends State<MyApp> {
         //   );
         // }
 
-      });
+      }});
 
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
         print('AAAAAAAAAAAAAAAAAAAAAAAAAA${message.data}');
@@ -470,7 +483,23 @@ class _MyAppState extends State<MyApp> {
         if(message.data["model_type"]=="ads_request") {
           Get.toNamed('/AdvertiserDetailsPage?requestId=${message
               .data["model_id"]}');
+        }else if(message.data["model_type"]=="chat"){
+          // Get.toNamed('/ChatPage?requestId=${message
+          //     .data["model_id"]}');
+        }else if(message.data["model_type"]=="ads"){
+          Get.toNamed('/HomePage');
+        }  else if(message.data["model_type"]=="comment"){
+          Get.toNamed('/CommentsPage');
+        }else if(message.data["model_type"]=="wallet"){
+          Get.toNamed('/WalletPage');
+        }else if(message.data["model_type"]=="employee"){
+          Get.toNamed('/EmployeesPage');
         }
+        // else if(message.data["model_type"]=="comment"){
+        //   Get.toNamed('/CommentsPage');
+        // }else if(message.data["model_type"]=="comment"){
+        //   Get.toNamed('/CommentsPage');
+        // }
         //   Navigator.pushNamed(
         //     context,
         //     '/message',

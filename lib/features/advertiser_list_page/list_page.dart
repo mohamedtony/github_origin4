@@ -38,8 +38,7 @@ class ListPage extends StatelessWidget {
           leadingWidth: 56.0,
           title:      InkWell(
             onTap: (){
-               Get.toNamed('/NotificationsPage');
-
+              Get.toNamed('/NotificationsScreen');
             },
             child: Center(
               child: Container(
@@ -56,7 +55,7 @@ class ListPage extends StatelessWidget {
             InkWell(
                 onTap: (){
                controller.changeIndex(1);
-               },
+              },
               child: Obx(()=>controller.clientProfileModel.value.role!=null && controller.clientProfileModel.value.role =="advertiser"?Container(
                 margin: EdgeInsets.only(left: 10.0),
                 child: SvgPicture.asset(

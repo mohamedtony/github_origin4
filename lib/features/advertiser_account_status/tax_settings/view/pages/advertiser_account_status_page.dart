@@ -35,7 +35,7 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
   //   '10000 - 100000',
   //   '100000 - 1000000'
   // ];
-  String _selectedRange = '';
+  int? _selectedRange ;
 
   @override
   Widget build(BuildContext context) {
@@ -161,18 +161,18 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                             child: const Icon(Icons.keyboard_arrow_down,color: Colors.grey,),
                           ),
 
-                          hint: _selectedRange.isNotEmpty
-                              ? Center(child: Text(_selectedRange,style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),))
+                          hint: _selectedRange!=null
+                              ? Center(child: Text(controller.ranges[_selectedRange??1-1].reason.toString(),style: TextStyle(color:Color(0xff041D67) ,fontSize: 16.sp),))
                               :  Center(child: Text(controller.reasonId.value>0?controller.ranges[controller.reasonId.value-1].reason.toString():'اختر',style: TextStyle(color:Color(0xff041D67) ,fontSize: 16),)),
                           items: controller.ranges.map((value) {
                             if(value!=null) {
-                              controller.id.value = value.id.toString();
+                             // controller.id.value = value.id.toString();
                             }else if(controller.reasonId.value>0){
                               value=controller.ranges[controller.reasonId.value-1];
                             }
-                            print(value);
+                            print(value.id);
                             return DropdownMenuItem(
-                              value: value.reason,
+                              value: value.id,
                               child: Text(value.reason),enabled: controller.isChecked.value == true ?true:false,
                             );
                           }).toList(),
@@ -180,11 +180,12 @@ class _AdvertiserAccountStatusPageState extends State<AdvertiserAccountStatusPag
                           // isDense: true,
                           isExpanded: true,
                           onChanged: (newVal) {
-                            setState(() {
-
-                              _selectedRange = newVal.toString();
-                            });
-                          },
+                            if(newVal!=null) {
+                              setState(() {
+                                controller.id.value = newVal.toString();
+                                _selectedRange = newVal as int?;
+                              });
+                            }},
                         )),
                   ],
                 ),
@@ -276,6 +277,7 @@ Text("${Get.find<AdvertiserAccountStatusController>().to.value.isNotEmpty?Get.fi
                   )),
                   Expanded(child: InkWell(
                     onTap:Get.find<AdvertiserAccountStatusController>().isChecked.value == true ? (){
+                      Get.find<AdvertiserAccountStatusController>().flagDate.value=false;
                       if(_selectedFromDate != null){
                         Future<void> _showDatePicker() async {
                           final DateTime? result =
@@ -284,6 +286,8 @@ Text("${Get.find<AdvertiserAccountStatusController>().to.value.isNotEmpty?Get.fi
                               lastDate: DateTime(2101),
                               initialDate:DateTime.now());
                           if (result != null) {
+
+    Get.find<AdvertiserAccountStatusController>().toDate.value=result;
                             if(Get.find<AdvertiserAccountStatusController>().fromDate.value.isAfter(result)){
     Get.snackbar(
     "خطأ",
@@ -338,11 +342,22 @@ Text("${Get.find<AdvertiserAccountStatusController>().to.value.isNotEmpty?Get.fi
             child: Row(
               children: [
                 Expanded(child: InkWell(onTap: (){
-                 Get.find<AdvertiserAccountStatusController>().postStopProfile();
-                // Get.find<AdvertiserAccountStatusController>().isChecked.value=false;
-                 //Get.delete<AdvertiserAccountStatusController>();
-                 Get.back();
-                },
+    if(Get.find<AdvertiserAccountStatusController>().fromDate.value.isAfter(Get.find<AdvertiserAccountStatusController>().toDate.value)){
+    Get.snackbar(
+    "خطأ",
+    "التاريخ الى يجب ان يكون اكبر من التاريخ من",
+    icon: const Icon(Icons.person, color: Colors.red),
+    backgroundColor: Colors.yellow,
+    snackPosition: SnackPosition.BOTTOM,);
+    Get.find<AdvertiserAccountStatusController>().flagDate.value=true;
+    //if(Get.find<AdvertiserAccountStatusController>().flagDate.value==false) {
+    }else{ Get.find<AdvertiserAccountStatusController>()
+                        .postStopProfile();
+                    // Get.find<AdvertiserAccountStatusController>().isChecked.value=false;
+                    //Get.delete<AdvertiserAccountStatusController>();
+                    Get.back();
+                //  }
+                }},
                   child: Container(
                     height: 40,
                     child: Center(

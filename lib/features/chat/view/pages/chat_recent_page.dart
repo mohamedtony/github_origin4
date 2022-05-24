@@ -31,11 +31,11 @@ class ChatRecentPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          ChatAndTitle(
+          _chatController.listChat.isNotEmpty?ChatAndTitle(
             show: Show.recent,
             name: _chatController.listChat.isNotEmpty?_chatController.listChat[0].from_user?.username??' ':' ',
             image: _chatController.listChat.isNotEmpty?_chatController.listChat[0].from_user?.image??' ':' ',
-          ),
+          ):SizedBox(),
           Expanded(
             child:SmartRefresher(
               controller: _chatController.refreshController,
@@ -59,6 +59,7 @@ class ChatRecentPage extends StatelessWidget {
               child: Obx(()=>ListView.builder(
                 padding: const EdgeInsets.only(bottom: 16),
                 physics: const BouncingScrollPhysics(),
+
                 itemCount: _chatController.listChat.length,
                 itemBuilder: (_, index) => InkWell(
                   onTap: () {

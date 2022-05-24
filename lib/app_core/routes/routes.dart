@@ -65,6 +65,7 @@ import 'package:advertisers/features/my_orders_and_my_orders_archive/my_orders_a
 import 'package:advertisers/features/my_orders_archive/controller/my_orders_archive_controller.dart';
 import 'package:advertisers/features/my_orders_archive/view/my_orders_archive_page.dart';
 import 'package:advertisers/features/notifications/view/pages/notifications_page.dart';
+import 'package:advertisers/features/notifications/view/pages/notifications_screen.dart';
 import 'package:advertisers/features/notifications_settings/view/pages/notifications_settings_page.dart';
 import 'package:advertisers/features/reason_rejecting_advertisement/controller/reason_rejecting_advertisement_controller.dart';
 import 'package:advertisers/features/reason_rejecting_advertisement/view/page/reason_rejecting_advertisement.dart';
@@ -218,8 +219,8 @@ class Routes {
 
         })),
     GetPage(
-      name: '/NotificationsPage',
-      page: () => NotificationsPage(),
+      name: '/NotificationsScreen',
+      page: () => NotificationsScreen(),
 
     ),
     GetPage(
