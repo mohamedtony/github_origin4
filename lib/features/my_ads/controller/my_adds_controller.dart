@@ -33,7 +33,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:advertisers/features/request_advertise_module/view/widgets/date_picker.dart' as DateRangePicker;
-
+import 'package:advertisers/app_core/network/models/User.dart'as myUser;
 import '../../../app_core/network/models/Country.dart';
 
 DateFormat dateFormat = DateFormat("yyyy-MM-dd");
@@ -241,8 +241,18 @@ class MyAddsController extends GetxController /*with StateMixin<ShowAddsListResp
     }
     EasyLoading.show();
 
+    //try{
+      dynamic data = await storage.read("data");
+
+    myUser.User user =myUser.User.fromJson(data);
+
+      print("UserId=${user.id}");
+   // }catch( e){
+
+    //}
 
     getAdsRequest2!.page = currentPage;
+    getAdsRequest2!.user_id = user.id;
     Logger().i(getAdsRequest2!.toJson());
     client!.getMyAdsAdvertiserMenue(getAdsRequest2!.toJson(),"Bearer " + token!).then((res) {
       if (EasyLoading.isShow) {

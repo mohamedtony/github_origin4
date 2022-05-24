@@ -239,7 +239,7 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   @GET('/myads?page={id}')
   Future<GetAdsListResponse> getMyAds(@Path("id") int? id,@Header("Authorization") String token);
 
-  @GET('/myads')
+  @GET('/ads')
   Future<ShowAddsListResponse> getMyAdsAdvertiserMenue(@Queries() Map<String, dynamic> queries,@Header("Authorization") String token);
 
 
