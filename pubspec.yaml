@@ -118,7 +118,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  analyzer: ^3.0.0
+ # analyzer: ^3.0.0
 
 
   # The "flutter_lints" package below contains a set of recommended lints to
