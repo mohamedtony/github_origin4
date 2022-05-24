@@ -15,14 +15,6 @@ class ApiService {
   final Dio dioClient = Dio(
     BaseOptions(
       baseUrl: '',
-      headers: {
-        // 'Content-Type': 'application/json',
-        // 'Accept-Type': 'application/json',
-        "Authorization": storage.read("token"),
-        "Accept": "application/json",
-        if(storage.read("ownerid")!=null)
-          "OwnerID": "${storage.read("ownerid")}",
-      },
       connectTimeout: 60000,
       receiveTimeout: 60000,
     ),

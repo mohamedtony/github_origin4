@@ -14,14 +14,16 @@ class CustomInterceptor implements Interceptor {
       RequestOptions options, RequestInterceptorHandler handler) async {
     options.headers = {
       "Accept":"application/json",
-      // "Authorization":"Bearer  $token",
+        "Authorization":"Bearer  $token",
       // "Authorization":"Bearer 1174|uRJTjtkcQZFdTLrB12utkLRkkylEJFy7tHeCQjaz",
-      "Authorization":"Bearer 2169|YihWq7GvP1D6GpoicWFBEdWewCVffIeZeT6EngXs",
+      //"Authorization":"Bearer 2169|YihWq7GvP1D6GpoicWFBEdWewCVffIeZeT6EngXs",
       // 'FbToken': locator<FcmTokenManager>().currentFcmToken,
       // 'Platform': Platform.isAndroid ? 'android' : 'ios',
       // 'Lang': locator<PrefsService>().appLanguage,
       // 'Authorization': locator<PrefsService>().userObj?.accessToken ?? '',
       'Content-Type': 'application/json',
+       if(storage.read("ownerid")!=null)
+      "OwnerID": "${storage.read("ownerid")}",
       // 'Accept': 'application/json',
     };
     return handler.next(options);
