@@ -67,23 +67,7 @@ class AdvertisersPageController extends GetxController {
   Future<void> onInit() async {
     // TODO: implement onInit
     myToken = await storage.read("token");
-/*    pagingController.addPageRequestListener((pageKey) async {
-      print("hhhhhhhhhhhhhhhhhhhhhhhh");
-      await _fetchPage(pageKey);
-    });*/
     searchAdvertiserController = TextEditingController();
-    /*client!.getAdvertisers("Bearer " + myToken!, GetAdvertisersRequest())
-        .then((value) {
-      if (value.status == 200 && value.data != null && value.data!.isNotEmpty) {
-        isLoading.value = false;
-        isEmpty.value = false;
-        advertisersModel.value = value.data!;
-      } else {
-        isLoading.value = false;
-        isEmpty.value = true;
-      }
-    });*/
-
     pagingController.addPageRequestListener((pageKey) async {
       print("hhhhhhhhhhhhhhhhhhhhhhhh");
       await fetchPage(pageKey);
@@ -328,34 +312,13 @@ class AdvertisersPageController extends GetxController {
         // advertisersFormModel.value.countries?.insert(0, Country(id: -1,name: 'اختر'));
         advertisersTopRated.value = [];
         isLoadingGetAdvertisersFromModel.value = false;
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.reply_speed!,
-          key: "reply_speed",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.oldest!,
-          key: "oldest",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.latest!,
-          key: "latest",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.top_rated!,
-          key: "top_rated",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.most_ads!,
-          key: "most_ads",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.most_followers!,
-          key: "most_followers",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.less_followers!,
-          key: "less_followers",
-        ));
+
+        advertisersFormModel.value.sort_types?.entries.forEach((element) {
+          advertisersTopRated.add(SelectedNotSelectedSortType(
+            name: element.value,
+            key: element.key,
+          ));
+        });
       } else {
         isLoadingGetAdvertisersFromModel.value = false;
       }
@@ -651,7 +614,7 @@ class AdvertisersPageController extends GetxController {
         .toJson());
     type = "search";
     getAdvertisersRequest2 = GetAdvertisersRequest(
-        page: 0,
+        page: 1,
         sort_by: sortByStrings!.isNotEmpty ? sortByStrings : null,
         categories: categoriesId.isNotEmpty ? categoriesId : null,
         country_category: countryCaregoriesIds.isNotEmpty
@@ -664,7 +627,7 @@ class AdvertisersPageController extends GetxController {
             : null);
     pagingController.refresh();
     fetchPage(0,getAdvertisersRequest: GetAdvertisersRequest(
-        page: 0,
+        page: 1,
         sort_by: sortByStrings!.isNotEmpty ? sortByStrings : null,
         categories: categoriesId.isNotEmpty ? categoriesId : null,
         country_category: countryCaregoriesIds.isNotEmpty

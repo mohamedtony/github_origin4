@@ -16,7 +16,7 @@ class _GuidesVideosCardState extends State<GuidesVideosCard> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(widget.url??"https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4")
+    _controller = VideoPlayerController.network(widget.url??" ")
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});

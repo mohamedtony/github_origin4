@@ -16,6 +16,7 @@ import 'package:advertisers/app_core/network/models/GetAdvertisersFromModel.dart
 import 'package:advertisers/app_core/network/models/GetAdvertisersModel.dart';
 import 'package:advertisers/app_core/network/models/SelectedNotSelectedSortType.dart';
 import 'package:advertisers/app_core/network/repository.dart';
+import 'package:advertisers/app_core/network/requests/GetAdsRequest.dart';
 import 'package:advertisers/app_core/network/requests/GetAdvertisersRequest.dart';
 import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetAdsListResponse.dart';
@@ -123,7 +124,7 @@ class MyAdsPageContoller extends GetxController {
     String myToken = await storage.read("token");
 
     print("mIDDDD= "+advertiserProfileOrderController.selectedAdvertiseId.toString());
-    GetAdsListResponse response = await client!.getAdsList(advertiserProfileOrderController.selectedAdvertiseId,pageKey,"Bearer " + myToken,);
+    GetAdsListResponse response = await client!.getAdsList(advertiserProfileOrderController.selectedAdvertiseId,pageKey,"Bearer " + myToken,GetAdsRequest());
 
     final completer = Completer<List<AdsListModel>>();
     List<AdsListModel> notifications = [];
@@ -269,34 +270,13 @@ class MyAdsPageContoller extends GetxController {
         // advertisersFormModel.value.countries?.insert(0, Country(id: -1,name: 'اختر'));
         advertisersTopRated.value = [];
         isLoadingGetAdvertisersFromModel.value = false;
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.reply_speed!,
-          key: "reply_speed",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.oldest!,
-          key: "oldest",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.latest!,
-          key: "latest",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.top_rated!,
-          key: "top_rated",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.most_ads!,
-          key: "most_ads",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.most_followers!,
-          key: "most_followers",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.less_followers!,
-          key: "less_followers",
-        ));
+
+        advertisersFormModel.value.sort_types?.entries.forEach((element) {
+          advertisersTopRated.add(SelectedNotSelectedSortType(
+            name: element.value,
+            key: element.key,
+          ));
+        });
       } else {
         isLoadingGetAdvertisersFromModel.value = false;
       }

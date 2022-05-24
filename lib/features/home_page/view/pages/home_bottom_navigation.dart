@@ -16,6 +16,7 @@ import 'package:advertisers/features/home_page/view/pages/filter_advertisers_she
 import 'package:advertisers/features/home_page/view/pages/filter_sort_ads_sheet.dart';
 import 'package:advertisers/features/home_page/view/pages/home_tabs_page.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
+import 'package:advertisers/features/home_page/view/widgets/FilterSortCoponsHomeSheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/address_bottom_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/advertising_channels_sheet.dart';
 import 'package:advertisers/features/request_advertise_module/view/widgets/advertising_date_sheet.dart';
@@ -375,10 +376,14 @@ class Home extends StatelessWidget {
                 return FilterSortAdsSheet(
                     scrollController: scrollController
                 );
-              }else /*if(bottomNumber==10)*/{
+              }else if(bottomNumber==11){
                 return FilterAdvertisesPageSheet(
                     scrollController: scrollController
                 );
+              }else /*if(bottomNumber==12)*/{
+              return FilterSortCoponsHomeSheet(
+              scrollController: scrollController
+              );
               }
             },
           );

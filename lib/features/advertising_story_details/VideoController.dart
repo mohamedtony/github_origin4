@@ -1,4 +1,5 @@
 import 'package:advertisers/app_core/network/models/AdsListModel.dart';
+import 'package:advertisers/app_core/network/requests/GetAdsRequest.dart';
 import 'package:advertisers/features/advertising_story_details/Dragabble/overlay_handler.dart';
 import 'package:advertisers/main.dart';
 import 'package:advertisers/shared/loading_dialog.dart';
@@ -203,7 +204,7 @@ class VideoController extends GetxController {
    }else{
      currentPagination = 1;
    }
-    client!.getAdsList(0,currentPagination,"Bearer " + myToken,)
+    client!.getAdsList(0,currentPagination,"Bearer " + myToken,GetAdsRequest())
         .then((value) {
       if (value.status == 200 && value.data != null && value.data!.isNotEmpty) {
         Logger().d(value.data.toString());
@@ -251,7 +252,7 @@ class VideoController extends GetxController {
     }else{
       currentPage = 1;
     }*/
-    client!.getAdsList(0,page,"Bearer " + myToken,)
+    client!.getAdsList(0,page,"Bearer " + myToken,GetAdsRequest())
         .then((value) {
       Logger().d(value.data.toString());
       if (value.status == 200 && value.data != null && value.data!.isNotEmpty) {

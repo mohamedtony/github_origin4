@@ -363,8 +363,7 @@ class _AdvertiserDetailsSheetState extends State<AdvertiserDetailsSheet> {
                                         )),
                                         InkWell(
                                           onTap: () async {
-                                            dynamic data = await storage
-                                                .read("data");
+                                            dynamic data = await storage.read("data");
 
                                             User user =
                                             User.fromJson(data);

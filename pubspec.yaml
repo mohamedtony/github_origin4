@@ -38,7 +38,7 @@ dependencies:
   phone_number: ^0.12.0+1
   cupertino_icons: ^1.0.2
   flutter_screenutil: ^5.2.0
-  get: ^4.6.3
+  get: ^4.5.1
   #dio: ^4.0.4
   dio: ^4.0.6
   flutter_svg: ^0.23.0+1
@@ -57,7 +57,7 @@ dependencies:
   flutter_carousel_widget: ^0.1.0
   modal_bottom_sheet: ^2.0.0
   json_annotation: ^4.4.0
-  retrofit: ^3.0.1
+  retrofit: ^3.0.1+1
   logger: ^1.1.0
   font_awesome_flutter: ^9.2.0
   flutter_easyloading: ^3.0.3
@@ -74,7 +74,7 @@ dependencies:
   device_info: ^2.0.3
   shimmer: ^2.0.0
   firebase_messaging:
-  flutter_local_notifications:
+  flutter_local_notifications: ^9.3.2
   overlay_support:
   cached_network_image: ^3.2.0
   google_maps_flutter: ^2.1.1
@@ -110,6 +110,7 @@ dependencies:
   firebase_dynamic_links: ^4.2.1
   flutter_file_view: ^2.0.5
   vimeoplayer_trinity: ^0.2.1+1
+  flutter_background_service: ^2.0.0
 
 #  record: ^3.0.4
 #  flutter_sound_record: ^3.1.0
@@ -126,7 +127,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
-  retrofit_generator: ^4.0.1
+  retrofit_generator: ^3.0.1+1
   build_runner: ^2.1.7
   json_serializable: ^6.1.3
 

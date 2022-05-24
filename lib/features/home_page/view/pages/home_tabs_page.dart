@@ -66,8 +66,10 @@ class HomePage extends StatelessWidget {
                           print("currentIndex=${_loginController.tabController.index}");
                           if(_loginController.tabController.index==0){
                             onSheetClicke!(10);
-                          }else{
+                          }else if(_loginController.tabController.index==1){
                             onSheetClicke!(11);
+                          }else{
+                            onSheetClicke!(12);
                           }
 
                         },

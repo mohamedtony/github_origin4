@@ -1,4 +1,6 @@
 import 'package:advertisers/app_core/network/models/CoponModelResponse.dart';
+import 'package:advertisers/app_core/network/requests/GetAdvertisersCoponsRequest.dart';
+import 'package:advertisers/app_core/network/requests/GetMyRequestsModelRequest.dart';
 import 'package:advertisers/features/advertisers_copons/controller/advertisers_copons_controller.dart';
 import 'package:advertisers/features/advertisers_copons/widgets/advertiser_copon_item.dart';
 import 'package:advertisers/features/advertisers_copons/widgets/discount_copon_sheet_advertiser.dart';
@@ -26,6 +28,7 @@ class _ShopsPageState extends State<ShopsPage> {
   @override
   void initState() {
     // TODO: implement initState
+    coponsPageController.getMyRequestsModelRequest = GetAdvertisersCoponsRequest(page: 1);
     coponsPageController.advertiserCoponspagingController.addPageRequestListener((pageKey) async {
       print("hhhhhhhhhhhhhhhhhhhhhhhh");
       await coponsPageController.fetchAdvertiserCoponsPage(pageKey);
@@ -37,20 +40,23 @@ class _ShopsPageState extends State<ShopsPage> {
     return Scaffold(
         body:Stack(
           children: [
-            PagedListView<int, CoponModelResponse>(
-              pagingController: coponsPageController.advertiserCoponspagingController,
-              builderDelegate: PagedChildBuilderDelegate<CoponModelResponse>(
-                animateTransitions: true,
-                noItemsFoundIndicatorBuilder: (context){
-                  return Container(
-                      alignment: Alignment.topCenter,
-                      margin: EdgeInsets.only(top:20.0),
-                      child: Text('لا يوجد كوبونات !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
-                },
+            RefreshIndicator(
+              onRefresh: coponsPageController.loadDataForACopons,
+              child: PagedListView<int, CoponModelResponse>(
+                pagingController: coponsPageController.advertiserCoponspagingController,
+                builderDelegate: PagedChildBuilderDelegate<CoponModelResponse>(
+                  animateTransitions: true,
+                  noItemsFoundIndicatorBuilder: (context){
+                    return Container(
+                        alignment: Alignment.topCenter,
+                        margin: EdgeInsets.only(top:20.0),
+                        child: Text('لا يوجد كوبونات !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
+                  },
 
-                itemBuilder: (context, item, position) {
-                  return AdvertiserCoponItem(pos: position, coponModelResponse: item);
-                },
+                  itemBuilder: (context, item, position) {
+                    return AdvertiserCoponItem(pos: position, coponModelResponse: item);
+                  },
+                ),
               ),
             ),
             Align(

@@ -101,6 +101,7 @@ class Repository {
     Map<String, dynamic>? json,
     Function(int,RES)? onError,
     Function(RES)? onSuccess,
+    Function(int,int)? onProgress,
   }) async {
     try {
       // EasyLoading.show();
@@ -126,9 +127,17 @@ class Repository {
               "Accept": "application/json",
               "Authorization": json["token"]
             },
-            responseType: dio.ResponseType.json
+            responseType: dio.ResponseType.json,
 
-        ))
+
+        ),onSendProgress: (f,s){
+          print("f=$f s= $s");
+          if(onProgress!=null) {
+            onProgress(f, s);
+          }
+        },onReceiveProgress: (g,u){
+          print("ggggg=$g sssss= $u");
+        })
             .then((res) {
           // if(EasyLoading.isShow) {
           //   EasyLoading.dismiss();
@@ -149,7 +158,9 @@ class Repository {
             onError!(code, fromJson!(data));
             return;
           }
-          onSuccess!(fromJson!(data));
+          if(onSuccess!=null) {
+            onSuccess(fromJson!(data));
+          }
         });
       }on dio.DioError catch(e){
       if(EasyLoading.isShow){
@@ -183,8 +194,7 @@ class Repository {
       final body = encoder.convert(json);
       debugPrintSynchronously("GET " + base + path! + "\n" + body);
 
-      client
-          .get(Uri.parse(base + path,),
+      client.get(Uri.parse(base + path,),
         headers: {
           // 'Content-Type': 'application/json',
           // 'Accept-Type': 'application/json',
