@@ -291,8 +291,7 @@ class _FilterSortRequestsSheetState extends State<FilterSortRequestsSheet> {
                           ),
                         )
                             : DropdownSearch<Country>(
-                            enabled: findOrderAdvertisersController
-                                .isCountryEnabled.value,
+                            enabled: findOrderAdvertisersController.isCountryEnabled.value,
                             mode: Mode.MENU,
                             dropdownBuilder: (BuildContext context, s) {
                               return Text(

@@ -38,6 +38,7 @@ import 'package:advertisers/app_core/network/responses/MyRequestFiltersResponse.
 import 'package:advertisers/app_core/network/responses/MyRequestsResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/app_core/network/responses/RequestDetailsResponse.dart';
+import 'package:advertisers/app_core/network/responses/ShowAddsListResponse.dart';
 import 'package:advertisers/app_core/network/responses/SubscriptionDetailsResponse.dart';
 import 'package:advertisers/app_core/network/responses/SubscruptionResponse.dart';
 import 'package:advertisers/app_core/network/responses/advertising_requests_response.dart';
@@ -237,6 +238,10 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
 
   @GET('/myads?page={id}')
   Future<GetAdsListResponse> getMyAds(@Path("id") int? id,@Header("Authorization") String token);
+
+  @GET('/myads')
+  Future<ShowAddsListResponse> getMyAdsAdvertiserMenue(@Queries() Map<String, dynamic> queries,@Header("Authorization") String token);
+
 
   @POST('/ads/{id}/report')
   @FormUrlEncoded()

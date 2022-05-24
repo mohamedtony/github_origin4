@@ -236,6 +236,20 @@ class AdvertisingRequestsController extends GetxController with StateMixin<Adver
               name: "اختر ترتيب بحسب",
               key: "-1",
             ));*/
+        countriesForLocationSheet.value = getMyRequestsFilterForm.value.countries!;
+        if (countriesForLocationSheet[0].areas != null &&
+            countriesForLocationSheet[0].areas!.isNotEmpty) {
+          areasForLocationSheet.value = countriesForLocationSheet[0].areas!;
+        }
+        countriesForLocationSheet.insert(0, Country(id: -2, name: 'كل الدول'));
+        countriesForLocationSheet.insert(0, Country(id: -1, name: 'إختر'));
+        Area? areaIn = areasForLocationSheet
+            .firstWhereOrNull((element) => element.id == -1);
+        if (areaIn == null) {
+          areasForLocationSheet.insert(0, Area(id: -2, name: 'كل المناطق'));
+          areasForLocationSheet.insert(0, Area(id: -1, name: 'إختر'));
+        }
+
         isLoadingGetAdvertisersFromModel.value = false;
       } else {
         isLoadingGetAdvertisersFromModel.value = false;
@@ -398,9 +412,14 @@ class AdvertisingRequestsController extends GetxController with StateMixin<Adver
     pageZero == true? page=1: page++;
     String myToken = await storage.read("token");
     getMyRequestsModelRequest!.page = page;
+    Logger().i(getMyRequestsModelRequest!.toJson());
     client!.getMyRequestsAdvertising(getMyRequestsModelRequest!.toJson(), "Bearer " + myToken).then((value){
       if(value.data!=null) {
        //final data = AdvertisingRequestsResponse.fromJson(value);
+        if(page==1){
+          parentRequests=[];
+          parentRequestsIds=[];
+        }
         value!.data!.parentRequests!.forEach((request) {
           if (!parentRequestsIds.contains(request.id)) {
             parentRequests.add(request);
@@ -714,6 +733,7 @@ print("parentRequests ==> lenght == > ${parentRequests.length}");
     List<int> areasIds = [];
     List<int> countryCaregoriesIds = [];
     selectedUserLocations.forEach((element) {
+      print("hereeeeee");
       if (element != null && element is Country && element.type == 'country') {
         countriesId.add(element.id!);
       }
@@ -727,35 +747,32 @@ print("parentRequests ==> lenght == > ${parentRequests.length}");
         countryCaregoriesIds.add(element.id!);
       }
     });
-/*    Logger().i(GetAdsRequest(
+    Logger().i(GetMyRequestsModelRequest(
         filters: sortByStrings.isNotEmpty ? sortByStrings.join(",") : null,
-        ads_types: categoriesId.isNotEmpty ? categoriesId.join(",") : null,
-        country_category:
-        countryCaregoriesIds.isNotEmpty ? countryCaregoriesIds.join(",") : null,
+        country_category: countryCaregoriesIds.isNotEmpty ? countryCaregoriesIds.join(",") : null,
         countries: countriesId.isNotEmpty ? countriesId.join(",") : null,
         areas: areasIds.isNotEmpty ? areasIds.join(",") : null,
-        distance_from: fromDistance==0?null:fromDistance,
-        distance_to: toDistance==0?null:toDistance,
-        name: searchAdvertiserController.text.isNotEmpty
+        from_date: fromDate1.isEmpty?null:fromDate1.value,
+        to_date: toDate1.isEmpty?null:toDate1.value,
+        advertiser_name: searchAdvertiserController.text.isNotEmpty
             ? searchAdvertiserController.text
             : null)
         .toJson());
-    type = "search";
-    getAdsRequest2 = GetAdsRequest(
-        user_id: 0,
+    getMyRequestsModelRequest = GetMyRequestsModelRequest(
         filters: sortByStrings.isNotEmpty ? sortByStrings.join(",") : null,
-        ads_types: categoriesId.isNotEmpty ? categoriesId.join(",") : null,
-        country_category:
-        countryCaregoriesIds.isNotEmpty ? countryCaregoriesIds.join(",") : null,
+        country_category: countryCaregoriesIds.isNotEmpty ? countryCaregoriesIds.join(",") : null,
         countries: countriesId.isNotEmpty ? countriesId.join(",") : null,
         areas: areasIds.isNotEmpty ? areasIds.join(",") : null,
-        distance_from: fromDistance==0?null:fromDistance,
-        distance_to: toDistance==0?null:toDistance,
-        name: searchAdvertiserController.text.isNotEmpty
+        from_date: fromDate1.isEmpty?null:fromDate1.value,
+        to_date: toDate1.isEmpty?null:toDate1.value,
+        advertiser_name: searchAdvertiserController.text.isNotEmpty
             ? searchAdvertiserController.text
             : null);
-    pagingController.refresh();*/
-  }
+    //pagingController.refresh();
+
+   // getMyRequestsModelRequest=GetMyRequestsModelRequest(page: 1);
+       fetchAdvertisingRequests(pageZero:true);
+    }
 
   void showToast(msg) {
     Fluttertoast.showToast(
@@ -781,6 +798,13 @@ print("parentRequests ==> lenght == > ${parentRequests.length}");
     selectedArea.value = Area();
     selectedUserLocations.value = [];
     searchAdvertiserController.text = '';
+    fromDate1.value="";
+    toDate1.value="";
+
+
+    getMyRequestsModelRequest=GetMyRequestsModelRequest(page: 1);
+    fetchAdvertisingRequests(pageZero:true);
+    Get.back();
   }
 
   var dateRange = DateRange().obs;

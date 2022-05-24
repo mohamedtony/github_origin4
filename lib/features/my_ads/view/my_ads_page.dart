@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:advertisers/app_core/network/requests/GetAdsRequest.dart';
 import 'package:advertisers/features/advertiser_order_details/controller/advertiser_order_details_controller.dart';
 import 'package:advertisers/features/my_ads/controller/my_adds_controller.dart';
+import 'package:advertisers/features/my_ads/view/MyAdsSheet.dart';
 import 'package:advertisers/features/my_ads/widgets/slide_right_item.dart';
 import 'package:advertisers/features/my_ads/widgets/slide_right_item_new.dart';
 import 'package:advertisers/features/my_ads/widgets/slide_right_item_separation.dart';
@@ -46,11 +48,15 @@ class MyAdsPage extends GetWidget<MyAddsController>  {
                   isNotification: false,
                   isBack: true,
                   searchBarBigRight: false,
+                  filterPressed: (){
+                    showBottomSheetForRequest(context, "m");
+                  },
                 ),
                 preferredSize:  Size(
                     MediaQuery.of(context).size.width,
                     90.0
                 ),
+
               ),
               body: Container(
         child: Column(
@@ -90,6 +96,7 @@ class MyAdsPage extends GetWidget<MyAddsController>  {
                   controller: controller.refreshController,
                   enablePullUp: true,
                   onRefresh: () async {
+                    controller.getAdsRequest2 = GetAdsRequest(page: 1,user_id: 0);
                       /*final result = await*/ controller.getAdsData(isRefresh: true);
                       if (controller.addsList.isNotEmpty) {
                         controller.refreshController.refreshCompleted();
@@ -902,6 +909,110 @@ class MyAdsPage extends GetWidget<MyAddsController>  {
       ),
     )
     );
+  }
+  Future<void> showBottomSheetForRequest(BuildContext context,String type)  async {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(10.0),
+            topRight: const Radius.circular(10.0)),
+      ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      builder: (BuildContext context) {
+        return DraggableScrollableSheet(
+          //maxChildSize: 0.8,
+          //minChildSize: 100.0,
+          //maxChildSize: 0.9,
+          initialChildSize: 0.67,
+          expand: false,
+          builder: (context, scrollController) {
+            return MyAdsSheet(
+              scrollController: scrollController,type: type,);
+          },
+        );
+      },
+    );
+
+
+    /*showMaterialModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+       // expand: true,
+        isDismissible: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+       // clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (context) => BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+
+            initialChildSize: 0.67,
+            expand: false,
+            builder: (context, scrollController) {
+              return AttatchementPage(
+                  scrollController: scrollController);
+            },
+          )
+        ),
+      );*/
+
+/*      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        isDismissible: true,
+        //barrierColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+        //clipBehavior: Clip.antiAliasWithSaveLayer,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (context) =>  BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          child: DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+            initialChildSize: 0.67,
+           // expand: true,
+            builder: (context, scrollController) {
+              return ActivitiesBottomSheet(
+                  scrollController: scrollController);
+            },
+          )),
+      );*/
+
+    /* showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) {
+          return DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+
+            initialChildSize: 0.67,
+            expand: false,
+            builder: (context, scrollController) {
+              return ActivitiesBottomSheet(
+                  scrollController: scrollController);
+            },
+          );
+        },
+      );*/
   }
 }
 

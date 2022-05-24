@@ -19,6 +19,7 @@ GetMyRequestsModelRequest _$GetMyRequestsModelRequestFromJson(
       keyword: json['keyword'] as String?,
       page: json['page'] as int?,
       countries: json['countries'] as String?,
+      country_category: json['country_category'] as String?,
     );
 
 Map<String, dynamic> _$GetMyRequestsModelRequestToJson(
@@ -32,6 +33,7 @@ Map<String, dynamic> _$GetMyRequestsModelRequestToJson(
       'advertiser_name': instance.advertiser_name,
       'areas': instance.areas,
       'countries': instance.countries,
+      'country_category': instance.country_category,
       'filters': instance.filters,
       'page': instance.page,
     };

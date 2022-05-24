@@ -15,11 +15,14 @@ GetMyRequestsFilterForm _$GetMyRequestsFilterFormFromJson(
       sorts: (json['sorts'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
-    );
+    )..countries = (json['countries'] as List<dynamic>?)
+        ?.map((e) => Country.fromJson(e as Map<String, dynamic>))
+        .toList();
 
 Map<String, dynamic> _$GetMyRequestsFilterFormToJson(
         GetMyRequestsFilterForm instance) =>
     <String, dynamic>{
       'filters': instance.filters,
       'sorts': instance.sorts,
+      'countries': instance.countries,
     };

@@ -156,12 +156,14 @@ class MyOrdersArchiveController extends GetxController{
          if (EasyLoading.isShow) {
            EasyLoading.dismiss();
          }
-         Get.snackbar(
-           "خطأ",
-           res!.statusMessage.toString(),
-           icon: const Icon(Icons.person, color: Colors.red),
-           backgroundColor: Colors.yellow,
-           snackPosition: SnackPosition.BOTTOM,);
+         if( res?.statusMessage!=null) {
+           Get.snackbar(
+             "خطأ",
+             res!.statusMessage.toString(),
+             icon: const Icon(Icons.person, color: Colors.red),
+             backgroundColor: Colors.yellow,
+             snackPosition: SnackPosition.BOTTOM,);
+         }
          return false;
          break;
        default:
