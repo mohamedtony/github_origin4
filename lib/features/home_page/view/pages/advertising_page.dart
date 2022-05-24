@@ -71,12 +71,24 @@ class AdvertisingPage extends StatelessWidget {
 
               builderDelegate: PagedChildBuilderDelegate<AdsListModel>(
                 animateTransitions: true,
+                newPageErrorIndicatorBuilder:(context){
+                  return Container(
+                      alignment: Alignment.topCenter,
+                      margin: EdgeInsets.only(top:6.0),
+                      child: Text('لا يوجد المزيد من الاعلانات !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
+                },
                 noItemsFoundIndicatorBuilder: (context){
                   return Container(
                       alignment: Alignment.topCenter,
                       margin: EdgeInsets.only(top:20.0),
                       child: Text('لا يوجد اعلانات  !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
                 },
+                firstPageErrorIndicatorBuilder: (context){
+            return Container(
+            alignment: Alignment.topCenter,
+            margin: EdgeInsets.only(top:20.0),
+            child: Text('لا يوجد اعلانات  !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
+            },
                 /*firstPageProgressIndicatorBuilder: (context)=>ListView(
                     shrinkWrap: true,
                     children: [

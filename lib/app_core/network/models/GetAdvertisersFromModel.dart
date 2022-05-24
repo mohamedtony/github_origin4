@@ -11,7 +11,7 @@ part 'GetAdvertisersFromModel.g.dart';
 
 @JsonSerializable()
 class GetAdvertisersFromModel {
-  SortTypesAdvertisersModel? sort_types;
+  Map<String,String>? sort_types;
   List<CategoryModel>? categories;
   List<EffectSlidesModel>? effect_slides;
   List<Country>? countries;

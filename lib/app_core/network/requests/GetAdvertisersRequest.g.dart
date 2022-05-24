@@ -20,6 +20,8 @@ GetAdvertisersRequest _$GetAdvertisersRequestFromJson(
           ?.map((e) => e as int)
           .toList(),
       keyword: json['keyword'] as String?,
+      distance_from: json['distance_from'] as int?,
+      distance_to: json['distance_to'] as int?,
     );
 
 Map<String, dynamic> _$GetAdvertisersRequestToJson(
@@ -32,4 +34,6 @@ Map<String, dynamic> _$GetAdvertisersRequestToJson(
       'country_category': instance.country_category,
       'page': instance.page,
       'keyword': instance.keyword,
+      'distance_from': instance.distance_from,
+      'distance_to': instance.distance_to,
     };

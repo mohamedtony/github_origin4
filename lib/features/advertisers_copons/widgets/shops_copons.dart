@@ -37,20 +37,23 @@ class _ShopsPageState extends State<ShopsPage> {
     return Scaffold(
         body:Stack(
           children: [
-            PagedListView<int, CoponModelResponse>(
-              pagingController: coponsPageController.advertiserCoponspagingController,
-              builderDelegate: PagedChildBuilderDelegate<CoponModelResponse>(
-                animateTransitions: true,
-                noItemsFoundIndicatorBuilder: (context){
-                  return Container(
-                      alignment: Alignment.topCenter,
-                      margin: EdgeInsets.only(top:20.0),
-                      child: Text('لا يوجد كوبونات !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
-                },
+            RefreshIndicator(
+              onRefresh: coponsPageController.loadDataForACopons,
+              child: PagedListView<int, CoponModelResponse>(
+                pagingController: coponsPageController.advertiserCoponspagingController,
+                builderDelegate: PagedChildBuilderDelegate<CoponModelResponse>(
+                  animateTransitions: true,
+                  noItemsFoundIndicatorBuilder: (context){
+                    return Container(
+                        alignment: Alignment.topCenter,
+                        margin: EdgeInsets.only(top:20.0),
+                        child: Text('لا يوجد كوبونات !',style:TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w600)));
+                  },
 
-                itemBuilder: (context, item, position) {
-                  return AdvertiserCoponItem(pos: position, coponModelResponse: item);
-                },
+                  itemBuilder: (context, item, position) {
+                    return AdvertiserCoponItem(pos: position, coponModelResponse: item);
+                  },
+                ),
               ),
             ),
             Align(

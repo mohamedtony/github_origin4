@@ -244,34 +244,12 @@ class FilterAdvertisesPageSheetController extends GetxController {
         // advertisersFormModel.value.countries?.insert(0, Country(id: -1,name: 'اختر'));
         advertisersTopRated.value = [];
         isLoadingGetAdvertisersFromModel.value = false;
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.reply_speed!,
-          key: "reply_speed",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.oldest!,
-          key: "oldest",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.latest!,
-          key: "latest",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.top_rated!,
-          key: "top_rated",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.most_ads!,
-          key: "most_ads",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.most_followers!,
-          key: "most_followers",
-        ));
-        advertisersTopRated.add(SelectedNotSelectedSortType(
-          name: advertisersFormModel.value.sort_types!.less_followers!,
-          key: "less_followers",
-        ));
+        advertisersFormModel.value.sort_types?.entries.forEach((element) {
+          advertisersTopRated.add(SelectedNotSelectedSortType(
+            name: element.value,
+            key: element.key,
+          ));
+        });
       } else {
         isLoadingGetAdvertisersFromModel.value = false;
       }

@@ -57,7 +57,7 @@ dependencies:
   flutter_carousel_widget: ^0.1.0
   modal_bottom_sheet: ^2.0.0
   json_annotation: ^4.4.0
-  retrofit: ^3.0.1
+  retrofit: ^3.0.1+1
   logger: ^1.1.0
   font_awesome_flutter: ^9.2.0
   flutter_easyloading: ^3.0.3

@@ -1,4 +1,5 @@
 import 'package:advertisers/features/advertisers_copons/controller/advertisers_copons_controller.dart';
+import 'package:advertisers/features/advertisers_copons/widgets/copons_filter_sheet.dart';
 import 'package:advertisers/features/advertisers_copons/widgets/myorders_copons_page.dart';
 import 'package:advertisers/features/advertisers_copons/widgets/shops_copons.dart';
 import 'package:advertisers/features/my_orders_archive/view/my_orders_archive_page.dart';
@@ -20,6 +21,9 @@ class AdvertisersCopons extends StatelessWidget {
           isNotification: false,
           isBack: true,
           searchBarBigRight: false,
+          filterPressed: (){
+            showBottomSheetForRequest(context,"kk");
+          },
         ),
         preferredSize:  Size(
             MediaQuery.of(context).size.width,
@@ -101,6 +105,111 @@ class AdvertisersCopons extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> showBottomSheetForRequest(BuildContext context,String type)  async {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(10.0),
+            topRight: const Radius.circular(10.0)),
+      ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      builder: (BuildContext context) {
+        return DraggableScrollableSheet(
+          //maxChildSize: 0.8,
+          //minChildSize: 100.0,
+          //maxChildSize: 0.9,
+          initialChildSize: 0.67,
+          expand: false,
+          builder: (context, scrollController) {
+            return CoponsFilterSheet(
+              scrollController: scrollController,type: type,);
+          },
+        );
+      },
+    );
+
+
+    /*showMaterialModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+       // expand: true,
+        isDismissible: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+       // clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (context) => BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+
+            initialChildSize: 0.67,
+            expand: false,
+            builder: (context, scrollController) {
+              return AttatchementPage(
+                  scrollController: scrollController);
+            },
+          )
+        ),
+      );*/
+
+/*      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        isDismissible: true,
+        //barrierColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+        //clipBehavior: Clip.antiAliasWithSaveLayer,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (context) =>  BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          child: DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+            initialChildSize: 0.67,
+           // expand: true,
+            builder: (context, scrollController) {
+              return ActivitiesBottomSheet(
+                  scrollController: scrollController);
+            },
+          )),
+      );*/
+
+    /* showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) {
+          return DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+
+            initialChildSize: 0.67,
+            expand: false,
+            builder: (context, scrollController) {
+              return ActivitiesBottomSheet(
+                  scrollController: scrollController);
+            },
+          );
+        },
+      );*/
   }
 }
 
