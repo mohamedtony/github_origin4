@@ -470,7 +470,7 @@ class EmployeesController extends GetxController /*with StateMixin<ListEmployees
         data: formData,
       );
       final data = AddEmployeeResponse.fromJson(response.data);
-      Logger().i(response.data);
+     // Logger().i(response.data);
 
       if(data.status==200){
         if (EasyLoading.isShow) {
@@ -485,8 +485,8 @@ class EmployeesController extends GetxController /*with StateMixin<ListEmployees
 
         restAll();
        // fetchEmployeesList();
-        getEmployeesList();
-        Get.toNamed('/EmployeesPage');
+        //getEmployeesList();
+       // Get.toNamed('/EmployeesPage');
       }else{
         if (EasyLoading.isShow) {
           EasyLoading.dismiss();
@@ -544,136 +544,84 @@ class EmployeesController extends GetxController /*with StateMixin<ListEmployees
   /// delete employee
   void deleteAnEmployee({int? id}) async {
     EasyLoading.show();
-    String url ='https://advertiser.cefour.com/api/v1/employees/$id';
-    print("URL+++> $url");
-    try {
-      final dio.Response response = await _apiService.dioClient.delete(
-        url,
-      );
-      final data = ShowEmployeeDetailsResponse.fromJson(response.data);
+    repo.delete<StopOrActivateResponse>(
+        path: 'employees/$id',
+        fromJson: (json) => StopOrActivateResponse.fromJson(json),
+        json: {"token": "Bearer $token"},
+        onSuccess: (res) {
+          Logger().i(res.data);
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
 
-      Logger().i(response.data);
-
-      if(data.status==200){
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
-
-        Get.snackbar("حسنا",
-          "تم حذف الموظف بنجاح",
-          icon: const Icon(Icons.check, color: Colors.green),
-          backgroundColor: Colors.yellow,
-          snackPosition: SnackPosition.TOP,);
+          Get.snackbar("حسنا",
+            "تم حذف الموظف بنجاح",
+            icon: const Icon(Icons.check, color: Colors.green),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.TOP,);
           restAll();
-         // fetchEmployeesList();
-        getEmployeesList();
+          getEmployeesList();
+          // update();
+        },
+        onError: (err, res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+        });
 
-      }else{
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
-        Get.snackbar(
-          "خطأ",
-          data.message.toString(),
-          icon: const Icon(Icons.person, color: Colors.red),
-          backgroundColor: Colors.yellow,
-          snackPosition: SnackPosition.BOTTOM,);
-      }
 
-    } on dio.DioError catch (error) {
-      Get.snackbar(
-        "خطأ",
-        error.message.toString(),
-        icon: const Icon(Icons.person, color: Colors.red),
-        backgroundColor: Colors.yellow,
-        snackPosition: SnackPosition.BOTTOM,);
-      if (error.response?.statusCode == 401 ||
-          error.response?.statusCode == 422) {
-        // Error occurred while fetching data
-        // change(null,
-        //     status: RxStatus.error(
-        //         'حدث خطأ ما ${error.response?.statusCode}'));
-      } else if (error.error is SocketException) {
-        // change(null,
-        //     status: RxStatus.error(
-        //         'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
-      } else {
-        String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-        //change(null, status: RxStatus.error(errorDescription));
-      }
-    }
   }
 
   /// stop or activate employee
   void stopOrActivateEmployee({int? id}) async {
+
     EasyLoading.show();
-    String url ='https://advertiser.cefour.com/api/v1/employees/$id/status';
-    print("URL+++> $url");
-    try {
-      final dio.Response response = await _apiService.dioClient.get(
-        url,
-      );
-      final data = StopOrActivateResponse.fromJson(response.data);
+    repo.get<StopOrActivateResponse>(
+        path: 'employees/$id/status',
+        fromJson: (json) => StopOrActivateResponse.fromJson(json),
+        json: {"token": "Bearer $token"},
+        onSuccess: (res) {
+          Logger().i(res.data);
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
 
-      Logger().i(response.data);
+          if(res.data!.status==1){
+            Get.snackbar("حسنا",
+              "تم تنشيط الموظف بنجاح",
+              icon: const Icon(Icons.check, color: Colors.green),
+              backgroundColor: Colors.yellow,
+              snackPosition: SnackPosition.TOP,);
+          }else if(res.data!.status==0){
+            Get.snackbar("حسنا",
+              "تم ايقاف الموظف بنجاح",
+              icon: const Icon(Icons.check, color: Colors.green),
+              backgroundColor: Colors.yellow,
+              snackPosition: SnackPosition.TOP,);
+          }
 
-      if(data.status==200){
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
-
-        if(data.data!.status==1){
-          Get.snackbar("حسنا",
-            "تم تنشيط الموظف بنجاح",
-            icon: const Icon(Icons.check, color: Colors.green),
+           restAll();
+          // fetchEmployeesList();
+           getEmployeesList();
+         // update();
+        },
+        onError: (err, res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res.message.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
             backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.TOP,);
-        }else if(data.data!.status==0){
-          Get.snackbar("حسنا",
-            "تم ايقاف الموظف بنجاح",
-            icon: const Icon(Icons.check, color: Colors.green),
-            backgroundColor: Colors.yellow,
-            snackPosition: SnackPosition.TOP,);
-        }
-
-        restAll();
-       // fetchEmployeesList();
-        getEmployeesList();
-
-      }else{
-        if (EasyLoading.isShow) {
-          EasyLoading.dismiss();
-        }
-        Get.snackbar(
-          "خطأ",
-          data.message.toString(),
-          icon: const Icon(Icons.person, color: Colors.red),
-          backgroundColor: Colors.yellow,
-          snackPosition: SnackPosition.BOTTOM,);
-      }
-
-    } on dio.DioError catch (error) {
-      Get.snackbar(
-        "خطأ",
-        error.message.toString(),
-        icon: const Icon(Icons.person, color: Colors.red),
-        backgroundColor: Colors.yellow,
-        snackPosition: SnackPosition.BOTTOM,);
-      if (error.response?.statusCode == 401 ||
-          error.response?.statusCode == 422) {
-        // Error occurred while fetching data
-        // change(null,
-        //     status: RxStatus.error(
-        //         'حدث خطأ ما ${error.response?.statusCode}'));
-      } else if (error.error is SocketException) {
-        // change(null,
-        //     status: RxStatus.error(
-        //         'لا يوجد اتصال بالانترنت ${error.response?.statusCode}'));
-      } else {
-        String errorDescription = 'حدث خطأ ما حاول في وقت لاحق';
-       // change(null, status: RxStatus.error(errorDescription));
-      }
-    }
+            snackPosition: SnackPosition.BOTTOM,);
+        });
   }
 
 

@@ -102,7 +102,53 @@ class _GalleryCardState extends State<GalleryCard> {
                                 backgroundColor: Colors.white54,child:SvgPicture.asset('images/Icon feather-share-2.svg') ),
                             InkWell(
                               onTap: (){
-                                Get.put(GalleryController()).deleteAnItemInGallery(id: widget.itemId);
+                                Get.defaultDialog(
+                                    title: "هل تريد حذف هذا الفيديو !",
+                                    content: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        InkWell(
+                                          onTap: (){
+                                            Get.put(GalleryController()).deleteAnItemInGallery(id: widget.itemId);
+                                            Get.back();
+                                            Get.back();
+                                          },
+                                          child: Container(
+                                            width: 80,
+                                            decoration: BoxDecoration(
+                                              color: Colors.red,
+                                              borderRadius: BorderRadius.circular(8),
+                                            ),
+                                            child: const Padding(
+                                              padding:  EdgeInsets.symmetric(horizontal:8.0,vertical: 4),
+                                              child: Center(child: Text("نعم",style: TextStyle(color: Colors.white,fontSize: 12),)),
+                                            ),
+                                          ),
+                                        ),
+
+                                        InkWell(
+                                          onTap: (){
+                                            Get.back();
+                                          },
+                                          child: Container(
+                                            width: 80,
+                                            decoration: BoxDecoration(
+                                              color: Colors.green,
+                                              borderRadius: BorderRadius.circular(8),
+                                            ),
+                                            child: const Padding(
+                                              padding:  EdgeInsets.symmetric(horizontal:8.0,vertical: 4),
+                                              child: Center(child: Text("لا",style: TextStyle(color: Colors.white,fontSize: 12),)),
+                                            ),
+                                          ),
+                                        ),
+
+                                      ],),
+                                    backgroundColor: Colors.white,
+                                    titleStyle: const TextStyle(color: Colors.red,fontSize: 16),
+                                    barrierDismissible: false
+                                );
+
                               },
                               child: CircleAvatar(
                                 radius: 15,

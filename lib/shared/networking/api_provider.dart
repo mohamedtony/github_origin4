@@ -1,6 +1,6 @@
 import 'package:advertisers/shared/networking/custom_interceptor.dart';
 import 'package:dio/dio.dart';
-
+import 'package:advertisers/main.dart';
 class ApiService {
   static final interceptors = [
     CustomInterceptor(),
@@ -14,8 +14,7 @@ class ApiService {
   ];
   final Dio dioClient = Dio(
     BaseOptions(
-      baseUrl:
-          '',
+      baseUrl: '',
       connectTimeout: 60000,
       receiveTimeout: 60000,
     ),

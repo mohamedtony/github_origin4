@@ -1,17 +1,17 @@
-import 'package:json_annotation/json_annotation.dart';
-part 'AdvertiserOrderDetailsResponse.g.dart';
-@JsonSerializable()
 
-class AdvertiserOrderDetailsResponse {
+import 'package:json_annotation/json_annotation.dart';
+part 'RequestResponseForAds.g.dart';
+@JsonSerializable()
+class RequestResponseForAds {
   int? status;
   String? message;
   Data? data;
   String? pagination;
 
-  AdvertiserOrderDetailsResponse(
+  RequestResponseForAds(
       {this.status, this.message, this.data, this.pagination});
 
-  AdvertiserOrderDetailsResponse.fromJson(Map<String, dynamic> json) {
+  RequestResponseForAds.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
@@ -32,8 +32,10 @@ class AdvertiserOrderDetailsResponse {
 
 class Data {
   int? id;
+  String? dateType;
   String? status;
   String? statusTxt;
+  bool? inline;
   ProductType? productType;
   Advertiser? advertiser;
   Advertiser? user;
@@ -55,8 +57,10 @@ class Data {
 
   Data(
       {this.id,
+        this.dateType,
         this.status,
         this.statusTxt,
+        this.inline,
         this.productType,
         this.advertiser,
         this.user,
@@ -78,8 +82,10 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    dateType = json['date_type'];
     status = json['status'];
     statusTxt = json['status_txt'];
+    inline = json['inline'];
     productType = json['product_type'] != null
         ? new ProductType.fromJson(json['product_type'])
         : null;
@@ -97,21 +103,21 @@ class Data {
       });
     }
     description = json['description'];
-    if (json['links'] != null) {
-      links = <Links>[];
-      json['links'].forEach((v) {
-        links!.add(new Links.fromJson(v));
-      });
-    }
     if (json['attachments'] != null) {
       attachments = <Attachments>[];
       json['attachments'].forEach((v) {
         attachments!.add(new Attachments.fromJson(v));
       });
     }
+    if (json['links'] != null) {
+      links = <Links>[];
+      json['links'].forEach((v) {
+        links!.add(new Links.fromJson(v));
+      });
+    }
     address =
     json['address'] != null ? new Address.fromJson(json['address']) : null;
-    copon = json['copon'] != null ? new Copon.fromJson(json['copon']) : null;
+    copon = json['copon'];
     notes = json['notes'];
     planFile = json['plan_file'];
     addedAt = json['added_at'];
@@ -125,8 +131,10 @@ class Data {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['date_type'] = this.dateType;
     data['status'] = this.status;
     data['status_txt'] = this.statusTxt;
+    data['inline'] = this.inline;
     if (this.productType != null) {
       data['product_type'] = this.productType!.toJson();
     }
@@ -143,19 +151,16 @@ class Data {
       data['channels'] = this.channels!.map((v) => v.toJson()).toList();
     }
     data['description'] = this.description;
-
-    if (this.links != null) {
-      data['links'] = this.links!.map((v) => v.toJson()).toList();
-    }
     if (this.attachments != null) {
       data['attachments'] = this.attachments!.map((v) => v.toJson()).toList();
+    }
+    if (this.links != null) {
+      data['links'] = this.links!.map((v) => v.toJson()).toList();
     }
     if (this.address != null) {
       data['address'] = this.address!.toJson();
     }
-    if (this.copon != null) {
-      data['copon'] = this.copon!.toJson();
-    }
+    data['copon'] = this.copon;
     data['notes'] = this.notes;
     data['plan_file'] = this.planFile;
     data['added_at'] = this.addedAt;
@@ -164,34 +169,6 @@ class Data {
     data['offer_ended_at'] = this.offerEndedAt;
     data['added_to'] = this.addedTo;
     data['repeat_count'] = this.repeatCount;
-    return data;
-  }
-}
-
-class Attachments {
-  int? id;
-  int? adsId;
-  String? path;
-  String? createdAt;
-  String? updatedAt;
-
-  Attachments({this.id, this.adsId, this.path, this.createdAt, this.updatedAt});
-
-  Attachments.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    adsId = json['ads_id'];
-    path = json['path'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['ads_id'] = this.adsId;
-    data['path'] = this.path;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
     return data;
   }
 }
@@ -284,7 +261,7 @@ class Requests {
   int? notFinished;
   int? rejected;
   int? cancelled;
-  Null? lateTime;
+  String? lateTime;
 
   Requests(
       {this.finished,
@@ -336,27 +313,44 @@ class Socials {
 
 class Channels {
   int? id;
+  int? sort;
+  bool? inline;
   String? name;
   int? channelType;
   String? image;
+  bool? blockedAt;
   Pivot? pivot;
 
-  Channels({this.id, this.name, this.channelType, this.image, this.pivot});
+  Channels(
+      {this.id,
+        this.sort,
+        this.inline,
+        this.name,
+        this.channelType,
+        this.image,
+        this.blockedAt,
+        this.pivot});
 
   Channels.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    sort = json['sort'];
+    inline = json['inline'];
     name = json['name'];
     channelType = json['channel_type'];
     image = json['image'];
+    blockedAt = json['blocked_at'];
     pivot = json['pivot'] != null ? new Pivot.fromJson(json['pivot']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['sort'] = this.sort;
+    data['inline'] = this.inline;
     data['name'] = this.name;
     data['channel_type'] = this.channelType;
     data['image'] = this.image;
+    data['blocked_at'] = this.blockedAt;
     if (this.pivot != null) {
       data['pivot'] = this.pivot!.toJson();
     }
@@ -383,16 +377,63 @@ class Pivot {
   }
 }
 
+class Attachments {
+  int? id;
+  int? sort;
+  int? adsId;
+  String? path;
+  String? fullPath;
+  String? type;
+  String? videoId;
+  bool? isUploaded;
+
+  Attachments(
+      {this.id,
+        this.sort,
+        this.adsId,
+        this.path,
+        this.fullPath,
+        this.type,
+        this.videoId,
+        this.isUploaded});
+
+  Attachments.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    sort = json['sort'];
+    adsId = json['ads_id'];
+    path = json['path'];
+    fullPath = json['full_path'];
+    type = json['type'];
+    videoId = json['video_id'];
+    isUploaded = json['is_uploaded'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['sort'] = this.sort;
+    data['ads_id'] = this.adsId;
+    data['path'] = this.path;
+    data['full_path'] = this.fullPath;
+    data['type'] = this.type;
+    data['video_id'] = this.videoId;
+    data['is_uploaded'] = this.isUploaded;
+    return data;
+  }
+}
+
 class Links {
   int? id;
+  int? sort;
   int? adsId;
   String? name;
   String? link;
 
-  Links({this.id, this.adsId, this.name, this.link});
+  Links({this.id, this.sort, this.adsId, this.name, this.link});
 
   Links.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    sort = json['sort'];
     adsId = json['ads_id'];
     name = json['name'];
     link = json['link'];
@@ -401,6 +442,7 @@ class Links {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['sort'] = this.sort;
     data['ads_id'] = this.adsId;
     data['name'] = this.name;
     data['link'] = this.link;
@@ -505,4 +547,3 @@ class Copon {
     return data;
   }
 }
-

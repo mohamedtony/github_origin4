@@ -2,6 +2,7 @@
 // import 'package:bego/app_core/app_core.dart';
 // import 'package:bego/app_core/fcm/FcmTokenManager.dart';
 
+import 'package:advertisers/features/advertiser_list_page/advertise_list_controller.dart';
 import 'package:advertisers/main.dart';
 import 'package:advertisers/shared/networking/custom_exception.dart';
 import 'package:dio/dio.dart';
@@ -9,19 +10,21 @@ import 'package:dio/dio.dart';
 class CustomInterceptor implements Interceptor {
 
  String token = storage.read("token");
-  @override
+   @override
   Future onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     options.headers = {
       "Accept":"application/json",
-      // "Authorization":"Bearer  $token",
+        "Authorization":"Bearer  $token",
       // "Authorization":"Bearer 1174|uRJTjtkcQZFdTLrB12utkLRkkylEJFy7tHeCQjaz",
-      "Authorization":"Bearer 2169|YihWq7GvP1D6GpoicWFBEdWewCVffIeZeT6EngXs",
+      //"Authorization":"Bearer 2169|YihWq7GvP1D6GpoicWFBEdWewCVffIeZeT6EngXs",
       // 'FbToken': locator<FcmTokenManager>().currentFcmToken,
       // 'Platform': Platform.isAndroid ? 'android' : 'ios',
       // 'Lang': locator<PrefsService>().appLanguage,
       // 'Authorization': locator<PrefsService>().userObj?.accessToken ?? '',
       'Content-Type': 'application/json',
+      // if(storage.read("ownerid")!=null && storage.read("accountype")!=null && storage.read("accountype")=="user")
+      //   "OwnerID": "${storage.read("ownerid")}",
       // 'Accept': 'application/json',
     };
     return handler.next(options);

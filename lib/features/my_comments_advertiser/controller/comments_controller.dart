@@ -153,7 +153,7 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
     repo=Repository();
     token =storage.read("token");
     searchController=TextEditingController();
-    getCommentsData(id: adsId.value);
+  //  getCommentsData(isRefresh: true,id: adsId.value);
     super.onInit();
   }
 
@@ -301,6 +301,7 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
       }
     }
     EasyLoading.show();
+    print("mycomments?ads_id=$id");
     repo.get<MyCommentsResponse>(
         path: 'mycomments?ads_id=$id',//mycomments
         fromJson: (json) => MyCommentsResponse.fromJson(json),
@@ -313,8 +314,10 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
         // Logger().i(res.data.);
 
           if (isRefresh) {
+            commentsList.clear();
             commentsList = res.data!.comments??[];
           }else{
+            commentsList.clear();
             commentsList.addAll(res.data!.comments??[]);
           }
           myCommentsResponse.value.data=res.data;
@@ -434,6 +437,7 @@ class CommentsController extends GetxController  with StateMixin<MyCommentsRespo
         if (EasyLoading.isShow) {
           EasyLoading.dismiss();
         }
+        commentControllers[index].clear();
 
         getCommentsData(isRefresh: true,id: adsId.value);
         update();

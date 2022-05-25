@@ -128,12 +128,12 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                           );
                         }).toList(),
                         isExpanded: true,
-                        onChanged: (newVal) {
+                        onChanged: null /*(newVal) {
 
                             controller.selectedEmployeeJob.value=newVal!;
                             print("v ${controller.selectedEmployeeJob}");
 
-                        },
+                        }*/,
                       ),
                     ),
                   ),

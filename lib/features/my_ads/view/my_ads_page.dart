@@ -511,7 +511,7 @@ class MyAdsPage extends GetWidget<MyAddsController>  {
                                                       onTap: (){
                                                         Get.put(CommentsController()).commentsList.clear();
                                                         Get.put(CommentsController()).adsId.value=controller.addsList[index].id??0;
-                                                        Get.put(CommentsController()).getCommentsData(id: controller.addsList[index].id);
+                                                       // Get.put(CommentsController()).getCommentsData(id: controller.addsList[index].id);
                                                          Get.toNamed('/CommentsPage');
                                                       },
                                                       child: Row(

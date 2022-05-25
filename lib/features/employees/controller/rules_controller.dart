@@ -147,6 +147,9 @@ class RulesController extends GetxController  {
               update();
          },
         onError: (err, res) {
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
           Get.snackbar(
             " خطأ ${res.status}",
             res.message.toString(),

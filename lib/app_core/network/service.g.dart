@@ -6,6 +6,8 @@ part of 'service.dart';
 // RetrofitGenerator
 // **************************************************************************
 
+// ignore_for_file: unnecessary_brace_in_string_interps
+
 class _RestClient implements RestClient {
   _RestClient(this._dio, {this.baseUrl}) {
     baseUrl ??= 'https://advertiser.cefour.com/api/v1/';

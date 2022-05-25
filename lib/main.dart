@@ -581,7 +581,7 @@ class _MyAppState extends State<MyApp> {
         designSize: const Size(375, 812),
         minTextAdapt: true,
         splitScreenMode: true,
-        builder:()=>GetMaterialApp(
+        builder: (BuildContext context, Widget? child) => GetMaterialApp(
           navigatorKey: navigatorKey,
           routingCallback: (r){
            // r!.route.;

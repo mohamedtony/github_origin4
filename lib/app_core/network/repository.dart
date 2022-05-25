@@ -1,11 +1,13 @@
 import 'dart:convert';
+import 'package:advertisers/features/advertiser_list_page/advertise_list_controller.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';import 'package:advertisers/main.dart';
+
 typedef T Unmarshable<T>(Map<String, dynamic> json);
 typedef String Marshable<T>(T object);
 class Repository {
@@ -199,6 +201,8 @@ class Repository {
           // 'Accept-Type': 'application/json',
           "Authorization": json!["token"],
           "Accept": "application/json",
+          // if(storage.read("ownerid")!=null && storage.read("accountype")!=null && storage.read("accountype")=="user")
+          //   "OwnerID": "${storage.read("ownerid")}",
         },
         //body: body,
       )
@@ -260,6 +264,8 @@ class Repository {
           // 'Accept-Type': 'application/json',
           "Authorization": json!["token"],
           "Accept": "application/json",
+          // if(storage.read("ownerid")!=null && storage.read("accountype")!=null && storage.read("accountype")=="user")
+          //   "OwnerID": "${storage.read("ownerid")}",
         },
         body: body,
       )
@@ -321,6 +327,8 @@ class Repository {
           // 'Accept-Type': 'application/json',
           "Authorization": json!["token"],
           "Accept": "application/json",
+          // if(storage.read("ownerid")!=null && storage.read("accountype")!=null && storage.read("accountype")=="user")
+          //   "OwnerID": "${storage.read("ownerid")}",
         },
         //body: body,
       )

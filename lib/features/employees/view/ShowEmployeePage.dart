@@ -375,12 +375,12 @@ class ShowEmployeePage extends GetWidget<EmployeesController> {
                           );
                         }).toList(),
                         isExpanded: true,
-                        onChanged: controller.isEdit.value?(newVal) {
+                        onChanged: /*controller.isEdit.value?(newVal) {
 
                           controller.selectedEmployeeJob.value=newVal!;
                           print("v ${controller.selectedEmployeeJob}");
 
-                        }:null,
+                        }:*/null,
                       ),),
                     ),
                   ),
