@@ -34,7 +34,7 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
 
   final EmployeesController  controller = Get.put(EmployeesController());
   final AdvertiseListController rulesController = Get.put(AdvertiseListController());
-
+  AdvertiseListController profileController = Get.find();
 
   // ScrollController? scrollController;
   launchURL(urlLink) async {
@@ -184,7 +184,7 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                   onTap:(){
 
 
-                                                    if(storage.read("ownerid")!=null) {
+                                                    if(storage.read("ownerid")!=null&&profileController.clientProfileModel.value.role!=null&&profileController.clientProfileModel.value.role=="user") {
                                                       if (rulesController.employeesRulesResponse.value.data!=null&&rulesController.employeesRulesResponse.value.data!.addEdit !=
                                                           null &&
                                                           rulesController
@@ -409,7 +409,7 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                                 firstWidget:   InkWell(
                                                                   onTap: (){
 
-                                                                    if(storage.read("ownerid")!=null) {
+                                                                    if(storage.read("ownerid")!=null&&profileController.clientProfileModel.value.role!=null&&profileController.clientProfileModel.value.role=="user") {
                                                                       if (rulesController.employeesRulesResponse.value.data!=null&&rulesController.employeesRulesResponse.value.data!.status !=
                                                                           null &&
                                                                           rulesController
@@ -490,7 +490,7 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                                 ),
                                                                 secondWidget: InkWell(
                                                                   onTap: (){
-                                                                    if(storage.read("ownerid")!=null) {
+                                                                    if(storage.read("ownerid")!=null&&profileController.clientProfileModel.value.role!=null&&profileController.clientProfileModel.value.role=="user") {
                                                                       if (rulesController.employeesRulesResponse.value.data!=null&&rulesController.employeesRulesResponse.value.data!.status !=
                                                                           null &&
                                                                           rulesController
@@ -569,7 +569,7 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                                                                 thirdWidget: InkWell(
                                                                   onTap: (){
 
-                                                                    if(storage.read("ownerid")!=null) {
+                                                                    if(storage.read("ownerid")!=null&&profileController.clientProfileModel.value.role!=null&&profileController.clientProfileModel.value.role=="user") {
                                                                       if (rulesController.employeesRulesResponse.value.data!=null&&rulesController.employeesRulesResponse.value.data!.delete !=
                                                                           null &&
                                                                           rulesController
@@ -792,7 +792,7 @@ class EmployeesPage extends GetWidget<EmployeesController>  {
                     padding: const EdgeInsets.only(bottom:64.0),
                     child: InkWell(
                       onTap: (){
-                        if(storage.read("ownerid")!=null) {
+                        if(storage.read("ownerid")!=null&&profileController.clientProfileModel.value.role!=null&&profileController.clientProfileModel.value.role=="user") {
                             if (rulesController.employeesRulesResponse.value.data!=null&&rulesController
                                         .employeesRulesResponse.value.data!.addEdit !=
                                     null &&

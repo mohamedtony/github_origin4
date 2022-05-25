@@ -22,6 +22,8 @@ import 'package:logger/logger.dart';
 
 //=========================================================================================
 class AdvertiseListController extends GetxController with GetSingleTickerProviderStateMixin {
+
+
   var isOpend = false;
   var position = -1;
   var tabIndex = 0.obs;
@@ -59,14 +61,17 @@ class AdvertiseListController extends GetxController with GetSingleTickerProvide
     repo=Repository();
     ownerId =   storage.read("ownerid");
     myToken  = await storage.read("token");
-    checkEmployeesRules();
-    checkAccountSettingRules();
-    checkAdsRequestsRules();
-    checkMyAdsRules();
-    checkGalleryRules();
-    checkReportsRules();
-    checkSubscriptionsRules();
-    checkEmployeesManagementRules();
+    if(clientProfileModel.value.role!=null&&clientProfileModel.value.role=="user"){
+      checkEmployeesRules();
+      checkAccountSettingRules();
+      checkAdsRequestsRules();
+      checkMyAdsRules();
+      checkGalleryRules();
+      checkReportsRules();
+      checkSubscriptionsRules();
+      checkEmployeesManagementRules();
+    }
+
     super.onInit();
     controller = TabController(vsync: this, length: 3);//Bearer 172|bArU5eQ7MZSTtD4CKY2Wwtvn2onzJlVrG643Vob6
 

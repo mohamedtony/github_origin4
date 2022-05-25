@@ -2,6 +2,7 @@
 // import 'package:bego/app_core/app_core.dart';
 // import 'package:bego/app_core/fcm/FcmTokenManager.dart';
 
+import 'package:advertisers/features/advertiser_list_page/advertise_list_controller.dart';
 import 'package:advertisers/main.dart';
 import 'package:advertisers/shared/networking/custom_exception.dart';
 import 'package:dio/dio.dart';
@@ -9,7 +10,7 @@ import 'package:dio/dio.dart';
 class CustomInterceptor implements Interceptor {
 
  String token = storage.read("token");
-  @override
+   @override
   Future onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     options.headers = {
@@ -22,8 +23,8 @@ class CustomInterceptor implements Interceptor {
       // 'Lang': locator<PrefsService>().appLanguage,
       // 'Authorization': locator<PrefsService>().userObj?.accessToken ?? '',
       'Content-Type': 'application/json',
-       if(storage.read("ownerid")!=null)
-      "OwnerID": "${storage.read("ownerid")}",
+      if(storage.read("ownerid")!=null && storage.read("accountype")!=null && storage.read("accountype")=="user")
+        "OwnerID": "${storage.read("ownerid")}",
       // 'Accept': 'application/json',
     };
     return handler.next(options);

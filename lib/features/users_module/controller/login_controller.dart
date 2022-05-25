@@ -105,6 +105,7 @@ class LoginController extends GetxController{
       storage.write("id", res.data!.id);
       if(res.data!.owners!=null&&res.data!.owners!.isNotEmpty){
         storage.write("ownerid", res.data!.owners![0].userId);
+        storage.write("accountype", res.data!.role);
         print("controller.ownerId ${res.data!.owners![0].userId} = ${storage.read("ownerid")}");
       }
 
