@@ -1,24 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'StarNotificationResponse.dart';
+part of 'GetGalleryFilterResponse.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-StarNotificationResponse _$StarNotificationResponseFromJson(
+GetGalleryFilterResponse _$GetGalleryFilterResponseFromJson(
         Map<String, dynamic> json) =>
-    StarNotificationResponse(
+    GetGalleryFilterResponse(
       status: json['status'] as int?,
       message: json['message'] as String?,
       data: json['data'] == null
           ? null
-          : StarNotificationModel.fromJson(
+          : GetGallaryRequestFilter.fromJson(
               json['data'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$StarNotificationResponseToJson(
-        StarNotificationResponse instance) =>
+Map<String, dynamic> _$GetGalleryFilterResponseToJson(
+        GetGalleryFilterResponse instance) =>
     <String, dynamic>{
       'status': instance.status,
       'message': instance.message,

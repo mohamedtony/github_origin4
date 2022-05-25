@@ -107,7 +107,7 @@ class _MyAdsSheetState extends State<MyAdsSheet> {
                 //padding: EdgeInsets.all(8.0),
                 margin: EdgeInsets.only(right: 8.0),
         child: Text(
-                'فرز وترتيب الطلبات بحسب',
+                'فرز وترتيب اعلاناتى بحسب',
                 style: TextStyle(color: Colors.white),
         textAlign: TextAlign.center,
                         ),
@@ -153,7 +153,7 @@ class _MyAdsSheetState extends State<MyAdsSheet> {
         Container(
                 margin: EdgeInsets.only(right: 5.0, bottom: 3,top: 16),
         child: Text(
-                'عرض الطلبات بحسب',
+                'عرض اعلاناتى بحسب',
                 style: TextStyle(color: Colors.white),
         textAlign: TextAlign.center,
                         ))

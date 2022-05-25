@@ -96,7 +96,7 @@ class HomePage extends StatelessWidget {
               actions: [
                 InkWell(
                   onTap: (){
-                    Get.toNamed('/NotificationsPage');
+                    Get.toNamed('/NotificationsScreen');
                   },
                   child: Container(
                     padding: EdgeInsets.only(left: 20.0, right: 10.0),

@@ -27,6 +27,7 @@ Map<String, dynamic> _$NotificationsModelToJson(NotificationsModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'user_id': instance.user_id,
+      'starred': instance.starred,
       'type': instance.type,
       'model_id': instance.model_id,
       'model_type': instance.model_type,
@@ -34,6 +35,5 @@ Map<String, dynamic> _$NotificationsModelToJson(NotificationsModel instance) =>
       'body': instance.body,
       'created_at': instance.created_at,
       'user': instance.user,
-      'starred': instance.starred,
       'seen': instance.seen,
     };

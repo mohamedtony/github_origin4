@@ -29,6 +29,7 @@ import 'package:advertisers/app_core/network/responses/GetAdvertisersResponse.da
 import 'package:advertisers/app_core/network/responses/GetBlockedUsersResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetCategoriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetCouponsFilterFormResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetGalleryFilterResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetMyProfileInfoResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetProductsAndAdsTypesResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetRulesResponse.dart';
@@ -36,6 +37,7 @@ import 'package:advertisers/app_core/network/responses/GetUseLocationsResponse.d
 import 'package:advertisers/app_core/network/responses/LoginClientResponse.dart';
 import 'package:advertisers/app_core/network/responses/MyRequestFiltersResponse.dart';
 import 'package:advertisers/app_core/network/responses/MyRequestsResponse.dart';
+import 'package:advertisers/app_core/network/responses/NotificationsResponse.dart';
 import 'package:advertisers/app_core/network/responses/RegisterClientUserResponse.dart';
 import 'package:advertisers/app_core/network/responses/RequestDetailsResponse.dart';
 import 'package:advertisers/app_core/network/responses/ShowAddsListResponse.dart';
@@ -262,6 +264,12 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   @GET('/employees/{id}/roles')
   Future<GetRulesResponse> getMyEmployeeRules( @Path("id") int? id,@Header("Authorization") String token);
 
+  @GET('/notifications_form')
+  Future<MyRequestFiltersResponse> notifications_form(@Header("Authorization") String token);
+
+  @GET('/notifications')
+  Future<NotificationsResponse> getNotifications(@Queries() Map<String, dynamic> queries,@Header("Authorization") String token);
+
   @GET('/myrequests')
   Future<MyRequestsResponse> getMyRequests(@Queries() Map<String, dynamic> queries,@Header("Authorization") String token,);
 
@@ -270,6 +278,10 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
 
   @GET('/copons/filter_form')
   Future<GetCouponsFilterFormResponse> getCoupounsFilterForm(@Header("Authorization") String token,);
+
+  @GET('/gallery/filter_form')
+  Future<GetGalleryFilterResponse> getGalleryFilterForm(@Header("Authorization") String token,);
+
 
   @GET('/copons/filter_form2')
   Future<GetCouponsFilterFormResponse> getCoupounsShopsFilterForm(@Header("Authorization") String token,);

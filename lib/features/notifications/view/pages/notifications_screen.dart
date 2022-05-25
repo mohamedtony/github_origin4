@@ -1,4 +1,5 @@
 import 'package:advertisers/features/notifications/controller/notifications_controller.dart';
+import 'package:advertisers/features/notifications/view/widgets/NotificationsSheet.dart';
 import 'package:advertisers/features/notifications/view/widgets/app_bar.dart';
 import 'package:advertisers/features/notifications/view/widgets/colors.dart';
 import 'package:advertisers/features/notifications/view/widgets/constants.dart';
@@ -11,7 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
+import 'package:advertisers/features/home_page/app_colors.dart' as mColor;
 // List<NotificationModel> notifications = [
 //   NotificationModel(
 //     content: 'تم الموافقة علي الطلب رقم ',
@@ -101,8 +102,94 @@ class NotificationsScreen extends StatelessWidget {
         return Directionality(
           textDirection: AppConstants.appDirection,
           child: Scaffold(
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(75.0),
+              child: AppBar(
+                leading: InkWell(
+                  onTap: (){
+                    Get.toNamed("/ListPage");
+                  },
+                  child: Container(
+
+                    margin: EdgeInsets.only(right: 10.0),
+                    child: SvgPicture.asset(
+                      'images/DrawerIcon.svg',
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                leadingWidth: 56.0,
+                title: Container(
+                  height: 40.0,
+                  // alignment: Alignment.center,
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    textAlignVertical: TextAlignVertical.center,
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(10.0),
+                        prefixIcon: Container(
+                          padding: EdgeInsets.all(8.0),
+                          child: SvgPicture.asset(
+                            'images/search_icon.svg',
+                          ),
+                        ),
+                        suffixIcon: InkWell(
+                          onTap: (){
+                            showBottomSheetForRequest(context, "lll");
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10.0),
+                            child: SvgPicture.asset(
+                              'images/filter_icon.svg',
+                            ),
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(70.0),
+                          borderSide: BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        filled: true,
+                        hintStyle: TextStyle(color: Colors.grey[800]),
+                        //hintText: "Type in your text",
+                        fillColor: Colors.white70),
+                  ),
+                ),
+                actions: [
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 25,
+                      ),
+                      InkWell(
+                        onTap: (){
+                          Get.back();
+                        },
+                        child: SvgPicture.asset('images/arrow_back.svg',
+                          // matchTextDirection: true,
+                          height: 50, fit: BoxFit.fitHeight,color: Colors.white,),
+                      ),
+
+                    ],
+                  ),
+                ],
+                flexibleSpace: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [mColor.AppColors.beginColor, mColor.AppColors.endColor],
+                    ),
+                  ),
+                ),
+                elevation: 2,
+                //  bottom: ,
+              ),
+            ),
             body: Column(children: [
-              const DefaultAppBar(notificationScreen: true),
+             // const DefaultAppBar(notificationScreen: true),
               notificationStatesBar(),
               Expanded(
                 child: MediaQuery.removePadding(
@@ -129,7 +216,7 @@ class NotificationsScreen extends StatelessWidget {
                     },
                     child: ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      reverse: true,
+                     // reverse: true,
                       itemBuilder: (context, index) {
 
                           return NotificationItem(context, controller.notifications[index],
@@ -219,5 +306,110 @@ class NotificationsScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> showBottomSheetForRequest(BuildContext context,String type)  async {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(10.0),
+            topRight: const Radius.circular(10.0)),
+      ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      builder: (BuildContext context) {
+        return DraggableScrollableSheet(
+          //maxChildSize: 0.8,
+          //minChildSize: 100.0,
+          //maxChildSize: 0.9,
+          initialChildSize: 0.67,
+          expand: false,
+          builder: (context, scrollController) {
+            return NotificationsSheet(
+              scrollController: scrollController,type: type,);
+          },
+        );
+      },
+    );
+
+
+    /*showMaterialModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+       // expand: true,
+        isDismissible: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+       // clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (context) => BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+
+            initialChildSize: 0.67,
+            expand: false,
+            builder: (context, scrollController) {
+              return AttatchementPage(
+                  scrollController: scrollController);
+            },
+          )
+        ),
+      );*/
+
+/*      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        isDismissible: true,
+        //barrierColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+        //clipBehavior: Clip.antiAliasWithSaveLayer,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (context) =>  BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          child: DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+            initialChildSize: 0.67,
+           // expand: true,
+            builder: (context, scrollController) {
+              return ActivitiesBottomSheet(
+                  scrollController: scrollController);
+            },
+          )),
+      );*/
+
+    /* showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10.0),
+              topRight: const Radius.circular(10.0)),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) {
+          return DraggableScrollableSheet(
+            //maxChildSize: 0.8,
+            //minChildSize: 100.0,
+
+            initialChildSize: 0.67,
+            expand: false,
+            builder: (context, scrollController) {
+              return ActivitiesBottomSheet(
+                  scrollController: scrollController);
+            },
+          );
+        },
+      );*/
   }
 }

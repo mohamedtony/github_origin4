@@ -1,3 +1,4 @@
+
 import 'package:advertisers/app_core/network/models/AdTypeModel.dart';
 import 'package:advertisers/app_core/network/models/Area.dart';
 import 'package:advertisers/app_core/network/models/CategoryModel.dart';
@@ -6,12 +7,15 @@ import 'package:advertisers/app_core/network/models/Country.dart';
 import 'package:advertisers/app_core/network/models/EffectSlidesModel.dart';
 import 'package:advertisers/app_core/network/models/GetAdsFilterForm.dart';
 import 'package:advertisers/app_core/network/models/GetAdvertisersFromModel.dart';
-import 'package:advertisers/app_core/network/models/GetCouponsFilterModel.dart';
+import 'package:advertisers/app_core/network/models/GetMyRequestsFilterForm.dart';
+import 'package:advertisers/app_core/network/models/SelectedNotSelectedFilterAdsType.dart';
 import 'package:advertisers/features/find_advertise_page/find_advertise_controller.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/features/home_page/controller/FilterSortAdsController.dart';
 import 'package:advertisers/features/home_page/controller/ads_page_controller.dart';
-import 'package:advertisers/features/home_page/controller/copons_page_controller.dart';
+import 'package:advertisers/features/my_orders/controller/my_orders_controller.dart';
+import 'package:advertisers/features/my_orders_archive/controller/my_orders_archive_controller.dart';
+import 'package:advertisers/features/notifications/controller/notifications_controller.dart';
 import 'package:advertisers/features/request_advertise_module/controller/find_order_advertisers_controller.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -23,26 +27,26 @@ import 'package:get/get.dart';
 //                         By Mohamed T. Hammad
 
 //=========================================================================================
-class FilterSortCoponsHomeSheet extends StatefulWidget {
+class NotificationsSheet extends StatefulWidget {
   ScrollController? scrollController;
 
-  FilterSortCoponsHomeSheet({Key? key, this.scrollController}) : super(key: key);
+  String? type;
+  NotificationsSheet({Key? key, this.scrollController,this.type}) : super(key: key);
 
   @override
-  State<FilterSortCoponsHomeSheet> createState() => _FilterSortCoponsHomeSheetState();
+  State<NotificationsSheet> createState() => _NotificationsSheetState();
 }
 
-class _FilterSortCoponsHomeSheetState extends State<FilterSortCoponsHomeSheet> {
+class _NotificationsSheetState extends State<NotificationsSheet> {
 
-  CoponsPageController findOrderAdvertisersController = Get.put(CoponsPageController());
+  NotificationsController findOrderAdvertisersController = Get.put(NotificationsController());
+ // MyOrdersController findOrderAdvertisersController2 = Get.put(MyOrdersController());
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(findOrderAdvertisersController.isFilterSavedClicked.isFalse) {
-      findOrderAdvertisersController.getCoponsFilterForm(context);
-    }
+    findOrderAdvertisersController.getAdsForm(context);
   }
   double _startValue = 20.0;
   double _endValue = 90.0;
@@ -100,7 +104,7 @@ class _FilterSortCoponsHomeSheetState extends State<FilterSortCoponsHomeSheet> {
                         //padding: EdgeInsets.all(8.0),
                         margin: EdgeInsets.only(right: 8.0),
                         child: Text(
-                          'فرز وترتيب كوبونات المتاجر',
+                          'فرز وترتيب الاشعارات بحسب',
                           style: TextStyle(color: Colors.white),
                           textAlign: TextAlign.center,
                         ),
@@ -146,7 +150,7 @@ class _FilterSortCoponsHomeSheetState extends State<FilterSortCoponsHomeSheet> {
                     Container(
                         margin: EdgeInsets.only(right: 5.0, bottom: 3,top: 16),
                         child: Text(
-                          'ترتيب بحسب',
+                          'عرض الاشعارات بحسب نوع الاشعارات',
                           style: TextStyle(color: Colors.white),
                           textAlign: TextAlign.center,
                         ))
@@ -163,9 +167,7 @@ class _FilterSortCoponsHomeSheetState extends State<FilterSortCoponsHomeSheet> {
                   ),
                   child: Obx(()=>SingleChildScrollView(
                     scrollDirection: Axis.vertical,
-                    child: findOrderAdvertisersController
-                        .advertisersTopRated.isNotEmpty
-                        ?
+                    child:  findOrderAdvertisersController.advertisersTopRated.isNotEmpty?
                     Wrap(
                       direction: Axis.horizontal,
                       children: findOrderAdvertisersController.advertisersTopRated.value
@@ -270,7 +272,7 @@ class _FilterSortCoponsHomeSheetState extends State<FilterSortCoponsHomeSheet> {
                     Container(
                         margin: EdgeInsets.only(right: 5.0, bottom: 3),
                         child: Text(
-                          ' عرض الكوبونات حسب اسم المتجر',
+                          'ترتيب الاشعارات',
                           style: TextStyle(color: Colors.white),
                           textAlign: TextAlign.center,
                         ))
@@ -281,16 +283,16 @@ class _FilterSortCoponsHomeSheetState extends State<FilterSortCoponsHomeSheet> {
                       top: 10.0, left: 10.0, right: 10.0, bottom: 8.0),
                   height: 35.0,
                   child: Obx(
-                        () => findOrderAdvertisersController
-                        .isLoadingGetAdvertisersFromModel.value ? Container(
+                        () => findOrderAdvertisersController.isLoadingGetAdvertisersFromModel.isTrue
+                        ? Container(
                       child: const SpinKitThreeBounce(
                         color: Colors.blue,
                         size: 25,
                       ),
                     )
-                        :findOrderAdvertisersController.getAdsFilterForm.value.stores!=null && findOrderAdvertisersController.getAdsFilterForm.value.stores!.isNotEmpty
+                        :findOrderAdvertisersController.requestsTypes!=null && findOrderAdvertisersController.requestsTypes.value.isNotEmpty
                         ?
-                    DropdownSearch<String>(
+                    DropdownSearch<SelectedNotSelectedFilterAdsType>(
                         mode: Mode.MENU,
                         dropDownButton: Container(
                           margin: const EdgeInsets.only(left: 0.0),
@@ -304,10 +306,9 @@ class _FilterSortCoponsHomeSheetState extends State<FilterSortCoponsHomeSheet> {
                         ),
                         dropdownBuilder: (BuildContext context, s) {
                           return Text(
-                            '${(s ?? '')}',
+                            '${(s?.name ?? '')}',
                             style: TextStyle(
                                 color: AppColors.activitiesDropDown,
-                                /*decoration: TextDecoration.underline,decorationThickness: 2,*/
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w500),
                             textAlign: TextAlign.start,
@@ -346,239 +347,23 @@ class _FilterSortCoponsHomeSheetState extends State<FilterSortCoponsHomeSheet> {
                                   width: 1,
                                 )),
                             fillColor: Colors.white),
-                        items: findOrderAdvertisersController.getAdsFilterForm.value.stores,
+                        items: findOrderAdvertisersController.requestsTypes.value,
                         // label: "Menu mode",
-                        itemAsString: (String? u) => u??'',
+                        itemAsString: (SelectedNotSelectedFilterAdsType? u) => u?.name??'',
                         // hint: "الدولة",
                         //popupItemDisabled: (String s) => s.startsWith('I'),
                         onChanged: (category) {
                           //controller.country.value = country!;
-                          findOrderAdvertisersController.selectedType.value = category!;
+                          findOrderAdvertisersController.selectedNotSelectedFilterAdsType.value = category!;
                         },
-                        selectedItem: findOrderAdvertisersController.selectedType.value!=null?findOrderAdvertisersController.selectedType.value:'اختر متجر') : Container(
+                        selectedItem: findOrderAdvertisersController.selectedNotSelectedFilterAdsType.value!=null && findOrderAdvertisersController.selectedNotSelectedFilterAdsType.value.key!=null?findOrderAdvertisersController.selectedNotSelectedFilterAdsType.value:findOrderAdvertisersController.requestsTypes.value[0]
+
+                    ) : Container(
                         alignment: Alignment.centerRight,
                         child: const Text("لا يوجد بيانات")),
                   ),
                 ),
-
-//--------------------------  third section chips  عرض المعلنين بحسب عدد متابعيهم--------------------
-                /* Divider(
-                  color: Colors.black54,
-                  thickness: .5,
-                  endIndent: 20,
-                  indent: 20,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 10,
-                      height: 10,
-                      margin: EdgeInsets.only(right: 10.0),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(right: 5.0, bottom: 3),
-                        child: Text(
-                          ' عرض الاعلانات بحسب عدد متابعيهم',
-                          style: TextStyle(color: Colors.white),
-                          textAlign: TextAlign.center,
-                        ))
-                  ],
-                ),*/
-                /*Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        margin: const EdgeInsets.only(
-                            top: 10.0, left: 5.0, right: 10.0, bottom: 8.0),
-                        height: 35.0,
-                        child: Obx(
-                              () => findOrderAdvertisersController
-                              .isLoadingGetAdvertisersFromModel.value ? Container(
-                            child: const SpinKitThreeBounce(
-                              color: Colors.blue,
-                              size: 25,
-                            ),
-                          )
-                              :findOrderAdvertisersController.advertisersFormModel.value.channels!=null && findOrderAdvertisersController.advertisersFormModel.value.channels!.isNotEmpty
-                              ?
-                          DropdownSearch<Channel>(
-                              mode: Mode.MENU,
-                              dropDownButton: Container(
-                                margin: const EdgeInsets.only(left: 0.0),
-                                child: SvgPicture.asset(
-                                  'images/dropdown_icon.svg',
-                                  fit: BoxFit.fill,
-                                  height: 8.0,
-                                  width: 8.0,
-                                  color: AppColors.white,
-                                ),
-                              ),
-                              dropdownBuilder: (BuildContext context, s) {
-                                return Text(
-                                  '${(s?.name ?? '')}',
-                                  style: TextStyle(
-                                      color: AppColors.white,
-                                      *//*decoration: TextDecoration.underline,decorationThickness: 2,*//*
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w500),
-                                  textAlign: TextAlign.start,
-                                );
-                              },
-                              dropdownSearchDecoration:
-                              const InputDecoration(
-                                  filled: true,
-                                  //fillColor: Color(0xFFF2F2F2),
-                                  contentPadding: EdgeInsets.only(
-                                      right: 15.0,
-                                      top: 0.0,
-                                      bottom: 0.0),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                        const Radius.circular(12)),
-                                    borderSide: BorderSide(
-                                        width: 0.4,
-                                        color: AppColors
-                                            .borderDropDownColor),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(12)),
-                                    borderSide: BorderSide(
-                                        width: 0.4,
-                                        color: AppColors
-                                            .borderDropDownColor),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(12)),
-                                    borderSide: BorderSide(
-                                        width: 0.4,
-                                        color: AppColors
-                                            .borderDropDownColor),
-                                  ),
-                                  border: const OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(12)),
-                                      borderSide: BorderSide(
-                                        width: 1,
-                                      )),
-                                  fillColor: AppColors.dropDownFill),
-                              items: findOrderAdvertisersController.advertisersFormModel.value.channels,
-                              // label: "Menu mode",
-                              itemAsString: (Channel? u) => u!.name!,
-                              // hint: "الدولة",
-                              //popupItemDisabled: (String s) => s.startsWith('I'),
-                              onChanged: (channel) {
-                                //controller.country.value = country!;
-                                findOrderAdvertisersController.selectedChannel.value = channel!;
-                              },
-                              selectedItem: findOrderAdvertisersController.selectedChannel.value!=null && findOrderAdvertisersController.selectedChannel.value.id!=null?findOrderAdvertisersController.selectedChannel.value:findOrderAdvertisersController.advertisersFormModel.value.channels![0]) : Container(
-                              alignment: Alignment.centerRight,
-                              child: const Text("لا يوجد قنوات")),
-                        ),
-                      ),),
-                    Expanded(
-                        flex: 3,
-                        child: Container(
-                          margin: const EdgeInsets.only(
-                              top: 10.0, left: 10.0, right: 5.0, bottom: 8.0),
-                          height: 35.0,
-                          child: Obx(
-                                () => findOrderAdvertisersController
-                                .isLoadingGetAdvertisersFromModel.value ? Container(
-                              child: const SpinKitThreeBounce(
-                                color: Colors.blue,
-                                size: 25,
-                              ),
-                            )
-                                :findOrderAdvertisersController.advertisersFormModel.value.effect_slides!=null && findOrderAdvertisersController.advertisersFormModel.value.effect_slides!.isNotEmpty
-                                ?
-                            DropdownSearch<EffectSlidesModel>(
-                                mode: Mode.MENU,
-                                dropDownButton: Container(
-                                  margin: const EdgeInsets.only(left: 0.0),
-                                  child: SvgPicture.asset(
-                                    'images/dropdown_icon.svg',
-                                    fit: BoxFit.fill,
-                                    height: 8.0,
-                                    width: 8.0,
-                                    color: AppColors.buttonDropDown,
-                                  ),
-                                ),
-                                dropdownBuilder: (BuildContext context, s) {
-                                  return Text(
-                                    s!.id==null || s.id==-1?'إختر':'${(s.count_to ?? '')}'+'-'+'${(s.count_from ?? '')}',
-                                    style: TextStyle(
-                                        color: AppColors.activitiesDropDown,
-                                        *//*decoration: TextDecoration.underline,decorationThickness: 2,*//*
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.start,
-                                  );
-                                },
-                                dropdownSearchDecoration:
-                                const InputDecoration(
-                                    filled: true,
-                                    //fillColor: Color(0xFFF2F2F2),
-                                    contentPadding: EdgeInsets.only(
-                                        right: 20.0,
-                                        top: 0.0,
-                                        bottom: 0.0),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          const Radius.circular(12)),
-                                      borderSide: BorderSide(
-                                          width: 0.4,
-                                          color: AppColors
-                                              .borderDropDownColor),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(12)),
-                                      borderSide: BorderSide(
-                                          width: 0.4,
-                                          color: AppColors
-                                              .borderDropDownColor),
-                                    ),
-                                    disabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(12)),
-                                      borderSide: BorderSide(
-                                          width: 0.4,
-                                          color: AppColors
-                                              .borderDropDownColor),
-                                    ),
-                                    border: const OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(12)),
-                                        borderSide: BorderSide(
-                                          width: 1,
-                                        )),
-                                    fillColor: Colors.white),
-                                items: findOrderAdvertisersController.advertisersFormModel.value.effect_slides,
-                                // label: "Menu mode",
-                                itemAsString: (EffectSlidesModel? u) => u!.itemAsString(),
-                                // hint: "الدولة",
-                                //popupItemDisabled: (String s) => s.startsWith('I'),
-                                onChanged: (effectSlidesModel) {
-                                  //controller.country.value = country!;
-                                  findOrderAdvertisersController.selectedEffectSlidesModel.value = effectSlidesModel!;
-                                },
-                                selectedItem: findOrderAdvertisersController.selectedEffectSlidesModel.value.id!=null? findOrderAdvertisersController.selectedEffectSlidesModel.value:findOrderAdvertisersController.advertisersFormModel.value.effect_slides![0]) : Container(
-                                alignment: Alignment.centerRight,
-                                child: const Text("لا يوجد شرائح")),
-                          ),
-                        ))
-                  ],
-                ),*/
-
-//--------------------------  fifth section chips 'ابجث باسم المعلن--------------------
+                //--------------------------  fifth section chips 'ابجث باسم المعلن--------------------
                 Divider(
                   color: Colors.black54,
                   thickness: .5,
@@ -587,6 +372,7 @@ class _FilterSortCoponsHomeSheetState extends State<FilterSortCoponsHomeSheet> {
                 ),
                 Container(
                   height: 38,
+                  width: Get.width,
                   margin: EdgeInsets.only(left: 10, right: 10),
                   decoration: const BoxDecoration(
                       border: Border(
@@ -606,61 +392,33 @@ class _FilterSortCoponsHomeSheetState extends State<FilterSortCoponsHomeSheet> {
                       borderRadius:
                       const BorderRadius.all(Radius.circular(12.0)),
                       color: Colors.white),
-                  child: TextField(
-                    textAlign: TextAlign.start,
-                    textAlignVertical: TextAlignVertical.center,
-                    //controller: controller.kayanNameController,
-                    //  enabled: controller.isEnabled.value,
-                    controller: findOrderAdvertisersController.searchAdvertiserController,
-                    style:  TextStyle(
-                        color: AppColors.activitiesDropDown,
-                        /*decoration: TextDecoration.underline,decorationThickness: 2,*/
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500),
-                    /*style: TextStyle(
-                        color: (AppColors.editProfileTextColorOpa)
-                            .withOpacity(0.51),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14.0),*/
-                    onChanged: (s){
-
+                  child: InkWell(
+                    onTap: (){
+                      findOrderAdvertisersController.showChoiceImageDialog(context);
                     },
-                    decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(
-                            left: 10.0, right: 14.0, bottom: 12.0),
-                        // isCollapsed: true,
-                        prefixIcon: Container(
-                          padding: EdgeInsets.all(8.0),
-                          child: SvgPicture.asset(
-                            'images/search_icon.svg',
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 10.0, right: 14.0, bottom: 4.0,top: 4.0),
+                          child: Obx(()=>Text(
+                            (findOrderAdvertisersController.fromDate1.isNotEmpty&&findOrderAdvertisersController.toDate1.isNotEmpty?"من ${findOrderAdvertisersController.fromDate1.value} - إلى ${findOrderAdvertisersController.toDate1.value}" : findOrderAdvertisersController.fromDate1.isNotEmpty?"تاريخ الطلب : ${findOrderAdvertisersController.fromDate1.value}":"اختر تاريخ محدد  أو مرن للطلب"),
+                            style: TextStyle(
+                                color: AppColors.activitiesDropDown,
+                                /*decoration: TextDecoration.underline,decorationThickness: 2,*/
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w500),)),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(left: 10.0),
+                          child: Image.asset(
+                            "images/calender.png",
+                            height: 20,
                           ),
                         ),
-                        /*suffixIcon: Container(
-                          margin: const EdgeInsets.only(left: 0.0),
-                          padding: EdgeInsets.only(left: 5.0,right: 5,top: 13,bottom: 15),
-                          child: SvgPicture.asset(
-                            'images/dropdown_icon.svg',
-                            fit: BoxFit.fill,
-                            height: 8.0,
-                            width: 8.0,
-                            color: AppColors.buttonDropDown,
-                          ),
-                        ),*/
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(70.0),
-                          borderSide: const BorderSide(
-                            width: 0,
-                            style: BorderStyle.none,
-                          ),
-                        ),
-                        filled: true,
-                        hintStyle: TextStyle(
-                            color: AppColors.activitiesDropDown,
-                            /*decoration: TextDecoration.underline,decorationThickness: 2,*/
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w500),
-                        hintText: 'ابجث عن الكوبون باسم المعلن',
-                        fillColor: Colors.white70),
+                      ],
+                    ),
                   ),
                 ),
 //--------------------------  six section حفظ استعادة--------------------
@@ -680,8 +438,7 @@ class _FilterSortCoponsHomeSheetState extends State<FilterSortCoponsHomeSheet> {
                         height: 35,
                         margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
                         child: InkWell(
-                          onTap: () => findOrderAdvertisersController
-                              .onDateClickedSaved(context),
+                          onTap: () => findOrderAdvertisersController.onDateClickedSaved(context),
                           child: Material(
                             elevation: 6.0,
                             shadowColor: Colors.grey[200],
@@ -744,18 +501,24 @@ class _FilterSortCoponsHomeSheetState extends State<FilterSortCoponsHomeSheet> {
       ),
     );
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
-    if(findOrderAdvertisersController.isFilterSavedClicked.isFalse) {
-      findOrderAdvertisersController.isLoadingGetAdvertisersFromModel.value =
-      true;
-      findOrderAdvertisersController.getAdsFilterForm.value = GetCouponsFilterModel();
-      findOrderAdvertisersController.advertisersTopRated.value = [];
-      findOrderAdvertisersController.selectedUserLocations.value = [];
-      findOrderAdvertisersController.isAreaEnabled.value = true;
-      findOrderAdvertisersController.isCountryEnabled.value = true;
-      findOrderAdvertisersController.searchAdvertiserController.text = '';
+    if(widget.type=="archive") {
+      if(findOrderAdvertisersController.isFilterSavedClicked.isFalse) {
+        findOrderAdvertisersController.isLoadingGetAdvertisersFromModel.value =
+        true;
+        findOrderAdvertisersController.getMyRequestsFilterForm.value =
+            GetMyRequestsFilterForm();
+        findOrderAdvertisersController.advertisersTopRated.value = [];
+        findOrderAdvertisersController.selectedUserLocations.value = [];
+        findOrderAdvertisersController.isAreaEnabled.value = true;
+        findOrderAdvertisersController.isCountryEnabled.value = true;
+        findOrderAdvertisersController.requestsTypes.value = [];
+        findOrderAdvertisersController.fromDate1.value = "";
+        findOrderAdvertisersController.toDate1.value = "";
+      }
     }
     super.dispose();
   }

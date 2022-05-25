@@ -1,15 +1,20 @@
 import 'dart:io';
 
+import 'package:advertisers/app_core/network/models/CategoryModel.dart';
 import 'package:advertisers/app_core/network/models/ClientProfileModel.dart';
 import 'package:advertisers/app_core/network/models/Employee.dart';
+import 'package:advertisers/app_core/network/models/GetMyRequestsFilterForm.dart';
 import 'package:advertisers/app_core/network/models/Operation.dart';
 import 'package:advertisers/app_core/network/models/ReasonDataModel.dart';
 import 'package:advertisers/app_core/network/models/RequestModel.dart';
+import 'package:advertisers/app_core/network/models/SelectedNotSelectedFilterAdsType.dart';
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/requests/AddEmployeeRequest.dart';
 import 'package:advertisers/app_core/network/requests/AddReplyOnCommentRequest.dart';
+import 'package:advertisers/app_core/network/requests/GetGallaryRequestFilter.dart';
 import 'package:advertisers/app_core/network/responses/AddEmployeeResponse.dart';
 import 'package:advertisers/app_core/network/responses/GalleryResponse.dart';
+import 'package:advertisers/app_core/network/responses/GetGalleryFilterResponse.dart';
 import 'package:advertisers/app_core/network/responses/ListEmployeesModelResponse.dart';
 import 'package:advertisers/app_core/network/responses/ListOperationsResponse.dart';
 import 'package:advertisers/app_core/network/responses/MyCommentsResponse.dart';
@@ -223,7 +228,89 @@ class GalleryController extends GetxController  with StateMixin<MyCommentsRespon
 
    }
 
+   var getMyRequestsFilterForm = GetGallaryRequestFilter().obs;
 
+   var isLoading = true.obs;
+   var isEmpty = false.obs;
+
+   RxList<SelectedNotSelectedFilterAdsType> advertisersTopRated = <SelectedNotSelectedFilterAdsType>[].obs;
+   RxList<SelectedNotSelectedFilterAdsType> users = <SelectedNotSelectedFilterAdsType>[].obs;
+   RxList<CategoryModel> services = <CategoryModel>[].obs;
+   var selectedNotSelectedFilterAdsType = SelectedNotSelectedFilterAdsType().obs;
+   var categorySelected = CategoryModel().obs;
+   var isLoadingGetAdvertisersFromModel = true.obs;
+   String? myToken;
+   RxList<CategoryModel> selectedUserLocations = <CategoryModel>[].obs;
+   var isFilterSavedClicked = false.obs;
+   var isAreaEnabled = true.obs;
+   var isCountryEnabled = true.obs;
+
+   Future<void> getAdsForm(BuildContext context) async {
+     print("here");
+     String myToken = await storage.read("token");
+     client!.getGalleryFilterForm("Bearer " + myToken).then((value) {
+       if (value.status == 200 && value.data != null) {
+         getMyRequestsFilterForm.value = value.data!;
+/*getMyRequestsFilterForm.value.sorts?.insert(
+0, AdTypeModel(id: -1, name: 'ابحث عن الاعلان من خلال القسم'));*/
+         advertisersTopRated.value = [];
+
+
+         getMyRequestsFilterForm.value.filters?.entries.forEach((element) {
+           advertisersTopRated.add(
+               SelectedNotSelectedFilterAdsType(
+                 name: element.value,
+                 key: element.key,
+               ));
+         });
+
+
+         getMyRequestsFilterForm.value.users?.entries.forEach((element) {
+           users.add(
+               SelectedNotSelectedFilterAdsType(
+                 name: element.value,
+                 key: element.key,
+               ));
+         });
+
+         users.insert(
+             0,
+             SelectedNotSelectedFilterAdsType(
+               name: "اختر ترتيب بحسب",
+               key: "-1",
+             ));
+
+         if( getMyRequestsFilterForm.value.services!=null) {
+           services.value = getMyRequestsFilterForm.value.services!;
+
+           services.insert(0,
+              CategoryModel(
+                name: "اختر ترتيب بحسب",
+                id: -1
+              ));
+         }
+         isLoadingGetAdvertisersFromModel.value = false;
+       } else {
+         isLoadingGetAdvertisersFromModel.value = false;
+       }
+     });
+   }
+
+   void addCategory(CategoryModel categoryModel) {
+
+     CategoryModel? country = selectedUserLocations.firstWhereOrNull((element) => element.id ==categoryModel.id);
+     if(country==null&& categoryModel.id!=-1) {
+       selectedUserLocations.add(categoryModel);
+     }
+   }
+
+   void onSelectedCategoriesClicked(int id) {
+
+     CategoryModel? country = selectedUserLocations.firstWhereOrNull((element) => element.id ==id);
+     if(country!=null ) {
+       selectedUserLocations.removeWhere((element) => element.id == id);
+     }
+   }
 
    @override
   void onClose() {
