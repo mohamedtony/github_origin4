@@ -201,8 +201,8 @@ class Repository {
           // 'Accept-Type': 'application/json',
           "Authorization": json!["token"],
           "Accept": "application/json",
-          if(storage.read("ownerid")!=null && storage.read("accountype")!=null && storage.read("accountype")=="user")
-            "OwnerID": "${storage.read("ownerid")}",
+          // if(storage.read("ownerid")!=null && storage.read("accountype")!=null && storage.read("accountype")=="user")
+          //   "OwnerID": "${storage.read("ownerid")}",
         },
         //body: body,
       )
@@ -264,8 +264,8 @@ class Repository {
           // 'Accept-Type': 'application/json',
           "Authorization": json!["token"],
           "Accept": "application/json",
-          if(storage.read("ownerid")!=null && storage.read("accountype")!=null && storage.read("accountype")=="user")
-            "OwnerID": "${storage.read("ownerid")}",
+          // if(storage.read("ownerid")!=null && storage.read("accountype")!=null && storage.read("accountype")=="user")
+          //   "OwnerID": "${storage.read("ownerid")}",
         },
         body: body,
       )
@@ -327,8 +327,8 @@ class Repository {
           // 'Accept-Type': 'application/json',
           "Authorization": json!["token"],
           "Accept": "application/json",
-          if(storage.read("ownerid")!=null && storage.read("accountype")!=null && storage.read("accountype")=="user")
-            "OwnerID": "${storage.read("ownerid")}",
+          // if(storage.read("ownerid")!=null && storage.read("accountype")!=null && storage.read("accountype")=="user")
+          //   "OwnerID": "${storage.read("ownerid")}",
         },
         //body: body,
       )

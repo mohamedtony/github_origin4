@@ -23,8 +23,8 @@ class CustomInterceptor implements Interceptor {
       // 'Lang': locator<PrefsService>().appLanguage,
       // 'Authorization': locator<PrefsService>().userObj?.accessToken ?? '',
       'Content-Type': 'application/json',
-      if(storage.read("ownerid")!=null && storage.read("accountype")!=null && storage.read("accountype")=="user")
-        "OwnerID": "${storage.read("ownerid")}",
+      // if(storage.read("ownerid")!=null && storage.read("accountype")!=null && storage.read("accountype")=="user")
+      //   "OwnerID": "${storage.read("ownerid")}",
       // 'Accept': 'application/json',
     };
     return handler.next(options);

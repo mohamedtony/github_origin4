@@ -103,10 +103,10 @@ class LoginController extends GetxController{
       storage.write("token", res.data!.token);
       storage.write("data",res.data!.toJson());
       storage.write("id", res.data!.id);
-      if(res.data!.owners!=null&&res.data!.owners!.isNotEmpty){
-        storage.write("ownerid", res.data!.owners![0].userId);
-        storage.write("accountype", res.data!.role);
-        print("controller.ownerId ${res.data!.owners![0].userId} = ${storage.read("ownerid")}");
+      if(res.data!.owners!=null&&res.data!.owners!.isNotEmpty&&res.data!.role!=null&&res.data!.role=="user"){
+        // storage.write("ownerid", res.data!.owners![0].userId);
+        // storage.write("accountype", res.data!.role);
+        // print("controller.ownerId ${res.data!.owners![0].userId} = ${storage.read("ownerid")}");
       }
 
       if(EasyLoading.isShow){
