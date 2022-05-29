@@ -22,6 +22,7 @@ import 'package:advertisers/app_core/network/responses/CoponsResponse.dart';
 import 'package:advertisers/app_core/network/responses/CountriesResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestResponse.dart';
 import 'package:advertisers/app_core/network/responses/CreateSubscriptionResponse.dart';
+import 'package:advertisers/app_core/network/responses/GalleryResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetAdsFilterFormResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetAdsListResponse.dart';
 import 'package:advertisers/app_core/network/responses/GetAdvertisersFormResponse.dart';
@@ -281,6 +282,9 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
 
   @GET('/gallery/filter_form')
   Future<GetGalleryFilterResponse> getGalleryFilterForm(@Header("Authorization") String token,);
+
+  @GET('/gallery')
+  Future<GalleryResponse> getGallery(@Queries() Map<String, dynamic> queries,@Header("Authorization") String token,);
 
 
   @GET('/copons/filter_form2')

@@ -581,7 +581,7 @@ class _GallerySheetState extends State<GallerySheet> {
                         height: 35,
                         margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
                         child: InkWell(
-                          //onTap: () => galleryController.onDateClickedSaved(context),
+                          onTap: () => galleryController.onDateClickedSaved(context),
                           child: Material(
                             elevation: 6.0,
                             shadowColor: Colors.grey[200],
@@ -610,7 +610,7 @@ class _GallerySheetState extends State<GallerySheet> {
                         child: InkWell(
 
                           onTap: () {
-                           // galleryController.onReturnClicked(context);
+                           galleryController.onReturnClicked(context);
                             // Get.back();
                           },
                           child: Material(

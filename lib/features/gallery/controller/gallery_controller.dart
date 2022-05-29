@@ -11,6 +11,7 @@ import 'package:advertisers/app_core/network/models/SelectedNotSelectedFilterAds
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/requests/AddEmployeeRequest.dart';
 import 'package:advertisers/app_core/network/requests/AddReplyOnCommentRequest.dart';
+import 'package:advertisers/app_core/network/requests/GetGallaryRequest.dart';
 import 'package:advertisers/app_core/network/requests/GetGallaryRequestFilter.dart';
 import 'package:advertisers/app_core/network/responses/AddEmployeeResponse.dart';
 import 'package:advertisers/app_core/network/responses/GalleryResponse.dart';
@@ -121,7 +122,7 @@ class GalleryController extends GetxController  with StateMixin<MyCommentsRespon
 
   List<GalleryItem> galleryList=[];
   var myGalleryResponse=GalleryResponse().obs;
-
+   GetGallaryRequest? getGallaryRequest = GetGallaryRequest(page: 1,);
   void getGalleryData({bool isRefresh = false }) async {
     if (isRefresh) {
       currentPage = 1;
@@ -131,7 +132,50 @@ class GalleryController extends GetxController  with StateMixin<MyCommentsRespon
       }
     }
     EasyLoading.show();
-    repo.get<GalleryResponse>(
+
+
+    getGallaryRequest!.page = currentPage;
+    Logger().i(getGallaryRequest!.toJson());
+    client!.getGallery(getGallaryRequest!.toJson(),"Bearer " + token!).then((res) {
+      if (EasyLoading.isShow) {
+        EasyLoading.dismiss();
+      }
+
+      if (isRefresh) {
+        galleryList = res.data??[];
+      }else{
+        galleryList.addAll(res.data??[]);
+      }
+      myGalleryResponse.value.data=res.data;
+      print("my commentsList len "+galleryList.length.toString());
+      currentPage++;
+      totalPages = res.pagination?.total??0;
+      update();
+      return true;
+    }).catchError((Object obj) {
+      // non-200 error goes here.
+      switch (obj.runtimeType) {
+        case DioError:
+        // Here's the sample to get the failed response error code and message
+          final res = (obj as DioError).response;
+          Logger().e("Got error : ${res?.statusCode} -> ${res?.statusMessage}");
+          if (EasyLoading.isShow) {
+            EasyLoading.dismiss();
+          }
+          Get.snackbar(
+            "خطأ",
+            res!.statusMessage.toString(),
+            icon: const Icon(Icons.person, color: Colors.red),
+            backgroundColor: Colors.yellow,
+            snackPosition: SnackPosition.BOTTOM,);
+          return false;
+          break;
+        default:
+          break;
+      }
+    });
+
+/*    repo.get<GalleryResponse>(
         path: 'gallery',
         fromJson: (json) => GalleryResponse.fromJson(json),
         json: {"token": "Bearer $token"},
@@ -164,7 +208,7 @@ class GalleryController extends GetxController  with StateMixin<MyCommentsRespon
             icon: const Icon(Icons.person, color: Colors.red),
             backgroundColor: Colors.yellow,
             snackPosition: SnackPosition.BOTTOM,);
-        });
+        });*/
   }
 
    void deleteAnItemInGallery({int? id}) async {
@@ -311,7 +355,53 @@ class GalleryController extends GetxController  with StateMixin<MyCommentsRespon
        selectedUserLocations.removeWhere((element) => element.id == id);
      }
    }
+   onDateClickedSaved(BuildContext context) {
+     isFilterSavedClicked.value = true;
+     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+         content: Text(
+           "تم حفظ البيانات بنجاح !",
+           style: TextStyle(
+               color: Colors.white, fontSize: 17, fontFamily: 'Arabic-Regular'),
+         )));
+     Get.back();
+     isLoading.value = true;
+     List<String>? sortByStrings = [];
+     advertisersTopRated.forEach((element) {
+       if (element.isSelected.isTrue) {
+         sortByStrings.add(element.key!);
+       }
+     });
+     List<String>? categoryStrings = [];
+     selectedUserLocations.forEach((element) {
+       categoryStrings.add(element.id!.toString());
+     });
+     Logger().i(GetGallaryRequest(
+         filters: sortByStrings.isNotEmpty ? sortByStrings.join(",") : null,
+         categories: categoryStrings.isNotEmpty ? categoryStrings.join(",") : null,
+          user_id: selectedNotSelectedFilterAdsType.value.key!=null?selectedNotSelectedFilterAdsType.value.key:null
+         )
+         .toJson());
+     getGallaryRequest = GetGallaryRequest(
+         filters: sortByStrings.isNotEmpty ? sortByStrings.join(",") : null,
+         categories: categoryStrings.isNotEmpty ? categoryStrings.join(",") : null,
+         user_id: selectedNotSelectedFilterAdsType.value.key!=null?selectedNotSelectedFilterAdsType.value.key:null
+     );
+     //pagingController.refresh();
+     //refreshController.resetNoData();
+     getGalleryData(isRefresh: true);
+   }
 
+   void onReturnClicked(BuildContext context) {
+     isFilterSavedClicked.value = false;
+     advertisersTopRated.value.forEach((element) {
+       element.isSelected.value = false;
+     });
+     selectedUserLocations.value = [];
+     selectedNotSelectedFilterAdsType.value = SelectedNotSelectedFilterAdsType();
+     getGallaryRequest = GetGallaryRequest(page: 1,);
+     getGalleryData(isRefresh: true);
+     Get.back();
+   }
    @override
   void onClose() {
     searchController.dispose();
