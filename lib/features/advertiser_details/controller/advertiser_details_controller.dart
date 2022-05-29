@@ -375,6 +375,7 @@ void setStateBehavior(){
       }
     }
   }
+
   void onSaveChannelsClicked(BuildContext context) {
     Logger().i(channelsIds);
     Logger().i("categoryId= ",categoryId);
@@ -398,8 +399,8 @@ void setStateBehavior(){
   List<TextEditingController> urlControllers = [];
 
   List<AnimationController> animationControllers = [];
-  List<Animation<Offset>> animationTextFields = [];
-  List<Animation<Offset>> animationsClose = [];
+  RxList<Animation<Offset>> animationTextFields = <Animation<Offset>>[].obs;
+  RxList<Animation<Offset>> animationsClose = <Animation<Offset>>[].obs;
   RxList<LinkModel> urlList = <LinkModel>[].obs;
 
  /* void addToUrlList(){
@@ -435,8 +436,8 @@ void setStateBehavior(){
     if(animationTextFields.length>0) {
       animationTextFields.removeAt(index);
     }
-    if(animationsClose.length>0) {
-      animationsClose.removeAt(index);
+    if(animationsClose.value.length>0) {
+      animationsClose.value.removeAt(index);
     }
     numOfLinks.value --;
     /* List<TextEditingController> textUrlControllers = [];
@@ -462,7 +463,7 @@ void setStateBehavior(){
       ),
     ));
 
-    animationsClose.add(Tween(
+    animationsClose.value.add(Tween(
       begin: const Offset(0.0, 0.0),
       end: const Offset(1.0, 0.0),
     ).animate(
@@ -626,34 +627,37 @@ void setStateBehavior(){
         if((value.data?.links)!=null && (value.data?.links?.length)!=null && (value.data?.links!.length)! > 0){
           //print("descController"+value.data!.links![0].toString());
           urlList.value = value.data!.links!;
-          //numOfLinks.value = value.data!.links!.length;
-          numOfLinks.value=1;
-          textUrlControllers.add(TextEditingController());
-          urlControllers.add(TextEditingController());
-          animationControllers.add(AnimationController(
-            vsync: this,
-            duration: const Duration(milliseconds: 200),
-          ));
+          numOfLinks.value = value.data!.links!.length;
+         // numOfLinks.value=1;
+          value.data!.links?.forEach((element) {
+            textUrlControllers.add(TextEditingController(text: element.name));
+            urlControllers.add(TextEditingController(text: element.link));
+            animationControllers.add(AnimationController(
+              vsync: this,
+              duration: const Duration(milliseconds: 200),
+            ));
 
-          animationTextFields.add(Tween(
-            begin: const Offset(0.0, 0.0),
-            end: const Offset(0.2, 0.0),
-          ).animate(
-            CurvedAnimation(
-              curve: Curves.decelerate,
-              parent: animationControllers[0],
-            ),
-          ));
+            animationTextFields.add(Tween(
+              begin: const Offset(0.0, 0.0),
+              end: const Offset(0.2, 0.0),
+            ).animate(
+              CurvedAnimation(
+                curve: Curves.decelerate,
+                parent: animationControllers[0],
+              ),
+            ));
 
-          animationsClose.add(Tween(
-            begin: const Offset(0.0, 0.0),
-            end: const Offset(1.0, 0.0),
-          ).animate(
-            CurvedAnimation(
-              curve: Curves.decelerate,
-              parent:  animationControllers[0],
-            ),
-          ));
+            animationsClose.value.add(Tween(
+              begin: const Offset(0.0, 0.0),
+              end: const Offset(1.0, 0.0),
+            ).animate(
+              CurvedAnimation(
+                curve: Curves.decelerate,
+                parent:  animationControllers[0],
+              ),
+            ));
+          });
+
 
           /*value.data?.links?.asMap().forEach((index,element) {
             if(index==0){
@@ -804,7 +808,7 @@ void setStateBehavior(){
         ),
       ));
 
-      animationsClose.add(Tween(
+      animationsClose.value.add(Tween(
         begin: const Offset(0.0, 0.0),
         end: const Offset(1.0, 0.0),
       ).animate(
@@ -833,7 +837,7 @@ void setStateBehavior(){
         ),
       ));
 
-      animationsClose.add(Tween(
+      animationsClose.value.add(Tween(
         begin: const Offset(0.0, 0.0),
         end: const Offset(1.0, 0.0),
       ).animate(
@@ -1886,7 +1890,7 @@ void setStateBehavior(){
         ),
       ));
 
-      animationsClose.add(Tween(
+      animationsClose.value.add(Tween(
         begin: const Offset(0.0, 0.0),
         end: const Offset(1.0, 0.0),
       ).animate(

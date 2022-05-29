@@ -34,7 +34,7 @@ class _UrlsPageState extends State<UrlsPage>  {
   initState() {
     super.initState();
 
-   //animateBegin();
+   animateBegin();
 
 /*    WidgetsBinding.instance?.addPostFrameCallback((_){
 
@@ -176,7 +176,7 @@ class _UrlsPageState extends State<UrlsPage>  {
                       },
                       child: Stack(
                         children: [
-                          Positioned(
+                          Obx(()=>requestAdvertiseController.animationsClose.isNotEmpty?Positioned(
                             left: -80,
                             top: 5,
                             bottom: 5,
@@ -212,8 +212,8 @@ class _UrlsPageState extends State<UrlsPage>  {
                                 ),
                               ),
                             ),
-                          ),
-                          SlideTransition(
+                          ):const SizedBox()),
+                          Obx(()=>requestAdvertiseController.animationTextFields.isNotEmpty?SlideTransition(
                             position:  requestAdvertiseController.animationTextFields[index],
                             child: Container(
                               margin: EdgeInsets.only(bottom: 8),
@@ -345,7 +345,7 @@ class _UrlsPageState extends State<UrlsPage>  {
                                 ],
                               ),
                             ),
-                          ),
+                          ):const SizedBox()),
                         ],
                       ),
                     );
@@ -428,17 +428,17 @@ class _UrlsPageState extends State<UrlsPage>  {
   void dispose() {
     // TODO: implement dispose
     if (requestAdvertiseController.isUrlSaveClicked.isFalse) {
-      requestAdvertiseController.links.value = [];
-      requestAdvertiseController.numOfLinks.value = 1;
+/*      requestAdvertiseController.links.value = [];
+      //requestAdvertiseController.numOfLinks.value = 1;
       requestAdvertiseController.urlControllers = [];
       requestAdvertiseController.textUrlControllers = [];
-      requestAdvertiseController.animationsClose = [];
-      requestAdvertiseController.animationTextFields = [];
+      requestAdvertiseController.animationsClose.value = [];
+      requestAdvertiseController.animationTextFields.value = [];
       requestAdvertiseController.animationControllers = [];
       requestAdvertiseController.textUrlControllers.add(
           TextEditingController());
       requestAdvertiseController.urlControllers.add(TextEditingController());
-      requestAdvertiseController.disposeAnimation();
+      requestAdvertiseController.disposeAnimation();*/
 /*      requestAdvertiseController.animationControllers.add(AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 200),
@@ -470,10 +470,16 @@ class _UrlsPageState extends State<UrlsPage>  {
   }
 
   Future<void> animateBegin() async {
-    await Future.delayed(Duration(milliseconds: 800), () => requestAdvertiseController.animationControllers[0].forward().whenComplete(() async {
-      await Future.delayed(Duration(milliseconds: 800), () => requestAdvertiseController.animationControllers[0].reverse()/*.whenComplete(() => _controller.stop())*/);
-
-    }));
+    if(requestAdvertiseController.animationControllers.isNotEmpty && requestAdvertiseController.animationControllers.length>0) {
+      await Future.delayed(Duration(milliseconds: 800), () =>
+          requestAdvertiseController.animationControllers[0]
+              .forward()
+              .whenComplete(() async {
+            await Future.delayed(Duration(milliseconds: 800), () =>
+                requestAdvertiseController.animationControllers[0]
+                    .reverse() /*.whenComplete(() => _controller.stop())*/);
+          }));
+    }
   }
 }
 

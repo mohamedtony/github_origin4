@@ -14,8 +14,9 @@ class GetMyRequestsModelRequest {
   String?country_category;
   String? filters;
   int? page;
+  int?withme;
 
-  GetMyRequestsModelRequest({this.archive,this.filters,this.sort_by,this.advertiser_name,this.from_date, this.areas,this.to_date,this.keyword,this.page,this.countries,this.country_category});
+  GetMyRequestsModelRequest({this.archive,this.filters,this.sort_by,this.advertiser_name,this.from_date, this.areas,this.to_date,this.keyword,this.page,this.countries,this.country_category,this.withme});
 
   factory GetMyRequestsModelRequest.fromJson(Map<String, dynamic> json) =>
       _$GetMyRequestsModelRequestFromJson(json);

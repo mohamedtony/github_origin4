@@ -20,6 +20,7 @@ GetMyRequestsModelRequest _$GetMyRequestsModelRequestFromJson(
       page: json['page'] as int?,
       countries: json['countries'] as String?,
       country_category: json['country_category'] as String?,
+      withme: json['withme'] as int?,
     );
 
 Map<String, dynamic> _$GetMyRequestsModelRequestToJson(
@@ -36,4 +37,5 @@ Map<String, dynamic> _$GetMyRequestsModelRequestToJson(
       'country_category': instance.country_category,
       'filters': instance.filters,
       'page': instance.page,
+      'withme': instance.withme,
     };

@@ -249,6 +249,7 @@ class MyOrdersController extends GetxController{
 
     Logger().i(getMyRequestsModelRequest!.toJson());
     getMyRequestsModelRequest!.archive = 0;
+    getMyRequestsModelRequest!.withme = 1;
     getMyRequestsModelRequest!.page = currentPage;
     client!.getMyRequests(getMyRequestsModelRequest!.toJson(),"Bearer " + token!).then((res) {
       if (EasyLoading.isShow) {
@@ -268,7 +269,7 @@ class MyOrdersController extends GetxController{
       // print(response.body);
       //setState(() {});
       update();
-      return true;
+      //return true;
     }).catchError((Object obj) {
       // non-200 error goes here.
       switch (obj.runtimeType) {
