@@ -16,12 +16,14 @@ import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestRes
 import 'package:advertisers/app_core/network/responses/TaxSettingsResponse.dart';
 import 'package:advertisers/features/advertiser_details/sheets/advertising_date_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/urls_bottom_sheet.dart';
+import 'package:advertisers/features/advertising_story_details/vimo_video/quality_links.dart';
 import 'package:advertisers/features/home_page/app_colors.dart';
 import 'package:advertisers/shared/loading_dialog.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -32,6 +34,7 @@ import 'package:logger/logger.dart';
 import 'dart:ui' as ui;
 import 'package:location/location.dart' as location;
 import 'package:dio/dio.dart' as myDio;
+import 'package:path_provider/path_provider.dart';
 import 'package:video_compress/video_compress.dart';
 import '../../../main.dart';
 
@@ -393,12 +396,12 @@ void setStateBehavior(){
   }
   //---------------------- for urls page ------------------------------------------------
   RxList<LinkModel> links = <LinkModel>[].obs;
-  var numOfLinks = 1.obs;
+  var numOfLinks = 0.obs;
   var isUrlSaveClicked = false.obs;
   List<TextEditingController> textUrlControllers = [];
   List<TextEditingController> urlControllers = [];
 
-  List<AnimationController> animationControllers = [];
+  List<AnimationController> animationControllers = <AnimationController>[].obs;
   RxList<Animation<Offset>> animationTextFields = <Animation<Offset>>[].obs;
   RxList<Animation<Offset>> animationsClose = <Animation<Offset>>[].obs;
   RxList<LinkModel> urlList = <LinkModel>[].obs;
@@ -415,14 +418,17 @@ void setStateBehavior(){
   }*/
 
   void removeFromUrlList(LinkModel? item,int? index){
-    urlList.remove(item);
+    print("mIndex=>$index");
+    urlList.value.remove(item!);
+
+    print("mIndex=>${urlList.length}");
     deleteLink(index!);
-    //update();
+   // update();
   }
   void deleteLink(int index) {
     print(index);
     if(links.value.length>0) {
-      links.removeAt(index);
+      links.value.removeAt(index);
     }
     if(textUrlControllers.length>0) {
       textUrlControllers.removeAt(index);
@@ -434,7 +440,7 @@ void setStateBehavior(){
       animationControllers.removeAt(index);
     }
     if(animationTextFields.length>0) {
-      animationTextFields.removeAt(index);
+      animationTextFields.value.removeAt(index);
     }
     if(animationsClose.value.length>0) {
       animationsClose.value.removeAt(index);
@@ -628,8 +634,39 @@ void setStateBehavior(){
           //print("descController"+value.data!.links![0].toString());
           urlList.value = value.data!.links!;
           numOfLinks.value = value.data!.links!.length;
+
+          value.data?.links?.asMap().forEach((index,element) {
+            textUrlControllers.add(TextEditingController(text: element.name));
+            urlControllers.add(TextEditingController(text: element.link));
+            animationControllers.add(AnimationController(
+              vsync: this,
+              duration: const Duration(milliseconds: 200),
+            ));
+
+            animationTextFields.add(Tween(
+              begin: const Offset(0.0, 0.0),
+              end: const Offset(0.2, 0.0),
+            ).animate(
+              CurvedAnimation(
+                curve: Curves.decelerate,
+                parent: animationControllers[index],
+              ),
+            ));
+
+            animationsClose.value.add(Tween(
+              begin: const Offset(0.0, 0.0),
+              end: const Offset(1.0, 0.0),
+            ).animate(
+              CurvedAnimation(
+                curve: Curves.decelerate,
+                parent:  animationControllers[index],
+              ),
+            ));
+          });
+
+
          // numOfLinks.value=1;
-          value.data!.links?.forEach((element) {
+         /* value.data!.links?.forEach((element) {
             textUrlControllers.add(TextEditingController(text: element.name));
             urlControllers.add(TextEditingController(text: element.link));
             animationControllers.add(AnimationController(
@@ -656,7 +693,7 @@ void setStateBehavior(){
                 parent:  animationControllers[0],
               ),
             ));
-          });
+          });*/
 
 
           /*value.data?.links?.asMap().forEach((index,element) {
@@ -758,12 +795,61 @@ void setStateBehavior(){
           toDate.value = value.data!.ended_at!;
           dateRange.value.toDate = value.data!.ended_at!;
         }
-        /*if(value.data?.attachments!=null && value.data!.attachments!.isNotEmpty){
-          value.data?.attachments?.forEach((element) {
-            attatechedFilesImageAndVideo.add(FileModel(link: element.path,isVideo:element.type=="image"?false:true ));
+        if(value.data?.attachments!=null && value.data!.attachments!.isNotEmpty){
+          value.data?.attachments?.forEach((element) async {
+            //element.type="video";
+            if(element.type=="video" && element.video_id!=null) {
+
+            /*  final fileName = await VideoThumbnail.thumbnailFile(
+                  video: '_qualityValue',
+                  thumbnailPath: (await getTemporaryDirectory()).path,
+            imageFormat: ImageFormat.PNG,
+            maxHeight: 64, // specify the height of the thumbnail, let the width auto-scaled to keep the source aspect ratio
+            quality: 75,
+            );*/
+
+
+              QualityLinks _quality = QualityLinks(element.video_id);
+
+              //Initializing video controllers when receiving data from Vimeo
+              _quality.getQualitiesSync("advertiser",id:element.id).then((value) async {
+                String _qualityValue = value[value.lastKey()];
+                print("url=" + _qualityValue.toString());
+
+                /*attatechedFilesImageAndVideo.add(FileModel(
+                    urlVideoLink: _qualityValue,link: element.path,
+                    isVideo: element.type == "image" ? false : true));
+
+                Map<String, dynamic> mymap3={
+                  "videLinkes": attatechedFilesImageAndVideo,
+                };
+
+                FlutterBackgroundService().invoke("setAsForeground",mymap3);
+
+
+                final fileName = await VideoThumbnail.thumbnailFile(
+                    video: _qualityValue,
+                    thumbnailPath: (await getTemporaryDirectory()).path,
+                imageFormat: ImageFormat.PNG,
+                maxHeight: 64, // specify the height of the thumbnail, let the width auto-scaled to keep the source aspect ratio
+                quality: 75,
+                );
+
+                attatechedFilesImageAndVideo.add(FileModel(
+                    urlVideoLink: fileName,link: element.path,
+                    isVideo: element.type == "image" ? false : true));*/
+              });
+            }else{
+              attatechedFilesImageAndVideo.add(
+                  FileModel(link: element.path,
+                  isVideo: element.type == "image" ? false : true,
+                    type:"net",
+                    id: element.id
+                  ));
+            }
           });
 
-        }*/
+        }
 
         if((value.data?.copon)!=null && (value.data?.copon?.code)!=null ){
           coponModel.value = value.data!.copon!;
@@ -858,17 +944,20 @@ void setStateBehavior(){
       );
     }
   }
-  void onSaveUrlsClicked(BuildContext context) {
+  void onSaveUrlsClicked(BuildContext context,String type) {
     if(numOfLinks.value==0){
       Get.back();
     }
     else if(textUrlControllers[numOfLinks.value-1].text.isNotEmpty && urlControllers[numOfLinks.value-1].text.isNotEmpty){
       isUrlSaveClicked.value = true;
-      Get.back();
+      //Get.back();
+      urlList.value = [];
+      links.value = [];
       for(int i=0;i<numOfLinks.value;i++){
         links.add(LinkModel(name: textUrlControllers[i].text,link: urlControllers[i].text));
         urlList.add(LinkModel(name: textUrlControllers[i].text,link: urlControllers[i].text));
       }
+      onEditRequestClicked(context,type);
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("تم حفظ الروابط بنجاح !",style: TextStyle(color: AppColors.white,fontSize: 17,fontFamily: 'Arabic-Regular'),)));
     }else{
@@ -1274,10 +1363,35 @@ void setStateBehavior(){
 
   //================================== attatchement sheet ===============================
   void deleteImage(int index){
-    attatechedFilesImageAndVideo.removeAt(index);
-    imageFideoFiles?.removeAt(index);
-    imageFideoRealFiles?.removeAt(index);
+    if(attatechedFilesImageAndVideo[index]!=null){
+      if(attatechedFilesImageAndVideo[index].type=="gallery"){
+        attatechedFilesImageAndVideo.removeAt(index);
+        imageFideoFiles?.removeAt(index);
+        imageFideoRealFiles.removeAt(index);
+        imageFideoFilesPathStr?.removeAt(index);
+      }else{
+        deleteFileApi(index,attatechedFilesImageAndVideo[index].id);
+      }
+    }
+
   }
+  Future<void> deleteFileApi(int index,int? file_id) async {
+    print("MyId"+file_id.toString());
+    EasyLoading.show();
+    // myToken = await storage.read("token");
+    client!.deleteFile(requestDetailsModel.value.id, file_id, "Bearer $myToken").then((value){
+      if(value.status!=null && value.status==200 ){
+        print("deleteSucess");
+        attatechedFilesImageAndVideo.removeAt(index);
+        //imageFideoFiles?.removeAt(index);
+        //imageFideoRealFiles.removeAt(index);
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
+      }
+    });
+  }
+
   Future<void> showChoiceImageOrVideoDialogForAttatchement(BuildContext context)
   {
     return showDialog(context: context,builder: (BuildContext context){
@@ -1393,7 +1507,8 @@ void setStateBehavior(){
       attatechedFilesImageAndVideo.add(
           FileModel(
               file:file,
-              isVideo:false
+              isVideo:false,
+              type:"gallery"
           )
       );
       await compressFile(file).then((value) async {
@@ -1402,6 +1517,7 @@ void setStateBehavior(){
                 .split(Platform.pathSeparator)
                 .last);
         imageFideoFiles?.add(mFile);
+        imageFideoFilesPathStr?.add(value.path);
         imageFideoRealFiles.add(value);
       });
     }
@@ -1435,7 +1551,8 @@ void setStateBehavior(){
           attatechedFilesImageAndVideo.add(
               FileModel(
                   file:videoFile,
-                  isVideo:true
+                  isVideo:true,
+                  type:"gallery"
               )
           );
           var mFile =  await myDio.MultipartFile.fromFile(videoFile.path,
@@ -1443,6 +1560,7 @@ void setStateBehavior(){
                   .split(Platform.pathSeparator)
                   .last);
           imageFideoFiles?.add(mFile);
+          imageFideoFilesPathStr?.add(videoFile.path);
           imageFideoRealFiles.add(videoFile);
           /*print("videoLength= "+videoFile.lengthSync().toString());
            await compressVideo(videoFile).then((value) async {
@@ -1458,7 +1576,8 @@ void setStateBehavior(){
           attatechedFilesImageAndVideo.add(
               FileModel(
                   file:File(element.path!),
-                  isVideo:false
+                  isVideo:false,
+                  type:"gallery"
               )
           );
           compressFile(File(element.path!)).then((value) async {
@@ -1467,6 +1586,7 @@ void setStateBehavior(){
                     .split(Platform.pathSeparator)
                     .last);
             imageFideoFiles?.add(mFile);
+            imageFideoFilesPathStr?.add(value.path);
             imageFideoRealFiles.add(value);
           });
         }
@@ -1504,7 +1624,8 @@ void setStateBehavior(){
         attatechedFilesImageAndVideo.add(
             FileModel(
                 file:file,
-                isVideo:false
+                isVideo:false,
+                type:"gallery"
             )
         );
         compressFile(file).then((value) async {
@@ -1513,6 +1634,7 @@ void setStateBehavior(){
                   .split(Platform.pathSeparator)
                   .last);
           imageFideoFiles?.add(mFile);
+          imageFideoFilesPathStr?.add(value.path);
           imageFideoRealFiles?.add(value);
         });
       });
@@ -1527,13 +1649,15 @@ void setStateBehavior(){
     File videoFile= File(mVideo!.path);
     attatechedFilesImageAndVideo.add(FileModel(
         file: videoFile,
-        isVideo: true
+        isVideo: true,
+        type:"gallery"
     ));
     var mFile =  await myDio.MultipartFile.fromFile(videoFile.path,
         filename: videoFile.path
             .split(Platform.pathSeparator)
             .last);
     imageFideoFiles?.add(mFile);
+    imageFideoFilesPathStr?.add(videoFile.path);
     imageFideoRealFiles?.add(videoFile);
     /*print("videoLength= "+videoFile.lengthSync().toString());
      compressVideo(videoFile).then((value) async {
@@ -1549,16 +1673,15 @@ void setStateBehavior(){
     Logger().i(attatechedFilesImageAndVideo);
     isAttachementSaveClicked.value = true;
     Get.back();
-    if(attatechedFilesImageAndVideo.isNotEmpty) {
+    onEditRequestClicked(context,'');
+    /*if(attatechedFilesImageAndVideo.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("تم حفظ المرفقات بنجاح !", style: TextStyle(
             color: Colors.white,
             fontSize: 17,
             fontFamily: 'Arabic-Regular'),),
       ));
-    }
-    /*Logger().i("categoryId= ",categoryId);
-    Logger().i("typeId= ",adTypeId);*/
+    }*/
   }
   //========================= notice sheet ===============
   //---------------------- for notice sheet --------------------------------------------
@@ -1596,7 +1719,7 @@ void setStateBehavior(){
 
   }
 
-  void onEditRequestClicked(BuildContext context) {
+  void onEditRequestClicked(BuildContext context,String type) {
 
       if (selectedCategory.value.id == -1) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1728,7 +1851,7 @@ void setStateBehavior(){
         "repeat_count":isFlixble.isTrue?
         int.parse(selectedTimeCounter.value):1,
         "channels[]": channelsIds,
-        "attachments[]": imageFideoFiles!.isNotEmpty ? imageFideoFiles : null,
+        //"attachments[]": imageFideoFiles!.isNotEmpty ? imageFideoFiles : null,
         /*     "links[][title]": requestAdvertiseController.links.value.isNotEmpty
           ? requestAdvertiseController.links.value.map((e) => e.title).toList()
           : null,
@@ -1771,87 +1894,49 @@ void setStateBehavior(){
           json: mymap,
           onSuccess: (res) async {
             //Navigator.of(context).pop();
-            Get.back();
-            if(res.data!=null){
-              Logger().i(res.data!.toJson());
-            }
-
-            if (res.message != null) {
+           // Get.back();
+          /*  if (res.message != null) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text('تم تعديل طلبك بنجاح !', style: TextStyle(
                     color: Colors.white,
                     fontSize: 17,
                     fontFamily: 'Arabic-Regular'),),
               ));
+            }*/
+            if(res.data!=null){
+              if(imageFideoFilesPathStr!=null && imageFideoFilesPathStr!.isNotEmpty && res.data?.id!=null){
+                onUploadFiles(res.data!.id!);
+              }
+
+              Logger().i(res.data!.toJson());
+              if(type=="url"){
+                if(Get.parameters['requestId']!=null && Get.parameters['requestId']!.isNotEmpty) {
+                  await getRequestDetails(int.parse(Get.parameters['requestId']!));
+                }
+              }
             }
             Navigator.of(context).pop();
-           /* Navigator.of(context).pop();
-            Get.delete<RequestAdvertiseController>();
-            Get.delete<FindAdvertiseController>();*/
-            //Get.offAllNamed('/Home');
           },
           onError: (err, res) {
             //Navigator.of(context).pop();
             Get.back();
             Logger().i(err);
           });
-
-      /*String json = jsonEncode(mymap);
-    Logger().i(json);*/
-
-/*    String json = jsonEncode(mymap);
-    final formData = myDio.FormData.fromMap(
-
-        mymap
-    );*/
-
-/*    Map<String, dynamic> mymap = {
-      "token": "Bearer " + myToken!,
-      "advertiser_id": selectedAdvertiseId,
-      "product_category_id": requestAdvertiseController.categoryId,
-      "description": requestAdvertiseController.descriptionController.text,
-      "ads_type_id": requestAdvertiseController.adTypeId,
-      "date_type":
-      requestAdvertiseController.isFlixble.isTrue ? "flexible" : "fixed",
-      "started_at": requestAdvertiseController.fromDate.value,
-      "ended_at": requestAdvertiseController.isFlixble.isTrue
-          ? requestAdvertiseController.toDate.value
-          : null,
-      "offer_ended_at":
-      requestAdvertiseController.endAdvertisingDate.value.isNotEmpty
-          ? requestAdvertiseController.endAdvertisingDate.value
-          : null,
-      "repeat_count":
-      int.parse(requestAdvertiseController.selectedTimeCounter.value),
-      "channels[]": requestAdvertiseController.channelsIds,
-      "attachments[]": requestAdvertiseController.imageFideoFiles!.isNotEmpty ? requestAdvertiseController.imageFideoFiles : null,
-      "links": requestAdvertiseController.links.value.isNotEmpty
-          ? requestAdvertiseController.links.value
-          : null,
-      "location[name]": requestAdvertiseController.locationModel.name,
-      "location[address]": requestAdvertiseController.locationModel.address,
-      "location[lat]": requestAdvertiseController.locationModel.lat,
-      "location[lng]": requestAdvertiseController.locationModel.lng,
-      "copon[image]": requestAdvertiseController.imageCoponMultiPart,
-      "copon[code]": requestAdvertiseController.coponNumberController?.text,
-      "copon[name]": requestAdvertiseController.coponNameController?.text,
-      "copon[discount]":
-      requestAdvertiseController.coponDiscountController?.text,
-      "copon[uses]": requestAdvertiseController.coponUsesController?.text,
-      "copon[link]": requestAdvertiseController.coponLinkController?.text,
-      "copon[ended_at]": requestAdvertiseController.endAdvertisingDateCoupon,
-      "notes": requestAdvertiseController.noticeController?.text,
-      "plan_file": requestAdvertiseController.planFile
-    };
-
-    client!.createAdvertiseRequest("application/json","Bearer "+myToken!,advertiser_id: mymap['advertiser_id'],ended_at: mymap['ended_at'],started_at: mymap['started_at'],product_category_id: mymap['product_category_id'],ads_type_id: mymap['ads_type_id'],channelsIdes: mymap['channels[]'],date_type: mymap['date_type'],description: mymap['description'],links: mymap['links'],
-      offer_ended_at: mymap['offer_ended_at'],repeat_count: mymap['repeat_count'],attachments: requestAdvertiseController.attatechedFilesImageAndVideo.value.map((e) => e.file!).toList(),).then((value){
-      print('mStatus ${value.status}');
-      print('mStatus ${value.message}');
-      Logger().i(value.data!.toJson());
-    });*/
-
     }
+  List<String>? imageFideoFilesPathStr = [];
+  Future<void> onUploadFiles( int ads_request_id) async {
+
+    Map<String, dynamic> mymap3={
+      "token": "Bearer " + myToken!,
+      "ads_request_id":ads_request_id,
+      "attachments[]": imageFideoFilesPathStr!.isNotEmpty ? imageFideoFilesPathStr: null,
+    };
+    Logger().i("mymap"+mymap3.toString());
+    imageFideoFiles = [];
+    imageFideoFilesPathStr = [];
+    imageFideoRealFiles = [];
+    FlutterBackgroundService().invoke("setAsForeground",mymap3);
+  }
 
   void onDecriptionSavedClicked(BuildContext context) {
     if(descController.text!=null && descController.text.isEmpty){

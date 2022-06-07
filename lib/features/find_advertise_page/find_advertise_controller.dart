@@ -774,7 +774,7 @@ class FindAdvertiseController extends GetxController {
     Map<String, dynamic> mymap3={
       "token": "Bearer " + myToken!,
       "ads_request_id":ads_request_id,
-      "attachments[]": requestAdvertiseController.imageFideoFiles!.isNotEmpty ? requestAdvertiseController.imageFideoFilesPathStr: null,
+      "attachments[]": requestAdvertiseController.imageFideoFilesPathStr!.isNotEmpty ? requestAdvertiseController.imageFideoFilesPathStr: null,
     };
     Logger().i("mymap"+mymap3.toString());
     FlutterBackgroundService().invoke("setAsForeground",mymap3);

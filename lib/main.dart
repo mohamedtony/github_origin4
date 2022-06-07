@@ -6,10 +6,13 @@ import 'dart:ui';
 import 'package:advertisers/NotificationDownloadingService.dart';
 import 'package:advertisers/app_core/FirebaseDynamicLinkes.dart';
 import 'package:advertisers/app_core/app_localization/app_localization.dart';
+import 'package:advertisers/app_core/network/models/FileModel.dart';
 import 'package:advertisers/app_core/network/repository.dart';
 import 'package:advertisers/app_core/network/responses/CreateAdvertiseRequestResponse.dart';
 import 'package:advertisers/app_core/network/service.dart';
 import 'package:advertisers/app_core/routes/routes.dart';
+import 'package:advertisers/features/advertiser_details/controller/advertiser_details_controller.dart';
+import 'package:advertisers/features/advertising_story_details/vimo_video/quality_links.dart';
 import 'package:advertisers/features/chat/controller/chat_messages_controller.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
@@ -30,8 +33,6 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logger/logger.dart';
-import 'features/employees/view/AddEmployeePage.dart';
-//import 'firebase_options.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:dio/dio.dart' as myDio;
@@ -105,7 +106,10 @@ void onStart(ServiceInstance service) {
       List<myDio.MultipartFile>? imageFideoFiles = [];
 
 
-      for(var m in event!["attachments[]"]){
+      if(event==null || event["attachments[]"]==null){
+        return;
+      }
+      for(var m in event["attachments[]"]){
         var mFile =  await myDio.MultipartFile.fromFile(m,
             filename: m
                 .split(Platform.pathSeparator)
@@ -152,6 +156,7 @@ void onStart(ServiceInstance service) {
                     fontFamily: 'Arabic-Regular'),),
               ));*/
             }
+
             /*Navigator.of(context).pop();
             Navigator.of(context).pop();
             Get.delete<RequestAdvertiseController>();
@@ -181,73 +186,113 @@ void onStart(ServiceInstance service) {
           content: "Updated at ${DateTime.now()}"
       );
 
+      if(event["type"]=="edit"){
+        QualityLinks _quality = QualityLinks('680589403'/*story.video_id*/);
 
-      List<myDio.MultipartFile>? imageFideoFiles = [];
+        //Initializing video controllers when receiving data from Vimeo
+        _quality.getQualitiesSync("advertiser").then((value) async {
+          String _qualityValue = value[value.lastKey()];
+          print("url=" + _qualityValue.toString());
+
+         /* service.invoke(
+            'update',
+            {
+              "current_date": DateTime.now().toIso8601String(),
+              "device": _qualityValue,
+            },
+          );*/
 
 
-      for(var m in event["attachments[]"]){
-        var mFile =  await myDio.MultipartFile.fromFile(m,
-            filename: m
-                .split(Platform.pathSeparator)
-                .last);
-        imageFideoFiles.add(mFile);
-      }
 
-      event["attachments[]"]=imageFideoFiles;
-      /*final service = FlutterBackgroundService();
+
+          /*Get.find<AdvertisingDetailsController>().attatechedFilesImageAndVideo.add(FileModel(
+              urlVideoLink: _qualityValue,
+              isVideo: true));*/
+         /* attatechedFilesImageAndVideo.add(FileModel(
+              urlVideoLink: _qualityValue,link: element.path,
+              isVideo: element.type == "image" ? false : true));
+
+          Map<String, dynamic> mymap3={
+            "videLinkes": attatechedFilesImageAndVideo,
+          };
+
+          FlutterBackgroundService().invoke("setAsForeground",mymap3);*/
+
+
+          /*final fileName = await VideoThumbnail.thumbnailFile(
+                    video: _qualityValue,
+                    thumbnailPath: (await getTemporaryDirectory()).path,
+                imageFormat: ImageFormat.PNG,
+                maxHeight: 64, // specify the height of the thumbnail, let the width auto-scaled to keep the source aspect ratio
+                quality: 75,
+                );
+
+                attatechedFilesImageAndVideo.add(FileModel(
+                    urlVideoLink: fileName,link: element.path,
+                    isVideo: element.type == "image" ? false : true));*/
+        });
+      }else{
+        List<myDio.MultipartFile>? imageFideoFiles = [];
+
+
+        for(var m in event["attachments[]"]){
+          var mFile =  await myDio.MultipartFile.fromFile(m,
+              filename: m
+                  .split(Platform.pathSeparator)
+                  .last);
+          imageFideoFiles.add(mFile);
+        }
+
+        event["attachments[]"]=imageFideoFiles;
+        /*final service = FlutterBackgroundService();
       var isRunning = await service.isRunning();
       if (isRunning) {
         service.invoke("stopService");
       } else {
         service.startService();
       }*/
-      Repository repo = Repository();
-      //repo.postWithImageMultipart()
-      repo.postWithImageMultipart<CreateAdvertiseRequestResponse>(
-          path: 'requests/upload_files',
-          fromJson: (json) => CreateAdvertiseRequestResponse.fromJson(json),
-          json: event,
-          onSuccess: (res) async {
-            //Navigator.of(context).pop();
-            //Get.back();
-            Logger().i(res.toJson());
-            //service.stopSelf();
-            NotificationService().cancelNotification();
-            if (res.message != null) {
-              /*ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        Repository repo = Repository();
+        //repo.postWithImageMultipart()
+        repo.postWithImageMultipart<CreateAdvertiseRequestResponse>(
+            path: 'requests/upload_files',
+            fromJson: (json) => CreateAdvertiseRequestResponse.fromJson(json),
+            json: event,
+            onSuccess: (res) async {
+              //Navigator.of(context).pop();
+              //Get.back();
+              Logger().i(res.toJson());
+              //service.stopSelf();
+              NotificationService().cancelNotification();
+              if (res.message != null) {
+                /*ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text('تم إنشاء طلبك بنجاح !', style: TextStyle(
                     color: Colors.white,
                     fontSize: 17,
                     fontFamily: 'Arabic-Regular'),),
               ));*/
-            }
-            /*Navigator.of(context).pop();
+              }
+              /*Navigator.of(context).pop();
             Navigator.of(context).pop();
             Get.delete<RequestAdvertiseController>();
             Get.delete<FindAdvertiseController>();*/
-            //Get.offAllNamed('/Home');
-          },onProgress: (prog,max){
-        NotificationService().showNotification(prog,max);
-      },
-          onError: (err, res) {
-            //Navigator.of(context).pop();
-           // Get.back();
-            Logger().i(err);
-          });
+              //Get.offAllNamed('/Home');
+            },onProgress: (prog,max){
+          NotificationService().showNotification(prog,max);
+        },
+            onError: (err, res) {
+              //Navigator.of(context).pop();
+              // Get.back();
+              Logger().i(err);
+            });
 
+      }
     });
   }
 
   service.on('stopService').listen((event) {
     service.stopSelf();
   });
-  service.invoke(
-    'update',
-    {
-      "current_date": DateTime.now().toIso8601String(),
-      "device": "device",
-    },
-  );
+
   // bring to foreground
   /*Timer.periodic(const Duration(seconds: 1), (timer) async {
     if (service is AndroidServiceInstance) {

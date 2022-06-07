@@ -22,7 +22,7 @@ import 'package:video_player/video_player.dart';
 import 'package:better_player/better_player.dart';
 
 class StoryScreen extends StatefulWidget {
-   List<Attachment>? stories;
+  List<Attachment>? stories;
   AdsListModel? adsListModel;
   Function onClicked;
   Function(BuildContext context,int ind) onSheetCliked;
@@ -71,8 +71,8 @@ class _StoryScreenState extends State<StoryScreen>
 
     _animController?.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-       // _videoController?.dispose();
-       // _videoController = null;
+        // _videoController?.dispose();
+        // _videoController = null;
         _betterPlayerController = null;
         _animController?.stop();
         _animController?.reset();
@@ -116,7 +116,7 @@ class _StoryScreenState extends State<StoryScreen>
       snap: true,
       builder: (context, scrollController) {
         return AdvertiserDetailsSheet(
-            /*"profile",*/
+          /*"profile",*/
             scrollController: scrollController
         );
       },
@@ -152,7 +152,7 @@ class _StoryScreenState extends State<StoryScreen>
     })
         .closed
         .whenComplete(() {
-     /* if (mounted) {
+      /* if (mounted) {
         setState(() {
           _showPersBottomSheetCallBack = _showBottomSheet;
         });
@@ -175,15 +175,15 @@ class _StoryScreenState extends State<StoryScreen>
         //maxChildSize: 0.4,
         initialChildSize: 0.6,
 
-       snap: false,
-       expand: false,
-       // maxChildSize: 0.444,
+        snap: false,
+        expand: false,
+        // maxChildSize: 0.444,
         builder: (context, scrollController) {
           scrollController.addListener(() {
             print("dragablr");
           });
           return AdvertiserDetailsSheet(
-             /* "profile",*/
+            /* "profile",*/
               scrollController: scrollController,
               adsListModel:adsListModel
           );
@@ -195,7 +195,7 @@ class _StoryScreenState extends State<StoryScreen>
 
   @override
   Widget build(BuildContext context) {
-     Attachment? story = widget.stories!=null && widget.stories!.length>_currentIndex? widget.stories![_currentIndex]:null;
+    Attachment? story = widget.stories!=null && widget.stories!.length>_currentIndex? widget.stories![_currentIndex]:null;
     return WillPopScope( onWillPop: () async{
       print("WillPopScope");
       return false;
@@ -654,10 +654,10 @@ class _StoryScreenState extends State<StoryScreen>
                                 child: InkWell(
                                   onTap: (){
 
-                                     //overlayHandlerProvider.disablePip();
+                                    //overlayHandlerProvider.disablePip();
 
 
-                                     /*if(overlayHandlerProvider.isBottomAdsShown && overlayHandlerProvider.sheetId==widget.adsListModel!.id!){
+                                    /*if(overlayHandlerProvider.isBottomAdsShown && overlayHandlerProvider.sheetId==widget.adsListModel!.id!){
                                        return;
                                      }
                                      overlayHandlerProvider.isBottomAdsShown = true;
@@ -666,12 +666,12 @@ class _StoryScreenState extends State<StoryScreen>
                                     overlayHandlerProvider.updateHidden(true, 0);
                                     _betterPlayerController?.pause();
                                     _animController?.stop();
-                                     audioPlayer?.pause();
-                                     overlayHandlerProvider.advertiserId = widget.adsListModel!.user!.id;
+                                    audioPlayer?.pause();
+                                    overlayHandlerProvider.advertiserId = widget.adsListModel!.user!.id;
                                     overlayHandlerProvider.adId = widget.adsListModel!.id;
                                     showBottomSheetForRequest(context, 9);
-                                     //widget.onSheetCliked(context,9,);
-                                     //Overlay.of(context)?.insert(getEntry(context, widget.adsListModel));
+                                    //widget.onSheetCliked(context,9,);
+                                    //Overlay.of(context)?.insert(getEntry(context, widget.adsListModel));
                                     //showBottomSheetForRequest2(Get.overlayContext!);
                                     //_addVideoWithTitleOverlay(context);
                                     //  widget.onSheetCliked(context,9);
@@ -821,7 +821,7 @@ class _StoryScreenState extends State<StoryScreen>
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                       // videoGetxController.clickedIndex.value = 2;
+                                        // videoGetxController.clickedIndex.value = 2;
                                         print("Clickeeeeed");
                                         if(widget.adsListModel?.id!=null) {
                                           videoGetxController.favoriteAds(
@@ -935,7 +935,7 @@ class _StoryScreenState extends State<StoryScreen>
                                         ),
                                       ),
                                     ),
-                                   /* Text(
+                                    /* Text(
                                         "${widget.adsListModel?.likes??0}",
                                       style: TextStyle(color: Color(0xff4286D2)),
                                     )*/
@@ -1129,7 +1129,7 @@ class _StoryScreenState extends State<StoryScreen>
     ),);
   }
   void showBottomSheetForRequest2(BuildContext context,){
-   // Get.
+    // Get.
     /*Get.bottomSheet(AdvertiserDetailsSheet(
         //scrollController: scrollController
     ),);*/
@@ -1159,7 +1159,7 @@ class _StoryScreenState extends State<StoryScreen>
                 expand: false,
                 builder: (context, scrollController) {
                   return AdvertiserDetailsSheet(
-                      /*"profile",*/
+                    /*"profile",*/
                       scrollController: scrollController
                   );
                 },
@@ -1403,12 +1403,12 @@ Future<void> showBottomSheetForRequest(BuildContext context,int bottomNumber)  a
         expand: false,
         builder: (context, scrollController) {
 
-         // if(bottomNumber==9) {
-            return AdvertiserDetailsSheet(
-             /* "profile",*/
-                scrollController: scrollController
-            );
-         // }
+          // if(bottomNumber==9) {
+          return AdvertiserDetailsSheet(
+            /* "profile",*/
+              scrollController: scrollController
+          );
+          // }
         },
       );
     },
@@ -1431,7 +1431,6 @@ Future<void> showBottomSheetForRequest(BuildContext context,int bottomNumber)  a
           child: DraggableScrollableSheet(
             //maxChildSize: 0.8,
             //minChildSize: 100.0,
-
             initialChildSize: 0.67,
             expand: false,
             builder: (context, scrollController) {
@@ -1482,7 +1481,6 @@ Future<void> showBottomSheetForRequest(BuildContext context,int bottomNumber)  a
           return DraggableScrollableSheet(
             //maxChildSize: 0.8,
             //minChildSize: 100.0,
-
             initialChildSize: 0.67,
             expand: false,
             builder: (context, scrollController) {
@@ -1594,7 +1592,7 @@ class UserInfo extends StatelessWidget {
                 size: 30.0,
                 color: Colors.white,
               ),
-             // onPressed: () => overlayHandlerProvider.disablePip(),
+              // onPressed: () => overlayHandlerProvider.disablePip(),
             ),
           ),
           const SizedBox(width: 4.0),
@@ -1691,7 +1689,7 @@ class UserInfo extends StatelessWidget {
               InkWell(
                 onTap: (){
                   //overlayHandlerProvider.enablePip(1.77);
-               /*   overlayHandlerProvider.updateHidden(true, 0);
+                  /*   overlayHandlerProvider.updateHidden(true, 0);
                   videoController?.pause();
                   animController?.stop();
                   audioPlayer?.pause();
@@ -1724,12 +1722,10 @@ class Modal extends StatelessWidget {
     required this.modal,
     required this.child,
   }) : super(key: key);
-
   final Widget child;
   final Widget modal;
   final bool visible;
   final VoidCallback onClose;
-
   @override
   Widget build(BuildContext context) {
     return Barrier(
@@ -1758,7 +1754,6 @@ class Modal extends StatelessWidget {
     );
   }
 }
-
 class Barrier extends StatelessWidget {
   const Barrier({
     Key? key,
@@ -1766,11 +1761,9 @@ class Barrier extends StatelessWidget {
     required this.visible,
     required this.child,
   }) : super(key: key);
-
   final Widget child;
   final VoidCallback onClose;
   final bool visible;
-
   @override
   Widget build(BuildContext context) {
     return PortalTarget(
@@ -1794,12 +1787,10 @@ class Barrier extends StatelessWidget {
     );
   }
 }
-
 /// Non-nullable version of ColorTween.
 class ColorTween extends Tween<Color> {
   ColorTween({required Color begin, required Color end})
       : super(begin: begin, end: end);
-
   @override
   Color lerp(double t) => Color.lerp(begin, end, t)!;
 }*/

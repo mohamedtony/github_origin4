@@ -143,6 +143,11 @@ Future<GetMyProfileInfoResponse> updateMyProfile(*//*@Body() UpdateProfileReques
   @FormUrlEncoded()
   Future<RequestDetailsResponse> deleteLink(@Path("id") int? id,@Field()int? link_id,@Header("Authorization") String token,);
 
+  @POST('/requests/{id}/delete_file')
+  @FormUrlEncoded()
+  Future<RequestDetailsResponse> deleteFile(@Path("id") int? id,@Field()int? file_id,@Header("Authorization") String token,);
+
+
   @GET('/advertiser_profile/{id}')
   Future<AdvertiserProfileDetailsResponse> getAdveriserProfileDetail(@Path("id") int? id,@Header("Authorization") String token);
   //@GET('/copons/app')

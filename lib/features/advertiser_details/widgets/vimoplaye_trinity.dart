@@ -2,9 +2,7 @@ library vimeoplayer;
 
 import 'package:advertisers/features/advertising_story_details/vimo_video/quality_links.dart';
 import 'package:better_player/better_player.dart';
-import 'package:better_player/src/video_player/video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:vimeoplayer_trinity/src/controls_config.dart';
 
 //Video player class
@@ -29,7 +27,6 @@ class VimeoPlayer extends StatefulWidget {
 
   /// Progress indicator background color
   final Color? loaderBackgroundColor;
-  BetterPlayerController? betterPlayerController;
 
   VimeoPlayer({
     required this.id,
@@ -39,7 +36,6 @@ class VimeoPlayer extends StatefulWidget {
     this.loaderColor,
     this.loaderBackgroundColor,
     this.allowFullScreen = false,
-    this.betterPlayerController,
     Key? key,
   })  : assert(id != null && allowFullScreen != null),
         super(key: key);
@@ -55,13 +51,52 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
   //Quality Class
   late QualityLinks _quality;
   var _qualityValue;
-
+  BetterPlayerController? _betterPlayerController;
 
   @override
   void initState() {
     fullScreen = widget.allowFullScreen;
 
+    //Create class
+    _quality = QualityLinks(widget.id);
 
+    //Initializing video controllers when receiving data from Vimeo
+    _quality.getQualitiesSync("").then((value) {
+      _qualityValue = value[value.lastKey()];
+
+      // Create resolutions map
+      Map<String, String> resolutionsMap = {};
+      value.keys.forEach((key) {
+        String processedKey = key.split(" ")[0];
+        resolutionsMap[processedKey] = value[key];
+      });
+
+      BetterPlayerDataSource betterPlayerDataSource = BetterPlayerDataSource(
+          BetterPlayerDataSourceType.network, _qualityValue,
+          resolutions: resolutionsMap);
+
+      setState(() {
+        _betterPlayerController = BetterPlayerController(
+            BetterPlayerConfiguration(
+                autoPlay: widget.autoPlay,
+
+                aspectRatio:9/32,
+                fit: BoxFit.fill,
+                looping: widget.looping,
+                fullScreenByDefault: fullScreen,
+                controlsConfiguration: BetterPlayerControlsConfiguration(enableQualities: false,  enableOverflowMenu :false,
+                  enablePlaybackSpeed : false,
+                  enableSubtitles : false,)
+            ),
+            betterPlayerDataSource: betterPlayerDataSource);
+      });
+
+      //Update orientation and rebuilding page
+      // setState(() {
+      //   SystemChrome.setPreferredOrientations(
+      //       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+      // });
+    });
 
     // //The video page takes precedence over portrait orientation
     // SystemChrome.setPreferredOrientations(
@@ -69,30 +104,32 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
     // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
 
     super.initState();
-    //print("on trinty Viemoplay"+widget.betterPlayerController!.videoPlayerController!.value.duration.toString());
-    // widget.betterPlayerController.betterPlayerDataSource.du
   }
 
   //Build player element
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: widget.betterPlayerController == null
+      child: _betterPlayerController == null
           ? CircularProgressIndicator(
           color: widget.loaderColor,
           backgroundColor: widget.loaderBackgroundColor)
-          : BetterPlayer(
-        controller: widget.betterPlayerController as BetterPlayerController,
-      )/*FittedBox(
-        fit: BoxFit.cover,
-        child: SizedBox(
-          width: Get.width,
-          height: Get.height,
-          child: BetterPlayer(
-            controller: widget.betterPlayerController as BetterPlayerController,
+          : /*BetterPlayer(
+        controller:_betterPlayerController as BetterPlayerController,
+      )*/ Column(
+        children: [
+          FittedBox(
+            fit: BoxFit.cover,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: BetterPlayer(
+                controller:_betterPlayerController as BetterPlayerController,
+              ),
+            ),
           ),
-        ),
-      )*/,
+        ],
+      ),
     );
   }
 
@@ -101,9 +138,5 @@ class _VimeoPlayerState extends State<VimeoPlayer> {
     // _controller.dispose();
     // initFuture = null;
     super.dispose();
-  }
-
-  VideoPlayerController?  getPlayer(){
-    return widget.betterPlayerController?.videoPlayerController;
   }
 }

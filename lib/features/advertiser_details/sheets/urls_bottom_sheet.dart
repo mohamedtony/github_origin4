@@ -159,7 +159,7 @@ class _UrlsPageState extends State<UrlsPage>  {
                 ),
               ),
               Container(
-                child: Obx(()=>requestAdvertiseController.numOfLinks.value!=0
+                child: Obx(()=>requestAdvertiseController.numOfLinks!=null && requestAdvertiseController.numOfLinks.value!=0
                     ? ListView.builder(
                   itemCount: requestAdvertiseController.numOfLinks.value,
                   shrinkWrap: true,
@@ -188,7 +188,16 @@ class _UrlsPageState extends State<UrlsPage>  {
                                 margin: EdgeInsets.only(right: 10.0, left: 28.0, top: 30.0,bottom:30),
                                 child: InkWell(
                                   onTap: (){
-                                    requestAdvertiseController.deleteLink(index);
+                                    if(index<requestAdvertiseController.urlList.length) {
+                                      requestAdvertiseController.deleteLinkApi(
+                                        requestAdvertiseController.urlList
+                                            .value[index], index,
+                                        requestAdvertiseController.urlList
+                                            .value[index].id!,);
+                                    }else{
+                                      requestAdvertiseController.deleteLink(index);
+                                    }
+                                   // requestAdvertiseController.deleteLink(index);
                                     // requestAdvertiseController.animationControllers[index].forward(from: 0.6).whenComplete(() => requestAdvertiseController.deleteLink(index));
                                   },
                                   child: Material(
@@ -362,7 +371,7 @@ class _UrlsPageState extends State<UrlsPage>  {
                     margin: EdgeInsets.only(right: 10.0, left: 10.0, top: 20.0),
                     child: InkWell(
                       onTap: (){
-                        requestAdvertiseController.onSaveUrlsClicked(context);
+                        requestAdvertiseController.onSaveUrlsClicked(context,'url');
                       },
                       child: Material(
                         elevation: 6.0,

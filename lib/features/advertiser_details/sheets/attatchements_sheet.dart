@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:advertisers/features/advertiser_details/controller/advertiser_details_controller.dart';
+import 'package:advertisers/features/advertiser_details/widgets/full_image_screen.dart';
 import 'package:advertisers/features/request_advertise_module/controller/adertising_channels_controller.dart';
 import 'package:advertisers/features/request_advertise_module/controller/attatchement_page_controller.dart';
 import 'package:advertisers/features/request_advertise_module/SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight.dart';
@@ -129,14 +130,14 @@ class _AttatchementPageState extends State<AttatchementPage> {
                 ],
               ),
               Obx(
-                    () => requestAdvertiseController.attatechedFilesImageAndVideo.isNotEmpty
+                    () => requestAdvertiseController.attatechedFilesImageAndVideo.value.isNotEmpty
                     ? GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   padding: EdgeInsets.only(
                       right: 18.0, left: 18.0, bottom: 8.0, top: 12.0),
                   shrinkWrap: true,
                   itemCount:
-                  requestAdvertiseController.attatechedFilesImageAndVideo.length ?? 0,
+                  requestAdvertiseController.attatechedFilesImageAndVideo.value.length ?? 0,
                   gridDelegate:
                   const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
                     //childAspectRatio: 100 / 150,
@@ -145,7 +146,103 @@ class _AttatchementPageState extends State<AttatchementPage> {
                     mainAxisSpacing: 1,
                     crossAxisCount: 4,
                   ),
-                  itemBuilder: (context, index) => Stack(
+                  itemBuilder: (context, index) =>
+                      Stack(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: !requestAdvertiseController.attatechedFilesImageAndVideo.value[index].isVideo!? Container(
+                              margin: const EdgeInsets.all(1),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              child: requestAdvertiseController.attatechedFilesImageAndVideo.value[index].link!=null && requestAdvertiseController.attatechedFilesImageAndVideo.value[index].link!.isNotEmpty? InkWell(
+                                onTap: (){
+                                  Get.to(FullImageScreen(imagePath: requestAdvertiseController.attatechedFilesImageAndVideo.value[index].link!));
+                                },
+                                child: Image.network(
+                                  requestAdvertiseController.attatechedFilesImageAndVideo.value[index].link!,
+                                  width: 200,
+                                  height: 200,
+                                  fit: BoxFit.fill,
+                                ),
+                              ):InkWell(
+                                onTap: (){
+                                  Get.to(FullImageScreen(imagePath: requestAdvertiseController.attatechedFilesImageAndVideo.value[index].file!.path));
+                                },
+                                child: Image.file(
+                                  requestAdvertiseController.attatechedFilesImageAndVideo.value[index].file!,
+                                  width: 200,
+                                  height: 200,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            ): requestAdvertiseController.attatechedFilesImageAndVideo.value[index].file!=null && !requestAdvertiseController.attatechedFilesImageAndVideo.value[index].file!.isBlank!?Container(
+                              width: 200,
+                              height: 200,
+                              child: VideoApp(
+
+                                file: requestAdvertiseController.attatechedFilesImageAndVideo.value[index].file!=null && !requestAdvertiseController.attatechedFilesImageAndVideo.value[index].file!.isBlank!?requestAdvertiseController.attatechedFilesImageAndVideo.value[index].file:null,
+                              ),
+                            ):Stack(
+                              children: [
+                                Image.network(
+                                  requestAdvertiseController.attatechedFilesImageAndVideo.value[index].urlVideoLink!,
+                                  width: 200,
+                                  height: 200,
+                                  fit: BoxFit.fill,
+                                ),
+                                Positioned(
+                                  top: 0,
+                                  bottom: 0,
+                                  left: 0,
+                                  right: 0,
+                                  child: InkWell(
+                                    onTap: (){
+                                      Get.to(FullImageScreen(videoId: requestAdvertiseController.attatechedFilesImageAndVideo.value[index].videoId));
+                                    },
+                                    child: Icon(
+                                      Icons.play_arrow,
+                                      color: Colors.white,
+                                      size: 50,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )/*VideoApp(
+                          path: controller.attatechedFilesImageAndVideo.value[index].urlVideoLink!=null && controller.attatechedFilesImageAndVideo.value[index].urlVideoLink!.isNotEmpty? controller.attatechedFilesImageAndVideo.value[index].urlVideoLink!:null,
+                          file: controller.attatechedFilesImageAndVideo.value[index].file!=null && !controller.attatechedFilesImageAndVideo.value[index].file!.isBlank!?controller.attatechedFilesImageAndVideo.value[index].file:null,
+                        )*/,
+                          ),
+                          Positioned(
+                              left: 0,
+                              child: InkWell(
+                                onTap: (){
+                                  requestAdvertiseController.deleteImage(index);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(1),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(100),
+                                    border: Border.all(
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  child: Icon(
+                                    Icons.close,
+                                    color: Colors.red,
+                                    size: 12,
+                                  ),
+                                ),
+                              ))
+                        ],
+                      )
+                      /*Stack(
                     children: [
                       Container(
                         margin: EdgeInsets.only(top: 10, left: 5.0),
@@ -160,33 +257,38 @@ class _AttatchementPageState extends State<AttatchementPage> {
                           BorderRadius.all(Radius.circular(8)),
                           //borderOnForeground: true,
                           color: AppColors.saveButtonBottomSheet,
-                          child: Container(
+                          child: requestAdvertiseController.attatechedFilesImageAndVideo[index].isVideo==false?Container(
                               child: requestAdvertiseController
-                                  .attatechedFilesImageAndVideo[index].file!=null && requestAdvertiseController
-                                  .attatechedFilesImageAndVideo[index].isVideo==false?Image.file(
-                                requestAdvertiseController
-                                    .attatechedFilesImageAndVideo[index].file!,
+                                  .attatechedFilesImageAndVideo[index].file!=null ?Image.file(
+                                requestAdvertiseController.attatechedFilesImageAndVideo[index].file!,
                                 width: 200.0,
                                 height: 200.0,
                                 fit: BoxFit.fitHeight,
-                              ):Container(
+                              ): *//*requestAdvertiseController.attatechedFilesImageAndVideo.value[index].link!=null && requestAdvertiseController.attatechedFilesImageAndVideo.value[index].link!.isNotEmpty*//*
+                              Image.network(
+                                requestAdvertiseController.attatechedFilesImageAndVideo.value[index].link!,
                                 width: 200.0,
                                 height: 200.0,
-                                child: VideoApp(
-                                  file: File(requestAdvertiseController
-                                      .attatechedFilesImageAndVideo[index].file!.path),
-                                ),
+                                fit: BoxFit.fill,
                               ),
                               decoration: BoxDecoration(
                                 border: Border.all(
                                     color: AppColors.addPhotoBottom,
                                     width: 0.5),
                                 borderRadius: BorderRadius.circular(8.0),
-                                /*image: DecorationImage(
+                                *//*image: DecorationImage(
                                     image: AssetImage("images/image1.jpg"),
                                     fit: BoxFit.cover,
-                                  )*/
-                              )),
+                                  )*//*
+                              )):Container(
+                            width: 200.0,
+                            height: 200.0,
+                            child: VideoApp(
+                              path: requestAdvertiseController.attatechedFilesImageAndVideo.value[index].urlVideoLink!=null && requestAdvertiseController.attatechedFilesImageAndVideo.value[index].urlVideoLink!.isNotEmpty? requestAdvertiseController.attatechedFilesImageAndVideo.value[index].urlVideoLink!:null,
+                              file: requestAdvertiseController.attatechedFilesImageAndVideo.value[index].file!=null && !requestAdvertiseController.attatechedFilesImageAndVideo.value[index].file!.isBlank!?requestAdvertiseController.attatechedFilesImageAndVideo.value[index].file:null,
+                              // file: File(requestAdvertiseController.attatechedFilesImageAndVideo[index].link!),
+                            ),
+                          ),
                         ),
                       ),
                       Align(
@@ -208,7 +310,7 @@ class _AttatchementPageState extends State<AttatchementPage> {
                         ),
                       )
                     ],
-                  ),
+                  )*/,
                 )
                     : Center(child: Text('لا يوجد مرفقات')),
               ),
@@ -289,7 +391,7 @@ class _AttatchementPageState extends State<AttatchementPage> {
   void dispose() {
     // TODO: implement dispose
     if (requestAdvertiseController.isAttachementSaveClicked.isFalse) {
-      requestAdvertiseController.attatechedFilesImageAndVideo.value = [];
+      //requestAdvertiseController.attatechedFilesImageAndVideo.value = [];
     }
     super.dispose();
   }
@@ -311,9 +413,10 @@ class _VideoAppState extends State<VideoApp> {
   @override
   void initState() {
     super.initState();
+
     if(widget.path!=null && widget.path!.isNotEmpty){
       _controller = VideoPlayerController.network(
-          widget.videoLink!)
+          widget.path!)
         ..initialize().then((_) {
           // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
           setState(() {});
@@ -323,8 +426,9 @@ class _VideoAppState extends State<VideoApp> {
           }
         });
     }else{
+      print("mfile"+widget.file!.path);
       _controller = VideoPlayerController.file(
-          File(widget.file!.path))
+          widget.file!)
         ..initialize().then((_) {
           // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
           setState(() {});
@@ -342,7 +446,7 @@ class _VideoAppState extends State<VideoApp> {
       width: 200.0,
       height: 200.0,
       child:  _controller.value.isInitialized
-          ?  _controller.value.hasError?AspectRatio(
+          ?  !_controller.value.hasError?AspectRatio(
         aspectRatio: _controller.value.aspectRatio,
         child:VideoPlayer(_controller,),
       ):Text('error')

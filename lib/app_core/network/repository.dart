@@ -79,7 +79,9 @@ class Repository {
           onError!(code, fromJson!(data));
           return;
         }
-        onSuccess!(fromJson!(data));
+        if(onSuccess!=null) {
+          onSuccess(fromJson!(data));
+        }
       });
     }on dio.DioError catch(e){
       if(EasyLoading.isShow){

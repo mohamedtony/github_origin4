@@ -23,7 +23,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:better_player/better_player.dart';
 
 class StoryScreen extends StatefulWidget {
-   List<Attachment>? stories;
+  List<Attachment>? stories;
   AdsListModel? adsListModel;
   Function onClicked;
   Function(BuildContext context,int ind) onSheetCliked;
@@ -70,7 +70,7 @@ class _StoryScreenState extends State<StoryScreen>
 
     _animController?.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-       // _betterPlayerController?.dispose();
+        // _betterPlayerController?.dispose();
         _betterPlayerController = null;
         _animController?.stop();
         _animController?.reset();
@@ -100,18 +100,18 @@ class _StoryScreenState extends State<StoryScreen>
   void dispose() {
     _pageController?.dispose();
     _animController?.dispose();
-   // _betterPlayerController?.dispose();
+    // _betterPlayerController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-     Attachment? story = widget.stories!=null && widget.stories!.length>_currentIndex? widget.stories![_currentIndex]:null;
+    Attachment? story = widget.stories!=null && widget.stories!.length>_currentIndex? widget.stories![_currentIndex]:null;
     return WillPopScope( onWillPop: () async{
       print("WillPopScope");
       return false;
     },child: Scaffold(
-     // key: _scaffoldKey,
+      // key: _scaffoldKey,
       backgroundColor: Colors.black,
       resizeToAvoidBottomInset: overlayHandlerProvider.inPipMode?false:true,
       body: story!=null?GestureDetector(
@@ -145,8 +145,8 @@ class _StoryScreenState extends State<StoryScreen>
 
                     return _betterPlayerController!=null
                         ? FittedBox(
-                      fit: BoxFit.cover,
-                      child: /*SizedBox(
+                        fit: BoxFit.cover,
+                        child: /*SizedBox(
                           width: _videoController!.value.size.width,
                           height: _videoController!.value.size.height,
                           child: AspectRatio(
@@ -154,14 +154,14 @@ class _StoryScreenState extends State<StoryScreen>
                             child: VideoPlayer(_videoController!),
                           ),
                         )*/
-                      SizedBox(
-                        width: Get.width,
-                        height: Get.height,
-                        child: AspectRatio(
-                          aspectRatio: 16/9,
-                          child: VimeoPlayer(id: '680589403'/*story.video_id*/, autoPlay: true, loaderColor: Colors.pink,betterPlayerController: _betterPlayerController),
-                        ),
-                      )
+                        SizedBox(
+                          width: Get.width,
+                          height: Get.height,
+                          child: AspectRatio(
+                            aspectRatio: 16/9,
+                            child: VimeoPlayer(id: '680589403'/*story.video_id*/, autoPlay: true, loaderColor: Colors.pink,betterPlayerController: _betterPlayerController),
+                          ),
+                        )
                     )
                         : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -505,10 +505,10 @@ class _StoryScreenState extends State<StoryScreen>
                                     overlayHandlerProvider.updateHidden(true, 0);
                                     _betterPlayerController?.videoPlayerController?.pause();
                                     _animController?.stop();
-                                     audioPlayer?.pause();
-                                     overlayHandlerProvider.advertiserId = widget.adsListModel!.user!.id;
+                                    audioPlayer?.pause();
+                                    overlayHandlerProvider.advertiserId = widget.adsListModel!.user!.id;
                                     overlayHandlerProvider.adId = widget.adsListModel!.id;
-                                     widget.onSheetCliked(context,9);
+                                    widget.onSheetCliked(context,9);
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only( left: 10.0,bottom:5.0),
@@ -630,7 +630,7 @@ class _StoryScreenState extends State<StoryScreen>
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                       // videoGetxController.clickedIndex.value = 2;
+                                        // videoGetxController.clickedIndex.value = 2;
                                         print("Clickeeeeed");
                                         if(widget.adsListModel?.id!=null) {
                                           videoGetxController.favoriteAds(
@@ -706,7 +706,7 @@ class _StoryScreenState extends State<StoryScreen>
                                                   }
                                                 });
                                               }
-                                              }
+                                            }
                                           },
                                           child: Image.asset(
                                             widget.adsListModel!.is_liked!=null && widget.adsListModel!.is_liked!?'images/like_story.png':'images/like_unfilled.png',
@@ -944,7 +944,7 @@ class _StoryScreenState extends State<StoryScreen>
     print("nextPage");
     _animController?.stop();
     _animController?.reset();
-   // _betterPlayerController?.dispose();
+    // _betterPlayerController?.dispose();
     _betterPlayerController = null;
     switch (story!.type) {
       case 'image':
@@ -952,7 +952,7 @@ class _StoryScreenState extends State<StoryScreen>
         _animController?.forward();
         break;
       case 'video':
-       // _betterPlayerController?.dispose();
+      // _betterPlayerController?.dispose();
         _betterPlayerController = null;
 
         //Create class
@@ -981,8 +981,8 @@ class _StoryScreenState extends State<StoryScreen>
                   autoPlay: false,
                   looping: false,
                   fullScreenByDefault: false,
-                    //aspectRatio: 1/1,
-                    fit: BoxFit.cover,
+                  aspectRatio:9/32,
+                  fit: BoxFit.fill,
                   controlsConfiguration: BetterPlayerControlsConfiguration(showControls: false,enableQualities: true),
                 ),
                 betterPlayerDataSource: betterPlayerDataSource);
@@ -1111,7 +1111,7 @@ class UserInfo extends StatelessWidget {
                 size: 30.0,
                 color: Colors.white,
               ),
-             // onPressed: () => overlayHandlerProvider.disablePip(),
+              // onPressed: () => overlayHandlerProvider.disablePip(),
             ),
           ),
           const SizedBox(width: 4.0),
@@ -1132,7 +1132,7 @@ class UserInfo extends StatelessWidget {
                             builder: (context) => RequestAdvertisePage(
                               onSheetClicked: (x){
                                 //  print('tony:sheetClicked');
-                               // this.onSheetClicked!(x);
+                                // this.onSheetClicked!(x);
                               },
                             ),
                           ),

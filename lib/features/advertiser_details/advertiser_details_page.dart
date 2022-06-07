@@ -13,6 +13,7 @@ import 'package:advertisers/features/advertiser_details/sheets/discount_coupon_s
 import 'package:advertisers/features/advertiser_details/sheets/notice_sheet.dart';
 import 'package:advertisers/features/advertiser_details/sheets/urls_bottom_sheet.dart';
 import 'package:advertisers/features/advertiser_details/widgets/channel_single_item.dart';
+import 'package:advertisers/features/advertiser_details/widgets/full_image_screen.dart';
 import 'package:advertisers/features/advertiser_details/widgets/item.dart';
 import 'package:advertisers/features/advertiser_details/widgets/title.dart';
 import 'package:advertisers/shared/advertisers_appbar/advertisers_app_bar.dart';
@@ -25,7 +26,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+
 
 //=========================================================================================
 
@@ -42,7 +46,7 @@ class AdvertiserDetailsPage extends StatefulWidget {
 
 class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
 
-  final AdvertisingDetailsController controller = Get.put(AdvertisingDetailsController());
+   AdvertisingDetailsController controller = Get.put(AdvertisingDetailsController());
 
   @override
   Widget build(BuildContext context) {
@@ -406,14 +410,15 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
             //============================== attachements of ads sheet ================================
             Item(
               onTap: (){
-                showModalBottomSheet(
+                showBottomSheetForRequest(context,7);
+                /*showModalBottomSheet(
                     context: context,
                     // isScrollControlled: true,
                     builder: (builder){
                       return AttatchementPage();
                       // return AdvertisingNoticsPage();
                     }
-                );
+                );*/
               },
               title: 'المرفقات',
               child: Container(
@@ -437,21 +442,64 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                               color: Colors.grey,
                             ),
                           ),
-                          child: controller.attatechedFilesImageAndVideo.value[index].link!=null && controller.attatechedFilesImageAndVideo.value[index].link!.isNotEmpty? Image.network(
-                            controller.attatechedFilesImageAndVideo.value[index].link!,
-                            width: 80.w,
-                            height: 80.w,
-                            fit: BoxFit.fill,
-                          ):Image.file(
-                            controller.attatechedFilesImageAndVideo.value[index].file!,
-                            width: 80.w,
-                            height: 80.w,
-                            fit: BoxFit.fill,
+                          child: controller.attatechedFilesImageAndVideo.value[index].link!=null && controller.attatechedFilesImageAndVideo.value[index].link!.isNotEmpty? InkWell(
+                            onTap: (){
+                              Get.to(() => FullImageScreen(imagePath: controller.attatechedFilesImageAndVideo.value[index].link!));
+                            },
+                            child: Image.network(
+                              controller.attatechedFilesImageAndVideo.value[index].link!,
+                              width: 80.w,
+                              height: 80.w,
+                              fit: BoxFit.fill,
+                            ),
+                          ):InkWell(
+                            onTap: (){
+                              Get.to(() => FullImageScreen(imagePath: controller.attatechedFilesImageAndVideo.value[index].file!.path));
+                            },
+                            child: Image.file(
+                              controller.attatechedFilesImageAndVideo.value[index].file!,
+                              width: 80.w,
+                              height: 80.w,
+                              fit: BoxFit.fill,
+                            ),
                           ),
-                        ):VideoApp(
-                          path: controller.attatechedFilesImageAndVideo.value[index].link!=null && controller.attatechedFilesImageAndVideo.value[index].link!.isNotEmpty? controller.attatechedFilesImageAndVideo.value[index].link!:null,
+                        ): controller.attatechedFilesImageAndVideo.value[index].file!=null && !controller.attatechedFilesImageAndVideo.value[index].file!.isBlank!?Container(
+                          width: 80.w,
+                          height: 80.w,
+                          child: VideoApp(
+
+                            file: controller.attatechedFilesImageAndVideo.value[index].file!=null && !controller.attatechedFilesImageAndVideo.value[index].file!.isBlank!?controller.attatechedFilesImageAndVideo.value[index].file:null,
+                          ),
+                        ):Stack(
+                          children: [
+                            Image.network(
+                              controller.attatechedFilesImageAndVideo.value[index].urlVideoLink!,
+                              width: 80.w,
+                              height: 80.w,
+                              fit: BoxFit.fill,
+                            ),
+                            Positioned(
+                                top: 0,
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                              child: InkWell(
+                                onTap: (){
+                                  //controller.attatechedFilesImageAndVideo.value[index].videoId = '680589403';
+                                  Get.to(() =>FullImageScreen(videoId: controller.attatechedFilesImageAndVideo.value[index].videoId));
+                                },
+                                child: Icon(
+                                  Icons.play_arrow,
+                                  color: Colors.white,
+                                  size: 50,
+                                ),
+                              ),
+                            )
+                          ],
+                        )/*VideoApp(
+                          path: controller.attatechedFilesImageAndVideo.value[index].urlVideoLink!=null && controller.attatechedFilesImageAndVideo.value[index].urlVideoLink!.isNotEmpty? controller.attatechedFilesImageAndVideo.value[index].urlVideoLink!:null,
                           file: controller.attatechedFilesImageAndVideo.value[index].file!=null && !controller.attatechedFilesImageAndVideo.value[index].file!.isBlank!?controller.attatechedFilesImageAndVideo.value[index].file:null,
-                        ),
+                        )*/,
                       ),
                       Positioned(
                           left: 0,
@@ -489,7 +537,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                 showBottomSheetForRequest(context,4);
               },
               title: 'الروابط',
-              child: Obx(()=>controller.urlList.value.length>0?ListView.builder(
+              child:Obx(()=> controller.numOfLinks.value>0?ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: controller.urlList.value.length,
                 shrinkWrap: true,
@@ -898,7 +946,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Obx(()=>Text('${controller.noticeText.value??''}',style: TextStyle(color: Color(0xff041D67)),)),
+                                  child: Obx(()=>Text('${controller.noticeText.isNotEmpty ? controller.noticeText.value : 'يمكنك اضافة ملحوظة'}',style: TextStyle(color: Color(0xff041D67)),)),
                                 ),
                               ],
                             ),
@@ -938,7 +986,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
               child: Row(
                 children: [
                   Expanded(child: InkWell(onTap: (){
-                                     controller.onEditRequestClicked(context);
+                                     controller.onEditRequestClicked(context,'');
                   },
                     child: Container(
                       height: 40,
@@ -1049,13 +1097,16 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
               /* return LocationRangeBottomSheet(
                     scrollController: scrollController);
 */
-            }else /*if(bottomNumber==6)*/ {
+            }else if(bottomNumber==6) {
               return NoticeSheet(
                   scrollController: scrollController
               );
               /* return LocationRangeBottomSheet(
                     scrollController: scrollController);
 */
+            }else /*if(bottomNumber==7)*/{
+              return AttatchementPage(
+                  scrollController: scrollController);
             }/*else if(bottomNumber==3){
               return AttatchementPage(
                   scrollController: scrollController);
@@ -1158,6 +1209,7 @@ class _AdvertiserDetailsPageState extends State<AdvertiserDetailsPage> {
         },
       );*/
   }
+
 }
 
 class Country {
